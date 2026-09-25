@@ -658,6 +658,10 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
     <!-- Mobile Bottom Navigation (Priority Sorted) -->
     <nav id="mobile-nav" class="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-teal-500/20 z-[100] pb-safe hidden">
         <div class="flex justify-around items-center h-16 px-2">
+            <button onclick="window.ui.openOCLM()" id="m-btn-tab-oclm" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors" aria-label="Meetings">
+                <span class="text-xl leading-none mb-1">◷</span>
+                <span class="text-[10px] font-medium">Meetings</span>
+            </button>
             <button onclick="window.ui.switchTab('dashboard')" id="m-btn-tab-dashboard" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 <span class="text-[10px] font-medium">Home</span>
@@ -3056,6 +3060,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                     window.ui.showOCLMComingSoon();
                     return;
                 }
+                window.ui.getOCLMState();
                 window.ui.switchTab('oclm');
             },
 
@@ -3413,6 +3418,61 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Attendance Form Link Copied!'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
             },
 
+            /* ===== OCLM core state + week helpers ===== */
+            oclmStorageKey: () => `ca_oclm_${window.currentCongId || 'unknown'}`,
+            oclmDefaultParts: () => [
+                {id:'chairman',category:'Chairman',title:'Chairman',slots:1,enabled:true},
+                {id:'opening-prayer',category:"Opening Prayer",title:'Opening Prayer',slots:1,enabled:true},
+                {id:'treasures-talk',category:"TREASURES FROM GOD'S WORD",title:'Talk (10 min)',slots:1,enabled:true},
+                {id:'spiritual-gems',category:"TREASURES FROM GOD'S WORD",title:'Spiritual Gems',slots:1,enabled:true},
+                {id:'bible-reading',category:"TREASURES FROM GOD'S WORD",title:'Bible Reading',slots:1,enabled:true},
+                {id:'starting-conversation',category:'APPLY YOURSELF TO THE FIELD MINISTRY',title:'Starting a Conversation',slots:2,enabled:true},
+                {id:'following-up',category:'APPLY YOURSELF TO THE FIELD MINISTRY',title:'Following Up',slots:2,enabled:true},
+                {id:'what-would-you-say',category:'APPLY YOURSELF TO THE FIELD MINISTRY',title:'What Would You Say?',slots:2,enabled:true},
+                {id:'living-first',category:"LIVING AS CHRISTIANS",title:'First Part',slots:1,enabled:true},
+                {id:'living-second',category:"LIVING AS CHRISTIANS",title:'Second Part',slots:1,enabled:true},
+                {id:'living-third',category:"LIVING AS CHRISTIANS",title:'Third Part',slots:1,enabled:true},
+                {id:'cbs',category:"LIVING AS CHRISTIANS",title:'Congregation Bible Study',slots:1,enabled:true},
+                {id:'cbs-reader',category:"LIVING AS CHRISTIANS",title:'Reader',slots:1,enabled:true},
+                {id:'closing-prayer',category:'Closing Prayer',title:'Closing Prayer',slots:1,enabled:true}
+            ],
+            oclmEscape: value => String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch])),
+            oclmWeekKey: value => {
+                const d=new Date(`${value}T12:00:00`);
+                if(Number.isNaN(d.getTime())) return '';
+                const day=d.getDay();
+                const diff=day===0?-6:1-day;
+                d.setDate(d.getDate()+diff); d.setHours(12,0,0,0);
+                return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            },
+            oclmWeekLabel: value => {
+                const key=window.ui.oclmWeekKey(value); if(!key) return 'Meeting week';
+                const start=new Date(`${key}T12:00:00`); const end=new Date(start); end.setDate(start.getDate()+5);
+                const sameMonth=start.getMonth()===end.getMonth();
+                const startText=start.toLocaleDateString('en-IN',{month:'long',day:'numeric'});
+                const endText=end.toLocaleDateString('en-IN',{month:sameMonth?undefined:'long',day:'numeric'});
+                return `Week of ${startText}–${endText}`;
+            },
+            getOCLMState: () => {
+                const key=window.ui.oclmStorageKey();
+                const fallback={version:3,parts:window.ui.oclmDefaultParts(),capabilities:{},pairings:{},assignments:[],published:false,publishedAt:null,publishedSnapshot:null};
+                try{
+                    const raw=localStorage.getItem(key);
+                    if(!raw) return fallback;
+                    const parsed=JSON.parse(raw)||{};
+                    const state={...fallback,...parsed};
+                    state.parts=Array.isArray(parsed.parts)&&parsed.parts.length?parsed.parts:window.ui.oclmDefaultParts();
+                    state.capabilities=parsed.capabilities&&typeof parsed.capabilities==='object'?parsed.capabilities:{};
+                    state.pairings=parsed.pairings&&typeof parsed.pairings==='object'?parsed.pairings:{};
+                    state.assignments=Array.isArray(parsed.assignments)?parsed.assignments:[];
+                    return state;
+                }catch(e){ console.warn('OCLM state recovery:',e); return fallback; }
+            },
+            saveOCLMState: state => {
+                try{ localStorage.setItem(window.ui.oclmStorageKey(),JSON.stringify({...state,version:3})); }
+                catch(e){ console.error('OCLM save failed:',e); window.ui.showToast?.('OCLM could not be saved on this device.','error'); }
+            },
+
             switchOCLMPanel: (panel) => {
                 const panels=['planner','capabilities','live'];
                 panels.forEach(name=>{const el=document.getElementById(`oclm-panel-${name}`);if(el)el.classList.toggle('hidden',name!==panel);});
@@ -3481,12 +3541,19 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
             getOCLMWeekDate: () => document.getElementById('oclm-week-date')?.value || '',
             populateOCLMWeeks: () => {
                 const select=document.getElementById('oclm-week-date'); if(!select)return;
-                const now=new Date(); now.setHours(12,0,0,0); now.setDate(now.getDate()-now.getDay());
+                const today=new Date(); today.setHours(12,0,0,0);
+                const day=today.getDay(); const diff=day===0?-6:1-day;
+                const monday=new Date(today); monday.setDate(today.getDate()+diff); monday.setHours(12,0,0,0);
                 const weeks=[];
-                for(let i=-8;i<=64;i++){ const d=new Date(now); d.setDate(now.getDate()+i*7); const key=d.toISOString().slice(0,10); weeks.push({key,label:window.ui.oclmWeekLabel(key)}); }
-                const current=select.value||window.ui.oclmWeekKey(now.toISOString().slice(0,10));
-                select.innerHTML=weeks.map(w=>`<option value="${w.key}">${window.ui.oclmEscape(w.label.replace('Week of ',''))}</option>`).join('');
-                select.value=weeks.some(w=>w.key===current)?current:weeks[8].key;
+                for(let i=0;i<=13;i++){
+                    const d=new Date(monday); d.setDate(monday.getDate()+i*7);
+                    const key=d.toISOString().slice(0,10);
+                    weeks.push({key,label:window.ui.oclmWeekLabel(key)});
+                }
+                const previous=select.value;
+                select.innerHTML=weeks.map(w=>`<option value="${w.key}">${window.ui.oclmEscape(w.label.replace(/^Week of /,''))}</option>`).join('');
+                const preferred=previous&&weeks.some(w=>w.key===previous)?previous:weeks[0].key;
+                select.value=preferred;
             },
             renderOCLMPlanner: () => {
                 const input=document.getElementById('oclm-week-date'); if(!input)return; window.ui.populateOCLMWeeks(); const date=input.value; const weekKey=window.ui.oclmWeekKey(date); const label=document.getElementById('oclm-week-label');if(label)label.textContent=window.ui.oclmWeekLabel(date); const box=document.getElementById('oclm-assignment-list'); if(!box)return; const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const items=window.ui.oclmAssignmentForWeek(s,weekKey);const activeParts=s.parts.filter(p=>p.enabled);if(!items.length){box.innerHTML='<div class="text-center py-10 text-teal-100/40 border border-dashed border-white/10 rounded-2xl">No assignments yet for this meeting week.</div>';}else{const byCat={};items.forEach(a=>{const part=s.parts.find(p=>p.id===a.partId);const cat=part?.category||'Other';(byCat[cat]??=[]).push(a);});box.innerHTML=Object.entries(byCat).map(([cat,arr])=>`<div><div class="text-[10px] uppercase tracking-wider text-cyan-300/70 font-bold mb-2">${window.ui.oclmEscape(cat)}</div><div class="space-y-2">${arr.sort((a,b)=>a.partOrder-b.partOrder).map(a=>{const part=s.parts.find(p=>p.id===a.partId);const names=(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean);return `<div class="rounded-xl border border-white/10 bg-black/20 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><div class="text-sm font-semibold text-white">${window.ui.oclmEscape(part?.title||'Assignment')}</div><div class="text-xs text-cyan-200 mt-1">${names.map(n=>window.ui.oclmEscape(n)).join(' + ')||'<span class="text-rose-300">Unassigned</span>'}</div>${a.note?`<div class="text-[11px] text-teal-100/45 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div><div class="flex gap-2"><button onclick="window.ui.editOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-white/5 text-xs text-white">Edit</button><button onclick="window.ui.deleteOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/10 text-xs text-rose-300">Delete</button></div></div>`;}).join('')}</div></div>`).join('');}
