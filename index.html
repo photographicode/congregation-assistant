@@ -444,6 +444,15 @@ body[data-theme="light"] .ca-announcement-card{background:#fff;border-color:#cbd
 body[data-theme="light"] .ca-announcement-card h4{color:#0f172a;} body[data-theme="light"] .ca-announcement-card p{color:#334155;}
 
 
+/* ===== OCLM focused workspace ===== */
+.oclm-workspace{display:grid;grid-template-columns:290px minmax(0,1fr);gap:16px;min-height:690px}
+.oclm-rail,.oclm-main{background:rgba(2,15,23,.52);border:1px solid rgba(148,163,184,.10);border-radius:22px;box-shadow:0 18px 55px rgba(0,0,0,.18);backdrop-filter:blur(18px)}
+.oclm-rail{display:flex;flex-direction:column;overflow:hidden}.oclm-rail-head{padding:20px 18px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+.oclm-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#5eead4}.oclm-rail-title{font-size:22px;font-weight:850;color:#fff;margin-top:2px}.oclm-icon-btn{width:34px;height:34px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#99f6e4;cursor:pointer}.oclm-rail-search{margin:14px;display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.07);color:#94a3b8}.oclm-rail-search input,.oclm-search-large input{border:0!important;background:transparent!important;outline:0!important;color:#e2e8f0!important;width:100%;min-width:0;padding:0!important}.oclm-publisher-rail{overflow:auto;padding:0 8px 10px;flex:1}.oclm-pub-row{width:100%;text-align:left;padding:11px 12px;border-radius:12px;border:1px solid transparent;background:transparent;color:#cbd5e1;cursor:pointer;transition:.18s;margin-bottom:3px}.oclm-pub-row:hover{background:rgba(255,255,255,.04)}.oclm-pub-row.active{background:linear-gradient(90deg,rgba(20,184,166,.18),rgba(34,211,238,.06));border-color:rgba(45,212,191,.18);color:#fff}.oclm-pub-name{font-weight:750;font-size:13px}.oclm-pub-meta{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#5eead4;margin-top:3px}.oclm-rail-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);display:grid;gap:6px}.oclm-quiet-btn{background:transparent;border:0;color:#94a3b8;text-align:left;padding:8px 10px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer}.oclm-quiet-btn:hover{background:rgba(255,255,255,.04);color:#e2e8f0}
+.oclm-main{padding:25px;overflow:hidden}.oclm-main-head,.oclm-schedule-head,.oclm-live-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.06)}.oclm-main-title{font-size:28px;font-weight:850;color:#fff;margin-top:4px}.oclm-section-title{font-size:22px;font-weight:850;color:#fff;margin-top:4px}.oclm-main-subtitle{font-size:12px;line-height:1.55;color:rgba(204,251,241,.55);margin-top:5px}.oclm-head-actions{display:flex;gap:8px;flex-wrap:wrap}.oclm-primary-btn,.oclm-secondary-btn,.oclm-danger-btn,.oclm-copy-link{border-radius:11px;padding:9px 13px;font-size:11px;font-weight:800;cursor:pointer;transition:.18s}.oclm-primary-btn{border:1px solid rgba(45,212,191,.35);background:linear-gradient(135deg,#14b8a6,#06b6d4);color:#042f2e;box-shadow:0 8px 22px rgba(20,184,166,.14)}.oclm-secondary-btn{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);color:#e2e8f0}.oclm-danger-btn{border:1px solid rgba(244,63,94,.18);background:rgba(244,63,94,.06);color:#fda4af}.oclm-capability-editor{padding-top:18px}.oclm-cap-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.oclm-cap-count{font-size:11px;color:#67e8f9}.oclm-category{margin-bottom:16px}.oclm-category-title{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:850;color:#5eead4;margin-bottom:7px}.oclm-part-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.oclm-part-check{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:11px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025);font-size:11px;color:#cbd5e1;cursor:pointer}.oclm-part-check:hover{background:rgba(255,255,255,.045)}.oclm-part-check input{accent-color:#14b8a6}.oclm-role-note{padding:11px 13px;border-radius:12px;background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.12);font-size:10px;color:rgba(204,251,241,.55);margin-bottom:16px}.oclm-week-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.oclm-select{border:1px solid rgba(255,255,255,.10)!important;background:rgba(0,0,0,.20)!important;color:#e2e8f0!important;border-radius:11px;padding:9px 11px;font-size:11px;min-width:180px}.oclm-week-pill{display:inline-flex;margin:14px 0;padding:7px 10px;border-radius:9px;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.12);color:#a5f3fc;font-size:10px;font-weight:800}.oclm-planner-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:14px}.oclm-assignment-panel,.oclm-preview-panel{border:1px solid rgba(255,255,255,.07);border-radius:16px;background:rgba(0,0,0,.12);padding:15px}.oclm-panel-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:11px}.oclm-panel-title-row h3{font-size:14px;color:#fff;font-weight:800}.oclm-panel-title-row p{font-size:10px;color:rgba(204,251,241,.4);margin-top:3px}.oclm-assignment-card{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border-radius:11px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025);margin-bottom:6px}.oclm-assignment-category{font-size:9px;text-transform:uppercase;color:#5eead4;font-weight:800}.oclm-assignment-title{font-size:12px;color:#fff;font-weight:750}.oclm-assignment-names{font-size:10px;color:#67e8f9;margin-top:3px}.oclm-board-preview{max-height:560px;overflow:auto}.oclm-copy-link{width:100%;margin-top:8px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.18);color:#99f6e4}.oclm-public-shell{max-width:1050px;margin:0 auto;padding:18px}.oclm-public-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;padding:22px;border-radius:22px;background:rgba(2,15,23,.72);border:1px solid rgba(255,255,255,.08)}.oclm-public-title{font-size:28px;font-weight:850;color:#fff;margin-top:4px}.oclm-public-head p{font-size:12px;color:rgba(204,251,241,.55);margin-top:5px}.oclm-public-tools{display:flex;gap:8px;align-items:center}.oclm-search-large{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:11px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.09);min-width:210px;color:#94a3b8}.oclm-public-assignment{display:grid;grid-template-columns:110px minmax(0,1fr);gap:15px;padding:14px;border-bottom:1px solid rgba(255,255,255,.06)}.oclm-public-assignment.match{background:rgba(34,211,238,.07);box-shadow:inset 3px 0 #22d3ee}.oclm-public-week{border-radius:17px;border:1px solid rgba(255,255,255,.08);background:rgba(2,15,23,.52);padding:16px;margin-top:12px}.oclm-public-week-title{font-size:13px;font-weight:850;color:#fff}.oclm-public-part{font-size:12px;font-weight:800;color:#fff}.oclm-public-category{font-size:9px;color:#5eead4;text-transform:uppercase;font-weight:800}.oclm-public-names{font-size:11px;color:#67e8f9;margin-top:4px}.oclm-panel-inline.hidden{display:none}.oclm-parts-modal-list{max-height:60vh;overflow:auto}
+@media(max-width:900px){.oclm-workspace{grid-template-columns:230px minmax(0,1fr)}.oclm-planner-grid{grid-template-columns:1fr}.oclm-main{padding:19px}}
+@media(max-width:680px){.oclm-workspace{display:block;min-height:0}.oclm-rail{margin-bottom:10px}.oclm-publisher-rail{display:flex;overflow:auto;padding:0 10px 10px}.oclm-pub-row{min-width:145px;margin-right:4px}.oclm-rail-footer{display:none}.oclm-main{border-radius:18px;padding:15px}.oclm-main-head,.oclm-schedule-head,.oclm-live-head{display:block}.oclm-head-actions{margin-top:12px}.oclm-part-grid{grid-template-columns:1fr}.oclm-week-controls{justify-content:stretch}.oclm-week-controls>*{flex:1;min-width:0}.oclm-assignment-card{grid-template-columns:1fr auto}.oclm-assignment-category{grid-column:1/-1}.oclm-public-shell{padding:8px}.oclm-public-head{display:block;padding:16px}.oclm-public-tools{display:block;margin-top:13px}.oclm-public-tools>*{width:100%;margin-top:7px}.oclm-search-large{min-width:0}.oclm-public-assignment{grid-template-columns:1fr;gap:5px}}
+
 /* OCLM Scheduler v2 */
 .oclm-shell{animation:oclmIn .35s ease both}
 @keyframes oclmIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -890,80 +899,80 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
         </div>
 
         <!-- OCLM SCHEDULER TAB -->
-        <div id="tab-oclm" class="tab-content space-y-5 oclm-shell">
-            <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-cyan-500/20 oclm-pulse">
-                <div class="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">
-                    <div>
-                        <div class="flex items-center gap-2"><span class="text-cyan-300">◷</span><h2 class="text-2xl sm:text-3xl font-bold text-white">OCLM Scheduling</h2></div>
-                        <p class="text-teal-200/70 mt-1 max-w-2xl">Build a reusable parts list, set publisher capabilities, prepare each midweek meeting, review the schedule, then publish one read-only link for the congregation.</p>
+        <div id="tab-oclm" class="tab-content space-y-4 oclm-shell">
+            <div class="oclm-workspace">
+                <aside class="oclm-rail">
+                    <div class="oclm-rail-head">
+                        <div>
+                            <div class="oclm-kicker">OCLM</div>
+                            <h2 class="oclm-rail-title">Scheduler</h2>
+                        </div>
+                        <button class="oclm-icon-btn" onclick="window.ui.openOCLMFeedback()" title="Write to developer" aria-label="Write to developer">✦</button>
                     </div>
-                    <div class="text-xs text-cyan-100/60 bg-cyan-950/30 border border-cyan-500/20 rounded-xl px-4 py-3 max-w-xl leading-relaxed"><strong class="text-cyan-200">What to expect:</strong> Set the parts each publisher can handle, create weekly assignments, The assigner can use Auto-Assign for a week to distribute eligible publishers, and to make sure everyone get's equal chances and generate a public link so each publisher can view current and upcoming assignments.</div>
-                </div>
-            </div>
+                    <div class="oclm-rail-search">
+                        <span>⌕</span><input id="oclm-publisher-search" type="search" oninput="window.ui.renderOCLMCapabilities()" placeholder="Find a publisher...">
+                    </div>
+                    <div id="oclm-publisher-rail" class="oclm-publisher-rail"></div>
+                    <div class="oclm-rail-footer">
+                        <button onclick="window.ui.openOCLMPartsSettings()" class="oclm-quiet-btn">⚙ Parts & titles</button>
+                        <button onclick="window.ui.openOCLMPairingEditor()" class="oclm-quiet-btn">♡ Couple pairings</button>
+                    </div>
+                </aside>
 
-            <div class="oclm-subnav" role="tablist" aria-label="OCLM sections">
-                <button id="oclm-sub-live" class="active" onclick="window.ui.switchOCLMPanel('live')">🔗 Live Link</button>
-                <button id="oclm-sub-publishers" onclick="window.ui.switchOCLMPanel('publishers')">👥 Publishers & Parts</button>
-                <button id="oclm-sub-planner" onclick="window.ui.switchOCLMPanel('planner')">🗓️ Planner & Preview</button>
-            </div>
+                <main class="oclm-main">
+                    <div class="oclm-main-head">
+                        <div>
+                            <div class="oclm-kicker">Publisher capabilities</div>
+                            <h1 id="oclm-selected-title" class="oclm-main-title">Select a publisher</h1>
+                            <p id="oclm-selected-subtitle" class="oclm-main-subtitle">Choose a name on the left to set the parts this publisher can handle.</p>
+                        </div>
+                        <div class="oclm-head-actions">
+                            <button onclick="window.ui.switchOCLMPanel('planner')" class="oclm-secondary-btn">Schedule</button>
+                            <button onclick="window.ui.switchOCLMPanel('live')" class="oclm-primary-btn">Live board</button>
+                        </div>
+                    </div>
 
-            <section id="oclm-panel-live" class="space-y-5">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div class="glass-panel p-5 rounded-2xl lg:col-span-2">
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                            <div><h3 class="font-bold text-white text-lg">Public notice board</h3><p class="text-xs text-teal-200/60 mt-1">Only the latest published snapshot is visible through the public link. Re-copy the link after publishing changes.</p></div>
-                            <div class="flex gap-2"><button onclick="window.ui.previewOCLMPublic()" class="px-3 py-2 rounded-xl bg-white/10 border border-white/10 text-xs font-bold text-white">Preview</button><button onclick="window.ui.publishOCLM()" class="px-3 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 text-xs font-bold">Go Live</button></div>
+                    <section id="oclm-capability-editor" class="oclm-capability-editor"></section>
+
+                    <section id="oclm-panel-planner" class="oclm-panel-inline hidden">
+                        <div class="oclm-schedule-head">
+                            <div>
+                                <div class="oclm-kicker">Weekly schedule</div>
+                                <h2 class="oclm-section-title">Build the meeting in minutes</h2>
+                                <p class="oclm-main-subtitle">Choose a midweek. Schedule future weeks now, review everything, then publish when ready.</p>
+                            </div>
+                            <div class="oclm-week-controls">
+                                <select id="oclm-week-date" onchange="window.ui.renderOCLMPlanner()" class="oclm-select"></select>
+                                <button onclick="window.ui.autoAssignOCLM()" class="oclm-primary-btn">⚡ Auto-Assign</button>
+                                <button onclick="window.ui.openOCLMAssignmentEditor()" class="oclm-secondary-btn">+ Assign</button>
+                            </div>
+                        </div>
+                        <div id="oclm-week-label" class="oclm-week-pill"></div>
+                        <div class="oclm-planner-grid">
+                            <div class="oclm-assignment-panel">
+                                <div class="oclm-panel-title-row"><div><h3>Assignments</h3><p>Click an assignment to edit it.</p></div><button onclick="window.ui.clearOCLMWeek()" class="oclm-danger-btn">Clear week</button></div>
+                                <div id="oclm-assignment-list" class="oclm-assignment-list"></div>
+                            </div>
+                            <div class="oclm-preview-panel">
+                                <div class="oclm-panel-title-row"><div><h3>Preview</h3><p>This is what publishers will see.</p></div><button onclick="window.ui.publishOCLM()" class="oclm-primary-btn">Go Live</button></div>
+                                <div id="oclm-planner-preview" class="oclm-board-preview"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="oclm-panel-live" class="oclm-panel-inline hidden">
+                        <div class="oclm-live-head">
+                            <div><div class="oclm-kicker">Public notice board</div><h2 class="oclm-section-title">One link for the congregation</h2><p class="oclm-main-subtitle">Publish only after the schedule has been reviewed.</p></div>
+                            <div class="oclm-head-actions"><button onclick="window.ui.previewOCLMPublic()" class="oclm-secondary-btn">Preview</button><button onclick="window.ui.publishOCLM()" class="oclm-primary-btn">Go Live</button></div>
                         </div>
                         <div id="oclm-live-status" class="mt-4"></div>
+                        <div id="oclm-live-link-box" class="mt-3"></div>
+                        <button onclick="window.ui.copyOCLMLiveLink()" class="oclm-copy-link">Copy public link</button>
                         <div id="oclm-live-preview" class="mt-4"></div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <h3 class="font-bold text-white text-lg">Live link</h3>
-                        <p class="text-xs text-teal-200/60 mt-1">Share this single link with the congregation.</p>
-                        <div id="oclm-live-link-box" class="mt-4"></div>
-                        <button onclick="window.ui.copyOCLMLiveLink()" class="mt-3 w-full px-4 py-2.5 rounded-xl bg-cyan-500/15 border border-cyan-500/25 text-cyan-200 text-sm font-bold">Copy live link</button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="oclm-panel-publishers" class="hidden space-y-5">
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
-                    <div class="glass-panel p-5 rounded-2xl xl:col-span-2">
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4"><div><h3 class="font-bold text-white text-lg">Publisher capabilities</h3><p class="text-xs text-teal-200/60 mt-1">The names come directly from Publishers. OCLM stores only capability choices here.</p></div><input id="oclm-publisher-search" type="search" oninput="window.ui.renderOCLMCapabilities()" placeholder="Search publisher..." class="px-3 py-2 rounded-xl text-sm w-full sm:w-56"></div>
-                        <div id="oclm-capability-list" class="space-y-2 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <div class="flex items-center justify-between gap-2"><div><h3 class="font-bold text-white text-lg">Parts library</h3><p class="text-xs text-teal-200/60 mt-1">Change these anytime; they stay available for future weeks.</p></div><button onclick="window.ui.openOCLMPartEditor()" class="px-3 py-2 rounded-xl bg-cyan-500/15 border border-cyan-500/20 text-cyan-200 text-xs font-bold">+ Add</button></div>
-                        <div id="oclm-parts-list" class="mt-4 space-y-2 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><h3 class="font-bold text-white text-lg">Couple pairing</h3><p class="text-xs text-teal-200/60 mt-1">For two-person assistant parts, Auto-Assign only uses same-gender pairs or couples you explicitly pair here.</p></div><button onclick="window.ui.openOCLMPairingEditor()" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold">Set a couple pair</button></div>
-                    <div id="oclm-pair-list" class="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
-                </div>
-            </section>
-
-            <section id="oclm-panel-planner" class="hidden space-y-5">
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex flex-col lg:flex-row lg:items-end gap-3">
-                        <div class="flex-1"><label class="text-[11px] uppercase tracking-wider text-teal-200/60 font-bold">Meeting week</label><input id="oclm-week-date" type="date" onchange="window.ui.renderOCLMPlanner()" class="mt-1 w-full px-3 py-2.5 rounded-xl text-sm"></div>
-                        <button onclick="window.ui.autoAssignOCLM()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 text-sm font-bold">⚡ Auto-Assign Week</button>
-                        <button onclick="window.ui.clearOCLMWeek()" class="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-white">Clear Week</button>
-                    </div>
-                    <div id="oclm-week-label" class="mt-3 text-sm text-cyan-200 font-semibold"></div>
-                    <p class="text-xs text-teal-200/50 mt-1">Auto-Assign never overwrites an assignment you already placed. Review and edit the week before publishing.</p>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4"><div><h3 class="font-bold text-white text-lg">Assignment board</h3><p class="text-xs text-teal-200/60 mt-1">Add one part at a time or let Auto-Assign fill eligible slots.</p></div><button onclick="window.ui.openOCLMAssignmentEditor()" class="px-4 py-2 rounded-xl bg-white/10 border border-white/10 text-xs font-bold text-white">+ Manual assignment</button></div>
-                    <div id="oclm-assignment-list" class="space-y-3"></div>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><h3 class="font-bold text-white text-lg">Preview before publishing</h3><p class="text-xs text-teal-200/60 mt-1">This is exactly what the public notice board will receive when you go live.</p></div><button onclick="window.ui.previewOCLMPublic()" class="px-4 py-2 rounded-xl bg-cyan-500/15 border border-cyan-500/25 text-cyan-200 text-xs font-bold">Preview public board</button></div>
-                    <div id="oclm-planner-preview" class="mt-4"></div>
-                </div>
-            </section>
+                    </section>
+                </main>
+            </div>
         </div>
-
         <!-- MEETING ATTENDANCE TAB -->
         <div id="tab-attendance" class="tab-content space-y-6">
             <div class="flex justify-between items-end flex-wrap gap-4">
@@ -1210,17 +1219,14 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
 
         <!-- PUBLIC OCLM VIEW -->
         <div id="tab-public-oclm" class="tab-content">
-            <div class="max-w-5xl mx-auto w-full px-4 py-6 sm:py-10">
-                <div class="glass-panel p-5 sm:p-7 rounded-3xl border border-cyan-500/20">
-                    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-                        <div><div class="text-cyan-300 text-xs font-bold uppercase tracking-[.2em]">OCLM Notice Board</div><h2 id="public-oclm-title" class="text-2xl sm:text-3xl font-bold text-white mt-1">Meeting Assignments</h2><p class="text-teal-200/60 text-sm mt-1">Search your name to quickly find every assignment.</p></div>
-                        <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto"><select id="public-oclm-week" onchange="window.ui.renderPublicOCLMBoard()" class="px-3 py-2.5 rounded-xl text-sm min-w-[190px]"></select><input id="public-oclm-search" oninput="window.ui.renderPublicOCLMBoard()" type="search" placeholder="Search publisher..." class="px-3 py-2.5 rounded-xl text-sm min-w-[190px]"></div>
-                    </div>
-                    <div id="public-oclm-summary" class="mt-4"></div><div id="public-oclm-list" class="mt-5 space-y-5"></div>
+            <div class="oclm-public-shell">
+                <div class="oclm-public-head">
+                    <div><div class="oclm-kicker">OCLM NOTICE BOARD</div><h1 id="public-oclm-title" class="oclm-public-title">Meeting Assignments</h1><p>Search your name to see every part assigned to you. Your name is highlighted so you can prepare quickly.</p></div>
+                    <div class="oclm-public-tools"><select id="public-oclm-week" onchange="window.ui.renderPublicOCLMBoard()" class="oclm-select"></select><div class="oclm-search-large"><span>⌕</span><input id="public-oclm-search" oninput="window.ui.renderPublicOCLMBoard()" type="search" placeholder="Search your name..."></div></div>
                 </div>
+                <div id="public-oclm-summary" class="mt-4"></div><div id="public-oclm-list" class="mt-5"></div>
             </div>
         </div>
-
         <!-- PUBLIC ATTENDANCE FORM (New Separate Tab for URL users) -->
         <div id="tab-public-attendance" class="tab-content">
             <div id="pub-att-success-msg" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-4 w-full">
@@ -1580,6 +1586,13 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                     </div>
                     <input type="file" id="csv-file" accept=".csv" class="hidden" onchange="window.db.importContacts(event)">
                     <input type="file" id="csv-report-file" accept=".csv" class="hidden" onchange="window.db.importReports(event)">
+                </div>
+
+                <!-- Developer Feedback -->
+                <div class="space-y-3 pb-5 border-b border-white/10">
+                    <h4 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Write to Developer</h4>
+                    <p class="text-[11px] text-teal-100/55">Found something confusing, broken, or worth improving? Send feedback directly to the developer.</p>
+                    <button type="button" onclick="window.ui.closeModal('modal-settings'); window.ui.openOCLMFeedback();" class="w-full glass-panel px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-white/10">✦ Send Feedback / Report an Issue</button>
                 </div>
 
                 <!-- Danger Zone -->
@@ -3615,13 +3628,13 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
             },
 
             switchOCLMPanel: (panel) => {
-                ['live','publishers','planner'].forEach(name => {
-                    document.getElementById(`oclm-panel-${name}`)?.classList.toggle('hidden', name !== panel);
-                    document.getElementById(`oclm-sub-${name}`)?.classList.toggle('active', name === panel);
-                });
-                if (panel === 'live') { window.ui.renderOCLMLive(); window.ui.renderOCLMPublicLinks(); }
-                if (panel === 'publishers') { window.ui.renderOCLMCapabilities(); window.ui.renderOCLMParts(); window.ui.renderOCLMPairs(); }
-                if (panel === 'planner') window.ui.renderOCLMPlanner();
+                const planner=document.getElementById('oclm-panel-planner');
+                const live=document.getElementById('oclm-panel-live');
+                if(planner) planner.classList.toggle('hidden', panel !== 'planner');
+                if(live) live.classList.toggle('hidden', panel !== 'live');
+                if(panel === 'planner') window.ui.renderOCLMPlanner();
+                if(panel === 'live') { window.ui.renderOCLMLive(); window.ui.renderOCLMPublicLinks(); }
+                window.ui.renderOCLMCapabilities();
             },
             oclmDefaultParts: () => [
                 {id:'chairman',category:'Meeting',title:'Chairman',slots:1,enabled:true},
@@ -3685,12 +3698,29 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
             openOCLMPartEditor: (id=null) => { const s=window.ui.getOCLMState(); const p=id?s.parts.find(x=>x.id===id):null; const category=prompt('Category',p?.category||'Additional Duties'); if(category===null)return; const title=prompt('Part title',p?.title||''); if(!title?.trim())return; const slotsRaw=prompt('Number of people for this part (1 or 2)',String(p?.slots||1)); const slots=Math.max(1,Math.min(2,parseInt(slotsRaw)||1)); if(p){p.category=category.trim();p.title=title.trim();p.slots=slots;}else{s.parts.push({id:`part-${window.utils.generateUUID()}`,category:category.trim(),title:title.trim(),slots,enabled:true});} window.ui.saveOCLMState(s);window.ui.renderOCLMParts();window.ui.renderOCLMCapabilities();window.ui.renderOCLMPlanner();window.ui.showToast('OCLM part saved.');},
             editOCLMPart: id => window.ui.openOCLMPartEditor(id),
 
+            oclmDefaultCapabilityIds: pub => {
+                const s=window.ui.getOCLMState();
+                const active=s.parts.filter(p=>p.enabled);
+                const isElder=!!pub.isElder;
+                const isMS=!!pub.isMS;
+                return active.filter(p=>isElder || (isMS && p.title.toLowerCase()!=='chairman')).map(p=>p.id);
+            },
+            ensureOCLMCapabilities: () => {
+                const s=window.ui.getOCLMState(); const pubs=window.db.getPublishers(); let changed=false;
+                pubs.forEach(pub=>{if(!Object.prototype.hasOwnProperty.call(s.capabilities,pub.id)){s.capabilities[pub.id]=window.ui.oclmDefaultCapabilityIds(pub);changed=true;}});
+                if(changed)window.ui.saveOCLMState(s); return s;
+            },
+            selectOCLMPublisher: id => { window.ui.oclmSelectedPublisherId=id; window.ui.renderOCLMCapabilities(); },
             renderOCLMCapabilities: () => {
-                const box=document.getElementById('oclm-capability-list'); if(!box)return;
-                const q=(document.getElementById('oclm-publisher-search')?.value||'').trim().toLowerCase(); const pubs=window.db.getPublishers().filter(p=>!q||`${p.name} ${p.group||''}`.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name)); const s=window.ui.getOCLMState(); const parts=s.parts.filter(p=>p.enabled);
-                if(!pubs.length){box.innerHTML='<div class="text-center py-8 text-teal-100/40">No publishers found.</div>';return;}
-                const cats=[...new Set(parts.map(p=>p.category))];
-                box.innerHTML=pubs.map(pub=>{const selected=new Set(s.capabilities[pub.id]||[]);return `<details class="rounded-2xl border border-white/10 bg-black/20 p-4"><summary class="cursor-pointer list-none flex items-center justify-between gap-3"><span><span class="font-semibold text-white">${window.ui.oclmEscape(pub.name)}</span><span class="block text-[10px] uppercase tracking-wider text-teal-300/60">${window.ui.oclmEscape(pub.group||'UNASSIGNED')}</span></span><span class="text-[10px] text-cyan-300">${selected.size} capable</span></summary><div class="mt-4 space-y-3">${cats.map(cat=>`<div><div class="text-[10px] uppercase tracking-wider text-teal-200/45 font-bold mb-2">${window.ui.oclmEscape(cat)}</div><div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${parts.filter(p=>p.category===cat).map(part=>`<label class="flex items-start gap-2 rounded-lg bg-white/[.03] px-2 py-2 text-xs text-teal-50/80"><input type="checkbox" ${selected.has(part.id)?'checked':''} onchange='window.ui.setOCLMCapability(${JSON.stringify(pub.id)},${JSON.stringify(part.id)},this.checked)' class="mt-0.5 accent-cyan-500"><span>${window.ui.oclmEscape(part.title)} <span class="text-[10px] text-teal-200/40">${part.slots===2?'· 2 people':''}</span></span></label>`).join('')}</div></div>`).join('')}</div></details>`;}).join('');
+                const rail=document.getElementById('oclm-publisher-rail'), editor=document.getElementById('oclm-capability-editor'); if(!rail||!editor)return;
+                const q=(document.getElementById('oclm-publisher-search')?.value||'').trim().toLowerCase(); const pubs=window.db.getPublishers().filter(p=>!q||`${p.name} ${p.group||''}`.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name)); const s=window.ui.ensureOCLMCapabilities();
+                if(!pubs.length){rail.innerHTML='<div class="text-center py-8 text-slate-500 text-xs">No publishers found.</div>';editor.innerHTML='';return;}
+                if(!window.ui.oclmSelectedPublisherId || !pubs.some(p=>p.id===window.ui.oclmSelectedPublisherId))window.ui.oclmSelectedPublisherId=pubs[0].id;
+                rail.innerHTML=pubs.map(pub=>`<button class="oclm-pub-row ${pub.id===window.ui.oclmSelectedPublisherId?'active':''}" onclick='window.ui.selectOCLMPublisher(${JSON.stringify(pub.id)})'><div class="oclm-pub-name">${window.ui.oclmEscape(pub.name)}</div><div class="oclm-pub-meta">${window.ui.oclmEscape(pub.group||'No group')} · ${pub.isElder?'Elder':pub.isMS?'MS':'Publisher'}</div></button>`).join('');
+                const pub=pubs.find(p=>p.id===window.ui.oclmSelectedPublisherId), selected=new Set(s.capabilities[pub.id]||[]), parts=s.parts.filter(p=>p.enabled), cats=[...new Set(parts.map(p=>p.category))];
+                document.getElementById('oclm-selected-title').textContent=pub.name; document.getElementById('oclm-selected-subtitle').textContent=`${pub.isElder?'Elder':pub.isMS?'Ministerial Servant':'Publisher'} · ${pub.group||'No service group'} · ${selected.size} parts enabled`;
+                const roleText=pub.isElder?'Every active OCLM part starts enabled for an elder. You can remove anything.' : pub.isMS?'Every active part except Chairman starts enabled for a ministerial servant. You can edit this anytime.':'Choose only the parts this publisher is able to handle.';
+                editor.innerHTML=`<div class="oclm-role-note">${roleText}</div><div class="oclm-cap-head"><div class="oclm-kicker">Can handle</div><div class="oclm-cap-count">${selected.size} selected</div></div>${cats.map(cat=>`<div class="oclm-category"><div class="oclm-category-title">${window.ui.oclmEscape(cat)}</div><div class="oclm-part-grid">${parts.filter(p=>p.category===cat).map(part=>`<label class="oclm-part-check"><input type="checkbox" ${selected.has(part.id)?'checked':''} onchange='window.ui.setOCLMCapability(${JSON.stringify(pub.id)},${JSON.stringify(part.id)},this.checked)'><span>${window.ui.oclmEscape(part.title)} ${part.slots===2?'<span class="text-cyan-300/60">· 2 people</span>':''}</span></label>`).join('')}</div></div>`).join('')}`;
             },
             setOCLMCapability: (pubId,partId,enabled) => {const s=window.ui.getOCLMState();const set=new Set(s.capabilities[pubId]||[]);if(enabled)set.add(partId);else set.delete(partId);s.capabilities[pubId]=[...set];window.ui.saveOCLMState(s);window.ui.renderOCLMCapabilities();},
 
@@ -3704,17 +3734,37 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
             removeOCLMPair: key => {const s=window.ui.getOCLMState();delete s.pairings[key];window.ui.saveOCLMState(s);window.ui.renderOCLMPairs();},
 
             getOCLMWeekDate: () => document.getElementById('oclm-week-date')?.value || '',
+            populateOCLMWeeks: () => {
+                const select=document.getElementById('oclm-week-date'); if(!select)return;
+                const now=new Date(); now.setHours(12,0,0,0); now.setDate(now.getDate()-now.getDay());
+                const weeks=[];
+                for(let i=-8;i<=64;i++){ const d=new Date(now); d.setDate(now.getDate()+i*7); const key=d.toISOString().slice(0,10); weeks.push({key,label:window.ui.oclmWeekLabel(key)}); }
+                const current=select.value||window.ui.oclmWeekKey(now.toISOString().slice(0,10));
+                select.innerHTML=weeks.map(w=>`<option value="${w.key}">${window.ui.oclmEscape(w.label.replace('Week of ',''))}</option>`).join('');
+                select.value=weeks.some(w=>w.key===current)?current:weeks[8].key;
+            },
             renderOCLMPlanner: () => {
-                const input=document.getElementById('oclm-week-date'); if(!input)return; if(!input.value){const d=new Date();input.value=d.toISOString().slice(0,10);} const date=input.value; const weekKey=window.ui.oclmWeekKey(date); const label=document.getElementById('oclm-week-label');if(label)label.textContent=window.ui.oclmWeekLabel(date); const box=document.getElementById('oclm-assignment-list'); if(!box)return; const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const items=window.ui.oclmAssignmentForWeek(s,weekKey);const activeParts=s.parts.filter(p=>p.enabled);if(!items.length){box.innerHTML='<div class="text-center py-10 text-teal-100/40 border border-dashed border-white/10 rounded-2xl">No assignments yet for this meeting week.</div>';}else{const byCat={};items.forEach(a=>{const part=s.parts.find(p=>p.id===a.partId);const cat=part?.category||'Other';(byCat[cat]??=[]).push(a);});box.innerHTML=Object.entries(byCat).map(([cat,arr])=>`<div><div class="text-[10px] uppercase tracking-wider text-cyan-300/70 font-bold mb-2">${window.ui.oclmEscape(cat)}</div><div class="space-y-2">${arr.sort((a,b)=>a.partOrder-b.partOrder).map(a=>{const part=s.parts.find(p=>p.id===a.partId);const names=(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean);return `<div class="rounded-xl border border-white/10 bg-black/20 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><div class="text-sm font-semibold text-white">${window.ui.oclmEscape(part?.title||'Assignment')}</div><div class="text-xs text-cyan-200 mt-1">${names.map(n=>window.ui.oclmEscape(n)).join(' + ')||'<span class="text-rose-300">Unassigned</span>'}</div>${a.note?`<div class="text-[11px] text-teal-100/45 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div><div class="flex gap-2"><button onclick="window.ui.editOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-white/5 text-xs text-white">Edit</button><button onclick="window.ui.deleteOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/10 text-xs text-rose-300">Delete</button></div></div>`;}).join('')}</div></div>`).join('');}
+                const input=document.getElementById('oclm-week-date'); if(!input)return; window.ui.populateOCLMWeeks(); const date=input.value; const weekKey=window.ui.oclmWeekKey(date); const label=document.getElementById('oclm-week-label');if(label)label.textContent=window.ui.oclmWeekLabel(date); const box=document.getElementById('oclm-assignment-list'); if(!box)return; const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const items=window.ui.oclmAssignmentForWeek(s,weekKey);const activeParts=s.parts.filter(p=>p.enabled);if(!items.length){box.innerHTML='<div class="text-center py-10 text-teal-100/40 border border-dashed border-white/10 rounded-2xl">No assignments yet for this meeting week.</div>';}else{const byCat={};items.forEach(a=>{const part=s.parts.find(p=>p.id===a.partId);const cat=part?.category||'Other';(byCat[cat]??=[]).push(a);});box.innerHTML=Object.entries(byCat).map(([cat,arr])=>`<div><div class="text-[10px] uppercase tracking-wider text-cyan-300/70 font-bold mb-2">${window.ui.oclmEscape(cat)}</div><div class="space-y-2">${arr.sort((a,b)=>a.partOrder-b.partOrder).map(a=>{const part=s.parts.find(p=>p.id===a.partId);const names=(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean);return `<div class="rounded-xl border border-white/10 bg-black/20 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><div class="text-sm font-semibold text-white">${window.ui.oclmEscape(part?.title||'Assignment')}</div><div class="text-xs text-cyan-200 mt-1">${names.map(n=>window.ui.oclmEscape(n)).join(' + ')||'<span class="text-rose-300">Unassigned</span>'}</div>${a.note?`<div class="text-[11px] text-teal-100/45 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div><div class="flex gap-2"><button onclick="window.ui.editOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-white/5 text-xs text-white">Edit</button><button onclick="window.ui.deleteOCLMAssignment('${a.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/10 text-xs text-rose-300">Delete</button></div></div>`;}).join('')}</div></div>`).join('');}
                 window.ui.renderOCLMPlannerPreview();
             },
             openOCLMAssignmentEditor: (assignmentId=null) => {
-                const s=window.ui.getOCLMState(); const date=document.getElementById('oclm-week-date')?.value || new Date().toISOString().slice(0,10); const weekKey=window.ui.oclmWeekKey(date); const existing=assignmentId?s.assignments.find(a=>a.id===assignmentId):null; const part=existing?s.parts.find(p=>p.id===existing.partId):null;
-                const enabled=s.parts.filter(p=>p.enabled); if(!enabled.length){window.ui.showToast('Add an active OCLM part first.','error');return;}
-                const partId=prompt(`Part ID/title:\n${enabled.map(p=>`${p.id} — ${p.title}`).join('\n')}\n\nEnter the part ID`,part?.id||enabled[0].id); if(!partId)return; const selected=enabled.find(p=>p.id===partId.trim());if(!selected){window.ui.showToast('Part ID not found.','error');return;}
-                const pubs=window.db.getPublishers().slice().sort((a,b)=>a.name.localeCompare(b.name)); const names=pubs.map(p=>`${p.id} — ${p.name}`).join('\n'); const primary=prompt(`Choose publisher ID for the first slot:\n${names}`,(existing?.pubIds||[])[0]||''); if(!primary)return; const pa=pubs.find(p=>p.id===primary.trim());if(!pa){window.ui.showToast('Publisher not found.','error');return;}
-                let pubIds=[pa.id]; if(selected.slots===2){const second=prompt(`Choose publisher ID for the assistant slot.\nFor this slot, same-gender is required unless the two publishers are an explicitly paired couple.\n\n${names}`,(existing?.pubIds||[])[1]||'');if(!second)return;const pb=pubs.find(p=>p.id===second.trim());if(!pb||!window.ui.oclmPairAllowed(s,pa,pb)){window.ui.showToast('That pair does not satisfy the same-gender/couple rule.','error');return;}pubIds.push(pb.id);}
-                const note=prompt('Optional note',existing?.note||'')||''; const obj=existing||{id:window.utils.generateUUID()};Object.assign(obj,{weekKey,date,partId: selected.id,partOrder:s.parts.findIndex(p=>p.id===selected.id),pubIds,note});if(!existing)s.assignments.push(obj);window.ui.oclmSortAssignments(s.assignments);window.ui.saveOCLMState(s);window.ui.renderOCLMPlanner();window.ui.showToast(existing?'Assignment updated.':'Assignment added.');
+                const s=window.ui.getOCLMState(); const date=document.getElementById('oclm-week-date')?.value || new Date().toISOString().slice(0,10); const existing=assignmentId?s.assignments.find(a=>a.id===assignmentId):null;
+                const enabled=s.parts.filter(p=>p.enabled); const pubs=window.db.getPublishers().slice().sort((a,b)=>a.name.localeCompare(b.name)); if(!enabled.length||!pubs.length){window.ui.showToast('Add publishers and active OCLM parts first.','error');return;}
+                document.getElementById('oclm-edit-assignment-id').value=existing?.id||'';
+                document.getElementById('oclm-edit-part').innerHTML=enabled.map(p=>`<option value="${window.ui.oclmEscape(p.id)}">${window.ui.oclmEscape(p.category)} — ${window.ui.oclmEscape(p.title)}${p.slots===2?' · 2 people':''}</option>`).join('');
+                document.getElementById('oclm-edit-part').value=existing?.partId||enabled[0].id;
+                document.getElementById('oclm-edit-primary').innerHTML='<option value="">Choose publisher...</option>'+pubs.map(p=>`<option value="${window.ui.oclmEscape(p.id)}">${window.ui.oclmEscape(p.name)}</option>`).join('');
+                document.getElementById('oclm-edit-primary').value=existing?.pubIds?.[0]||'';
+                document.getElementById('oclm-edit-secondary').innerHTML='<option value="">Choose assistant...</option>'+pubs.map(p=>`<option value="${window.ui.oclmEscape(p.id)}">${window.ui.oclmEscape(p.name)}</option>`).join('');
+                document.getElementById('oclm-edit-secondary').value=existing?.pubIds?.[1]||'';
+                document.getElementById('oclm-edit-note').value=existing?.note||'';
+                window.ui.toggleOCLMAssistantField(); window.ui.openModal('modal-oclm-assignment');
+            },
+            toggleOCLMAssistantField: () => { const s=window.ui.getOCLMState(); const id=document.getElementById('oclm-edit-part')?.value; const part=s.parts.find(p=>p.id===id); document.getElementById('oclm-secondary-wrap')?.classList.toggle('hidden',part?.slots!==2); },
+            saveOCLMAssignmentEditor: () => {
+                const s=window.ui.getOCLMState(); const id=document.getElementById('oclm-edit-assignment-id').value; const partId=document.getElementById('oclm-edit-part').value; const primary=document.getElementById('oclm-edit-primary').value; const secondary=document.getElementById('oclm-edit-secondary').value; const note=document.getElementById('oclm-edit-note').value.trim(); const part=s.parts.find(p=>p.id===partId); if(!part||!primary){window.ui.showToast('Choose a part and publisher.','error');return;}
+                const pa=window.db.getPublishers().find(p=>p.id===primary); const pubIds=[primary]; if(part.slots===2){if(!secondary||secondary===primary){window.ui.showToast('Choose a different assistant.','error');return;}const pb=window.db.getPublishers().find(p=>p.id===secondary);if(!pb||!window.ui.oclmPairAllowed(s,pa,pb)){window.ui.showToast('Assistant pairs must be the same gender, unless registered as a couple.','error');return;}pubIds.push(secondary);}
+                const date=document.getElementById('oclm-week-date').value, obj=id?s.assignments.find(a=>a.id===id):{id:window.utils.generateUUID()}; Object.assign(obj,{weekKey:window.ui.oclmWeekKey(date),date,partId,partOrder:s.parts.findIndex(p=>p.id===partId),pubIds,note}); if(!id)s.assignments.push(obj); window.ui.oclmSortAssignments(s.assignments); window.ui.saveOCLMState(s); window.ui.closeModal('modal-oclm-assignment'); window.ui.renderOCLMPlanner(); window.ui.showToast(id?'Assignment updated.':'Assignment added.');
             },
             editOCLMAssignment: id => window.ui.openOCLMAssignmentEditor(id),
             deleteOCLMAssignment: id => {const s=window.ui.getOCLMState();s.assignments=s.assignments.filter(a=>a.id!==id);window.ui.saveOCLMState(s);window.ui.renderOCLMPlanner();window.ui.renderOCLMLive();},
@@ -3735,11 +3785,24 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
             copyOCLMLiveLink: async () => {const s=window.ui.getOCLMState();if(!s.publishedSnapshot){window.ui.showToast('Publish the schedule first.','error');return;}const url=window.ui.getOCLMLiveLink(s.publishedSnapshot);window.ui.copyText(url);},
             renderOCLMLive: () => {const status=document.getElementById('oclm-live-status'),preview=document.getElementById('oclm-live-preview'),box=document.getElementById('oclm-live-link-box');if(!status||!preview||!box)return;const s=window.ui.getOCLMState();if(!s.publishedSnapshot){status.innerHTML='<div class="rounded-xl border border-dashed border-white/10 p-4 text-sm text-teal-100/45">Nothing has been published yet. Use Planner & Preview to prepare the week, then choose Go Live.</div>';preview.innerHTML='';box.innerHTML='<div class="text-xs text-teal-100/40 break-all">No live link yet.</div>';return;}status.innerHTML=`<div class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 flex items-center justify-between gap-3"><div><div class="text-sm font-bold text-emerald-300">● Live</div><div class="text-xs text-teal-100/45 mt-1">Published ${new Date(s.publishedAt||Date.now()).toLocaleString()}</div></div><span class="text-[10px] text-teal-200/40">Snapshot publishing</span></div>`;const snap=s.publishedSnapshot;preview.innerHTML=window.ui.renderOCLMBoardHTML(snap,'');box.innerHTML=`<div class="rounded-xl bg-black/20 border border-white/10 p-3 text-[11px] text-teal-100/50 break-all">${window.ui.oclmEscape(window.ui.getOCLMLiveLink(snap))}</div>`;},
             renderOCLMPlannerPreview: () => {const box=document.getElementById('oclm-planner-preview');if(!box)return;const date=window.ui.getOCLMWeekDate();const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const items=window.ui.oclmAssignmentForWeek(s,window.ui.oclmWeekKey(date)).map(a=>{const p=s.parts.find(x=>x.id===a.partId);return {...a,partTitle:p?.title||'Assignment',category:p?.category||'Other',pubNames:(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean)};});box.innerHTML=items.length?window.ui.renderOCLMBoardHTML({congregation:window.db.currentCongData?.name||'Congregation',assignments:items,weeks:[window.ui.oclmWeekKey(date)]},''):'<div class="text-sm text-teal-100/40 border border-dashed border-white/10 rounded-xl p-5">Nothing to preview yet.</div>';},
-            renderOCLMBoardHTML: (snapshot,search='') => {const q=search.trim().toLowerCase();const groups={};(snapshot.assignments||[]).filter(a=>!q||a.pubNames.some(n=>n.toLowerCase().includes(q))).forEach(a=>(groups[a.weekKey]??=[]).push(a));const keys=Object.keys(groups).sort();if(!keys.length)return '<div class="text-center py-8 text-teal-100/40">No matching assignments.</div>';return keys.map(key=>`<div class="oclm-week-card rounded-2xl border border-white/10 bg-black/10 p-4"><div class="flex items-center justify-between gap-3 mb-3"><div class="font-bold text-white">${window.ui.oclmEscape(window.ui.oclmWeekLabel(key))}</div><span class="text-[10px] text-teal-200/45">${groups[key].length} parts</span></div><div class="overflow-x-auto"><table class="oclm-table w-full text-sm"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-teal-200/45 border-b border-white/10"><th class="py-2 pr-3">Part</th><th class="py-2 pr-3">Assignment</th><th class="py-2">Note</th></tr></thead><tbody>${groups[key].sort((a,b)=>a.partOrder-b.partOrder).map(a=>{const match=q&&a.pubNames.some(n=>n.toLowerCase().includes(q));return `<tr class="border-b border-white/5 ${match?'oclm-match':''}"><td class="py-3 pr-3 text-teal-100/60">${window.ui.oclmEscape(a.category)}</td><td class="py-3 pr-3"><div class="font-semibold text-white">${window.ui.oclmEscape(a.partTitle)}</div><div class="text-xs text-cyan-200 mt-1">${a.pubNames.map(n=>window.ui.oclmEscape(n)).join(' + ')}</div></td><td class="py-3 text-xs text-teal-100/45">${window.ui.oclmEscape(a.note||'')}</td></tr>`;}).join('')}</tbody></table></div></div>`).join('');},
+            renderOCLMBoardHTML: (snapshot,search='') => { const q=search.trim().toLowerCase(); const groups={}; (snapshot.assignments||[]).filter(a=>!q||a.pubNames.some(n=>n.toLowerCase().includes(q))).forEach(a=>(groups[a.weekKey]??=[]).push(a)); const keys=Object.keys(groups).sort(); if(!keys.length)return '<div class="text-center py-10 text-teal-100/40">No matching assignments.</div>'; return keys.map(key=>{const rows=groups[key].sort((a,b)=>a.partOrder-b.partOrder); return `<section class="oclm-public-week"><div class="oclm-public-week-title">${window.ui.oclmEscape(window.ui.oclmWeekLabel(key))}</div>${rows.map(a=>{const match=q&&a.pubNames.some(n=>n.toLowerCase().includes(q)); return `<div class="oclm-public-assignment ${match?'match':''}"><div><div class="oclm-public-category">${window.ui.oclmEscape(a.category)}</div></div><div><div class="oclm-public-part">${window.ui.oclmEscape(a.partTitle)}</div><div class="oclm-public-names">${a.pubNames.map(n=>window.ui.oclmEscape(n)).join(' + ')}</div>${a.note?`<div class="text-[10px] text-slate-500 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div></div>`;}).join('')}</section>`;}).join(''); },
             previewOCLMPublic: () => {window.ui.switchOCLMPanel('live');window.ui.renderOCLMLive();window.ui.showToast('Preview refreshed.');},
             renderOCLMPublicLinks: () => window.ui.renderOCLMLive(),
             setupPublicOCLM: () => {const params=new URLSearchParams(window.location.search);const raw=params.get('data');try{if(!raw)throw new Error('missing');const snap=window.ui.decodeOCLMSnapshot(raw);document.getElementById('public-oclm-title').textContent=`${snap.congregation||'Congregation'} — OCLM Assignments`;const sel=document.getElementById('public-oclm-week');const keys=[...new Set((snap.assignments||[]).map(a=>a.weekKey))].sort();sel.innerHTML='<option value="ALL">All weeks</option>'+keys.map(k=>`<option value="${window.ui.oclmEscape(k)}">${window.ui.oclmEscape(window.ui.oclmWeekLabel(k))}</option>`).join('');window.ui.publicOCLMSnapshot=snap;window.ui.renderPublicOCLMBoard();}catch(e){console.error(e);document.getElementById('public-oclm-list').innerHTML='<div class="text-center py-12 text-rose-300">This OCLM link is invalid or incomplete. Please request a new published link.</div>';}},
             renderPublicOCLMBoard: () => {const snap=window.ui.publicOCLMSnapshot;if(!snap)return;const week=document.getElementById('public-oclm-week')?.value||'ALL';const q=(document.getElementById('public-oclm-search')?.value||'').trim().toLowerCase();const filtered={...snap,assignments:(snap.assignments||[]).filter(a=>(week==='ALL'||a.weekKey===week)&&(!q||a.pubNames.some(n=>n.toLowerCase().includes(q))))};const names=[...new Set(filtered.assignments.flatMap(a=>a.pubNames))];document.getElementById('public-oclm-summary').innerHTML=q?`<div class="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3 text-sm text-cyan-100">Showing assignments matching <strong>${window.ui.oclmEscape(q)}</strong>. Matching rows are highlighted.</div>`:`<div class="text-xs text-teal-100/40">${filtered.assignments.length} published assignment${filtered.assignments.length===1?'':'s'} · ${names.length} publisher${names.length===1?'':'s'}</div>`;document.getElementById('public-oclm-list').innerHTML=window.ui.renderOCLMBoardHTML(filtered,q);},
+            openOCLMPartsSettings: () => {
+                const s=window.ui.getOCLMState(); const rows=s.parts.map(p=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(p.title)}</div><div class="text-[10px] text-teal-200/50">${window.ui.oclmEscape(p.category)} · ${p.slots===2?'2 people':'1 person'}</div></div><div class="flex gap-1"><button onclick="window.ui.editOCLMPart('${p.id}')" class="px-2 py-1 rounded-lg bg-white/5 text-[10px]">Rename</button><button onclick="window.ui.toggleOCLMPart('${p.id}')" class="px-2 py-1 rounded-lg ${p.enabled?'bg-emerald-500/15 text-emerald-300':'bg-white/5 text-slate-400'} text-[10px]">${p.enabled?'Active':'Hidden'}</button></div></div>`).join('');
+                window.ui.openModal('modal-oclm-parts'); document.getElementById('modal-oclm-parts-body').innerHTML=`<div class="space-y-2 oclm-parts-modal-list">${rows}</div><button onclick="window.ui.openOCLMPartEditor();window.ui.closeModal('modal-oclm-parts')" class="w-full mt-3 px-4 py-2.5 rounded-xl bg-cyan-500/15 text-cyan-200 text-sm font-bold">+ Add a part</button>`;
+            },
+            openOCLMFeedback: () => { window.ui.openModal('modal-oclm-feedback'); },
+            submitOCLMFeedback: () => {
+                const subject=document.getElementById('oclm-feedback-subject')?.value.trim()||'Congregation Assistant feedback';
+                const body=document.getElementById('oclm-feedback-body')?.value.trim()||''; const file=document.getElementById('oclm-feedback-media')?.files?.[0];
+                if(!body && !file){window.ui.showToast('Please add a message or media first.','error');return;}
+                const note=file?`\n\nMedia selected: ${file.name}. Your email app may require you to attach it manually.`:'';
+                window.location.href=`mailto:photographicode@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body+note)}`;
+                window.ui.showToast('Opening your email app.');
+            },
             copyText: async text => {try{await navigator.clipboard.writeText(text);window.ui.showToast('Public link copied.');}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();window.ui.showToast('Public link copied.');}},
 
             setupPublicAttendance: () => {
