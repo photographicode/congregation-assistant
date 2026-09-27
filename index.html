@@ -464,7 +464,19 @@ body[data-theme="light"] .ca-announcement-card h4{color:#0f172a;} body[data-them
 .oclm-muted{color:rgba(204,251,241,.45)}
 @media(max-width:640px){.oclm-mobile-stack{grid-template-columns:1fr!important}.oclm-subnav button{flex:1}.oclm-table{min-width:720px}}
 
-        </style>
+        <style>
+.oclm-public-week{overflow:hidden}
+.oclm-public-category{padding:5px 7px;border-radius:5px;display:inline-block;color:#fff!important;letter-spacing:.03em}
+.oclm-public-category[data-cat*="TREASURES"]{background:#5f6870}
+.oclm-public-category[data-cat*="APPLY"]{background:#c58a22}
+.oclm-public-category[data-cat*="LIVING"]{background:#a71931}
+.oclm-public-category[data-cat*="OPENING"],.oclm-public-category[data-cat*="CLOSING"],.oclm-public-category[data-cat*="CHAIRMAN"]{background:#6b7280}
+.oclm-public-assignment{background:rgba(255,255,255,.96);color:#111827}
+.oclm-public-part{color:#111827!important}
+.oclm-public-names{color:#374151!important}
+.oclm-public-assignment.match{background:#f0fdfa}
+@media(max-width:680px){.oclm-public-head{display:block}.oclm-public-tools{margin-top:12px;display:grid;grid-template-columns:1fr}.oclm-public-assignment{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:10px}.oclm-public-title{font-size:22px}}
+</style></style>
 <style>
 /* ===== Requested four-theme and navigation refinement ===== */
 body[data-theme="default"]{background:radial-gradient(circle at top left,#064e3b 0%,#020617 50%,#083344 100%)!important;color:#f8fafc!important;}
@@ -589,7 +601,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 <button type="submit" id="auth-btn" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)]">Unlock Database</button>
                 <div class="flex items-center gap-3 my-4 text-[10px] text-white/30 uppercase tracking-widest"><span class="h-px flex-1 bg-white/10"></span>or<span class="h-px flex-1 bg-white/10"></span></div>
                 <button type="button" onclick="window.auth.googleLogin()" class="w-full bg-white text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-lg hover:bg-slate-100">Continue with Google</button>
-                <p class="text-[10px] text-teal-100/40 mt-3">Google sign-in is for authorized section roles. Main admin access still uses the congregation admin credentials.</p>
+                <p class="text-[10px] text-teal-100/40 mt-3">Authorized brothers — including Main admins — can sign in with their Google account. Access is granted only to email addresses entered by a Main admin.</p>
             </form>
         </div>
     </div>
@@ -634,7 +646,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                         <div class="ca-nav-section-title">Main</div>
                         <button onclick="window.ui.switchTab('dashboard', false, 'main')" id="btn-tab-dashboard" data-nav-context="main" data-nav-tab="dashboard" class="ca-nav-item" aria-label="Home"><span class="ca-nav-icon">⌂</span><span class="ca-nav-label">Home</span></button>
                         <button onclick="window.ui.switchTab('publishers', false, 'main')" id="btn-tab-publishers" data-nav-context="main" data-nav-tab="publishers" class="ca-nav-item" aria-label="Publishers"><span class="ca-nav-icon">♙</span><span class="ca-nav-label">Publishers</span></button>
-                        <button onclick="window.ui.switchTab('emergency', false, 'main')" id="btn-tab-emergency" data-nav-context="main" data-nav-tab="emergency" class="ca-nav-item hidden" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
+                        <button onclick="window.ui.switchTab('emergency', false, 'main')" id="btn-tab-emergency" data-nav-context="main" data-nav-tab="emergency" class="ca-nav-item" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
                         <button onclick="window.ui.openAccessManager()" id="btn-tab-access" data-nav-context="main" class="ca-nav-item" aria-label="Access & Roles"><span class="ca-nav-icon">⌁</span><span class="ca-nav-label">Access &amp; Roles</span></button>
                     </div>
                     <div class="ca-nav-divider"></div>
@@ -644,12 +656,12 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                         <button onclick="window.ui.switchTab('publishers', false, 'field')" id="btn-tab-field-publishers" data-nav-context="field" data-nav-tab="publishers" class="ca-nav-item" aria-label="Field Service Publishers"><span class="ca-nav-icon">♙</span><span class="ca-nav-label">Publishers</span></button>
                         <button onclick="window.ui.switchTab('groups', false, 'field')" id="btn-tab-groups" data-nav-context="field" data-nav-tab="groups" class="ca-nav-item" aria-label="Groups"><span class="ca-nav-icon">♧</span><span class="ca-nav-label">Groups</span></button>
                         <button onclick="window.ui.switchTab('analytics', false, 'field')" id="btn-tab-analytics" data-nav-context="field" data-nav-tab="analytics" class="ca-nav-item" aria-label="Analytics"><span class="ca-nav-icon">▥</span><span class="ca-nav-label">Analytics</span></button>
-                        <button onclick="window.ui.switchTab('emergency', false, 'field')" id="btn-tab-field-emergency" data-nav-context="field" data-nav-tab="emergency" class="ca-nav-item hidden" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
+                        <button onclick="window.ui.switchTab('emergency', false, 'field')" id="btn-tab-field-emergency" data-nav-context="field" data-nav-tab="emergency" class="ca-nav-item" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
                     </div>
                     <div class="ca-nav-divider"></div>
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">Attendance</div>
-                        <button onclick="window.ui.switchTab('attendance', false, 'attendance')" id="btn-tab-attendance" data-nav-context="attendance" data-nav-tab="attendance" class="ca-nav-item hidden" aria-label="Attendance"><span class="ca-nav-icon">✓</span><span class="ca-nav-label">Attendance</span></button>
+                        <button onclick="window.ui.switchTab('attendance', false, 'attendance')" id="btn-tab-attendance" data-nav-context="attendance" data-nav-tab="attendance" class="ca-nav-item" aria-label="Attendance"><span class="ca-nav-icon">✓</span><span class="ca-nav-label">Attendance</span></button>
                     </div>
                     <div class="ca-nav-divider"></div>
                     <div class="ca-nav-section">
@@ -691,27 +703,12 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
 
     <!-- Mobile Bottom Navigation (Priority Sorted) -->
     <nav id="mobile-nav" class="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-teal-500/20 z-[100] pb-safe hidden">
-        <div class="flex justify-around items-center h-16 px-2">
-            <button onclick="window.ui.openOCLM()" id="m-btn-tab-oclm" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors" aria-label="Meetings">
-                <span class="text-xl leading-none mb-1">◷</span>
-                <span class="text-[10px] font-medium">OCLM Live</span>
-            </button>
-            <button onclick="window.ui.switchTab('dashboard')" id="m-btn-tab-dashboard" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[10px] font-medium">Home</span>
-            </button>
-            <button onclick="window.ui.switchTab('groups')" id="m-btn-tab-groups" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span class="text-[10px] font-medium">Groups</span>
-            </button>
-            <button onclick="window.ui.switchTab('publishers')" id="m-btn-tab-publishers" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span class="text-[10px] font-medium">Profiles</span>
-            </button>
-            <button onclick="window.ui.openModal('modal-mobile-menu')" class="flex flex-col items-center justify-center w-16 h-full text-teal-50/50 hover:text-teal-300 transition-colors">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span class="text-[10px] font-medium">More</span>
-            </button>
+        <div class="flex justify-around items-center h-16 px-1">
+            <button onclick="window.ui.openOCLM()" id="m-btn-tab-oclm" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors" aria-label="OCLM Live"><span class="text-xl leading-none mb-1">◷</span><span class="text-[10px] font-medium">OCLM</span></button>
+            <button onclick="window.ui.switchTab('dashboard', false, 'main')" id="m-btn-tab-dashboard" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">⌂</span><span class="text-[10px] font-medium">Home</span></button>
+            <button onclick="window.ui.switchTab('publishers', false, 'main')" id="m-btn-tab-publishers" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">♙</span><span class="text-[10px] font-medium">Publishers</span></button>
+            <button onclick="window.ui.switchTab('attendance', false, 'attendance')" id="m-btn-tab-attendance" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">✓</span><span class="text-[10px] font-medium">Attendance</span></button>
+            <button onclick="window.ui.openModal('modal-mobile-menu')" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">☰</span><span class="text-[10px] font-medium">More</span></button>
         </div>
     </nav>
 
@@ -826,7 +823,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
                     <input id="access-email-input" type="email" placeholder="brother@gmail.com" class="w-full px-4 py-3 rounded-xl">
-                    <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
+                    <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main Admin</option><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
                 <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">One-time setup required</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. This HTML is prepared for that flow, but a browser-only file cannot securely create or enforce the database policy.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy setup SQL</button></div>
@@ -1062,6 +1059,331 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 <div id="public-oclm-summary" class="mt-4"></div><div id="public-oclm-list" class="mt-5"></div>
             </div>
         </div>
+        <!-- PUBLIC ATTENDANCE FORM (New Separate Tab for URL users) -->
+        <div id="tab-public-attendance" class="tab-content">
+            <div id="pub-att-success-msg" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-4 w-full">
+                <div class="s4-modern-card flex flex-col items-center max-w-md w-full text-center p-8 sm:p-10">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                        <span class="text-4xl sm:text-5xl text-emerald-500">✓</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="color: #0f172a;">Attendance Saved</h2>
+                    <p class="text-base mb-8" style="color: #64748b;">The attendance numbers for this week have been securely recorded.</p>
+                    <button onclick="location.reload()" class="px-8 py-3 bg-teal-500 hover:bg-teal-400 rounded-xl transition-all text-white font-bold shadow-lg w-full">Submit Another Week</button>
+                </div>
+            </div>
+
+            <div id="pub-att-form-area" class="s4-modern-wrapper">
+                <div class="s4-modern-card">
+                    <h2>Meeting Attendance</h2>
+                    <p class="subtitle">Securely submit weekly attendance counts.</p>
+
+                    <div class="s4-form-group s4-grid-2">
+                        <div>
+                            <label class="s4-label">Year</label>
+                            <select id="pub-att-year" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500"></select>
+                        </div>
+                        <div>
+                            <label class="s4-label">Month</label>
+                            <select id="pub-att-month" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500">
+                                <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
+                                <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
+                                <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="s4-form-group">
+                        <label class="s4-label">Target Week</label>
+                        <select id="pub-att-week" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-pointer text-center font-bold text-teal-700">
+                            <option value="1">Week 1</option>
+                            <option value="2">Week 2</option>
+                            <option value="3">Week 3</option>
+                            <option value="4">Week 4</option>
+                            <option value="5">Week 5</option>
+                        </select>
+                        <span class="s4-help-text" id="pub-att-current-week-msg"></span>
+                    </div>
+
+                    <div id="pub-att-mid-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
+                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Midweek Meeting</h4>
+                        <div class="flex flex-col gap-2">
+                            <select id="pub-att-mid-type" onchange="window.ui.togglePubAttInput('mid')" class="s4-input cursor-pointer text-sm py-2">
+                                <option value="count">Numeric Count</option>
+                                <option value="CA">Circuit Assembly</option>
+                                <option value="RC">Regional Convention</option>
+                                <option value="Memorial">Memorial</option>
+                            </select>
+                            <input type="number" id="pub-att-mid-val" min="0" placeholder="Enter attendance count" class="s4-input">
+                        </div>
+                    </div>
+
+                    <div id="pub-att-end-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
+                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Weekend Meeting</h4>
+                        <div class="flex flex-col gap-2">
+                            <select id="pub-att-end-type" onchange="window.ui.togglePubAttInput('end')" class="s4-input cursor-pointer text-sm py-2">
+                                <option value="count">Numeric Count</option>
+                                <option value="CA">Circuit Assembly</option>
+                                <option value="RC">Regional Convention</option>
+                                <option value="Memorial">Memorial</option>
+                            </select>
+                            <input type="number" id="pub-att-end-val" min="0" placeholder="Enter attendance count" class="s4-input">
+                        </div>
+                    </div>
+
+                    <button onclick="window.db.savePublicAttendance()" id="pub-att-submit-btn" class="s4-submit-btn">Save Attendance</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MEETING ATTENDANCE TAB -->
+        <div id="tab-attendance" class="tab-content space-y-6">
+            <div class="flex justify-between items-end flex-wrap gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Meeting Attendance</h2>
+                    <p class="text-teal-200/70 mt-1">Record weekly statistics and generate S-3-E form</p>
+                </div>
+                <div class="flex gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+                    <select id="att-year" class="ca-service-select " onchange="window.ui.renderAttendance()"></select>
+                    <select id="att-month" class="ca-service-select " onchange="window.ui.renderAttendance()">
+                        <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
+                        <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
+                        <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 mb-4" id="att-stats-container">
+                <!-- Populated via JS -->
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-black/20 p-4 rounded-xl border border-white/5">
+                <input type="text" id="att-cong-name" class="w-full sm:max-w-xs px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-sm font-semibold text-white focus:border-teal-400 outline-none" placeholder="Congregation Print Name" onchange="window.ui.saveAttendanceStateLocally()">
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="window.ui.copyAttendanceLink()" class="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex justify-center items-center gap-2 border border-white/10">🔗 Copy Public Link</button>
+                    <button id="att-print-btn" onclick="window.ui.printS3()" class="flex-1 sm:flex-none bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)] flex items-center justify-center gap-2">
+                        Download S-3-E
+                    </button>
+                    <button id="att-print88-btn" onclick="window.ui.printS88()" class="flex-1 sm:flex-none bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(129,140,248,0.5)] flex items-center justify-center gap-2">
+                        Download S-88-E
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 sm:p-6 rounded-2xl overflow-hidden mt-4">
+                <div class="overflow-x-auto pb-2">
+                    <table class="w-full text-left text-sm whitespace-nowrap min-w-[700px]">
+                        <thead class="bg-black/40 text-teal-100/70 text-xs uppercase border-b border-white/10">
+                            <tr>
+                                <th class="px-4 py-3 w-24">Week</th>
+                                <th class="px-4 py-3 text-center border-l border-white/10">Midweek Meeting</th>
+                                <th class="px-4 py-3 text-center border-l border-white/10">Weekend Meeting</th>
+                            </tr>
+                        </thead>
+                        <tbody id="att-table-body" class="divide-y divide-white/10 text-teal-50">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 flex justify-between items-center border-t border-white/10 pt-4">
+                    <div class="text-xs text-teal-200/60 flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 rounded-full bg-teal-500/30 border border-teal-400"></span>
+                        Highlighted row indicates the current week based on today's date.
+                    </div>
+                    <button id="att-save-btn" onclick="window.db.saveAttendance()" class="bg-teal-600 hover:bg-teal-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg flex items-center gap-2">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+            
+            <div id="s3-render-area" class="hidden">
+                <iframe id="s3-render-frame"></iframe>
+            </div>
+            <div id="s88-render-area" class="hidden">
+                <iframe id="s88-render-frame"></iframe>
+            </div>
+        </div>
+
+        <!-- EMERGENCY CONTACTS TAB -->
+        <div id="tab-emergency" class="tab-content space-y-6">
+            <div class="flex justify-between items-center glass-panel p-4 sm:p-6 rounded-2xl flex-wrap gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Emergency Contacts</h2>
+                    <p class="text-teal-200/70 mt-1">Quick-access directory for urgent situations</p>
+                </div>
+                <button onclick="window.ui.printEmergencyContacts()" class="w-full sm:w-auto bg-gradient-to-r from-rose-500 to-orange-400 hover:from-rose-400 hover:to-orange-300 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Download PDF
+                </button>
+            </div>
+            <div class="glass-panel p-3 sm:p-4 rounded-2xl">
+                <input type="text" id="emergency-search" oninput="window.ui.renderEmergencyContacts()" placeholder="🔍 Search by name..." class="w-full px-4 py-2.5 rounded-xl text-sm">
+            </div>
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-black/50 text-teal-100/70">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Publisher</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Phone</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Address</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Emergency Contact</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Relationship</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Emergency Phone</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="emergency-table-body" class="divide-y divide-white/10 text-teal-50"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="emergency-render-area" class="hidden">
+                <iframe id="emergency-render-frame"></iframe>
+            </div>
+        </div>
+
+        <!-- ANALYTICS TAB -->
+        <div id="tab-analytics" class="tab-content space-y-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Analytics & Rosters</h2>
+                <p class="text-teal-200/70 mt-1">Rolling statistical summaries and historical data</p>
+            </div>
+            
+            <div class="flex gap-2 sm:gap-3 mb-4 w-full sm:w-auto">
+                <select id="analytics-year" class="ca-service-select " onchange="window.ui.renderAnalytics(); window.ui.renderDetailedRoster()"></select>
+                <select id="analytics-month" class="ca-service-select " onchange="window.ui.renderAnalytics(); window.ui.renderDetailedRoster()">
+                    <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
+                    <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
+                    <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
+                </select>
+            </div>
+
+            <div class="glass-panel p-4 sm:p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                    <h3 class="text-lg sm:text-xl font-bold text-white">Detailed Monthly Roster</h3>
+                </div>
+                <div id="analytics-roster" class="overflow-x-auto pb-4"></div>
+            </div>
+            
+            <div id="analytics-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 bg-white p-4 sm:p-8 rounded-xl overflow-x-auto text-black"></div>
+        </div>
+
+        <!-- PUBLISHERS TAB -->
+        <div id="tab-publishers" class="tab-content space-y-6">
+            <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Publishers</h2>
+                    <p class="text-teal-200/70 mt-1">Manage profiles for this congregation</p>
+                </div>
+                <div id="pub-filter-bar" class="flex gap-2 sm:gap-3 flex-wrap w-full sm:w-auto">
+                    <select id="pub-s21-year" class="ca-service-select " onchange="window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL', window.ui.currentPubFilterValue || '')" title="S-21 Service Year"></select>
+                    <select id="pub-filter-month" class="ca-service-select " onchange="window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL', window.ui.currentPubFilterValue || '')" title="Report month"></select>
+                    <button id="pub-download-filtered-s21" onclick="window.ui.downloadS21Filtered()" class="w-full sm:w-auto bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-5 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] flex items-center justify-center gap-2">⬇️ Download S-21</button>
+                    <button onclick="window.ui.openModal('modal-add-publisher')" class="w-full sm:w-auto bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-400 hover:to-emerald-300 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.4)] flex items-center justify-center gap-2">
+                        + Add Publisher
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 sm:p-6 rounded-2xl mb-6 flex flex-col md:flex-row gap-6 items-center">
+                <div class="relative w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-full border-4 border-slate-800 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-500" id="pub-pie-chart" style="background: conic-gradient(#64748b 0% 100%);"></div>
+                <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 w-full" id="pub-stats-container"></div>
+            </div>
+            
+            <div class="mb-4">
+                <input id="publisher-search" type="search" oninput="window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL', window.ui.currentPubFilterValue || '')" placeholder="🔍 Search publishers by name or group..." class="w-full px-4 py-3 rounded-xl text-sm glass-panel">
+            </div>
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-black/50 text-teal-100/70">
+                            <tr>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Name & Group</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Privileges</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold">Demographics</th>
+                                <th class="px-4 sm:px-6 py-4 font-semibold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publisher-table-body" class="divide-y divide-white/10 text-teal-50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- S-4 FORM (Public Mode Default) -->
+        <div id="tab-s4" class="tab-content">
+            <div id="s4-success-msg" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-4 w-full">
+                <div class="s4-modern-card flex flex-col items-center max-w-md w-full text-center p-8 sm:p-10">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                        <span class="text-4xl sm:text-5xl text-emerald-500">✓</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="color: #0f172a;">Report Submitted</h2>
+                    <p class="text-base mb-8" style="color: #64748b;">Thank you. Your field service report has been securely recorded.</p>
+                    <button onclick="location.reload()" class="px-8 py-3 bg-teal-500 hover:bg-teal-400 rounded-xl transition-all text-white font-bold shadow-lg w-full">Submit Another Report</button>
+                </div>
+            </div>
+        
+            <div id="s4-form-area" class="s4-modern-wrapper">
+                <div class="s4-modern-card">
+                    <h2>Field Service Report</h2>
+                    <p class="subtitle">Securely submit your monthly activity below.</p>
+
+                    <div id="s4-group-field" class="s4-form-group">
+                        <label class="s4-label">Service Group</label>
+                        <select id="s4-group-select" onchange="window.ui.changePublicS4Group(this.value)" class="s4-input cursor-pointer"></select>
+                    </div>
+
+                    <div class="s4-form-group">
+                        <label class="s4-label">Publisher Name</label>
+                        <select id="s4-pub-select" onchange="window.ui.loadS4()" class="s4-input cursor-pointer"></select>
+                    </div>
+
+                    <div class="s4-form-group">
+                        <label class="s4-label">Reporting Month</label>
+                        <input id="s4-month-display" type="text" readonly class="s4-input bg-slate-50 text-slate-600 cursor-default" style="background:#f8fafc; color:#475569 !important;">
+                    </div>
+
+                    <div class="s4-form-group">
+                        <div class="s4-checkbox-card">
+                            <div class="s4-checkbox-text-area cursor-pointer" onclick="document.getElementById('s4-ministry').click()">
+                                <span class="s4-checkbox-title">Shared in the ministry</span>
+                                <span class="s4-checkbox-desc">Check this box if you shared in any form of the ministry during the month.</span>
+                            </div>
+                            <label class="s4-custom-check">
+                                <input type="checkbox" id="s4-ministry" checked onchange="window.ui.enforceS4Logic()">
+                                <span class="s4-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="s4-form-group s4-grid-2">
+                        <div>
+                            <label class="s4-label">Bible Studies</label>
+                            <input id="s4-studies" type="number" min="0" step="1" placeholder="0" class="s4-input s4-input-center">
+                            <span class="s4-help-text">Number of different studies conducted</span>
+                        </div>
+                        <div>
+                            <label class="s4-label">Hours</label>
+                            <input id="s4-hours" type="number" min="0" step="0.25" placeholder="0" class="s4-input s4-input-center">
+                            <span class="s4-help-text">If auxiliary, regular, special pioneer or missionary</span>
+                        </div>
+                    </div>
+
+                    <div class="s4-form-group">
+                        <label class="s4-label">Comments</label>
+                        <textarea id="s4-comments" rows="3" placeholder="Additional Remarks, Hour Credits... For example LDC - 8" class="s4-input resize-none"></textarea>
+                    </div>
+
+                    <button onclick="window.ui.saveS4()" class="s4-submit-btn">Submit Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PUBLIC OCLM VIEW -->
+        <div id="tab-public-oclm" class="tab-content">
+            <div class="max-w-3xl mx-auto w-full px-4 py-8"><div class="glass-panel p-6 rounded-3xl border border-cyan-500/20"><h2 id="public-oclm-title" class="text-2xl font-bold text-white">My OCLM Assignments</h2><p class="text-teal-200/70 text-sm mt-1">Current and upcoming assignments</p><div id="public-oclm-list" class="mt-6 space-y-3"></div></div></div>
+        </div>
+
         <!-- PUBLIC ATTENDANCE FORM (New Separate Tab for URL users) -->
         <div id="tab-public-attendance" class="tab-content">
             <div id="pub-att-success-msg" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-4 w-full">
@@ -1701,6 +2023,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 const congParam = urlParams.get('cong');
                 const groupParam = urlParams.get('group');
                 const modeParam = urlParams.get('mode');
+                const oclmToken = urlParams.get('token');
 
                 if (congParam && modeParam === 'overseer' && groupParam) {
                     window.currentCongId = congParam;
@@ -1718,6 +2041,12 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                     return true;
                 }
                 
+                if (oclmToken && modeParam === 'oclm') {
+                    window.ui.switchTab('public-oclm');
+                    document.body.classList.add('public-mode');
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    return true;
+                }
                 if (congParam) { 
                     window.currentCongId = congParam;
                     document.body.classList.add('public-mode'); 
@@ -1744,7 +2073,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 try{
                     const {data:{session}}=await supabaseClient.auth.getSession();
                     const email=session?.user?.email?.toLowerCase(); if(!email) return false;
-                    const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true);
+                    const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error) return false;
                     const row=(data||[])[0]; if(!row)return false;
                     const {data:cong,error:congError}=await supabaseClient.from('congregations').select('*').eq('id',row.cong_id).single();
@@ -2089,11 +2418,11 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
 
                 // Re-apply feature-gated navigation after the congregation profile has
                 // arrived from Supabase (the shell is intentionally rendered before the fetch).
-                if (window.db.currentCongData?.feature_attendance === true) {
+                if (window.db.currentCongData?.feature_attendance === true || sessionStorage.getItem('fs_role') === 'admin') {
                     document.getElementById('btn-tab-attendance')?.classList.remove('hidden');
                     document.getElementById('menu-item-attendance')?.classList.remove('hidden');
                 }
-                if (window.db.currentCongData?.feature_emergency_contacts === true) {
+                if (window.db.currentCongData?.feature_emergency_contacts === true || sessionStorage.getItem('fs_role') === 'admin') {
                     document.getElementById('btn-tab-emergency')?.classList.remove('hidden');
                     document.getElementById('btn-tab-field-emergency')?.classList.remove('hidden');
                     document.getElementById('menu-item-emergency')?.classList.remove('hidden');
@@ -2868,7 +3197,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 window.db.writeLocalCache('publishers');
                 window.db.writeLocalCache('reports');
             },
-            currentTab: 'dashboard', publicGroup: null, overseerGroup: null, currentPubFilter: 'ALL', currentPubFilterValue: '', superAdminSelected: new Set(),
+            currentTab: 'dashboard', publicGroup: null, overseerGroup: null, oclmCloudLoaded: false, oclmCloudLoading: null, currentPubFilter: 'ALL', currentPubFilterValue: '', superAdminSelected: new Set(),
             
             checkPassword: (pwd, listId, btnId) => {
                 const list = document.getElementById(listId);
@@ -2941,12 +3270,12 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 const attNameInput = document.getElementById('att-cong-name');
                 if(attNameInput) attNameInput.value = savedName || window.db.currentCongData?.name || '';
 
-                if(window.db.currentCongData && window.db.currentCongData.feature_attendance === true) {
+                if(window.db.currentCongData && (window.db.currentCongData.feature_attendance === true || sessionStorage.getItem('fs_role') === 'admin')) {
                     document.getElementById('btn-tab-attendance')?.classList.remove('hidden');
                     document.getElementById('menu-item-attendance')?.classList.remove('hidden');
                 }
 
-                if(window.db.currentCongData && window.db.currentCongData.feature_emergency_contacts === true) {
+                if(window.db.currentCongData && (window.db.currentCongData.feature_emergency_contacts === true || sessionStorage.getItem('fs_role') === 'admin')) {
                     document.getElementById('btn-tab-emergency')?.classList.remove('hidden');
                     document.getElementById('btn-tab-field-emergency')?.classList.remove('hidden');
                     document.getElementById('menu-item-emergency')?.classList.remove('hidden');
@@ -3131,14 +3460,14 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
                 const sections={main:role==='admin',field:role==='admin'||role==='field_service',attendance:role==='admin'||role==='attendance',oclm:role==='admin'||role==='oclm',more:role==='admin'};
                 document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();let key=title==='main'?'main':title==='field service'?'field':title==='attendance'?'attendance':title==='oclm'?'oclm':title==='more'?'more':null;if(key)section.style.display=sections[key]?'':'none';});
                 document.getElementById('btn-tab-access')?.classList.toggle('hidden',role!=='admin');
-                document.querySelectorAll('#mobile-nav button').forEach(b=>b.classList.remove('hidden')); const mobileAllowed={admin:['m-btn-tab-oclm','m-btn-tab-dashboard','m-btn-tab-groups','m-btn-tab-publishers'],field_service:['m-btn-tab-groups','m-btn-tab-publishers'],attendance:['m-btn-tab-oclm'],oclm:['m-btn-tab-oclm']}; if(role!=='admin'){document.querySelectorAll('#mobile-nav button').forEach(b=>{if(!mobileAllowed[role]?.includes(b.id))b.classList.add('hidden');});}
+                document.querySelectorAll('#mobile-nav button').forEach(b=>b.classList.remove('hidden')); const mobileAllowed={admin:['m-btn-tab-oclm','m-btn-tab-dashboard','m-btn-tab-publishers','m-btn-tab-attendance'],field_service:['m-btn-tab-dashboard','m-btn-tab-publishers','m-btn-tab-groups'],attendance:['m-btn-tab-attendance'],oclm:['m-btn-tab-oclm']}; if(role!=='admin'){document.querySelectorAll('#mobile-nav button').forEach(b=>{if(!mobileAllowed[role]?.includes(b.id))b.classList.add('hidden');});}
             },
 
             openAccessManager: async () => { window.ui.openModal('modal-access-manager'); await window.ui.loadRoleAccess(); },
             loadRoleAccess: async () => {
                 const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess('${window.ui.oclmEscape(r.id||'')}')" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main Admin',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess('${window.ui.oclmEscape(r.id||'')}')" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
             },
             addRoleAccess: async () => {const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase();const role=document.getElementById('access-role-input')?.value;if(!email||!email.includes('@')){window.ui.showToast('Enter a valid Google account email.','error');return;}try{const {error}=await supabaseClient.from('congregation_access').upsert({id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});if(error)throw error;document.getElementById('access-email-input').value='';await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');}catch(e){window.ui.showToast('Role table is not configured yet. Run the setup SQL first.','error');}},
             removeRoleAccess: async id => {if(!id)return;try{const {error}=await supabaseClient.from('congregation_access').delete().eq('id',id).eq('cong_id',window.currentCongId);if(error)throw error;await window.ui.loadRoleAccess();window.ui.showToast('Access removed.');}catch(e){window.ui.showToast('Could not remove access.','error');}},
@@ -3157,11 +3486,10 @@ alter table public.congregation_access enable row level security;
 -- so authorized OCLM brothers can see the same schedule on their own devices.
 `;window.ui.copyText(sql);window.ui.showToast('Setup SQL copied.');},
 
-            openOCLM: () => {
-                if (window.db.currentCongData?.feature_oclm !== true && sessionStorage.getItem('fs_role') !== 'oclm') {
-                    window.ui.showOCLMComingSoon();
-                    return;
-                }
+            openOCLM: async () => {
+                const role=sessionStorage.getItem('fs_role')||'admin';
+                if (window.db.currentCongData?.feature_oclm !== true && role !== 'oclm' && role !== 'admin') { window.ui.showOCLMComingSoon(); return; }
+                await window.ui.loadOCLMStateFromCloud();
                 window.ui.getOCLMState();
                 window.ui.switchTab('oclm');
             },
@@ -3560,7 +3888,7 @@ alter table public.congregation_access enable row level security;
             },
             getOCLMState: () => {
                 const key=window.ui.oclmStorageKey();
-                const fallback={version:3,parts:window.ui.oclmDefaultParts(),capabilities:{},pairings:{},assignments:[],published:false,publishedAt:null,publishedSnapshot:null,weekParts:{},step:1};
+                const fallback={version:4,parts:window.ui.oclmDefaultParts(),capabilities:{},pairings:{},assignments:[],published:false,publishedAt:null,publishedSnapshot:null,publicToken:null,weekParts:{},step:1};
                 try{
                     const raw=localStorage.getItem(key);
                     if(!raw) return fallback;
@@ -3574,13 +3902,40 @@ alter table public.congregation_access enable row level security;
                     state.capabilities=parsed.capabilities&&typeof parsed.capabilities==='object'?parsed.capabilities:{};
                     state.pairings=parsed.pairings&&typeof parsed.pairings==='object'?parsed.pairings:{};
                     state.assignments=Array.isArray(parsed.assignments)?parsed.assignments:[];
-                    state.weekParts=parsed.weekParts&&typeof parsed.weekParts==='object'?parsed.weekParts:{}; state.step=Math.max(1,Math.min(3,parseInt(parsed.step)||1));
+                    state.weekParts=parsed.weekParts&&typeof parsed.weekParts==='object'?parsed.weekParts:{}; state.publicToken=parsed.publicToken||null; state.step=Math.max(1,Math.min(3,parseInt(parsed.step)||1));
                     return state;
                 }catch(e){ console.warn('OCLM state recovery:',e); return fallback; }
             },
             saveOCLMState: state => {
-                try{ localStorage.setItem(window.ui.oclmStorageKey(),JSON.stringify({...state,version:3})); }
+                try{ localStorage.setItem(window.ui.oclmStorageKey(),JSON.stringify({...state,version:4})); }
                 catch(e){ console.error('OCLM save failed:',e); window.ui.showToast?.('OCLM could not be saved on this device.','error'); }
+                if(isCloudEnabled && supabaseClient && window.ui.oclmCloudLoaded && window.currentCongId){
+                    clearTimeout(window.ui._oclmSaveTimer);
+                    window.ui._oclmSaveTimer=setTimeout(async()=>{
+                        try{ await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...state,version:4}}); }
+                        catch(e){ console.error('OCLM cloud save failed:',e); }
+                    },350);
+                }
+            },
+            loadOCLMStateFromCloud: async () => {
+                if(!isCloudEnabled || !supabaseClient || !window.currentCongId){window.ui.oclmCloudLoaded=true;return;}
+                if(window.ui.oclmCloudLoading) return window.ui.oclmCloudLoading;
+                window.ui.oclmCloudLoading=(async()=>{
+                    try{
+                        const {data,error}=await supabaseClient.rpc('get_oclm_state',{p_cong_id:String(window.currentCongId)});
+                        if(error) throw error;
+                        const cloud=data?.state||data?.[0]?.state||null;
+                        if(cloud && typeof cloud==='object'){
+                            localStorage.setItem(window.ui.oclmStorageKey(),JSON.stringify(cloud));
+                        } else {
+                            const local=window.ui.getOCLMState();
+                            await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...local,version:4}});
+                        }
+                        window.ui.oclmCloudLoaded=true;
+                    }catch(e){console.error('OCLM cloud load failed:',e);window.ui.showToast('OCLM cloud data could not be loaded. Check the setup SQL.','error');}
+                    finally{window.ui.oclmCloudLoading=null;}
+                })();
+                return window.ui.oclmCloudLoading;
             },
 
             switchOCLMPanel: (panel) => {
@@ -3727,15 +4082,22 @@ alter table public.congregation_access enable row level security;
             buildOCLMSnapshot: () => {const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const assignments=s.assignments.map(a=>{const part=s.parts.find(p=>p.id===a.partId);const confirmed=Array.isArray(s.weekParts?.[a.weekKey])?s.weekParts[a.weekKey].includes(a.partId):!!part?.enabled;return {...a,partTitle:part?.title||'Assignment',category:part?.category||'Other',pubNames:(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean)};}).filter(a=>a.pubNames.length&&a.pubIds.length&&(a.pubIds.length===s.parts.find(p=>p.id===a.partId)?.slots)&&a.weekKey&&a.partTitle&&a.partId&&(!s.weekParts?.[a.weekKey]||s.weekParts[a.weekKey].includes(a.partId))).sort((a,b)=>a.weekKey.localeCompare(b.weekKey)||a.partOrder-b.partOrder);const weeks=[...new Set(assignments.map(a=>a.weekKey))];return {version:2,congregation:window.db.currentCongData?.name||'Congregation',publishedAt:new Date().toISOString(),weeks,assignments};},
             encodeOCLMSnapshot: snapshot => btoa(unescape(encodeURIComponent(JSON.stringify(snapshot)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),
             decodeOCLMSnapshot: raw => {const normalized=raw.replace(/-/g,'+').replace(/_/g,'/');const padded=normalized+'='.repeat((4-normalized.length%4)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))));},
-            getOCLMLiveLink: snapshot => {const base=window.location.href.split('?')[0];return `${base}?cong=${encodeURIComponent(window.currentCongId)}&mode=oclm&data=${encodeURIComponent(window.ui.encodeOCLMSnapshot(snapshot))}`;},
-            publishOCLM: () => {const date=window.ui.getOCLMWeekDate();const key=window.ui.oclmWeekKey(date);const s=window.ui.getOCLMState();const confirmed=window.ui.getOCLMConfirmedParts(s,key);const complete=confirmed.every(id=>{const part=s.parts.find(p=>p.id===id);const a=s.assignments.find(x=>x.weekKey===key&&x.partId===id);return !!a&&(a.pubIds||[]).length===part?.slots;});if(!confirmed.length){window.ui.showToast('Confirm at least one part before publishing.','error');return;}if(!complete){window.ui.setOCLMStep(3);window.ui.showToast('Complete every confirmed assignment before publishing.','error');return;}const snapshot=window.ui.buildOCLMSnapshot();if(!snapshot.assignments.length){window.ui.showToast('Add at least one assignment before going live.','error');return;}s.published=true;s.publishedAt=snapshot.publishedAt;s.publishedSnapshot=snapshot;window.ui.saveOCLMState(s);window.ui.switchOCLMPanel('live');window.ui.renderOCLMLive();window.ui.showToast('OCLM schedule is live. Share the public link.');},
-            copyOCLMLiveLink: async () => {const s=window.ui.getOCLMState();if(!s.publishedSnapshot){window.ui.showToast('Publish the schedule first.','error');return;}const url=window.ui.getOCLMLiveLink(s.publishedSnapshot);window.ui.copyText(url);},
-            renderOCLMLive: () => {const status=document.getElementById('oclm-live-status'),preview=document.getElementById('oclm-live-preview'),box=document.getElementById('oclm-live-link-box');if(!status||!preview||!box)return;const s=window.ui.getOCLMState();if(!s.publishedSnapshot){status.innerHTML='<div class="rounded-xl border border-dashed border-white/10 p-4 text-sm text-teal-100/45">Nothing has been published yet. Use Planner & Preview to prepare the week, then choose Go Live.</div>';preview.innerHTML='';box.innerHTML='<div class="text-xs text-teal-100/40 break-all">No live link yet.</div>';return;}status.innerHTML=`<div class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 flex items-center justify-between gap-3"><div><div class="text-sm font-bold text-emerald-300">● Live</div><div class="text-xs text-teal-100/45 mt-1">Published ${new Date(s.publishedAt||Date.now()).toLocaleString()}</div></div><span class="text-[10px] text-teal-200/40">Snapshot publishing</span></div>`;const snap=s.publishedSnapshot;preview.innerHTML=window.ui.renderOCLMBoardHTML(snap,'');box.innerHTML=`<div class="rounded-xl bg-black/20 border border-white/10 p-3 text-[11px] text-teal-100/50 break-all">${window.ui.oclmEscape(window.ui.getOCLMLiveLink(snap))}</div>`;},
+            getOCLMPublicToken: state => state?.publicToken || null,
+            getOCLMLiveLink: (snapshot,state=null) => {const token=window.ui.getOCLMPublicToken(state||window.ui.getOCLMState()); const base=window.location.href.split('?')[0]; if(token) return `${base}?mode=oclm&token=${encodeURIComponent(token)}`; return `${base}?cong=${encodeURIComponent(window.currentCongId)}&mode=oclm&data=${encodeURIComponent(window.ui.encodeOCLMSnapshot(snapshot))}`;},
+            syncOCLMPublicLink: async snapshot => {
+                if(!isCloudEnabled || !window.currentCongId || !supabaseClient) return null;
+                const {data,error}=await supabaseClient.rpc('upsert_oclm_public_snapshot',{p_cong_id:String(window.currentCongId),p_snapshot:snapshot});
+                if(error) throw error;
+                return data?.token || data?.[0]?.token || null;
+            },
+            publishOCLM: async () => {const date=window.ui.getOCLMWeekDate();const key=window.ui.oclmWeekKey(date);const s=window.ui.getOCLMState();const confirmed=window.ui.getOCLMConfirmedParts(s,key);const complete=confirmed.every(id=>{const part=s.parts.find(p=>p.id===id);const a=s.assignments.find(x=>x.weekKey===key&&x.partId===id);return !!a&&(a.pubIds||[]).length===part?.slots;});if(!confirmed.length){window.ui.showToast('Confirm at least one part before publishing.','error');return;}if(!complete){window.ui.setOCLMStep(3);window.ui.showToast('Complete every confirmed assignment before publishing.','error');return;}const snapshot=window.ui.buildOCLMSnapshot();if(!snapshot.assignments.length){window.ui.showToast('Add at least one assignment before going live.','error');return;}try{if(isCloudEnabled){const token=await window.ui.syncOCLMPublicLink(snapshot);if(!token)throw new Error('No public token returned');s.publicToken=token;}s.published=true;s.publishedAt=snapshot.publishedAt;s.publishedSnapshot=snapshot;window.ui.saveOCLMState(s);window.ui.switchOCLMPanel('live');window.ui.renderOCLMLive();window.ui.showToast('OCLM schedule is live. The same public link has been updated.');}catch(e){console.error('OCLM publish:',e);window.ui.showToast('Could not publish the OCLM public link. Check the Supabase setup SQL.','error');}},
+            copyOCLMLiveLink: async () => {const s=window.ui.getOCLMState();if(!s.publishedSnapshot){window.ui.showToast('Publish the schedule first.','error');return;}const url=window.ui.getOCLMLiveLink(s.publishedSnapshot,s);window.ui.copyText(url);},
+            renderOCLMLive: () => {const status=document.getElementById('oclm-live-status'),preview=document.getElementById('oclm-live-preview'),box=document.getElementById('oclm-live-link-box');if(!status||!preview||!box)return;const s=window.ui.getOCLMState();if(!s.publishedSnapshot){status.innerHTML='<div class=\"rounded-xl border border-dashed border-white/10 p-4 text-sm text-teal-100/45\">Nothing has been published yet. Use Planner & Preview to prepare the week, then choose Go Live.</div>';preview.innerHTML='';box.innerHTML='<div class=\"text-xs text-teal-100/40 break-all\">No live link yet.</div>';return;}status.innerHTML=`<div class=\"rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 flex items-center justify-between gap-3\"><div><div class=\"text-sm font-bold text-emerald-300\">● Live</div><div class=\"text-xs text-teal-100/45 mt-1\">Published ${new Date(s.publishedAt||Date.now()).toLocaleString()}</div></div><span class=\"text-[10px] text-teal-200/40\">Permanent public link</span></div>`;const snap=s.publishedSnapshot;preview.innerHTML=window.ui.renderOCLMBoardHTML(snap,'');box.innerHTML=`<div class=\"rounded-xl bg-black/20 border border-white/10 p-3 text-[11px] text-teal-100/50 break-all\">${window.ui.oclmEscape(window.ui.getOCLMLiveLink(snap,s))}</div><div class=\"text-[10px] text-teal-100/35 mt-2\">This link is created once for this congregation. Publishing future changes updates the same link.</div>`;},
             renderOCLMPlannerPreview: () => {const box=document.getElementById('oclm-planner-preview');if(!box)return;const date=window.ui.getOCLMWeekDate();const s=window.ui.getOCLMState();const pubs=Object.fromEntries(window.db.getPublishers().map(p=>[p.id,p]));const items=window.ui.oclmAssignmentForWeek(s,window.ui.oclmWeekKey(date)).map(a=>{const p=s.parts.find(x=>x.id===a.partId);return {...a,partTitle:p?.title||'Assignment',category:p?.category||'Other',pubNames:(a.pubIds||[]).map(id=>pubs[id]?.name).filter(Boolean)};});box.innerHTML=items.length?window.ui.renderOCLMBoardHTML({congregation:window.db.currentCongData?.name||'Congregation',assignments:items,weeks:[window.ui.oclmWeekKey(date)]},''):'<div class="text-sm text-teal-100/40 border border-dashed border-white/10 rounded-xl p-5">Nothing to preview yet.</div>';},
-            renderOCLMBoardHTML: (snapshot,search='') => { const q=search.trim().toLowerCase(); const groups={}; (snapshot.assignments||[]).filter(a=>!q||a.pubNames.some(n=>n.toLowerCase().includes(q))).forEach(a=>(groups[a.weekKey]??=[]).push(a)); const keys=Object.keys(groups).sort(); if(!keys.length)return '<div class="text-center py-10 text-teal-100/40">No matching assignments.</div>'; return keys.map(key=>{const rows=groups[key].sort((a,b)=>a.partOrder-b.partOrder); return `<section class="oclm-public-week"><div class="oclm-public-week-title">${window.ui.oclmEscape(window.ui.oclmWeekLabel(key))}</div>${rows.map(a=>{const match=q&&a.pubNames.some(n=>n.toLowerCase().includes(q)); return `<div class="oclm-public-assignment ${match?'match':''}"><div><div class="oclm-public-category">${window.ui.oclmEscape(a.category)}</div></div><div><div class="oclm-public-part">${window.ui.oclmEscape(a.partTitle)}</div><div class="oclm-public-names">${a.pubNames.map(n=>window.ui.oclmEscape(n)).join(' + ')}</div>${a.note?`<div class="text-[10px] text-slate-500 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div></div>`;}).join('')}</section>`;}).join(''); },
+            renderOCLMBoardHTML: (snapshot,search='') => { const q=search.trim().toLowerCase(); const groups={}; (snapshot.assignments||[]).filter(a=>!q||a.pubNames.some(n=>n.toLowerCase().includes(q))).forEach(a=>(groups[a.weekKey]??=[]).push(a)); const keys=Object.keys(groups).sort(); if(!keys.length)return '<div class="text-center py-10 text-teal-100/40">No matching assignments.</div>'; return keys.map(key=>{const rows=groups[key].sort((a,b)=>a.partOrder-b.partOrder); return `<section class="oclm-public-week"><div class="oclm-public-week-title">${window.ui.oclmEscape(window.ui.oclmWeekLabel(key))}</div>${rows.map(a=>{const match=q&&a.pubNames.some(n=>n.toLowerCase().includes(q)); return `<div class="oclm-public-assignment ${match?'match':''}"><div><div class="oclm-public-category" data-cat="${window.ui.oclmEscape(a.category)}">${window.ui.oclmEscape(a.category)}</div></div><div><div class="oclm-public-part">${window.ui.oclmEscape(a.partTitle)}</div><div class="oclm-public-names">${a.pubNames.map(n=>window.ui.oclmEscape(n)).join(' + ')}</div>${a.note?`<div class="text-[10px] text-slate-500 mt-1">${window.ui.oclmEscape(a.note)}</div>`:''}</div></div>`;}).join('')}</section>`;}).join(''); },
             previewOCLMPublic: () => {window.ui.switchOCLMPanel('live');window.ui.renderOCLMLive();window.ui.showToast('Preview refreshed.');},
             renderOCLMPublicLinks: () => window.ui.renderOCLMLive(),
-            setupPublicOCLM: () => {const params=new URLSearchParams(window.location.search);const raw=params.get('data');try{if(!raw)throw new Error('missing');const snap=window.ui.decodeOCLMSnapshot(raw);document.getElementById('public-oclm-title').textContent=`${snap.congregation||'Congregation'} — OCLM Assignments`;const sel=document.getElementById('public-oclm-week');const keys=[...new Set((snap.assignments||[]).map(a=>a.weekKey))].sort();sel.innerHTML='<option value="ALL">All weeks</option>'+keys.map(k=>`<option value="${window.ui.oclmEscape(k)}">${window.ui.oclmEscape(window.ui.oclmWeekLabel(k))}</option>`).join('');window.ui.publicOCLMSnapshot=snap;window.ui.renderPublicOCLMBoard();}catch(e){console.error(e);document.getElementById('public-oclm-list').innerHTML='<div class="text-center py-12 text-rose-300">This OCLM link is invalid or incomplete. Please request a new published link.</div>';}},
+            setupPublicOCLM: async () => {const params=new URLSearchParams(window.location.search);const token=params.get('token');const raw=params.get('data');try{let snap=null;if(token&&isCloudEnabled&&supabaseClient){const {data,error}=await supabaseClient.rpc('get_oclm_public_snapshot',{p_token:token});if(error)throw error;snap=data?.snapshot||data?.[0]?.snapshot||null;}if(!snap&&raw)snap=window.ui.decodeOCLMSnapshot(raw);if(!snap)throw new Error('missing');document.getElementById('public-oclm-title').textContent=`${snap.congregation||'Congregation'} — OCLM Assignments`;const sel=document.getElementById('public-oclm-week');const keys=[...new Set((snap.assignments||[]).map(a=>a.weekKey))].sort();sel.innerHTML='<option value=\"ALL\">All weeks</option>'+keys.map(k=>`<option value=\"${window.ui.oclmEscape(k)}\">${window.ui.oclmEscape(window.ui.oclmWeekLabel(k))}</option>`).join('');window.ui.publicOCLMSnapshot=snap;window.ui.renderPublicOCLMBoard();}catch(e){console.error(e);document.getElementById('public-oclm-list').innerHTML='<div class=\"text-center py-12 text-rose-300\">This OCLM public link is unavailable. Please contact the congregation administrator.</div>';}} ,
             renderPublicOCLMBoard: () => {const snap=window.ui.publicOCLMSnapshot;if(!snap)return;const week=document.getElementById('public-oclm-week')?.value||'ALL';const q=(document.getElementById('public-oclm-search')?.value||'').trim().toLowerCase();const filtered={...snap,assignments:(snap.assignments||[]).filter(a=>(week==='ALL'||a.weekKey===week)&&(!q||a.pubNames.some(n=>n.toLowerCase().includes(q))))};const names=[...new Set(filtered.assignments.flatMap(a=>a.pubNames))];document.getElementById('public-oclm-summary').innerHTML=q?`<div class="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3 text-sm text-cyan-100">Showing assignments matching <strong>${window.ui.oclmEscape(q)}</strong>. Matching rows are highlighted.</div>`:`<div class="text-xs text-teal-100/40">${filtered.assignments.length} published assignment${filtered.assignments.length===1?'':'s'} · ${names.length} publisher${names.length===1?'':'s'}</div>`;document.getElementById('public-oclm-list').innerHTML=window.ui.renderOCLMBoardHTML(filtered,q);},
             openOCLMPartsSettings: () => {
                 const s=window.ui.getOCLMState(); const rows=s.parts.map(p=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(p.title)}</div><div class="text-[10px] text-teal-200/50">${window.ui.oclmEscape(p.category)} · ${p.slots===2?'2 people':'1 person'}</div></div><div class="flex gap-1"><button onclick="window.ui.editOCLMPart('${p.id}')" class="px-2 py-1 rounded-lg bg-white/5 text-[10px]">Rename</button><button onclick="window.ui.toggleOCLMPart('${p.id}')" class="px-2 py-1 rounded-lg ${p.enabled?'bg-emerald-500/15 text-emerald-300':'bg-white/5 text-slate-400'} text-[10px]">${p.enabled?'Active':'Hidden'}</button></div></div>`).join('');
