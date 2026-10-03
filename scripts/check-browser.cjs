@@ -84,6 +84,8 @@ async function run(profile) {
             assert.equal(await page.locator(`#${view}View`).isVisible(), true);
         }
         if(profile.mobile) {
+            await page.waitForFunction(() => !document.getElementById('toast').classList.contains('show'));
+            assert.equal(await page.locator('#autoRemaining').evaluate(el=>getComputedStyle(el).fontSize),'14px','Scheduler small actions must remain readable');
             for(const width of [320,375,390,430]) {
                 await page.setViewportSize({width,height:profile.viewport.height});
                 for(const theme of ['default','scheduler','dark']) {

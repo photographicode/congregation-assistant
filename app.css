@@ -153,7 +153,7 @@ body:is([data-theme="light"],[data-theme="scheduler"]) [class*="bg-emerald-900/"
     #ca-midweek-root .top-actions { display: grid; grid-template-columns: auto auto minmax(0,1fr); gap: 8px; }
     #ca-midweek-root #saveStateLabel { grid-column: 1 / -1; font-size: 13px; text-align: center; }
     #ca-midweek-root .top-actions .btn:not(.primary) { display: inline-flex; }
-    #ca-midweek-root .btn { height: auto; min-height: 48px; padding: 10px; font-size: 14px; white-space: normal; }
+    #ca-midweek-root .btn, #ca-midweek-root .btn.small { height: auto; min-height: 48px; padding: 10px; font-size: 14px; white-space: normal; }
     #ca-midweek-root .content { padding: 16px 12px 24px; }
     #ca-midweek-root .schedule-head h1 { font-size: 25px; line-height: 1.2; }
     #ca-midweek-root .schedule-head p { font-size: 15px; }
