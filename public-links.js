@@ -88,14 +88,14 @@
                 return true;
             }
             if (token && ['report','attendance'].includes(mode)) {
-                publicShell();window.ui.switchTab(mode==='attendance'?'public-attendance':'s4');
+                publicShell();document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
                 try {
                     const context=await rpc('get_public_link_context',{p_token:token});
                     if (!context || context.kind !== mode) throw new Error('This public link is invalid, expired, or withdrawn. Ask your administrator for a new link.');
                     window.currentCongId=context.cong_id;window.ui.publicLinkToken=token;window.ui.publicGroup=context.service_group || null;
                     window.db.publishers=(context.publishers || []).map(window.db.mapPubFromDB);
                     window.db.currentCongData={id:context.cong_id,name:context.congregation};
-                    if(mode==='attendance')window.ui.setupPublicAttendance();else window.ui.setupS4Tab();
+                    window.ui.switchTab(mode==='attendance'?'public-attendance':'s4');
                     status(`${context.congregation} · ${mode==='attendance'?'Meeting attendance':'Monthly report'}`);
                 } catch(error) { status(error.message,true);document.getElementById(mode==='attendance'?'tab-public-attendance':'tab-s4').classList.remove('active'); }
                 return true;

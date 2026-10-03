@@ -1179,6 +1179,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <div class="glass-panel ca-mobile-menu-sheet">
             <div class="ca-mobile-menu-heading"><div><h2 id="mobile-menu-title">All sections</h2><p id="mobile-menu-role">Choose where you want to go.</p></div><button type="button" onclick="window.ui.closeModal('modal-mobile-menu')" aria-label="Close navigation menu">×</button></div>
             <div class="ca-mobile-menu-content">
+                <section class="ca-mobile-menu-section" data-menu-section="Administration"><h3>Administration</h3>
+                    <button type="button" id="menu-item-super-overview" data-menu-permission="super" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.switchTab('superadmin')"><span class="ca-menu-icon" aria-hidden="true">▥</span><span><strong>Service overview</strong><small>Congregations, trials and renewals</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-super-create" data-menu-permission="super" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.openModal('modal-add-cong')"><span class="ca-menu-icon" aria-hidden="true">+</span><span><strong>Add congregation</strong><small>Set up a workspace and its administrator</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-super-notice" data-menu-permission="super" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.openNotificationComposer()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Send a system notice</strong><small>Compose an update for selected congregations</small></span><span aria-hidden="true">›</span></button>
+                </section>
                 <section class="ca-mobile-menu-section" data-menu-section="Main"><h3>Main</h3>
                     <button type="button" id="menu-item-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('dashboard',false,'main')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Home</strong><small>Reports and monthly overview</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('publishers',false,'main')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publishers</strong><small>Profiles, reports and S-21 downloads</small></span><span aria-hidden="true">›</span></button>
@@ -1885,15 +1890,15 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <label class="text-xs text-amber-200/80 font-bold uppercase tracking-wider block border-b border-white/10 pb-2 mb-2">Enabled Features</label>
                     <div class="space-y-2">
                         <label class="flex items-center gap-3 text-sm text-white cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                            <input type="checkbox" id="saas-feat-attendance" class="accent-amber-500 rounded w-4 h-4"> 
+                            <input type="checkbox" id="saas-feat-attendance" checked class="accent-amber-500 rounded w-4 h-4"> 
                             <span>Meeting Attendance Module</span>
                         </label>
                         <label class="flex items-center gap-3 text-sm text-white cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                            <input type="checkbox" id="saas-feat-emergency" class="accent-amber-500 rounded w-4 h-4"> 
+                            <input type="checkbox" id="saas-feat-emergency" checked class="accent-amber-500 rounded w-4 h-4"> 
                             <span>Emergency Contacts Module</span>
                         </label>
                         <label class="flex items-center gap-3 text-sm text-white cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                            <input type="checkbox" id="saas-feat-oclm" class="accent-amber-500 rounded w-4 h-4"> 
+                            <input type="checkbox" id="saas-feat-oclm" checked class="accent-amber-500 rounded w-4 h-4"> 
                             <span>OCLM Scheduling Module</span>
                         </label>
                     </div>
@@ -3153,7 +3158,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.applyTheme(localStorage.getItem('ca_theme') || 'default');
                 document.body.classList.add('super-admin-theme'); 
                 document.getElementById('nav-superadmin').classList.remove('hidden');
-                window.ui.switchTab('superadmin');
+                window.ui.switchTab('superadmin');window.ui.applyRoleNavigation();document.getElementById('mobile-nav').classList.remove('hidden');document.getElementById('nav-mobile-title').textContent='Service administration';document.getElementById('nav-mobile-title').onclick=()=>window.ui.switchTab('superadmin');
                 if (isCloudEnabled) {
                     const { data } = await supabaseClient.from('congregations').select('*').order('created_at', { ascending: false });
                     if (data) window.db.congregations = data;
@@ -4156,7 +4161,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 document.getElementById('saas-cong-grid').innerHTML=filtered.map(c=>{
                     const status=window.ui.getTenantStatus(c),days=Number(c.trial_days)||30,expires=new Date(new Date(c.created_at||Date.now()).getTime()+days*86400000),left=Math.max(0,Math.ceil((expires-Date.now())/86400000));
                     const features=[['Attendance',c.feature_attendance],['Emergency contacts',c.feature_emergency_contacts],['OCLM',c.feature_oclm]].map(([label,on])=>`<span class="ca-admin-feature ${on?'enabled':''}">${on?'✓':'–'} ${label}</span>`).join('');
-                    return `<article class="saas-card ca-admin-card"><div class="ca-admin-card-head"><label class="ca-admin-select"><input type="checkbox" aria-label="Select ${esc(c.name)}" ${window.ui.superAdminSelected.has(c.id)?'checked':''} onchange="window.ui.toggleSuperAdminSelection(${window.ui.jsArg(c.id)},this.checked);window.ui.renderSuperAdmin()"></label><div><h3>${esc(c.name)}</h3><p>${esc(c.id)}</p></div><span class="ca-admin-status ${esc(status)}">${esc(status)}</span></div><dl><div><dt>Administrator</dt><dd>${esc(c.email||'Not assigned')}</dd></div><div><dt>Trial</dt><dd>${days} days${status==='trial'?` · ${left} days left`:''}</dd></div><div><dt>Payment recorded</dt><dd>${esc(c.payment_date||'Not recorded')}</dd></div></dl><div class="ca-admin-features">${features}</div>${c.wipe_requested_at?'<p class="ca-admin-alert">Deletion requested — review before taking action.</p>':''}<div class="ca-admin-card-actions"><button class="ca-secondary-action" onclick="window.ui.editCongregation(${window.ui.jsArg(c.id)})">Manage congregation</button><button class="ca-admin-delete" onclick="window.db.deleteCongregation(${window.ui.jsArg(c.id)})">Delete</button></div></article>`;
+                    return `<article class="saas-card ca-admin-card"><div class="ca-admin-card-head"><label class="ca-admin-select"><input type="checkbox" aria-label="Select ${esc(c.name)}" ${window.ui.superAdminSelected.has(c.id)?'checked':''} onchange="window.ui.toggleSuperAdminSelection(${window.ui.jsArg(c.id)},this.checked);window.ui.renderSuperAdmin()"></label><div><h3>${esc(c.name)}</h3><p>${esc(c.id)}</p></div><span class="ca-admin-status ${esc(status)}">${esc(status)}</span></div><dl><div><dt>Administrator</dt><dd>${esc(c.email||'Not assigned')}</dd></div><div><dt>Trial</dt><dd>${days} days${status==='trial'?` · ${left} days left`:''}</dd></div><div><dt>Payment recorded</dt><dd>${esc(c.payment_date||'Not recorded')}</dd></div></dl><div class="ca-admin-features">${features}</div>${c.wipe_requested_at?'<p class="ca-admin-alert">Deletion requested — review before taking action.</p>':''}<div class="ca-admin-card-actions"><button class="ca-secondary-action" onclick="window.currentCongId=${window.ui.jsArg(c.id)};window.ui.openAccessManager()">Access &amp; Roles</button><button class="ca-secondary-action" onclick="window.ui.editCongregation(${window.ui.jsArg(c.id)})">Manage congregation</button><button class="ca-admin-delete" onclick="window.db.deleteCongregation(${window.ui.jsArg(c.id)})">Delete</button></div></article>`;
                 }).join('')||'<p class="ca-admin-empty">No congregations match. Clear the search or choose another section.</p>';
             },
 
@@ -4190,7 +4195,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             canManageAccess: () => window.ui.getRoleGrants().includes('admin'),
             applyRoleNavigation: () => {
-                const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs();
+                const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs(),isSuper=sessionStorage.getItem('fs_auth_type')==='super';
                 const sections={main:roles.includes('admin'),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
                 document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{
                     const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();
@@ -4199,15 +4204,15 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 });
                 document.querySelectorAll('#nav-admin .ca-nav-divider').forEach(el=>{el.style.display='none';});
                 document.getElementById('btn-tab-access')?.classList.toggle('hidden',!window.ui.canManageAccess());
-                document.querySelectorAll('#mobile-nav [data-primary-tab]').forEach(button=>button.classList.toggle('hidden',!allowed.includes(button.dataset.primaryTab)));
+                document.querySelectorAll('#mobile-nav [data-primary-tab]').forEach(button=>button.classList.toggle('hidden',isSuper||!allowed.includes(button.dataset.primaryTab)));
                 document.getElementById('m-btn-tab-menu')?.classList.remove('hidden');
                 document.querySelectorAll('[data-menu-permission]').forEach(button=>{
                     const permission=button.dataset.menuPermission;
-                    button.classList.toggle('hidden',!(permission==='support'||(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
+                    button.classList.toggle('hidden',!(permission==='support'||permission==='super'&&isSuper||!isSuper&&(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
                 document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',(section.dataset.menuSection==='Main'&&!roles.includes('admin'))||![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
                 const names={admin:'Administrator',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
-                const label=document.getElementById('mobile-menu-role');if(label)label.textContent=roles.map(role=>names[role]).join(' · ')||'No assigned sections';
+                const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
 
             openAccessManager: async () => { if(!window.ui.canManageAccess()){window.ui.showToast('Only administrators can manage access.','error');return;} window.ui.openModal('modal-access-manager'); await window.ui.loadRoleAccess(); },

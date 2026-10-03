@@ -221,6 +221,11 @@ async function run(profile) {
         await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#auth-screen').isVisible(),true);assert.match(await page.locator('#google-auth-status').innerText(),/no approved access/);
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
+        await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});
+        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
+        assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
+        await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
+        if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').click();}
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });
