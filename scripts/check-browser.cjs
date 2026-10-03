@@ -83,6 +83,30 @@ async function run(profile) {
             await page.locator(`#ca-midweek-root [data-view="${view}"]`).click();
             assert.equal(await page.locator(`#${view}View`).isVisible(), true);
         }
+        if(profile.mobile) {
+            await page.waitForFunction(() => !document.getElementById('toast').classList.contains('show'));
+            assert.equal(await page.locator('#autoRemaining').evaluate(el=>getComputedStyle(el).fontSize),'14px','Scheduler small actions must remain readable');
+            for(const width of [320,375,390,430]) {
+                await page.setViewportSize({width,height:profile.viewport.height});
+                for(const theme of ['default','scheduler','dark']) {
+                    await page.evaluate(theme=>{window.ui.applyTheme(theme);window.scrollTo(0,0);},theme);
+                    await page.waitForTimeout(150);
+                    const layout=await page.evaluate(()=>{
+                        const root=document.getElementById('ca-midweek-root');
+                        const bounds=selector=>root.querySelector(selector).getBoundingClientRect();
+                        return {rootWidth:root.clientWidth,contentWidth:root.scrollWidth,week:bounds('.week-nav').toJSON(),actions:bounds('.top-actions').toJSON(),header:document.getElementById('mobile-top-header').getBoundingClientRect().toJSON(),stripWidth:root.querySelector('.week-strip').clientWidth,stripContent:root.querySelector('.week-strip').scrollWidth,inputBackground:getComputedStyle(root.querySelector('.row-title-input')).backgroundColor,headerBackground:getComputedStyle(document.getElementById('mobile-top-header')).backgroundColor};
+                    });
+                    assert(layout.week.top>=layout.header.bottom,'Week controls hidden behind mobile header');
+                    assert(layout.actions.top>=layout.week.bottom,'Scheduler toolbar overlaps week controls');
+                    assert(layout.contentWidth<=layout.rootWidth+1,'Scheduler overflows phone width '+width);
+                    assert(layout.stripContent<=layout.stripWidth+1,'Week cards require sideways scrolling');
+                    assert.equal(layout.inputBackground,'rgb(255, 255, 255)','Global theme darkened scheduler inputs');
+                    assert(/^rgb\(/.test(layout.headerBackground),'Mobile header must be opaque');
+                    await page.screenshot({path:path.join(output,`${profile.name}-scheduler-${width}-${theme}.png`)});
+                }
+            }
+            await page.setViewportSize(profile.viewport);
+        }
         for (let cycle = 0; cycle < 3; cycle++) for (const tab of ['dashboard', 'publishers', 'attendance', 'oclm', 'analytics', 'emergency']) {
             const elapsed = await page.evaluate(tab => { const start = performance.now(); window.ui.switchTab(tab); return performance.now() - start; }, tab);
             timings.push({ tab, elapsed });
