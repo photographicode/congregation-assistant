@@ -214,6 +214,7 @@ async function run(profile) {
             }
             if(profile.mobile){
                 assert.equal(await page.locator('#m-btn-tab-menu').isVisible(),true,'Menu missing for '+role);await page.locator('#m-btn-tab-menu').click();
+                assert.equal(await page.locator('.ca-mobile-menu-content').evaluate(el=>el.scrollTop),0,'Navigation reopens with its first sections scrolled away');
                 assert.equal(await page.locator('#menu-item-access').isVisible(),false);assert.equal(await page.locator('#menu-item-emergency').isVisible(),false);
                 assert.equal(await page.locator('#menu-item-home').isVisible(),role==='field_service');
                 assert.equal(await page.locator('#menu-item-publishers').isVisible(),role==='field_service');

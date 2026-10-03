@@ -102,6 +102,10 @@
     }
 
     function dialogOpened(dialog) {
+        if(dialog.id==='modal-mobile-menu'){
+            const sections=dialog.querySelector('.ca-mobile-menu-content');
+            if(sections)sections.scrollTop=0;
+        }
         focusHistory.set(dialog, document.activeElement);
         dialog.setAttribute('role', 'dialog'); dialog.setAttribute('aria-modal', 'true');
         const heading = dialog.querySelector('h2,h3,[id$="Title"],[id$="title"]');

@@ -16,6 +16,8 @@ Live SQL contract tests used a transaction that rolled back all synthetic record
 
 The performance advisor no longer reports missing foreign-key indexes, repeated JWT policy evaluation, or overlapping SELECT policies. It reports unused indexes in this empty project; retain these indexes until actual workload data justifies changing them.
 
+The `preserve_payment_date_when_provisioning` migration fixes a dropped payment-date field in the creation form. Live rollback and isolated contract tests check that the entered date is retained.
+
 ## Intentional public functions
 
 The security advisor warns about SECURITY DEFINER functions executable by anonymous or authenticated callers. The narrow public-link RPCs require scoped tokens and keep private-table access revoked. Administrator RPCs check server-side role memberships; the internal token resolver has no public execute grant. These are deliberate privileged interfaces, not a clean security-advisor result. Review future changes against the tested authorization contracts.
