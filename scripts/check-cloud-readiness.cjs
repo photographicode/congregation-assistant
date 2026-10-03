@@ -1,0 +1,7 @@
+/* Read-only checks with a deliberately nonexistent token. No private records or writes. */
+const fs=require('node:fs');const html=fs.readFileSync('index.html','utf8');
+const url=html.match(/const SUPABASE_URL[^;]*'(https:\/\/[^']+)'/)[1];const key=html.match(/const SUPABASE_ANON_KEY[^;]*'([^']+)'/)[1];
+(async()=>{const output={checkedAt:new Date().toISOString(),project:url};
+ try{const response=await fetch(url+'/rest/v1/rpc/get_oclm_public_snapshot',{method:'POST',headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({p_token:'00000000-0000-0000-0000-000000000000'}),signal:AbortSignal.timeout(15000)});const data=await response.json();output.publicScheduleRPC={status:response.status,available:response.ok,errorCode:response.ok?null:data?.code||null};}catch(error){output.publicScheduleRPC={available:false,error:'Connection unavailable'};}
+ try{const response=await fetch(url+'/auth/v1/settings',{headers:{apikey:key,Authorization:'Bearer '+key},signal:AbortSignal.timeout(15000)});const data=await response.json();output.googleProvider={status:response.status,enabled:response.ok&&data.external?.google===true};}catch(error){output.googleProvider={enabled:false,error:'Connection unavailable'};}
+ fs.mkdirSync('artifacts/cloud',{recursive:true});fs.writeFileSync('artifacts/cloud/readiness.json',JSON.stringify(output,null,2));console.log(JSON.stringify(output));})();

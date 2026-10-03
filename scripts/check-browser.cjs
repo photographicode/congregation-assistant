@@ -144,6 +144,54 @@ async function run(profile) {
             const gaps=await page.evaluate(()=>[...document.querySelectorAll('#nav-admin .ca-nav-section')].filter(el=>el.getClientRects().length).slice(1).map((el,i)=>el.getBoundingClientRect().top-document.querySelectorAll('#nav-admin .ca-nav-section')[i].getBoundingClientRect().bottom));
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
+        await nav('oclm');
+        await page.evaluate(()=>window.openPersonModal());
+        await page.locator('#personName').fill('Sample Schedule Person');
+        await page.locator('#roleChecks input[value="Chairman"]').check();
+        await page.locator('#personForm button[type="submit"]').click();
+        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');});
+        await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
+        await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
+        const sharedURL=await page.locator('#liveLinkInput').inputValue();assert(!sharedURL.includes('#live='),'New public link is a frozen snapshot');
+        const publicContext=await browser.newContext({viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile});
+        await publicContext.route('**/*.supabase.co/**',route=>route.abort('blockedbyclient'));
+        await publicContext.route('**/npm/@supabase/supabase-js@2',route=>route.fulfill({contentType:'application/javascript',body:'/* Fixture */'}));
+        await publicContext.route('**/pdf-lib.min.js',route=>route.fulfill({contentType:'application/javascript',body:fs.readFileSync(require.resolve('pdf-lib/dist/pdf-lib.min.js'),'utf8')}));
+        await publicContext.addInitScript({path:path.join(__dirname,'browser-fixture.js')});
+        const published=await page.evaluate(()=>window.__qaBackend.publications);
+        await publicContext.addInitScript(value=>{window.__qaPublicationsSeed=value;},published);
+        const publicPage=await publicContext.newPage();publicPage.on('pageerror',error=>errors.push(error.message));
+        await publicPage.goto(sharedURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('First published title'));
+        assert.equal(await publicPage.evaluate(()=>sessionStorage.getItem('fs_auth')),null,'Public URL needs a private session');
+        assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
+        assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);
+        await page.evaluate(()=>window.setPartTitle('Chairman','Updated published title'));
+        await publicPage.evaluate(()=>window.dispatchEvent(new Event('focus')));
+        assert((await publicPage.locator('#liveSections').innerText()).includes('First published title'),'Draft edit became public before publishing');
+        await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
+        assert.equal(await page.locator('#liveLinkInput').inputValue(),sharedURL,'Publishing changed the shared URL');
+        const updated=await page.evaluate(()=>window.__qaBackend.publications);
+        await publicPage.evaluate(value=>{window.__qaPublicationsSeed=value;window.dispatchEvent(new Event('focus'));},updated);
+        await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('Updated published title'));
+        await publicPage.screenshot({path:path.join(output,`${profile.name}-public-live-updated.png`)});
+        await page.evaluate(()=>{window.__qaBackend.rejectWrites=true;window.setPartTitle('Chairman','Rejected update');});await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
+        assert.equal(await page.locator('#liveLinkInput').inputValue(),sharedURL);
+        assert.equal(await page.evaluate(()=>window.__qaBackend.publications['qa-live-token'].snapshot.assignments[window.MidweekScheduler.getPayload().defaultWeek].Chairman.customTitle),'Updated published title','Rejected publication overwrote cloud data');
+        await page.evaluate(()=>{window.__qaBackend.rejectWrites=false;});
+        const legacyURL=sharedURL.split('?')[0]+'#live='+encodeURIComponent(Buffer.from(JSON.stringify(updated['qa-live-token'].snapshot)).toString('base64'));
+        await publicPage.goto(legacyURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('Updated published title'));
+        assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0);
+        await publicPage.goto(sharedURL.replace('qa-live-token','invalid-token'));await publicPage.waitForFunction(()=>document.getElementById('public-link-status')?.textContent.includes('not been published'));
+        assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);
+        for(const [mode,tab] of [['attendance','public-attendance'],['report','s4']]){
+            const token='qa-'+mode,context={kind:mode,cong_id:'qa-congregation',congregation:'Public Example',publishers:[{id:'qa-0',name:'Sample Reporter',service_group:'Group 1'}]};
+            await publicPage.addInitScript(value=>{window.__qaPublicLinksSeed={...(window.__qaPublicLinksSeed||{}),...value};},{[token]:context});
+            const url=new URL(sharedURL);url.searchParams.set('mode',mode);url.searchParams.set('token',token);await publicPage.goto(url.href);
+            await publicPage.waitForFunction(()=>window.ui?.publicLinkToken);assert.equal(await publicPage.locator('#tab-'+tab).isVisible(),true);assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);
+            assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'New public forms directly read private tables');
+        }
+        await publicContext.close();
+        if(profile.mobile){await nav('publishers');await page.locator('#m-btn-tab-menu').click();for(const section of ['Main','Field Service','Attendance','OCLM','More'])assert(await page.locator('[data-menu-section="'+section+'"]').isVisible(),'Mobile section missing '+section);await page.locator('#menu-item-install').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app button').click();}
         await page.evaluate(async()=>{await window.auth.googleLogin();});
         const oauth=await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1));assert.equal(oauth.provider,'google');assert.equal(new URL(oauth.options.redirectTo).search,'');assert.equal(new URL(oauth.options.redirectTo).hash,'');
         for(const role of ['field_service','attendance','oclm']) {
@@ -176,7 +224,7 @@ async function run(profile) {
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });
-        console.log('PASS', profile.name, ': navigation, 1000 records, drafts, rejected/successful saves, dialogs, PDF downloads, scheduler views, seven themes, full mobile menus and Google role routing');
+        console.log('PASS', profile.name, ': navigation, 1000 records, drafts, rejected/successful saves, dialogs, PDF downloads, scheduler views, seven themes, grouped mobile menus, stable public publishing, independent public routes and Google role routing');
     } catch (error) {
         await page.screenshot({ path: path.join(output, `${profile.name}-failure.png`), fullPage: true }).catch(() => {});
         reports.push({ profile: profile.name, status: 'failed', error: error.message, errors, blockedProduction, timings });

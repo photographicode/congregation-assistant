@@ -54,7 +54,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
         auth: { getSession: async () => ({ data: { session: null } }), signInWithOAuth: async () => ({ error: null }), signOut: async () => ({ error: null }) }
     };
     const window = {
-        document, PDFLib: require('pdf-lib'), location: { search: '', hash: '', href: 'http://localhost/index.html' }, innerWidth: 1280, innerHeight: 800,
+        document, PDFLib: require('pdf-lib'), location: { search: '', hash: '', href: 'http://localhost/index.html',origin:'http://localhost',pathname:'/index.html' }, innerWidth: 1280, innerHeight: 800,
         addEventListener(name, callback) { const group = events.get('window:' + name) || []; group.push(callback); events.set('window:' + name, group); }, removeEventListener() {}, scrollTo() {}, open() {}
     };
     if (cloudAvailable) window.supabase = { createClient: () => client };
@@ -68,6 +68,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     };
     const execute = code => new Function(...Object.keys(globals), code)(...Object.values(globals));
     execute(scripts[0][2]);
+    execute(fs.readFileSync(path.join(root, 'public-links.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root, 'pdf-tools.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root, 'app-support.js'), 'utf8'));
     execute(scripts[1][2] + '\nwindow.__exports={s21:buildS21OriginalPdf,s3:buildS3OriginalPdf};');

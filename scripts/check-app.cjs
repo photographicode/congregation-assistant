@@ -31,18 +31,29 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         for (const theme of ['default','blue','green','crimson','scheduler','light','dark']) { w.ui.applyTheme(theme); assert.equal(h.document.body.dataset.theme, theme); assert.equal(h.localStorage.getItem('ca_theme'), theme); }
         w.ui.applyTheme('unknown'); assert.equal(h.document.body.dataset.theme, 'default');
     });
-    await test('scheduler navigation, assignment controls, roster and sharing run without missing DOM targets', () => {
+    await test('scheduler navigation, assignment controls, roster and sharing run without missing DOM targets', async () => {
         w.currentCongId = 'test'; w.initMidweekScheduler();
         el.get('nextWeek').onclick(); el.get('prevWeek').onclick(); el.get('todayBtn').onclick(); el.get('previewBtn').onclick();
         el.get('autoTop').onclick(); el.get('autoRemaining').onclick();
         w.openAssign('BibleReading'); w.closeAssignModal();
         w.openPersonModal(); el.get('cancelPerson').onclick();
-        el.get('publishWeekBtn').onclick(); assert(el.get('liveLinkInput').value.includes('#live='));
+        h.setCloud({data:{token:'test-live-token'},error:null});await el.get('publishWeekBtn').onclick();assert(el.get('liveLinkInput').value.includes('?mode=oclm&token=test-live-token'));h.setCloud({error:null});
         w.clearAssignment('BibleReading'); assert.match(el.get('mwsToast').textContent, /cleared/);
         assert(h.localStorage.keys().some(k => k.startsWith('ca_midweek_test_')));
         w.currentCongId = 'other'; w.initMidweekScheduler(); el.get('autoTop').onclick();
         assert(h.localStorage.keys().some(k => k.startsWith('ca_midweek_other_')));
     });
+    await test('publishing failure preserves the previous stable link and publishes no false success',async()=>{
+        h.setCloud({data:{token:'stable-test-token'},error:null});await el.get('publishWeekBtn').onclick();const before=el.get('liveLinkInput').value;
+        h.setCloud({error:{message:'Publication denied'}});await el.get('publishWeekBtn').onclick();assert.equal(el.get('liveLinkInput').value,before);assert.equal(el.get('publishWeekBtn').disabled,false);assert.match(el.get('mwsToast').textContent,/denied/);h.setCloud({error:null});
+    });
+    await test('public URL builder discards admin queries and fragments',()=>{
+        w.location.href='http://localhost/index.html?cong=private#old';const url=new URL(w.PublicLinks.tokenURL('oclm','token value'));assert.equal(url.searchParams.get('token'),'token value');assert.equal(url.searchParams.has('cong'),false);assert.equal(url.hash,'');w.location.href='http://localhost/index.html';
+    });
+    await test('Superadmin cards escape values, hide passwords, and classify expired trials',()=>{
+        w.db.congregations=[{id:'quoted-id',name:'Example <script>alert(1)</script>',email:'owner@example.com',status:'trial',trial_days:30,created_at:'2000-01-01',admin_password:'never-display-this'}];el.get('saas-search').value='';el.get('saas-filter').value='EXPIRED';w.ui.renderSuperAdmin();assert.equal(w.ui.getSuperAdminMatches().length,1);assert.match(el.get('saas-cong-grid').innerHTML,/&lt;script&gt;/);assert(!el.get('saas-cong-grid').innerHTML.includes('never-display-this'));w.db.congregations=[];el.get('saas-filter').value='ALL';
+    });
+    await test('browser source has no shared Superadmin master password',()=>{assert(!h.markup.includes('MASTER_PASSWORD'));});
     await test('core data screens render names and groups containing quotes and markup', () => {
         w.currentCongId='test';w.db.publishers=[{id:'p1',name:'Sam <Junior> & "Jr"',group:'South "A" & O\'Brien',dob:'1990-01-01'}];w.db.reports=[];
         for(const name of ['renderPublishers','renderGroups','renderDashboard','renderAnalytics','renderDetailedRoster','renderEmergencyContacts']) w.ui[name]();

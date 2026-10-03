@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-192.png"><meta name="theme-color" content="#0b252c">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Congregation Assistant</title>
     
@@ -1178,27 +1179,37 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <div class="glass-panel ca-mobile-menu-sheet">
             <div class="ca-mobile-menu-heading"><div><h2 id="mobile-menu-title">All sections</h2><p id="mobile-menu-role">Choose where you want to go.</p></div><button type="button" onclick="window.ui.closeModal('modal-mobile-menu')" aria-label="Close navigation menu">×</button></div>
             <div class="ca-mobile-menu-content">
-                <section class="ca-mobile-menu-section"><h3>Your work</h3>
+                <section class="ca-mobile-menu-section" data-menu-section="Main"><h3>Main</h3>
                     <button type="button" id="menu-item-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('dashboard',false,'main')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Home</strong><small>Reports and monthly overview</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('publishers',false,'main')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publishers</strong><small>Profiles, reports and S-21 downloads</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-emergency" data-menu-permission="emergency" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('emergency',false,'main')"><span class="ca-menu-icon" aria-hidden="true">!</span><span><strong>Emergency Contacts</strong><small>Contact details and printable lists</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-access" data-menu-permission="admin" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAccessManager()"><span class="ca-menu-icon" aria-hidden="true">⌁</span><span><strong>Access & Roles</strong><small>Manage approved Google accounts</small></span><span aria-hidden="true">›</span></button>
+                </section>
+                <section class="ca-mobile-menu-section" data-menu-section="Field Service"><h3>Field Service</h3>
+                    <button type="button" id="menu-item-field-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.switchTab('dashboard',false,'field')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Field Service Home</strong><small>Monthly reports and pending submissions</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-field-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.switchTab('publishers',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publisher Reports</strong><small>Publisher records and reporting tools</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-groups" data-menu-permission="groups" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('groups',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♧</span><span><strong>Groups</strong><small>Service groups and group reports</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-analytics" data-menu-permission="analytics" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('analytics',false,'field')"><span class="ca-menu-icon" aria-hidden="true">▥</span><span><strong>Analytics & Rosters</strong><small>Review totals and publisher rosters</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-attendance" data-menu-permission="attendance" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('attendance',false,'attendance')"><span class="ca-menu-icon" aria-hidden="true">✓</span><span><strong>Meeting Attendance</strong><small>Weekly counts, S-3 and S-88 downloads</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-oclm" data-menu-permission="oclm" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openOCLM()"><span class="ca-menu-icon" aria-hidden="true">◷</span><span><strong>Midweek Scheduler</strong><small>Schedule, people, preview and messages</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-emergency" data-menu-permission="emergency" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('emergency',false,'main')"><span class="ca-menu-icon" aria-hidden="true">!</span><span><strong>Emergency Contacts</strong><small>Contact details and printable lists</small></span><span aria-hidden="true">›</span></button>
                 </section>
-                <section class="ca-mobile-menu-section"><h3>Account & support</h3>
-                    <button type="button" id="menu-item-access" data-menu-permission="admin" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAccessManager()"><span class="ca-menu-icon" aria-hidden="true">⌁</span><span><strong>Access & Roles</strong><small>Manage approved Google accounts</small></span><span aria-hidden="true">›</span></button>
+                <section class="ca-mobile-menu-section" data-menu-section="Attendance"><h3>Attendance</h3>
+                    <button type="button" id="menu-item-attendance" data-menu-permission="attendance" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('attendance',false,'attendance')"><span class="ca-menu-icon" aria-hidden="true">✓</span><span><strong>Meeting Attendance</strong><small>Weekly counts, S-3 and S-88 downloads</small></span><span aria-hidden="true">›</span></button>
+                </section>
+                <section class="ca-mobile-menu-section" data-menu-section="OCLM"><h3>OCLM</h3>
+                    <button type="button" id="menu-item-oclm" data-menu-permission="oclm" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openOCLM()"><span class="ca-menu-icon" aria-hidden="true">◷</span><span><strong>Midweek Scheduler</strong><small>Schedule, people, preview and messages</small></span><span aria-hidden="true">›</span></button>
+                </section>
+                <section class="ca-mobile-menu-section" data-menu-section="More"><h3>More</h3>
                     <button type="button" id="menu-item-announcements" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAnnouncements()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Announcements</strong><small>Read congregation updates</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-help" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-how-to-use')"><span class="ca-menu-icon" aria-hidden="true">?</span><span><strong>How to use</strong><small>Step-by-step help for this application</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-about" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-about')"><span class="ca-menu-icon" aria-hidden="true">i</span><span><strong>About the application</strong><small>Application information and support</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-settings" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-settings')"><span class="ca-menu-icon" aria-hidden="true">⚙</span><span><strong>Settings & Appearance</strong><small>Choose a theme, font and account settings</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-install" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.installCongregationApp()"><span class="ca-menu-icon" aria-hidden="true">↓</span><span><strong>Install app</strong><small>Add this workspace to your home screen</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-logout" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.confirmLogout()"><span class="ca-menu-icon" aria-hidden="true">↪</span><span><strong>Sign out</strong><small>Leave this account safely</small></span><span aria-hidden="true">›</span></button>
                 </section>
             </div>
         </div>
     </div>
 
+    <div id="modal-install-app" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="install-app-title"><div class="glass-panel max-w-lg w-full rounded-2xl p-6"><h2 id="install-app-title" class="text-xl font-bold">Add the app to your home screen</h2><p class="mt-4">Android: open your browser menu and choose Install app or Add to Home screen.</p><p class="mt-4">iPhone or iPad: open this website in Safari, tap Share, then Add to Home Screen.</p><p class="mt-4">Internet is needed for cloud records and publishing.</p><button class="ca-secondary-action mt-6" onclick="window.ui.closeModal('modal-install-app')">Got it</button></div></div>
     <div id="modal-google-congregation" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="google-congregation-title">
         <div class="glass-panel w-full max-w-lg rounded-2xl p-6"><h2 id="google-congregation-title" class="text-xl font-bold">Choose your congregation</h2><p class="mt-2">Your Google account has access to more than one congregation.</p><div id="google-congregation-list" class="mt-4 space-y-3"></div><button type="button" class="ca-secondary-action mt-4" onclick="window.ui.closeModal('modal-google-congregation')">Cancel</button></div>
     </div>
@@ -1232,8 +1243,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <div id="tab-superadmin" class="tab-content space-y-6">
             <div class="flex justify-between items-center flex-wrap gap-4">
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">SaaS Control Center</h2>
-                    <p class="text-teal-200/70 mt-1 text-slate-400">Manage tenant congregations and system access</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Your service overview</h2>
+                    <p class="text-teal-200/70 mt-1 text-slate-400">Congregations, trials, access, and published tools at a glance</p>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
                     <div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1" aria-label="Theme">
@@ -1244,7 +1255,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     </div>
                     <input type="text" id="saas-search" oninput="window.ui.renderSuperAdmin()" placeholder="Search ID or Name..." class="flex-1 sm:w-56 px-4 py-2.5 rounded-xl border border-white/10 text-white bg-black/50 placeholder-slate-500 focus:outline-none focus:border-amber-400 shadow-sm transition-all">
                     <select id="saas-filter" onchange="window.ui.renderSuperAdmin()" class="px-3 py-2.5 rounded-xl text-sm">
-                        <option value="ALL">All Congregations</option><option value="ACTIVE">Active</option><option value="TRIAL">Trial</option><option value="EXPIRED">Expired</option><option value="ATTENDANCE">Attendance Enabled</option><option value="EMERGENCY">Emergency Enabled</option>
+                        <option value="ALL">All Congregations</option><option value="ACTIVE">Active</option><option value="TRIAL">Trial</option><option value="EXPIRED">Expired</option><option value="ATTENDANCE">Attendance Enabled</option><option value="EMERGENCY">Emergency Enabled</option><option value="OCLM">OCLM Enabled</option>
                     </select>
                     <button onclick="window.ui.selectAllSuperAdmin(true)" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-amber-200 border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20">Select Visible</button><button onclick="window.ui.selectAllSuperAdmin(false); window.db.congregations.forEach(c=>window.ui.superAdminSelected.add(c.id)); window.ui.renderSuperAdmin();" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-fuchsia-200 border border-fuchsia-500/30 bg-fuchsia-500/10 hover:bg-fuchsia-500/20">Select All Tenants</button>
                     <button onclick="window.ui.openNotificationComposer()" class="shrink-0 bg-gradient-to-r from-fuchsia-500 to-amber-400 hover:from-fuchsia-400 hover:to-amber-300 text-slate-900 px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg">📢 Send Notification</button>
@@ -1253,7 +1264,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </div>
             </div>
             
-            <div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div id="saas-overview" class="ca-admin-overview"></div><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <!-- Populated via JS -->
             </div>
         </div>
@@ -1863,7 +1874,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-xs text-amber-200/80 font-bold uppercase tracking-wider">Trial Days</label>
-                        <input type="number" id="saas-cong-trial" value="7" min="1" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-400">
+                        <input type="number" id="saas-cong-trial" value="30" min="1" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-400">
                     </div>
                     <div class="space-y-2">
                         <label class="text-xs text-amber-200/80 font-bold uppercase tracking-wider">Next Payment</label>
@@ -1938,7 +1949,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-xs text-amber-200/80 font-bold uppercase tracking-wider">Trial Days</label>
-                        <input type="number" id="edit-cong-trial" value="7" min="1" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-400">
+                        <input type="number" id="edit-cong-trial" value="30" min="1" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-400">
                     </div>
                     <div class="space-y-2">
                         <label class="text-xs text-amber-200/80 font-bold uppercase tracking-wider">Next Payment</label>
@@ -2424,7 +2435,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   const state = {
     currentWeek:weekId(new Date()), personnel:[], assignments:{}, template:DEFAULT_TEMPLATE, activeView:'schedule', selectedField:null, publishedWeeks:[],
-    program:{}, weekKeys:[]
+    program:{}, weekKeys:[], publication:null
   };
 
   const root = document.getElementById('ca-midweek-root');
@@ -2453,6 +2464,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     try{state.template=localStorage.getItem(storageKey('jw_scheduler_template'))||DEFAULT_TEMPLATE;}catch{state.template=DEFAULT_TEMPLATE;}
     state.weekKeys=buildWeeks(state.currentWeek);
     state.program=PROGRAM_LIBRARY[state.currentWeek]||{range:weekLabel(state.currentWeek),reading:'',theme:'Life and Ministry Meeting',parts:{}};
+    state.publication=storageGet('jw_scheduler_publication',null);
     loadedCongregation=congregation;
   }
   function save(){
@@ -2461,6 +2473,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       localStorage.setItem(storageKey('jw_scheduler_assignments'),JSON.stringify(state.assignments));
       localStorage.setItem(storageKey('jw_scheduler_published_weeks'),JSON.stringify(state.publishedWeeks));
       localStorage.setItem(storageKey('jw_scheduler_template'),state.template);
+      localStorage.setItem(storageKey('jw_scheduler_publication'),JSON.stringify(state.publication));
       if($('saveStateLabel'))$('saveStateLabel').textContent='Saved on this device';
     }catch(error){toast('Schedule could not be saved on this device. Check browser storage.');throw error;}
   }
@@ -2666,19 +2679,29 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     $('paper').innerHTML=html;
   }
 
-  function publishCurrentWeek(){
-    if(!state.publishedWeeks.includes(state.currentWeek)) state.publishedWeeks.push(state.currentWeek);
-    state.publishedWeeks=[...new Set(state.publishedWeeks)].sort(); save(); renderLivePanel(); updateLiveLink(); toast('Week published to the live link');
+  let publishing=false;
+  async function commitPublication(weeks){
+    if(publishing)return;
+    publishing=true;const button=$('publishWeekBtn');button.disabled=true;button.textContent='Publishing…';
+    try{
+      const payload=livePayload(weeks);
+      const publication=await window.PublicLinks.publish(payload);
+      state.publishedWeeks=weeks;state.publication=publication;save();renderLivePanel();
+      toast('Published. The same live link now shows this update.');
+    }catch(error){toast(error.message||'Publishing failed. The previous live schedule is unchanged.');}
+    finally{publishing=false;button.disabled=false;renderLivePanel();}
   }
-  function unpublishWeek(week){ state.publishedWeeks=state.publishedWeeks.filter(w=>w!==week); save(); renderLivePanel(); updateLiveLink(); toast('Week removed from the live link'); }
+  function publishCurrentWeek(){return commitPublication([...new Set([...state.publishedWeeks,state.currentWeek])].sort());}
+  function unpublishWeek(week){return commitPublication(state.publishedWeeks.filter(w=>w!==week));}
   function utf8ToBase64(str){ const bytes=new TextEncoder().encode(str); let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
   function base64ToUtf8(str){ const bin=atob(str); const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(bytes); }
-  function livePayload(){
-    const assignments={}; state.publishedWeeks.forEach(w=>{ assignments[w]=state.assignments[w]||{}; });
-    const people=state.personnel.map(p=>({id:p.id,name:p.name,gender:p.gender,appointment:p.appointment,roles:p.roles}));
-    return {v:1,defaultWeek:state.currentWeek,publishedWeeks:state.publishedWeeks,assignments,people,generatedAt:Date.now()};
+  function livePayload(weeks=state.publishedWeeks){
+    const assignments={}; weeks.forEach(w=>{assignments[w]=state.assignments[w]||{};});
+    const ids=new Set(Object.values(assignments).flatMap(week=>Object.values(week).map(part=>part.personId).filter(Boolean)));
+    const people=state.personnel.filter(p=>ids.has(p.id)).map(p=>({id:p.id,name:p.name}));
+    return {v:2,kind:'midweek',congregation:window.db?.currentCongData?.name||'Congregation',defaultWeek:state.currentWeek,publishedWeeks:weeks,assignments,people,generatedAt:Date.now()};
   }
-  function liveLink(){ if(!state.publishedWeeks.length)return ''; return location.href.split('#')[0]+'#live='+encodeURIComponent(utf8ToBase64(JSON.stringify(livePayload()))); }
+  function liveLink(){return state.publication?.token?window.PublicLinks.tokenURL('oclm',state.publication.token):'';}
   function updateLiveLink(){ const el=$('liveLinkInput'); if(el)el.value=liveLink(); }
   function renderLivePanel(){
     const box=$('publishedWeeks'); if(!box)return;
@@ -2690,8 +2713,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const weeks=(payload.publishedWeeks||[]).filter(w=>payload.assignments?.[w]);
     const people=payload.people||[]; const personBy=(id)=>people.find(p=>p.id===id);
     const select=$('liveWeekSelect'); const search=$('livePublisherSearch');
-    if(!weeks.length){$('liveView').innerHTML='<div class="live-shell"><div class="live-info"><div class="live-info-title">No published schedules</div><div class="live-info-sub">The congregation has not published a meeting schedule yet.</div></div></div>';return;}
-    const current=weeks.includes(payload.defaultWeek)?payload.defaultWeek:weeks[weeks.length-1];
+    if(!weeks.length){$('liveSections').innerHTML='<div class="live-shell"><div class="live-info"><div class="live-info-title">No published schedules</div><div class="live-info-sub">The congregation has not published a meeting schedule yet.</div></div></div>';return;}
+    const previous=select.value;const current=weeks.includes(previous)?previous:weeks.includes(payload.defaultWeek)?payload.defaultWeek:weeks[weeks.length-1];
     select.innerHTML=weeks.map(w=>`<option value="${w}">${esc(PROGRAM_LIBRARY[w]?.range||weekLabel(w))}</option>`).join(''); select.value=current;
     function draw(){
       const w=select.value; const q=search.value.toLowerCase().trim(); const data=payload.assignments[w]||{}; const program=PROGRAM_LIBRARY[w]||{range:weekLabel(w),reading:'',theme:'Life and Ministry Meeting',parts:{}};
@@ -2721,18 +2744,20 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function showView(view){state.activeView=view;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
 
   // Public handlers for inline interactions
-  window.openAssign=openAssign; window.setAssignment=setAssignment; window.clearAssignment=clearAssignment; window.closeAssignModal=()=>closeModal('assignModal');
+  window.setPartTitle=setPartTitle; window.openAssign=openAssign; window.setAssignment=setAssignment; window.clearAssignment=clearAssignment; window.closeAssignModal=()=>closeModal('assignModal');
   window.editPerson=editPerson; window.deletePerson=deletePerson; window.openPersonModal=()=>openPersonModal(null); window.setSchedulerWeek=setWeek;
 
   // Events
   root.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
   $('prevWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,-1)); $('nextWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,1)); $('todayBtn').onclick=()=>setWeek(weekId(new Date())); $('previewBtn').onclick=()=>showView('preview'); $('autoTop').onclick=autoAssign; $('autoRemaining').onclick=autoAssign; if($('mobilePreview')) $('mobilePreview').onclick=()=>showView('preview'); if($('mobileAuto')) $('mobileAuto').onclick=autoAssign;
-  $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week first');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
+  $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week to the cloud first. Older snapshot links do not update.');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
   $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
   $('addPersonBtn').onclick=()=>openPersonModal(null); $('closePerson').onclick=()=>closeModal('personModal'); $('cancelPerson').onclick=()=>closeModal('personModal'); $('personForm').addEventListener('submit',savePerson); $('personSearch').addEventListener('input',renderPeople);
   $('saveTemplateBtn').onclick=()=>{state.template=$('templateText').value;save();renderMessage();toast('Template saved');}; $('templateText').addEventListener('input',()=>{state.template=$('templateText').value;renderMessage();save();});
   ['assignModal','personModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('assignModal');closeModal('personModal')}});
+
+  window.MidweekScheduler={showPublic:renderLiveViewer,showLegacyPublic:()=>{const payload=readLivePayload();if(!payload)return false;renderLiveViewer(payload);return true;},getPayload:livePayload};
 
   window.initMidweekScheduler = () => {
     if(!root) return;
@@ -2748,19 +2773,23 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
     </script>
 
+    <script src="app-config.js"></script>
+    <script src="app-install.js"></script>
+    <script src="public-links.js"></script>
     <script src="pdf-tools.js"></script>
     <script src="app-support.js"></script>
     <script type="module">
         const createClient = window.supabase?.createClient;
         
-        const SUPABASE_URL = 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
+        const SUPABASE_URL = window.CA_CONFIG?.supabaseUrl || 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
+        const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
         
         const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
         const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
         const supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-        window.config = { MASTER_PASSWORD: '3xqrWauMQCbp' };
+        window.config = {};
+        window.PublicLinks?.install(supabaseClient);
         window.sysPromptState = { actionCallback: null, requiresPassword: false };
         window.currentCongId = null;
 
@@ -2867,6 +2896,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
                     if(sessionError)throw sessionError;
                     const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
+                    const {data:superAccess,error:superError}=await supabaseClient.rpc('ca_is_superadmin');
+                    if(!superError && superAccess===true){sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
                     const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
                     window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
@@ -2886,15 +2917,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 
                 btn.textContent = "Authenticating..."; btn.disabled = true;
 
-                if (cid === 'SUPERADMIN' && pwd === window.config.MASTER_PASSWORD) {
-                    sessionStorage.setItem('fs_auth','true');
-                    sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');
-                    sessionStorage.setItem('fs_last_activity',String(Date.now()));
-                    document.getElementById('auth-screen').classList.add('hidden');
-                    await window.db.initSuperAdmin();
-                    return;
-                }
+                if(cid==='SUPERADMIN'){window.auth.showGoogleStatus('Superadmin access uses your approved Google account. Choose Continue with Google.');btn.disabled=false;btn.textContent='Unlock Database';return;}
 
+                if(window.CA_CONFIG?.secureBackend){window.auth.showGoogleStatus('Use Continue with Google and your approved account.');btn.disabled=false;btn.textContent='Unlock Database';return;}
                 if (!isCloudEnabled) { window.ui.showToast("Cloud connection required for SaaS", "error"); btn.textContent = "Unlock Database"; btn.disabled = false; return; }
                 
                 try {
@@ -2904,7 +2929,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     window.db.currentCongData = data; 
                     if (data.status === 'trial') {
                         const createdMs = data.created_at ? new Date(data.created_at).getTime() : Date.now();
-                        const maxTrial = parseInt(data.trial_days) || 7;
+                        const maxTrial = parseInt(data.trial_days) || 30;
                         const trialMs = maxTrial * 24 * 60 * 60 * 1000;
                         const expired = (Date.now() - createdMs) >= trialMs;
                         const daysLeft = Math.max(0, Math.ceil((createdMs + trialMs - Date.now()) / (24 * 60 * 60 * 1000)));
@@ -2964,7 +2989,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     localStorage.removeItem('fs_auth');
                     localStorage.removeItem('fs_auth_type');
                     localStorage.removeItem('fs_trial_days');
-                    location.href = window.location.href.split('?')[0]; 
+                    location.href = window.location.href.split(/[?#]/)[0]; 
                 });
             },
 
@@ -3095,7 +3120,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if(!isCloudEnabled) throw new Error('Cloud connection required to save an overseer password.');
                 const groupName = document.getElementById('gp-group-name').value;
                 const pwd = document.getElementById('gp-new-pass').value.trim();
-                if (!window.utils.isValidPassword(pwd)) { window.ui.showToast("Password does not meet requirements.", "error"); return; }
+                if (!window.CA_CONFIG?.secureBackend && !window.utils.isValidPassword(pwd)) { window.ui.showToast("Password does not meet requirements.", "error"); return; }
                 const id = `${window.currentCongId}_${groupName}`;
                 if (isCloudEnabled) {
                     const { error } = await supabaseClient.from('group_access').upsert([{ id: id, cong_id: window.currentCongId, group_name: groupName, password: pwd }]);
@@ -3124,6 +3149,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             initSuperAdmin: async () => {
                 window.ui.initAppFont();
+                if(window.CA_CONFIG?.secureBackend){for(const id of ['saas-cong-pwd','edit-cong-pwd']){const input=document.getElementById(id);input.required=false;input.parentElement.classList.add('hidden');}document.getElementById('btn-add-cong').disabled=false;document.getElementById('btn-edit-cong').disabled=false;}
                 window.ui.applyTheme(localStorage.getItem('ca_theme') || 'default');
                 document.body.classList.add('super-admin-theme'); 
                 document.getElementById('nav-superadmin').classList.remove('hidden');
@@ -3147,7 +3173,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     let expired = cong.status === 'expired';
                     if (cong.status === 'trial') {
                         const created = cong.created_at ? new Date(cong.created_at).getTime() : Date.now();
-                        const trialMs = (parseInt(cong.trial_days) || 7) * 24 * 60 * 60 * 1000;
+                        const trialMs = (parseInt(cong.trial_days) || 30) * 24 * 60 * 60 * 1000;
                         expired = (Date.now() - created) >= trialMs;
                         const left = Math.max(0, Math.ceil((created + trialMs - Date.now()) / (24 * 60 * 60 * 1000)));
                         localStorage.setItem('fs_trial_days', String(left));
@@ -3276,7 +3302,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const id = document.getElementById('saas-cong-id').value.trim();
                 const name = document.getElementById('saas-cong-name').value.trim();
                 const pwd = document.getElementById('saas-cong-pwd').value.trim();
-                const trial = parseInt(document.getElementById('saas-cong-trial').value) || 7;
+                const trial = parseInt(document.getElementById('saas-cong-trial').value) || 30;
                 const payment = document.getElementById('saas-cong-payment').value || null;
                 const featAttendance = document.getElementById('saas-feat-attendance').checked;
                 const featEmergency = document.getElementById('saas-feat-emergency').checked;
@@ -3284,7 +3310,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const email = document.getElementById('saas-cong-email').value.trim();
                 const notes = document.getElementById('saas-cong-notes').value.trim();
 
-                if (!window.utils.isValidPassword(pwd)) {
+                if (!window.CA_CONFIG?.secureBackend && !window.utils.isValidPassword(pwd)) {
                     window.ui.showToast("Password does not meet requirements.", "error");
                     return;
                 }
@@ -3295,13 +3321,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
 
                 const payload = { 
-                    id: id, name: name, admin_password: pwd, status: 'trial', 
+                    id: id, name: name, admin_password: window.CA_CONFIG?.secureBackend ? null : pwd, status: 'trial', 
                     trial_days: trial, payment_date: payment, feature_attendance: featAttendance,
                     feature_emergency_contacts: featEmergency, feature_oclm: featOclm,
                     email: email, notes: notes 
                 };
 
-                const { data, error } = await supabaseClient.from('congregations').insert([payload]);
+                if(window.CA_CONFIG?.secureBackend && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){window.ui.showToast('Enter the first administrator’s Google email.','error');return;}
+                const { data, error } = window.CA_CONFIG?.secureBackend ? await supabaseClient.rpc('provision_congregation',{p_cong:payload,p_admin_email:email.toLowerCase()}) : await supabaseClient.from('congregations').insert([payload]);
                 if (error) { window.ui.showToast(error.message, "error"); } 
                 else { window.ui.showToast("Tenant Provisioned!"); window.ui.closeModal('modal-add-cong'); window.db.initSuperAdmin(); }
             },
@@ -3313,7 +3340,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const name = document.getElementById('edit-cong-name').value.trim();
                 const pwd = document.getElementById('edit-cong-pwd').value.trim();
                 const status = document.getElementById('edit-cong-status').value;
-                const trial = parseInt(document.getElementById('edit-cong-trial').value) || 7;
+                const trial = parseInt(document.getElementById('edit-cong-trial').value) || 30;
                 const payment = document.getElementById('edit-cong-payment').value || null;
                 const featAttendance = document.getElementById('edit-feat-attendance').checked;
                 const featEmergency = document.getElementById('edit-feat-emergency').checked;
@@ -3321,7 +3348,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const email = document.getElementById('edit-cong-email').value.trim();
                 const notes = window.ui.composeSystemNoticeNotes(document.getElementById('edit-cong-notes').value.trim(), window.ui.getSystemNotice(window.db.congregations.find(x=>x.id===oldId)?.notes || ''));
 
-                if (!window.utils.isValidPassword(pwd)) {
+                if (!window.CA_CONFIG?.secureBackend && !window.utils.isValidPassword(pwd)) {
                     window.ui.showToast("Password does not meet requirements.", "error");
                     return;
                 }
@@ -3333,7 +3360,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 const existingTenant = window.db.congregations.find(x => x.id === oldId);
                 const payload = { 
-                    id: newId, name: name, admin_password: pwd, status: status, 
+                    id: newId, name: name, admin_password: window.CA_CONFIG?.secureBackend ? null : pwd, status: status, 
                     ...(status === 'trial' && existingTenant?.status !== 'trial' ? { created_at: new Date().toISOString() } : {}),
                     trial_days: trial, payment_date: payment, feature_attendance: featAttendance,
                     feature_emergency_contacts: featEmergency, feature_oclm: featOclm,
@@ -3347,7 +3374,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             deleteCongregation: async (id) => {
                 window.ui.openSysPrompt("Delete Tenant Record", `Are you sure you want to permanently delete tenant: ${id}?`, false, async () => {
-                    await supabaseClient.from('congregations').delete().eq('id', id);
+                    const {error}=await supabaseClient.from('congregations').delete().eq('id', id);if(error)throw error;
                     window.ui.showToast("Tenant Destroyed.");
                     window.db.initSuperAdmin();
                 });
@@ -3412,6 +3439,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 if(!Object.keys(changes).length)throw new Error('Enter a count or select a meeting event. Blank counts leave saved values unchanged.');
                 if(!isCloudEnabled)throw new Error('Cloud connection required to save attendance.');
+                if(window.ui.publicLinkToken){await window.PublicLinks.submitAttendance(sy,month,changes);document.getElementById('pub-att-form-area').classList.add('hidden');document.getElementById('pub-att-success-msg').classList.remove('hidden');return;}
                 const {data:existing,error:readError}=await supabaseClient.from('meeting_attendance').select('*').eq('id',id).eq('cong_id',window.currentCongId).maybeSingle();
                 if(readError)throw readError;
                 // Updating only entered fields preserves other weeks and blank meeting counts.
@@ -3500,7 +3528,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before saving.');
                 window.ui.setSyncStatus('syncing', 'Saving…');
                 try {
-                    if (isCloudEnabled) {
+                    if (window.ui.publicLinkToken) {await window.PublicLinks.submitReport(report);window.ui.setSyncStatus('synced','Submitted');return report;}
+                    else if (isCloudEnabled) {
                         const { error } = await supabaseClient.from('reports').upsert(window.db.mapRepToDB(report), { onConflict: 'id' });
                         if (error) throw error;
                     }
@@ -4113,112 +4142,39 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             toggleSuperAdminSelection: (id, checked) => { if(checked) window.ui.superAdminSelected.add(id); else window.ui.superAdminSelected.delete(id); },
-            selectAllSuperAdmin: (all=true) => { const filter=document.getElementById('saas-filter')?.value||'ALL'; const search=(document.getElementById('saas-search')?.value||'').toLowerCase(); const list=window.db.congregations.filter(c=>{const f=filter==='ALL'||(filter==='ACTIVE'&&c.status==='active')||(filter==='TRIAL'&&c.status==='trial')||(filter==='EXPIRED'&&c.status==='expired')||(filter==='ATTENDANCE'&&c.feature_attendance)||(filter==='EMERGENCY'&&c.feature_emergency_contacts); return f && (((c.name||'').toLowerCase().includes(search))||((c.id||'').toLowerCase().includes(search)));}); if(all) list.forEach(c=>window.ui.superAdminSelected.add(c.id)); else window.ui.superAdminSelected.clear(); window.ui.renderSuperAdmin(); },
+            selectAllSuperAdmin: (all=true) => {if(all)window.ui.getSuperAdminMatches().forEach(c=>window.ui.superAdminSelected.add(c.id));else window.ui.superAdminSelected.clear();window.ui.renderSuperAdmin();},
             openNotificationComposer: () => { document.getElementById('notification-recipient-count').textContent=`${window.ui.superAdminSelected.size} selected`; window.ui.openModal('modal-superadmin-notification'); },
             sendSuperAdminNotification: async (e) => { e.preventDefault(); const title=document.getElementById('ca-notice-title').value.trim()||'System Notice'; const message=document.getElementById('ca-notice-message').value.trim(); if(!message){window.ui.showToast('Enter a notification message.','error');return;} const ids=[...window.ui.superAdminSelected]; if(!ids.length){window.ui.showToast('Select at least one congregation first.','error');return;} const notice={title,message,sentAt:new Date().toISOString()}; let ok=0; for(const id of ids){ const c=window.db.congregations.find(x=>x.id===id); const notes=window.ui.composeSystemNoticeNotes(window.ui.stripSystemNotice(c?.notes||''),notice); const {error}=await supabaseClient.from('congregations').update({notes}).eq('id',id); if(!error){ok++; c.notes=notes;} } window.ui.closeModal('modal-superadmin-notification'); window.ui.showToast(`Notification sent to ${ok} congregation${ok===1?'':'s'}.`); window.ui.renderSuperAdmin(); },
 
+            getTenantStatus: c => {const days=Number(c.trial_days)||30;const expiry=new Date(c.created_at||Date.now()).getTime()+days*86400000;return c.status==='trial'&&expiry<=Date.now()?'expired':c.status;},
+            getSuperAdminMatches: () => {const search=(document.getElementById('saas-search')?.value||'').toLowerCase().trim(),filter=document.getElementById('saas-filter')?.value||'ALL';return window.db.congregations.filter(c=>{const status=window.ui.getTenantStatus(c);return ([c.name,c.id,c.email].some(v=>String(v||'').toLowerCase().includes(search)))&&(filter==='ALL'||filter===status.toUpperCase()||filter==='ATTENDANCE'&&c.feature_attendance||filter==='EMERGENCY'&&c.feature_emergency_contacts||filter==='OCLM'&&c.feature_oclm);});},
             renderSuperAdmin: () => {
-                const searchStr = (document.getElementById('saas-search')?.value || '').toLowerCase();
-                const filter = document.getElementById('saas-filter')?.value || 'ALL';
-                const grid = document.getElementById('saas-cong-grid');
-                grid.innerHTML = '';
-                const matchesFilter = (c) => {
-                    if(filter==='ACTIVE') return c.status==='active';
-                    if(filter==='TRIAL') return c.status==='trial';
-                    if(filter==='EXPIRED') return c.status==='expired';
-                    if(filter==='ATTENDANCE') return !!c.feature_attendance;
-                    if(filter==='EMERGENCY') return !!c.feature_emergency_contacts;
-                    return true;
-                };
-                const filtered = window.db.congregations.filter(c => matchesFilter(c) && (c.name||'').toLowerCase().includes(searchStr) || matchesFilter(c) && (c.id||'').toLowerCase().includes(searchStr));
-
-                if(filtered.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full text-center text-slate-500 py-10 font-medium">No tenants found matching your search.</div>';
-                    return;
-                }
-
-                filtered.forEach(c => {
-                    const isTrial = c.status === 'trial';
-                    const isExpired = c.status === 'expired';
-
-                    let trialDaysLeft = null;
-                    if (isTrial) {
-                        const createdDate = c.created_at ? new Date(c.created_at) : new Date();
-                        const diffDays = Math.ceil(Math.abs(new Date() - createdDate) / (1000 * 60 * 60 * 24));
-                        trialDaysLeft = Math.max(0, (c.trial_days || 7) - diffDays);
-                    }
-                    
-                    let statusBadge = `<span class="px-2.5 py-1 rounded-md text-[10px] uppercase font-bold bg-emerald-900/50 text-emerald-400 border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.2)]">Active</span>`;
-                    if (isTrial) statusBadge = `<span class="px-2.5 py-1 rounded-md text-[10px] uppercase font-bold bg-amber-900/50 text-amber-400 border border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.2)]">Trial · ${trialDaysLeft}d left</span>`;
-                    if (isExpired) statusBadge = `<span class="px-2.5 py-1 rounded-md text-[10px] uppercase font-bold bg-rose-900/50 text-rose-400 border border-rose-500/30 shadow-[0_0_10px_rgba(225,29,72,0.2)]">Expired</span>`;
-
-                    let wipeAlertHtml = '';
-                    if (c.wipe_requested_at) {
-                        const reqAt = new Date(c.wipe_requested_at);
-                        const deadline = new Date(reqAt.getTime() + 24 * 60 * 60 * 1000);
-                        const hrsLeft = Math.max(0, Math.ceil((deadline - new Date()) / (1000 * 60 * 60)));
-                        wipeAlertHtml = `
-                            <div class="mb-4 p-3 rounded-xl bg-rose-950/60 border border-rose-500/40 text-[11px] text-rose-200 space-y-1">
-                                <div class="font-bold uppercase tracking-wider text-rose-300">⚠️ Wipe Scheduled — ~${hrsLeft}h left</div>
-                                <div>Requested: ${reqAt.toLocaleString()}</div>
-                                <div class="break-all">Device: ${c.wipe_device_info || 'Unknown'}</div>
-                            </div>
-                        `;
-                    }
-
-                    grid.innerHTML += `
-                        <div class="saas-card relative group">
-                            ${wipeAlertHtml}
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-start gap-3">
-                                    <input type="checkbox" class="saas-cong-check mt-1 accent-amber-500 w-4 h-4" data-cong-id="${c.id}" ${window.ui.superAdminSelected.has(c.id)?'checked':''} onchange="window.ui.toggleSuperAdminSelection('${c.id}', this.checked)">
-                                    <div>
-                                    <h3 class="font-bold text-xl leading-tight mb-1 text-white group-hover:text-amber-400 transition-colors">${c.name}</h3>
-                                    <div class="font-mono text-xs text-slate-400 flex items-center gap-1"><span class="font-semibold text-slate-500">ID:</span> ${c.id}</div>
-                                    </div>
-                                </div>
-                                ${statusBadge}
-                            </div>
-                            
-                            <div class="space-y-2 mb-6">
-                                <div class="text-sm flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-slate-500">Password:</span>
-                                    <span class="font-mono font-medium text-slate-300">${c.admin_password}</span>
-                                </div>
-                                <div class="text-sm flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-slate-500">Trial Limit:</span>
-                                    <span class="font-medium text-amber-300">${c.trial_days || 7} Days${isTrial ? ` (${trialDaysLeft} left)` : ''}</span>
-                                </div>
-                                <div class="text-sm flex justify-between pb-1">
-                                    <span class="text-slate-500">Attendance Feat:</span>
-                                    <span class="font-medium ${c.feature_attendance ? 'text-emerald-400' : 'text-slate-500'}">${c.feature_attendance ? 'Enabled' : 'Disabled'}</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-end gap-2 mt-auto pt-4 border-t border-white/5">
-                                <button onclick="window.ui.editCongregation('${c.id}')" class="p-2 bg-white/5 hover:bg-amber-500/20 hover:text-amber-300 text-slate-300 rounded-lg transition-all border border-white/10 hover:border-amber-500/30" title="Edit congregation" aria-label="Edit congregation"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 4 19.5l1.037-4.25L16.862 3.487zM15.5 5l3.5 3.5" /></svg></button>
-                                <button onclick="window.db.deleteCongregation('${c.id}')" class="px-4 py-1.5 bg-rose-900/30 hover:bg-rose-900/60 text-rose-400 rounded-lg text-sm font-semibold transition-all border border-rose-500/20 hover:border-rose-500/50">Delete</button>
-                            </div>
-                        </div>
-                    `;
-                });
+                const all=window.db.congregations,filtered=window.ui.getSuperAdminMatches(),esc=window.ui.escapeHtml;
+                const counts={active:0,trial:0,expired:0};all.forEach(c=>counts[window.ui.getTenantStatus(c)]++);
+                const stats=document.getElementById('saas-overview');if(stats)stats.innerHTML=[['Congregations',all.length],['Active',counts.active],['In trial',counts.trial],['Need renewal',counts.expired]].map(([label,n])=>`<div class="ca-admin-stat"><span>${label}</span><strong>${n||0}</strong></div>`).join('');
+                const summary=document.getElementById('saas-results');if(summary)summary.textContent=`${filtered.length} of ${all.length} congregations · ${window.ui.superAdminSelected.size} selected`;
+                document.getElementById('saas-cong-grid').innerHTML=filtered.map(c=>{
+                    const status=window.ui.getTenantStatus(c),days=Number(c.trial_days)||30,expires=new Date(new Date(c.created_at||Date.now()).getTime()+days*86400000),left=Math.max(0,Math.ceil((expires-Date.now())/86400000));
+                    const features=[['Attendance',c.feature_attendance],['Emergency contacts',c.feature_emergency_contacts],['OCLM',c.feature_oclm]].map(([label,on])=>`<span class="ca-admin-feature ${on?'enabled':''}">${on?'✓':'–'} ${label}</span>`).join('');
+                    return `<article class="saas-card ca-admin-card"><div class="ca-admin-card-head"><label class="ca-admin-select"><input type="checkbox" aria-label="Select ${esc(c.name)}" ${window.ui.superAdminSelected.has(c.id)?'checked':''} onchange="window.ui.toggleSuperAdminSelection(${window.ui.jsArg(c.id)},this.checked);window.ui.renderSuperAdmin()"></label><div><h3>${esc(c.name)}</h3><p>${esc(c.id)}</p></div><span class="ca-admin-status ${esc(status)}">${esc(status)}</span></div><dl><div><dt>Administrator</dt><dd>${esc(c.email||'Not assigned')}</dd></div><div><dt>Trial</dt><dd>${days} days${status==='trial'?` · ${left} days left`:''}</dd></div><div><dt>Payment recorded</dt><dd>${esc(c.payment_date||'Not recorded')}</dd></div></dl><div class="ca-admin-features">${features}</div>${c.wipe_requested_at?'<p class="ca-admin-alert">Deletion requested — review before taking action.</p>':''}<div class="ca-admin-card-actions"><button class="ca-secondary-action" onclick="window.ui.editCongregation(${window.ui.jsArg(c.id)})">Manage congregation</button><button class="ca-admin-delete" onclick="window.db.deleteCongregation(${window.ui.jsArg(c.id)})">Delete</button></div></article>`;
+                }).join('')||'<p class="ca-admin-empty">No congregations match. Clear the search or choose another section.</p>';
             },
-            
+
             editCongregation: (id) => {
                 const c = window.db.congregations.find(x => x.id === id); if(!c) return;
                 document.getElementById('edit-cong-original-id').value = c.id;
-                document.getElementById('edit-cong-id').value = c.id;
+                document.getElementById('edit-cong-id').value = c.id;document.getElementById('edit-cong-id').readOnly=!!window.CA_CONFIG?.secureBackend;
                 document.getElementById('edit-cong-name').value = c.name;
                 document.getElementById('edit-cong-pwd').value = c.admin_password;
                 document.getElementById('edit-cong-status').value = c.status;
-                document.getElementById('edit-cong-trial').value = c.trial_days || 7;
+                document.getElementById('edit-cong-trial').value = c.trial_days || 30;
                 document.getElementById('edit-cong-payment').value = c.payment_date || '';
                 document.getElementById('edit-feat-attendance').checked = !!c.feature_attendance;
                 document.getElementById('edit-feat-emergency').checked = !!c.feature_emergency_contacts;
                 document.getElementById('edit-feat-oclm').checked = !!c.feature_oclm;
                 document.getElementById('edit-cong-email').value = c.email || '';
                 document.getElementById('edit-cong-notes').value = window.ui.stripSystemNotice(c.notes || '');
-                window.ui.checkPassword(c.admin_password, 'edit-cong-pwd-reqs', 'btn-edit-cong');
+                if(!window.CA_CONFIG?.secureBackend)window.ui.checkPassword(c.admin_password, 'edit-cong-pwd-reqs', 'btn-edit-cong');
                 window.ui.openModal('modal-edit-cong');
             },
 
@@ -4249,6 +4205,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const permission=button.dataset.menuPermission;
                     button.classList.toggle('hidden',!(permission==='support'||(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
+                document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',(section.dataset.menuSection==='Main'&&!roles.includes('admin'))||![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
                 const names={admin:'Administrator',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
                 const label=document.getElementById('mobile-menu-role');if(label)label.textContent=roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
@@ -4317,10 +4274,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
 
                 // Update Mobile Title
-                const titles = { 'dashboard': 'Overview', 'groups': 'Groups', 'analytics': 'Analytics', 'publishers': 'Publishers', 'attendance': 'Meeting Attendance', 'oclm': 'Midweek Scheduler', 'superadmin': 'SaaS Control Center' };
+                const titles = { 'dashboard': 'Overview', 'groups': 'Groups', 'analytics': 'Analytics', 'publishers': 'Publishers', 'attendance': 'Meeting Attendance', 'oclm': 'Midweek Scheduler', 'superadmin': 'Your service overview' };
                 const mTitle = document.getElementById('nav-mobile-title');
                 const congName = window.db?.currentCongData?.name || '';
-                if(mTitle) mTitle.textContent = (tabId === 'superadmin' ? 'SaaS Control Center' : (congName || titles[tabId] || 'Congregation Assistant'));
+                if(mTitle) mTitle.textContent = (tabId === 'superadmin' ? 'Your service overview' : (congName || titles[tabId] || 'Congregation Assistant'));
 
                 // Ensure mobile menu is closed when switching tabs
                 window.ui.closeModal('modal-mobile-menu');
@@ -4333,7 +4290,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (tabId === 's4') window.ui.setupS4Tab();
                 if (tabId === 'attendance') window.ui.renderAttendance();
                 if (tabId === 'public-attendance') window.ui.setupPublicAttendance();
-                if (tabId === 'public-oclm') window.ui.setupPublicOCLM();
+                // PublicLinks.boot handles public loading before role initialization.
                 if (tabId === 'analytics') { window.ui.renderAnalytics(); window.ui.renderDetailedRoster(); }
                 if (tabId === 'emergency') window.ui.renderEmergencyContacts();
             },
@@ -4360,7 +4317,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             
             handleSysPromptConfirm: async () => {
-                if (window.sysPromptState.requiresPassword) {
+                if(window.sysPromptState.requiresPassword && window.CA_CONFIG?.secureBackend){const {data,error}=await supabaseClient.rpc('ca_is_congregation_admin',{p_cong_id:String(window.currentCongId)});if(error||data!==true){window.ui.showToast('An approved Google administrator session is required.','error');return;}}
+                if (window.sysPromptState.requiresPassword && !window.CA_CONFIG?.secureBackend) {
                     const p = document.getElementById('sys-prompt-input').value;
                     let storedPwd = window.db.currentCongData?.admin_password || '';
 
@@ -4399,7 +4357,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     localStorage.removeItem('fs_cong_id');
                     localStorage.removeItem('fs_cong_name');
                     localStorage.removeItem('fs_trial_days');
-                    location.href = window.location.href.split('?')[0]; 
+                    location.href = window.location.href.split(/[?#]/)[0]; 
                 });
             },
 
@@ -4486,7 +4444,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                             const createdDate = cong.created_at ? new Date(cong.created_at) : new Date();
                             const diffTime = Math.abs(new Date() - createdDate);
                             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                            const maxTrial = cong.trial_days || 7;
+                            const maxTrial = cong.trial_days || 30;
                             let left = Math.max(0, maxTrial - diffDays);
                             statusText = `<span class="text-amber-400">Trial Mode</span> (${left} Days Left)`;
                         } else if(cong.status === 'active') {
@@ -4503,7 +4461,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 if(id === 'modal-add-cong') {
                     document.getElementById('form-congregation').reset();
-                    window.ui.checkPassword('', 'add-cong-pwd-reqs', 'btn-add-cong');
+                    if(!window.CA_CONFIG?.secureBackend)window.ui.checkPassword('', 'add-cong-pwd-reqs', 'btn-add-cong');else document.getElementById('btn-add-cong').disabled=false;
                 }
                 document.getElementById(id).classList.remove('hidden');
             },
@@ -4636,9 +4594,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
             },
 
-            copyAttendanceLink: () => {
-                const baseUrl = window.location.href.split('?')[0]; 
-                const url = `${baseUrl}?cong=${window.currentCongId}&mode=attendance`;
+            copyAttendanceLink: async () => {
+                if(window.CA_CONFIG?.secureBackend){const url=await window.PublicLinks.create('attendance');await window.ui.copyText(url);return;}
+                const baseUrl = window.location.href.split(/[?#]/)[0]; 
+                const url = `${baseUrl}?cong=${encodeURIComponent(window.currentCongId)}&mode=attendance`;
                 const textArea = document.createElement("textarea"); textArea.value = url; document.body.appendChild(textArea);
                 textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Attendance Form Link Copied!'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
             },
@@ -4943,7 +4902,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 if (isCloudEnabled) {
                     try {
-                        const { data } = await supabaseClient.from('meeting_attendance').select('*').eq('id', id).single();
+                        const { data } = window.ui.publicLinkToken ? await supabaseClient.rpc('get_public_attendance',{p_token:window.ui.publicLinkToken,p_year:sy,p_month:month}) : await supabaseClient.from('meeting_attendance').select('*').eq('id', id).single();
                         if (data) {
                             const mVal = data[`w${week}_mid`] || '';
                             const eVal = data[`w${week}_end`] || '';
@@ -5062,9 +5021,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.AppSupport.download(csv,`${window.currentCongId}_Reports_Backup.csv`,'text/csv;charset=utf-8');
             },
 
-            sendReminder: (pId, pName, pGroup, pPhone) => {
-                const baseUrl = window.location.href.split('?')[0]; 
-                const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(pGroup||'')}&pub=${pId}`;
+            sendReminder: async (pId, pName, pGroup, pPhone) => {
+                const baseUrl = window.location.href.split(/[?#]/)[0]; 
+                const url = window.CA_CONFIG?.secureBackend ? await window.PublicLinks.create('report',pGroup,pId) : `${baseUrl}?cong=${encodeURIComponent(window.currentCongId)}&group=${encodeURIComponent(pGroup||'')}&pub=${encodeURIComponent(pId)}`;
                 const msg = `Hi ${pName},\n\nA gentle reminder to submit your field service report for this month. You can submit it directly using this pre-filled link:\n\n${url}\n\nThank you!`;
                 const cleanPhone = (pPhone || '').replace(/[^\d+]/g, '');
                 const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
@@ -5309,7 +5268,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             copyOverseerLink: (groupName) => {
-                const baseUrl = window.location.href.split('?')[0]; const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(groupName)}&mode=overseer`;
+                const baseUrl = window.location.href.split(/[?#]/)[0]; const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(groupName)}&mode=overseer`;
                 const textArea = document.createElement("textarea"); textArea.value = url; document.body.appendChild(textArea);
                 textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Overseer Link Copied! Requires the group password to open.'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
             },
@@ -5339,8 +5298,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 document.getElementById('overseer-detail').innerHTML = `<div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
             },
 
-            copyGroupLink: (groupName) => {
-                const baseUrl = window.location.href.split('?')[0]; const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(groupName)}`;
+            copyGroupLink: async (groupName) => {
+                if(window.CA_CONFIG?.secureBackend){await window.ui.copyText(await window.PublicLinks.create('report',groupName));return;}
+                const baseUrl = window.location.href.split(/[?#]/)[0]; const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(groupName)}`;
                 const textArea = document.createElement("textarea"); textArea.value = url; document.body.appendChild(textArea);
                 textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Public Link Copied!'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
             },
@@ -5801,6 +5761,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             const urlParams = new URLSearchParams(window.location.search);
             const oauthError=urlParams.get('error_description')||new URLSearchParams(window.location.hash.slice(1)).get('error_description');
             if(oauthError){window.auth.clearGoogleRole();window.auth.showGoogleStatus('Google sign-in was not completed. Please try again or contact your administrator.');document.getElementById('global-loader')?.classList.add('hidden');history.replaceState(null,'',window.location.pathname);return;}
+            if(await window.PublicLinks?.boot()) return;
             const isPublicLink = !!urlParams.get('cong');
             const loader = document.getElementById('global-loader');
             if (loader) {
