@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
 const base = process.env.CA_CHECK_BASE_URL;
 if (!base || new URL(base).protocol !== 'https:') throw new Error('Set CA_CHECK_BASE_URL to the published HTTPS site.');
-const names = ['index.html', 'app.css', 'app-support.js', 'pdf-tools.js'];
+const names = ['index.html', 'app.css', 'app-support.js', 'pdf-tools.js','app-config.js','public-links.js','app-install.js','service-worker.js','manifest.webmanifest'];
 const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const expected = new Map(names.map(name => [name, digest(fs.readFileSync(path.join(root, name)))]));
 (async () => {

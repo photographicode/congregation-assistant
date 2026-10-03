@@ -24,9 +24,31 @@ jobs:
           CA_CHECK_OUTPUT: artifacts/pdf-check
       - run: python3 scripts/check-pdf-layout.py artifacts/pdf-check --render
       - run: npm run test:browser
+      - run: node public-site-preview/scripts/check-site.cjs
+        env:
+          CA_SITE_OUTPUT: artifacts/public-site
+      - run: node scripts/check-cloud-readiness.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: acceptance-results
           path: artifacts/
           retention-days: 14
+  database-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: acceptance-only
+          POSTGRES_DB: ca_acceptance
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
+        env:
+          PGPASSWORD: acceptance-only

@@ -23,6 +23,10 @@ jobs:
       - run: npx playwright install --with-deps chromium webkit
       - run: node scripts/check-published.cjs
       - run: npm run test:browser
+      - run: node public-site-preview/scripts/check-site.cjs
+        env:
+          CA_SITE_OUTPUT: artifacts/public-site
+          CA_SITE_URL: https://photographicode.github.io/congregation-assistant/public-site-preview/
       - uses: actions/upload-artifact@v4
         if: always()
         with:
