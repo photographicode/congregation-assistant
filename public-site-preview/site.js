@@ -1,0 +1,23 @@
+(() => {
+    const menu=document.getElementById('mobile-menu'),toggle=document.getElementById('menu-toggle');
+    const close=()=>{menu.hidden=true;toggle.setAttribute('aria-expanded','false');};
+    toggle.addEventListener('click',()=>{menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden));});
+    menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden){close();toggle.focus();}});
+    const previews={
+        records:{title:'Publisher records',description:'Keep profiles and reporting tasks together.',checks:['Search by name or group','Review monthly reports','Generate publisher record PDFs'],tag:'Records',rows:[['Sample Publisher A','Group 1','Report ready'],['Sample Publisher B','Group 2','Needs review'],['Sample Publisher C','Group 1','Report ready'],['Sample Publisher D','Group 3','Report ready']]},
+        attendance:{title:'Meeting attendance',description:'A clear view of the month, ready for your reports.',checks:['Enter weekly meeting counts','Keep entered drafts while switching tabs','Generate S-3 and S-88 PDFs'],tag:'Example month',rows:[['Week 1','Midweek / Weekend','84 / 102'],['Week 2','Midweek / Weekend','88 / 107'],['Week 3','Midweek / Weekend','86 / 104'],['Week 4','Midweek / Weekend','90 / 109']]},
+        schedule:{title:'Midweek schedule',description:'Arrange assignments, review, then publish.',checks:['Find people for each part','Review before publishing','Share published updates after cloud setup'],tag:'Example week',rows:[['Chairman','Treasures from God’s Word','Sample Publisher A'],['Bible reading','Treasures from God’s Word','Sample Publisher B'],['Starting a conversation','Apply Yourself to the Field Ministry','Sample Publisher C'],['Congregation Bible study','Living as Christians','Sample Publisher D']]}
+    };
+    const tabs=[...document.querySelectorAll('[data-preview]')];
+    const draw=which=>{const p=previews[which];document.getElementById('preview-title').textContent=p.title;document.getElementById('preview-description').textContent=p.description;document.getElementById('preview-checks').innerHTML=p.checks.map(s=>`<p><span>✓</span>${s}</p>`).join('');document.getElementById('preview-screen').innerHTML=`<div class="demo-title">${p.title}<span class="demo-tag">${p.tag}</span></div>`+p.rows.map(([title,sub,value])=>`<div class="demo-row"><div><strong>${title}</strong><span>${sub}</span></div><b>${value}</b></div>`).join('');document.getElementById('preview-panel').setAttribute('aria-labelledby','preview-tab-'+which);tabs.forEach(t=>{t.setAttribute('aria-selected',String(t.dataset.preview===which));t.tabIndex=t.dataset.preview===which?0:-1;});};
+    tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>draw(tab.dataset.preview));tab.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;else return;event.preventDefault();tabs[next].focus();draw(tabs[next].dataset.preview);});});draw('records');
+    let request='';
+    document.getElementById('trial-form').addEventListener('submit',event=>{
+        event.preventDefault();const form=event.currentTarget;if(!form.reportValidity())return;const fields=new FormData(form);
+        request=`30-day Congregation Assistant trial request\n\nName: ${fields.get('name')}\nCongregation: ${fields.get('congregation')}\nContact email: ${fields.get('email')}\nContact phone: ${fields.get('phone')||'Not supplied'}\nCongregation authorization: confirmed\nOffer: ₹1,499/year after a 30-day trial; no automatic purchase.\n\nPlease help us arrange account setup.`;
+        document.getElementById('email-request').href='mailto:photographicode@gmail.com?subject='+encodeURIComponent('Congregation Assistant — 30-day trial request')+'&body='+encodeURIComponent(request);
+        document.getElementById('request-result').hidden=false;document.getElementById('request-result').scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+    document.getElementById('copy-request').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(request);document.getElementById('copy-request').textContent='Request copied';}catch{const area=document.createElement('textarea');area.value=request;area.setAttribute('aria-label','Select and copy your trial request');document.getElementById('request-result').append(area);area.select();}});
+})();

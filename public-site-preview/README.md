@@ -1,0 +1,1 @@
+Public website redesign preview. The original Congregation-Assistant_Public repository currently denies this GitHub connection write access (403). This copy enables review and browser validation until its repository access is enabled. Trial requests prepare email drafts; nothing is sent automatically.

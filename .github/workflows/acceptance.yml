@@ -24,6 +24,9 @@ jobs:
           CA_CHECK_OUTPUT: artifacts/pdf-check
       - run: python3 scripts/check-pdf-layout.py artifacts/pdf-check --render
       - run: npm run test:browser
+      - run: node public-site-preview/scripts/check-site.cjs
+        env:
+          CA_SITE_OUTPUT: artifacts/public-site
       - run: node scripts/check-cloud-readiness.cjs
       - uses: actions/upload-artifact@v4
         if: always()
