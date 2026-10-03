@@ -51,6 +51,14 @@ create table public.ca_public_links(
  active boolean not null default true,expires_at timestamptz not null default(now()+interval '1 year'),created_at timestamptz default now(),
  foreign key(pub_id,cong_id) references public.publishers(id,cong_id) on delete cascade
 );
+create index ca_public_links_cong_idx on public.ca_public_links(cong_id);
+create index ca_public_links_publisher_idx on public.ca_public_links(pub_id,cong_id);
+create index publishers_cong_idx on public.publishers(cong_id);
+create index publishers_family_idx on public.publishers(family_head_id,cong_id);
+create index reports_cong_period_idx on public.reports(cong_id,service_year,month);
+create index reports_publisher_cong_idx on public.reports(pub_id,cong_id);
+create index wipe_requests_cong_idx on public.wipe_requests(cong_id);
+create index congregation_access_email_idx on public.congregation_access(email,cong_id) where active;
 create function public.ca_google_identity() returns boolean language sql stable set search_path='' as $$
  select coalesce(auth.jwt()->'app_metadata'->>'provider'='google' or (auth.jwt()->'app_metadata'->'providers') ? 'google',false)
  and auth.jwt()->>'email' is not null;
@@ -73,11 +81,15 @@ do $$ declare t text; begin
   execute format('grant select,insert,update,delete on public.%I to authenticated',t);
  end loop;
 end $$;
-create policy superadmins_self on public.ca_superadmins for select to authenticated using(public.ca_google_identity() and email=lower(auth.jwt()->>'email'));
+create policy superadmins_self on public.ca_superadmins for select to authenticated using((select public.ca_google_identity()) and email=lower((select auth.jwt())->>'email'));
 create policy congregations_read on public.congregations for select to authenticated using(public.ca_has_role(id,array['admin','field_service','attendance','oclm']));
-create policy congregations_super on public.congregations for all to authenticated using(public.ca_is_superadmin()) with check(public.ca_is_superadmin());
-create policy access_read on public.congregation_access for select to authenticated using(public.ca_is_congregation_admin(cong_id) or public.ca_google_identity() and active and email=lower(auth.jwt()->>'email'));
-create policy access_manage on public.congregation_access for all to authenticated using(public.ca_is_congregation_admin(cong_id)) with check(public.ca_is_congregation_admin(cong_id));
+create policy congregations_insert on public.congregations for insert to authenticated with check((select public.ca_is_superadmin()));
+create policy congregations_update on public.congregations for update to authenticated using((select public.ca_is_superadmin())) with check((select public.ca_is_superadmin()));
+create policy congregations_delete on public.congregations for delete to authenticated using((select public.ca_is_superadmin()));
+create policy access_read on public.congregation_access for select to authenticated using(public.ca_is_congregation_admin(cong_id) or (select public.ca_google_identity()) and active and email=lower((select auth.jwt())->>'email'));
+create policy access_insert on public.congregation_access for insert to authenticated with check(public.ca_is_congregation_admin(cong_id));
+create policy access_update on public.congregation_access for update to authenticated using(public.ca_is_congregation_admin(cong_id)) with check(public.ca_is_congregation_admin(cong_id));
+create policy access_delete on public.congregation_access for delete to authenticated using(public.ca_is_congregation_admin(cong_id));
 create policy publishers_manage on public.publishers for all to authenticated using(public.ca_has_role(cong_id,array['field_service'])) with check(public.ca_has_role(cong_id,array['field_service']));
 create policy reports_manage on public.reports for all to authenticated using(public.ca_has_role(cong_id,array['field_service'])) with check(public.ca_has_role(cong_id,array['field_service']));
 create policy attendance_manage on public.meeting_attendance for all to authenticated using(public.ca_has_role(cong_id,array['attendance'])) with check(public.ca_has_role(cong_id,array['attendance']));
@@ -90,8 +102,8 @@ create function public.provision_congregation(p_cong jsonb,p_admin_email text) r
  begin
  if not public.ca_is_superadmin() then raise exception 'Superadmin access required' using errcode='42501';end if;
  if p_admin_email !~ '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$' then raise exception 'Administrator email required';end if;
- insert into public.congregations(id,name,trial_days,email,notes,feature_attendance,feature_emergency_contacts,feature_oclm)
- values(p_cong->>'id',p_cong->>'name',coalesce((p_cong->>'trial_days')::integer,30),lower(trim(p_admin_email)),p_cong->>'notes',coalesce((p_cong->>'feature_attendance')::boolean,true),coalesce((p_cong->>'feature_emergency_contacts')::boolean,true),coalesce((p_cong->>'feature_oclm')::boolean,true)) returning * into c;
+ insert into public.congregations(id,name,trial_days,payment_date,email,notes,feature_attendance,feature_emergency_contacts,feature_oclm)
+ values(p_cong->>'id',p_cong->>'name',coalesce((p_cong->>'trial_days')::integer,30),nullif(p_cong->>'payment_date','')::date,lower(trim(p_admin_email)),p_cong->>'notes',coalesce((p_cong->>'feature_attendance')::boolean,true),coalesce((p_cong->>'feature_emergency_contacts')::boolean,true),coalesce((p_cong->>'feature_oclm')::boolean,true)) returning * into c;
  insert into public.congregation_access(cong_id,email,role) values(c.id,lower(trim(p_admin_email)),'admin');
  return to_jsonb(c);
  end $$;

@@ -33,6 +33,8 @@ async function run(profile) {
     try {
         await page.goto(publishedURL || `http://127.0.0.1:${server.address().port}`, { waitUntil: 'load' });
         await page.waitForFunction(() => window.db?.publishers.length === 1000 && document.getElementById('global-loader').classList.contains('hidden'));
+        const destinations=await page.locator('#nav-admin [data-nav-tab]').evaluateAll(buttons=>buttons.map(button=>button.dataset.navTab));
+        assert.equal(new Set(destinations).size,destinations.length,'Desktop navigation repeats a destination');
         const nav = async tab => {
             const selector = profile.mobile ? `#m-btn-tab-${tab}` : `#btn-tab-${tab}`;
             const button = page.locator(selector);
@@ -219,9 +221,19 @@ async function run(profile) {
                 window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true}];
                 await window.auth.resumeGoogleRole();
             },role);
+            if(!profile.mobile){
+                assert.equal(await page.locator('#btn-tab-access').isVisible(),false,'Restricted desktop role sees access management');
+                assert.equal(await page.locator('#btn-tab-emergency').isVisible(),false,'Restricted desktop role sees emergency records');
+                assert.equal(await page.locator('#btn-tab-dashboard').isVisible(),role==='field_service','Desktop overview visibility does not match its role');
+                assert.equal(await page.locator('#btn-tab-publishers').isVisible(),role==='field_service','Desktop publisher visibility does not match its role');
+                await page.screenshot({path:path.join(output,`${profile.name}-${role}-navigation.png`)});
+            }
             if(profile.mobile){
                 assert.equal(await page.locator('#m-btn-tab-menu').isVisible(),true,'Menu missing for '+role);await page.locator('#m-btn-tab-menu').click();
+                assert.equal(await page.locator('.ca-mobile-menu-content').evaluate(el=>el.scrollTop),0,'Navigation reopens with its first sections scrolled away');
                 assert.equal(await page.locator('#menu-item-access').isVisible(),false);assert.equal(await page.locator('#menu-item-emergency').isVisible(),false);
+                assert.equal(await page.locator('#menu-item-home').isVisible(),role==='field_service');
+                assert.equal(await page.locator('#menu-item-publishers').isVisible(),role==='field_service');
                 for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
                 assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':'oclm')).isVisible(),true);
                 await page.screenshot({path:path.join(output,`${profile.name}-${role}-menu.png`)});
@@ -242,6 +254,7 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
+        assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
