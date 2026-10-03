@@ -8,8 +8,6 @@
     <!-- External Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -464,7 +462,7 @@ body[data-theme="light"] .ca-announcement-card h4{color:#0f172a;} body[data-them
 .oclm-muted{color:rgba(204,251,241,.45)}
 @media(max-width:640px){.oclm-mobile-stack{grid-template-columns:1fr!important}.oclm-subnav button{flex:1}.oclm-table{min-width:720px}}
 
-        <style>
+
 .oclm-public-week{overflow:hidden}
 .oclm-public-category{padding:5px 7px;border-radius:5px;display:inline-block;color:#fff!important;letter-spacing:.03em}
 .oclm-public-category[data-cat*="TREASURES"]{background:#5f6870}
@@ -476,7 +474,7 @@ body[data-theme="light"] .ca-announcement-card h4{color:#0f172a;} body[data-them
 .oclm-public-names{color:#374151!important}
 .oclm-public-assignment.match{background:#f0fdfa}
 @media(max-width:680px){.oclm-public-head{display:block}.oclm-public-tools{margin-top:12px;display:grid;grid-template-columns:1fr}.oclm-public-assignment{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:10px}.oclm-public-title{font-size:22px}}
-</style></style>
+</style>
 <style>
 /* ===== Requested four-theme and navigation refinement ===== */
 body[data-theme="default"]{background:radial-gradient(circle at top left,#064e3b 0%,#020617 50%,#083344 100%)!important;color:#f8fafc!important;}
@@ -941,6 +939,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 #ca-midweek-root,#ca-midweek-root *{box-sizing:border-box;}
 #ca-midweek-root{width:100%;max-width:1400px;margin:0 auto;}
 </style>
+    <link rel="stylesheet" href="app.css">
 </head>
 <body class="text-sm">
 
@@ -1083,6 +1082,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             <div class="ca-topbar-subtitle">Congregation administration, simplified.</div>
         </div>
         <div class="ca-topbar-actions">
+            <span id="ca-sync-status" class="ca-sync-pill" role="status" aria-live="polite">● Connecting…</span>
             <button type="button" class="ca-topbar-icon" onclick="window.ui.openModal('modal-settings')" title="Settings" aria-label="Settings">⚙</button>
             <button type="button" class="ca-topbar-profile" onclick="window.ui.openModal('modal-profile-menu')" title="Profile">
                 <span id="ca-topbar-avatar" class="avatar">C</span>
@@ -1357,6 +1357,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <button aria-label="Next week" class="week-arrow" id="nextWeek">›</button>
 </div>
 <div class="top-actions">
+<span id="saveStateLabel" class="meta" role="status">Saved on this device</span>
 <button class="btn" id="todayBtn">Today</button>
 <button class="btn" id="previewBtn">Preview</button>
 <button class="btn primary" id="autoTop">Auto-assign</button>
@@ -1409,13 +1410,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <!-- Preview -->
 <section class="mws-view" id="previewView">
 <div class="page-head">
-<div><div class="eyebrow">Publisher-facing layout</div><h2>Schedule preview</h2><p>Clean publisher-facing schedule. Publish the weeks you want to share through one live link.</p></div>
+<div><div class="eyebrow">Publisher-facing layout</div><h2>Schedule preview</h2><p>Review the schedule, then copy a link to share the published weeks.</p></div>
 </div>
 <div class="live-panel">
-<div class="live-panel-head"><div><div class="live-kicker">ONE LIVE LINK</div><h3>Publish schedule</h3><p>Publish this week to the shared schedule. The same link can contain every published week.</p></div><button class="btn gold" id="publishWeekBtn">Publish this week</button></div>
+<div class="live-panel-head"><div><div class="live-kicker">SHARED SCHEDULE</div><h3>Publish schedule</h3><p>Publish this week to include it in your shared schedule.</p></div><button class="btn gold" id="publishWeekBtn">Publish this week</button></div>
 <div class="live-link-row"><input class="live-link-input" id="liveLinkInput" placeholder="Publish a week to create the live link" readonly=""/><button class="btn" id="copyLiveLinkBtn">Copy link</button></div>
 <div class="published-weeks" id="publishedWeeks"></div>
-<div class="live-note">Anyone with the link can choose a published week and search by publisher name.</div>
+<div class="live-note">Anyone with the link can view the published weeks and search by name. After making changes, copy and share the updated link. This schedule is saved on this device.</div>
 </div>
 <div class="preview-wrap"><div class="paper" id="paper"></div></div>
 </section>
@@ -1434,7 +1435,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div><div class="sheet-kicker" id="sheetKicker">Assign part</div><div class="sheet-title" id="sheetTitle">—</div><div class="sheet-sub" id="sheetSub">—</div></div>
 <button class="close" id="closeAssign">×</button>
 </div>
-<div class="sheet-tools"><input autocomplete="off" class="sheet-search" id="candidateSearch" placeholder="Search people…" type="search"/><button class="filter-pill active" data-filter="all">Qualified</button></div>
+<div class="sheet-tools"><input autocomplete="off" class="sheet-search" id="candidateSearch" placeholder="Search people…" type="search"/><span class="filter-pill active" aria-label="Only qualified publishers are shown">Qualified</span></div>
 <div class="candidate-list" id="candidateList"></div>
 <div class="sheet-foot"><div class="sheet-foot-note" id="sheetFootNote">Suggested person is highlighted.</div><button class="btn small" id="assignNone">Leave unassigned</button></div>
 </div>
@@ -1494,16 +1495,16 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             <div id="pub-att-form-area" class="s4-modern-wrapper">
                 <div class="s4-modern-card">
                     <h2>Meeting Attendance</h2>
-                    <p class="subtitle">Securely submit weekly attendance counts.</p>
+                    <p class="subtitle">Choose the week and enter meeting attendance. Leave a count blank to keep its saved value.</p>
 
                     <div class="s4-form-group s4-grid-2">
                         <div>
                             <label class="s4-label">Year</label>
-                            <select id="pub-att-year" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500"></select>
+                            <select id="pub-att-year" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-default text-center bg-slate-50 text-slate-500"></select>
                         </div>
                         <div>
                             <label class="s4-label">Month</label>
-                            <select id="pub-att-month" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500">
+                            <select id="pub-att-month" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-default text-center bg-slate-50 text-slate-500">
                                 <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
                                 <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
                                 <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
@@ -1798,87 +1799,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             </div>
         </div>
 
-        <!-- PUBLIC OCLM VIEW -->
-        <div id="tab-public-oclm" class="tab-content">
-            <div class="max-w-3xl mx-auto w-full px-4 py-8"><div class="glass-panel p-6 rounded-3xl border border-cyan-500/20"><h2 id="public-oclm-title" class="text-2xl font-bold text-white">My OCLM Assignments</h2><p class="text-teal-200/70 text-sm mt-1">Current and upcoming assignments</p><div id="public-oclm-list" class="mt-6 space-y-3"></div></div></div>
-        </div>
-
-        <!-- PUBLIC ATTENDANCE FORM (New Separate Tab for URL users) -->
-        <div id="tab-public-attendance" class="tab-content">
-            <div id="pub-att-success-msg" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-4 w-full">
-                <div class="s4-modern-card flex flex-col items-center max-w-md w-full text-center p-8 sm:p-10">
-                    <div class="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-                        <span class="text-4xl sm:text-5xl text-emerald-500">✓</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="color: #0f172a;">Attendance Saved</h2>
-                    <p class="text-base mb-8" style="color: #64748b;">The attendance numbers for this week have been securely recorded.</p>
-                    <button onclick="location.reload()" class="px-8 py-3 bg-teal-500 hover:bg-teal-400 rounded-xl transition-all text-white font-bold shadow-lg w-full">Submit Another Week</button>
-                </div>
-            </div>
-
-            <div id="pub-att-form-area" class="s4-modern-wrapper">
-                <div class="s4-modern-card">
-                    <h2>Meeting Attendance</h2>
-                    <p class="subtitle">Securely submit weekly attendance counts.</p>
-
-                    <div class="s4-form-group s4-grid-2">
-                        <div>
-                            <label class="s4-label">Year</label>
-                            <select id="pub-att-year" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500"></select>
-                        </div>
-                        <div>
-                            <label class="s4-label">Month</label>
-                            <select id="pub-att-month" disabled class="s4-input cursor-default text-center bg-slate-50 text-slate-500">
-                                <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
-                                <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
-                                <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="s4-form-group">
-                        <label class="s4-label">Target Week</label>
-                        <select id="pub-att-week" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-pointer text-center font-bold text-teal-700">
-                            <option value="1">Week 1</option>
-                            <option value="2">Week 2</option>
-                            <option value="3">Week 3</option>
-                            <option value="4">Week 4</option>
-                            <option value="5">Week 5</option>
-                        </select>
-                        <span class="s4-help-text" id="pub-att-current-week-msg"></span>
-                    </div>
-
-                    <div id="pub-att-mid-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
-                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Midweek Meeting</h4>
-                        <div class="flex flex-col gap-2">
-                            <select id="pub-att-mid-type" onchange="window.ui.togglePubAttInput('mid')" class="s4-input cursor-pointer text-sm py-2">
-                                <option value="count">Numeric Count</option>
-                                <option value="CA">Circuit Assembly</option>
-                                <option value="RC">Regional Convention</option>
-                                <option value="Memorial">Memorial</option>
-                            </select>
-                            <input type="number" id="pub-att-mid-val" min="0" placeholder="Enter attendance count" class="s4-input">
-                        </div>
-                    </div>
-
-                    <div id="pub-att-end-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
-                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Weekend Meeting</h4>
-                        <div class="flex flex-col gap-2">
-                            <select id="pub-att-end-type" onchange="window.ui.togglePubAttInput('end')" class="s4-input cursor-pointer text-sm py-2">
-                                <option value="count">Numeric Count</option>
-                                <option value="CA">Circuit Assembly</option>
-                                <option value="RC">Regional Convention</option>
-                                <option value="Memorial">Memorial</option>
-                            </select>
-                            <input type="number" id="pub-att-end-val" min="0" placeholder="Enter attendance count" class="s4-input">
-                        </div>
-                    </div>
-
-                    <button onclick="window.db.savePublicAttendance()" id="pub-att-submit-btn" class="s4-submit-btn">Save Attendance</button>
-                </div>
-            </div>
-        </div>
-
         <!-- GROUP OVERSEER TAB -->
         <div id="tab-overseer" class="tab-content">
             <div class="max-w-3xl mx-auto w-full space-y-6 px-2">
@@ -2133,11 +2053,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="space-y-3 pb-5 border-b border-white/10">
                     <h4 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Appearance</h4>
                     <div id="ca-theme-grid">
-                        <button type="button" class="ca-theme-option" data-theme-option="default" onclick="window.ui.setTheme('default')"><div class="ca-theme-swatch" style="background:radial-gradient(circle at top left,#064e3b 0%,#020617 55%,#083344 100%)"></div><small>Default</small></button>
+                        <button type="button" class="ca-theme-option" data-theme-option="default" onclick="window.ui.setTheme('default')"><div class="ca-theme-swatch" style="background:radial-gradient(circle at top left,#064e3b 0%,#020617 55%,#083344 100%)"></div><small>Lagoon</small></button>
                         <button type="button" class="ca-theme-option" data-theme-option="blue" onclick="window.ui.setTheme('blue')"><div class="ca-theme-swatch" style="background:radial-gradient(circle at 50% 58%,#1b40aa 0%,#0b1b4e 38%,#05070d 78%)"></div><small>Blue</small></button>
                         <button type="button" class="ca-theme-option" data-theme-option="crimson" onclick="window.ui.setTheme('crimson')"><div class="ca-theme-swatch" style="background:radial-gradient(circle at 50% 58%,#a10f2b 0%,#4b0717 38%,#090909 78%)"></div><small>Crimson</small></button>
                         <button type="button" class="ca-theme-option" data-theme-option="green" onclick="window.ui.setTheme('green')"><div class="ca-theme-swatch" style="background:radial-gradient(circle at 50% 58%,#107a4e 0%,#082f22 38%,#06110d 78%)"></div><small>Green</small></button>
                         <button type="button" class="ca-theme-option" data-theme-option="scheduler" onclick="window.ui.setTheme('scheduler')"><div class="ca-theme-swatch" style="background:linear-gradient(135deg,#eef1f4 0%,#5b6c7c 42%,#cda013 72%,#8f1d35 100%)"></div><small>Scheduler</small></button>
+                    <button type="button" class="ca-theme-option" data-theme-option="light" onclick="window.ui.setTheme('light')"><div class="ca-theme-swatch" style="background:linear-gradient(135deg,#ffffff,#eef6f7)"></div><small>Daylight</small></button>
+                    <button type="button" class="ca-theme-option" data-theme-option="dark" onclick="window.ui.setTheme('dark')"><div class="ca-theme-swatch" style="background:linear-gradient(135deg,#111827,#020617)"></div><small>Midnight</small></button>
                     </div>
                     <p class="text-[10px] text-teal-100/50">Theme colors apply to the application interface only. Document and form appearance remains unchanged.</p>
                 </div>
@@ -2416,6 +2338,19 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         </div>
     </div>
 
+    <div id="modal-oclm-feedback" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[999] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+        <div class="glass-panel w-full max-w-xl rounded-3xl p-6 space-y-4">
+            <div class="flex justify-between items-center"><h2 id="feedback-title" class="text-xl font-bold">Send feedback</h2><button type="button" onclick="window.ui.closeModal('modal-oclm-feedback')" aria-label="Close feedback">×</button></div>
+            <p class="text-sm text-teal-100/70">Describe the problem and the steps that led to it. Your email app will open so you can review and send the message.</p>
+            <label for="oclm-feedback-subject" class="block text-sm font-semibold">Subject</label><input id="oclm-feedback-subject" class="w-full px-4 py-3 rounded-xl" placeholder="What would you like to improve?">
+            <label for="oclm-feedback-body" class="block text-sm font-semibold">Message</label><textarea id="oclm-feedback-body" rows="5" class="w-full px-4 py-3 rounded-xl" placeholder="Describe what happened…"></textarea>
+            <button type="button" onclick="window.ui.submitOCLMFeedback()" class="oclm-main-btn w-full">Continue in email app</button>
+        </div>
+    </div>
+    <div id="modal-oclm-parts" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[999] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="parts-dialog-title">
+        <div class="glass-panel w-full max-w-xl rounded-3xl p-6"><div class="flex justify-between items-center mb-4"><h2 id="parts-dialog-title" class="text-xl font-bold">Meeting parts</h2><button type="button" onclick="window.ui.closeModal('modal-oclm-parts')" aria-label="Close meeting parts">×</button></div><div id="modal-oclm-parts-body"></div></div>
+    </div>
+
     <div id="toast" class="glass-panel text-white px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-2xl flex items-center gap-3 sm:gap-4 border border-teal-500/40">
         <span id="toast-icon" class="text-xl sm:text-2xl drop-shadow-md">✅</span>
         <span id="toast-msg" class="font-medium tracking-wide text-sm sm:text-base"></span>
@@ -2491,7 +2426,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   };
 
   const state = {
-    currentWeek:'2026-W41', personnel:[], assignments:{}, template:DEFAULT_TEMPLATE, activeView:'schedule', selectedField:null, publishedWeeks:[],
+    currentWeek:weekId(new Date()), personnel:[], assignments:{}, template:DEFAULT_TEMPLATE, activeView:'schedule', selectedField:null, publishedWeeks:[],
     program:{}, weekKeys:[]
   };
 
@@ -2500,29 +2435,40 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   const esc = (value='') => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const initials = (name='') => name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0].toUpperCase()).join('') || '?';
 
+  let loadedCongregation = null;
+  const storageKey = key => `ca_midweek_${window.currentCongId || 'local'}_${key}`;
   function storageGet(key, fallback) {
-    try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; }
+    try { const value=localStorage.getItem(storageKey(key));return value===null?fallback:JSON.parse(value); } catch { return fallback; }
   }
   function load(){
-    state.personnel = storageGet('jw_scheduler_personnel', DEFAULT_PERSONNEL);
-    state.assignments = storageGet('jw_scheduler_assignments', {});
-    state.publishedWeeks = storageGet('jw_scheduler_published_weeks', []);
-    const rawT = localStorage.getItem('jw_scheduler_template');
-    state.template = rawT === null ? DEFAULT_TEMPLATE : rawT;
-    state.weekKeys = buildWeeks(state.currentWeek);
-    state.program = PROGRAM_LIBRARY[state.currentWeek] || {range:weekLabel(state.currentWeek),reading:'',theme:'Life and Ministry Meeting',parts:{}};
+    const congregation=window.currentCongId || 'local';
+    if(window.currentCongId && !localStorage.getItem('ca_midweek_legacy_owner')){
+      const legacyKeys=['jw_scheduler_personnel','jw_scheduler_assignments','jw_scheduler_published_weeks','jw_scheduler_template'];
+      legacyKeys.forEach(key=>{const old=localStorage.getItem(key);if(old!==null && localStorage.getItem(storageKey(key))===null)localStorage.setItem(storageKey(key),old);});
+      localStorage.setItem('ca_midweek_legacy_owner',congregation);
+    }
+    const personnel=storageGet('jw_scheduler_personnel',[]);
+    state.personnel=Array.isArray(personnel)?personnel:[];
+    const assignments=storageGet('jw_scheduler_assignments',{});
+    state.assignments=assignments && typeof assignments==='object'&&!Array.isArray(assignments)?assignments:{};
+    const published=storageGet('jw_scheduler_published_weeks',[]);
+    state.publishedWeeks=Array.isArray(published)?published.filter(w=>/^\d{4}-W\d{2}$/.test(w)):[];
+    try{state.template=localStorage.getItem(storageKey('jw_scheduler_template'))||DEFAULT_TEMPLATE;}catch{state.template=DEFAULT_TEMPLATE;}
+    state.weekKeys=buildWeeks(state.currentWeek);
+    state.program=PROGRAM_LIBRARY[state.currentWeek]||{range:weekLabel(state.currentWeek),reading:'',theme:'Life and Ministry Meeting',parts:{}};
+    loadedCongregation=congregation;
   }
   function save(){
     try{
-      localStorage.setItem('jw_scheduler_personnel', JSON.stringify(state.personnel));
-      localStorage.setItem('jw_scheduler_assignments', JSON.stringify(state.assignments));
-      localStorage.setItem('jw_scheduler_published_weeks', JSON.stringify(state.publishedWeeks));
-      localStorage.setItem('jw_scheduler_template', state.template);
-      $('saveStateLabel').textContent='Saved automatically';
-    }catch{}
+      localStorage.setItem(storageKey('jw_scheduler_personnel'),JSON.stringify(state.personnel));
+      localStorage.setItem(storageKey('jw_scheduler_assignments'),JSON.stringify(state.assignments));
+      localStorage.setItem(storageKey('jw_scheduler_published_weeks'),JSON.stringify(state.publishedWeeks));
+      localStorage.setItem(storageKey('jw_scheduler_template'),state.template);
+      if($('saveStateLabel'))$('saveStateLabel').textContent='Saved on this device';
+    }catch(error){toast('Schedule could not be saved on this device. Check browser storage.');throw error;}
   }
   function toast(msg){
-    const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2600);
+    const t=$('mwsToast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2600);
   }
 
   function mondayOf(weekStr){
@@ -2562,7 +2508,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     $('readingBadge').textContent = state.program.reading || 'CLM';
     $('meetingTheme').textContent = state.program.theme || 'Life and Ministry Meeting';
     $('meetingSub').textContent = state.program.reading ? 'Our Christian Life and Ministry — Meeting Workbook' : 'Select a week to schedule';
-    renderWeekStrip(); renderSchedule(); renderPeople(); renderPreview(); renderMessage(); renderLivePanel();
+    renderWeekStrip();
+    if(state.activeView==='schedule')renderSchedule();
+    if(state.activeView==='people')renderPeople();
+    if(state.activeView==='preview'){renderPreview();renderLivePanel();}
+    if(state.activeView==='messages')renderMessage();
     root.querySelectorAll('.mws-nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===state.activeView));
     root.querySelectorAll('.mws-view').forEach(v=>v.classList.toggle('mws-active',v.id===state.activeView+'View'));
   }
@@ -2678,7 +2628,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const data=ensureWeekData(); if(!personId){delete data[fieldId];} else {data[fieldId]={personId,customTitle:data[fieldId]?.customTitle||''};}
     save(); renderAll();
   }
-  function setPartTitle(fieldId,title){ const data=ensureWeekData(); data[fieldId]={...(data[fieldId]||{}),customTitle:String(title||'').trim()}; save(); renderPreview(); renderSchedule(); }
+  function setPartTitle(fieldId,title){ const data=ensureWeekData(); data[fieldId]={...(data[fieldId]||{}),customTitle:String(title||'').trim()}; save(); renderAll(); }
   function clearAssignment(fieldId){setAssignment(fieldId,''); toast('Assignment cleared');}
   function autoAssign(){
     const data=ensureWeekData(); let count=0;
@@ -2769,8 +2719,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     let msg=state.template; Object.keys(vals).forEach(k=>msg=msg.replaceAll(k,vals[k])); $('messagePreview').textContent=msg;
   }
 
-  function openModal(id){const m=$(id);m.classList.add('open');m.setAttribute('aria-hidden','false');}
-  function closeModal(id){const m=$(id);m.classList.remove('open');m.setAttribute('aria-hidden','true');}
+  function openModal(id){const m=$(id);m.classList.add('open');m.setAttribute('aria-hidden','false');window.AppSupport?.dialogOpened(m);}
+  function closeModal(id){const m=$(id);m.classList.remove('open');m.setAttribute('aria-hidden','true');window.AppSupport?.dialogClosed(m);}
   function showView(view){state.activeView=view;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
 
   // Public handlers for inline interactions
@@ -2790,6 +2740,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   window.initMidweekScheduler = () => {
     if(!root) return;
     root.classList.remove('mws-live-mode');
+    if(loadedCongregation!==(window.currentCongId || 'local')) load();
     renderAll();
   };
 
@@ -2800,13 +2751,16 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
     </script>
 
+    <script src="pdf-tools.js"></script>
+    <script src="app-support.js"></script>
     <script type="module">
-        const { createClient } = window.supabase;
+        const createClient = window.supabase?.createClient;
         
         const SUPABASE_URL = 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
         
-        const isCloudEnabled = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('http');
+        const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
+        const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
         const supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
         window.config = { MASTER_PASSWORD: '3xqrWauMQCbp' };
@@ -2815,8 +2769,15 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         window.auth = {
             IDLE_TIMEOUT_MS: 30 * 60 * 1000,
-            touchActivity: () => { if (sessionStorage.getItem('fs_auth') === 'true') sessionStorage.setItem('fs_last_activity', String(Date.now())); },
-            expireIfIdle: () => { if (sessionStorage.getItem('fs_auth') !== 'true') return false; const last=parseInt(sessionStorage.getItem('fs_last_activity')||'0',10); if(!last||Date.now()-last>window.auth.IDLE_TIMEOUT_MS){sessionStorage.removeItem('fs_auth');sessionStorage.removeItem('fs_auth_type');sessionStorage.removeItem('fs_last_activity');localStorage.removeItem('fs_auth');localStorage.removeItem('fs_auth_type');return true;} return false; },
+            lastActivity: 0, lastActivityWritten: 0,
+            touchActivity: () => {
+                const now=Date.now(); window.auth.lastActivity=now;
+                if(now-window.auth.lastActivityWritten<15000)return;
+                if(sessionStorage.getItem('fs_auth')==='true'){
+                    try{sessionStorage.setItem('fs_last_activity',String(now));window.auth.lastActivityWritten=now;}catch{}
+                }
+            },
+            expireIfIdle: () => { if (sessionStorage.getItem('fs_auth') !== 'true') return false; const last=Math.max(parseInt(sessionStorage.getItem('fs_last_activity')||'0',10),window.auth.lastActivity||0); if(!last||Date.now()-last>window.auth.IDLE_TIMEOUT_MS){sessionStorage.removeItem('fs_auth');sessionStorage.removeItem('fs_auth_type');sessionStorage.removeItem('fs_last_activity');localStorage.removeItem('fs_auth');localStorage.removeItem('fs_auth_type');return true;} return false; },
             check: () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const congParam = urlParams.get('cong');
@@ -2905,7 +2866,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     sessionStorage.setItem('fs_auth_type','super');
                     sessionStorage.setItem('fs_last_activity',String(Date.now()));
                     document.getElementById('auth-screen').classList.add('hidden');
-                    window.db.initSuperAdmin();
+                    await window.db.initSuperAdmin();
                     return;
                 }
 
@@ -2948,7 +2909,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         localStorage.setItem('fs_cong_name',data.name);
                         
                         document.getElementById('auth-screen').classList.add('hidden');
-                        window.db.initAdmin(data.id, data.name);
+                        await window.db.initAdmin(data.id, data.name);
                     } else {
                         window.ui.showToast("Invalid Congregation ID or Password", "error");
                         btn.textContent = "Unlock Database"; btn.disabled = false;
@@ -2989,7 +2950,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     if (data) {
                         sessionStorage.setItem(`ov_auth_${window.currentCongId}_${window.ui.overseerGroup}`, 'true');
                         document.getElementById('overseer-auth-screen').classList.add('hidden');
-                        window.db.initOverseer(window.currentCongId, window.ui.overseerGroup);
+                        await window.db.initOverseer(window.currentCongId, window.ui.overseerGroup);
                     } else {
                         window.ui.showToast("Incorrect group password", "error");
                         btn.textContent = "View Group"; btn.disabled = false;
@@ -3029,7 +2990,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             getISTPreviousMonthInfo: () => {
                 const now = new Date(); const ist = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 5.5));
-                ist.setMonth(ist.getMonth() - 1); const month = ist.getMonth(); const year = ist.getFullYear();
+                ist.setDate(1); ist.setMonth(ist.getMonth() - 1); const month = ist.getMonth(); const year = ist.getFullYear();
                 return { month, year, serviceYear: month >= 8 ? year + 1 : year, displayString: `${window.utils.getMonthName(month)} ${year}` };
             },
             extractNumbers: (str) => {
@@ -3100,6 +3061,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             setGroupPassword: async (e) => {
                 e.preventDefault();
+                if(!isCloudEnabled) throw new Error('Cloud connection required to save an overseer password.');
                 const groupName = document.getElementById('gp-group-name').value;
                 const pwd = document.getElementById('gp-new-pass').value.trim();
                 if (!window.utils.isValidPassword(pwd)) { window.ui.showToast("Password does not meet requirements.", "error"); return; }
@@ -3114,6 +3076,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             changeGroupPassword: async (e) => {
                 e.preventDefault();
+                if(!isCloudEnabled) throw new Error('Cloud connection required to change the password.');
                 const currentP = document.getElementById('ov-cp-current').value;
                 const newP = document.getElementById('ov-cp-new').value.trim();
                 if (!window.utils.isValidPassword(newP)) { window.ui.showToast("Password must contain min 8 chars, 1 uppercase, 1 lowercase, 1 number, and 1 special character.", "error"); return; }
@@ -3179,6 +3142,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             initAdmin: async (congId, congName) => {
+                if (window.db.currentCongData?.id !== congId) window.db.currentCongData = null;
+                window.db.syncState = 'syncing';
                 window.currentCongId = congId;
                 document.getElementById('nav-admin').classList.remove('hidden');
                 const legacyCongName = document.getElementById('nav-cong-name');
@@ -3217,10 +3182,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         window.ui.setSyncStatus('error','Sync unavailable');
                     }
                 }
-                try { await window.db.cleanupLegacyDemoData(); } catch (e) { console.warn('Legacy demo cleanup failed:', e); }
 
                 try { window.ui.initAdminUI(); } catch (e) { console.error('Initial admin UI setup failed:', e); }
-                window.ui.setSyncStatus('synced','Synced');
+                window.ui.setSyncStatus(window.db.syncState || 'error', window.db.syncState === 'synced' ? 'Synced' : 'Sync unavailable');
 
                 // Re-apply feature-gated navigation after the congregation profile has
                 // arrived from Supabase (the shell is intentionally rendered before the fetch).
@@ -3240,7 +3204,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     oclmBtn.setAttribute('aria-disabled', oclmEnabled ? 'false' : 'true');
                 }
 
-                const accessOk = await window.ui.refreshSubscriptionAccess(false);
+                const accessOk = await window.db.refreshSubscriptionAccess(false);
                 if (!accessOk) document.getElementById('expired-overlay')?.classList.remove('hidden');
                 window.ui.updateAnnouncementDot();
 
@@ -3354,6 +3318,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             changeAdminPassword: async (e) => {
                 e.preventDefault();
+                if(!isCloudEnabled) throw new Error('Cloud connection required to change the password.');
                 const currentP = document.getElementById('cp-current').value;
                 const newP = document.getElementById('cp-new').value.trim();
                 
@@ -3375,92 +3340,55 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             saveAttendance: async () => {
-                const sy = parseInt(document.getElementById('att-year').value);
-                const month = parseInt(document.getElementById('att-month').value);
-                const id = `${window.currentCongId}_${sy}_${month}`;
-
-                const getVal = (w, m) => {
-                    const type = document.getElementById(`att-w${w}-${m}-type`).value;
-                    if(type !== 'count') return type;
-                    return document.getElementById(`att-w${w}-${m}-val`).value || '';
-                };
-
-                const payload = {
-                    id: id, cong_id: window.currentCongId, service_year: sy, month: month,
-                    w1_mid: getVal(1, 'mid'), w1_end: getVal(1, 'end'),
-                    w2_mid: getVal(2, 'mid'), w2_end: getVal(2, 'end'),
-                    w3_mid: getVal(3, 'mid'), w3_end: getVal(3, 'end'),
-                    w4_mid: getVal(4, 'mid'), w4_end: getVal(4, 'end'),
-                    w5_mid: getVal(5, 'mid'), w5_end: getVal(5, 'end')
-                };
-
-                const idx = window.db.attendance.findIndex(a => a.id === id);
-                const previous = idx > -1 ? window.db.attendance[idx] : null;
-                if (idx > -1) window.db.attendance[idx] = payload; else window.db.attendance.push(payload);
-
-                if (isCloudEnabled) {
-                    const { error } = await supabaseClient.from('meeting_attendance').upsert([payload], { onConflict: 'id' });
-                    if (error) {
-                        if (idx > -1 && previous) window.db.attendance[idx] = previous;
-                        else window.db.attendance = window.db.attendance.filter(a => a.id !== id);
-                        window.ui.showToast(`Attendance was not saved: ${error.message || 'Supabase rejected the record.'}`, 'error');
-                        console.error(error);
-                        return;
-                    }
+                const sy=Number(document.getElementById('att-year').value),month=Number(document.getElementById('att-month').value);
+                if(!Number.isInteger(sy)||!Number.isInteger(month)||month<0||month>11) throw new Error('Select a service year and month.');
+                const payload={id:`${window.currentCongId}_${sy}_${month}`,cong_id:window.currentCongId,service_year:sy,month};
+                for(let week=1;week<=5;week++) for(const meeting of ['mid','end']){
+                    const type=document.getElementById(`att-w${week}-${meeting}-type`).value;
+                    const value=type==='count'?document.getElementById(`att-w${week}-${meeting}-val`).value:type;
+                    if(type==='count' && value!=='' && (!Number.isInteger(Number(value))||Number(value)<0)) throw new Error('Attendance counts must be whole numbers of zero or more.');
+                    payload[`w${week}_${meeting}`]=value;
                 }
-                
-                window.ui.showToast('Attendance Saved Successfully');
-                window.ui.renderAttendance();
+                if(!isCloudEnabled) throw new Error('Cloud connection required to save attendance.');
+                window.ui.setSyncStatus('syncing','Saving…');
+                try{
+                    const {error}=await supabaseClient.from('meeting_attendance').upsert([payload],{onConflict:'id'});
+                    if(error)throw error;
+                    const index=window.db.attendance.findIndex(a=>a.id===payload.id);
+                    if(index<0)window.db.attendance.push(payload);else window.db.attendance[index]=payload;
+                    window.db.writeLocalCache('attendance');window.ui.setSyncStatus('synced','Synced');
+                    window.AppSupport.clearAttendanceDraft(payload.id);
+                window.ui.showToast('Attendance saved.');window.ui.renderAttendance();
+                }catch(error){window.ui.setSyncStatus('error','Attendance not saved');throw error;}
             },
 
             savePublicAttendance: async () => {
-                const btn = document.getElementById('pub-att-submit-btn');
-                btn.textContent = "Saving..."; btn.disabled = true;
-
-                const sy = parseInt(document.getElementById('pub-att-year').value);
-                const month = parseInt(document.getElementById('pub-att-month').value);
-                const week = parseInt(document.getElementById('pub-att-week').value);
-                const id = `${window.currentCongId}_${sy}_${month}`;
-
-                const mType = document.getElementById('pub-att-mid-type').value;
-                const mVal = mType === 'count' ? (document.getElementById('pub-att-mid-val').value || '') : mType;
-                
-                const eType = document.getElementById('pub-att-end-type').value;
-                const eVal = eType === 'count' ? (document.getElementById('pub-att-end-val').value || '') : eType;
-
-                try {
-                    let existingData = { 
-                        id: id, cong_id: window.currentCongId, service_year: sy, month: month,
-                        w1_mid: '', w1_end: '', w2_mid: '', w2_end: '', w3_mid: '', w3_end: '', w4_mid: '', w4_end: '', w5_mid: '', w5_end: '' 
-                    };
-                    
-                    if (isCloudEnabled) {
-                        const { data, error } = await supabaseClient.from('meeting_attendance').select('*').eq('id', id).maybeSingle();
-                        if (error) throw error;
-                        if (data) existingData = data;
-                    }
-
-                    existingData[`w${week}_mid`] = mVal;
-                    existingData[`w${week}_end`] = eVal;
-
-                    if (isCloudEnabled) {
-                        const { error } = await supabaseClient.from('meeting_attendance').upsert([existingData], { onConflict: 'id' });
-                        if (error) throw error;
-                    }
-
-                    const localIdx = window.db.attendance.findIndex(a => a.id === id);
-                    if (localIdx > -1) window.db.attendance[localIdx] = existingData;
-                    else window.db.attendance.push(existingData);
-                    window.db.writeLocalCache('attendance');
-
-                    document.getElementById('pub-att-form-area').classList.add('hidden');
-                    document.getElementById('pub-att-success-msg').classList.remove('hidden');
-
-                } catch (e) {
-                    console.error(e);
-                    window.ui.showToast("Failed to save. Please try again.", "error");
-                    btn.textContent = "Save Attendance"; btn.disabled = false;
+                const sy=Number(document.getElementById('pub-att-year').value),month=Number(document.getElementById('pub-att-month').value),week=Number(document.getElementById('pub-att-week').value);
+                if(!Number.isInteger(sy)||!Number.isInteger(month)||month<0||month>11||!Number.isInteger(week)||week<1||week>5)throw new Error('Select a year, month and week.');
+                const id=`${window.currentCongId}_${sy}_${month}`,changes={};
+                for(const meeting of ['mid','end']){
+                    const type=document.getElementById(`pub-att-${meeting}-type`).value;
+                    const value=type==='count'?document.getElementById(`pub-att-${meeting}-val`).value:type;
+                    if(value==='')continue;
+                    if(type==='count' && (!Number.isInteger(Number(value))||Number(value)<0)) throw new Error('Attendance counts must be whole numbers of zero or more.');
+                    changes[`w${week}_${meeting}`]=value;
                 }
+                if(!Object.keys(changes).length)throw new Error('Enter a count or select a meeting event. Blank counts leave saved values unchanged.');
+                if(!isCloudEnabled)throw new Error('Cloud connection required to save attendance.');
+                const {data:existing,error:readError}=await supabaseClient.from('meeting_attendance').select('*').eq('id',id).eq('cong_id',window.currentCongId).maybeSingle();
+                if(readError)throw readError;
+                // Updating only entered fields preserves other weeks and blank meeting counts.
+                const base={id,cong_id:window.currentCongId,service_year:sy,month};
+                const {error}=existing
+                    ?await supabaseClient.from('meeting_attendance').update(changes).eq('id',id).eq('cong_id',window.currentCongId)
+                    :await supabaseClient.from('meeting_attendance').insert([{...base,...changes}]);
+                if(error)throw error;
+                const record={...base,...existing,...changes};
+                const index=window.db.attendance.findIndex(a=>a.id===id);
+                if(index<0)window.db.attendance.push(record);else window.db.attendance[index]=record;
+                window.db.writeLocalCache('attendance');
+                document.getElementById('pub-att-form-area').classList.add('hidden');
+                document.getElementById('pub-att-success-msg').classList.remove('hidden');
             },
 
             getSFTSOverrides: () => {
@@ -3498,9 +3426,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const pubs = window.db.readLocalCache('publishers');
                 const reps = window.db.readLocalCache('reports');
                 const att = window.db.readLocalCache('attendance');
-                if (Array.isArray(pubs)) window.db.publishers = pubs;
-                if (Array.isArray(reps)) window.db.reports = reps;
-                if (Array.isArray(att)) window.db.attendance = att;
+                window.db.publishers = Array.isArray(pubs) ? pubs : [];
+                window.db.reports = Array.isArray(reps) ? reps : [];
+                window.db.attendance = Array.isArray(att) ? att : [];
             },
             getPublishers: () => window.db.publishers,
             getReports: (sy, month) => {
@@ -3512,155 +3440,127 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             savePublisher: async (pub) => {
                 if (!pub.id) pub.id = window.utils.generateUUID();
-                const previous = window.db.publishers.find(p => p.id === pub.id);
-                const idx = window.db.publishers.findIndex(p => p.id === pub.id);
-                if (idx > -1) window.db.publishers[idx] = pub; else window.db.publishers.push(pub);
-
-                window.db.writeLocalCache('publishers');
-                if (isCloudEnabled) {
-                    const payload = window.db.mapPubToDB(pub);
-                    const { error } = await supabaseClient.from('publishers').upsert([payload], { onConflict: 'id' });
-                    if (error) {
-                        // Do not report success when Supabase rejected the write. Roll the
-                        // optimistic local change back so a failed cloud save cannot look real.
-                        if (idx > -1 && previous) window.db.publishers[idx] = previous;
-                        else window.db.publishers = window.db.publishers.filter(p => p.id !== pub.id);
-                        console.error('Publisher cloud save failed:', error);
-                        window.db.writeLocalCache('publishers');
-                        window.ui.showToast(`Publisher was not synced: ${error.message || 'Supabase rejected the record.'}`, 'error');
-                        throw error;
+                if (!String(pub.name || '').trim()) throw new Error('Enter a publisher name.');
+                if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before saving.');
+                window.ui.setSyncStatus('syncing', 'Saving…');
+                try {
+                    if (isCloudEnabled) {
+                        const { error } = await supabaseClient.from('publishers').upsert([window.db.mapPubToDB(pub)], { onConflict: 'id' });
+                        if (error) throw error;
                     }
+                    const idx = window.db.publishers.findIndex(p => p.id === pub.id);
+                    if (idx > -1) window.db.publishers[idx] = pub; else window.db.publishers.push(pub);
                     window.db.writeLocalCache('publishers');
-                }
+                    window.ui.setSyncStatus(isCloudEnabled ? 'synced' : 'local', isCloudEnabled ? 'Synced' : 'Saved on this device');
+                    return pub;
+                } catch (error) { window.ui.setSyncStatus('error', 'Not saved'); throw error; }
             },
 
             saveReport: async (report) => {
+                if (!report.pubId || !Number.isInteger(Number(report.serviceYear)) || !Number.isInteger(Number(report.month)) || Number(report.month) < 0 || Number(report.month) > 11) throw new Error('Select a publisher, service year and month.');
+                if (Number(report.hours) < 0 || Number(report.studies) < 0) throw new Error('Hours and studies cannot be negative.');
                 report.id = `${report.pubId}_${report.serviceYear}_${report.month}`;
-                const idx = window.db.reports.findIndex(r => r.id === report.id);
-                const previous = idx > -1 ? window.db.reports[idx] : null;
-                if (idx > -1) window.db.reports[idx] = report; else window.db.reports.push(report);
-
-                window.db.writeLocalCache('reports');
-                if (isCloudEnabled) {
-                    const { error } = await supabaseClient.from('reports').upsert(window.db.mapRepToDB(report), { onConflict: 'id' });
-                    if (error) {
-                        if (idx > -1 && previous) window.db.reports[idx] = previous;
-                        else window.db.reports = window.db.reports.filter(r => r.id !== report.id);
-                        console.error('Report cloud save failed:', error);
-                        window.db.writeLocalCache('reports');
-                        window.ui.showToast(`Field service report was not saved: ${error.message || 'Supabase rejected the record.'}`, 'error');
-                        throw error;
+                if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before saving.');
+                window.ui.setSyncStatus('syncing', 'Saving…');
+                try {
+                    if (isCloudEnabled) {
+                        const { error } = await supabaseClient.from('reports').upsert(window.db.mapRepToDB(report), { onConflict: 'id' });
+                        if (error) throw error;
                     }
+                    const idx = window.db.reports.findIndex(r => r.id === report.id);
+                    if (idx > -1) window.db.reports[idx] = report; else window.db.reports.push(report);
                     window.db.writeLocalCache('reports');
-                }
+                    window.ui.setSyncStatus(isCloudEnabled ? 'synced' : 'local', isCloudEnabled ? 'Synced' : 'Saved on this device');
+                    return report;
+                } catch (error) { window.ui.setSyncStatus('error', 'Not saved'); throw error; }
             },
 
             deletePublisher: async (id) => {
-                window.ui.openSysPrompt("Delete Publisher", "Are you sure? This action cannot be undone.", false, async () => {
+                window.ui.openSysPrompt('Delete publisher', 'Delete this publisher? Remove their reports first. This action cannot be undone.', false, async () => {
+                    if (window.db.reports.some(r => r.pubId === id)) throw new Error('This publisher has reports. Keep the record to preserve service history.');
+                    if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before deleting.');
+                    if (isCloudEnabled) {
+                        const { error } = await supabaseClient.from('publishers').delete().eq('id', id).eq('cong_id', window.currentCongId);
+                        if (error) throw error;
+                    }
                     window.db.publishers = window.db.publishers.filter(p => p.id !== id);
-                    if (isCloudEnabled) await supabaseClient.from('publishers').delete().eq('id', id); 
-                    window.ui.renderPublishers(); window.ui.showToast('Record purged.');
+                    window.db.writeLocalCache('publishers');
+                    window.ui.renderPublishers(); window.ui.showToast('Publisher deleted.');
                 });
             },
 
             revokeAP: async (reportId) => {
-                const idx = window.db.reports.findIndex(r => r.id === reportId);
-                if(idx > -1) {
-                    window.db.reports[idx].isAP = false; 
-                    window.db.reports[idx].hours = 0;
-                    window.db.reports[idx].comments = '';
-                    if (isCloudEnabled) await supabaseClient.from('reports').upsert(window.db.mapRepToDB(window.db.reports[idx])); 
-                    window.ui.renderDashboard(); window.ui.showToast('AP hours & comments revoked.');
-                }
+                const report = window.db.reports.find(r => r.id === reportId);
+                if (!report) return;
+                await window.db.saveReport({ ...report, isAP: false, hours: 0, comments: '' });
+                window.ui.renderDashboard(); window.ui.showToast('Auxiliary pioneer hours and comments cleared.');
             },
-            
-            importReports: async (e) => {
-                const file = e.target.files[0]; if (!file) return;
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    const lines = event.target.result.split('\n');
-                    if (lines.length < 2) { window.ui.showToast('Invalid CSV format', 'error'); return; }
-                    let imported = 0; const dbRepsToUpsert = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim(); if (!line) continue;
-                        const values = []; let inQuotes = false, val = '';
-                        for (let j = 0; j < line.length; j++) {
-                            const char = line[j];
-                            if (char === '"') inQuotes = !inQuotes;
-                            else if (char === ',' && !inQuotes) { values.push(val); val = ''; }
-                            else val += char;
-                        }
-                        values.push(val);
-                        const pubName = values[0]?.trim(); if (!pubName) continue;
-                        const pub = window.db.publishers.find(p => p.name.toLowerCase() === pubName.toLowerCase()); if (!pub) continue; 
-                        
-                        const isTrue = (v) => v && v.toUpperCase() === 'TRUE';
-                        const monthName = values[2]?.trim();
-                        const monthIdx = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].findIndex(m => m.toLowerCase() === monthName.toLowerCase());
-                        if(monthIdx === -1) continue;
 
-                        const repData = { pubId: pub.id, serviceYear: parseInt(values[1]), month: monthIdx, sharedInMinistry: isTrue(values[3]), studies: parseInt(values[4]) || 0, hours: parseFloat(values[5]) || 0, comments: values[6]?.trim() || '', isAP: isTrue(values[7]) };
-                        repData.id = `${repData.pubId}_${repData.serviceYear}_${repData.month}`;
-                        
-                        const idx = window.db.reports.findIndex(r => r.id === repData.id);
-                        if (idx > -1) window.db.reports[idx] = repData; else window.db.reports.push(repData);
-                        dbRepsToUpsert.push(window.db.mapRepToDB(repData)); imported++;
-                    }
-                    if (isCloudEnabled && dbRepsToUpsert.length > 0) await supabaseClient.from('reports').upsert(dbRepsToUpsert);
-                    window.ui.showToast(`Imported ${imported} historical reports`); window.ui.renderDashboard(); window.ui.renderAnalytics(); e.target.value = ''; 
-                };
-                reader.readAsText(file);
+            importReports: async (e) => {
+                const file=e.target.files?.[0]; if(!file)return;
+                const rows=window.AppSupport.parseCSV(await file.text());
+                if(rows.length<2) throw new Error('The CSV has no report rows.');
+                const header=rows[0].map(v=>v.trim().toLowerCase());
+                const col=(row,name)=>row[header.indexOf(name.toLowerCase())]?.trim() || '';
+                if(!header.includes('publisher name') || !header.includes('service year') || !header.includes('month')) throw new Error('Use an exported reports CSV with Publisher Name, Service Year and Month columns.');
+                const drafts=new Map(); let skipped=0;
+                for(const row of rows.slice(1)){
+                    const id=col(row,'Publisher ID'),name=col(row,'Publisher Name');
+                    const matches=window.db.publishers.filter(p=>(id && p.id===id)||(!id && p.name.toLowerCase()===name.toLowerCase()));
+                    if(matches.length!==1){skipped++;continue;}
+                    const sy=Number(col(row,'Service Year'));
+                    const monthText=col(row,'Month');
+                    const month=['January','February','March','April','May','June','July','August','September','October','November','December'].findIndex(m=>m.toLowerCase()===monthText.toLowerCase());
+                    const hours=Number(col(row,'Hours')||0),studies=Number(col(row,'Studies')||0);
+                    if(!Number.isInteger(sy)||sy<1900||sy>2200||month<0||!Number.isFinite(hours)||hours<0||!Number.isInteger(studies)||studies<0) throw new Error('A report row has an invalid year, month, hours or studies. No rows were imported.');
+                    const report={id:`${matches[0].id}_${sy}_${month}`,pubId:matches[0].id,serviceYear:sy,month,hours,studies,comments:col(row,'Remarks'),sharedInMinistry:col(row,'Shared In Ministry').toUpperCase()==='TRUE',isAP:col(row,'Is Auxiliary Pioneer').toUpperCase()==='TRUE'};
+                    drafts.set(report.id,report);
+                }
+                if(!drafts.size) throw new Error('No reports match a publisher in this congregation.');
+                if(!isCloudEnabled) throw new Error('Cloud connection required to import reports.');
+                const {error}=await supabaseClient.from('reports').upsert([...drafts.values()].map(window.db.mapRepToDB),{onConflict:'id'});
+                if(error) throw error;
+                const merged=new Map(window.db.reports.map(r=>[r.id,r])); drafts.forEach((r,id)=>merged.set(id,r));
+                window.db.reports=[...merged.values()]; window.db.writeLocalCache('reports');
+                window.ui.showToast(`Imported ${drafts.size} reports${skipped?`; skipped ${skipped} unmatched publishers`:''}.`);
+                window.ui.renderDashboard(); window.ui.renderAnalytics(); e.target.value='';
             },
 
             importContacts: async (e) => {
-                const file = e.target.files[0]; if (!file) return;
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    const lines = event.target.result.split('\n');
-                    if (lines.length < 2) { window.ui.showToast('Invalid CSV format', 'error'); return; }
-                    const hasSFTSColumn = /(^|,)\s*SFTS\s*(,|$)/i.test(lines[0]);
-                    let imported = 0; const dbPubsToUpsert = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim(); if (!line) continue;
-                        const values = []; let inQuotes = false, val = '';
-                        for (let j = 0; j < line.length; j++) {
-                            const char = line[j];
-                            if (char === '"') inQuotes = !inQuotes;
-                            else if (char === ',' && !inQuotes) { values.push(val); val = ''; }
-                            else val += char;
-                        }
-                        values.push(val);
-                        
-                        const name = values[0]?.trim(); if (!name) continue;
-                        const isTrue = (v) => v && v.toUpperCase() === 'TRUE';
-                        
-                        const pubData = {
-                            name: name,
-                            phone: values[1]?.trim() || '', 
-                            dob: values[2]?.trim() || '', 
-                            baptized: values[3]?.trim() || '',
-                            isElder: isTrue(values[4]), 
-                            isMS: isTrue(values[5]), 
-                            isRP: isTrue(values[6]), 
-                            gender: isTrue(values[7]) ? 'Male' : 'Female', 
-                            isSP: isTrue(values[9]), 
-                            isSFTS: hasSFTSColumn ? (isTrue(values[10]) || isTrue(values[9])) : isTrue(values[9]),
-                            isFM: isTrue(values[hasSFTSColumn ? 11 : 10]), 
-                            hope: isTrue(values[hasSFTSColumn ? 12 : 11]) ? 'Anointed' : 'Other Sheep', 
-                            group: values[hasSFTSColumn ? 14 : 13]?.trim() || ''
-                        };
-                        const existing = window.db.publishers.find(p => p.name.toLowerCase() === name.toLowerCase());
-                        pubData.id = existing ? existing.id : window.utils.generateUUID();
-                        
-                        const idx = window.db.publishers.findIndex(p => p.id === pubData.id);
-                        if (idx > -1) window.db.publishers[idx] = pubData; else window.db.publishers.push(pubData);
-                        window.db.setSFTS(pubData.id, !!pubData.isSFTS); dbPubsToUpsert.push(window.db.mapPubToDB(pubData)); imported++;
-                    }
-                    if (isCloudEnabled && dbPubsToUpsert.length > 0) await supabaseClient.from('publishers').upsert(dbPubsToUpsert);
-                    window.ui.showToast(`Imported ${imported} profiles`); window.ui.renderPublishers(); window.ui.renderGroups(); e.target.value = ''; 
-                };
-                reader.readAsText(file);
+                const file=e.target.files?.[0]; if(!file)return;
+                const rows=window.AppSupport.parseCSV(await file.text());
+                if(rows.length<2) throw new Error('The CSV has no publisher rows.');
+                const header=rows[0].map(v=>v.trim().toLowerCase());
+                if(!header.includes('name')) throw new Error('Use a contacts CSV with a Name column.');
+                const col=(row,name,fallback='')=>{const i=header.indexOf(name.toLowerCase());return i<0?fallback:(row[i]||'').trim();};
+                const bool=(row,name,fallback=false)=>String(col(row,name,fallback?'TRUE':'FALSE')).toUpperCase()==='TRUE';
+                const drafts=new Map(), importedIds=new Map();
+                for(const row of rows.slice(1)){
+                    const name=col(row,'Name'); if(!name)continue;
+                    const sourceId=col(row,'ID');
+                    const matches=window.db.publishers.filter(p=>sourceId?p.id===sourceId:p.name.toLowerCase()===name.toLowerCase());
+                    if(matches.length>1) throw new Error(`More than one publisher matches ${name}. Export contacts with the ID column before importing.`);
+                    const previous=matches[0]||[...drafts.values()].find(p=>p.name.toLowerCase()===name.toLowerCase())||{};
+                    const id=previous.id||window.utils.generateUUID(); if(sourceId)importedIds.set(sourceId,id);
+                    const publisher={...previous,id,name,phone:col(row,'Phone',previous.phone),dob:col(row,'DOB',previous.dob),baptized:col(row,'Baptized',previous.baptized),
+                        isElder:bool(row,'Elder',previous.isElder),isMS:bool(row,'MS',previous.isMS),isRP:bool(row,'RP',previous.isRP),
+                        gender:bool(row,'Male',previous.gender!=='Female')?'Male':'Female',isSP:bool(row,'Special Pioneer',previous.isSP),isSFTS:bool(row,'SFTS',previous.isSFTS),isFM:bool(row,'Field Missionary',previous.isFM),
+                        hope:bool(row,'Anointed',previous.hope==='Anointed')?'Anointed':'Other Sheep',group:col(row,'Group',previous.group),address:col(row,'Address',previous.address),
+                        emergencyName:col(row,'Emergency Name',previous.emergencyName),emergencyRelationship:col(row,'Emergency Relationship',previous.emergencyRelationship),emergencyPhone:col(row,'Emergency Phone',previous.emergencyPhone),
+                        spiritualStatus:col(row,'Spiritual Status',previous.spiritualStatus),familyHeadId:col(row,'Family Head ID',previous.familyHeadId)||null};
+                    publisher.isSFTS=publisher.isSFTS||publisher.isSP; drafts.set(id,publisher);
+                }
+                if(!drafts.size) throw new Error('No named publishers were found in the CSV.');
+                for(const publisher of drafts.values()) if(publisher.familyHeadId) publisher.familyHeadId=importedIds.get(publisher.familyHeadId)||publisher.familyHeadId;
+                if(!isCloudEnabled) throw new Error('Cloud connection required to import contacts.');
+                const {error}=await supabaseClient.from('publishers').upsert([...drafts.values()].map(window.db.mapPubToDB),{onConflict:'id'});
+                if(error) throw error;
+                const merged=new Map(window.db.publishers.map(p=>[p.id,p])); drafts.forEach((p,id)=>merged.set(id,p));
+                window.db.publishers=[...merged.values()];
+                drafts.forEach(p=>window.db.setSFTS(p.id,p.isSFTS)); window.db.writeLocalCache('publishers');
+                window.ui.showToast(`Imported ${drafts.size} publisher profiles.`); window.ui.renderPublishers(); window.ui.renderGroups(); e.target.value='';
             }
+
         };
 
         const S3_ENGINE_CSS = `
@@ -3710,7 +3610,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         // Build S-21 directly from the supplied two-card PDF. The source page is
         // split at its actual midpoint/bleed line, then each half becomes a page.
         const buildS21OriginalPdf = async (publishers, sy) => {
-            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const { PDFDocument, StandardFonts, rgb } = window.PdfTools.requireLibrary();
             const sourceBytes = Uint8Array.from(atob(S21_TEMPLATE_B64), c => c.charCodeAt(0));
             const srcDoc = await PDFDocument.load(sourceBytes);
             const srcPage = srcDoc.getPage(0);
@@ -3726,17 +3626,18 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             const fontBold = await out.embedFont(StandardFonts.HelveticaBold);
             const dark = rgb(0.04, 0.04, 0.04);
 
-            const drawCentered = (page, text, cx, bottom, top, size=9, fontObj=font, raise=1.8) => {
+            const continuationNotes = [];
+            const drawCentered = (page, text, cx, bottom, top, size=9, fontObj=font, raise=1.8, maxWidth=60) => {
                 if (text === '' || text === null || text === undefined) return;
-                const s = String(text);
-                const cellH = top - bottom;
-                const w = fontObj.widthOfTextAtSize(s, size);
-                const y = bottom + (cellH - size) / 2 + raise;
-                page.drawText(s, { x: cx - w/2, y, size, font: fontObj, color: dark });
+                const fitted = window.PdfTools.fit(text,fontObj,maxWidth,size,7);
+                const low = Math.min(bottom,top), high = Math.max(bottom,top);
+                const y = low + (high-low-fitted.size)/2 + raise;
+                page.drawText(fitted.text, { x: cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
             };
-            const drawLeft = (page, text, x, topBaseline, size=9, fontObj=font) => {
+            const drawLeft = (page, text, x, topBaseline, size=9, fontObj=font, maxWidth=480) => {
                 if (text === '' || text === null || text === undefined) return;
-                page.drawText(String(text), { x, y: topBaseline, size, font: fontObj, color: dark });
+                const fitted=window.PdfTools.fit(text,fontObj,maxWidth,size,7);
+                page.drawText(fitted.text,{x,y:topBaseline,size:fitted.size,font:fontObj,color:dark});
             };
             const check = (page, cx, cy) => {
                 page.drawLine({ start:{x:cx-3.0,y:cy}, end:{x:cx-0.8,y:cy-2.4}, thickness:1.15, color:dark });
@@ -3780,9 +3681,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 // Header fields.
                 drawB(pub.name||'',53,49.5,9.5);
-                drawB(pub.dob||'',92,64.0,9.5);
+                drawLeft(page,pub.dob||'',92,toOutY(64),9.5,font,265);
                 const bapText=!pub.baptized?'UBP':(pub.baptized||'');
-                drawB(bapText,109,78.5,9.5);
+                drawLeft(page,bapText,109,toOutY(78.5),9.5,font,248);
 
                 // Identity/role checkboxes — the original boxes remain untouched.
                 const checkboxCenters=[
@@ -3804,7 +3705,15 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const remarks=hasReport ? (shared ? (r.comments||'') : 'Not Participated') : '';
                     drawT(r.studies||'',col.studies,row.bottom,row.top,9,false,1.8);
                     drawT(r.hours||'',col.hours,row.bottom,row.top,9,false,1.8);
-                    drawT(remarks,col.remarks,row.bottom,row.top,8.2,false,1.4);
+                    const remarkLines=window.PdfTools.wrap(remarks,font,185,7.5);
+                    const visible=remarkLines.slice(0,2);
+                    if(remarkLines.length>2){
+                        continuationNotes.push({name:pub.name,label:window.utils.getMonthName(monthOrder[i]),text:remarks});
+                        const suffix=' [see notes]';
+                        visible[1]=window.PdfTools.fit(visible[1]||'',font,185-font.widthOfTextAtSize(suffix,7.5),7.5,7.5).text+suffix;
+                    }
+                    const mid=toOutY((row.top+row.bottom)/2);
+                    visible.forEach((line,n)=>drawCentered(page,line,col.remarks,mid-4.5+(visible.length-1)*4-n*8,mid+4.5+(visible.length-1)*4-n*8,7.5,font,1.4,185));
                     if(shared){
                         // Shared-in-ministry checkbox centre is x≈136.7; AP checkbox x≈277.9.
                         const cy=toOutY((row.top+row.bottom)/2); check(page,col.shared,cy);
@@ -3815,7 +3724,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 });
                 drawT(totalHours>0 ? totalHours : '',348.47,371.93,389.48,9,true,1.9);
                 const remarksOutput=totalRemarksNum>0 ? `Additional hours: ${totalRemarksNum}` : '';
-                drawT(remarksOutput,480.80,371.93,389.48,7.8,false,1.5);
+                drawCentered(page,remarksOutput,480.80,toOutY(389.48),toOutY(371.93),7.8,font,1.5,185);
             };
 
             for (const pub of publishers) {
@@ -3824,11 +3733,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 page.drawPage(embedded,{x:0,y:-splitYTop,width:srcW,height:srcH});
                 publisherRows(pub,page,0);
             }
+            window.PdfTools.appendNotes(out,font,fontBold,continuationNotes);
             return out.save();
         };
 
         const buildS3OriginalPdf = async (sy, month, congName) => {
-            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const { PDFDocument, StandardFonts, rgb } = window.PdfTools.requireLibrary();
             const bytes=Uint8Array.from(atob(S3_TEMPLATE_B64),c=>c.charCodeAt(0));
             const pdf=await PDFDocument.load(bytes);
             const page=pdf.getPage(0);
@@ -3845,12 +3755,22 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             let mTotal=0,mCount=0,eTotal=0,eCount=0;
             const w=[];
             for(let i=1;i<=5;i++){ const a=printObj(rec[`w${i}_mid`]), b=printObj(rec[`w${i}_end`]); if(!a.str&&a.num){mTotal+=a.num;mCount++;} if(!b.str&&b.num){eTotal+=b.num;eCount++;} w.push({mid:a,end:b}); }
-            const center=(text,cx,top,bottom,size=9,bold=false,raise=2.0)=>{ if(text===''||text==null)return; const f=bold?fontBold:font; const width=f.widthOfTextAtSize(String(text),size); const cellH=bottom-top; const y=h-bottom+(cellH-size)/2+raise; page.drawText(String(text),{x:cx-width/2,y,size,font:f,color:dark}); };
-            const left=(text,x,top,size=8.5)=>{if(text===''||text==null)return; page.drawText(String(text),{x,y:h-top+1.5,size,font,color:dark});};
+            const center=(text,cx,top,bottom,size=9,bold=false,raise=2.0)=>{
+                if(text===''||text==null)return;
+                const f=bold?fontBold:font;
+                const fitted=window.PdfTools.fit(text,f,32,size,7);
+                const y=h-bottom+(bottom-top-fitted.size)/2+raise;
+                page.drawText(fitted.text,{x:cx-fitted.width/2,y,size:fitted.size,font:f,color:dark});
+            };
+            const left=(text,x,top,size=8.5,maxWidth=128)=>{
+                if(text===''||text==null)return;
+                const fitted=window.PdfTools.fit(text,font,maxWidth,size,6.5);
+                page.drawText(fitted.text,{x,y:h-top+4.0,size:fitted.size,font,color:dark});
+            };
             // The official template already prints the labels and dotted lines.
             // Start both entered values at the left edge of their corresponding lines and
-            // place them slightly lower so they sit cleanly on the baseline.
-            left(congName,83.0,98.0,8.5); left(monthName,239.0,98.0,8.5);
+            // keep entered text 2.5pt higher, clear of the printed dotted baseline.
+            left(congName,83.0,98.0,8.5); left(monthName,239.0,98.0,8.5,69);
             const xs=[69.61,106.46,143.30,180.15,217.10];
             const rowTops=[127.57,127.57,127.57,127.57,127.57];
             const rowBottoms=[166.91,166.91,166.91,166.91,166.91];
@@ -3916,14 +3836,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         
             window.ui = {
             /* ===== UI refresh helpers ===== */
+            jsArg: value => window.ui.escapeHtml(JSON.stringify(String(value ?? ''))),
             escapeHtml: (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])),
             applyTheme: (theme) => {
-                const allowed = ['default','blue','crimson','green','scheduler'];
-                if (theme === 'light' || theme === 'colorful' || theme === 'bw-light' || theme === 'bw-dark' || theme === 'dark') theme = 'default';
+                const allowed = ['default','blue','crimson','green','scheduler','light','dark'];
+                if (theme === 'colorful') theme = 'default';
+                if (theme === 'bw-light') theme = 'light';
+                if (theme === 'bw-dark') theme = 'dark';
                 theme = allowed.includes(theme) ? theme : 'default';
                 document.body.dataset.theme = theme;
                 localStorage.setItem('ca_theme', theme);
-                document.querySelectorAll('[data-theme-option]').forEach(b => b.classList.toggle('active', b.dataset.themeOption === theme));
+                document.querySelectorAll('[data-theme-option]').forEach(b => { const active = b.dataset.themeOption === theme; b.classList.toggle('active', active); b.setAttribute('aria-pressed', String(active)); });
             },
             setTheme: (theme) => { window.ui.applyTheme(theme); window.ui.showToast(`Theme changed to ${theme.charAt(0).toUpperCase()+theme.slice(1)}.`); },
             getAnnouncementStorageKey: () => `ca_announcements_read_${window.currentCongId || 'global'}`,
@@ -3979,10 +3902,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 render();
             },
             setSyncStatus: (state, label) => {
+                window.db.syncState = state;
                 let pill=document.getElementById('ca-sync-status');
                 if(!pill) return;
                 pill.className=`ca-sync-pill ${state||''}`;
-                pill.innerHTML=`<span>●</span>${label || (state==='syncing'?'Syncing…':state==='error'?'Sync issue':'Synced')}`;
+                pill.textContent=`● ${label || (state==='syncing'?'Syncing…':state==='error'?'Sync issue':'Synced')}`;
             },
             cleanupLegacyDemoData: async () => {
                 // Remove only records created by the previous seeded demo build.
@@ -4129,9 +4053,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.applyRoleNavigation();
                 window.ui.switchTab(initialTab, true, localStorage.getItem(`fs_last_context_${window.currentCongId || 'global'}`) || null);
                 window.ui.renderWipeBanner();
-                window.addEventListener('resize', () => { window.ui.scaleS21Preview(); });
                 if (window.ui.subscriptionTimer) clearInterval(window.ui.subscriptionTimer);
-                window.ui.subscriptionTimer = setInterval(() => window.ui.refreshSubscriptionAccess(true), 60000);
+                window.ui.subscriptionTimer = setInterval(() => window.db.refreshSubscriptionAccess(true), 60000);
             },
 
             getSystemNotice: (notes) => {
@@ -4308,7 +4231,7 @@ alter table public.congregation_access enable row level security;
 
             switchTab: (tabId, restoring = false, context = null) => {
                 if (tabId === 'oclm' && window.db.currentCongData?.feature_oclm !== true && sessionStorage.getItem('fs_role') !== 'oclm') { window.ui.showOCLMComingSoon(); return; }
-                const role=sessionStorage.getItem('fs_role')||'admin';
+                const role=(document.body.classList.contains('public-mode') || document.body.classList.contains('overseer-mode'))?'admin':sessionStorage.getItem('fs_role')||'admin';
                 const allowed={admin:true,field_service:context==='field'||tabId==='dashboard'||tabId==='publishers',attendance:context==='attendance'||tabId==='attendance',oclm:context==='oclm'||tabId==='oclm'};
                 if(role!=='admin'&&!allowed[role]){window.ui.showToast('This section is not included in your role.','error');return;}
                 if(!context){context=(tabId==='groups'||tabId==='analytics'?'field':tabId==='attendance'?'attendance':tabId==='oclm'?'oclm':'main');}
@@ -4327,20 +4250,21 @@ alter table public.congregation_access enable row level security;
                 // Remember the user's last working tab so refresh/re-open returns there.
                 // Public/overseer links use their own explicit routing and are not persisted here.
                 if (!window.ui.publicGroup && !window.ui.overseerGroup && window.currentCongId) {
-                    localStorage.setItem(`fs_last_tab_${window.currentCongId}`, tabId); localStorage.setItem(`fs_last_context_${window.currentCongId}`, context);
+                    try{localStorage.setItem(`fs_last_tab_${window.currentCongId}`,tabId);localStorage.setItem(`fs_last_context_${window.currentCongId}`,context);}catch{}
                 }
 
                 // Update Mobile Title
                 const titles = { 'dashboard': 'Overview', 'groups': 'Groups', 'analytics': 'Analytics', 'publishers': 'Publishers', 'attendance': 'Meeting Attendance', 'oclm': 'Midweek Scheduler', 'superadmin': 'SaaS Control Center' };
                 const mTitle = document.getElementById('nav-mobile-title');
-                const congName = window.db?.currentCongData?.name || localStorage.getItem('fs_cong_name');
+                const congName = window.db?.currentCongData?.name || '';
                 if(mTitle) mTitle.textContent = (tabId === 'superadmin' ? 'SaaS Control Center' : (congName || titles[tabId] || 'Congregation Assistant'));
 
                 // Ensure mobile menu is closed when switching tabs
                 window.ui.closeModal('modal-mobile-menu');
+                window.AppSupport.reconcileDialogs();
 
                 if (tabId === 'dashboard') window.ui.renderDashboard();
-                if (tabId === 'publishers') window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL');
+                if (tabId === 'publishers') window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL',window.ui.currentPubFilterValue || '');
                 if (tabId === 'groups') window.ui.renderGroups();
                 if (tabId === 'oclm') { window.initMidweekScheduler?.(); }
                 if (tabId === 's4') window.ui.setupS4Tab();
@@ -4353,7 +4277,7 @@ alter table public.congregation_access enable row level security;
 
             showToast: (msg, type = 'success') => {
                 const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = msg; document.getElementById('toast-icon').textContent = type === 'success' ? '✅' : '⚠️';
-                t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500);
+                t.classList.add('show'); clearTimeout(window.ui.toastTimer); window.ui.toastTimer=setTimeout(() => t.classList.remove('show'), type==='success'?3500:6500);
             },
 
             openSysPrompt: (title, desc, requiresPassword, callback) => {
@@ -4481,7 +4405,7 @@ alter table public.congregation_access enable row level security;
                     const famSel = document.getElementById('pub-family-head');
                     const currentId = document.getElementById('pub-id').value;
                     const others = window.db.getPublishers().filter(p => p.id !== currentId).sort((a,b)=>a.name.localeCompare(b.name));
-                    famSel.innerHTML = '<option value="">-- None (Head of own household) --</option>' + others.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                    famSel.innerHTML = '<option value="">-- None (Head of own household) --</option>' + others.map(p => `<option value="${p.id}">${window.ui.escapeHtml(p.name)}</option>`).join('');
                 }
                 if(id === 'modal-settings') { 
                     window.ui.initAppFont();
@@ -4519,7 +4443,7 @@ alter table public.congregation_access enable row level security;
                 }
                 document.getElementById(id).classList.remove('hidden');
             },
-            closeModal: (id) => document.getElementById(id).classList.add('hidden'),
+            closeModal: (id) => document.getElementById(id)?.classList.add('hidden'),
 
             renderAttendance: () => {
                 const tbody = document.getElementById('att-table-body');
@@ -4716,8 +4640,8 @@ alter table public.congregation_access enable row level security;
                 if(isCloudEnabled && supabaseClient && window.ui.oclmCloudLoaded && window.currentCongId){
                     clearTimeout(window.ui._oclmSaveTimer);
                     window.ui._oclmSaveTimer=setTimeout(async()=>{
-                        try{ await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...state,version:4}}); }
-                        catch(e){ console.error('OCLM cloud save failed:',e); }
+                        try{ const {error}=await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...state,version:4}}); if(error) throw error; window.ui.setSyncStatus('synced','Synced'); }
+                        catch(e){ console.error('OCLM cloud save failed:',e); window.ui.setSyncStatus('error','Schedule not synced'); window.ui.showToast('Schedule saved on this device. Cloud sync failed; retry before sharing.', 'error'); }
                     },350);
                 }
             },
@@ -4733,7 +4657,7 @@ alter table public.congregation_access enable row level security;
                             localStorage.setItem(window.ui.oclmStorageKey(),JSON.stringify(cloud));
                         } else {
                             const local=window.ui.getOCLMState();
-                            await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...local,version:4}});
+                            const {error:saveError}=await supabaseClient.rpc('save_oclm_state',{p_cong_id:String(window.currentCongId),p_state:{...local,version:4}}); if(saveError) throw saveError;
                         }
                         window.ui.oclmCloudLoaded=true;
                     }catch(e){console.error('OCLM cloud load failed:',e);window.ui.showToast('OCLM cloud data could not be loaded. Check the setup SQL.','error');}
@@ -4887,7 +4811,7 @@ alter table public.congregation_access enable row level security;
             encodeOCLMSnapshot: snapshot => btoa(unescape(encodeURIComponent(JSON.stringify(snapshot)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),
             decodeOCLMSnapshot: raw => {const normalized=raw.replace(/-/g,'+').replace(/_/g,'/');const padded=normalized+'='.repeat((4-normalized.length%4)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))));},
             getOCLMPublicToken: state => state?.publicToken || null,
-            getOCLMLiveLink: (snapshot,state=null) => {const token=window.ui.getOCLMPublicToken(state||window.ui.getOCLMState()); const base=window.location.href.split('?')[0]; if(token) return `${base}?mode=oclm&token=${encodeURIComponent(token)}`; return `${base}?cong=${encodeURIComponent(window.currentCongId)}&mode=oclm&data=${encodeURIComponent(window.ui.encodeOCLMSnapshot(snapshot))}`;},
+            getOCLMLiveLink: (snapshot,state=null) => {const token=window.ui.getOCLMPublicToken(state||window.ui.getOCLMState()); const base=window.location.href.split(/[?#]/)[0]; if(token) return `${base}?mode=oclm&token=${encodeURIComponent(token)}`; return `${base}?cong=${encodeURIComponent(window.currentCongId)}&mode=oclm&data=${encodeURIComponent(window.ui.encodeOCLMSnapshot(snapshot))}`;},
             syncOCLMPublicLink: async snapshot => {
                 if(!isCloudEnabled || !window.currentCongId || !supabaseClient) return null;
                 const {data,error}=await supabaseClient.rpc('upsert_oclm_public_snapshot',{p_cong_id:String(window.currentCongId),p_snapshot:snapshot});
@@ -4916,10 +4840,10 @@ alter table public.congregation_access enable row level security;
                 window.location.href=`mailto:photographicode@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body+note)}`;
                 window.ui.showToast('Opening your email app.');
             },
-            copyText: async text => {try{await navigator.clipboard.writeText(text);window.ui.showToast('Public link copied.');}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();window.ui.showToast('Public link copied.');}},
+            copyText: async text => {try{await navigator.clipboard.writeText(text);window.ui.showToast('Copied to clipboard.');}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const copied=document.execCommand('copy');if(copied){ta.remove();window.ui.showToast('Copied to clipboard.');}else{ta.setAttribute('aria-label','Select and copy this text');window.ui.showToast('Automatic copy is unavailable. Select and copy the displayed text.','error');}}},
 
             setupPublicAttendance: () => {
-                const syInfo = window.utils.getCurrentServiceYearInfo(); const istInfo = window.utils.getISTPreviousMonthInfo();
+                const syInfo = window.utils.getCurrentServiceYearInfo(); const istInfo = { serviceYear: syInfo.serviceYear, month: syInfo.month };
                 
                 const ySel = document.getElementById('pub-att-year');
                 if (ySel && ySel.options.length === 0) {
@@ -4934,14 +4858,8 @@ alter table public.congregation_access enable row level security;
                 document.getElementById('pub-att-week').value = currentWeekIdx;
                 document.getElementById('pub-att-current-week-msg').textContent = `Defaulted to current week (${currentWeekIdx})`;
 
-                const isWeekend = today.getDay() === 0 || today.getDay() === 6;
-                if (isWeekend) {
-                    document.getElementById('pub-att-end-container').classList.remove('hidden');
-                    document.getElementById('pub-att-mid-container').classList.add('hidden');
-                } else {
-                    document.getElementById('pub-att-mid-container').classList.remove('hidden');
-                    document.getElementById('pub-att-end-container').classList.add('hidden');
-                }
+                document.getElementById('pub-att-end-container').classList.remove('hidden');
+                document.getElementById('pub-att-mid-container').classList.remove('hidden');
 
                 window.ui.loadPublicAttendance();
             },
@@ -5011,9 +4929,9 @@ alter table public.congregation_access enable row level security;
                     const blob=new Blob([pdfBytes],{type:'application/pdf'});
                     const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url;
                     const viewYear=month>=8?sy-1:sy; const monthName=window.utils.getMonthName(month)+' '+viewYear;
-                    a.download=`S-3_${congName}_${monthName}.pdf`; a.click(); URL.revokeObjectURL(url);
+                    a.download=`S-3_${congName}_${monthName}.pdf`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),30000);
                     window.ui.showToast('Original S-3-E template compiled successfully!');
-                }catch(err){console.error('S-3 PDF Error:',err);window.ui.showToast('Failed to compile S-3 PDF.','error');}
+                }catch(err){console.error('S-3 PDF Error:',err);window.ui.showToast(err.message || 'Failed to compile S-3 PDF.','error');}
                 finally{btn.innerHTML=originalText;btn.disabled=false;}
             },
 
@@ -5042,8 +4960,8 @@ alter table public.congregation_access enable row level security;
                     spiritualStatus: document.getElementById('pub-spiritual-status').value,
                     familyHeadId: document.getElementById('pub-family-head').value || null
                 };
+                await window.db.savePublisher(pub);
                 window.db.setSFTS(pub.id, !!pub.isSFTS);
-                await window.db.savePublisher(pub); 
                 window.ui.showToast(id ? 'Profile updated!' : 'Profile successfully provisioned!'); 
                 window.ui.closeModal('modal-add-publisher'); 
                 window.ui.renderPublishers();
@@ -5065,17 +4983,19 @@ alter table public.congregation_access enable row level security;
             },
 
             downloadContacts: () => {
-                const pubs = window.db.getPublishers(); if (pubs.length === 0) { window.ui.showToast('No contacts to export', 'error'); return; }
-                let csv = 'Name,Phone,DOB,Baptized,Elder,MS,RP,Male,Female,Special Pioneer,SFTS,Field Missionary,Anointed,Other Sheep,Group\n';
-                pubs.forEach(p => { csv += `"${p.name}","${p.phone || ''}","${p.dob || ''}","${p.baptized || ''}",${!!p.isElder?'TRUE':'FALSE'},${!!p.isMS?'TRUE':'FALSE'},${!!p.isRP?'TRUE':'FALSE'},${p.gender==='Male'?'TRUE':'FALSE'},${p.gender==='Female'?'TRUE':'FALSE'},${!!p.isSP?'TRUE':'FALSE'},${!!p.isSFTS || !!p.isSP?'TRUE':'FALSE'},${!!p.isFM?'TRUE':'FALSE'},${p.hope==='Anointed'?'TRUE':'FALSE'},${p.hope==='Other Sheep'?'TRUE':'FALSE'},"${p.group || ''}"\n`; });
-                const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = `${window.currentCongId}_Publishers_Backup.csv`; a.click();
+                const publishers=window.db.getPublishers(); if(!publishers.length){window.ui.showToast('No contacts to export.','error');return;}
+                const header=['Name','Phone','DOB','Baptized','Elder','MS','RP','Male','Female','Special Pioneer','SFTS','Field Missionary','Anointed','Other Sheep','Group','Address','Emergency Name','Emergency Relationship','Emergency Phone','Spiritual Status','Family Head ID','ID'];
+                const bool=v=>v?'TRUE':'FALSE';
+                const rows=publishers.map(p=>[p.name,p.phone,p.dob,p.baptized,bool(p.isElder),bool(p.isMS),bool(p.isRP),bool(p.gender==='Male'),bool(p.gender==='Female'),bool(p.isSP),bool(p.isSFTS||p.isSP),bool(p.isFM),bool(p.hope==='Anointed'),bool(p.hope!=='Anointed'),p.group,p.address,p.emergencyName,p.emergencyRelationship,p.emergencyPhone,p.spiritualStatus,p.familyHeadId,p.id]);
+                const csv=[header,...rows].map(row=>row.map(window.AppSupport.csvCell).join(',')).join('\r\n');
+                window.AppSupport.download(csv,`${window.currentCongId}_Publishers_Backup.csv`,'text/csv;charset=utf-8');
             },
 
             downloadReports: () => {
-                const reps = window.db.getReports(); const pubs = window.db.getPublishers(); if (reps.length === 0) { window.ui.showToast('No reports to export', 'error'); return; }
-                let csv = 'Publisher Name,Service Year,Month,Shared In Ministry,Studies,Hours,Remarks,Is Auxiliary Pioneer\n';
-                reps.forEach(r => { const pubName = pubs.find(p => p.id === r.pubId)?.name || 'Unknown'; const monthName = window.utils.getMonthName(r.month); const cleanComments = (r.comments || '').replace(/"/g, '""'); csv += `"${pubName}",${r.serviceYear},"${monthName}",${r.sharedInMinistry?'TRUE':'FALSE'},${r.studies||0},${r.hours||0},"${cleanComments}",${r.isAP?'TRUE':'FALSE'}\n`; });
-                const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = window.URL.createObjectURL(blob); a.download = `${window.currentCongId}_Reports_Backup.csv`; a.click();
+                const reports=window.db.getReports(), publishers=window.db.getPublishers(); if(!reports.length){window.ui.showToast('No reports to export.','error');return;}
+                const rows=reports.map(r=>[publishers.find(p=>p.id===r.pubId)?.name||'Unknown',r.serviceYear,window.utils.getMonthName(r.month),r.sharedInMinistry?'TRUE':'FALSE',r.studies,r.hours,r.comments,r.isAP?'TRUE':'FALSE',r.pubId]);
+                const csv=[['Publisher Name','Service Year','Month','Shared In Ministry','Studies','Hours','Remarks','Is Auxiliary Pioneer','Publisher ID'],...rows].map(row=>row.map(window.AppSupport.csvCell).join(',')).join('\r\n');
+                window.AppSupport.download(csv,`${window.currentCongId}_Reports_Backup.csv`,'text/csv;charset=utf-8');
             },
 
             sendReminder: (pId, pName, pGroup, pPhone) => {
@@ -5091,13 +5011,14 @@ alter table public.congregation_access enable row level security;
                 const dYear = document.getElementById('dash-year'); const dMonth = document.getElementById('dash-month'); if(!dYear || !dMonth) return;
                 const sy = parseInt(dYear.value); const month = parseInt(dMonth.value);
                 const pubs = window.db.getPublishers(); const reports = window.db.getReports(sy, month);
+                const reportsByPublisher = new Map(reports.map(r=>[r.pubId,r]));
                 let stats = { totalRep: 0, apCount: 0, apHours: 0, apStudies: 0, rpCount: 0, rpHours: 0, rpStudies: 0, pubCount: 0, pubStudies: 0 };
                 let rpTableHtml = '', apTableHtml = '';
                 
-                const tbody = document.getElementById('dash-reports-table'); tbody.innerHTML = '';
+                const tbody = document.getElementById('dash-reports-table'); const renderedRows = [];
 
-                pubs.sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
-                    const r = reports.find(x => x.pubId === p.id);
+                pubs.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+                    const r = reportsByPublisher.get(p.id);
                     if (r) {
                         stats.totalRep++;
                         let h = parseFloat(r.hours || 0); let s = parseInt(r.studies || 0);
@@ -5108,21 +5029,23 @@ alter table public.congregation_access enable row level security;
                         if (p.isRP || p.isSP || p.isFM) { 
                             if(isShared) { stats.rpCount++; stats.rpHours += h; stats.rpStudies += s; }
                             tagHtml = '<span class="text-[9px] sm:text-[10px] bg-cyan-900/80 text-cyan-200 border border-cyan-500/50 px-1.5 py-0.5 rounded ml-2 font-bold">RP</span>';
-                            rpTableHtml += `<tr class="border-b border-white/5"><td class="px-4 sm:px-5 py-2">${p.name}</td><td class="px-4 sm:px-5 py-2 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-5 py-2 text-center font-mono">${isShared && s>0 ? s : '-'}</td></tr>`;
+                            rpTableHtml += `<tr class="border-b border-white/5"><td class="px-4 sm:px-5 py-2">${window.ui.escapeHtml(p.name)}</td><td class="px-4 sm:px-5 py-2 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-5 py-2 text-center font-mono">${isShared && s>0 ? s : '-'}</td></tr>`;
                         } else if (r.isAP) { 
                             if(isShared) { stats.apCount++; stats.apHours += h; stats.apStudies += s; }
                             tagHtml = '<span class="text-[9px] sm:text-[10px] bg-emerald-900/80 text-emerald-200 border border-emerald-500/50 px-1.5 py-0.5 rounded ml-2 font-bold">AP</span>';
-                            apTableHtml += `<tr class="border-b border-white/5 bg-emerald-900/10"><td class="px-4 sm:px-5 py-3 font-medium">${p.name}</td><td class="px-4 sm:px-5 py-3 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-5 py-3 text-center font-mono">${isShared && s>0 ? s : '-'}</td><td class="px-4 sm:px-5 py-3 text-right"><button onclick="window.db.revokeAP('${r.id}')" class="bg-rose-900/50 text-rose-300 px-3 py-1 text-xs rounded border border-rose-500/50 hover:bg-rose-800 transition">Revoke AP</button></td></tr>`;
+                            apTableHtml += `<tr class="border-b border-white/5 bg-emerald-900/10"><td class="px-4 sm:px-5 py-3 font-medium">${window.ui.escapeHtml(p.name)}</td><td class="px-4 sm:px-5 py-3 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-5 py-3 text-center font-mono">${isShared && s>0 ? s : '-'}</td><td class="px-4 sm:px-5 py-3 text-right"><button onclick="window.db.revokeAP('${r.id}')" class="bg-rose-900/50 text-rose-300 px-3 py-1 text-xs rounded border border-rose-500/50 hover:bg-rose-800 transition">Revoke AP</button></td></tr>`;
                         } else {
                             if (isShared) { stats.pubCount++; stats.pubStudies += s; }
                         }
                         
-                        const groupTag = p.group ? `<span class="text-[9px] sm:text-[10px] text-teal-400 ml-2 bg-teal-900/40 px-1.5 py-0.5 rounded whitespace-nowrap">${p.group}</span>` : '';
-                        tbody.innerHTML += `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="px-4 sm:px-6 py-4 font-medium flex items-center flex-wrap gap-y-1">${p.name} ${groupTag} ${tagHtml}</td><td class="px-4 sm:px-6 py-4 text-center text-emerald-400 text-lg">${isShared?'✔':'<span class="text-rose-400 font-semibold text-sm">No</span>'}</td><td class="px-4 sm:px-6 py-4 text-center font-mono">${isShared && s>0 ? s : '-'}</td><td class="px-4 sm:px-6 py-4 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-6 py-4 text-center text-xs text-teal-100/70"><div class="mx-auto max-w-[150px] sm:max-w-[200px] truncate" title="${isShared ? (r.comments||'') : 'Not Participated'}">${isShared ? (r.comments||'') : 'Not Participated'}</div></td><td class="px-4 sm:px-6 py-4 text-center">-</td></tr>`;
+                        const groupTag = p.group ? `<span class="text-[9px] sm:text-[10px] text-teal-400 ml-2 bg-teal-900/40 px-1.5 py-0.5 rounded whitespace-nowrap">${window.ui.escapeHtml(p.group)}</span>` : '';
+                        renderedRows.push(`<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="px-4 sm:px-6 py-4 font-medium flex items-center flex-wrap gap-y-1">${window.ui.escapeHtml(p.name)} ${groupTag} ${tagHtml}</td><td class="px-4 sm:px-6 py-4 text-center text-emerald-400 text-lg">${isShared?'✔':'<span class="text-rose-400 font-semibold text-sm">No</span>'}</td><td class="px-4 sm:px-6 py-4 text-center font-mono">${isShared && s>0 ? s : '-'}</td><td class="px-4 sm:px-6 py-4 text-center font-mono">${isShared && h>0 ? h : '-'}</td><td class="px-4 sm:px-6 py-4 text-center text-xs text-teal-100/70"><div class="mx-auto max-w-[150px] sm:max-w-[200px] truncate" title="${window.ui.escapeHtml(isShared ? (r.comments||'') : 'Not Participated')}">${window.ui.escapeHtml(isShared ? (r.comments||'') : 'Not Participated')}</div></td><td class="px-4 sm:px-6 py-4 text-center">-</td></tr>`);
                     } else {
-                        tbody.innerHTML += `<tr class="border-b border-white/5 bg-black/20 text-teal-100/30"><td class="px-4 sm:px-6 py-4">${p.name}</td><td colspan="4" class="px-4 sm:px-6 py-4 text-center italic text-xs uppercase tracking-widest">Awaiting Data</td><td class="px-4 sm:px-6 py-4 text-right"><button onclick="window.ui.sendReminder('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${(p.group||'').replace(/'/g, "\\'")}', '${(p.phone||'').replace(/'/g, "\\'")}')" class="bg-teal-900/50 hover:bg-teal-800 text-teal-300 px-3 py-1.5 rounded-lg border border-teal-500/30 transition text-xs flex items-center gap-1 ml-auto">📱 Remind</button></td></tr>`;
+                        renderedRows.push(`<tr class="border-b border-white/5 bg-black/20 text-teal-100/30"><td class="px-4 sm:px-6 py-4">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="px-4 sm:px-6 py-4 text-center italic text-xs uppercase tracking-widest">Awaiting Data</td><td class="px-4 sm:px-6 py-4 text-right"><button onclick="window.ui.sendReminder(${window.ui.jsArg(p.id)}, ${window.ui.jsArg(p.name)}, ${window.ui.jsArg((p.group||''))}, ${window.ui.jsArg((p.phone||''))})" class="bg-teal-900/50 hover:bg-teal-800 text-teal-300 px-3 py-1.5 rounded-lg border border-teal-500/30 transition text-xs flex items-center gap-1 ml-auto">📱 Remind</button></td></tr>`);
                     }
                 });
+
+                window.AppSupport.renderRows(tbody,renderedRows,{key:`${sy}_${month}`,label:'publishers'});
 
                 document.getElementById('dash-rp-table').innerHTML = rpTableHtml || `<tr><td colspan="3" class="px-5 py-3 text-center text-cyan-200/50 italic text-xs">No Regular Pioneers found.</td></tr>`;
                 document.getElementById('dash-ap-review-table').innerHTML = apTableHtml || `<tr><td colspan="4" class="px-6 py-4 text-center text-emerald-200/50 italic text-xs">No Auxiliary Pioneers logged for this month.</td></tr>`;
@@ -5164,6 +5087,8 @@ alter table public.congregation_access enable row level security;
                 window.ui.currentPubFilterValue = filterValue;
                 const tbody = document.getElementById('publisher-table-body'); if(!tbody) return;
                 const allPubs = window.db.getPublishers();
+                const sftsOverrides=window.db.getSFTSOverrides();
+                const isSFTS=p=>!!p.isSP||!!sftsOverrides[p.id];
                 const syEl = document.getElementById('pub-filter-month');
                 const month = syEl ? parseInt(syEl.value) : window.utils.getISTPreviousMonthInfo().month;
                 const yearEl = document.getElementById('pub-s21-year');
@@ -5177,7 +5102,7 @@ alter table public.congregation_access enable row level security;
                     if(p.isElder) elders++;
                     if(p.isMS) ms++;
                     if(p.isRP) rps++;
-                    if(window.db.isSFTS(p.id, p.isSP)) sfts++;
+                    if(isSFTS(p)) sfts++;
                     if(apSet.has(p.id)) aps++;
                     if(!p.baptized) ubps++;
                     else baptized++;
@@ -5187,7 +5112,7 @@ alter table public.congregation_access enable row level security;
                 if (filterType === 'ELDERS') displayPubs = allPubs.filter(p => p.isElder);
                 else if (filterType === 'MS') displayPubs = allPubs.filter(p => p.isMS);
                 else if (filterType === 'RPS') displayPubs = allPubs.filter(p => p.isRP);
-                else if (filterType === 'SFTS') displayPubs = allPubs.filter(p => window.db.isSFTS(p.id, p.isSP));
+                else if (filterType === 'SFTS') displayPubs = allPubs.filter(p => isSFTS(p));
                 else if (filterType === 'AP') displayPubs = allPubs.filter(p => apSet.has(p.id));
                 else if (filterType === 'UBP') displayPubs = allPubs.filter(p => !p.baptized);
                 else if (filterType === 'BAPTIZED') displayPubs = allPubs.filter(p => !!p.baptized);
@@ -5208,7 +5133,7 @@ alter table public.congregation_access enable row level security;
                         <button onclick="window.ui.renderPublishers('AP')" class="p-3 rounded-xl border ${filterType==='AP'?'border-teal-400 bg-teal-900/60':'border-white/10 bg-black/20'} hover:bg-white/10 transition flex flex-col items-center justify-center text-center"><div class="text-xl sm:text-2xl font-bold text-teal-400">${aps}</div><div class="text-[9px] text-teal-200/70 uppercase tracking-widest mt-1">AP · ${window.utils.getMonthName(month)}</div></button>
                         <button onclick="window.ui.renderPublishers('BAPTIZED')" class="p-3 rounded-xl border ${filterType==='BAPTIZED'?'border-teal-400 bg-teal-900/60':'border-white/10 bg-black/20'} hover:bg-white/10 transition flex flex-col items-center justify-center text-center"><div class="text-xl sm:text-2xl font-bold text-teal-400">${baptized}</div><div class="text-[9px] text-teal-200/70 uppercase tracking-widest mt-1">Baptized</div></button>
                         <button onclick="window.ui.renderPublishers('UBP')" class="p-3 rounded-xl border ${filterType==='UBP'?'border-rose-400 bg-rose-900/60':'border-white/10 bg-black/20'} hover:bg-white/10 transition flex flex-col items-center justify-center text-center"><div class="text-xl sm:text-2xl font-bold text-rose-400">${ubps}</div><div class="text-[9px] text-rose-200/70 uppercase tracking-widest mt-1">Unbaptized</div></button>
-                        ${groups.map(g => `<button onclick="window.ui.renderPublishers('GROUP','${esc(g)}')" class="p-3 rounded-xl border ${filterType==='GROUP'&&filterValue===g?'border-violet-400 bg-violet-900/60':'border-white/10 bg-black/20'} hover:bg-white/10 transition flex flex-col items-center justify-center text-center"><div class="text-xl sm:text-2xl font-bold text-violet-300">${allPubs.filter(p=>(p.group||'').trim()===g).length}</div><div class="text-[9px] text-violet-200/70 uppercase tracking-widest mt-1">${g}</div></button>`).join('')}
+                        ${groups.map(g => `<button onclick="window.ui.renderPublishers('GROUP',${window.ui.jsArg(g)})" class="p-3 rounded-xl border ${filterType==='GROUP'&&filterValue===g?'border-violet-400 bg-violet-900/60':'border-white/10 bg-black/20'} hover:bg-white/10 transition flex flex-col items-center justify-center text-center"><div class="text-xl sm:text-2xl font-bold text-violet-300">${allPubs.filter(p=>(p.group||'').trim()===g).length}</div><div class="text-[9px] text-violet-200/70 uppercase tracking-widest mt-1">${g}</div></button>`).join('')}
                     `;
                 }
 
@@ -5218,20 +5143,21 @@ alter table public.congregation_access enable row level security;
                     chart.style.background = `conic-gradient(#22d3ee 0% ${ePct}%, #60a5fa ${ePct}% ${ePct+mPct}%, #34d399 ${ePct+mPct}% ${ePct+mPct+rPct}%, #fbbf24 ${ePct+mPct+rPct}% ${ePct+mPct+rPct+(sfts/total)*100}%, #475569 ${ePct+mPct+rPct+(sfts/total)*100}% 100%)`;
                 }
 
-                tbody.innerHTML = '';
+                const renderedRows = [];
                 displayPubs.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
                     let badges=[];
                     if(p.isElder) badges.push('<span class="bg-cyan-900/80 text-cyan-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-cyan-500/50">Elder</span>');
                     if(p.isMS) badges.push('<span class="bg-cyan-900/80 text-cyan-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-cyan-500/50">MS</span>');
                     if(p.isRP) badges.push('<span class="bg-emerald-900/80 text-emerald-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-emerald-500/50">RP</span>');
                     if(p.isSP) badges.push('<span class="bg-emerald-900/80 text-emerald-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-emerald-500/50">SP</span>');
-                    if(window.db.isSFTS(p.id,p.isSP)) badges.push('<span class="bg-amber-900/80 text-amber-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-amber-500/50">SFTS</span>');
+                    if(isSFTS(p)) badges.push('<span class="bg-amber-900/80 text-amber-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-amber-500/50">SFTS</span>');
                     if(apSet.has(p.id)) badges.push(`<span class="bg-teal-900/80 text-teal-200 px-2.5 py-1 rounded-md text-[10px] font-bold border border-teal-500/50">AP · ${window.utils.getMonthName(month)}</span>`);
                     const age=p.dob ? window.utils.calculateAge(p.dob)+' yrs':'-';
                     const bapText=!p.baptized?'<span class="text-rose-300 font-semibold border border-rose-500/40 bg-rose-900/50 px-1.5 py-0.5 rounded text-[10px] uppercase">UBP</span>':p.baptized;
                     const safeId=esc(p.id);
-                    tbody.innerHTML += `<tr class="hover:bg-white/5 transition-colors border-b border-white/5"><td class="px-4 sm:px-6 py-4"><div class="font-bold text-white text-base">${p.name}</div><div class="text-[11px] text-teal-300 mt-1 uppercase tracking-widest font-semibold">${p.group||'UNASSIGNED'}</div></td><td class="px-4 sm:px-6 py-4"><div class="flex flex-wrap gap-2">${badges.join('')}</div></td><td class="px-4 sm:px-6 py-4 text-teal-100/90 font-mono text-sm">${age}<br><span class="text-[11px] font-sans text-teal-100/60 mt-1 block">${bapText}</span></td><td class="px-4 sm:px-6 py-4 text-right"><div class="flex justify-end gap-2"><button onclick="window.ui.downloadS21Publisher('${safeId}')" class="text-teal-300 hover:text-teal-200 transition-colors px-2 py-1.5 rounded-lg bg-teal-900/30 border border-teal-500/30 text-xs font-bold" title="Download S-21">⬇️ S-21</button><button onclick="window.ui.editPublisher('${safeId}')" class="text-cyan-400 hover:text-cyan-300 transition-colors p-1" title="Edit"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 4 19.5l1.037-4.25L16.862 3.487zM15.5 5l3.5 3.5" /></svg></button><button onclick="window.db.deletePublisher('${safeId}')" class="text-rose-400 hover:text-rose-300 transition-colors p-1" title="Delete"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div></td></tr>`;
+                    renderedRows.push(`<tr class="hover:bg-white/5 transition-colors border-b border-white/5"><td class="px-4 sm:px-6 py-4"><div class="font-bold text-white text-base">${window.ui.escapeHtml(p.name)}</div><div class="text-[11px] text-teal-300 mt-1 uppercase tracking-widest font-semibold">${window.ui.escapeHtml(p.group||'UNASSIGNED')}</div></td><td class="px-4 sm:px-6 py-4"><div class="flex flex-wrap gap-2">${badges.join('')}</div></td><td class="px-4 sm:px-6 py-4 text-teal-100/90 font-mono text-sm">${age}<br><span class="text-[11px] font-sans text-teal-100/60 mt-1 block">${bapText}</span></td><td class="px-4 sm:px-6 py-4 text-right"><div class="flex justify-end gap-2"><button onclick="window.ui.downloadS21Publisher('${safeId}')" class="text-teal-300 hover:text-teal-200 transition-colors px-2 py-1.5 rounded-lg bg-teal-900/30 border border-teal-500/30 text-xs font-bold" title="Download S-21">⬇️ S-21</button><button onclick="window.ui.editPublisher('${safeId}')" class="text-cyan-400 hover:text-cyan-300 transition-colors p-1" title="Edit"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 4 19.5l1.037-4.25L16.862 3.487zM15.5 5l3.5 3.5" /></svg></button><button onclick="window.db.deletePublisher('${safeId}')" class="text-rose-400 hover:text-rose-300 transition-colors p-1" title="Delete"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div></td></tr>`);
                 });
+                window.AppSupport.renderRows(tbody,renderedRows,{key:`${filterType}_${filterValue}_${publisherSearch}_${serviceYear}_${month}`,label:'publishers'});
             },
 
             getPublisherS21Pubs: () => {
@@ -5253,7 +5179,7 @@ alter table public.congregation_access enable row level security;
             downloadS21Publisher: async (id) => {
                 const pub=window.db.getPublishers().find(p=>p.id===id); if(!pub){window.ui.showToast('Publisher not found','error');return;}
                 const sy=parseInt(document.getElementById('pub-s21-year')?.value || window.utils.getISTPreviousMonthInfo().serviceYear);
-                try{ const bytes=await buildS21OriginalPdf([pub],sy); const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'})); const a=document.createElement('a'); a.href=url; a.download=`S-21_${pub.name.replace(/[^a-z0-9_-]+/gi,'_')}_${sy-1}-${sy}.pdf`; a.click(); URL.revokeObjectURL(url); window.ui.showToast('S-21 downloaded.'); }
+                try{ const bytes=await buildS21OriginalPdf([pub],sy); const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'})); const a=document.createElement('a'); a.href=url; a.download=`S-21_${pub.name.replace(/[^a-z0-9_-]+/gi,'_')}_${sy-1}-${sy}.pdf`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),30000); window.ui.showToast('S-21 downloaded.'); }
                 catch(e){console.error(e);window.ui.showToast('Failed to generate S-21.','error');}
             },
 
@@ -5262,8 +5188,8 @@ alter table public.congregation_access enable row level security;
                 const sy=parseInt(document.getElementById('pub-s21-year')?.value || window.utils.getISTPreviousMonthInfo().serviceYear);
                 const filter=window.ui.currentPubFilter||'ALL'; const value=window.ui.currentPubFilterValue||'';
                 let label=filter==='GROUP'?value:(filter==='AP'?`AP_${window.utils.getMonthName(parseInt(document.getElementById('pub-filter-month')?.value||0))}`:filter);
-                try{ const bytes=await buildS21OriginalPdf(pubs,sy); const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'})); const a=document.createElement('a'); a.href=url; a.download=`S-21_${label}_${sy-1}-${sy}.pdf`; a.click(); URL.revokeObjectURL(url); window.ui.showToast(`${pubs.length} S-21 card${pubs.length===1?'':'s'} downloaded.`); }
-                catch(e){console.error(e);window.ui.showToast('Failed to generate S-21 PDF.','error');}
+                try{ const bytes=await buildS21OriginalPdf(pubs,sy); const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'})); const a=document.createElement('a'); a.href=url; a.download=`S-21_${label}_${sy-1}-${sy}.pdf`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),30000); window.ui.showToast(`${pubs.length} S-21 card${pubs.length===1?'':'s'} downloaded.`); }
+                catch(e){console.error(e);window.ui.showToast(e.message || 'Failed to generate S-21 PDF.','error');}
             },
 
             downloadS21Group: async (groupName) => {
@@ -5274,15 +5200,15 @@ alter table public.congregation_access enable row level security;
                     const bytes = await buildS21OriginalPdf(pubs, sy);
                     const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'}));
                     const a = document.createElement('a'); a.href = url; a.download = `S-21_${groupName.replace(/[^a-z0-9_-]+/gi,'_')}_${sy-1}-${sy}.pdf`; a.click();
-                    URL.revokeObjectURL(url); window.ui.showToast(`${pubs.length} group S-21 card${pubs.length===1?'':'s'} downloaded.`);
-                } catch(e) { console.error(e); window.ui.showToast('Failed to generate group S-21 PDF.', 'error'); }
+                    setTimeout(()=>URL.revokeObjectURL(url),30000); window.ui.showToast(`${pubs.length} group S-21 card${pubs.length===1?'':'s'} downloaded.`);
+                } catch(e) { console.error(e); window.ui.showToast(e.message || 'Failed to generate group S-21 PDF.', 'error'); }
             },
 
             renderGroups: () => {
                 const pubs = window.db.getPublishers(); const groups = [...new Set(pubs.map(p => p.group).filter(g => g && g.trim() !== ''))].sort();
                 const sidebar = document.getElementById('groups-sidebar'); if(!sidebar) return;
                 if (groups.length === 0) { sidebar.innerHTML = '<div class="glass-panel p-4 text-center text-teal-100/60">No groups assigned.</div>'; document.getElementById('group-details').classList.add('hidden'); return; }
-                sidebar.innerHTML = groups.map(g => `<button onclick="window.ui.showGroup('${g.replace(/'/g, "\\'")}')" class="group-btn w-full glass-panel text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-all font-medium flex justify-between items-center text-white mb-2">${g} <span class="bg-black/40 text-teal-300 text-xs px-2.5 py-1 rounded-full">${pubs.filter(p=>p.group===g).length}</span></button>`).join('');
+                sidebar.innerHTML = groups.map(g => `<button onclick="window.ui.showGroup(${window.ui.jsArg(g)})" class="group-btn w-full glass-panel text-left px-4 py-3 rounded-xl hover:bg-white/10 transition-all font-medium flex justify-between items-center text-white mb-2">${window.ui.escapeHtml(g)} <span class="bg-black/40 text-teal-300 text-xs px-2.5 py-1 rounded-full">${pubs.filter(p=>p.group===g).length}</span></button>`).join('');
                 window.ui.showGroup(groups[0]);
             },
 
@@ -5302,12 +5228,12 @@ alter table public.congregation_access enable row level security;
                         if(r.isAP) stats.aps++;
                         const gH = parseFloat(r.hours || 0); const gS = parseInt(r.studies || 0);
                         const gIsShared = r.sharedInMinistry || gH > 0 || gS > 0;
-                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${p.name}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
-                    } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${p.name}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
+                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
+                    } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
                 });
                 
                 let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${name}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
-                details.innerHTML = `<div class="flex justify-between items-start mb-6 pb-4 border-b border-white/10 flex-wrap gap-4"><div><h3 class="text-2xl font-bold text-white">${groupName}</h3><div class="text-sm text-teal-200/60 mt-1">Data for ${istInfo.displayString}</div></div><div class="flex flex-wrap gap-2"><button onclick="window.ui.downloadS21Group('${groupName.replace(/'/g, "\\'")}')" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow flex items-center gap-2 transition-all">⬇️ Download S-21</button><button onclick="window.ui.copyGroupLink('${groupName.replace(/'/g, "\\'")}')" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all">🔗 Copy Form Link</button><button onclick="window.ui.openGroupPasswordModal('${groupName.replace(/'/g, "\\'")}')" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔒 Overseer Password</button><button onclick="window.ui.copyOverseerLink('${groupName.replace(/'/g, "\\'")}')" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔗 Copy Overseer Link</button></div></div><div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
+                details.innerHTML = `<div class="flex justify-between items-start mb-6 pb-4 border-b border-white/10 flex-wrap gap-4"><div><h3 class="text-2xl font-bold text-white">${window.ui.escapeHtml(groupName)}</h3><div class="text-sm text-teal-200/60 mt-1">Data for ${istInfo.displayString}</div></div><div class="flex flex-wrap gap-2"><button onclick="window.ui.downloadS21Group(${window.ui.jsArg(groupName)})" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow flex items-center gap-2 transition-all">⬇️ Download S-21</button><button onclick="window.ui.copyGroupLink(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all">🔗 Copy Form Link</button><button onclick="window.ui.openGroupPasswordModal(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔒 Overseer Password</button><button onclick="window.ui.copyOverseerLink(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔗 Copy Overseer Link</button></div></div><div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
             },
 
             openGroupPasswordModal: (groupName) => {
@@ -5341,8 +5267,8 @@ alter table public.congregation_access enable row level security;
                         if(r.isAP) stats.aps++;
                         const gH = parseFloat(r.hours || 0); const gS = parseInt(r.studies || 0);
                         const gIsShared = r.sharedInMinistry || gH > 0 || gS > 0;
-                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${p.name}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
-                    } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${p.name}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
+                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
+                    } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
                 });
 
                 let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${name}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
@@ -5405,16 +5331,16 @@ alter table public.congregation_access enable row level security;
                         let h = parseFloat(r.hours || 0); let s = parseInt(r.studies || 0);
                         let isShared = r.sharedInMinistry || h > 0 || s > 0;
                         if(isShared) {
-                            const trHtml = `<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${p.name}</td><td class="px-4 py-2 text-center">${h||'-'}</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`;
+                            const trHtml = `<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${window.ui.escapeHtml(p.name)}</td><td class="px-4 py-2 text-center">${h||'-'}</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`;
                             if (p.isRP || p.isSP || p.isFM) {
                                 rps.push(trHtml); 
                             } else if (r.isAP) {
                                 aps.push(trHtml);
                             } else {
-                                normals.push(`<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${p.name}</td><td class="px-4 py-2 text-center">-</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`);
+                                normals.push(`<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${window.ui.escapeHtml(p.name)}</td><td class="px-4 py-2 text-center">-</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`);
                             }
                         } else {
-                            inactives.push(`<tr class="border-b border-white/10"><td class="px-4 py-2 text-rose-300">${p.name}</td><td class="px-4 py-2 text-center">-</td><td class="px-4 py-2 text-center">-</td></tr>`);
+                            inactives.push(`<tr class="border-b border-white/10"><td class="px-4 py-2 text-rose-300">${window.ui.escapeHtml(p.name)}</td><td class="px-4 py-2 text-center">-</td><td class="px-4 py-2 text-center">-</td></tr>`);
                         }
                     }
                 });
@@ -5432,25 +5358,26 @@ alter table public.congregation_access enable row level security;
                 const pubs = window.db.getPublishers();
                 const reports = window.db.getReports(istInfo.serviceYear, istInfo.month);
                 const missingList = document.getElementById('missing-reports-list');
-                missingList.innerHTML = '';
+                const renderedRows = [];
 
                 const missingPubs = pubs.filter(p => !reports.find(r => r.pubId === p.id)).sort((a,b)=>a.name.localeCompare(b.name));
 
                 if (missingPubs.length === 0) {
-                    missingList.innerHTML = '<div class="text-center text-emerald-400 py-4 font-medium">All publishers have submitted their reports!</div>';
+                    renderedRows.push('<div class="text-center text-emerald-400 py-4 font-medium">All publishers have submitted their reports!</div>');
                 } else {
                     missingPubs.forEach(p => {
-                        missingList.innerHTML += `
+                        renderedRows.push(`
                             <div class="flex justify-between items-center p-3 bg-black/20 rounded-xl border border-white/5">
                                 <div>
-                                    <div class="font-bold text-white">${p.name}</div>
+                                    <div class="font-bold text-white">${window.ui.escapeHtml(p.name)}</div>
                                     <div class="text-[10px] text-teal-300 uppercase font-semibold tracking-wider">${p.group || 'UNASSIGNED'}</div>
                                 </div>
-                                <button onclick="window.ui.sendReminder('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${(p.group || '').replace(/'/g, "\\'")}', '${(p.phone || '').replace(/'/g, "\\'")}')" class="bg-teal-900/50 hover:bg-teal-800 text-teal-300 px-3 py-1.5 rounded-lg border border-teal-500/30 transition text-xs flex items-center gap-1 font-medium shadow-sm">📱 Remind</button>
+                                <button onclick="window.ui.sendReminder(${window.ui.jsArg(p.id)}, ${window.ui.jsArg(p.name)}, ${window.ui.jsArg((p.group || ''))}, ${window.ui.jsArg((p.phone || ''))})" class="bg-teal-900/50 hover:bg-teal-800 text-teal-300 px-3 py-1.5 rounded-lg border border-teal-500/30 transition text-xs flex items-center gap-1 font-medium shadow-sm">📱 Remind</button>
                             </div>
-                        `;
+                        `);
                     });
                 }
+                window.AppSupport.renderRows(missingList,renderedRows,{key:istInfo.displayString,label:'publishers'});
                 window.ui.openModal('modal-missing-reports');
             },
 
@@ -5474,32 +5401,34 @@ alter table public.congregation_access enable row level security;
                 pubs = pubs.sort((a,b)=>a.name.localeCompare(b.name));
 
                 const reports = window.db.getReports(sy, month);
+                const reportsByPublisher = new Map(reports.map(r=>[r.pubId,r]));
                 const tbody = document.getElementById('bulk-entry-table-body');
-                tbody.innerHTML = '';
+                const renderedRows = [];
 
                 if (pubs.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-teal-100/40 italic">No publishers found for this group.</td></tr>';
+                    renderedRows.push('<tr><td colspan="6" class="text-center py-6 text-teal-100/40 italic">No publishers found for this group.</td></tr>');
                 } else {
                     pubs.forEach(p => {
-                        const r = reports.find(x => x.pubId === p.id);
+                        const r = reportsByPublisher.get(p.id);
                         const hasExisting = !!r;
                         const isShared = hasExisting ? !!r.sharedInMinistry : false;
                         const disAttr = isShared ? '' : 'disabled style="opacity:0.35"';
                         const studiesVal = hasExisting && isShared ? (r.studies ?? '') : '';
                         const hoursVal = hasExisting && isShared ? (r.hours ?? '') : '';
                         const commentsVal = hasExisting && isShared ? (r.comments || '') : '';
-                        tbody.innerHTML += `
+                        renderedRows.push(`
                             <tr class="border-b border-white/5 hover:bg-white/5" data-pubid="${p.id}">
-                                <td class="px-3 py-2 font-medium text-white">${p.name}</td>
+                                <td class="px-3 py-2 font-medium text-white">${window.ui.escapeHtml(p.name)}</td>
                                 <td class="px-3 py-2 text-center"><input type="checkbox" class="bulk-shared accent-teal-500 w-4 h-4" onchange="window.ui.toggleBulkRow(this)" ${isShared ? 'checked' : ''}></td>
                                 <td class="px-3 py-2 text-center"><input type="number" min="0" class="bulk-studies att-input" style="width:70px" value="${studiesVal}" ${disAttr}></td>
                                 <td class="px-3 py-2 text-center"><input type="number" min="0" step="0.25" class="bulk-hours att-input" style="width:70px" value="${hoursVal}" ${disAttr}></td>
                                 <td class="px-3 py-2 text-center"><input type="checkbox" class="bulk-ap accent-emerald-500 w-4 h-4" ${r && r.isAP ? 'checked' : ''} ${disAttr}></td>
                                 <td class="px-3 py-2"><input type="text" class="bulk-comments att-input" style="text-align:left" value="${commentsVal.replace(/"/g,'&quot;')}" ${disAttr}></td>
                             </tr>
-                        `;
+                        `);
                     });
                 }
+                tbody.innerHTML = renderedRows.join('');
                 window.ui.openModal('modal-bulk-entry');
             },
 
@@ -5587,7 +5516,7 @@ alter table public.congregation_access enable row level security;
                 btn.disabled = true;
 
                 try {
-                    const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+                    const { PDFDocument, StandardFonts, rgb } = window.PdfTools.requireLibrary();
                     const binaryStr = atob(S88_TEMPLATE_B64);
                     const bytes = new Uint8Array(binaryStr.length);
                     for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
@@ -5600,8 +5529,8 @@ alter table public.congregation_access enable row level security;
 
                     const centerText = (text, centerX, bottomY, size = 9, useFont = font) => {
                         if (text === '' || text === null || text === undefined) return;
-                        const str = String(text);
-                        const width = useFont.widthOfTextAtSize(str, size);
+                        const fitted=window.PdfTools.fit(text,useFont,56,size,7);
+                        const str=fitted.text, width=fitted.width; size=fitted.size;
                         // Raise the inserted value slightly so it sits optically centered in the cell.
                         page.drawText(str, { x: centerX - width / 2, y: pageHeight - bottomY + 3, size, font: useFont, color: rgb(0.05, 0.05, 0.05) });
                     };
@@ -5635,11 +5564,11 @@ alter table public.congregation_access enable row level security;
                     a.href = url;
                     a.download = `S-88_${window.currentCongId}_${syLeft-1}-${syRight}.pdf`;
                     a.click();
-                    URL.revokeObjectURL(url);
+                    setTimeout(()=>URL.revokeObjectURL(url),30000);
                     window.ui.showToast('Yearly Attendance Record Generated!');
                 } catch (err) {
                     console.error("PDF Error: ", err);
-                    window.ui.showToast('Failed to compile PDF.', 'error');
+                    window.ui.showToast(err.message || 'Failed to compile PDF.', 'error');
                 } finally {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -5651,87 +5580,35 @@ alter table public.congregation_access enable row level security;
                 const searchStr = (document.getElementById('emergency-search')?.value || '').toLowerCase();
                 const allPubs = window.db.getPublishers();
                 const families = window.utils.buildFamilies(allPubs);
-                tbody.innerHTML = '';
+                const renderedRows = [];
 
                 let anyRendered = false;
                 families.forEach(fam => {
                     const members = searchStr ? fam.members.filter(m => m.name.toLowerCase().includes(searchStr)) : fam.members;
                     if (members.length === 0) return;
                     anyRendered = true;
-                    tbody.innerHTML += `<tr class="bg-rose-950/40"><td colspan="7" class="px-4 sm:px-6 py-2 text-[11px] font-bold uppercase tracking-widest text-rose-300">🏠 ${fam.headName} Family</td></tr>`;
+                    renderedRows.push(`<tr class="bg-rose-950/40"><td colspan="7" class="px-4 sm:px-6 py-2 text-[11px] font-bold uppercase tracking-widest text-rose-300">🏠 ${window.ui.escapeHtml(fam.headName)} Family</td></tr>`);
                     members.forEach(p => {
                         const phoneLink = p.phone ? `<a href="tel:${p.phone.replace(/[^\d+]/g,'')}" class="text-cyan-300 hover:text-cyan-200 underline">${p.phone}</a>` : '-';
                         const ePhoneLink = p.emergencyPhone ? `<a href="tel:${p.emergencyPhone.replace(/[^\d+]/g,'')}" class="text-rose-300 hover:text-rose-200 underline">${p.emergencyPhone}</a>` : '-';
                         const status = p.spiritualStatus || (p.baptized ? 'Baptised' : 'Unbaptised');
-                        tbody.innerHTML += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="px-4 sm:px-6 py-4 font-medium text-white">${p.name}</td><td class="px-4 sm:px-6 py-4">${phoneLink}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${p.address || '-'}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${p.emergencyName || '-'}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${p.emergencyRelationship || '-'}</td><td class="px-4 sm:px-6 py-4">${ePhoneLink}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${status}</td></tr>`;
+                        renderedRows.push(`<tr class="border-b border-white/5 hover:bg-white/5"><td class="px-4 sm:px-6 py-4 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="px-4 sm:px-6 py-4">${phoneLink}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${window.ui.escapeHtml(p.address || '-')}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${window.ui.escapeHtml(p.emergencyName || '-')}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${window.ui.escapeHtml(p.emergencyRelationship || '-')}</td><td class="px-4 sm:px-6 py-4">${ePhoneLink}</td><td class="px-4 sm:px-6 py-4 text-teal-100/80">${status}</td></tr>`);
                     });
                 });
+                tbody.innerHTML=renderedRows.join('');
                 if (!anyRendered) {
                     tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-teal-100/40 italic">No publishers found.</td></tr>';
                 }
             },
 
-            printEmergencyContacts: () => {
-                const iframe = document.getElementById('emergency-render-frame');
-                const wrapper = document.getElementById('emergency-render-area');
-                const allPubs = window.db.getPublishers();
-                if (!allPubs.length) { window.ui.showToast('No publishers to export.', 'error'); return; }
-                const families = window.utils.buildFamilies(allPubs);
-
-                const rows = [];
-                families.forEach(fam => {
-                    rows.push({ type: 'family', html: `<tr class="ec-family-row"><td colspan="7">🏠 ${window.ui.escapeHtml(fam.headName)} Family</td></tr>` });
-                    fam.members.forEach(p => rows.push({ type: 'member', html: `<tr><td>${window.ui.escapeHtml(p.name)}</td><td>${window.ui.escapeHtml(p.phone || '-')}</td><td>${window.ui.escapeHtml(p.address || '-')}</td><td>${window.ui.escapeHtml(p.emergencyName || '-')}</td><td>${window.ui.escapeHtml(p.emergencyRelationship || '-')}</td><td>${window.ui.escapeHtml(p.emergencyPhone || '-')}</td><td>${window.ui.escapeHtml(p.spiritualStatus || (p.baptized ? 'Baptised' : 'Unbaptised'))}</td></tr>` }));
-                });
-
-                const chunks = [];
-                let chunk = [], memberCount = 0;
-                const maxMembersPerPage = 10;
-                rows.forEach((row, index) => {
-                    if (row.type === 'family' && memberCount >= maxMembersPerPage) { chunks.push(chunk); chunk = []; memberCount = 0; }
-                    chunk.push(row);
-                    if (row.type === 'member') memberCount++;
-                    const next = rows[index + 1];
-                    if (memberCount >= maxMembersPerPage && next?.type === 'member') { chunks.push(chunk); chunk = []; memberCount = 0; }
-                });
-                if (chunk.length) chunks.push(chunk);
-
-                const makePage = (pageRows, pageNo, totalPages) => `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><style>html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#000}.ec-wrapper{width:1000px;min-height:700px;padding:38px 34px;box-sizing:border-box;background:#fff}.ec-title{font-size:26px;font-weight:700;text-align:center;margin-bottom:5px}.ec-subtitle{font-size:13px;text-align:center;color:#555;margin-bottom:18px}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #333;padding:9px 7px;font-size:12px;text-align:center;vertical-align:middle;word-break:break-word}th{background:#f0f0f0;font-weight:700}.ec-family-row td{background:#fde8e8;font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.5px;color:#9f1239}.ec-page{margin-top:12px;font-size:11px;color:#666;text-align:center}</style></head><body><div class="ec-wrapper"><div class="ec-title">Emergency Contacts Directory</div><div class="ec-subtitle">${window.ui.escapeHtml(window.db.currentCongData?.name || localStorage.getItem('fs_cong_name') || 'Congregation')} · Generated ${new Date().toLocaleDateString()}</div><table><thead><tr><th>Publisher</th><th>Phone</th><th>Address</th><th>Emergency Contact</th><th>Relationship</th><th>Emergency Phone</th><th>Status</th></tr></thead><tbody>${pageRows.map(r=>r.html).join('')}</tbody></table><div class="ec-page">Page ${pageNo} of ${totalPages}</div></div></body></html>`;
-
-                wrapper.classList.remove('hidden');
-                wrapper.style.display = 'block';
-                iframe.style.width = '1000px';
-                iframe.style.height = '800px';
-
-                (async () => {
-                    try {
-                        const { jsPDF } = window.jspdf;
-                        const doc = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1080, 763], hotfixes: ['px_scaling'] });
-                        const totalPages = chunks.length;
-                        for (let i = 0; i < chunks.length; i++) {
-                            iframe.srcdoc = makePage(chunks[i], i + 1, totalPages);
-                            await new Promise(resolve => { let done=false; const finish=()=>{if(done)return;done=true;resolve();}; iframe.onload=finish; setTimeout(finish,180); });
-                            const target = iframe.contentDocument?.querySelector('.ec-wrapper');
-                            if (!target) throw new Error('Emergency PDF render target unavailable.');
-                            const canvas = await window.html2canvas(target, { scale: 2, logging: false, useCORS: true, backgroundColor: '#ffffff' });
-                            const imgData = canvas.toDataURL('image/jpeg', 0.98);
-                            const maxW = 1040, maxH = 735;
-                            const scale = Math.min(maxW / canvas.width, maxH / canvas.height);
-                            const drawW = canvas.width * scale, drawH = canvas.height * scale;
-                            const x = (1080 - drawW) / 2, y = (763 - drawH) / 2;
-                            if (i > 0) doc.addPage([1080, 763], 'landscape');
-                            doc.addImage(imgData, 'JPEG', x, y, drawW, drawH);
-                        }
-                        doc.save(`Emergency_Contacts_${window.currentCongId}.pdf`);
-                        window.ui.showToast(`Emergency Contacts PDF generated (${totalPages} page${totalPages === 1 ? '' : 's'}).`);
-                    } catch (err) {
-                        console.error('Emergency PDF error:', err);
-                        window.ui.showToast('Failed to compile Emergency Contacts PDF.', 'error');
-                    } finally {
-                        wrapper.classList.add('hidden');
-                        wrapper.style.display = 'none';
-                    }
-                })();
+            printEmergencyContacts: async () => {
+                const publishers=window.db.getPublishers();
+                if(!publishers.length){window.ui.showToast('No publishers to export.','error');return;}
+                const families=window.utils.buildFamilies(publishers);
+                const name=window.db.currentCongData?.name || localStorage.getItem('fs_cong_name') || 'Congregation';
+                const bytes=await window.PdfTools.emergency(families,name);
+                window.AppSupport.download(bytes,`Emergency_Contacts_${window.currentCongId}.pdf`);
+                window.ui.showToast('Emergency contacts downloaded.');
             },
 
             renderS21: async () => {
@@ -5818,7 +5695,7 @@ alter table public.congregation_access enable row level security;
 
             saveS4: async () => {
                 const pubId = document.getElementById('s4-pub-select').value; if(!pubId) { window.ui.showToast('Please select your name.', 'error'); return; }
-                const pub = window.db.getPublishers().find(p => p.id === pubId); const istInfo = window.utils.getISTPreviousMonthInfo();
+                const pub = window.db.getPublishers().find(p => p.id === pubId); if(!pub) throw new Error('This publisher could not be found. Reload the form and choose a name.'); const istInfo = window.utils.getISTPreviousMonthInfo();
                 const sharedInMinistry = document.getElementById('s4-ministry').checked;
                 let hours = parseFloat(document.getElementById('s4-hours').value) || 0; let studies = parseInt(document.getElementById('s4-studies').value) || 0; let isAP = false;
                 let comments = document.getElementById('s4-comments').value;
@@ -5840,7 +5717,9 @@ alter table public.congregation_access enable row level security;
             }
         };
 
-        ['click','pointerdown','keydown','touchstart','scroll'].forEach(evt=>window.addEventListener(evt,()=>{if(window.auth&&sessionStorage.getItem('fs_auth')==='true')window.auth.touchActivity();},{passive:true}));
+        window.addEventListener('load', () => window.AppSupport?.init({ cloudAvailable: isCloudEnabled }));
+
+        ['click','pointerdown','keydown','touchstart','scroll'].forEach(evt=>window.addEventListener(evt,()=>window.auth?.touchActivity(),{passive:true}));
         setInterval(()=>{if(window.auth&&window.auth.expireIfIdle()){document.getElementById('auth-screen')?.classList.remove('hidden');document.getElementById('global-loader')?.classList.add('hidden');}},60000);
 
         window.addEventListener('load', () => {
@@ -5871,7 +5750,7 @@ alter table public.congregation_access enable row level security;
                 }
             }
 
-            if(await window.auth.resumeGoogleRole()) return;
+            if(!isPublicLink && !window.location.hash.startsWith('#live=') && await window.auth.resumeGoogleRole()) return;
             if(window.auth.check()) {
                 if (urlParams.get('cong') && urlParams.get('mode') !== 'overseer') {
                     if(urlParams.get('mode')==='oclm'){window.currentCongId=urlParams.get('cong');window.ui.setupPublicOCLM();} else window.db.initPublicS4(urlParams.get('cong'));
