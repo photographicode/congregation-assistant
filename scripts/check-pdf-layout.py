@@ -34,9 +34,11 @@ for file in sorted(args.directory.glob('*.pdf')):
                 continue
             x, y = float(word.attrib['xMin']), float(word.attrib['yMin'])
             if 83 <= x < 214 and 85 < y < 100:
+                assert x >= 87, ('S-3 name lacks left padding', word.text)
                 assert float(word.attrib['xMax']) <= 212, ('S-3 header overlap', word.text)
                 assert float(word.attrib['yMax']) < 96, ('S-3 name touches line', word.text)
             if x >= 239 and 85 < y < 100:
+                assert x >= 243, ('S-3 month lacks left padding', word.text)
                 assert float(word.attrib['yMax']) < 96, ('S-3 month touches line', word.text)
     print(f'PASS {file.name}: {len(pages)} pages, {count} words within page bounds')
     if args.render:
