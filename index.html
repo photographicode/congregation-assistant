@@ -1036,7 +1036,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="ca-nav-scroll custom-scrollbar">
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">Main</div>
-                        <button onclick="window.ui.switchTab('dashboard', false, 'main')" id="btn-tab-dashboard" data-nav-context="main" data-nav-tab="dashboard" class="ca-nav-item" aria-label="Home"><span class="ca-nav-icon">⌂</span><span class="ca-nav-label">Home</span></button>
+                        <button onclick="window.ui.switchTab('dashboard', false, 'main')" id="btn-tab-dashboard" data-nav-context="main" data-nav-tab="dashboard" class="ca-nav-item" aria-label="Overview"><span class="ca-nav-icon">⌂</span><span class="ca-nav-label">Overview</span></button>
                         <button onclick="window.ui.switchTab('publishers', false, 'main')" id="btn-tab-publishers" data-nav-context="main" data-nav-tab="publishers" class="ca-nav-item" aria-label="Publishers"><span class="ca-nav-icon">♙</span><span class="ca-nav-label">Publishers</span></button>
                         <button onclick="window.ui.switchTab('emergency', false, 'main')" id="btn-tab-emergency" data-nav-context="main" data-nav-tab="emergency" class="ca-nav-item" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
                         <button onclick="window.ui.openAccessManager()" id="btn-tab-access" data-nav-context="main" class="ca-nav-item" aria-label="Access & Roles"><span class="ca-nav-icon">⌁</span><span class="ca-nav-label">Access &amp; Roles</span></button>
@@ -1044,11 +1044,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <div class="ca-nav-divider"></div>
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">Field Service</div>
-                        <button onclick="window.ui.switchTab('dashboard', false, 'field')" id="btn-tab-field-home" data-nav-context="field" data-nav-tab="dashboard" class="ca-nav-item" aria-label="Field Service Home"><span class="ca-nav-icon">⌂</span><span class="ca-nav-label">Home</span></button>
-                        <button onclick="window.ui.switchTab('publishers', false, 'field')" id="btn-tab-field-publishers" data-nav-context="field" data-nav-tab="publishers" class="ca-nav-item" aria-label="Field Service Publishers"><span class="ca-nav-icon">♙</span><span class="ca-nav-label">Publishers</span></button>
                         <button onclick="window.ui.switchTab('groups', false, 'field')" id="btn-tab-groups" data-nav-context="field" data-nav-tab="groups" class="ca-nav-item" aria-label="Groups"><span class="ca-nav-icon">♧</span><span class="ca-nav-label">Groups</span></button>
                         <button onclick="window.ui.switchTab('analytics', false, 'field')" id="btn-tab-analytics" data-nav-context="field" data-nav-tab="analytics" class="ca-nav-item" aria-label="Analytics"><span class="ca-nav-icon">▥</span><span class="ca-nav-label">Analytics</span></button>
-                        <button onclick="window.ui.switchTab('emergency', false, 'field')" id="btn-tab-field-emergency" data-nav-context="field" data-nav-tab="emergency" class="ca-nav-item" aria-label="Emergency Contacts"><span class="ca-nav-icon">!</span><span class="ca-nav-label">Emergency Contacts</span></button>
                     </div>
                     <div class="ca-nav-divider"></div>
                     <div class="ca-nav-section">
@@ -1185,14 +1182,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <button type="button" id="menu-item-super-notice" data-menu-permission="super" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.openNotificationComposer()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Send a system notice</strong><small>Compose an update for selected congregations</small></span><span aria-hidden="true">›</span></button>
                 </section>
                 <section class="ca-mobile-menu-section" data-menu-section="Main"><h3>Main</h3>
-                    <button type="button" id="menu-item-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('dashboard',false,'main')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Home</strong><small>Reports and monthly overview</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('dashboard',false,'main')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Overview</strong><small>Reports and monthly overview</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('publishers',false,'main')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publishers</strong><small>Profiles, reports and S-21 downloads</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-emergency" data-menu-permission="emergency" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('emergency',false,'main')"><span class="ca-menu-icon" aria-hidden="true">!</span><span><strong>Emergency Contacts</strong><small>Contact details and printable lists</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-access" data-menu-permission="admin" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAccessManager()"><span class="ca-menu-icon" aria-hidden="true">⌁</span><span><strong>Access & Roles</strong><small>Manage approved Google accounts</small></span><span aria-hidden="true">›</span></button>
                 </section>
                 <section class="ca-mobile-menu-section" data-menu-section="Field Service"><h3>Field Service</h3>
-                    <button type="button" id="menu-item-field-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.switchTab('dashboard',false,'field')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Field Service Home</strong><small>Monthly reports and pending submissions</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-field-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.switchTab('publishers',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publisher Reports</strong><small>Publisher records and reporting tools</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-groups" data-menu-permission="groups" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('groups',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♧</span><span><strong>Groups</strong><small>Service groups and group reports</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-analytics" data-menu-permission="analytics" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('analytics',false,'field')"><span class="ca-menu-icon" aria-hidden="true">▥</span><span><strong>Analytics & Rosters</strong><small>Review totals and publisher rosters</small></span><span aria-hidden="true">›</span></button>
                 </section>
@@ -3262,7 +3257,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 if (window.db.currentCongData?.feature_emergency_contacts === true || sessionStorage.getItem('fs_role') === 'admin') {
                     document.getElementById('btn-tab-emergency')?.classList.remove('hidden');
-                    document.getElementById('btn-tab-field-emergency')?.classList.remove('hidden');
                     document.getElementById('menu-item-emergency')?.classList.remove('hidden');
                 }
                 const oclmBtn = document.getElementById('btn-tab-oclm');
@@ -4078,7 +4072,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 if(window.db.currentCongData && (window.db.currentCongData.feature_emergency_contacts === true || sessionStorage.getItem('fs_role') === 'admin')) {
                     document.getElementById('btn-tab-emergency')?.classList.remove('hidden');
-                    document.getElementById('btn-tab-field-emergency')?.classList.remove('hidden');
                     document.getElementById('menu-item-emergency')?.classList.remove('hidden');
                 }
                 const oclmNav = document.getElementById('btn-tab-oclm');
@@ -4191,18 +4184,20 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             getAllowedTabs: () => {
                 const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['dashboard','publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm']};
-                const tabs=[...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];if(sessionStorage.getItem('fs_auth_type')==='super')tabs.push('superadmin');return tabs;
+                if(sessionStorage.getItem('fs_auth_type')==='super')return ['superadmin'];
+                return [...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];
             },
             canManageAccess: () => window.ui.getRoleGrants().includes('admin'),
             applyRoleNavigation: () => {
                 const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs(),isSuper=sessionStorage.getItem('fs_auth_type')==='super';
-                const sections={main:roles.includes('admin'),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
+                const sections={main:allowed.some(tab=>['dashboard','publishers','emergency'].includes(tab)),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
                 document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{
                     const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();
                     const key=title==='field service'?'field':title==='main'?'main':title==='attendance'?'attendance':title==='oclm'?'oclm':'more';
                     section.style.setProperty('display',sections[key]?'flex':'none','important');
                 });
                 document.querySelectorAll('#nav-admin .ca-nav-divider').forEach(el=>{el.style.display='none';});
+                document.querySelectorAll('#nav-admin [data-nav-tab]').forEach(button=>{if(!allowed.includes(button.dataset.navTab))button.classList.add('hidden');else if(button.dataset.navTab!=='emergency')button.classList.remove('hidden');});
                 document.getElementById('btn-tab-access')?.classList.toggle('hidden',!window.ui.canManageAccess());
                 document.querySelectorAll('#mobile-nav [data-primary-tab]').forEach(button=>button.classList.toggle('hidden',isSuper||!allowed.includes(button.dataset.primaryTab)));
                 document.getElementById('m-btn-tab-menu')?.classList.remove('hidden');
@@ -4210,7 +4205,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const permission=button.dataset.menuPermission;
                     button.classList.toggle('hidden',!(permission==='support'||permission==='super'&&isSuper||!isSuper&&(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
-                document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',(section.dataset.menuSection==='Main'&&!roles.includes('admin'))||![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
+                document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
                 const names={admin:'Administrator',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
                 const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
@@ -4259,13 +4254,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const role=(document.body.classList.contains('public-mode') || document.body.classList.contains('overseer-mode'))?'admin':sessionStorage.getItem('fs_role')||'admin';
                 const allowed=window.ui.getAllowedTabs();
                 if(!document.body.classList.contains('public-mode')&&!document.body.classList.contains('overseer-mode')&&!allowed.includes(tabId)){window.ui.showToast('This section is not included in your role.','error');return;}
+                if(['dashboard','publishers','emergency'].includes(tabId))context='main';
                 if(!context){context=(tabId==='groups'||tabId==='analytics'?'field':tabId==='attendance'?'attendance':tabId==='oclm'?'oclm':'main');}
                 window.ui.navContext=context;
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
                 const targetTab = document.getElementById(`tab-${tabId}`); if (targetTab) targetTab.classList.add('active');
                 document.querySelectorAll('#nav-admin .ca-nav-item').forEach(el => el.classList.remove('ca-nav-active'));
                 document.querySelectorAll('nav button[id^="btn-tab-"]').forEach(el => { el.classList.remove('bg-teal-500/80', 'text-white', 'shadow-lg'); el.classList.add('hover:bg-white/10', 'text-teal-50/70'); });
-                const btn = [...document.querySelectorAll('#nav-admin .ca-nav-item')].find(el=>el.dataset.navContext===context&&(!el.dataset.navTab||el.dataset.navTab===tabId)); if(btn){btn.classList.add('ca-nav-active');btn.classList.remove('hover:bg-white/10','text-teal-50/70');btn.classList.add('bg-teal-500/80','text-white','shadow-lg');}
+                const btn = [...document.querySelectorAll('#nav-admin .ca-nav-item')].find(el=>el.dataset.navContext===context&&el.dataset.navTab===tabId); if(btn){btn.classList.add('ca-nav-active');btn.classList.remove('hover:bg-white/10','text-teal-50/70');btn.classList.add('bg-teal-500/80','text-white','shadow-lg');}
                 
                 // Mobile Bottom Nav Styling
                 document.querySelectorAll('#mobile-nav button[id^="m-btn-tab-"]').forEach(el => { el.classList.remove('text-teal-300'); el.classList.add('text-teal-50/50'); });

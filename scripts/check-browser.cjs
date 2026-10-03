@@ -33,6 +33,8 @@ async function run(profile) {
     try {
         await page.goto(publishedURL || `http://127.0.0.1:${server.address().port}`, { waitUntil: 'load' });
         await page.waitForFunction(() => window.db?.publishers.length === 1000 && document.getElementById('global-loader').classList.contains('hidden'));
+        const destinations=await page.locator('#nav-admin [data-nav-tab]').evaluateAll(buttons=>buttons.map(button=>button.dataset.navTab));
+        assert.equal(new Set(destinations).size,destinations.length,'Desktop navigation repeats a destination');
         const nav = async tab => {
             const selector = profile.mobile ? `#m-btn-tab-${tab}` : `#btn-tab-${tab}`;
             const button = page.locator(selector);
@@ -226,6 +228,7 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
+        assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
