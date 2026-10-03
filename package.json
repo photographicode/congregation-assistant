@@ -1,0 +1,11 @@
+{
+  "name": "congregation-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/check-app.cjs"
+  },
+  "devDependencies": {
+    "pdf-lib": "1.17.1"
+  }
+}
