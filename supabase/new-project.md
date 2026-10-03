@@ -1,6 +1,8 @@
 # New Supabase project and live links
 
-The browser app and fresh schema are prepared. No Google account, Supabase account, project, OAuth provider, or production database has been created or changed by this workspace: no administrative credentials or signed-in Google browser are connected.
+The new project `ejosykrxjvwrhxfnputo` is healthy in Mumbai, with the fresh schema and active Superadmin owner already configured. The live SQL authorization contracts passed with all test data rolled back. **Google sign-in is disabled**, and the application still uses its original backend. See [the connection audit](connection-audit.md) for evidence and remaining limitations.
+
+Steps 1, 3, and 4 below are complete for this project. Do not create a duplicate project or rerun the fresh-only schema. Follow the remaining authentication, backup, and activation steps. The CLI alternative is for another empty project, not this configured database.
 
 1. Sign into Supabase using your Google account and create a **new** project on the free plan. Choose the region nearest your users. Keep the database password in a password manager. The existing project and its records remain untouched.
 2. Set up Google OAuth as described in `google-sign-in.md`, using the **new** project's callback URL. Allow `https://photographicode.github.io/congregation-assistant/` and `/index.html` in Supabase URL Configuration. Set the former as Site URL.
