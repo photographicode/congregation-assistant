@@ -120,7 +120,7 @@
         if (!focusHistory.size && previous?.isConnected && previous.getClientRects().length && !previous.closest('.hidden')) previous.focus();
     }
     function visibleDialogs() {
-        return [...document.querySelectorAll('[role="dialog"], [id^="modal-"], #sys-prompt-overlay')]
+        return [...document.querySelectorAll('[role="dialog"], [id^="modal-"].fixed, #sys-prompt-overlay')]
             .filter(el => el.getClientRects().length && !el.classList.contains('hidden') && (el.getAttribute('aria-hidden') !== 'true'));
     }
 
