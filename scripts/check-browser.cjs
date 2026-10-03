@@ -20,7 +20,7 @@ const server = http.createServer((request, response) => {
 });
 async function run(profile) {
     const browser = await profile.engine.launch({ headless: true });
-    const context = await browser.newContext({ viewport: profile.viewport, isMobile: profile.mobile, hasTouch: profile.mobile, acceptDownloads: true });
+    const context = await browser.newContext({ viewport: profile.viewport, isMobile: profile.mobile, hasTouch: profile.mobile, acceptDownloads: true, serviceWorkers: 'block' });
     const page = await context.newPage();
     page.setDefaultTimeout(15000);
     const errors = [], blockedProduction = [], timings = [];
@@ -153,7 +153,8 @@ async function run(profile) {
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
         const sharedURL=await page.locator('#liveLinkInput').inputValue();assert(!sharedURL.includes('#live='),'New public link is a frozen snapshot');
-        const publicContext=await browser.newContext({viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile});
+        // Route-backed fixtures require requests to stay outside a service worker.
+        const publicContext=await browser.newContext({viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,serviceWorkers:'block'});
         await publicContext.route('**/*.supabase.co/**',route=>route.abort('blockedbyclient'));
         await publicContext.route('**/npm/@supabase/supabase-js@2',route=>route.fulfill({contentType:'application/javascript',body:'/* Fixture */'}));
         await publicContext.route('**/pdf-lib.min.js',route=>route.fulfill({contentType:'application/javascript',body:fs.readFileSync(require.resolve('pdf-lib/dist/pdf-lib.min.js'),'utf8')}));
@@ -189,7 +190,7 @@ async function run(profile) {
             const token='qa-'+mode,context={kind:mode,cong_id:'qa-congregation',congregation:'Public Example',publishers:[{id:'qa-0',name:'Sample Reporter',service_group:'Group 1'}]};
             await publicPage.addInitScript(value=>{window.__qaPublicLinksSeed={...(window.__qaPublicLinksSeed||{}),...value};},{[token]:context});
             const url=new URL(sharedURL);url.searchParams.set('mode',mode);url.searchParams.set('token',token);await publicPage.goto(url.href);
-            await publicPage.waitForFunction(()=>window.ui?.publicLinkToken);assert.equal(await publicPage.locator('#tab-'+tab).isVisible(),true);assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);
+            await publicPage.waitForFunction(()=>window.ui?.publicLinkToken).catch(async error=>{await publicPage.screenshot({path:path.join(output,`${profile.name}-public-${mode}-failure.png`)});throw new Error(`${mode}: ${error.message}; public status: ${await publicPage.locator('body').innerText()}`);});assert.equal(await publicPage.locator('#tab-'+tab).isVisible(),true);assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);
             assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'New public forms directly read private tables');
         }
         await publicContext.close();
