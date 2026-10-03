@@ -105,6 +105,11 @@ async function run(profile) {
             await page.locator('#m-btn-tab-menu').click();
             for (const id of ['groups','analytics','access','announcements','help','about','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(), 'Missing mobile menu option '+id);
             const menu=await page.locator('.ca-mobile-menu-sheet').boundingBox();assert(menu.height <= profile.viewport.height, 'Menu exceeds viewport');
+            for(const theme of ['default','blue','green','crimson','scheduler','light','dark']) {
+                await page.evaluate(theme=>window.ui.applyTheme(theme),theme);
+                const background=await page.locator('.ca-mobile-menu-sheet').evaluate(el=>getComputedStyle(el).backgroundColor);
+                assert(/^rgb\(/.test(background),'Navigation surface must be opaque in '+theme+': '+background);
+            }
             await page.screenshot({path:path.join(output,`${profile.name}-all-sections.png`)});
             await page.locator('#menu-item-groups').click();assert.equal(await page.locator('#tab-groups').isVisible(),true);
             await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-access').click();

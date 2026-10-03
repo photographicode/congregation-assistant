@@ -33,7 +33,9 @@ returns boolean language sql stable security definer set search_path=''
 as $$
  select exists(select 1 from public.congregation_access a
   where a.cong_id=_cong_id and a.active and a.role='admin'
-  and lower(a.email)=lower(auth.jwt()->>'email'));
+  and lower(a.email)=lower(auth.jwt()->>'email')
+  and (auth.jwt()->'app_metadata'->>'provider'='google'
+   or (auth.jwt()->'app_metadata'->'providers') ? 'google'));
 $$;
 revoke all on function public.ca_is_congregation_admin(text) from public,anon;
 grant execute on function public.ca_is_congregation_admin(text) to authenticated;
@@ -42,7 +44,9 @@ grant select,insert,update,delete on public.congregation_access to authenticated
 
 drop policy if exists ca_access_read on public.congregation_access;
 create policy ca_access_read on public.congregation_access for select to authenticated
- using ((active and lower(email)=lower(auth.jwt()->>'email')) or public.ca_is_congregation_admin(cong_id));
+ using ((active and lower(email)=lower(auth.jwt()->>'email')
+  and (auth.jwt()->'app_metadata'->>'provider'='google'
+   or (auth.jwt()->'app_metadata'->'providers') ? 'google')) or public.ca_is_congregation_admin(cong_id));
 drop policy if exists ca_access_insert on public.congregation_access;
 create policy ca_access_insert on public.congregation_access for insert to authenticated
  with check (public.ca_is_congregation_admin(cong_id));
