@@ -18,6 +18,8 @@ jobs:
           node-version: '22'
       - run: node scripts/check-cloud-readiness.cjs
       - run: curl --fail --max-time 20 https://supabase.com/changelog.md -o artifacts/cloud/supabase-changelog.md
+      - run: curl --fail --max-time 20 https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes -o artifacts/cloud/postgres-17-11-changes.html
+      - run: curl --fail --max-time 20 https://supabase.com/changelog/45329-breaking-change-tables-not-exposed-to-data-and-graphql-api-automatically -o artifacts/cloud/data-api-changes.html
       - uses: actions/upload-artifact@v4
         if: always()
         with:

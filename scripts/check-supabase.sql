@@ -12,6 +12,7 @@ grant usage on schema test to anon,authenticated;grant execute on function test.
 insert into public.ca_superadmins(email) values('owner@example.com');
 set request.jwt.claims='{"email":"owner@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
 select test.assert(public.ca_is_superadmin(),'verified owner is superadmin');
+select test.assert((select count(*)=1 from public.ca_superadmins),'owner reads only their own owner entry');
 select public.provision_congregation('{"id":"a","name":"Example A"}','admin-a@example.com');
 select public.provision_congregation('{"id":"b","name":"Example B"}','admin-b@example.com');
 select test.assert((select trial_days=30 from public.congregations where id='a'),'new trial is thirty days');
@@ -21,6 +22,7 @@ insert into public.publishers(id,cong_id,name,service_group,phone,address) value
 insert into public.congregation_access(cong_id,email,role) values('a','field-a@example.com','field_service'),('a','attendance-a@example.com','attendance'),('a','scheduler-a@example.com','oclm');
 set request.jwt.claims='{"email":"field-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
 select test.assert((select count(*)=1 from public.publishers),'field role only reads its congregation');
+select test.assert((select count(*)=1 from public.congregation_access),'field role reads only their own active membership');
 do $$ begin
  begin update public.publishers set cong_id='b' where id='pub-a';raise exception 'Tenant move accepted';exception when insufficient_privilege then null;end;
  begin insert into public.reports(id,cong_id,pub_id,service_year,month) values('bad','a','pub-b',2026,8);raise exception 'Cross-tenant publisher accepted';exception when foreign_key_violation then null;end;

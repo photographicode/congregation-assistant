@@ -66,7 +66,7 @@ The PDF checks verify page bounds and the S-3 congregation/month field boundary.
 
 ## Backend setup and production blockers
 
-The HTML points to an existing Supabase project. This repository has no verified database migrations or authoritative RLS policy definitions. Do not assume that the existing project has the required tables or permissions simply because a client key is present.
+The HTML points to an existing Supabase project. The new project has the verified fresh schema and role policies. The original project remains unaudited and is still selected by the live configuration. See [connection-audit.md](supabase/connection-audit.md) for the activation blocker and live SQL checks.
 
 The data workflows require these tables: `congregations`, `publishers`, `reports`, `meeting_attendance`, `group_access`, and `congregation_access`. Optional wipe-request logging uses `wipe_requests`. Legacy OCLM cloud helpers also reference `get_oclm_state`, `save_oclm_state`, `upsert_oclm_public_snapshot`, and `get_oclm_public_snapshot` RPCs; their definitions are absent here. The current midweek scheduler saves drafts to congregation-specific browser storage and publishes sanitized snapshots through the stable public snapshot RPCs. `supabase/fresh-project.sql` defines the new project contract; it has not been applied to a live project.
 
@@ -80,13 +80,13 @@ Midweek drafts are stored under congregation-specific browser keys. Publishing u
 
 ## Verification status
 
-The current revision passes 30 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
+The current revision passes 34 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
 
 Browser acceptance now runs in GitHub Actions with an isolated backend. Desktop Chromium, mobile Chromium, and mobile WebKit passed navigation with 1,000 publishers, attendance draft retention, rejected and successful saves, modal closing, actual PDF downloads, scheduler views, and all seven themes. Browser runs exposed and fixed two interaction bugs: Escape targeted a modal title instead of its container, and an invisible toast intercepted bottom-navigation taps. Screenshot review also corrected desktop sidebar overlap and Daylight label contrast. The workflow checks sidebar positioning and stores screenshots and results as artifacts.
 
-Local browser execution remains blocked by `EPERM` on the HTTP listener. Physical devices, live Supabase authorization, OAuth, and clipboard permissions still need verification. The SQL metadata audit is prepared but has not run against a live database because no administrative connection is configured here.
+Local browser execution remains blocked by `EPERM` on the HTTP listener. Physical devices, live Supabase authorization, OAuth, and clipboard permissions still need verification. The new-project schema and policies have been audited through Supabase; rollback contract tests passed. Google OAuth is disabled and real-account sign-in remains unverified.
 
-For additional browser acceptance testing, use an isolated test Supabase project or an intercepted backend. Exercise each navigation tab, each dialog's cancel/save/error states, imports/exports, shared public links, and all themes at desktop and phone widths. Check the browser console for errors and inspect actual downloaded files. No production Supabase data was changed during this review.
+For additional browser acceptance testing, use an isolated test Supabase project or an intercepted backend. Exercise each navigation tab, each dialog's cancel/save/error states, imports/exports, shared public links, and all themes at desktop and phone widths. Check the browser console for errors and inspect actual downloaded files. The new project received reviewed performance migrations; all synthetic SQL test data was rolled back. Browser fixtures never write production records.
 
 ## Published website
 
@@ -98,10 +98,10 @@ If a browser still shows an older interface after a successful deployment, reloa
 
 The mobile Menu includes every permitted section, plus help, announcements, appearance settings, and sign-out for all roles. Large labeled controls and a scrolling menu sheet keep options reachable on small screens. Desktop sections stay together without a spacer. S-3 name/month fields now have 4pt of left padding.
 
-Google sign-in handles multiple roles, congregation selection, denied memberships, and expired sessions. Limited-role sessions fetch only their relevant data categories, and changing navigation context cannot grant extra screens. Backend RLS must enforce the same permissions. See [Google provider activation and account setup](supabase/google-sign-in.md); dashboard/provider activation remains pending administrative access.
+Google sign-in handles multiple roles, congregation selection, denied memberships, and expired sessions. Limited-role sessions fetch only their relevant data categories, and changing navigation context cannot grant extra screens. Backend RLS must enforce the same permissions. See [Google provider activation and account setup](supabase/google-sign-in.md); the new Google provider must be enabled in the dashboard before activating the project.
 
 ## New backend and public website
 
-See [new-project.md](supabase/new-project.md) for a guarded fresh schema, Google owner setup, data migration boundaries, and a one-command CLI setup once secure administrative access is connected. No Supabase account/project was created in this workspace. `app-config.js` retains the current project until a tested new one is configured. New congregations default to a 30-day trial, with an introductory ₹1,499/year offer and manual payment records; there is no payment gateway or automatic charge. The separate public site is maintained in `photographicode/Congregation-Assistant_Public`.
+See [new-project.md](supabase/new-project.md) for a guarded fresh schema, Google owner setup, data migration boundaries, and a one-command CLI setup once secure administrative access is connected. The new project `ejosykrxjvwrhxfnputo` is configured and connected. Its Google provider is disabled, so activation remains pending. `app-config.js` retains the current project until a tested new one is configured. New congregations default to a 30-day trial, with an introductory ₹1,499/year offer and manual payment records; there is no payment gateway or automatic charge. The separate public site is maintained in `photographicode/Congregation-Assistant_Public`.
 
 The app can be added to a home screen through its manifest and Install app menu item. Its service worker caches public app files only and checks the network first; it does not cache Supabase responses or provide offline cloud editing.

@@ -80,6 +80,8 @@ body:not([data-theme="light"]):not([data-theme="scheduler"]) :is([class*="text-t
 #nav-admin > .ca-nav-scroll { margin-top: 0 !important; height: auto !important; overflow-y: auto !important; gap: 8px !important; }
 #nav-admin .ca-nav-scroll .ca-nav-section { margin-top: 0 !important; flex: 0 0 auto !important; }
 #nav-admin .ca-nav-section-title { padding-top: 10px; }
+#nav-admin .ca-nav-item.hidden { display: none !important; }
+#nav-admin .ca-nav-item { font-size: 14px !important; min-height: 48px; }
 .ca-mobile-menu-sheet { width: 100%; max-height: min(92dvh, 850px) !important; display: flex; flex-direction: column; border-radius: 24px 24px 0 0; overflow: hidden !important; }
 .ca-mobile-menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px; border-bottom: 1px solid #64748b55; flex-shrink: 0; }
 .ca-mobile-menu-heading h2 { font-size: 24px; font-weight: 750; }

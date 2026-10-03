@@ -205,9 +205,18 @@ async function run(profile) {
                 window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true}];
                 await window.auth.resumeGoogleRole();
             },role);
+            if(!profile.mobile){
+                assert.equal(await page.locator('#btn-tab-access').isVisible(),false,'Restricted desktop role sees access management');
+                assert.equal(await page.locator('#btn-tab-emergency').isVisible(),false,'Restricted desktop role sees emergency records');
+                assert.equal(await page.locator('#btn-tab-dashboard').isVisible(),role==='field_service','Desktop overview visibility does not match its role');
+                assert.equal(await page.locator('#btn-tab-publishers').isVisible(),role==='field_service','Desktop publisher visibility does not match its role');
+                await page.screenshot({path:path.join(output,`${profile.name}-${role}-navigation.png`)});
+            }
             if(profile.mobile){
                 assert.equal(await page.locator('#m-btn-tab-menu').isVisible(),true,'Menu missing for '+role);await page.locator('#m-btn-tab-menu').click();
                 assert.equal(await page.locator('#menu-item-access').isVisible(),false);assert.equal(await page.locator('#menu-item-emergency').isVisible(),false);
+                assert.equal(await page.locator('#menu-item-home').isVisible(),role==='field_service');
+                assert.equal(await page.locator('#menu-item-publishers').isVisible(),role==='field_service');
                 for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
                 assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':'oclm')).isVisible(),true);
                 await page.screenshot({path:path.join(output,`${profile.name}-${role}-menu.png`)});
