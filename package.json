@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node scripts/check-app.cjs"
+    "test": "node scripts/check-app.cjs",
+    "test:browser": "node scripts/check-browser.cjs"
   },
   "devDependencies": {
-    "pdf-lib": "1.17.1"
+    "pdf-lib": "1.17.1",
+    "playwright": "1.62.1"
   }
 }

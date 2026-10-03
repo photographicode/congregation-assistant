@@ -37,6 +37,17 @@ With Python and Poppler installed, check text coordinates and render the generat
 python3 scripts/check-pdf-layout.py /tmp/congregation-pdf-check --render
 ```
 
+Browser acceptance checks run with an isolated in-memory backend and block production Supabase traffic:
+
+```sh
+npx playwright install --with-deps chromium webkit
+npm run test:browser
+```
+
+The GitHub `Application acceptance` workflow runs the regression/PDF checks and browser suite on pull requests. Browser coverage includes desktop Chromium, mobile Chromium at 390 pixels, and mobile WebKit at 375 pixels; a 1,000-publisher fixture; repeated tab switching; draft retention; rejected and successful attendance saves; dialog closing; real PDF downloads; scheduler navigation; and screenshots for seven themes. Results, screenshots, and PDFs are uploaded as workflow artifacts. Screen emulation still requires follow-up on physical devices.
+
+A read-only Supabase metadata audit and tenant/role verification checklist are in [supabase/README.md](supabase/README.md). The audit must be run against a configured project before an authorization migration can be designed safely.
+
 The PDF checks verify page bounds and the S-3 congregation/month field boundary. A human should still review alignment, print scaling, and physical printer margins.
 
 ## Interface and PDF behavior
@@ -73,4 +84,6 @@ The current revision passes 26 command-line regression checks and coordinate che
 
 Real-browser checks could not run in the managed environment: both local HTTP sockets and Chromium were rejected with `Operation not permitted`. Network-enabled retries were interrupted before execution. CDN reachability, live Supabase permissions, OAuth, actual browser downloads/clipboard, keyboard focus behavior, and desktop/mobile visual layouts remain unverified.
 
-For browser acceptance testing, use an isolated test Supabase project or an intercepted backend. Exercise each navigation tab, each dialog's cancel/save/error states, imports/exports, shared public links, and all themes at desktop and phone widths. Check the browser console for errors and inspect actual downloaded files. No production Supabase data was changed during this review.
+The browser suite is ready to run in GitHub Actions; local execution is still blocked at the HTTP listener with `EPERM`. Remote workflow results must be inspected before treating browser acceptance as complete.
+
+For additional browser acceptance testing, use an isolated test Supabase project or an intercepted backend. Exercise each navigation tab, each dialog's cancel/save/error states, imports/exports, shared public links, and all themes at desktop and phone widths. Check the browser console for errors and inspect actual downloaded files. No production Supabase data was changed during this review.
