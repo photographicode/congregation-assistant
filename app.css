@@ -37,13 +37,17 @@ body:is([data-theme="light"],[data-theme="scheduler"]) :is([class*="text-cyan-"]
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="text-rose-"] { color: #9f1239 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(#mobile-top-header,#mobile-nav) { background: #fff !important; border-color: #cbd5e1; color: #172033; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(.oclm-search-box input,.oclm-rail-search input,.oclm-big-select) { color: #172033 !important; background: #fff !important; }
-/* Keep sidebar hover from moving the whole workspace. Expand over content. */
+/* Match the fixed desktop sidebar; hover must not cover the workspace. */
 @media (min-width: 641px) {
-    #app-header:hover ~ .main-content { margin-left: var(--ca-sidebar-current) !important; }
-    body.sidebar-expanded .main-content { margin-left: var(--ca-sidebar-open) !important; }
-    #app-header:focus-within { width: var(--ca-sidebar-open) !important; }
-    #app-header:focus-within :is(.ca-nav-label,.ca-nav-section-title,#ca-sidebar-settings span,#ca-sidebar-help span) { display: inline !important; opacity: 1 !important; }
+    .main-content, #app-header:hover ~ .main-content, body.sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
+    #app-header:focus-within { width: var(--ca-sidebar-fixed) !important; }
 }
+body button.bg-gradient-to-r.text-slate-900 { color: #0f172a !important; }
+body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container button { background: #f1f5f9 !important; border-color: #cbd5e1 !important; }
+body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container button:first-child { background: #ccfbf1 !important; }
+body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container .uppercase { color: #475569 !important; }
+body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container [class*="text-blue-"] { color: #1d4ed8 !important; }
+#pub-stats-container .uppercase { font-size: 11px; }
 @media (max-width: 640px) {
     button { min-height: 42px; }
     input:not([type="checkbox"]):not([type="radio"]),select,textarea { font-size: 16px !important; }

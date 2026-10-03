@@ -88,9 +88,15 @@ async function run(profile) {
             assert.equal(await page.evaluate(() => document.body.classList.contains('ca-dialog-open')), false);
         }
         await nav('publishers');
+        await page.waitForFunction(() => !document.getElementById('toast').classList.contains('show'));
+        if (!profile.mobile) {
+            const layout = await page.evaluate(() => ({ sidebar: document.getElementById('app-header').getBoundingClientRect().right, content: document.querySelector('.main-content').getBoundingClientRect().left }));
+            assert(layout.content >= layout.sidebar, 'Desktop content sits underneath the sidebar');
+        }
         for (const theme of ['default', 'blue', 'green', 'crimson', 'scheduler', 'light', 'dark']) {
             await page.evaluate(theme => window.ui.applyTheme(theme), theme);
             assert.equal(await page.locator('body').getAttribute('data-theme'), theme);
+            await page.waitForTimeout(600); // Body background transition lasts 500ms.
             await page.screenshot({ path: path.join(output, `${profile.name}-${theme}.png`), fullPage: false });
         }
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
