@@ -128,7 +128,7 @@ body[data-theme="green"] { --ca-dialog-surface: #064e3b; }
 body[data-theme="crimson"] { --ca-dialog-surface: #4c1026; }
 body[data-theme="dark"] { --ca-dialog-surface: #10202b; }
 body:is([data-theme="light"],[data-theme="scheduler"]) { --ca-dialog-surface: #ffffff; }
-[id^="modal-"] > .glass-panel { background: var(--ca-dialog-surface) !important; }
+body[data-theme] [id^="modal-"] > .glass-panel { background: var(--ca-dialog-surface) !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container [class*="text-violet-"] { color: #6d28d9 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) table thead { background: #f1f5f9 !important; color: #334155 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="bg-cyan-900/"] { background: #cffafe !important; color: #155e75 !important; }
