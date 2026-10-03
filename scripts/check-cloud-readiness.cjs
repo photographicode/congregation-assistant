@@ -27,7 +27,16 @@ async function check(target) {
  const activeResult=await check(active);
  const next=JSON.parse(fs.readFileSync('supabase/new-project-public.json','utf8'));
  const newResult=next.supabaseUrl===active.supabaseUrl?activeResult:await check(next);
- const output={active:activeResult,newProject:newResult};
+ const applicationURL='https://photographicode.github.io/congregation-assistant/';
+ async function landing(url){
+  try{const response=await fetch(url,{signal:AbortSignal.timeout(12000)});const html=await response.text();return {url,status:response.status,mentionsApplicationURL:response.ok?html.includes(applicationURL):null};}
+  catch{return {url,status:null,mentionsApplicationURL:null,error:'Connection unavailable'};}
+ }
+ const [originalLanding,previewLanding]=await Promise.all([
+  landing('https://photographicode.github.io/Congregation-Assistant_Public/'),
+  landing(applicationURL+'public-site-preview/')
+ ]);
+ const output={active:activeResult,newProject:newResult,websites:{originalLanding,previewLanding}};
  fs.mkdirSync('artifacts/cloud',{recursive:true});fs.writeFileSync('artifacts/cloud/readiness.json',JSON.stringify(output,null,2));
  console.log(JSON.stringify(output));
  if(newResult.privateTableAccess.anonymousDenied===false)throw new Error('New project exposes the private congregation table to anonymous requests.');
