@@ -87,3 +87,9 @@ Browser acceptance now runs in GitHub Actions with an isolated backend. Desktop 
 Local browser execution remains blocked by `EPERM` on the HTTP listener. Physical devices, live Supabase authorization, OAuth, and clipboard permissions still need verification. The SQL metadata audit is prepared but has not run against a live database because no administrative connection is configured here.
 
 For additional browser acceptance testing, use an isolated test Supabase project or an intercepted backend. Exercise each navigation tab, each dialog's cancel/save/error states, imports/exports, shared public links, and all themes at desktop and phone widths. Check the browser console for errors and inspect actual downloaded files. No production Supabase data was changed during this review.
+
+## Published website
+
+The existing site is [GitHub Pages](https://photographicode.github.io/congregation-assistant/), published from `main`. Pull-request branches are tested but do not update this website until merged. The `Published website verification` workflow waits for the deployed HTML, CSS, and helper scripts to match the commit, then runs the isolated browser acceptance suite against that HTTPS URL. It intercepts the cloud client and blocks production Supabase requests, so verification does not change live database records. Deployment hashes, screenshots, and browser results are saved as workflow artifacts.
+
+If a browser still shows an older interface after a successful deployment, reload once with cache bypass or reopen the site in a private window. Deploying this frontend does not establish the existing backend's authorization guarantees; the audit described above is still required.

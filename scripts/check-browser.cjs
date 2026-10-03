@@ -8,6 +8,8 @@ const root = path.resolve(__dirname, '..');
 const output = path.join(root, 'artifacts/browser');
 fs.mkdirSync(output, { recursive: true });
 const reports = [];
+const publishedURL = process.env.CA_CHECK_BASE_URL;
+if (publishedURL && new URL(publishedURL).protocol !== 'https:') throw new Error('Published-site checks require HTTPS.');
 const server = http.createServer((request, response) => {
     const relative = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
     const file = path.resolve(root, '.' + (relative === '/' ? '/index.html' : relative));
@@ -29,7 +31,7 @@ async function run(profile) {
     await context.route('**/pdf-lib.min.js', route => route.fulfill({ contentType: 'application/javascript', body: fs.readFileSync(require.resolve('pdf-lib/dist/pdf-lib.min.js'), 'utf8') }));
     await context.addInitScript({ path: path.join(__dirname, 'browser-fixture.js') });
     try {
-        await page.goto(`http://127.0.0.1:${server.address().port}`, { waitUntil: 'load' });
+        await page.goto(publishedURL || `http://127.0.0.1:${server.address().port}`, { waitUntil: 'load' });
         await page.waitForFunction(() => window.db?.publishers.length === 1000 && document.getElementById('global-loader').classList.contains('hidden'));
         const nav = async tab => {
             const selector = profile.mobile ? `#m-btn-tab-${tab}` : `#btn-tab-${tab}`;
@@ -113,12 +115,12 @@ async function run(profile) {
     }
 }
 (async () => {
-    await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
+    if (!publishedURL) await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
     try {
         for (const profile of [
             { name: 'desktop-chromium', engine: chromium, viewport: { width: 1440, height: 900 }, mobile: false },
             { name: 'mobile-chromium', engine: chromium, viewport: { width: 390, height: 844 }, mobile: true },
             { name: 'mobile-webkit', engine: webkit, viewport: { width: 375, height: 812 }, mobile: true }
         ]) await run(profile);
-    } finally { server.close(); }
+    } finally { if (!publishedURL) server.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
