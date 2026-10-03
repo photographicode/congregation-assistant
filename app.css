@@ -218,6 +218,15 @@ body:is([data-theme="light"],[data-theme="scheduler"]) [class*="bg-emerald-900/"
 @media(max-width:640px) { .ca-admin-overview { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; } .ca-admin-stat { padding: 16px; } .ca-admin-card { padding: 18px; } }
 
 /* Scheduler dialogs must sit above the shared mobile navigation. */
+body.mws-public-mode #tab-oclm { opacity: 1 !important; }
+body.mws-public-mode #ca-midweek-root .live-brand-title { font-size: 18px; }
+body.mws-public-mode #ca-midweek-root :is(.live-brand-sub,.live-info-sub,.live-part,.live-person,.live-section-head,.live-note) { font-size: 14px; }
+body.mws-public-mode #ca-midweek-root .live-assistant { font-size: 13px; }
+body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search) { min-height: 48px; font-size: 16px; }
+body.mws-public-mode #ca-midweek-root .live-row { min-height: 56px; }
+@media(min-width:1024px) {
+    body.super-admin-theme .main-content { padding-top: calc(var(--ca-topbar-h) + 24px) !important; }
+}
 #ca-midweek-root .modal-backdrop { z-index: 10001; }
 @media(max-width:640px) {
     #ca-midweek-root :is(.field-label,.check-row,.candidate-tag,.sheet-sub,.sheet-foot-note) { font-size: 14px; }

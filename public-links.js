@@ -18,7 +18,9 @@
     };
     const status = (message, failed = false) => {
         let el = document.getElementById('public-link-status');
-        if (!el) { el = document.createElement('div'); el.id = 'public-link-status'; el.setAttribute('role','status'); (document.body.classList.contains('mws-public-mode')?document.getElementById('liveView'):document.querySelector('.main-content')).prepend(el); }
+        if (!el) { el = document.createElement('div'); el.id = 'public-link-status'; el.setAttribute('role','status'); }
+        const host=document.body.classList.contains('mws-public-mode')?document.getElementById('liveView'):document.querySelector('.main-content');
+        if(el.parentElement!==host)host.prepend(el);
         el.textContent = message; el.className = 'ca-public-status' + (failed ? ' ca-public-status-error' : '');
     };
     const openSnapshot = snap => {

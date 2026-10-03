@@ -162,6 +162,8 @@ async function run(profile) {
         await publicContext.addInitScript(value=>{window.__qaPublicationsSeed=value;},published);
         const publicPage=await publicContext.newPage();publicPage.on('pageerror',error=>errors.push(error.message));
         await publicPage.goto(sharedURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('First published title'));
+        assert.equal(await publicPage.locator('#liveView').isVisible(),true,'Published schedule is hidden');
+        assert.equal(await publicPage.locator('#tab-oclm').evaluate(el=>getComputedStyle(el).opacity),'1','Published schedule is transparent');
         assert.equal(await publicPage.evaluate(()=>sessionStorage.getItem('fs_auth')),null,'Public URL needs a private session');
         assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
         assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);
