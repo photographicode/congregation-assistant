@@ -192,6 +192,62 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         await fw.auth.activateGoogleRole('qa');assert.deepEqual(JSON.parse(fixture.sessionStorage.getItem('fs_roles')),['attendance','field_service']);assert.equal(fw.auth.roleReady,true);
         await assert.rejects(fw.auth.activateGoogleRole('other'),/no active access/);
     });
+    await test('secure backend rejects cached legacy and Superadmin sessions without OAuth', async () => {
+        for (const type of ['admin','super','role']) {
+            const fixture=createHarness(),fw=fixture.window;fw.CA_CONFIG={secureBackend:true};
+            for(const [key,value] of Object.entries({fs_auth:'true',fs_auth_type:type,fs_role:'admin',fs_last_activity:String(Date.now())}))fixture.sessionStorage.setItem(key,value);
+            assert.equal(fw.auth.check(),false,type+' opened before OAuth verification');
+            assert.equal(await fw.auth.resumeGoogleRole(),false);
+            assert.equal(fixture.sessionStorage.getItem('fs_auth'),null);
+            assert.equal(fw.auth.check(),false);
+        }
+    });
+    await test('secure legacy links cannot enter password screens or read private tables', async () => {
+        for(const query of ['?cong=qa&mode=overseer&group=Group%201','?cong=qa','?cong=qa&mode=attendance']) {
+            const fixture=createHarness(),fw=fixture.window;fw.CA_CONFIG={secureBackend:true};fw.location.search=query;
+            // A minimal status host is enough; real layout is covered by browser acceptance.
+            fixture.document.querySelector=()=>({prepend(){}});
+            assert.equal(fw.auth.check(),false);
+            let resumed=false;fw.auth.resumeGoogleRole=async()=>{resumed=true;return true;};
+            await fw.db.initPublicS4OrLogin();
+            assert.equal(fixture.calls.length,0,'Legacy route contacted private tables');
+            assert.equal(resumed,query.includes('overseer'),'Legacy overseer did not resume Google');
+            assert.equal(fixture.elements.get('overseer-auth-screen').classList.contains('hidden'),true);
+        }
+    });
+    await test('rejected attendance lookup reports an error instead of looking like an empty month', async () => {
+        const fixture=createHarness(),fw=fixture.window;fw.ui.publicLinkToken='withdrawn';
+        fixture.elements.get('pub-att-year').value='2026';fixture.elements.get('pub-att-month').value='8';fixture.elements.get('pub-att-week').value='1';
+        fixture.setCloud({data:null,error:{message:'Invalid attendance link'}});
+        await fw.ui.loadPublicAttendance();
+        assert(fixture.messages.some(m=>m.type==='error'&&m.text.includes('Invalid attendance link')));
+        fixture.messages.length=0;fixture.setCloud({data:null,error:null});await fw.ui.loadPublicAttendance();assert.equal(fixture.messages.length,0);
+    });
+    await test('partial secure configuration cannot fall back to the old project', async () => {
+        for(const config of [{secureBackend:true},{secureBackend:true,supabaseUrl:'https://example.supabase.co'},{supabaseUrl:'https://example.supabase.co'},{supabaseAnonKey:'publishable-test'}]) {
+            const fixture=createHarness({config});fixture.sessionStorage.setItem('fs_auth','true');fixture.sessionStorage.setItem('fs_auth_type','admin');fixture.sessionStorage.setItem('fs_last_activity',String(Date.now()));
+            assert.equal(fixture.window.auth.check(),false);await fixture.window.db.initPublicS4OrLogin();assert(fixture.elements.get('google-auth-status').textContent.includes('incomplete'));
+            await assert.rejects(fixture.window.auth.googleLogin(),/Cloud connection/);assert.equal(fixture.calls.length,0);
+        }
+        await createHarness({config:{secureBackend:true,supabaseUrl:'https://example.supabase.co',supabaseAnonKey:'publishable-test'}}).window.auth.googleLogin();
+    });
+    await test('secure project refuses legacy password and unconfigured wipe operations', async () => {
+        const fixture=createHarness(),fw=fixture.window;fw.CA_CONFIG={secureBackend:true};
+        const event={preventDefault(){}};
+        for(const name of ['setGroupPassword','changeGroupPassword','changeAdminPassword'])await assert.rejects(fw.db[name](event),/Google/);
+        fw.ui.confirmWipeDatabase();fw.ui.cancelWipe();await fw.ui.executeScheduledWipe();
+        assert.equal(fixture.calls.length,0);assert(fixture.messages.some(m=>/wipe.*not configured/i.test(m.text)));
+        fw.ui.openGroupPasswordModal('Example');assert(fixture.messages.some(m=>/Google/.test(m.text)));
+    });
+    await test('group and overseer views display names and remarks as text', () => {
+        const fixture=createHarness(),fw=fixture.window,period=fw.utils.getISTPreviousMonthInfo();
+        fw.db.publishers=[{id:'reported',name:'<img src=x onerror=alert(1)>',group:'A'},{id:'pending',name:'<svg onload=alert(2)>',group:'A'}];
+        fw.db.reports=[{pubId:'reported',serviceYear:period.serviceYear,month:period.month,sharedInMinistry:true,comments:'<iframe srcdoc="bad">'}];
+        for(const [method,id] of [['showGroup','group-details'],['renderOverseerView','overseer-detail']]) {
+            fw.ui[method]('A');const markup=fixture.elements.get(id).innerHTML;
+            assert(!/<(?:img|svg|iframe)\b/.test(markup));assert(markup.includes('&lt;img'));assert(markup.includes('&lt;svg'));assert(markup.includes('&lt;iframe'));
+        }
+    });
     await test('PDF text fitting stays within fields and unsupported scripts fail clearly', async () => {
         const pdf=await PDFDocument.create(),font=await pdf.embedFont(StandardFonts.Helvetica);
         const fitted=w.PdfTools.fit('Long congregation '.repeat(20),font,128,8.5,6.5);assert(fitted.width<=128);assert(fitted.size>=6.5);
