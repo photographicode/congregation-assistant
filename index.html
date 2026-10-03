@@ -2789,7 +2789,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         const SUPABASE_URL = window.CA_CONFIG?.supabaseUrl || 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
         const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
         
-        const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
+        const configuredUrl = !!window.CA_CONFIG?.supabaseUrl, configuredKey = !!window.CA_CONFIG?.supabaseAnonKey;
+        const configComplete = configuredUrl === configuredKey && (!window.CA_CONFIG?.secureBackend || configuredUrl && configuredKey);
+        const isCloudConfigured = configComplete && SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
         const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
         const supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
@@ -2810,6 +2812,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             expireIfIdle: () => { if (sessionStorage.getItem('fs_auth') !== 'true') return false; const last=Math.max(parseInt(sessionStorage.getItem('fs_last_activity')||'0',10),window.auth.lastActivity||0); if(!last||Date.now()-last>window.auth.IDLE_TIMEOUT_MS){sessionStorage.removeItem('fs_auth');sessionStorage.removeItem('fs_auth_type');sessionStorage.removeItem('fs_last_activity');localStorage.removeItem('fs_auth');localStorage.removeItem('fs_auth_type');return true;} return false; },
             check: () => {
+                if(!configComplete)return false;
                 const urlParams = new URLSearchParams(window.location.search);
                 const congParam = urlParams.get('cong');
                 const groupParam = urlParams.get('group');
@@ -2823,7 +2826,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     return true;
                 }
 
-                if (congParam && modeParam === 'overseer' && groupParam) {
+                if (!window.CA_CONFIG?.secureBackend && congParam && modeParam === 'overseer' && groupParam) {
                     window.currentCongId = congParam;
                     window.ui.overseerGroup = groupParam;
                     document.body.classList.add('overseer-mode');
@@ -2845,7 +2848,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     document.getElementById('auth-screen').classList.add('hidden');
                     return true;
                 }
-                if (congParam) { 
+                if (!window.CA_CONFIG?.secureBackend && congParam) {
                     window.currentCongId = congParam;
                     document.body.classList.add('public-mode'); 
                     window.ui.publicGroup = urlParams.get('group'); 
@@ -2863,7 +2866,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 
                 window.auth.expireIfIdle();
-                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(type==='role'&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
+                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if((window.CA_CONFIG?.secureBackend||type==='role'||type==='super')&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
                 return false;
             },
             roleReady: false,
@@ -2875,7 +2878,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 document.getElementById('auth-screen')?.classList.remove('hidden');
             },
             clearGoogleRole: (force=false) => {
-                if(force||sessionStorage.getItem('fs_auth_type')==='role')for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
+                if(force||window.CA_CONFIG?.secureBackend||['role','super'].includes(sessionStorage.getItem('fs_auth_type')))for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
                 window.auth.roleReady=false;
             },
             activateGoogleRole: async congId => {
@@ -3122,6 +3125,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             setGroupPassword: async (e) => {
                 e.preventDefault();
+                if(window.CA_CONFIG?.secureBackend)throw new Error('This project uses Google accounts. Manage approved access in Authorized Accounts.');
                 if(!isCloudEnabled) throw new Error('Cloud connection required to save an overseer password.');
                 const groupName = document.getElementById('gp-group-name').value;
                 const pwd = document.getElementById('gp-new-pass').value.trim();
@@ -3137,6 +3141,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             changeGroupPassword: async (e) => {
                 e.preventDefault();
+                if(window.CA_CONFIG?.secureBackend)throw new Error('This project uses Google accounts. Manage approved access in Authorized Accounts.');
                 if(!isCloudEnabled) throw new Error('Cloud connection required to change the password.');
                 const currentP = document.getElementById('ov-cp-current').value;
                 const newP = document.getElementById('ov-cp-new').value.trim();
@@ -3387,6 +3392,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             changeAdminPassword: async (e) => {
                 e.preventDefault();
+                if(window.CA_CONFIG?.secureBackend)throw new Error('This project uses Google accounts. Manage approved access in Authorized Accounts.');
                 if(!isCloudEnabled) throw new Error('Cloud connection required to change the password.');
                 const currentP = document.getElementById('cp-current').value;
                 const newP = document.getElementById('cp-new').value.trim();
@@ -4367,6 +4373,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             confirmWipeDatabase: () => {
+                if(window.CA_CONFIG?.secureBackend){window.ui.showToast('Data wipe is not configured for this project. Contact the application administrator.', 'error');return;}
                 if (window.db.currentCongData && window.db.currentCongData.wipe_requested_at) {
                     window.ui.showToast('A wipe is already scheduled for this congregation. Use "Cancel Wipe" to stop it.', 'error');
                     window.ui.renderWipeBanner();
@@ -4388,6 +4395,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             cancelWipe: () => {
+                if(window.CA_CONFIG?.secureBackend){window.ui.showToast('Data wipe is not configured for this project. Contact the application administrator.', 'error');return;}
                 window.ui.openSysPrompt("Cancel Scheduled Wipe", "Are you sure you want to cancel the pending data wipe for this congregation?", false, async () => {
                     if (isCloudEnabled) await supabaseClient.from('congregations').update({ wipe_requested_at: null, wipe_device_info: null }).eq('id', window.currentCongId);
                     if (window.db.currentCongData) { window.db.currentCongData.wipe_requested_at = null; window.db.currentCongData.wipe_device_info = null; }
@@ -4397,6 +4405,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             executeScheduledWipe: async () => {
+                if(window.CA_CONFIG?.secureBackend){window.ui.showToast('Data wipe is not configured for this project. Contact the application administrator.', 'error');return;}
                 window.db.publishers = []; window.db.reports = [];
                 if (isCloudEnabled) {
                     await supabaseClient.from('reports').delete().eq('cong_id', window.currentCongId);
@@ -4907,7 +4916,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 if (isCloudEnabled) {
                     try {
-                        const { data } = window.ui.publicLinkToken ? await supabaseClient.rpc('get_public_attendance',{p_token:window.ui.publicLinkToken,p_year:sy,p_month:month}) : await supabaseClient.from('meeting_attendance').select('*').eq('id', id).single();
+                        const { data, error } = window.ui.publicLinkToken ? await supabaseClient.rpc('get_public_attendance',{p_token:window.ui.publicLinkToken,p_year:sy,p_month:month}) : await supabaseClient.from('meeting_attendance').select('*').eq('id', id).maybeSingle();
+                        if (error) throw error;
                         if (data) {
                             const mVal = data[`w${week}_mid`] || '';
                             const eVal = data[`w${week}_end`] || '';
@@ -4925,7 +4935,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                             setFields(eVal, 'end');
                             window.ui.togglePubAttInput('mid'); window.ui.togglePubAttInput('end');
                         }
-                    } catch (e) { /* No existing data for this month, perfectly fine. */ }
+                    } catch (e) { window.ui.showToast('Attendance could not be loaded. '+(e.message || 'Check your connection and try again.'), 'error'); }
                 }
             },
 
@@ -5250,21 +5260,22 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 let stats = { elders: 0, rps: 0, aps: 0 }; let pending = [], membersList = [], tableHtml = '';
                 
                 pubs.sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
-                    membersList.push(p.name); if(p.isElder) stats.elders++; if(p.isRP) stats.rps++;
+                    membersList.push(window.ui.escapeHtml(p.name)); if(p.isElder) stats.elders++; if(p.isRP) stats.rps++;
                     const r = reports.find(x => x.pubId === p.id);
                     if (r) {
                         if(r.isAP) stats.aps++;
                         const gH = parseFloat(r.hours || 0); const gS = parseInt(r.studies || 0);
                         const gIsShared = r.sharedInMinistry || gH > 0 || gS > 0;
-                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
+                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${window.ui.escapeHtml(gIsShared ? (r.comments||'') : 'Not Participated')}</td></tr>`;
                     } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
                 });
                 
-                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${name}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
+                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${window.ui.escapeHtml(name)}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
                 details.innerHTML = `<div class="flex justify-between items-start mb-6 pb-4 border-b border-white/10 flex-wrap gap-4"><div><h3 class="text-2xl font-bold text-white">${window.ui.escapeHtml(groupName)}</h3><div class="text-sm text-teal-200/60 mt-1">Data for ${istInfo.displayString}</div></div><div class="flex flex-wrap gap-2"><button onclick="window.ui.downloadS21Group(${window.ui.jsArg(groupName)})" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow flex items-center gap-2 transition-all">⬇️ Download S-21</button><button onclick="window.ui.copyGroupLink(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all">🔗 Copy Form Link</button><button onclick="window.ui.openGroupPasswordModal(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔒 Overseer Password</button><button onclick="window.ui.copyOverseerLink(${window.ui.jsArg(groupName)})" class="glass-panel hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm shadow flex items-center gap-2 transition-all border border-rose-500/30">🔗 Copy Overseer Link</button></div></div><div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
             },
 
             openGroupPasswordModal: (groupName) => {
+                if(window.CA_CONFIG?.secureBackend){window.ui.showToast('Assign the overseer a Field Service role in Authorized Accounts, then ask them to sign in with Google.');return;}
                 document.getElementById('gp-group-name').value = groupName;
                 document.getElementById('gp-group-name-label').textContent = groupName;
                 document.getElementById('gp-new-pass').value = '';
@@ -5273,6 +5284,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             copyOverseerLink: (groupName) => {
+                if(window.CA_CONFIG?.secureBackend){return window.ui.copyText(new URL(window.location.pathname,window.location.origin).href);}
                 const baseUrl = window.location.href.split(/[?#]/)[0]; const url = `${baseUrl}?cong=${window.currentCongId}&group=${encodeURIComponent(groupName)}&mode=overseer`;
                 const textArea = document.createElement("textarea"); textArea.value = url; document.body.appendChild(textArea);
                 textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Overseer Link Copied! Requires the group password to open.'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
@@ -5289,17 +5301,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 let stats = { elders: 0, rps: 0, aps: 0 }; let pending = [], membersList = [], tableHtml = '';
 
                 pubs.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
-                    membersList.push(p.name); if(p.isElder) stats.elders++; if(p.isRP) stats.rps++;
+                    membersList.push(window.ui.escapeHtml(p.name)); if(p.isElder) stats.elders++; if(p.isRP) stats.rps++;
                     const r = reports.find(x => x.pubId === p.id);
                     if (r) {
                         if(r.isAP) stats.aps++;
                         const gH = parseFloat(r.hours || 0); const gS = parseInt(r.studies || 0);
                         const gIsShared = r.sharedInMinistry || gH > 0 || gS > 0;
-                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
+                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${window.ui.escapeHtml(gIsShared ? (r.comments||'') : 'Not Participated')}</td></tr>`;
                     } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
                 });
 
-                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${name}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
+                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${window.ui.escapeHtml(name)}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
                 document.getElementById('overseer-detail').innerHTML = `<div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
             },
 
@@ -5763,11 +5775,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         // Setup the initial load logic explicitly
         window.db.initPublicS4OrLogin = async () => {
+            if(!configComplete){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Cloud setup is incomplete. Ask the application administrator to finish the project configuration.');return;}
             const urlParams = new URLSearchParams(window.location.search);
             const oauthError=urlParams.get('error_description')||new URLSearchParams(window.location.hash.slice(1)).get('error_description');
             if(oauthError){window.auth.clearGoogleRole();window.auth.showGoogleStatus('Google sign-in was not completed. Please try again or contact your administrator.');document.getElementById('global-loader')?.classList.add('hidden');history.replaceState(null,'',window.location.pathname);return;}
             if(await window.PublicLinks?.boot()) return;
-            const isPublicLink = !!urlParams.get('cong');
+            const isPublicLink = !window.CA_CONFIG?.secureBackend && !!urlParams.get('cong');
             const loader = document.getElementById('global-loader');
             if (loader) {
                 const bootFailsafe=setTimeout(()=>{if(!loader.classList.contains('hidden')){loader.style.opacity='0';setTimeout(()=>loader.classList.add('hidden'),250);}},9000);

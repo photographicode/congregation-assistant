@@ -107,6 +107,12 @@
                 window.auth.showGoogleStatus('Sign in with your approved Google account to open your Field Service tools.');
                 return false;
             }
+            if (params.get('cong') && window.CA_CONFIG?.secureBackend) {
+                publicShell();
+                document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+                status('This older link is not supported by this project. Ask your administrator for a new public link.',true);
+                return true;
+            }
             return false;
         }
     };

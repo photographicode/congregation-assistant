@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(m => !/\bsrc\s*=/.test(m[1]));
 const markup = html.slice(0, html.indexOf('<script>'));
-function createHarness({ cloudAvailable = true, date = Date } = {}) {
+function createHarness({ cloudAvailable = true, date = Date, config } = {}) {
     const elements = new Map(), messages = [], consoleErrors = [], timers = [], events = new Map(), calls = [];
     const makeStorage = () => {
         const data = new Map();
@@ -58,6 +58,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
         addEventListener(name, callback) { const group = events.get('window:' + name) || []; group.push(callback); events.set('window:' + name, group); }, removeEventListener() {}, scrollTo() {}, open() {}
     };
     if (cloudAvailable) window.supabase = { createClient: () => client };
+    if (config) window.CA_CONFIG = config;
     window.window = window; window.URL = URL;
     const globals = {
         window, document, localStorage, sessionStorage, location: window.location,
