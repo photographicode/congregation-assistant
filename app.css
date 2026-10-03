@@ -133,3 +133,53 @@ body:is([data-theme="light"],[data-theme="scheduler"]) #pub-stats-container [cla
 body:is([data-theme="light"],[data-theme="scheduler"]) table thead { background: #f1f5f9 !important; color: #334155 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="bg-cyan-900/"] { background: #cffafe !important; color: #155e75 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="bg-emerald-900/"] { background: #d1fae5 !important; color: #065f46 !important; }
+
+/* Phone layouts reflow controls instead of squeezing the desktop toolbar. */
+@media (max-width: 640px) {
+    body[data-theme] #mobile-top-header,
+    body[data-theme] #mobile-nav { background: var(--ca-dialog-surface) !important; }
+    #mobile-top-header { gap: 12px; padding: 10px 12px; }
+    #mobile-top-header #nav-mobile-title { flex: 1; min-width: 0; max-width: none; white-space: normal; overflow-wrap: anywhere; font-size: 16px; line-height: 1.3; }
+    #mobile-top-header > div { flex-shrink: 0; gap: 6px; }
+    #mobile-top-header > div > button:last-child { display: none; }
+    .main-content { padding-inline: 12px !important; padding-top: 12px !important; }
+    #ca-midweek-root .topbar-inner { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; padding: 12px; }
+    #ca-midweek-root .mobile-brand { display: none; }
+    #ca-midweek-root .week-nav { display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; gap: 10px; }
+    #ca-midweek-root .week-arrow { width: 48px; height: 48px; font-size: 24px; }
+    #ca-midweek-root .week-main { max-width: none; text-align: center; }
+    #ca-midweek-root .week-caption { font-size: 12px; }
+    #ca-midweek-root .week-title { font-size: 16px; white-space: normal; overflow-wrap: anywhere; }
+    #ca-midweek-root .top-actions { display: grid; grid-template-columns: auto auto minmax(0,1fr); gap: 8px; }
+    #ca-midweek-root #saveStateLabel { grid-column: 1 / -1; font-size: 13px; text-align: center; }
+    #ca-midweek-root .top-actions .btn:not(.primary) { display: inline-flex; }
+    #ca-midweek-root .btn { height: auto; min-height: 48px; padding: 10px; font-size: 14px; white-space: normal; }
+    #ca-midweek-root .content { padding: 16px 12px 24px; }
+    #ca-midweek-root .schedule-head h1 { font-size: 25px; line-height: 1.2; }
+    #ca-midweek-root .schedule-head p { font-size: 15px; }
+    #ca-midweek-root :is(.context-title,.section-name,.assignee-name,.person-name) { font-size: 16px; }
+    #ca-midweek-root :is(.context-sub,.status-copy,.section-sub,.person-sub,.toolbar-note) { font-size: 14px; }
+    #ca-midweek-root :is(.section-count,.assignee-label,.tag,.role-tag) { font-size: 12px; }
+    #ca-midweek-root .toolbar { flex-direction: column; align-items: stretch; }
+    #ca-midweek-root .toolbar-left { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
+    #ca-midweek-root .week-strip { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; overflow: visible; }
+    #ca-midweek-root .week-chip { min-width: 0; padding: 12px 10px; }
+    #ca-midweek-root .week-chip strong { font-size: 13px; white-space: normal; overflow-wrap: anywhere; }
+    #ca-midweek-root .week-chip small { font-size: 12px; }
+    #ca-midweek-root .assign-row { padding: 14px 12px; }
+    #ca-midweek-root .row-title-input { font-size: 16px !important; padding: 8px; }
+    #ca-midweek-root .assignee { min-height: 56px; height: auto; padding: 8px 10px; }
+    #ca-midweek-root .clear-btn { width: 44px; min-width: 44px; height: 48px; }
+    body[data-theme] #ca-midweek-root :is(input,select,textarea) { background: #fff !important; color: #202a33 !important; border-color: #b8c2cc !important; }
+    #ca-midweek-root .row-title-input { border: 1px solid #d6dde3 !important; }
+    #ca-midweek-root .person-actions { flex-wrap: wrap; }
+    #ca-midweek-root .mini-icon { width: 44px; height: 48px; }
+    #mobile-nav { padding-bottom: env(safe-area-inset-bottom); }
+    #mobile-nav button span:first-child { font-size: 24px; }
+    #mobile-nav button span:last-child { font-size: 12px; }
+}
+@media (max-width: 359px) {
+    #ca-midweek-root .mws-subnav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #ca-midweek-root .section-head { flex-wrap: wrap; gap: 8px; }
+    #mobile-nav button span:last-child { font-size: 11px; }
+}
