@@ -158,6 +158,29 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const original=h.sessionStorage.setItem;h.sessionStorage.setItem=(...args)=>{writes++;return original(...args);};
         try{for(let i=0;i<1000;i++)w.auth.touchActivity();assert.equal(writes,1);assert.equal(w.auth.expireIfIdle(),false);}finally{h.sessionStorage.setItem=original;}
     });
+    await test('role navigation combines assignments and rejects context-based escalation', () => {
+        const fixture=createHarness(), fw=fixture.window;
+        fixture.sessionStorage.setItem('fs_role','attendance');assert.deepEqual(fw.ui.getAllowedTabs(),['attendance']);
+        fw.ui.currentTab='attendance';fw.ui.switchTab('emergency',false,'attendance');assert.equal(fw.ui.currentTab,'attendance');
+        fixture.sessionStorage.setItem('fs_roles',JSON.stringify(['attendance','field_service']));
+        assert(fw.ui.getAllowedTabs().includes('groups'));assert(fw.ui.getAllowedTabs().includes('attendance'));assert(!fw.ui.canManageAccess());
+    });
+    await test('access management rejects restricted roles and preserves rejected form entries', async () => {
+        const fixture=createHarness(),fw=fixture.window;fw.currentCongId='qa';fixture.sessionStorage.setItem('fs_role','attendance');
+        await assert.rejects(fw.ui.addRoleAccess(),/Only administrators/);assert.equal(fixture.calls.length,0);
+        fixture.sessionStorage.setItem('fs_role','admin');fixture.elements.get('access-email-input').value='person@example.com';fixture.elements.get('access-role-input').value='attendance';
+        fixture.setCloud({error:new Error('RLS rejected')});await assert.rejects(fw.ui.addRoleAccess(),/not saved/);assert.equal(fixture.elements.get('access-email-input').value,'person@example.com');
+    });
+    await test('cached Google role cannot open the application without a live OAuth session', async () => {
+        const fixture=createHarness(),fw=fixture.window;fixture.sessionStorage.setItem('fs_auth','true');fixture.sessionStorage.setItem('fs_auth_type','role');fixture.sessionStorage.setItem('fs_role','admin');fixture.sessionStorage.setItem('fs_last_activity',String(Date.now()));
+        assert.equal(fw.auth.check(),false);assert.equal(await fw.auth.resumeGoogleRole(),false);assert.equal(fixture.sessionStorage.getItem('fs_auth'),null);
+    });
+    await test('Google memberships combine valid roles and omit invalid or inactive grants', async () => {
+        const fixture=createHarness(),fw=fixture.window;fw.db.initAdmin=async()=>{};fw.ui.applyRoleNavigation=()=>{};fw.ui.switchTab=()=>{};
+        fw.auth.googleAccess=[{cong_id:'qa',role:'attendance',active:true},{cong_id:'qa',role:'field_service',active:true}];fixture.setCloud({data:{id:'qa',name:'Test',status:'active'},error:null});
+        await fw.auth.activateGoogleRole('qa');assert.deepEqual(JSON.parse(fixture.sessionStorage.getItem('fs_roles')),['attendance','field_service']);assert.equal(fw.auth.roleReady,true);
+        await assert.rejects(fw.auth.activateGoogleRole('other'),/no active access/);
+    });
     await test('PDF text fitting stays within fields and unsupported scripts fail clearly', async () => {
         const pdf=await PDFDocument.create(),font=await pdf.embedFont(StandardFonts.Helvetica);
         const fitted=w.PdfTools.fit('Long congregation '.repeat(20),font,128,8.5,6.5);assert(fitted.width<=128);assert(fitted.size>=6.5);

@@ -37,9 +37,9 @@ async function run(profile) {
             const selector = profile.mobile ? `#m-btn-tab-${tab}` : `#btn-tab-${tab}`;
             const button = page.locator(selector);
             if (await button.count() && await button.isVisible()) await button.click();
-            else if (profile.mobile && ['analytics', 'emergency'].includes(tab)) {
+            else if (profile.mobile && ['analytics', 'emergency', 'groups'].includes(tab)) {
                 await page.locator('#mobile-nav button').last().click();
-                await page.locator(`#modal-mobile-menu button[onclick*="switchTab('${tab}')"]`).click();
+                await page.locator(`#menu-item-${tab}`).click();
             } else await page.evaluate(tab => window.ui.switchTab(tab), tab);
             await page.waitForFunction(tab => document.getElementById(`tab-${tab}`).classList.contains('active'), tab);
         };
@@ -101,10 +101,58 @@ async function run(profile) {
             await page.waitForTimeout(600); // Body background transition lasts 500ms.
             await page.screenshot({ path: path.join(output, `${profile.name}-${theme}.png`), fullPage: false });
         }
+        if (profile.mobile) {
+            await page.locator('#m-btn-tab-menu').click();
+            for (const id of ['groups','analytics','access','announcements','help','about','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(), 'Missing mobile menu option '+id);
+            const menu=await page.locator('.ca-mobile-menu-sheet').boundingBox();assert(menu.height <= profile.viewport.height, 'Menu exceeds viewport');
+            for(const theme of ['default','blue','green','crimson','scheduler','light','dark']) {
+                await page.evaluate(theme=>window.ui.applyTheme(theme),theme);
+                const background=await page.locator('.ca-mobile-menu-sheet').evaluate(el=>getComputedStyle(el).backgroundColor);
+                assert(/^rgb\(/.test(background),'Navigation surface must be opaque in '+theme+': '+background);
+            }
+            await page.screenshot({path:path.join(output,`${profile.name}-all-sections.png`)});
+            await page.locator('#menu-item-groups').click();assert.equal(await page.locator('#tab-groups').isVisible(),true);
+            await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-access').click();
+            await page.waitForFunction(()=>document.getElementById('access-manager-list').textContent.includes('No role accounts'));
+            assert.equal(await page.locator('#modal-mobile-menu').isVisible(),false);
+            await page.locator('#modal-access-manager button[onclick*=closeModal]').click();
+        } else {
+            const gaps=await page.evaluate(()=>[...document.querySelectorAll('#nav-admin .ca-nav-section')].filter(el=>el.getClientRects().length).slice(1).map((el,i)=>el.getBoundingClientRect().top-document.querySelectorAll('#nav-admin .ca-nav-section')[i].getBoundingClientRect().bottom));
+            assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
+        }
+        await page.evaluate(async()=>{await window.auth.googleLogin();});
+        const oauth=await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1));assert.equal(oauth.provider,'google');assert.equal(new URL(oauth.options.redirectTo).search,'');assert.equal(new URL(oauth.options.redirectTo).hash,'');
+        for(const role of ['field_service','attendance','oclm']) {
+            await page.evaluate(async role=>{
+                window.__qaBackend.session={user:{email:'qa@example.com'}};
+                window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true}];
+                await window.auth.resumeGoogleRole();
+            },role);
+            if(profile.mobile){
+                assert.equal(await page.locator('#m-btn-tab-menu').isVisible(),true,'Menu missing for '+role);await page.locator('#m-btn-tab-menu').click();
+                assert.equal(await page.locator('#menu-item-access').isVisible(),false);assert.equal(await page.locator('#menu-item-emergency').isVisible(),false);
+                for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
+                assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':'oclm')).isVisible(),true);
+                await page.screenshot({path:path.join(output,`${profile.name}-${role}-menu.png`)});
+                await page.locator('#modal-mobile-menu button[aria-label="Close navigation menu"]').click();
+            }
+            const before=await page.evaluate(()=>window.ui.currentTab);await page.evaluate(()=>window.ui.switchTab('emergency',false,'field'));assert.equal(await page.evaluate(()=>window.ui.currentTab),before,'Navigation context bypassed role');
+            assert.equal(await page.locator('#auth-screen').isVisible(),false);
+        }
+        await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'field_service',active:true}];await window.auth.resumeGoogleRole();});
+        const grants=await page.evaluate(()=>window.ui.getAllowedTabs());assert(grants.includes('attendance')&&grants.includes('groups'));
+        await page.evaluate(async()=>{
+            sessionStorage.removeItem('fs_cong_id');window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-second',email:'qa@example.com',role:'attendance',active:true}];await window.auth.resumeGoogleRole();
+        });
+        assert.equal(await page.locator('#modal-google-congregation').isVisible(),true);assert.equal(await page.locator('#google-congregation-list button').count(),2);
+        await page.locator('#google-congregation-list button').first().click();await page.waitForFunction(()=>document.getElementById('auth-screen').classList.contains('hidden')&&!window.auth.googleSwitching);
+        await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});
+        assert.equal(await page.locator('#auth-screen').isVisible(),true);assert.match(await page.locator('#google-auth-status').innerText(),/no approved access/);
+        assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });
-        console.log('PASS', profile.name, ': navigation, 1000 records, drafts, rejected/successful saves, dialogs, PDF downloads, scheduler views and seven themes');
+        console.log('PASS', profile.name, ': navigation, 1000 records, drafts, rejected/successful saves, dialogs, PDF downloads, scheduler views, seven themes, full mobile menus and Google role routing');
     } catch (error) {
         await page.screenshot({ path: path.join(output, `${profile.name}-failure.png`), fullPage: true }).catch(() => {});
         reports.push({ profile: profile.name, status: 'failed', error: error.message, errors, blockedProduction, timings });

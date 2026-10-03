@@ -80,7 +80,7 @@ Midweek data is now stored under congregation-specific browser keys. Existing un
 
 ## Verification status
 
-The current revision passes 26 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
+The current revision passes 30 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
 
 Browser acceptance now runs in GitHub Actions with an isolated backend. Desktop Chromium, mobile Chromium, and mobile WebKit passed navigation with 1,000 publishers, attendance draft retention, rejected and successful saves, modal closing, actual PDF downloads, scheduler views, and all seven themes. Browser runs exposed and fixed two interaction bugs: Escape targeted a modal title instead of its container, and an invisible toast intercepted bottom-navigation taps. Screenshot review also corrected desktop sidebar overlap and Daylight label contrast. The workflow checks sidebar positioning and stores screenshots and results as artifacts.
 
@@ -93,3 +93,9 @@ For additional browser acceptance testing, use an isolated test Supabase project
 The existing site is [GitHub Pages](https://photographicode.github.io/congregation-assistant/), published from `main`. Pull-request branches are tested but do not update this website until merged. The `Published website verification` workflow waits for the deployed HTML, CSS, and helper scripts to match the commit, then runs the isolated browser acceptance suite against that HTTPS URL. It intercepts the cloud client and blocks production Supabase requests, so verification does not change live database records. Deployment hashes, screenshots, and browser results are saved as workflow artifacts.
 
 If a browser still shows an older interface after a successful deployment, reload once with cache bypass or reopen the site in a private window. Deploying this frontend does not establish the existing backend's authorization guarantees; the audit described above is still required.
+
+## Navigation and Google accounts
+
+The mobile Menu includes every permitted section, plus help, announcements, appearance settings, and sign-out for all roles. Large labeled controls and a scrolling menu sheet keep options reachable on small screens. Desktop sections stay together without a spacer. S-3 name/month fields now have 4pt of left padding.
+
+Google sign-in handles multiple roles, congregation selection, denied memberships, and expired sessions. Limited-role sessions fetch only their relevant data categories, and changing navigation context cannot grant extra screens. Backend RLS must enforce the same permissions. See [Google provider activation and account setup](supabase/google-sign-in.md); dashboard/provider activation remains pending administrative access.

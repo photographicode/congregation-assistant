@@ -130,11 +130,12 @@
             queueMicrotask(() => { actionButton = null; });
         }, true);
         document.addEventListener('submit', event => { actionButton = event.submitter; queueMicrotask(() => { actionButton = null; }); }, true);
-        ['savePublisher','saveS4','saveBulkEntry','handleSysPromptConfirm','printS3','printS88','downloadS21Publisher','downloadS21Filtered','downloadS21Group','printEmergencyContacts','publishOCLM'].forEach(name => protectAction(window.ui, name));
+        ['savePublisher','saveS4','saveBulkEntry','handleSysPromptConfirm','printS3','printS88','downloadS21Publisher','downloadS21Filtered','downloadS21Group','printEmergencyContacts','publishOCLM','addRoleAccess','removeRoleAccess'].forEach(name => protectAction(window.ui, name));
         ['saveAttendance','savePublicAttendance','createCongregation','updateCongregation','changeAdminPassword','changeGroupPassword','setGroupPassword','revokeAP','importContacts','importReports'].forEach(name => protectAction(window.db, name));
         protectAction(window.auth, 'login', 'auth-btn');
         protectAction(window.auth, 'overseerLogin', 'overseer-auth-btn');
-        protectAction(window.auth, 'googleLogin');
+        protectAction(window.auth, 'googleLogin', 'auth-google-btn');
+        protectAction(window.auth, 'activateGoogleRole');
         const renderAttendance = window.ui.renderAttendance;
         window.ui.renderAttendance = (...args) => {
             renderAttendance(...args);
@@ -158,8 +159,8 @@
         document.addEventListener('input', rememberAttendance);
         document.addEventListener('change', rememberAttendance);
         const open = window.ui.openModal, close = window.ui.closeModal;
-        window.ui.openModal = (...args) => { open(...args); const el = document.getElementById(args[0]); if (el) dialogOpened(el); };
-        window.ui.closeModal = id => { close(id); const el = document.getElementById(id); if (el) dialogClosed(el); };
+        window.ui.openModal = (...args) => { if(args[0]==='modal-mobile-menu'){window.ui.applyRoleNavigation();document.getElementById('m-btn-tab-menu')?.setAttribute('aria-expanded','true');} open(...args); const el = document.getElementById(args[0]); if (el) dialogOpened(el); };
+        window.ui.closeModal = id => { if(id==='modal-mobile-menu')document.getElementById('m-btn-tab-menu')?.setAttribute('aria-expanded','false');close(id); const el = document.getElementById(id); if (el) dialogClosed(el); };
 
         document.querySelectorAll('label:not([for])').forEach(label => {
             const input = label.parentElement?.querySelector('input:not([type="hidden"]),select,textarea');

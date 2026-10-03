@@ -524,7 +524,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
 /* Main + Coming Soon stay at the top; More follows directly underneath. */
 #nav-admin .ca-nav-scroll{justify-content:flex-start!important;}
 #nav-admin .ca-nav-scroll .ca-nav-section{flex:0 0 auto!important;}
-#nav-admin .ca-nav-scroll .ca-nav-section:nth-of-type(3){margin-top:auto!important;}
+#nav-admin .ca-nav-scroll .ca-nav-section:nth-of-type(3){margin-top:0!important;}
 /* Broadcasts are read from Announcements; do not auto-open a banner. */
 #system-notice-banner{display:none!important;}
 </style>
@@ -990,7 +990,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <input type="password" id="auth-pass" placeholder="Password" required class="w-full px-5 py-3 rounded-xl mb-6 text-center">
                 <button type="submit" id="auth-btn" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)]">Unlock Database</button>
                 <div class="flex items-center gap-3 my-4 text-[10px] text-white/30 uppercase tracking-widest"><span class="h-px flex-1 bg-white/10"></span>or<span class="h-px flex-1 bg-white/10"></span></div>
-                <button type="button" onclick="window.auth.googleLogin()" class="w-full bg-white text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-lg hover:bg-slate-100">Continue with Google</button>
+                <button id="auth-google-btn" type="button" onclick="window.auth.googleLogin()" class="w-full bg-white text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-lg hover:bg-slate-100">Continue with Google</button>
+                <p id="google-auth-status" class="hidden ca-auth-status" role="alert"></p>
                 <p class="text-[10px] text-teal-100/40 mt-3">Authorized brothers — including Main admins — can sign in with their Google account. Access is granted only to email addresses entered by a Main admin.</p>
             </form>
         </div>
@@ -1062,7 +1063,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">More</div>
                         <button onclick="window.ui.openAnnouncements()" id="btn-announcements" class="ca-nav-item ca-announcements-item" aria-label="Announcements"><span class="ca-nav-icon">🔔</span><span class="ca-nav-label">Announcements</span><span id="ca-announcements-dot" class="ca-notification-dot hidden"></span></button>
-                        <button onclick="window.ui.startHowToUse()" id="btn-how-to-use" class="ca-nav-item" aria-label="How to use"><span class="ca-nav-icon">?</span><span class="ca-nav-label">How to use</span></button>
+                        <button onclick="window.ui.openModal('modal-how-to-use')" id="btn-how-to-use" class="ca-nav-item" aria-label="How to use"><span class="ca-nav-icon">?</span><span class="ca-nav-label">How to use</span></button>
                         <button onclick="window.ui.openModal('modal-about')" id="btn-about" class="ca-nav-item" aria-label="About the application"><span class="ca-nav-icon">i</span><span class="ca-nav-label">About the application</span></button>
                     </div>
                     <span id="nav-trial-timer" class="hidden"></span>
@@ -1095,11 +1096,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <!-- Mobile Bottom Navigation (Priority Sorted) -->
     <nav id="mobile-nav" class="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-teal-500/20 z-[100] pb-safe hidden">
         <div class="flex justify-around items-center h-16 px-1">
-            <button onclick="window.ui.openOCLM()" id="m-btn-tab-oclm" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors" aria-label="OCLM Live"><span class="text-xl leading-none mb-1">◷</span><span class="text-[10px] font-medium">OCLM</span></button>
-            <button onclick="window.ui.switchTab('dashboard', false, 'main')" id="m-btn-tab-dashboard" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">⌂</span><span class="text-[10px] font-medium">Home</span></button>
-            <button onclick="window.ui.switchTab('publishers', false, 'main')" id="m-btn-tab-publishers" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">♙</span><span class="text-[10px] font-medium">Publishers</span></button>
-            <button onclick="window.ui.switchTab('attendance', false, 'attendance')" id="m-btn-tab-attendance" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">✓</span><span class="text-[10px] font-medium">Attendance</span></button>
-            <button onclick="window.ui.openModal('modal-mobile-menu')" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">☰</span><span class="text-[10px] font-medium">More</span></button>
+            <button onclick="window.ui.openOCLM()" data-primary-tab="oclm" id="m-btn-tab-oclm" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors" aria-label="Midweek Scheduler"><span class="text-xl leading-none mb-1">◷</span><span class="text-[10px] font-medium">Schedule</span></button>
+            <button onclick="window.ui.switchTab('dashboard', false, 'main')" data-primary-tab="dashboard" id="m-btn-tab-dashboard" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">⌂</span><span class="text-[10px] font-medium">Home</span></button>
+            <button onclick="window.ui.switchTab('publishers', false, 'main')" data-primary-tab="publishers" id="m-btn-tab-publishers" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">♙</span><span class="text-[10px] font-medium">Publishers</span></button>
+            <button onclick="window.ui.switchTab('attendance', false, 'attendance')" data-primary-tab="attendance" id="m-btn-tab-attendance" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">✓</span><span class="text-[10px] font-medium">Attendance</span></button>
+            <button id="m-btn-tab-menu" aria-label="All sections" aria-controls="modal-mobile-menu" aria-expanded="false" onclick="window.ui.openModal('modal-mobile-menu')" class="flex flex-col items-center justify-center w-[20%] h-full text-teal-50/50 hover:text-teal-300 transition-colors"><span class="text-xl leading-none mb-1">☰</span><span class="text-[10px] font-medium">Menu</span></button>
         </div>
     </nav>
 
@@ -1107,6 +1108,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <div class="sm:hidden sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-teal-500/20 px-4 py-3 flex justify-between items-center" id="mobile-top-header">
         <button onclick="window.ui.openModal('modal-profile-menu')" class="font-bold text-lg tracking-wide text-white drop-shadow-lg truncate max-w-[58%] text-left hover:text-teal-200 transition-colors" id="nav-mobile-title">Congregation</button>
         <div class="flex items-center gap-2">
+            <button type="button" onclick="window.ui.openModal('modal-mobile-menu')" class="ca-mobile-top-icon" aria-label="All sections" aria-controls="modal-mobile-menu">☰</button>
             <button onclick="window.ui.openModal('modal-settings')" class="ca-mobile-top-icon" aria-label="Settings" title="Settings">⚙</button>
             <button onclick="window.ui.openModal('modal-profile-menu')" class="w-8 h-8 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-300 font-bold border border-teal-500/30 text-xs">CA</button>
         </div>
@@ -1172,52 +1174,47 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     </div>
 
     <!-- Mobile "More" Menu Modal -->
-    <div id="modal-mobile-menu" class="hidden sm:hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] flex items-end justify-center">
-        <div class="glass-panel w-full rounded-t-3xl overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)] border-t border-white/10 pb-safe">
-            <div class="bg-black/40 px-6 py-4 flex justify-between items-center border-b border-white/10">
-                <h3 class="text-lg font-bold text-white tracking-tight">More Options</h3>
-                <button type="button" onclick="window.ui.closeModal('modal-mobile-menu')" class="text-teal-200/50 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <div class="p-4 space-y-2">
-                <button onclick="window.ui.switchTab('attendance'); window.ui.closeModal('modal-mobile-menu');" id="menu-item-attendance" class="hidden w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white font-medium flex items-center gap-3 border border-transparent">
-                    <span class="bg-teal-900/50 p-2 rounded-lg text-teal-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></span>
-                    Meeting Attendance
-                </button>
-                <button onclick="window.ui.switchTab('analytics'); window.ui.closeModal('modal-mobile-menu');" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white font-medium flex items-center gap-3 border border-transparent">
-                    <span class="bg-teal-900/50 p-2 rounded-lg text-teal-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></span>
-                    Analytics & Rosters
-                </button>
-                <button onclick="window.ui.switchTab('emergency'); window.ui.closeModal('modal-mobile-menu');" id="menu-item-emergency" class="hidden w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-white font-medium flex items-center gap-3 border border-transparent">
-                    <span class="bg-rose-900/50 p-2 rounded-lg text-rose-300"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.5m4.5 0H14M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
-                    Emergency Contacts
-                </button>
-                <div class="h-px w-full bg-white/10 my-2"></div>
-                <button onclick="window.ui.openModal('modal-settings'); window.ui.closeModal('modal-mobile-menu');" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-teal-100/80 font-medium flex items-center gap-3">
-                    <span class="bg-white/5 p-2 rounded-lg text-teal-200/50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></span>
-                    System Settings
-                </button>
-                <button onclick="window.ui.confirmLogout(); window.ui.closeModal('modal-mobile-menu');" class="w-full text-left px-4 py-3 rounded-xl hover:bg-rose-500/10 text-rose-300 font-medium flex items-center gap-3">
-                    <span class="bg-rose-500/10 p-2 rounded-lg text-rose-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg></span>
-                    Log Out
-                </button>
+    <div id="modal-mobile-menu" class="hidden sm:hidden fixed inset-0 bg-black/80 z-[1000] flex items-end justify-center" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+        <div class="glass-panel ca-mobile-menu-sheet">
+            <div class="ca-mobile-menu-heading"><div><h2 id="mobile-menu-title">All sections</h2><p id="mobile-menu-role">Choose where you want to go.</p></div><button type="button" onclick="window.ui.closeModal('modal-mobile-menu')" aria-label="Close navigation menu">×</button></div>
+            <div class="ca-mobile-menu-content">
+                <section class="ca-mobile-menu-section"><h3>Your work</h3>
+                    <button type="button" id="menu-item-home" data-menu-permission="dashboard" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('dashboard',false,'main')"><span class="ca-menu-icon" aria-hidden="true">⌂</span><span><strong>Home</strong><small>Reports and monthly overview</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-publishers" data-menu-permission="publishers" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('publishers',false,'main')"><span class="ca-menu-icon" aria-hidden="true">♙</span><span><strong>Publishers</strong><small>Profiles, reports and S-21 downloads</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-groups" data-menu-permission="groups" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('groups',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♧</span><span><strong>Groups</strong><small>Service groups and group reports</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-analytics" data-menu-permission="analytics" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('analytics',false,'field')"><span class="ca-menu-icon" aria-hidden="true">▥</span><span><strong>Analytics & Rosters</strong><small>Review totals and publisher rosters</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-attendance" data-menu-permission="attendance" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('attendance',false,'attendance')"><span class="ca-menu-icon" aria-hidden="true">✓</span><span><strong>Meeting Attendance</strong><small>Weekly counts, S-3 and S-88 downloads</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-oclm" data-menu-permission="oclm" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openOCLM()"><span class="ca-menu-icon" aria-hidden="true">◷</span><span><strong>Midweek Scheduler</strong><small>Schedule, people, preview and messages</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-emergency" data-menu-permission="emergency" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('emergency',false,'main')"><span class="ca-menu-icon" aria-hidden="true">!</span><span><strong>Emergency Contacts</strong><small>Contact details and printable lists</small></span><span aria-hidden="true">›</span></button>
+                </section>
+                <section class="ca-mobile-menu-section"><h3>Account & support</h3>
+                    <button type="button" id="menu-item-access" data-menu-permission="admin" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAccessManager()"><span class="ca-menu-icon" aria-hidden="true">⌁</span><span><strong>Access & Roles</strong><small>Manage approved Google accounts</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-announcements" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAnnouncements()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Announcements</strong><small>Read congregation updates</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-help" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-how-to-use')"><span class="ca-menu-icon" aria-hidden="true">?</span><span><strong>How to use</strong><small>Step-by-step help for this application</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-about" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-about')"><span class="ca-menu-icon" aria-hidden="true">i</span><span><strong>About the application</strong><small>Application information and support</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-settings" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-settings')"><span class="ca-menu-icon" aria-hidden="true">⚙</span><span><strong>Settings & Appearance</strong><small>Choose a theme, font and account settings</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-logout" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.confirmLogout()"><span class="ca-menu-icon" aria-hidden="true">↪</span><span><strong>Sign out</strong><small>Leave this account safely</small></span><span aria-hidden="true">›</span></button>
+                </section>
             </div>
         </div>
+    </div>
+
+    <div id="modal-google-congregation" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="google-congregation-title">
+        <div class="glass-panel w-full max-w-lg rounded-2xl p-6"><h2 id="google-congregation-title" class="text-xl font-bold">Choose your congregation</h2><p class="mt-2">Your Google account has access to more than one congregation.</p><div id="google-congregation-list" class="mt-4 space-y-3"></div><button type="button" class="ca-secondary-action mt-4" onclick="window.ui.closeModal('modal-google-congregation')">Cancel</button></div>
     </div>
 
     <div id="modal-access-manager" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-panel w-full max-w-3xl rounded-3xl border border-teal-500/20 shadow-2xl">
             <div class="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between gap-3"><div><div class="text-[10px] uppercase tracking-[.16em] text-teal-300 font-black">MAIN · ADMIN</div><h2 class="text-xl sm:text-2xl font-bold text-white mt-1">Access &amp; Roles</h2><p class="text-xs text-teal-100/45 mt-1">Authorize brothers for Field Service, Attendance, or OCLM without giving them the Main admin password.</p></div><button onclick="window.ui.closeModal('modal-access-manager')" class="text-white/50 hover:text-white text-xl">✕</button></div>
             <div class="p-5 sm:p-6 space-y-4">
-                <div class="rounded-2xl border border-cyan-400/15 bg-cyan-400/5 p-4"><div class="font-bold text-cyan-100 text-sm">Google sign-in</div><p class="text-xs text-cyan-100/55 mt-1">The secure version of this feature uses Google OAuth through Supabase. The admin enters approved Gmail/Google accounts below; the brother then signs in with Google and sees only the sections assigned to him.</p></div>
+                <div class="rounded-2xl border border-cyan-400/15 bg-cyan-400/5 p-4"><div class="font-bold text-cyan-100 text-sm">Google sign-in</div><p class="text-xs text-cyan-100/55 mt-1">Sign in with an approved Google administrator account to manage access. The admin enters approved Gmail/Google accounts below; the brother then signs in with Google and sees only the sections assigned to him.</p></div>
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
                     <input id="access-email-input" type="email" placeholder="brother@gmail.com" class="w-full px-4 py-3 rounded-xl">
                     <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main Admin</option><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
-                <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">One-time setup required</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. This HTML is prepared for that flow, but a browser-only file cannot securely create or enforce the database policy.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy setup SQL</button></div>
+                <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">Google account setup</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. Provider activation and database permissions require your Supabase administrator. Setup instructions are included in the repository.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy account setup SQL</button></div>
             </div>
         </div>
     </div>
@@ -1365,10 +1362,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 </div></div>
   
 <div class="mws-subnav" role="tablist" aria-label="Midweek scheduler sections">
-  <button type="button" class="mws-nav-btn active" data-view="schedule"><span>Schedule</span></button>
-  <button type="button" class="mws-nav-btn" data-view="people"><span>People</span></button>
-  <button type="button" class="mws-nav-btn" data-view="preview"><span>Preview</span></button>
-  <button type="button" class="mws-nav-btn" data-view="messages"><span>Messages</span></button>
+  <button type="button" class="mws-nav-btn active" data-view="schedule" id="mws-tab-schedule" role="tab" aria-controls="scheduleView"><span>Schedule</span></button>
+  <button type="button" class="mws-nav-btn" data-view="people" id="mws-tab-people" role="tab" aria-controls="peopleView"><span>People</span></button>
+  <button type="button" class="mws-nav-btn" data-view="preview" id="mws-tab-preview" role="tab" aria-controls="previewView"><span>Preview</span></button>
+  <button type="button" class="mws-nav-btn" data-view="messages" id="mws-tab-messages" role="tab" aria-controls="messagesView"><span>Messages</span></button>
 </div>
 
   <div class="content">
@@ -2027,7 +2024,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </div>
 
                 <!-- Password Section -->
-                <form onsubmit="window.db.changeAdminPassword(event)" class="space-y-4 pb-5 border-b border-white/10">
+                <form id="settings-admin-password" onsubmit="window.db.changeAdminPassword(event)" class="space-y-4 pb-5 border-b border-white/10">
                     <h4 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Change Password</h4>
                     <div class="space-y-2">
                         <label class="text-xs text-teal-200/80 font-bold uppercase tracking-wider">Current Password</label>
@@ -2513,7 +2510,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(state.activeView==='people')renderPeople();
     if(state.activeView==='preview'){renderPreview();renderLivePanel();}
     if(state.activeView==='messages')renderMessage();
-    root.querySelectorAll('.mws-nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===state.activeView));
+    root.querySelectorAll('.mws-nav-btn').forEach(b=>{const active=b.dataset.view===state.activeView;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
     root.querySelectorAll('.mws-view').forEach(v=>v.classList.toggle('mws-active',v.id===state.activeView+'View'));
   }
   function renderWeekStrip(){
@@ -2832,26 +2829,54 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 
                 window.auth.expireIfIdle();
-                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
+                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(type==='role'&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
                 return false;
             },
-            resumeGoogleRole: async () => {
-                if(!isCloudEnabled || !supabaseClient?.auth) return false;
+            roleReady: false,
+            googleAccess: [],
+            showGoogleStatus: message => {
+                const status=document.getElementById('google-auth-status');
+                if(status){status.textContent=message;status.classList.toggle('hidden',!message);}
+                if(message)document.getElementById('global-loader')?.classList.add('hidden');
+                document.getElementById('auth-screen')?.classList.remove('hidden');
+            },
+            clearGoogleRole: (force=false) => {
+                if(force||sessionStorage.getItem('fs_auth_type')==='role')for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
+                window.auth.roleReady=false;
+            },
+            activateGoogleRole: async congId => {
+                if(window.auth.googleSwitching)throw new Error('Please wait for your congregation to open.');
+                window.auth.googleSwitching=true;
                 try{
-                    const {data:{session}}=await supabaseClient.auth.getSession();
-                    const email=session?.user?.email?.toLowerCase(); if(!email) return false;
+                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId);
+                if(!grants.length)throw new Error('This Google account has no active access to that congregation.');
+                const {data:cong,error}=await supabaseClient.from('congregations').select('id,name,status,created_at,trial_days,feature_attendance,feature_emergency_contacts,feature_oclm').eq('id',congId).single();
+                if(error||!cong)throw new Error('Your congregation could not be opened. Ask an administrator to check your access.');
+                const roles=[...new Set(grants.map(row=>row.role))],role=roles.includes('admin')?'admin':roles[0];
+                window.auth.roleReady=true;window.currentCongId=cong.id;window.db.currentCongData=cong;
+                sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','role');sessionStorage.setItem('fs_role',role);sessionStorage.setItem('fs_roles',JSON.stringify(roles));sessionStorage.setItem('fs_cong_id',cong.id);sessionStorage.setItem('fs_cong_name',cong.name);sessionStorage.setItem('fs_last_activity',String(Date.now()));
+                document.getElementById('auth-screen')?.classList.add('hidden');window.ui.closeModal('modal-google-congregation');
+                await window.db.initAdmin(cong.id,cong.name);window.ui.applyRoleNavigation();
+                const saved=localStorage.getItem(`fs_last_tab_${cong.id}`),allowed=window.ui.getAllowedTabs();
+                window.ui.switchTab(allowed.includes(saved)?saved:allowed[0]);
+                }finally{window.auth.googleSwitching=false;}
+            },
+            resumeGoogleRole: async () => {
+                if(!isCloudEnabled||!supabaseClient?.auth){window.auth.clearGoogleRole();return false;}
+                try{
+                    const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
+                    if(sessionError)throw sessionError;
+                    const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
                     const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
-                    if(error) return false;
-                    const row=(data||[])[0]; if(!row)return false;
-                    const {data:cong,error:congError}=await supabaseClient.from('congregations').select('*').eq('id',row.cong_id).single();
-                    if(congError||!cong)return false;
-                    window.currentCongId=cong.id; window.db.currentCongData=cong;
-                    sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','role');sessionStorage.setItem('fs_role',row.role);sessionStorage.setItem('fs_cong_id',cong.id);sessionStorage.setItem('fs_cong_name',cong.name);sessionStorage.setItem('fs_last_activity',String(Date.now()));
-                    document.getElementById('auth-screen')?.classList.add('hidden');
-                    await window.db.initAdmin(cong.id,cong.name); window.ui.applyRoleNavigation();
-                    const roleTab=row.role==='oclm'?'oclm':row.role==='attendance'?'attendance':'dashboard'; window.ui.switchTab(roleTab,false,row.role==='field_service'?'field':row.role);
-                    return true;
-                }catch(e){console.warn('Google role resume failed:',e);return false;}
+                    if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
+                    window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
+                    if(!window.auth.googleAccess.length){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
+                    const ids=[...new Set(window.auth.googleAccess.map(row=>row.cong_id))],saved=sessionStorage.getItem('fs_cong_id');
+                    if(ids.length===1||ids.includes(saved)){await window.auth.activateGoogleRole(ids.includes(saved)?saved:ids[0]);return true;}
+                    window.auth.clearGoogleRole(true);const box=document.getElementById('google-congregation-list');
+                    box.innerHTML=ids.map(id=>`<button type="button" class="ca-secondary-action w-full" onclick="window.auth.activateGoogleRole(${window.ui.jsArg(id)})">${window.ui.escapeHtml(id)}</button>`).join('');
+                    window.auth.showGoogleStatus('Choose a congregation to continue.');window.ui.openModal('modal-google-congregation');return true;
+                }catch(error){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus(error.message||'Google sign-in could not be completed. Please try again.');return true;}
             },
 
             login: async () => {
@@ -2863,7 +2888,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                 if (cid === 'SUPERADMIN' && pwd === window.config.MASTER_PASSWORD) {
                     sessionStorage.setItem('fs_auth','true');
-                    sessionStorage.setItem('fs_auth_type','super');
+                    sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');
                     sessionStorage.setItem('fs_last_activity',String(Date.now()));
                     document.getElementById('auth-screen').classList.add('hidden');
                     await window.db.initSuperAdmin();
@@ -2901,7 +2926,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     }
 
                     sessionStorage.setItem('fs_auth','true');
-                    sessionStorage.setItem('fs_auth_type','admin'); sessionStorage.setItem('fs_role','admin');
+                    sessionStorage.setItem('fs_auth_type','admin'); sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');
                     sessionStorage.setItem('fs_last_activity',String(Date.now()));
                         sessionStorage.setItem('fs_cong_id',data.id);
                         sessionStorage.setItem('fs_cong_name',data.name);
@@ -2919,14 +2944,20 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     btn.textContent = "Unlock Database"; btn.disabled = false;
                 }
             },
-            googleLogin: async () => { if(!isCloudEnabled){window.ui.showToast('Cloud connection required for Google sign-in.','error');return;} try{const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href.split('?')[0]}});if(error)throw error;}catch(e){console.error(e);window.ui.showToast('Google sign-in could not be started.','error');}},
+            googleLogin: async () => {
+                if(!isCloudEnabled)throw new Error('Cloud connection is required for Google sign-in.');
+                const redirect=new URL(window.location.href);redirect.search='';redirect.hash='';
+                window.auth.showGoogleStatus('Opening Google sign-in…');
+                const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{prompt:'select_account'}}});
+                if(error){window.auth.showGoogleStatus('Google sign-in could not start. '+error.message);throw error;}
+            },
 
             logout: () => {
                 window.ui.openSysPrompt("Secure Logout", "Are you sure you want to exit the management portal?", false, async () => {
-                    if (sessionStorage.getItem('fs_auth_type')==='role' && supabaseClient?.auth) { try { await supabaseClient.auth.signOut(); } catch(e) {} }
+                    if (supabaseClient?.auth) { try { await supabaseClient.auth.signOut(); } catch(e) {} }
                     sessionStorage.removeItem('fs_auth');
                     sessionStorage.removeItem('fs_auth_type');
-                    sessionStorage.removeItem('fs_role');
+                    sessionStorage.removeItem('fs_role');sessionStorage.removeItem('fs_roles');
                     sessionStorage.removeItem('fs_cong_id');
                     sessionStorage.removeItem('fs_cong_name');
                     sessionStorage.removeItem('fs_last_activity');
@@ -3154,6 +3185,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (legacyAvatar) legacyAvatar.textContent = (congName || 'C').trim().charAt(0).toUpperCase();
 
                 window.db.restoreLocalCaches();
+                const allowedTabs=window.ui.getAllowedTabs(),needsPublishers=allowedTabs.some(tab=>['dashboard','publishers','groups','analytics','emergency'].includes(tab));
+                if(!needsPublishers){window.db.publishers=[];window.db.reports=[];}if(!allowedTabs.includes('attendance'))window.db.attendance=[];
                 if (isCloudEnabled) {
                     try {
                         if (!window.db.currentCongData) {
@@ -3162,6 +3195,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                             if (congData) window.db.currentCongData = congData;
                         }
 
+                        if(needsPublishers){
                         const { data: pData, error: pError } = await supabaseClient.from('publishers').select('*').eq('cong_id', congId);
                         if (pError) throw pError;
                         window.db.publishers = (pData || []).map(window.db.mapPubFromDB);
@@ -3172,10 +3206,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         window.db.reports = (rData || []).map(window.db.mapRepFromDB);
                         window.db.writeLocalCache('reports');
 
+                        }
+                        if(allowedTabs.includes('attendance')){
                         const { data: aData, error: aError } = await supabaseClient.from('meeting_attendance').select('*').eq('cong_id', congId);
                         if (aError) throw aError;
                         window.db.attendance = aData || [];
                         window.db.writeLocalCache('attendance');
+                        }
                         window.ui.setSyncStatus('synced','Synced');
                     } catch (e) {
                         console.error('Cloud fetch failed; using local cache:', e);
@@ -3768,9 +3805,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 page.drawText(fitted.text,{x,y:h-top+4.0,size:fitted.size,font,color:dark});
             };
             // The official template already prints the labels and dotted lines.
-            // Start both entered values at the left edge of their corresponding lines and
+            // Inset both entered values 4pt from their corresponding dotted lines and
             // keep entered text 2.5pt higher, clear of the printed dotted baseline.
-            left(congName,83.0,98.0,8.5); left(monthName,239.0,98.0,8.5,69);
+            left(congName,87.0,98.0,8.5,124); left(monthName,243.0,98.0,8.5,65);
             const xs=[69.61,106.46,143.30,180.15,217.10];
             const rowTops=[127.57,127.57,127.57,127.57,127.57];
             const rowBottoms=[166.91,166.91,166.91,166.91,166.91];
@@ -4049,7 +4086,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (featureOclm) validTabs.push('oclm');
                 if (featureAttendance) validTabs.push('attendance');
                 if (featureEmergency) validTabs.push('emergency');
-                const initialTab = validTabs.includes(savedTab) ? savedTab : 'dashboard';
+                const allowedTabs=window.ui.getAllowedTabs();
+                const initialTab = validTabs.includes(savedTab)&&allowedTabs.includes(savedTab) ? savedTab : (allowedTabs[0]||'dashboard');
                 window.ui.applyRoleNavigation();
                 window.ui.switchTab(initialTab, true, localStorage.getItem(`fs_last_context_${window.currentCongId || 'global'}`) || null);
                 window.ui.renderWipeBanner();
@@ -4184,40 +4222,65 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.openModal('modal-edit-cong');
             },
 
+            getRoleGrants: () => {
+                let roles; try{roles=JSON.parse(sessionStorage.getItem('fs_roles')||'null');}catch{}
+                if(sessionStorage.getItem('fs_auth_type')==='super')return ['admin'];
+                const fallback=sessionStorage.getItem('fs_role')||'admin';
+                return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm'].includes(role)))];
+            },
+            getAllowedTabs: () => {
+                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['dashboard','publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm']};
+                const tabs=[...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];if(sessionStorage.getItem('fs_auth_type')==='super')tabs.push('superadmin');return tabs;
+            },
+            canManageAccess: () => window.ui.getRoleGrants().includes('admin'),
             applyRoleNavigation: () => {
-                const role=sessionStorage.getItem('fs_role')||'admin';
-                const sections={main:role==='admin',field:role==='admin'||role==='field_service',attendance:role==='admin'||role==='attendance',oclm:role==='admin'||role==='oclm',more:role==='admin'};
-                document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();let key=title==='main'?'main':title==='field service'?'field':title==='attendance'?'attendance':title==='oclm'?'oclm':title==='more'?'more':null;if(key)section.style.display=sections[key]?'':'none';});
-                document.getElementById('btn-tab-access')?.classList.toggle('hidden',role!=='admin');
-                document.querySelectorAll('#mobile-nav button').forEach(b=>b.classList.remove('hidden')); const mobileAllowed={admin:['m-btn-tab-oclm','m-btn-tab-dashboard','m-btn-tab-publishers','m-btn-tab-attendance'],field_service:['m-btn-tab-dashboard','m-btn-tab-publishers','m-btn-tab-groups'],attendance:['m-btn-tab-attendance'],oclm:['m-btn-tab-oclm']}; if(role!=='admin'){document.querySelectorAll('#mobile-nav button').forEach(b=>{if(!mobileAllowed[role]?.includes(b.id))b.classList.add('hidden');});}
+                const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs();
+                const sections={main:roles.includes('admin'),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
+                document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{
+                    const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();
+                    const key=title==='field service'?'field':title==='main'?'main':title==='attendance'?'attendance':title==='oclm'?'oclm':'more';
+                    section.style.setProperty('display',sections[key]?'flex':'none','important');
+                });
+                document.querySelectorAll('#nav-admin .ca-nav-divider').forEach(el=>{el.style.display='none';});
+                document.getElementById('btn-tab-access')?.classList.toggle('hidden',!window.ui.canManageAccess());
+                document.querySelectorAll('#mobile-nav [data-primary-tab]').forEach(button=>button.classList.toggle('hidden',!allowed.includes(button.dataset.primaryTab)));
+                document.getElementById('m-btn-tab-menu')?.classList.remove('hidden');
+                document.querySelectorAll('[data-menu-permission]').forEach(button=>{
+                    const permission=button.dataset.menuPermission;
+                    button.classList.toggle('hidden',!(permission==='support'||(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
+                });
+                const names={admin:'Administrator',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
+                const label=document.getElementById('mobile-menu-role');if(label)label.textContent=roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
 
-            openAccessManager: async () => { window.ui.openModal('modal-access-manager'); await window.ui.loadRoleAccess(); },
+            openAccessManager: async () => { if(!window.ui.canManageAccess()){window.ui.showToast('Only administrators can manage access.','error');return;} window.ui.openModal('modal-access-manager'); await window.ui.loadRoleAccess(); },
             loadRoleAccess: async () => {
-                const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
+                if(!window.ui.canManageAccess())return;const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main Admin',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess('${window.ui.oclmEscape(r.id||'')}')" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main Admin',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
             },
-            addRoleAccess: async () => {const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase();const role=document.getElementById('access-role-input')?.value;if(!email||!email.includes('@')){window.ui.showToast('Enter a valid Google account email.','error');return;}try{const {error}=await supabaseClient.from('congregation_access').upsert({id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});if(error)throw error;document.getElementById('access-email-input').value='';await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');}catch(e){window.ui.showToast('Role table is not configured yet. Run the setup SQL first.','error');}},
-            removeRoleAccess: async id => {if(!id)return;try{const {error}=await supabaseClient.from('congregation_access').delete().eq('id',id).eq('cong_id',window.currentCongId);if(error)throw error;await window.ui.loadRoleAccess();window.ui.showToast('Access removed.');}catch(e){window.ui.showToast('Could not remove access.','error');}},
-            copyAccessSQL: async () => {const sql=`-- 1) Role access table
-create table if not exists public.congregation_access (id uuid primary key default gen_random_uuid(), cong_id text not null, email text not null, role text not null check (role in ('field_service','attendance','oclm')), active boolean not null default true, created_at timestamptz not null default now(), unique(cong_id,email,role));
-
--- 2) Enable RLS. Do NOT add a broad public SELECT/INSERT policy.
-alter table public.congregation_access enable row level security;
-
--- 3) Recommended production design: create an admin identity mapping table tied to auth.users,
--- then use a security-definer RPC for Main admins to add/remove role emails.
--- Role users should only be allowed to SELECT their own active access rows, e.g. by auth.email().
--- 4) In Supabase Dashboard → Authentication → Providers, enable Google.
--- 5) Add your production redirect URL under Authentication → URL Configuration.
--- 6) For OCLM, move the current localStorage schedule into a congregation-scoped Supabase table
--- so authorized OCLM brothers can see the same schedule on their own devices.
-`;window.ui.copyText(sql);window.ui.showToast('Setup SQL copied.');},
+            addRoleAccess: async () => {
+                if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');
+                const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase(),role=document.getElementById('access-role-input')?.value;
+                if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Enter a valid Google account email.');
+                if(!['admin','field_service','attendance','oclm'].includes(role))throw new Error('Choose a valid role.');
+                if(!isCloudEnabled)throw new Error('Cloud connection is required to manage access.');
+                const {error}=await supabaseClient.from('congregation_access').upsert({id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});
+                if(error)throw new Error('Account access was not saved. '+error.message);
+                document.getElementById('access-email-input').value='';await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');
+            },
+            removeRoleAccess: async id => {
+                if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');if(!id)return;
+                if(!isCloudEnabled)throw new Error('Cloud connection is required to manage access.');
+                const {error}=await supabaseClient.from('congregation_access').delete().eq('id',id).eq('cong_id',window.currentCongId);
+                if(error)throw new Error('Account access was not removed. '+error.message);
+                await window.ui.loadRoleAccess();window.ui.showToast('Access removed.');
+            },
+            copyAccessSQL: async () => {window.ui.copyText("-- Review audit-access.sql results before running this migration in Supabase SQL Editor.\n-- Configures account membership only; other data tables/RPCs need their own verified RLS.\nbegin;\ncreate table if not exists public.congregation_access (\n id uuid primary key default gen_random_uuid(),\n cong_id text not null,\n email text not null,\n role text not null,\n active boolean not null default true,\n created_at timestamptz not null default now(),\n unique(cong_id,email,role)\n);\n-- Refuse to run over unknown policies rather than silently preserving a public bypass.\ndo $$\nbegin\n if exists(select 1 from pg_catalog.pg_policies where schemaname='public'\n  and tablename='congregation_access' and policyname not in\n  ('ca_access_read','ca_access_insert','ca_access_update','ca_access_delete')) then\n  raise exception 'Existing access policies require review. Run audit-access.sql first.';\n end if;\nend $$;\nalter table public.congregation_access drop constraint if exists congregation_access_role_check;\nalter table public.congregation_access add constraint congregation_access_role_check\n check (role in ('admin','field_service','attendance','oclm'));\nupdate public.congregation_access set email=lower(trim(email)) where email<>lower(trim(email));\n-- Case-normalized identity uniqueness; duplicate historical emails stop this migration.\ncreate unique index if not exists ca_access_email_role_unique\n on public.congregation_access(cong_id,lower(email),role);\nalter table public.congregation_access enable row level security;\n\ncreate or replace function public.ca_is_congregation_admin(_cong_id text)\nreturns boolean language sql stable security definer set search_path=''\nas $$\n select exists(select 1 from public.congregation_access a\n  where a.cong_id=_cong_id and a.active and a.role='admin'\n  and lower(a.email)=lower(auth.jwt()->>'email')\n  and (auth.jwt()->'app_metadata'->>'provider'='google'\n   or (auth.jwt()->'app_metadata'->'providers') ? 'google'));\n$$;\nrevoke all on function public.ca_is_congregation_admin(text) from public,anon;\ngrant execute on function public.ca_is_congregation_admin(text) to authenticated;\nrevoke all on public.congregation_access from anon;\ngrant select,insert,update,delete on public.congregation_access to authenticated;\n\ndrop policy if exists ca_access_read on public.congregation_access;\ncreate policy ca_access_read on public.congregation_access for select to authenticated\n using ((active and lower(email)=lower(auth.jwt()->>'email')\n  and (auth.jwt()->'app_metadata'->>'provider'='google'\n   or (auth.jwt()->'app_metadata'->'providers') ? 'google')) or public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_insert on public.congregation_access;\ncreate policy ca_access_insert on public.congregation_access for insert to authenticated\n with check (public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_update on public.congregation_access;\ncreate policy ca_access_update on public.congregation_access for update to authenticated\n using (public.ca_is_congregation_admin(cong_id)) with check (public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_delete on public.congregation_access;\ncreate policy ca_access_delete on public.congregation_access for delete to authenticated\n using (public.ca_is_congregation_admin(cong_id));\ncommit;\n\n-- Bootstrap the first Google administrator ONLY from this trusted SQL editor.\n-- Replace both values with the actual congregation ID and the administrator's Google email.\n-- insert into public.congregation_access(cong_id,email,role,active)\n-- values ('YOUR_CONGREGATION_ID','admin@example.com','admin',true)\n-- on conflict(cong_id,email,role) do update set active=true;\n");window.ui.showToast('Account membership SQL copied. Review existing policies before running it.');},
 
             openOCLM: async () => {
                 const role=sessionStorage.getItem('fs_role')||'admin';
-                if (window.db.currentCongData?.feature_oclm !== true && role !== 'oclm' && role !== 'admin') { window.ui.showOCLMComingSoon(); return; }
+                if (window.db.currentCongData?.feature_oclm !== true && !window.ui.getRoleGrants().includes('oclm')) { window.ui.showOCLMComingSoon(); return; }
                 window.ui.switchTab('oclm');
             },
 
@@ -4230,10 +4293,10 @@ alter table public.congregation_access enable row level security;
             },
 
             switchTab: (tabId, restoring = false, context = null) => {
-                if (tabId === 'oclm' && window.db.currentCongData?.feature_oclm !== true && sessionStorage.getItem('fs_role') !== 'oclm') { window.ui.showOCLMComingSoon(); return; }
+                if (tabId === 'oclm' && window.db.currentCongData?.feature_oclm !== true && !window.ui.getRoleGrants().includes('oclm')) { window.ui.showOCLMComingSoon(); return; }
                 const role=(document.body.classList.contains('public-mode') || document.body.classList.contains('overseer-mode'))?'admin':sessionStorage.getItem('fs_role')||'admin';
-                const allowed={admin:true,field_service:context==='field'||tabId==='dashboard'||tabId==='publishers',attendance:context==='attendance'||tabId==='attendance',oclm:context==='oclm'||tabId==='oclm'};
-                if(role!=='admin'&&!allowed[role]){window.ui.showToast('This section is not included in your role.','error');return;}
+                const allowed=window.ui.getAllowedTabs();
+                if(!document.body.classList.contains('public-mode')&&!document.body.classList.contains('overseer-mode')&&!allowed.includes(tabId)){window.ui.showToast('This section is not included in your role.','error');return;}
                 if(!context){context=(tabId==='groups'||tabId==='analytics'?'field':tabId==='attendance'?'attendance':tabId==='oclm'?'oclm':'main');}
                 window.ui.navContext=context;
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -4407,7 +4470,8 @@ alter table public.congregation_access enable row level security;
                     const others = window.db.getPublishers().filter(p => p.id !== currentId).sort((a,b)=>a.name.localeCompare(b.name));
                     famSel.innerHTML = '<option value="">-- None (Head of own household) --</option>' + others.map(p => `<option value="${p.id}">${window.ui.escapeHtml(p.name)}</option>`).join('');
                 }
-                if(id === 'modal-settings') { 
+                if(id === 'modal-settings') {
+                    document.getElementById('settings-admin-password')?.classList.toggle('hidden',!window.ui.canManageAccess()||sessionStorage.getItem('fs_auth_type')==='role');
                     window.ui.initAppFont();
                     document.getElementById('cp-current').value = ''; document.getElementById('cp-new').value = ''; 
                     window.ui.checkPassword('', 'cp-new-pwd-reqs', 'btn-cp-save');
@@ -5735,6 +5799,8 @@ alter table public.congregation_access enable row level security;
         // Setup the initial load logic explicitly
         window.db.initPublicS4OrLogin = async () => {
             const urlParams = new URLSearchParams(window.location.search);
+            const oauthError=urlParams.get('error_description')||new URLSearchParams(window.location.hash.slice(1)).get('error_description');
+            if(oauthError){window.auth.clearGoogleRole();window.auth.showGoogleStatus('Google sign-in was not completed. Please try again or contact your administrator.');document.getElementById('global-loader')?.classList.add('hidden');history.replaceState(null,'',window.location.pathname);return;}
             const isPublicLink = !!urlParams.get('cong');
             const loader = document.getElementById('global-loader');
             if (loader) {
