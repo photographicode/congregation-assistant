@@ -301,6 +301,12 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);
         assert.equal(await page.locator('#auth-screen').isVisible(),true);
+        await page.route('**/app-config.js',route=>route.fulfill({contentType:'application/javascript',body:'window.CA_CONFIG={secureBackend:true,supabaseUrl:"https://ejosykrxjvwrhxfnputo.supabase.co",supabaseAnonKey:"publishable-acceptance-fixture"};'}));
+        const ownerURL=new URL(page.url());ownerURL.search='?superadmin=1';await page.goto(ownerURL.href);
+        await page.waitForFunction(()=>document.getElementById('super-password-panel').open);
+        assert.equal(await page.locator('#super-password-form').isVisible(),true);
+        await page.locator('#super-password-btn').scrollIntoViewIfNeeded();
+        const ownerButton=await page.locator('#super-password-btn').boundingBox();assert(ownerButton.y>=0 && ownerButton.y+ownerButton.height<=await page.evaluate(()=>innerHeight),'Password sign-in is unreachable');
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });
