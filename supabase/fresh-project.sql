@@ -64,7 +64,9 @@ create function public.ca_google_identity() returns boolean language sql stable 
  and auth.jwt()->>'email' is not null;
 $$;
 create function public.ca_is_superadmin() returns boolean language sql stable security definer set search_path='' as $$
- select public.ca_google_identity() and exists(select 1 from public.ca_superadmins where active and email=lower(auth.jwt()->>'email'));
+ select exists(select 1 from public.ca_superadmins a where a.active and a.email=lower(auth.jwt()->>'email')
+ and (public.ca_google_identity() or (auth.jwt()->'app_metadata'->>'provider'='email' and exists(
+ select 1 from auth.users u where u.id=auth.uid() and lower(u.email)=a.email and u.email_confirmed_at is not null))));
 $$;
 create function public.ca_has_role(p_cong_id text,p_roles text[]) returns boolean language sql stable security definer set search_path='' as $$
  select public.ca_is_superadmin() or (public.ca_google_identity() and exists(

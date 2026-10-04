@@ -995,6 +995,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <p id="google-auth-status" class="hidden ca-auth-status" role="alert"></p>
                 <p class="text-[10px] text-teal-100/40 mt-3">Authorized brothers — including Main admins — can sign in with their Google account. Access is granted only to email addresses entered by a Main admin.</p>
             </form>
+            <details id="super-password-panel" class="mt-5 text-left"><summary class="cursor-pointer font-bold py-3">SuperAdmin password sign-in</summary><p class="text-sm my-3">Use your approved owner email and password. Google sign-in is not required.</p><form id="super-password-form" onsubmit="window.auth.superPasswordLogin(event)"><label for="super-email">Owner email</label><input id="super-email" type="email" autocomplete="username" required class="w-full px-5 py-3 rounded-xl mb-4"/><label for="super-password">Password</label><input id="super-password" type="password" autocomplete="current-password" required class="w-full px-5 py-3 rounded-xl mb-4"/><button id="super-password-btn" type="submit" class="ca-primary-action w-full">Sign in as SuperAdmin</button></form><a class="block underline py-3" href="https://photographicode.github.io/congregation-assistant/staging/?superadmin=1">Open secure SuperAdmin sign-in</a><p class="text-sm">The secure workspace uses the new backend. Existing legacy congregation data is not migrated.</p></details>
         </div>
     </div>
 
@@ -2854,6 +2855,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         
         const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
         const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
+        document.getElementById('super-password-form').hidden=!window.CA_CONFIG?.secureBackend;
+        if(new URLSearchParams(location.search).get('superadmin')==='1')document.getElementById('super-password-panel').open=true;
         const supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
         window.config = {};
@@ -2873,6 +2876,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             expireIfIdle: () => { if (sessionStorage.getItem('fs_auth') !== 'true') return false; const last=Math.max(parseInt(sessionStorage.getItem('fs_last_activity')||'0',10),window.auth.lastActivity||0); if(!last||Date.now()-last>window.auth.IDLE_TIMEOUT_MS){sessionStorage.removeItem('fs_auth');sessionStorage.removeItem('fs_auth_type');sessionStorage.removeItem('fs_last_activity');localStorage.removeItem('fs_auth');localStorage.removeItem('fs_auth_type');return true;} return false; },
             check: () => {
+                if(sessionStorage.getItem('ca_signed_out')==='true')return false;
                 const urlParams = new URLSearchParams(window.location.search);
                 const congParam = urlParams.get('cong');
                 const groupParam = urlParams.get('group');
@@ -2926,7 +2930,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 
                 window.auth.expireIfIdle();
-                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(type==='role'&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
+                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(['role','super'].includes(type)&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
                 return false;
             },
             roleReady: false,
@@ -2959,6 +2963,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }finally{window.auth.googleSwitching=false;}
             },
             resumeGoogleRole: async () => {
+                if(sessionStorage.getItem('ca_signed_out')==='true')return false;
                 if(!isCloudEnabled||!supabaseClient?.auth){window.auth.clearGoogleRole();return false;}
                 try{
                     const {data:{session},error:sessionError}=await supabaseClient.auth.getSession();
@@ -2985,7 +2990,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 
                 btn.textContent = "Authenticating..."; btn.disabled = true;
 
-                if(cid==='SUPERADMIN'){window.auth.showGoogleStatus('Superadmin access uses your approved Google account. Choose Continue with Google.');btn.disabled=false;btn.textContent='Unlock Database';return;}
+                if(cid==='SUPERADMIN'){window.auth.showGoogleStatus('Use the SuperAdmin email and password form below. Google is optional for SuperAdmin.');document.getElementById('super-password-panel').open=true;btn.disabled=false;btn.textContent='Unlock Database';return;}
 
                 if(window.CA_CONFIG?.secureBackend){window.auth.showGoogleStatus('Use Continue with Google and your approved account.');btn.disabled=false;btn.textContent='Unlock Database';return;}
                 if (!isCloudEnabled) { window.ui.showToast("Cloud connection required for SaaS", "error"); btn.textContent = "Unlock Database"; btn.disabled = false; return; }
@@ -3018,6 +3023,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         localStorage.removeItem('fs_trial_days');
                     }
 
+                    sessionStorage.removeItem('ca_signed_out');
                     sessionStorage.setItem('fs_auth','true');
                     sessionStorage.setItem('fs_auth_type','admin'); sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');
                     sessionStorage.setItem('fs_last_activity',String(Date.now()));
@@ -3038,6 +3044,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
             },
             googleLogin: async () => {
+                sessionStorage.removeItem('ca_signed_out');
                 if(!isCloudEnabled)throw new Error('Cloud connection is required for Google sign-in.');
                 const redirect=new URL(window.location.href);redirect.search='';redirect.hash='';
                 window.auth.showGoogleStatus('Opening Google sign-in…');
@@ -3045,20 +3052,35 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if(error){window.auth.showGoogleStatus('Google sign-in could not start. '+error.message);throw error;}
             },
 
-            logout: () => {
-                window.ui.openSysPrompt("Secure Logout", "Are you sure you want to exit the management portal?", false, async () => {
-                    if (supabaseClient?.auth) { try { await supabaseClient.auth.signOut(); } catch(e) {} }
-                    sessionStorage.removeItem('fs_auth');
-                    sessionStorage.removeItem('fs_auth_type');
-                    sessionStorage.removeItem('fs_role');sessionStorage.removeItem('fs_roles');
-                    sessionStorage.removeItem('fs_cong_id');
-                    sessionStorage.removeItem('fs_cong_name');
-                    sessionStorage.removeItem('fs_last_activity');
-                    localStorage.removeItem('fs_auth');
-                    localStorage.removeItem('fs_auth_type');
-                    localStorage.removeItem('fs_trial_days');
-                    location.href = window.location.href.split(/[?#]/)[0]; 
-                });
+            logout: () => window.ui.openSysPrompt('Sign out', 'Sign out of this account on this device?', false, window.auth.endSession),
+            endSession: async () => {
+                sessionStorage.setItem('ca_signed_out','true');
+                for(const storage of [sessionStorage,localStorage]) {
+                    for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_cong_id','fs_cong_name','fs_last_activity','fs_trial_days'])storage.removeItem(key);
+                    for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(key.startsWith('ov_auth_'))storage.removeItem(key);
+                }
+                window.auth.roleReady=false;window.auth.googleAccess=[];window.currentCongId=null;
+                for(const key of ['publishers','reports','congregations'])window.db[key]=[];
+                window.db.currentCongData=null;
+                document.getElementById('auth-screen').classList.remove('hidden');
+                try { await Promise.race([supabaseClient?.auth?.signOut({scope:'local'}),new Promise(resolve=>setTimeout(resolve,2000))]); } catch(e) {}
+                for(const storage of [localStorage,sessionStorage])for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(/^sb-.*-auth-token/.test(key))storage.removeItem(key);
+                location.href=window.location.href.split(/[?#]/)[0];
+            },
+            superPasswordLogin: async (event) => {
+                event.preventDefault();
+                const button=document.getElementById('super-password-btn');button.disabled=true;
+                const password=document.getElementById('super-password');
+                try {
+                    if(!window.CA_CONFIG?.secureBackend)throw new Error('Open the secure SuperAdmin sign-in page below.');
+                    const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('super-email').value.trim().toLowerCase(),password:password.value});
+                    if(error || !data?.session)throw new Error('Sign-in failed. Check your email and password. The owner account must first be created in Supabase Authentication.');
+                    const access=await supabaseClient.rpc('ca_is_superadmin');
+                    if(access.error || access.data!==true){await supabaseClient.auth.signOut({scope:'local'});throw new Error('This account does not have SuperAdmin access.');}
+                    sessionStorage.removeItem('ca_signed_out');
+                    await window.auth.resumeGoogleRole();
+                } catch(error){window.auth.showGoogleStatus(error.message);}
+                finally {password.value='';button.disabled=false;}
             },
 
             overseerLogin: async () => {
@@ -4419,16 +4441,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.closeSysPrompt();
             },
 
-            confirmLogout: () => {
-                window.ui.openSysPrompt("Secure Logout", "Are you sure you want to exit the management portal?", false, async () => {
-                    localStorage.removeItem('fs_auth');
-                    localStorage.removeItem('fs_auth_type');
-                    localStorage.removeItem('fs_cong_id');
-                    localStorage.removeItem('fs_cong_name');
-                    localStorage.removeItem('fs_trial_days');
-                    location.href = window.location.href.split(/[?#]/)[0]; 
-                });
-            },
+            confirmLogout: () => window.auth.logout(),
 
             confirmWipeDatabase: () => {
                 if (window.db.currentCongData && window.db.currentCongData.wipe_requested_at) {

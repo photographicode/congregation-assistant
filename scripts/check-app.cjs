@@ -117,6 +117,27 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         qa.window.currentCongId='real-tenant';qa.window.initMidweekScheduler();await qa.elements.get('publishWeekBtn').onclick();
         assert(qa.calls.length>before);assert.equal(qa.elements.get('schedulerPublishError').hidden,false);
     });
+    await test('visible sign-out clears current sessions even if the auth server fails',async()=>{
+        const qa=createHarness();qa.window.currentCongId='logout-test';qa.window.auth.roleReady=true;
+        for(const storage of [qa.sessionStorage,qa.localStorage])for(const key of ['fs_auth','fs_auth_type','fs_role','fs_cong_id','ov_auth_logout-test_A','sb-test-auth-token'])storage.setItem(key,'saved');
+        qa.localStorage.setItem('ca_midweek_logout-test_jw_scheduler_assignments','draft');
+        qa.window.supabase.createClient().auth.signOut=async()=>{throw new Error('Offline');};
+        qa.window.ui.confirmLogout();await qa.window.ui.handleSysPromptConfirm();
+        assert.equal(qa.sessionStorage.getItem('fs_auth'),null);assert.equal(qa.localStorage.getItem('fs_auth'),null);
+        assert.equal(qa.sessionStorage.getItem('ov_auth_logout-test_A'),null);assert.equal(qa.localStorage.getItem('sb-test-auth-token'),null);
+        assert.equal(qa.window.auth.roleReady,false);assert.equal(qa.window.currentCongId,null);
+        assert.equal(await qa.window.auth.resumeGoogleRole(),false);assert.equal(qa.window.auth.check(),false);
+        assert.equal(qa.localStorage.getItem('ca_midweek_logout-test_jw_scheduler_assignments'),'draft');
+    });
+    await test('password SuperAdmin requires both a verified session and server owner approval',async()=>{
+        const qa=createHarness();qa.window.CA_CONFIG={secureBackend:true};
+        qa.elements.get('super-email').value='owner@example.com';qa.elements.get('super-password').value='fixture-password';
+        qa.window.supabase.createClient().auth.signInWithPassword=async()=>({data:{session:{user:{email:'owner@example.com'}}},error:null});
+        let opened=false;qa.window.auth.resumeGoogleRole=async()=>{opened=true;return true;};
+        qa.setCloud({data:false,error:null});await qa.window.auth.superPasswordLogin({preventDefault(){}});assert.equal(opened,false);
+        qa.elements.get('super-password').value='fixture-password';qa.setCloud({data:true,error:null});
+        await qa.window.auth.superPasswordLogin({preventDefault(){}});assert.equal(opened,true);assert.equal(qa.elements.get('super-password').value,'');
+    });
     await test('editing during publication remains an unpublished draft',async()=>{
         const qa=createHarness();qa.window.currentCongId='publish-race';qa.window.initMidweekScheduler();
         qa.window.setPartTitle('Chairman','Version sent to the server');qa.setCloud({data:{token:'race-token'},error:null});
