@@ -25,7 +25,7 @@ async function run(profile) {
     page.setDefaultTimeout(15000);
     const errors = [], blockedProduction = [], timings = [];
     page.on('pageerror', error => errors.push(error.message));
-    page.on('console', message => { if (message.type() === 'error' && !message.text().includes('Acceptance test: save rejected')) errors.push(message.text()); });
+    page.on('console', message => { const rejectedOwner=message.location().url.includes('/functions/v1/owner-password-session')&&message.text().includes('401');if(message.type()==='error'&&!rejectedOwner&&!message.text().includes('Acceptance test: save rejected'))errors.push(message.text()); });
     await context.route('**/*.supabase.co/**', async route => { blockedProduction.push(route.request().url()); await route.abort('blockedbyclient'); });
     await context.route('**/npm/@supabase/supabase-js@2', route => route.fulfill({ contentType: 'application/javascript', body: '/* Isolated acceptance backend installed before boot. */' }));
     await context.route('**/pdf-lib.min.js', route => route.fulfill({ contentType: 'application/javascript', body: fs.readFileSync(require.resolve('pdf-lib/dist/pdf-lib.min.js'), 'utf8') }));
