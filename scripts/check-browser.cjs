@@ -95,7 +95,15 @@ async function run(profile) {
         assert.equal(await page.locator('.mws-week-browser').getAttribute('open'),null,'Nearby weeks should be optional');
         await page.locator('#mws-tab-schedule').focus();await page.keyboard.press('ArrowRight');
         assert.equal(await page.locator('#previewView').isVisible(),true,'Scheduler tabs must support the keyboard');
-        for (const view of ['people', 'preview', 'messages', 'schedule']) {
+        assert.equal(await page.locator('#previewBtn, #mws-tab-messages, #messagesView').count(),0,'Duplicate preview and Messages controls must be removed');
+        await page.locator('#mws-tab-preview').click();
+        await page.locator('#publishWeekBtn').scrollIntoViewIfNeeded();
+        assert(await page.locator('#publishWeekBtn').isVisible(),'Publish button must be visible on every device');
+        const reviewOrder=await page.evaluate(()=>document.getElementById('paper').getBoundingClientRect().bottom<=document.getElementById('publishWeekBtn').getBoundingClientRect().top);
+        assert(reviewOrder,'Publish follows the schedule review');
+        const frames=await page.locator('#s3-render-area, #s88-render-area').evaluateAll(els=>els.every(el=>getComputedStyle(el).display==='none'));
+        assert(frames,'PDF rendering frames must not leave blank screen space');
+        for (const view of ['people', 'preview', 'schedule']) {
             await page.locator(`#ca-midweek-root [data-view="${view}"]`).click();
             assert.equal(await page.locator(`#${view}View`).isVisible(), true);
         }
@@ -178,6 +186,7 @@ async function run(profile) {
         await nav('oclm');
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
+        await page.locator('details:has(#roleChecks) summary').click();
         await page.locator('#roleChecks input[value="Chairman"]').check();
         await page.locator('#personForm button[type="submit"]').click();
         await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');});

@@ -80,7 +80,7 @@ Midweek drafts are stored under congregation-specific browser keys. Publishing u
 
 ## Verification status
 
-The current revision passes 38 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
+The current revision passes 39 command-line regression checks and coordinate checks for all four generated PDF samples. The samples were visually reviewed, including long names, overflowing remarks, event markers, large families, and long addresses.
 
 Browser acceptance now runs in GitHub Actions with an isolated backend. Desktop Chromium, mobile Chromium, and mobile WebKit passed navigation with 1,000 publishers, attendance draft retention, rejected and successful saves, modal closing, actual PDF downloads, scheduler views, and all seven themes. Browser runs exposed and fixed two interaction bugs: Escape targeted a modal title instead of its container, and an invisible toast intercepted bottom-navigation taps. Screenshot review also corrected desktop sidebar overlap and Daylight label contrast. The workflow checks sidebar positioning and stores screenshots and results as artifacts.
 
@@ -108,6 +108,6 @@ The app can be added to a home screen through its manifest and Install app menu 
 
 ## Integrated midweek workspace
 
-The midweek scheduler follows the selected CA theme, with one week selector and Schedule, Review & publish, People, and Reminders sections. Nearby weeks are optional. Review highlights missing parts, assistants, repeated names, and missing workbook details. Workbook content is only preloaded for the weeks in the embedded library; users must check other weeks against the official workbook and edit titles.
+The midweek scheduler follows the selected CA theme, with one week selector and Schedule, Review & publish, and People sections. Nearby weeks are optional. Review highlights missing parts, assistants, repeated names, and missing workbook details. Workbook content is only preloaded for the weeks in the embedded library; users must check other weeks against the official workbook and edit titles.
 
 Drafts remain device-local. A persistent Retry save warning preserves the in-memory draft after browser storage fails. Assignment clearing retains edited titles, and Undo restores recent schedule changes within the current congregation. Publishing remains explicit: the page distinguishes device drafts, published versions, and unpublished changes. Failed publication leaves its error visible and preserves the previous live schedule. Changes made while publishing remain unpublished until the next publication. Removing a published week requires confirmation.

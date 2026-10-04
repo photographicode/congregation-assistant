@@ -365,7 +365,7 @@ body[data-theme] #ca-midweek-root :is(.search,.sheet-search,.field-input,.field-
     #ca-midweek-root .week-arrow { width: 44px; height: 44px; }
     #ca-midweek-root .top-actions { display: flex; justify-content: space-between; gap: 8px; }
     #ca-midweek-root #saveStateLabel { font-size: 12px; text-align: left; }
-    #ca-midweek-root .mws-subnav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 12px 0 20px; }
+    #ca-midweek-root .mws-subnav { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; margin: 12px 0 20px; }
     #ca-midweek-root .mws-subnav .mws-nav-btn { font-size: 14px; }
     #ca-midweek-root .schedule-head { grid-template-columns: minmax(0,1fr); gap: 12px; }
     #ca-midweek-root .status-box { justify-content: space-between; }
@@ -386,3 +386,16 @@ body[data-theme] #ca-midweek-root :is(.search,.sheet-search,.field-input,.field-
     #ca-midweek-root .page-head { align-items: stretch; flex-direction: column; gap: 14px; }
     #ca-midweek-root .mws-save-error { flex-direction: column; align-items: stretch; }
 }
+
+/* Preserve the latest navigation and command-centre styling. */
+#mobile-nav #m-btn-tab-dashboard { order: -1; }
+#s3-render-area, #s88-render-area { display: none !important; }
+#tab-superadmin { --premium-gold: #dfc28b; background: radial-gradient(ellipse at top right, rgba(194,157,95,.12), transparent 55%); border-radius: 24px; padding: 20px; }
+#tab-superadmin .glass-panel { background: linear-gradient(145deg,#192332,#0f1724); border: 1px solid rgba(223,194,139,.22); box-shadow: 0 14px 38px rgba(0,0,0,.2); border-radius: 20px; }
+#tab-superadmin h2, #tab-superadmin h3 { color: #f4e6c9 !important; }
+#tab-superadmin button, #tab-superadmin input, #tab-superadmin select { min-height: 44px; }
+#tab-superadmin table { line-height: 1.7; }
+@media(max-width:640px) { #tab-superadmin { padding: 8px; } }
+
+#ca-midweek-root .mws-week-options summary { padding: 10px; color: var(--muted); font-size: 14px; cursor: pointer; }
+#ca-midweek-root .mws-week-options[open] .btn { margin-top: 6px; }

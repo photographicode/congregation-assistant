@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-192.png"><meta name="theme-color" content="#0b252c">
+    <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="assets/icon-192.png"><meta name="theme-color" content="#0b252c">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Congregation Assistant</title>
     
@@ -1209,7 +1209,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         </div>
     </div>
 
-    <div id="modal-install-app" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="install-app-title"><div class="glass-panel max-w-lg w-full rounded-2xl p-6"><h2 id="install-app-title" class="text-xl font-bold">Add the app to your home screen</h2><p class="mt-4">Android: open your browser menu and choose Install app or Add to Home screen.</p><p class="mt-4">iPhone or iPad: open this website in Safari, tap Share, then Add to Home Screen.</p><p class="mt-4">Internet is needed for cloud records and publishing.</p><button class="ca-secondary-action mt-6" onclick="window.ui.closeModal('modal-install-app')">Got it</button></div></div>
+    <div id="modal-install-app" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="install-app-title"><div class="glass-panel max-w-lg w-full rounded-2xl p-6"><h2 id="install-app-title" class="text-xl font-bold">Add the app to your home screen</h2><p class="mt-4">Android: open your browser menu and choose Install app or Add to Home screen.</p><p class="mt-4">iPhone or iPad: open this website in Safari, tap Share, then Add to Home Screen.</p><p class="mt-4">Internet is needed for cloud records and publishing.</p><hr class="my-4"><h3 class="font-bold">Notifications</h3><p id="notification-status" class="mt-2" role="status">Check your device notification settings.</p><div class="flex gap-2 mt-4 flex-wrap"><button class="ca-secondary-action" onclick="window.CANotifications.enable()">Enable notifications</button><button class="ca-secondary-action" onclick="window.CANotifications.test()">Send test notification</button><button class="ca-secondary-action" onclick="window.CANotifications.guide()">Settings help</button></div><p id="notification-help" class="mt-4 text-sm">Android: allow notifications for this site in your browser settings. iPhone/iPad: use iOS 16.4 or later, add the app to your Home Screen, then open the installed app to enable notifications. Remote alerts need the server delivery setup.</p><button class="ca-secondary-action mt-6" onclick="window.ui.closeModal('modal-install-app')">Got it</button></div></div>
     <div id="modal-google-congregation" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="google-congregation-title">
         <div class="glass-panel w-full max-w-lg rounded-2xl p-6"><h2 id="google-congregation-title" class="text-xl font-bold">Choose your congregation</h2><p class="mt-2">Your Google account has access to more than one congregation.</p><div id="google-congregation-list" class="mt-4 space-y-3"></div><button type="button" class="ca-secondary-action mt-4" onclick="window.ui.closeModal('modal-google-congregation')">Cancel</button></div>
     </div>
@@ -1243,7 +1243,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <div id="tab-superadmin" class="tab-content space-y-6">
             <div class="flex justify-between items-center flex-wrap gap-4">
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Your service overview</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Command centre</h2>
                     <p class="text-teal-200/70 mt-1 text-slate-400">Congregations, trials, access, and published tools at a glance</p>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
@@ -1376,7 +1376,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   <button type="button" class="mws-nav-btn active" data-view="schedule" id="mws-tab-schedule" role="tab" aria-controls="scheduleView"><span>Schedule</span></button>
   <button type="button" class="mws-nav-btn" data-view="preview" id="mws-tab-preview" role="tab" aria-controls="previewView"><span>Review &amp; publish</span></button>
   <button type="button" class="mws-nav-btn" data-view="people" id="mws-tab-people" role="tab" aria-controls="peopleView"><span>People</span></button>
-  <button type="button" class="mws-nav-btn" data-view="messages" id="mws-tab-messages" role="tab" aria-controls="messagesView"><span>Reminders</span></button>
 </div>
 
   <div class="content">
@@ -1402,7 +1401,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="mws-notice" id="workbookNotice" hidden><strong>Check this week’s workbook.</strong><p>Workbook details are not loaded for this week. Check the official workbook and update the part titles before publishing.</p><a href="https://www.jw.org/en/library/jw-meeting-workbook/" target="_blank" rel="noopener">Open official workbook ↗</a></div>
 <div class="toolbar">
 <div class="toolbar-left"><button class="btn small primary" id="autoRemaining">Suggest remaining assignments</button><button class="btn small" id="undoSchedule" disabled>Undo</button></div>
-<button class="btn small mws-clear-week" id="clearWeek">Clear week</button>
+<details class="mws-week-options"><summary>More options</summary><button class="btn small mws-clear-week" id="clearWeek">Clear week</button></details>
 </div>
 <details class="mws-week-browser"><summary>Browse nearby weeks</summary><div class="week-strip" id="weekStrip"></div></details>
 <div class="mws-empty-state" id="schedulerEmpty" hidden><strong>Start with your meeting roster.</strong><p>Add people and their qualifications. Then choose assignments or let the scheduler suggest them.</p><button class="btn primary" id="setupSchedulerPeople">Add people</button></div>
@@ -1424,6 +1423,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 </div>
 <div class="mws-review-checks" id="scheduleReviewChecks" role="status"></div>
 <div class="mws-notice mws-save-error" id="schedulerPublishError" role="alert" hidden></div>
+<div class="preview-wrap"><div class="paper" id="paper"></div></div>
 <div class="live-panel">
 <div class="live-panel-head"><div><div class="live-kicker">LIVE SCHEDULE</div><h3 id="publicationHeading">This week is a draft</h3><p id="publicationDescription">Publish when you are ready for others to see it.</p></div><button class="btn primary" id="publishWeekBtn">Publish this week</button></div>
 <label class="field-label mws-link-label" for="liveLinkInput">Shared schedule link</label>
@@ -1431,16 +1431,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="published-weeks" id="publishedWeeks"></div>
 <div class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Draft editing is limited to this device.</div>
 </div>
-<div class="preview-wrap"><div class="paper" id="paper"></div></div>
 </section>
-<!-- Messages -->
-<section class="mws-view" id="messagesView" role="tabpanel" aria-labelledby="mws-tab-messages">
-<div class="page-head"><div><div class="eyebrow">Help people prepare</div><h2>Assignment reminders</h2><p>Customize the WhatsApp message for an assignment. Messages are sent only when you choose to send them in WhatsApp.</p></div></div>
-<div class="message-grid">
-<div class="panel"><h3>Reminder template</h3><div class="panel-note">Use the variables below anywhere in your message.</div><textarea id="templateText" spellcheck="true"></textarea><div style="display:flex;justify-content:flex-end;margin-top:9px"><button class="btn primary" id="saveTemplateBtn">Save template</button></div></div>
-<div class="panel"><h3>Live preview</h3><div class="panel-note">Example using the current week.</div><div class="preview-message" id="messagePreview"></div><div class="vars"><div class="var"><code>{NAME}</code> — publisher name</div><div class="var"><code>{ROLE}</code> — assignment name</div><div class="var"><code>{PART}</code> — customized part title</div><div class="var"><code>{WEEK}</code> — meeting week</div></div></div>
-</div>
-</section>
+
 </div>
   <div aria-hidden="true" aria-modal="true" class="modal-backdrop" id="assignModal" role="dialog">
 <div class="assign-sheet">
@@ -1463,7 +1455,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div><label class="field-label" for="personPhone">Phone</label><input autocomplete="tel" class="field-input" id="personPhone" type="tel"/></div>
 <div><label class="field-label" for="personGender">Person</label><select class="field-select" id="personGender"><option value="Male">Brother</option><option value="Female">Sister</option></select></div>
 <div class="full"><label class="field-label" for="personAppointment">Appointment</label><select class="field-select" id="personAppointment"><option value="Elder">Elder</option><option value="MS">Ministerial Servant</option><option value="Sister">Sister</option><option value="Other">Other / custom</option></select></div>
-<div class="full"><label class="field-label">Qualifications</label><div class="role-checks" id="roleChecks"></div></div>
+<details class="full"><summary class="field-label">Qualifications — change when needed</summary><div class="role-checks" id="roleChecks"></div></details>
 </div>
 <div style="display:flex;gap:7px;justify-content:flex-end;margin-top:12px"><button class="btn" id="cancelPerson" type="button">Cancel</button><button class="btn primary" type="submit">Save person</button></div>
 </form>
@@ -2577,7 +2569,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(state.activeView==='schedule')renderSchedule();
     if(state.activeView==='people')renderPeople();
     if(state.activeView==='preview'){renderPreview();renderLivePanel();}
-    if(state.activeView==='messages')renderMessage();
     renderWorkflowStatus();
     root.querySelectorAll('.mws-nav-btn').forEach(b=>{const active=b.dataset.view===state.activeView;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
     root.querySelectorAll('.mws-view').forEach(v=>v.classList.toggle('mws-active',v.id===state.activeView+'View'));
@@ -2608,6 +2599,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function weekUseCount(personId){ return ALL_FIELDS.filter(id=>recordFor(id).personId===personId).length; }
   function personHasDifferentPart(personId,currentField){ return ALL_FIELDS.some(id=>id!==currentField && recordFor(id).personId===personId); }
 
+  function lastPartWeek(personId,fieldId){
+    const role=ROLE_MAP[fieldId];
+    return Object.keys(state.assignments).filter(w=>w<state.currentWeek && Object.entries(state.assignments[w]||{}).some(([id,r])=>r?.personId===personId && (id===fieldId || (role && ROLE_MAP[id]===role)))).sort().at(-1)||'';
+  }
+  function compareRecency(a,b,fieldId){return lastPartWeek(a.id,fieldId).localeCompare(lastPartWeek(b.id,fieldId));}
   function suggestPerson(role,fieldId){
     const candidates=state.personnel.filter(p=>allowedPerson(p,role));
     if(!candidates.length) return null;
@@ -2615,7 +2611,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       const aSame=personHasDifferentPart(a.id,fieldId)?1:0, bSame=personHasDifferentPart(b.id,fieldId)?1:0;
       if(aSame!==bSame) return aSame-bSame;
       const aw=weekUseCount(a.id), bw=weekUseCount(b.id); if(aw!==bw)return aw-bw;
-      return assignmentUseCount(a.id)-assignmentUseCount(b.id);
+      return compareRecency(a,b,fieldId)||assignmentUseCount(a.id)-assignmentUseCount(b.id)||a.name.localeCompare(b.name);
     })[0];
   }
 
@@ -2641,7 +2637,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
   function renderAssignmentRow(field,sectionKey,index){
     const record=recordFor(field.id); const person=personById(record.personId); const title=effectiveTitle(field); const role=ROLE_MAP[field.id]||field.role;
-    let assignText=person?.name||'Unassigned';
+    let assignText=person?.name||'Choose a person';
     const contextParts=[]; if(field.duration)contextParts.push(field.duration); if(field.optional)contextParts.push('Optional');
     if(record.personId && !person) assignText='Unknown person';
     return `<div class="assign-row">
@@ -2649,7 +2645,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       <div class="row-main"><div class="row-title-line"><input class="row-title-input" value="${esc(title)}" aria-label="Edit part title" onchange="window.setPartTitle('${field.id}',this.value)" onkeydown="if(event.key==='Enter'){this.blur();}"></div><div class="row-meta"><span class="meta">${esc(LABELS[field.id]||field.label)}</span>${contextParts.map(x=>`<span class="tag ${x==='Optional'?'optional':''}">${esc(x)}</span>`).join('')}</div></div>
       <div class="row-right">
         <button class="assignee ${person?'':'unassigned'}" onclick="window.openAssign('${field.id}')" aria-label="Assign ${esc(field.label)}">
-          <span class="assignee-copy"><span class="assignee-label">Assigned to</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
+          <span class="assignee-copy"><span class="assignee-label">${person?'Assigned to':'Tap to assign'}</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
         </button>
         ${person?`<button class="clear-btn" onclick="window.clearAssignment('${field.id}')" title="Clear assignment" aria-label="Clear ${esc(field.label)} assignment">×</button>`:''}
       </div>
@@ -2663,7 +2659,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const list=state.personnel.filter(p=>allowedPerson(p,role));
     return [...list].sort((a,b)=>{
       const aSame=personHasDifferentPart(a.id,currentField)?1:0, bSame=personHasDifferentPart(b.id,currentField)?1:0; if(aSame!==bSame)return aSame-bSame;
-      return a.name.localeCompare(b.name);
+      return compareRecency(a,b,currentField)||a.name.localeCompare(b.name);
     });
   }
 
@@ -2678,14 +2674,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function renderCandidates(suggestion){
     const fieldId=state.selectedField; const field=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===fieldId)||{role:ROLE_MAP[fieldId]}; const role=ROLE_MAP[fieldId]||field.role; const q=$('candidateSearch').value.toLowerCase().trim();
     const people=state.personnel.filter(p=>allowedPerson(p,role) && p.name.toLowerCase().includes(q)).sort((a,b)=>{
-      if(suggestion && a.id===suggestion.id)return -1; if(suggestion && b.id===suggestion.id)return 1;
       const aOther=personHasDifferentPart(a.id,fieldId)?1:0, bOther=personHasDifferentPart(b.id,fieldId)?1:0; if(aOther!==bOther)return aOther-bOther;
-      return a.name.localeCompare(b.name);
+      return compareRecency(a,b,fieldId)||a.name.localeCompare(b.name);
     });
     if(!people.length){$('candidateList').innerHTML='<div style="padding:28px;text-align:center;font-size:10px;color:#8d969d">No qualified people found.</div>';return;}
     $('candidateList').innerHTML=people.map(p=>{
       const recommended=suggestion?.id===p.id; const same=personHasDifferentPart(p.id,fieldId); const weekCount=weekUseCount(p.id); const historic=assignmentUseCount(p.id);
-      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta"><span class="candidate-tag green">Qualified</span>${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">${historic} total</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
+      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta"><span class="candidate-tag green">Qualified</span>${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span><span class="candidate-tag">${historic} total</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
     }).join('');
   }
 
@@ -2764,7 +2759,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     return {v:2,kind:'midweek',congregation:window.db?.currentCongData?.name||'Congregation',defaultWeek:state.currentWeek,publishedWeeks:weeks,assignments,people,generatedAt:Date.now()};
   }
   function liveLink(){return state.publication?.token?window.PublicLinks.tokenURL('oclm',state.publication.token):'';}
-  function updateLiveLink(){ const el=$('liveLinkInput'); if(el)el.value=liveLink(); }
+  function updateLiveLink(){ const el=$('liveLinkInput'); if(el)el.value=liveLink();const link=$('openLiveLink');if(link){link.hidden=!liveLink();if(liveLink())link.href=liveLink();} }
   function renderLivePanel(){
     const box=$('publishedWeeks'); if(!box)return;
     box.innerHTML=state.publishedWeeks.length ? state.publishedWeeks.map(w=>`<span class="published-chip">${esc(PROGRAM_LIBRARY[w]?.range||weekLabel(w))}<button onclick="window.unpublishWeek('${w}')" aria-label="Unpublish">×</button></span>`).join('') : '<span class="live-note">No weeks published yet.</span>';
@@ -2784,8 +2779,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       $('liveWeekTitle').textContent=`Week of ${program.range||weekLabel(w)}`; $('liveWeekSub').textContent=program.reading?`${program.reading} · ${program.theme||'Life and Ministry Meeting'}`:'Life and Ministry Meeting';
       let found=0;
       $('liveSections').innerHTML=SECTIONS.map(sec=>{
-        const fields=sec.fields.filter(f=>!f.optional || program.parts?.[f.id] || data[f.id]?.personId);
-        const rows=fields.map(f=>{ const r=data[f.id]||{}; const p=personBy(r.personId); const a=f.assistant?personBy(data[f.assistant]?.personId):null; const title=r.customTitle||program.parts?.[f.id]?.title||f.label; const hay=`${p?.name||''} ${title} ${LABELS[f.id]||f.label}`.toLowerCase(); if(q&&!hay.includes(q))return ''; found++; return `<div class="live-row"><div><div class="live-part">${esc(title)}</div>${a?`<div class="live-assistant">Assistant: ${esc(a.name)}</div>`:''}</div><div class="live-person">${esc(p?.name||'Unassigned')}</div></div>`;}).join('');
+        const fields=sec.fields.filter(f=>(sec.key!=='field' || data[f.id]?.personId) && (!f.optional || program.parts?.[f.id] || data[f.id]?.personId));
+        const rows=fields.map(f=>{ const r=data[f.id]||{}; const p=personBy(r.personId); const a=f.assistant?personBy(data[f.assistant]?.personId):null; const title=r.customTitle||program.parts?.[f.id]?.title||f.label; const hay=`${p?.name||''} ${title} ${LABELS[f.id]||f.label}`.toLowerCase(); if(q&&!hay.includes(q))return ''; found++; return `<div class="live-row"><div><div class="live-part">${esc(title)}</div>${a?`<div class="live-assistant">Assistant: ${esc(a.name)}</div>`:''}</div><div class="live-person">${esc(p?.name||'')}</div></div>`;}).join('');
         if(!rows)return ''; return `<section class="live-section"><div class="live-section-head ${sec.key}">${esc(sec.title)}</div>${rows}</section>`;
       }).join('') || '<div class="live-info"><div class="live-info-sub">No matching publisher or assignment found.</div></div>';
       $('liveResultNote').textContent=q?`${found} matching assignment${found===1?'':'s'}`:'';
@@ -2797,14 +2792,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     try{return JSON.parse(base64ToUtf8(decodeURIComponent(hash.slice(6))))}catch{return null;}
   }
 
-  function renderMessage(){
-    $('templateText').value=state.template; const p=state.personnel[0]||{name:'Publisher'}; const vals={'{NAME}':p.name,'{ROLE}':'Life and Ministry assignment','{PART}':'','{WEEK}':state.program.range||weekLabel(state.currentWeek)};
-    let msg=state.template; Object.keys(vals).forEach(k=>msg=msg.replaceAll(k,vals[k])); $('messagePreview').textContent=msg;
-  }
-
   function openModal(id){const m=$(id);m.classList.add('open');m.setAttribute('aria-hidden','false');window.AppSupport?.dialogOpened(m);}
   function closeModal(id){const m=$(id);m.classList.remove('open');m.setAttribute('aria-hidden','true');window.AppSupport?.dialogClosed(m);}
-  function showView(view){state.activeView=view;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
+  function showView(view){if(!['schedule','people','preview'].includes(view))return;state.activeView=view;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
 
   // Public handlers for inline interactions
   window.setPartTitle=setPartTitle; window.openAssign=openAssign; window.setAssignment=setAssignment; window.clearAssignment=clearAssignment; window.closeAssignModal=()=>closeModal('assignModal');
@@ -2818,7 +2808,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week to the cloud first. Older snapshot links do not update.');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
   $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
   $('addPersonBtn').onclick=()=>openPersonModal(null); $('closePerson').onclick=()=>closeModal('personModal'); $('cancelPerson').onclick=()=>closeModal('personModal'); $('personForm').addEventListener('submit',savePerson); $('personSearch').addEventListener('input',renderPeople);
-  $('saveTemplateBtn').onclick=()=>{state.template=$('templateText').value;const saved=save();renderMessage();if(saved)toast('Template saved');}; $('templateText').addEventListener('input',()=>{state.template=$('templateText').value;renderMessage();save();});
   ['assignModal','personModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('assignModal');closeModal('personModal')}});
 
