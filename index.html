@@ -995,7 +995,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <p id="google-auth-status" class="hidden ca-auth-status" role="alert"></p>
                 <p class="text-[10px] text-teal-100/40 mt-3">Authorized brothers — including Main admins — can sign in with their Google account. Access is granted only to email addresses entered by a Main admin.</p>
             </form>
-            <details id="super-password-panel" class="mt-5 text-left"><summary class="cursor-pointer font-bold py-3">SuperAdmin password sign-in</summary><p class="text-sm my-3">Use your approved owner email and password. Google sign-in is not required.</p><form id="super-password-form" onsubmit="window.auth.superPasswordLogin(event)"><label for="super-email">Owner email</label><input id="super-email" type="email" autocomplete="username" required class="w-full px-5 py-3 rounded-xl mb-4"/><label for="super-password">Password</label><input id="super-password" type="password" autocomplete="current-password" required class="w-full px-5 py-3 rounded-xl mb-4"/><button id="super-password-btn" type="submit" class="ca-primary-action w-full">Sign in as SuperAdmin</button></form><a class="block underline py-3" href="https://photographicode.github.io/congregation-assistant/staging/?superadmin=1">Open secure SuperAdmin sign-in</a><p class="text-sm">The secure workspace uses the new backend. Existing legacy congregation data is not migrated.</p></details>
+            <details id="super-password-panel" class="mt-5 text-left"><summary class="cursor-pointer font-bold py-3">SuperAdmin password sign-in</summary><p class="text-sm my-3">Use your approved owner email and password. Google sign-in is not required.</p><form id="super-password-form" onsubmit="window.auth.superPasswordLogin(event)"><label for="super-email">Owner email</label><input id="super-email" value="photographicode@gmail.com" type="email" autocomplete="username" required class="w-full px-5 py-3 rounded-xl mb-4"/><label for="super-password">Password</label><input id="super-password" type="password" autocomplete="current-password" required class="w-full px-5 py-3 rounded-xl mb-4"/><button type="button" id="super-password-toggle" class="ca-secondary-action mb-4" aria-controls="super-password" aria-pressed="false" onclick="window.auth.toggleSuperPassword()">Show password</button><p id="super-password-status" class="ca-auth-status mb-4" role="alert" hidden></p><a class="block underline mb-4" href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#superadmin" target="_blank" rel="noopener">Password setup and sign-in help ↗</a><button id="super-password-btn" type="submit" class="ca-primary-action w-full">Sign in as SuperAdmin</button></form><a class="block underline py-3" href="https://photographicode.github.io/congregation-assistant/staging/?superadmin=1">Open secure SuperAdmin sign-in</a><p class="text-sm">The secure workspace uses the new backend. Existing legacy congregation data is not migrated.</p></details>
         </div>
     </div>
 
@@ -1062,7 +1062,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">More</div>
                         <button onclick="window.ui.openAnnouncements()" id="btn-announcements" class="ca-nav-item ca-announcements-item" aria-label="Announcements"><span class="ca-nav-icon">🔔</span><span class="ca-nav-label">Announcements</span><span id="ca-announcements-dot" class="ca-notification-dot hidden"></span></button>
-                        <button onclick="window.ui.openModal('modal-how-to-use')" id="btn-how-to-use" class="ca-nav-item" aria-label="How to use"><span class="ca-nav-icon">?</span><span class="ca-nav-label">How to use</span></button>
+                        <button onclick="window.ui.startHowToUse()" id="btn-how-to-use" class="ca-nav-item" aria-label="How to use"><span class="ca-nav-icon">?</span><span class="ca-nav-label">How to use</span></button>
                         <button onclick="window.ui.openModal('modal-about')" id="btn-about" class="ca-nav-item" aria-label="About the application"><span class="ca-nav-icon">i</span><span class="ca-nav-label">About the application</span></button>
                     </div>
                     <span id="nav-trial-timer" class="hidden"></span>
@@ -1200,7 +1200,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </section>
                 <section class="ca-mobile-menu-section" data-menu-section="More"><h3>More</h3>
                     <button type="button" id="menu-item-announcements" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAnnouncements()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Announcements</strong><small>Read congregation updates</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-help" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-how-to-use')"><span class="ca-menu-icon" aria-hidden="true">?</span><span><strong>How to use</strong><small>Step-by-step help for this application</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-help" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.startHowToUse()"><span class="ca-menu-icon" aria-hidden="true">?</span><span><strong>How to use</strong><small>Step-by-step help for this application</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-about" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-about')"><span class="ca-menu-icon" aria-hidden="true">i</span><span><strong>About the application</strong><small>Application information and support</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-settings" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-settings')"><span class="ca-menu-icon" aria-hidden="true">⚙</span><span><strong>Settings & Appearance</strong><small>Choose a theme, font and account settings</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-notifications" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.openModal('modal-install-app')"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Notification settings</strong><small>Enable notifications, get help, or send a test</small></span><span aria-hidden="true">›</span></button>
@@ -1398,9 +1398,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="scripture-box" id="readingBadge">—</div>
 <div><div class="context-title" id="meetingTheme">Bible reading</div><div class="context-sub" id="meetingSub">Meeting workbook</div></div>
 </div>
-<a class="context-link" href="https://www.jw.org/en/library/jw-meeting-workbook/" id="workbookLink" rel="noopener" target="_blank">Open meeting workbook ↗</a>
+<a class="context-link" href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#midweek" id="workbookLink" rel="noopener" target="_blank">Scheduling help ↗</a>
 </div>
-<div class="mws-notice" id="workbookNotice" hidden><strong>Check this week’s workbook.</strong><p>Workbook details are not loaded for this week. Check the official workbook and update the part titles before publishing.</p><a href="https://www.jw.org/en/library/jw-meeting-workbook/" target="_blank" rel="noopener">Open official workbook ↗</a></div>
+<div class="mws-notice" id="workbookNotice" hidden><strong>Check this week’s workbook.</strong><p>Workbook details are not loaded for this week. Check the official workbook and update the part titles before publishing.</p><a href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#midweek" target="_blank" rel="noopener">Scheduling help ↗</a></div>
 <div class="toolbar">
 <div class="toolbar-left"><button class="btn small primary" id="autoRemaining">Suggest remaining assignments</button><button class="btn small" id="undoSchedule" disabled>Undo</button></div>
 <details class="mws-week-options"><summary>More options</summary><button class="btn small mws-clear-week" id="clearWeek">Clear week</button></details>
@@ -3067,9 +3067,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 for(const storage of [localStorage,sessionStorage])for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(/^sb-.*-auth-token/.test(key))storage.removeItem(key);
                 location.href=window.location.href.split(/[?#]/)[0];
             },
+            toggleSuperPassword: () => {const field=document.getElementById('super-password'),button=document.getElementById('super-password-toggle');const visible=field.type!=='text';field.type=visible?'text':'password';button.textContent=visible?'Hide password':'Show password';button.setAttribute('aria-pressed',String(visible));},
             superPasswordLogin: async (event) => {
                 event.preventDefault();
-                const button=document.getElementById('super-password-btn');button.disabled=true;
+                const button=document.getElementById('super-password-btn');if(button.disabled)return;button.disabled=true;button.textContent='Signing in…';
+                const status=document.getElementById('super-password-status');status.hidden=true;status.textContent='';
                 const password=document.getElementById('super-password');
                 try {
                     if(!window.CA_CONFIG?.secureBackend)throw new Error('Open the secure SuperAdmin sign-in page below.');
@@ -3079,8 +3081,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     if(access.error || access.data!==true){await supabaseClient.auth.signOut({scope:'local'});throw new Error('This account does not have SuperAdmin access.');}
                     sessionStorage.removeItem('ca_signed_out');
                     await window.auth.resumeGoogleRole();
-                } catch(error){window.auth.showGoogleStatus(error.message);}
-                finally {password.value='';button.disabled=false;}
+                } catch(error){status.textContent=error.message;status.hidden=false;document.getElementById('auth-screen').classList.remove('hidden');}
+                finally {password.value='';password.type='password';document.getElementById('super-password-toggle').textContent='Show password';document.getElementById('super-password-toggle').setAttribute('aria-pressed','false');button.disabled=false;button.textContent='Sign in as SuperAdmin';}
             },
 
             overseerLogin: async () => {
@@ -4024,7 +4026,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.openModal('modal-announcements');
             },
             showComingSoon: (name) => { const t=document.getElementById('coming-soon-title'); if(t) t.textContent=`${name} — Coming Soon`; window.ui.openModal('modal-coming-soon'); },
-            startHowToUse: () => { window.ui.openModal('modal-how-to-use'); },
+            startHowToUse: () => { window.open('https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html', '_blank', 'noopener,noreferrer'); },
             startGuidedTour: () => {
                 const steps = [
                     {id:'btn-tab-publishers', title:'1. Start with Publishers', text:'Add each publisher first. The Publisher database is the foundation for reports, groups, filtering and S-21 downloads.'},
