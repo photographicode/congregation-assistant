@@ -70,6 +70,7 @@ async function run(profile) {
         await page.locator('#att-save-btn').click();
         if (profile.mobile) {
             await page.waitForFunction(() => document.getElementById('toast').classList.contains('show'));
+            await page.waitForFunction(() => document.getElementById('toast').getBoundingClientRect().bottom <= document.getElementById('mobile-nav').getBoundingClientRect().top);
             const placement = await page.evaluate(() => ({
                 toastBottom: document.getElementById('toast').getBoundingClientRect().bottom,
                 navigationTop: document.getElementById('mobile-nav').getBoundingClientRect().top
