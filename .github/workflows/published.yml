@@ -22,6 +22,10 @@ jobs:
       - run: npm install --ignore-scripts
       - run: npx playwright install --with-deps chromium webkit
       - run: node scripts/check-published.cjs
+      - run: node scripts/check-published.cjs
+        env:
+          CA_CHECK_BASE_URL: https://photographicode.github.io/congregation-assistant/staging/
+          CA_CHECK_ASSET_ROOT: staging
       - run: node scripts/check-cloud-readiness.cjs
       - run: npm run test:browser
       - run: node public-site-preview/scripts/check-site.cjs
