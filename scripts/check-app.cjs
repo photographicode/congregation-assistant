@@ -105,6 +105,18 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.equal(qa.elements.get('publicationState').textContent,'Unpublished changes');
         assert.equal(qa.elements.get('schedulerPublishError').hidden,false);assert.match(qa.elements.get('schedulerPublishError').textContent,/previous live schedule is unchanged/);
     });
+    await test('demo publication is local, resets safely, and real tenants still call the server',async()=>{
+        const qa=createHarness();qa.window.currentCongId='demo-cong';qa.window.initMidweekScheduler();
+        qa.setCloud({error:{message:'Not authorized'}});
+        const before=qa.calls.length;await qa.elements.get('publishWeekBtn').onclick();
+        assert.equal(qa.calls.length,before);assert.equal(qa.elements.get('publicationState').textContent,'Demo published');
+        assert.equal(qa.elements.get('schedulerPublishError').hidden,true);assert.equal(qa.elements.get('copyLiveLinkBtn').disabled,true);
+        assert.equal(qa.window.MidweekScheduler.getPayload().people.length,0);
+        qa.window.setAssignment('Chairman','p1');
+        qa.elements.get('resetSchedulerDemo').onclick();assert.deepEqual(qa.window.MidweekScheduler.getPayload().assignments,{});
+        qa.window.currentCongId='real-tenant';qa.window.initMidweekScheduler();await qa.elements.get('publishWeekBtn').onclick();
+        assert(qa.calls.length>before);assert.equal(qa.elements.get('schedulerPublishError').hidden,false);
+    });
     await test('editing during publication remains an unpublished draft',async()=>{
         const qa=createHarness();qa.window.currentCongId='publish-race';qa.window.initMidweekScheduler();
         qa.window.setPartTitle('Chairman','Version sent to the server');qa.setCloud({data:{token:'race-token'},error:null});

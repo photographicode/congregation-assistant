@@ -1156,7 +1156,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">2. Record monthly reports</b><p class="text-sm text-white/65 mt-1">From Home, use the monthly submissions area to review reports. Missing reports can be identified and reminders can be sent.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">3. Use Groups &amp; Analytics</b><p class="text-sm text-white/65 mt-1">Groups keeps people organised, while Analytics provides roster and service summaries.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">4. Attendance &amp; Emergency Contacts</b><p class="text-sm text-white/65 mt-1">When enabled for your congregation, these modules appear automatically in the navigation.</p></div>
-                <div class="rounded-2xl bg-teal-500/10 border border-teal-400/20 p-4"><b class="text-teal-300">Demo congregation</b><p class="text-sm text-white/65 mt-1">The demo congregation follows the same empty-database behavior as a normal congregation. Add publishers and records to build its data.</p></div>
+                <div class="rounded-2xl bg-teal-500/10 border border-teal-400/20 p-4"><b class="text-teal-300">Demo congregation</b><p class="text-sm text-white/65 mt-1">Try midweek scheduling with fictional people. Demo publishing stays on your device and creates no public link.</p></div>
                 <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="window.ui.closeModal('modal-how-to-use')" class="px-4 py-2 rounded-xl bg-white/10 text-white font-bold">Close</button><button type="button" onclick="window.ui.closeModal('modal-how-to-use'); window.ui.startGuidedTour()" class="px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold">Start guided tour</button></div>
             </div>
         </div>
@@ -1426,11 +1426,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="mws-notice mws-save-error" id="schedulerPublishError" role="alert" hidden></div>
 <div class="preview-wrap"><div class="paper" id="paper"></div></div>
 <div class="live-panel">
+<div id="demoPublishNotice" class="mws-notice" hidden><strong>Demo only</strong><p>Try publishing without signing in. This stays on your device and creates no public link.</p><button class="btn" id="resetSchedulerDemo" type="button">Reset demo</button></div>
 <div class="live-panel-head"><div><div class="live-kicker">LIVE SCHEDULE</div><h3 id="publicationHeading">This week is a draft</h3><p id="publicationDescription">Publish when you are ready for others to see it.</p></div><button class="btn primary" id="publishWeekBtn">Publish this week</button></div>
 <label class="field-label mws-link-label" for="liveLinkInput">Shared schedule link</label>
 <div class="live-link-row"><input class="live-link-input" id="liveLinkInput" placeholder="Your link appears after publishing" readonly=""/><button class="btn" id="copyLiveLinkBtn">Copy link</button><a class="btn" id="openLiveSchedule" target="_blank" rel="noopener" hidden>Open live ↗</a></div>
 <div class="published-weeks" id="publishedWeeks"></div>
-<div class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Draft editing is limited to this device.</div>
+<div id="publicationPrivacyNote" class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Draft editing is limited to this device.</div>
 </div>
 </section>
 
@@ -2441,6 +2442,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   const esc = (value='') => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const initials = (name='') => name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0].toUpperCase()).join('') || '?';
 
+  const isDemo = () => String(window.currentCongId || "").toLowerCase() === "demo-cong";
   let loadedCongregation = null;
   let storageFailed = false;
   const undoStack = [];
@@ -2458,6 +2460,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     }
     const personnel=storageGet('jw_scheduler_personnel',[]);
     state.personnel=Array.isArray(personnel)?personnel:[];
+    if(isDemo() && !state.personnel.length) state.personnel=DEFAULT_PERSONNEL.map(p=>({...p,phone:"",roles:[...p.roles]}));
     const assignments=storageGet('jw_scheduler_assignments',{});
     state.assignments=assignments && typeof assignments==='object'&&!Array.isArray(assignments)?assignments:{};
     const published=storageGet('jw_scheduler_published_weeks',[]);
@@ -2550,6 +2553,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     $('publicationState').textContent=published?(changed?'Unpublished changes':'Published'):'Device draft';
     $('publicationHeading').textContent=published?(changed?'Your draft has unpublished changes':'This week is published'):'This week is a draft';
     $('publicationDescription').textContent=published?(changed?'Publish again to update the same live link.':'The live link shows this version. Editing creates a new device draft.'):'Publish when you are ready for others to see it.';
+    if(isDemo()){
+      $('publicationState').textContent=published?(changed?'Demo changes':'Demo published'):'Demo draft';
+      $('publicationHeading').textContent=published?'Demo only — publication simulated':'Try publishing this demo';
+      $('publicationDescription').textContent='Only on this device. No public schedule is created or changed.';
+    }
     const items=[];
     items.push([review.missing.length>0,review.missing.length?`${review.missing.length} main part${review.missing.length===1?' is':'s are'} unassigned. An incomplete schedule can still be published.`:'All main parts have a person assigned.']);
     if(review.assistants.length)items.push([true,`${review.assistants.length} student part${review.assistants.length===1?' needs':'s need'} an assistant.`]);
@@ -2738,10 +2746,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     try{
       const payload=livePayload(weeks);
       const draftSignatures=Object.fromEntries(weeks.map(w=>[w,draftSignature(w)]));
-      const publication=await window.PublicLinks.publish(payload);
+      const publication=isDemo()?{demo:true,publishedAt:new Date().toISOString()}:await window.PublicLinks.publish(payload);
       state.publishedWeeks=weeks;state.publication={...publication,draftSignatures};
       const saved=save(); $('schedulerPublishError').hidden=true;renderLivePanel();renderWorkflowStatus();
-      toast(saved?'Published. The same live link now shows this update.':'Published online, but the device copy could not be saved. Retry saving before leaving.');
+      toast(isDemo()?(saved?'Demo only — publishing simulated on this device.':'Demo tried, but device saving failed. Retry save before leaving.'):saved?'Published. The same live link now shows this update.':'Published online, but the device copy could not be saved. Retry saving before leaving.');
     }catch(error){
       const message=error.message||'Connection unavailable';
       $('schedulerPublishError').textContent=`Publishing failed: ${message}. Your device draft is still here. The previous live schedule is unchanged. Try publishing again.`;
@@ -2759,12 +2767,16 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const people=state.personnel.filter(p=>ids.has(p.id)).map(p=>({id:p.id,name:p.name}));
     return {v:2,kind:'midweek',congregation:window.db?.currentCongData?.name||'Congregation',defaultWeek:state.currentWeek,publishedWeeks:weeks,assignments,people,generatedAt:Date.now()};
   }
-  function liveLink(){return state.publication?.token?window.PublicLinks.tokenURL('oclm',state.publication.token):'';}
+  function liveLink(){return !isDemo() && state.publication?.token?window.PublicLinks.tokenURL('oclm',state.publication.token):'';}
   function updateLiveLink(){ const el=$('liveLinkInput'); if(el)el.value=liveLink();const link=$('openLiveLink');if(link){link.hidden=!liveLink();if(liveLink())link.href=liveLink();} }
   function renderLivePanel(){
     const box=$('publishedWeeks'); if(!box)return;
     box.innerHTML=state.publishedWeeks.length ? state.publishedWeeks.map(w=>`<span class="published-chip">${esc(PROGRAM_LIBRARY[w]?.range||weekLabel(w))}<button onclick="window.unpublishWeek('${w}')" aria-label="Unpublish">×</button></span>`).join('') : '<span class="live-note">No weeks published yet.</span>';
-    const b=$('publishWeekBtn'); if(b)b.textContent=publishing?'Publishing…':state.publishedWeeks.includes(state.currentWeek)?'Update this week':'Publish this week'; updateLiveLink();
+    $('demoPublishNotice').hidden=!isDemo();
+    $('publicationPrivacyNote').hidden=isDemo();
+    const linkRow=$('liveLinkInput').parentElement;if(linkRow)linkRow.hidden=isDemo();
+    const linkLabel=root.querySelector('.mws-link-label');if(linkLabel)linkLabel.hidden=isDemo();
+    const b=$('publishWeekBtn'); if(b)b.textContent=isDemo()?(publishing?'Trying…':state.publishedWeeks.includes(state.currentWeek)?'Update demo':'Try publishing'):publishing?'Publishing…':state.publishedWeeks.includes(state.currentWeek)?'Update this week':'Publish this week'; updateLiveLink();
     const link=liveLink(); $('copyLiveLinkBtn').disabled=!link; $('openLiveSchedule').hidden=!link; if(link)$('openLiveSchedule').setAttribute('href',link);
   }
   function renderLiveViewer(payload){
@@ -2806,6 +2818,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   $('prevWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,-1)); $('nextWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,1)); $('todayBtn').onclick=()=>setWeek(weekId(new Date())); $('reviewScheduleBtn').onclick=()=>showView('preview'); $('autoRemaining').onclick=autoAssign;
   $('undoSchedule').onclick=undoSchedule; $('setupSchedulerPeople').onclick=()=>showView('people'); $('retrySchedulerSave').onclick=()=>{if(save())toast('Your draft is now saved on this device.');renderAll();};
   root.querySelectorAll('.mws-nav-btn').forEach((button,index,buttons)=>button.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%buttons.length;else if(event.key==='ArrowLeft')next=(index+buttons.length-1)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;else return;event.preventDefault();showView(buttons[next].dataset.view);buttons[next].focus();}));
+  $('resetSchedulerDemo').onclick=()=>{if(!isDemo() || !confirm('Reset this demo’s people and assignments on this device?'))return;state.personnel=DEFAULT_PERSONNEL.map(p=>({...p,phone:'',roles:[...p.roles]}));state.assignments={};state.publishedWeeks=[];state.publication=null;undoStack.length=0;save();$('schedulerPublishError').hidden=true;renderAll();toast('Demo reset');};
   $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week to the cloud first. Older snapshot links do not update.');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
   $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
   $('addPersonBtn').onclick=()=>openPersonModal(null); $('closePerson').onclick=()=>closeModal('personModal'); $('cancelPerson').onclick=()=>closeModal('personModal'); $('personForm').addEventListener('submit',savePerson); $('personSearch').addEventListener('input',renderPeople);
