@@ -12,6 +12,8 @@ The new Supabase project is connected and its schema is configured. Its Google p
 
    `https://photographicode.github.io/congregation-assistant/`
 
+   For the separate pilot deployment, also allow `https://photographicode.github.io/congregation-assistant/staging/` and `https://photographicode.github.io/congregation-assistant/staging/index.html`.
+
    If users open `index.html` directly, also allow `https://photographicode.github.io/congregation-assistant/index.html`. The app strips public-link parameters and URL fragments before starting OAuth.
 5. The new project's `fresh-project.sql` schema already supplies memberships and RLS. Do not run the legacy `google-access.sql` over this schema.
 6. The owner `photographicode@gmail.com` is already active in `ca_superadmins`. Sign in with that Google account, then create the first congregation and its approved administrator in Superadmin.

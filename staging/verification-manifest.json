@@ -1,0 +1,19 @@
+{
+  "preparedAt": "2026-10-04T04:30:31.599Z",
+  "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
+  "deploymentVerified": false,
+  "oauthVerified": false,
+  "files": {
+    "index.html": "1f6c137e71e4a6ba65a7cedfe1f16d32816ca3456e76dbe1ed16b308776edacb",
+    "app.css": "906938109cbc6e198b69e5f41c75033fbe571f00f62a6647c7c2ae28bd7103c2",
+    "app-support.js": "1d98cf1adda3f355d6d0e8a7152f14c996bed8466c9b5f6cfc06a207cd6f588c",
+    "pdf-tools.js": "728086d8fc78bb886b7c70d7f98a1c9b5bafdebdb277923401f6fa93a3da3ad9",
+    "public-links.js": "f77f9586d2e9d686cb196a81ea9a8e86bab47eb1c52bd6ea2db58217a68144d5",
+    "app-install.js": "37ddd9d5d0f49045c11fda84130e00ea599b3f54560d03bf3665ea2c7a5c8a19",
+    "service-worker.js": "38f3b1215a52eae3c2e2caef1ce758e0f5c83ac143679df185cb7f5f8849189d",
+    "manifest.webmanifest": "3c4b56dca3e5534edae54aa221068be14e7ca11e3bdae885d860315c86d599ad",
+    "assets/icon-192.png": "b28fedf054d8c7115c6956ce0947e112024486d394bf372aac3d70d8116f0552",
+    "assets/icon-512.png": "b0c1e1e5ec9116fbd90d10b1a384218b65c15145b1a309acf2ca5fdd025fc709",
+    "app-config.js": "7f0a15089ea7beec1ac62089e2673584c07b7b58c5dac79811022493ce253ced"
+  }
+}

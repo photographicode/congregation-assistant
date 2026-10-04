@@ -68,6 +68,15 @@ async function run(profile) {
         assert.equal(await page.locator('#att-w1-mid-val').isVisible(), true);
         await page.evaluate(() => { window.__qaBackend.rejectWrites = true; });
         await page.locator('#att-save-btn').click();
+        if (profile.mobile) {
+            await page.waitForFunction(() => document.getElementById('toast').classList.contains('show'));
+            await page.waitForFunction(() => document.getElementById('toast').getBoundingClientRect().bottom <= document.getElementById('mobile-nav').getBoundingClientRect().top);
+            const placement = await page.evaluate(() => ({
+                toastBottom: document.getElementById('toast').getBoundingClientRect().bottom,
+                navigationTop: document.getElementById('mobile-nav').getBoundingClientRect().top
+            }));
+            assert(placement.toastBottom <= placement.navigationTop, 'Mobile notification is covered by bottom navigation');
+        }
         await page.waitForFunction(() => !document.getElementById('att-save-btn').disabled);
         assert.equal(await page.locator('#att-w1-mid-val').inputValue(), '127');
         assert.equal(await page.evaluate(() => window.db.attendance.length), 0);
