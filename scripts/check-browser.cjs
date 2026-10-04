@@ -295,6 +295,12 @@ async function run(profile) {
         assert.equal(await page.locator('#demoPublishNotice').isVisible(),true);
         page.once('dialog',dialog=>dialog.accept());await page.locator('#resetSchedulerDemo').click();
         assert.equal(await page.locator('#publicationState').innerText(),'Demo draft');
+        await page.evaluate(()=>window.ui.confirmLogout());
+        await Promise.all([page.waitForNavigation(),page.locator('#sys-prompt-confirm-btn').click()]);
+        await page.waitForFunction(()=>window.auth && !window.auth.check());
+        assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
+        assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);
+        assert.equal(await page.locator('#auth-screen').isVisible(),true);
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });
