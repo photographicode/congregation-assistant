@@ -166,6 +166,7 @@ async function run(profile) {
         await nav('oclm');
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
+        await page.locator('#personForm details summary').click();
         await page.locator('#roleChecks input[value="Chairman"]').check();
         await page.locator('#personForm button[type="submit"]').click();
         await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');});

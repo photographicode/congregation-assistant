@@ -270,3 +270,13 @@ body.mws-public-mode #ca-midweek-root .live-row { min-height: 56px; }
 #ca-midweek-root #openLiveLink[hidden] { display: none; }
 #ca-midweek-root #mws-tab-preview { border: 1px solid #475b6a; border-radius: 10px; background: #e8edf1; color: #172033; padding: 12px 18px; }
 #ca-midweek-root #mws-tab-preview.active { background: #334b60; color: #fff; }
+/* Readable controls throughout records, attendance and administration. */
+.main-content button, .ca-menu-item { min-height: 44px; }
+.main-content button[class*="text-[10px]"], .main-content button[class*="text-[11px]"] { font-size: 14px; }
+#ca-midweek-root :is(.field-label,.row-meta,.tag,.sheet-sub,.person-meta,.candidate-right) { font-size: 12px; line-height: 1.5; }
+#modal-install-app > div { max-height: calc(100dvh - 32px); overflow-y: auto; }
+#mobile-nav button > span:last-child { font-size: 11px; }
+@media(max-width:640px) {
+ .main-content :is(input,select,textarea), [role="dialog"] :is(input,select,textarea) { font-size: 16px; }
+ #ca-midweek-root :is(input,select,textarea) { font-size: 16px; }
+}
