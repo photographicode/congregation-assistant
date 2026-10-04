@@ -237,3 +237,36 @@ body.mws-public-mode #ca-midweek-root .live-row { min-height: 56px; }
     #ca-midweek-root .check-row { min-height: 44px; }
     #ca-midweek-root .sheet-foot { gap: 12px; }
 }
+/* Clear, touch-friendly scheduling and navigation. */
+#mobile-nav #m-btn-tab-dashboard { order: -1; }
+#ca-midweek-root .mws-subnav { gap: 12px; }
+#ca-midweek-root #mws-tab-people { margin-left: auto; order: 3; font-size: 12px; }
+#ca-midweek-root .btn, #ca-midweek-root .mws-nav-btn { min-height: 46px; font-size: 14px; }
+#ca-midweek-root .candidate-name { font-size: 16px; }
+#ca-midweek-root .candidate-meta, #ca-midweek-root .live-note { font-size: 12px; line-height: 1.6; }
+#ca-midweek-root .live-panel { margin: 24px auto 0; max-width: 850px; border: 2px solid #475b6a; padding: 20px; }
+#ca-midweek-root #publishWeekBtn { font-size: 16px; font-weight: 800; min-height: 52px; background: #334b60; color: white; }
+#ca-midweek-root #mwsToast, #toast { position: fixed; bottom: calc(92px + env(safe-area-inset-bottom)); z-index: 20000; pointer-events: none; max-width: calc(100vw - 32px); white-space: normal; line-height: 1.5; }
+#ca-midweek-root details summary { cursor: pointer; padding: 12px 0; font-size: 14px; }
+#s3-render-area, #s88-render-area { display: none !important; }
+#tab-superadmin { --premium-gold: #dfc28b; background: radial-gradient(ellipse at top right, rgba(194,157,95,.12), transparent 55%); border-radius: 24px; padding: 20px; }
+#tab-superadmin .glass-panel { background: linear-gradient(145deg,#192332,#0f1724); border: 1px solid rgba(223,194,139,.22); box-shadow: 0 14px 38px rgba(0,0,0,.2); border-radius: 20px; }
+#tab-superadmin h2, #tab-superadmin h3 { color: #f4e6c9 !important; }
+#tab-superadmin button, #tab-superadmin input, #tab-superadmin select { min-height: 44px; }
+#tab-superadmin table { line-height: 1.7; }
+@media(max-width:640px) {
+ #ca-midweek-root .mws-subnav { flex-wrap: wrap; }
+ #ca-midweek-root #mws-tab-people { flex-basis: 100%; margin-left: 0; text-align: left; }
+ #ca-midweek-root .live-panel-head { flex-direction: column; align-items: stretch; gap: 16px; }
+ #ca-midweek-root #publishWeekBtn { width: 100%; }
+ #tab-superadmin { padding: 8px; }
+}
+#ca-midweek-root .top-actions #todayBtn { display: inline-flex; }
+#ca-midweek-root .mws-nav-btn { white-space: normal; }
+#ca-midweek-root .mws-week-options summary { padding: 12px; font-size: 14px; cursor: pointer; }
+#ca-midweek-root .publish-feedback { font-size: 15px; margin: 16px 0; line-height: 1.6; }
+#ca-midweek-root .live-link-row { flex-wrap: wrap; }
+#ca-midweek-root .live-link-input { min-width: 0; flex-basis: 100%; font-size: 14px; }
+#ca-midweek-root #openLiveLink[hidden] { display: none; }
+#ca-midweek-root #mws-tab-preview { border: 1px solid #475b6a; border-radius: 10px; background: #e8edf1; color: #172033; padding: 12px 18px; }
+#ca-midweek-root #mws-tab-preview.active { background: #334b60; color: #fff; }

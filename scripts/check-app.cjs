@@ -33,19 +33,38 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('scheduler navigation, assignment controls, roster and sharing run without missing DOM targets', async () => {
         w.currentCongId = 'test'; w.initMidweekScheduler();
-        el.get('nextWeek').onclick(); el.get('prevWeek').onclick(); el.get('todayBtn').onclick(); el.get('previewBtn').onclick();
-        el.get('autoTop').onclick(); el.get('autoRemaining').onclick();
+        el.get('nextWeek').onclick(); el.get('prevWeek').onclick(); el.get('todayBtn').onclick();
+        el.get('autoRemaining').onclick();
         w.openAssign('BibleReading'); w.closeAssignModal();
         w.openPersonModal(); el.get('cancelPerson').onclick();
         h.setCloud({data:{token:'test-live-token'},error:null});await el.get('publishWeekBtn').onclick();assert(el.get('liveLinkInput').value.includes('?mode=oclm&token=test-live-token'));h.setCloud({error:null});
         w.clearAssignment('BibleReading'); assert.match(el.get('mwsToast').textContent, /cleared/);
         assert(h.localStorage.keys().some(k => k.startsWith('ca_midweek_test_')));
-        w.currentCongId = 'other'; w.initMidweekScheduler(); el.get('autoTop').onclick();
+        w.currentCongId = 'other'; w.initMidweekScheduler(); el.get('autoRemaining').onclick();
         assert(h.localStorage.keys().some(k => k.startsWith('ca_midweek_other_')));
     });
     await test('publishing failure preserves the previous stable link and publishes no false success',async()=>{
         h.setCloud({data:{token:'stable-test-token'},error:null});await el.get('publishWeekBtn').onclick();const before=el.get('liveLinkInput').value;
         h.setCloud({error:{message:'Publication denied'}});await el.get('publishWeekBtn').onclick();assert.equal(el.get('liveLinkInput').value,before);assert.equal(el.get('publishWeekBtn').disabled,false);assert.match(el.get('mwsToast').textContent,/denied/);h.setCloud({error:null});
+    });
+    await test('scheduler shows longest-waiting qualified people first and hides empty field-ministry parts publicly',()=>{
+        const fixture=createHarness(), fw=fixture.window, fe=fixture.elements;
+        fw.currentCongId='rotation';
+        fixture.localStorage.setItem('ca_midweek_rotation_jw_scheduler_personnel',JSON.stringify([
+            {id:'recent',name:'Aaron Recent',appointment:'Elder',roles:[]},
+            {id:'old',name:'Beth Older',appointment:'Elder',roles:[]},
+            {id:'never',name:'Zach Never',appointment:'Elder',roles:[]}
+        ]));
+        fixture.localStorage.setItem('ca_midweek_rotation_jw_scheduler_assignments',JSON.stringify({'2026-W38':{BibleReading:{personId:'old'}},'2026-W39':{BibleReading:{personId:'recent'}}}));
+        fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W40');fw.openAssign('BibleReading');
+        const names=fe.get('candidateList').innerHTML;
+        assert(names.indexOf('Zach Never')<names.indexOf('Beth Older'));
+        assert(names.indexOf('Beth Older')<names.indexOf('Aaron Recent'));
+        assert(names.includes('Same part:'));
+        fw.MidweekScheduler.showPublic({publishedWeeks:['2026-W40'],defaultWeek:'2026-W40',people:[{id:'old',name:'Beth Older'}],assignments:{'2026-W40':{Conversation:{personId:'old'}}}});
+        assert(fe.get('liveSections').innerHTML.includes('Beth Older'));
+        assert(!fe.get('liveSections').innerHTML.includes('Making Disciples'));
+        assert(!fe.get('liveSections').innerHTML.includes('Unassigned'));
     });
     await test('public URL builder discards admin queries and fragments',()=>{
         w.location.href='http://localhost/index.html?cong=private#old';const url=new URL(w.PublicLinks.tokenURL('oclm','token value'));assert.equal(url.searchParams.get('token'),'token value');assert.equal(url.searchParams.has('cong'),false);assert.equal(url.hash,'');w.location.href='http://localhost/index.html';
