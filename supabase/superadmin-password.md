@@ -1,13 +1,11 @@
-# SuperAdmin password sign-in
+# Owner sign-in through the main login
 
-The secure staging workspace supports Supabase email/password authentication for active approved owners. Google is optional for SuperAdmin. Congregation role accounts continue using their existing Google contract.
+Use the normal software login form with username `superadmin` and the owner account password. There is no separate public owner form and Google is not needed for this account.
 
-1. Open https://supabase.com/dashboard/project/ejosykrxjvwrhxfnputo/auth/users .
-2. Add an email/password user for photographicode@gmail.com, using a private password and an email-confirmed account. This email is already listed as an active owner in ca_superadmins. Do not put the password in source code or chat.
-3. Open https://photographicode.github.io/congregation-assistant/staging/?superadmin=1 .
-4. Expand SuperAdmin password sign-in and enter the owner email and password.
-5. Verify the command centre opens, sign out, then verify reloading stays signed out. Test an incorrect password and an unapproved account.
+The main login calls the server-only owner-password-session function. It verifies the password through Supabase Auth and requires active owner approval. Owner sessions use the new backend on the same software URL; legacy congregation records have not been migrated.
 
-This workspace uses the new backend. Existing legacy congregation records have not been migrated. The main app links here rather than creating a browser master-password bypass.
+For a fresh owner, the initial password digest is configured privately in ca_private.owner_bootstrap. Only the service-role function can verify it. The first successful login creates the confirmed owner through the Auth admin API and consumes the bootstrap digest. It never resets an existing owner's password. No password, digest, or service-role key is published in the software.
 
-The backend verifies an active owner entry and, for email-provider sessions, an actual confirmed auth.users account matching auth.uid(). Live transaction tests verified approved, disabled, and unconfirmed password owners and rolled back fixtures. Actual password sign-in requires the owner account setup above.
+Password activation is pending clarification of the trailing dots in the supplied credential. Configure the exact initial password only after that answer. Verify actual sign-in, denied credentials, reload, sign-out, and disabled owner behavior.
+
+Approved congregation identities use server-loaded roles. Main admin / Secretary has all congregation sections; field service has publishers/groups/reports; attendance has attendance; OCLM has only scheduling. Help, appearance and sign-out remain available. Multiple deliberately assigned roles combine. The new backend enforces role permissions and tenant isolation; the legacy backend still needs its authorization audit.

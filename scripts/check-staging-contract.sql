@@ -30,6 +30,11 @@ select ca_pilot_verification.assert((select count(*)=0 from public.publishers),'
 select set_config('ca_pilot.attendance_token',(public.create_public_link('a','attendance',null,null)->>'token'),true);
 reset role;
 set request.jwt.claims='{"email":"scheduler-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select ca_pilot_verification.assert((select count(*)=0 from public.reports),'OCLM cannot read reports');
+select ca_pilot_verification.assert((select count(*)=0 from public.meeting_attendance),'OCLM cannot read attendance');
+select ca_pilot_verification.assert((select count(*)=0 from public.publishers),'OCLM cannot read private publisher records');
+do $$ begin begin insert into public.reports(id,cong_id,pub_id,service_year,month) values('denied-oclm','a','pub-a',2026,8);raise exception 'OCLM wrote a report';exception when insufficient_privilege then null;end;end $$;
+
 select set_config('ca_pilot.schedule_token',(public.upsert_oclm_public_snapshot('a','{"kind":"midweek","v":2,"defaultWeek":"2026-W40","publishedWeeks":["2026-W40"],"assignments":{"2026-W40":{"Chairman":{"personId":"sample","customTitle":"First title","privateNote":"SECRET"}}},"people":[{"id":"sample","name":"Sample Person","phone":"SECRET"},{"id":"unused","name":"UNPUBLISHED"}]}')->>'token'),true);
 select ca_pilot_verification.assert(public.get_oclm_public_snapshot(current_setting('ca_pilot.schedule_token'))::text not like '%SECRET%' and public.get_oclm_public_snapshot(current_setting('ca_pilot.schedule_token'))::text not like '%UNPUBLISHED%','initial publication strips private fields and unassigned names');
 select set_config('ca_pilot.updated_token',(public.upsert_oclm_public_snapshot('a','{"kind":"midweek","v":2,"defaultWeek":"2026-W40","publishedWeeks":["2026-W40"],"assignments":{"2026-W40":{"Chairman":{"personId":"sample","customTitle":"Updated title"}}},"people":[{"id":"sample","name":"Sample Person"}]}')->>'token'),true);

@@ -36,6 +36,13 @@ async function check(target) {
   landing('https://photographicode.github.io/Congregation-Assistant_Public/'),
   landing(applicationURL+'public-site-preview/')
  ]);
+ const ownerURL=next.supabaseUrl+'/functions/v1/owner-password-session';
+ const ownerChecks=await Promise.all([
+  fetch(ownerURL,{method:'POST',headers:{apikey:next.supabaseAnonKey,'Content-Type':'application/json'},body:JSON.stringify({username:'invalid',password:'invalid-test-password'}),signal:AbortSignal.timeout(15000)}),
+  fetch(ownerURL,{method:'POST',headers:{apikey:next.supabaseAnonKey,'Content-Type':'application/json'},body:JSON.stringify({username:'superadmin',password:'invalid-test-password'}),signal:AbortSignal.timeout(15000)})
+ ]);
+ if(ownerChecks.some(r=>r.status!==401))throw new Error('Owner login endpoint did not reject invalid credentials.');
+ console.log('PASS live owner login rejects invalid username and password');
  const output={active:activeResult,newProject:newResult,websites:{originalLanding,previewLanding}};
  fs.mkdirSync('artifacts/cloud',{recursive:true});fs.writeFileSync('artifacts/cloud/readiness.json',JSON.stringify(output,null,2));
  console.log(JSON.stringify(output));
