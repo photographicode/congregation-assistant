@@ -90,6 +90,11 @@ async function run(profile) {
             await page.waitForFunction(id => !document.getElementById(id).disabled, id);
         }
         await nav('oclm');
+        assert.equal(await page.locator('#ca-midweek-root h1').count(),1,'Scheduler must have one page heading');
+        assert.equal(await page.locator('#autoTop,#previewBtn').count(),0,'Duplicate scheduler actions returned');
+        assert.equal(await page.locator('.mws-week-browser').getAttribute('open'),null,'Nearby weeks should be optional');
+        await page.locator('#mws-tab-schedule').focus();await page.keyboard.press('ArrowRight');
+        assert.equal(await page.locator('#previewView').isVisible(),true,'Scheduler tabs must support the keyboard');
         assert.equal(await page.locator('#previewBtn, #mws-tab-messages, #messagesView').count(),0,'Duplicate preview and Messages controls must be removed');
         await page.locator('#mws-tab-preview').click();
         await page.locator('#publishWeekBtn').scrollIntoViewIfNeeded();
@@ -102,12 +107,26 @@ async function run(profile) {
             await page.locator(`#ca-midweek-root [data-view="${view}"]`).click();
             assert.equal(await page.locator(`#${view}View`).isVisible(), true);
         }
+        await page.evaluate(()=>{
+            const original=Storage.prototype.setItem;
+            window.__restoreScheduleStorage=()=>{Storage.prototype.setItem=original;};
+            Storage.prototype.setItem=function(key,value){if(key.endsWith('_jw_scheduler_assignments'))throw new Error('Acceptance test: device storage full');return original.call(this,key,value);};
+            window.setPartTitle('Chairman','Unsaved browser title');
+        });
+        assert.equal(await page.locator('#schedulerSaveError').isVisible(),true,'Storage failure must remain visible');
+        assert.equal(await page.locator('.row-title-input').first().inputValue(),'Unsaved browser title');
+        await page.evaluate(()=>window.__restoreScheduleStorage());await page.locator('#retrySchedulerSave').click();
+        assert.equal(await page.locator('#schedulerSaveError').isVisible(),false);
+        await page.locator('.mws-week-browser summary').click();
+        assert.equal(await page.locator('.week-chip').count(),3,'The week browser repeats the selected week');
+        await page.locator('.mws-week-browser summary').click();
+        if(!profile.mobile)await page.screenshot({path:path.join(output,`${profile.name}-integrated-scheduler.png`),fullPage:false});
         if(profile.mobile) {
             await page.waitForFunction(() => !document.getElementById('toast').classList.contains('show'));
             assert.equal(await page.locator('#autoRemaining').evaluate(el=>getComputedStyle(el).fontSize),'14px','Scheduler small actions must remain readable');
             for(const width of [320,375,390,430]) {
                 await page.setViewportSize({width,height:profile.viewport.height});
-                for(const theme of ['default','scheduler','dark']) {
+                for(const theme of ['default','blue','green','crimson','scheduler','light','dark']) {
                     await page.evaluate(theme=>{window.ui.applyTheme(theme);window.scrollTo(0,0);},theme);
                     await page.waitForTimeout(150);
                     const layout=await page.evaluate(()=>{
@@ -119,7 +138,8 @@ async function run(profile) {
                     assert(layout.actions.top>=layout.week.bottom,'Scheduler toolbar overlaps week controls');
                     assert(layout.contentWidth<=layout.rootWidth+1,'Scheduler overflows phone width '+width);
                     assert(layout.stripContent<=layout.stripWidth+1,'Week cards require sideways scrolling');
-                    assert.equal(layout.inputBackground,'rgb(255, 255, 255)','Global theme darkened scheduler inputs');
+                    const surfaces={default:'rgb(16, 76, 69)',blue:'rgb(27, 40, 71)',green:'rgb(27, 74, 54)',crimson:'rgb(71, 35, 45)',scheduler:'rgb(248, 250, 252)',light:'rgb(248, 250, 252)',dark:'rgb(28, 44, 66)'};
+                    assert.equal(layout.inputBackground,surfaces[theme],'Scheduler input does not follow the selected CA theme');
                     assert(/^rgb\(/.test(layout.headerBackground),'Mobile header must be opaque');
                     await page.screenshot({path:path.join(output,`${profile.name}-scheduler-${width}-${theme}.png`)});
                 }
@@ -166,12 +186,14 @@ async function run(profile) {
         await nav('oclm');
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
-        await page.locator('#personForm details summary').click();
+        await page.locator('details:has(#roleChecks) summary').click();
         await page.locator('#roleChecks input[value="Chairman"]').check();
         await page.locator('#personForm button[type="submit"]').click();
         await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
+        assert.equal(await page.locator('#publicationState').innerText(),'Published');
+        assert.equal(await page.locator('#openLiveSchedule').isVisible(),true);
         const sharedURL=await page.locator('#liveLinkInput').inputValue();assert(!sharedURL.includes('#live='),'New public link is a frozen snapshot');
         // Route-backed fixtures require requests to stay outside a service worker.
         const publicContext=await browser.newContext({viewport:profile.viewport,isMobile:profile.mobile,hasTouch:profile.mobile,serviceWorkers:'block'});
@@ -189,15 +211,19 @@ async function run(profile) {
         assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
         assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);
         await page.evaluate(()=>window.setPartTitle('Chairman','Updated published title'));
+        assert.equal(await page.locator('#publicationState').innerText(),'Unpublished changes');
         await publicPage.evaluate(()=>window.dispatchEvent(new Event('focus')));
         assert((await publicPage.locator('#liveSections').innerText()).includes('First published title'),'Draft edit became public before publishing');
         await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
+        assert.equal(await page.locator('#publicationState').innerText(),'Published');
         assert.equal(await page.locator('#liveLinkInput').inputValue(),sharedURL,'Publishing changed the shared URL');
         const updated=await page.evaluate(()=>window.__qaBackend.publications);
         await publicPage.evaluate(value=>{window.__qaPublicationsSeed=value;window.dispatchEvent(new Event('focus'));},updated);
         await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('Updated published title'));
         await publicPage.screenshot({path:path.join(output,`${profile.name}-public-live-updated.png`)});
         await page.evaluate(()=>{window.__qaBackend.rejectWrites=true;window.setPartTitle('Chairman','Rejected update');});await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
+        assert.equal(await page.locator('#schedulerPublishError').isVisible(),true,'Publishing errors must stay visible');
+        assert.equal(await page.locator('#publicationState').innerText(),'Unpublished changes');
         assert.equal(await page.locator('#liveLinkInput').inputValue(),sharedURL);
         assert.equal(await page.evaluate(()=>window.__qaBackend.publications['qa-live-token'].snapshot.assignments[window.MidweekScheduler.getPayload().defaultWeek].Chairman.customTitle),'Updated published title','Rejected publication overwrote cloud data');
         await page.evaluate(()=>{window.__qaBackend.rejectWrites=false;});

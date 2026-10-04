@@ -33,7 +33,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('scheduler navigation, assignment controls, roster and sharing run without missing DOM targets', async () => {
         w.currentCongId = 'test'; w.initMidweekScheduler();
-        el.get('nextWeek').onclick(); el.get('prevWeek').onclick(); el.get('todayBtn').onclick();
+        el.get('nextWeek').onclick(); el.get('prevWeek').onclick(); el.get('todayBtn').onclick(); el.get('reviewScheduleBtn').onclick();
         el.get('autoRemaining').onclick();
         w.openAssign('BibleReading'); w.closeAssignModal();
         w.openPersonModal(); el.get('cancelPerson').onclick();
@@ -68,6 +68,51 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('public URL builder discards admin queries and fragments',()=>{
         w.location.href='http://localhost/index.html?cong=private#old';const url=new URL(w.PublicLinks.tokenURL('oclm','token value'));assert.equal(url.searchParams.get('token'),'token value');assert.equal(url.searchParams.has('cong'),false);assert.equal(url.hash,'');w.location.href='http://localhost/index.html';
+    });
+    await test('scheduler device-save failure keeps the draft and recovers through Retry save',()=>{
+        const qa=createHarness(); qa.window.currentCongId='save-recovery';qa.window.initMidweekScheduler();
+        const original=qa.localStorage.setItem;
+        qa.localStorage.setItem=(key,value)=>{if(key.endsWith('_jw_scheduler_assignments'))throw new Error('Storage full');original(key,value);};
+        qa.window.setPartTitle('Chairman','Keep this unsaved title');
+        assert.equal(qa.elements.get('schedulerSaveError').hidden,false);
+        assert.match(qa.elements.get('saveStateLabel').textContent,/Not saved/);
+        const week=qa.window.MidweekScheduler.getPayload().defaultWeek;
+        assert.equal(qa.window.MidweekScheduler.getPayload([week]).assignments[week].Chairman.customTitle,'Keep this unsaved title');
+        qa.localStorage.setItem=original;qa.elements.get('retrySchedulerSave').onclick();
+        assert.equal(qa.elements.get('schedulerSaveError').hidden,true);
+        assert.equal(JSON.parse(qa.localStorage.getItem('ca_midweek_save-recovery_jw_scheduler_assignments'))[week].Chairman.customTitle,'Keep this unsaved title');
+    });
+    await test('clearing an assignment preserves its title and Undo restores the person',()=>{
+        const qa=createHarness();qa.window.currentCongId='undo';
+        qa.localStorage.setItem('ca_midweek_undo_jw_scheduler_personnel',JSON.stringify([{id:'qa-person',name:'Sample Person',roles:['Chairman'],appointment:'Other'}]));
+        qa.window.initMidweekScheduler();qa.window.setPartTitle('Chairman','Custom chairman title');qa.window.setAssignment('Chairman','qa-person');
+        const week=qa.window.MidweekScheduler.getPayload().defaultWeek;
+        qa.window.clearAssignment('Chairman');
+        let part=qa.window.MidweekScheduler.getPayload([week]).assignments[week].Chairman;
+        assert.equal(part.customTitle,'Custom chairman title');assert.equal(part.personId,undefined);
+        qa.elements.get('undoSchedule').onclick();part=qa.window.MidweekScheduler.getPayload([week]).assignments[week].Chairman;
+        assert.equal(part.personId,'qa-person');assert.equal(part.customTitle,'Custom chairman title');
+        qa.elements.get('clearWeek').onclick();assert.deepEqual(qa.window.MidweekScheduler.getPayload([week]).assignments[week],{});
+        qa.elements.get('undoSchedule').onclick();assert.equal(qa.window.MidweekScheduler.getPayload([week]).assignments[week].Chairman.personId,'qa-person');
+        qa.window.currentCongId='different-tenant';qa.window.initMidweekScheduler();assert.equal(qa.elements.get('undoSchedule').disabled,true);
+    });
+    await test('scheduler distinguishes published data from edits and preserves the status after a rejected update',async()=>{
+        const qa=createHarness();qa.window.currentCongId='publish-status';qa.window.initMidweekScheduler();
+        qa.window.setPartTitle('Chairman','Published title');qa.setCloud({data:{token:'status-token'},error:null});
+        await qa.elements.get('publishWeekBtn').onclick();assert.equal(qa.elements.get('publicationState').textContent,'Published');
+        qa.window.setPartTitle('Chairman','Device draft title');assert.equal(qa.elements.get('publicationState').textContent,'Unpublished changes');
+        qa.setCloud({error:{message:'Denied update'}});await qa.elements.get('publishWeekBtn').onclick();
+        assert.equal(qa.elements.get('publicationState').textContent,'Unpublished changes');
+        assert.equal(qa.elements.get('schedulerPublishError').hidden,false);assert.match(qa.elements.get('schedulerPublishError').textContent,/previous live schedule is unchanged/);
+    });
+    await test('editing during publication remains an unpublished draft',async()=>{
+        const qa=createHarness();qa.window.currentCongId='publish-race';qa.window.initMidweekScheduler();
+        qa.window.setPartTitle('Chairman','Version sent to the server');qa.setCloud({data:{token:'race-token'},error:null});
+        const publication=qa.elements.get('publishWeekBtn').onclick();
+        qa.window.setPartTitle('Chairman','New edit while publishing');await publication;
+        assert.equal(qa.elements.get('publicationState').textContent,'Unpublished changes');
+        const week=qa.window.MidweekScheduler.getPayload().defaultWeek;
+        assert.equal(qa.window.MidweekScheduler.getPayload([week]).assignments[week].Chairman.customTitle,'New edit while publishing');
     });
     await test('Superadmin cards escape values, hide passwords, and classify expired trials',()=>{
         w.db.congregations=[{id:'quoted-id',name:'Example <script>alert(1)</script>',email:'owner@example.com',status:'trial',trial_days:30,created_at:'2000-01-01',admin_password:'never-display-this'}];el.get('saas-search').value='';el.get('saas-filter').value='EXPIRED';w.ui.renderSuperAdmin();assert.equal(w.ui.getSuperAdminMatches().length,1);assert.match(el.get('saas-cong-grid').innerHTML,/&lt;script&gt;/);assert(!el.get('saas-cong-grid').innerHTML.includes('never-display-this'));w.db.congregations=[];el.get('saas-filter').value='ALL';

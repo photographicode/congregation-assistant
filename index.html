@@ -1358,75 +1358,80 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <!-- MEETINGS / OCLM TAB -->
         <div id="tab-oclm" class="tab-content space-y-4">
 <div id="ca-midweek-root" class="mws-root">
+  <div class="mws-heading"><div><div class="eyebrow">Meeting preparation</div><h1>Midweek meeting</h1><p>Prepare assignments. Review the week. Share one live schedule.</p></div><span class="mws-draft-badge" id="publicationState">Device draft</span></div>
+  <div class="mws-notice mws-save-error" id="schedulerSaveError" role="alert" hidden><div><strong>Your changes are not saved.</strong><p>They are still on this screen. Retry saving before leaving or reloading.</p></div><button class="btn" id="retrySchedulerSave" type="button">Retry save</button></div>
   <div class="mws-topbar"><div class="topbar-inner">
 <div class="mobile-brand"><div class="brand-mark">CA</div><span>Midweek Scheduler</span></div>
 <div class="week-nav">
 <button aria-label="Previous week" class="week-arrow" id="prevWeek">‹</button>
-<div class="week-main"><div class="week-caption">Selected week</div><div class="week-title" id="weekTitle">—</div></div>
+<div class="week-main"><div class="week-caption">Meeting week</div><div class="week-title" id="weekTitle">—</div></div>
 <button aria-label="Next week" class="week-arrow" id="nextWeek">›</button>
 </div>
 <div class="top-actions">
 <span id="saveStateLabel" class="meta" role="status">Saved on this device</span>
-<button class="btn" id="todayBtn">Today</button>
+<button class="btn" id="todayBtn">This week</button>
 </div>
 </div></div>
   
 <div class="mws-subnav" role="tablist" aria-label="Midweek scheduler sections">
   <button type="button" class="mws-nav-btn active" data-view="schedule" id="mws-tab-schedule" role="tab" aria-controls="scheduleView"><span>Schedule</span></button>
-  <button type="button" class="mws-nav-btn" data-view="people" id="mws-tab-people" role="tab" aria-controls="peopleView"><span>⚙ People &amp; qualifications</span></button>
   <button type="button" class="mws-nav-btn" data-view="preview" id="mws-tab-preview" role="tab" aria-controls="previewView"><span>Review &amp; publish</span></button>
-
+  <button type="button" class="mws-nav-btn" data-view="people" id="mws-tab-people" role="tab" aria-controls="peopleView"><span>People</span></button>
 </div>
 
   <div class="content">
 <!-- Schedule -->
-<section class="mws-view mws-active" id="scheduleView">
+<section class="mws-view mws-active" id="scheduleView" role="tabpanel" aria-labelledby="mws-tab-schedule">
 <div class="schedule-head">
 <div>
-<div class="eyebrow">Christian Life and Ministry Meeting</div>
-<h1 id="scheduleHeading">Meeting schedule</h1>
-<p>Assign one part at a time. Tap “Choose a person” beside a part. When finished, open Review &amp; publish above.</p>
+<h2 id="scheduleHeading">Assignments</h2>
+<p>Choose a person for each part. Select a title to edit it.</p>
 </div>
 <div class="status-box">
 <div><div class="status-number" id="statusNumber">0/0</div><div class="status-copy">parts assigned</div></div>
 <div><div class="status-copy" id="statusText">Ready to schedule</div><div class="status-line"><div class="status-fill" id="statusFill"></div></div></div>
 </div>
 </div>
-<div class="context-card">
+<div class="context-card" id="workbookContext">
 <div class="context-left">
 <div class="scripture-box" id="readingBadge">—</div>
 <div><div class="context-title" id="meetingTheme">Bible reading</div><div class="context-sub" id="meetingSub">Meeting workbook</div></div>
 </div>
 <a class="context-link" href="https://www.jw.org/en/library/jw-meeting-workbook/" id="workbookLink" rel="noopener" target="_blank">Open meeting workbook ↗</a>
 </div>
+<div class="mws-notice" id="workbookNotice" hidden><strong>Check this week’s workbook.</strong><p>Workbook details are not loaded for this week. Check the official workbook and update the part titles before publishing.</p><a href="https://www.jw.org/en/library/jw-meeting-workbook/" target="_blank" rel="noopener">Open official workbook ↗</a></div>
 <div class="toolbar">
-<div class="toolbar-left"><button class="btn small gold" id="autoRemaining">Auto-assign remaining</button><details class="mws-week-options"><summary>More options</summary><button class="btn small" id="clearWeek">Clear all assignments this week</button></details></div>
-<div class="toolbar-note">Assignments save automatically on this device.</div>
+<div class="toolbar-left"><button class="btn small primary" id="autoRemaining">Suggest remaining assignments</button><button class="btn small" id="undoSchedule" disabled>Undo</button></div>
+<details class="mws-week-options"><summary>More options</summary><button class="btn small mws-clear-week" id="clearWeek">Clear week</button></details>
 </div>
-<div class="week-strip" id="weekStrip"></div>
+<details class="mws-week-browser"><summary>Browse nearby weeks</summary><div class="week-strip" id="weekStrip"></div></details>
+<div class="mws-empty-state" id="schedulerEmpty" hidden><strong>Start with your meeting roster.</strong><p>Add people and their qualifications. Then choose assignments or let the scheduler suggest them.</p><button class="btn primary" id="setupSchedulerPeople">Add people</button></div>
 <div class="meeting" id="meetingSections"></div>
+<div class="mws-next-step"><span>Your draft stays on this device until you publish.</span><button class="btn primary" id="reviewScheduleBtn">Review this week →</button></div>
 </section>
 <!-- People -->
-<section class="mws-view" id="peopleView">
+<section class="mws-view" id="peopleView" role="tabpanel" aria-labelledby="mws-tab-people">
 <div class="page-head">
-<div><div class="eyebrow">Roster</div><h2>People</h2><p>Keep qualifications simple. The scheduler uses these to filter who can receive each part.</p></div>
+<div><div class="eyebrow">Meeting roster</div><h2>People &amp; qualifications</h2><p>Add the people who take meeting parts. Qualifications guide the assignment suggestions; review every suggestion.</p></div>
 <div class="people-tools"><input autocomplete="off" class="search" id="personSearch" placeholder="Search people…" type="search"/><button class="btn primary" id="addPersonBtn">Add person</button></div>
 </div>
 <div class="people-grid" id="peopleGrid"></div>
 </section>
 <!-- Preview -->
-<section class="mws-view" id="previewView">
+<section class="mws-view" id="previewView" role="tabpanel" aria-labelledby="mws-tab-preview">
 <div class="page-head">
-<div><div class="eyebrow">Publisher-facing layout</div><h2>Review &amp; publish</h2><p>Check the names below. At the end, publish to update the live schedule.</p></div>
+<div><div class="eyebrow">Ready to share?</div><h2>Review &amp; publish</h2><p>Check the names and part titles below. Only publishing changes the live schedule.</p></div>
 </div>
+<div class="mws-review-checks" id="scheduleReviewChecks" role="status"></div>
+<div class="mws-notice mws-save-error" id="schedulerPublishError" role="alert" hidden></div>
 <div class="preview-wrap"><div class="paper" id="paper"></div></div>
 <div class="live-panel">
-<div class="live-panel-head"><div><div class="live-kicker">SHARED SCHEDULE</div><h3>Publish schedule</h3><p>Publish this week to include it in your shared schedule.</p></div><button class="btn gold" id="publishWeekBtn">Publish this week</button></div>
-<p class="publish-feedback" id="publishFeedback" role="status" aria-live="polite">Review the names above, then publish below.</p><div class="live-link-row"><input class="live-link-input" id="liveLinkInput" placeholder="Publish a week to create the live link" readonly=""/><button class="btn" id="copyLiveLinkBtn">Copy live link</button><a class="btn" id="openLiveLink" target="_blank" rel="noopener" hidden>Open live schedule ↗</a></div>
+<div class="live-panel-head"><div><div class="live-kicker">LIVE SCHEDULE</div><h3 id="publicationHeading">This week is a draft</h3><p id="publicationDescription">Publish when you are ready for others to see it.</p></div><button class="btn primary" id="publishWeekBtn">Publish this week</button></div>
+<label class="field-label mws-link-label" for="liveLinkInput">Shared schedule link</label>
+<div class="live-link-row"><input class="live-link-input" id="liveLinkInput" placeholder="Your link appears after publishing" readonly=""/><button class="btn" id="copyLiveLinkBtn">Copy link</button><a class="btn" id="openLiveSchedule" target="_blank" rel="noopener" hidden>Open live ↗</a></div>
 <div class="published-weeks" id="publishedWeeks"></div>
-<div class="live-note">Anyone with the link can view the published weeks and search by name. After making changes, press Update live schedule. The same link shows the latest published version. Drafts save on this device.</div>
+<div class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Draft editing is limited to this device.</div>
 </div>
-
 </section>
 
 </div>
@@ -2437,11 +2442,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   const initials = (name='') => name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0].toUpperCase()).join('') || '?';
 
   let loadedCongregation = null;
+  let storageFailed = false;
+  const undoStack = [];
   const storageKey = key => `ca_midweek_${window.currentCongId || 'local'}_${key}`;
   function storageGet(key, fallback) {
     try { const value=localStorage.getItem(storageKey(key));return value===null?fallback:JSON.parse(value); } catch { return fallback; }
   }
   function load(){
+    undoStack.length=0; storageFailed=false;
     const congregation=window.currentCongId || 'local';
     if(window.currentCongId && !localStorage.getItem('ca_midweek_legacy_owner')){
       const legacyKeys=['jw_scheduler_personnel','jw_scheduler_assignments','jw_scheduler_published_weeks','jw_scheduler_template'];
@@ -2467,11 +2475,19 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       localStorage.setItem(storageKey('jw_scheduler_published_weeks'),JSON.stringify(state.publishedWeeks));
       localStorage.setItem(storageKey('jw_scheduler_template'),state.template);
       localStorage.setItem(storageKey('jw_scheduler_publication'),JSON.stringify(state.publication));
+      storageFailed=false;
+      $('schedulerSaveError').hidden=true;
       if($('saveStateLabel'))$('saveStateLabel').textContent='Saved on this device';
-    }catch(error){toast('Schedule could not be saved on this device. Check browser storage.');throw error;}
+      return true;
+    }catch(error){
+      storageFailed=true; $('schedulerSaveError').hidden=false;
+      $('saveStateLabel').textContent='Not saved — retry below';
+      toast('Changes are still here, but could not be saved. Retry before leaving.');
+      return false;
+    }
   }
   function toast(msg){
-    const t=$('mwsToast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),6500);
+    const t=$('mwsToast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),6000);
   }
 
   function mondayOf(weekStr){
@@ -2505,24 +2521,64 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function personById(id){ return state.personnel.find(p=>p.id===id); }
   function currentAssignmentsCount(){ return ALL_FIELDS.filter(id=>recordFor(id).personId && personById(recordFor(id).personId)).length; }
 
+  function visibleFields(){return SECTIONS.flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));}
+  function weekReview(){
+    const fields=visibleFields(), missing=fields.filter(f=>!personById(recordFor(f.id).personId));
+    const assistants=fields.filter(f=>f.assistant && personById(recordFor(f.id).personId) && !personById(recordFor(f.assistant).personId));
+    const assigned=ALL_FIELDS.map(id=>recordFor(id).personId).filter(id=>id && personById(id));
+    const repeated=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
+    return {fields,missing,assistants,repeated};
+  }
+  function draftSignature(week){
+    const assignments=state.assignments[week]||{};
+    return JSON.stringify({assignments,people:state.personnel.filter(p=>Object.values(assignments).some(a=>a.personId===p.id)).map(p=>({id:p.id,name:p.name}))});
+  }
+  function renderWorkflowStatus(){
+    const review=weekReview(); const total=review.fields.length, assigned=total-review.missing.length;
+    $('statusNumber').textContent=`${assigned}/${total}`;
+    $('statusText').textContent=review.missing.length?`${review.missing.length} part${review.missing.length===1?'':'s'} to assign`:'All main parts assigned';
+    $('statusFill').style.width=`${total?Math.round(assigned/total*100):0}%`;
+    $('workbookNotice').hidden=!!PROGRAM_LIBRARY[state.currentWeek];
+    $('workbookContext').hidden=!PROGRAM_LIBRARY[state.currentWeek];
+    $('schedulerEmpty').hidden=state.personnel.length>0;
+    $('undoSchedule').disabled=undoStack.length===0;
+    $('schedulerSaveError').hidden=!storageFailed;
+    $('saveStateLabel').textContent=storageFailed?'Not saved — retry below':'Saved on this device';
+    const published=state.publishedWeeks.includes(state.currentWeek);
+    const signature=state.publication?.draftSignatures?.[state.currentWeek];
+    const changed=published && signature!==draftSignature(state.currentWeek);
+    $('publicationState').textContent=published?(changed?'Unpublished changes':'Published'):'Device draft';
+    $('publicationHeading').textContent=published?(changed?'Your draft has unpublished changes':'This week is published'):'This week is a draft';
+    $('publicationDescription').textContent=published?(changed?'Publish again to update the same live link.':'The live link shows this version. Editing creates a new device draft.'):'Publish when you are ready for others to see it.';
+    const items=[];
+    items.push([review.missing.length>0,review.missing.length?`${review.missing.length} main part${review.missing.length===1?' is':'s are'} unassigned. An incomplete schedule can still be published.`:'All main parts have a person assigned.']);
+    if(review.assistants.length)items.push([true,`${review.assistants.length} student part${review.assistants.length===1?' needs':'s need'} an assistant.`]);
+    if(review.repeated.length)items.push([true,`Check repeated assignments: ${review.repeated.map(id=>personById(id).name).join(', ')}.`]);
+    if(!PROGRAM_LIBRARY[state.currentWeek])items.push([true,'Workbook details are not loaded. Verify every part title against the official workbook.']);
+    $('scheduleReviewChecks').innerHTML=items.map(([warning,text])=>`<div class="mws-review-item ${warning?'warning':''}">${esc(text)}</div>`).join('');
+  }
+  function rememberEdit(){undoStack.push({week:state.currentWeek,data:JSON.parse(JSON.stringify(getWeekData()))});if(undoStack.length>20)undoStack.shift();}
+  function undoSchedule(){const previous=undoStack.pop();if(!previous)return;state.assignments[previous.week]=previous.data;setWeek(previous.week);if(save())toast('Last schedule change undone.');renderAll();}
+
   function renderAll(){
     $('weekTitle').textContent = state.program.range || weekLabel(state.currentWeek);
-    $('scheduleHeading').textContent = `Week of ${state.program.range || weekLabel(state.currentWeek)}`;
+    $('scheduleHeading').textContent = 'Assignments';
     $('readingBadge').textContent = state.program.reading || 'CLM';
     $('meetingTheme').textContent = state.program.theme || 'Life and Ministry Meeting';
-    $('meetingSub').textContent = state.program.reading ? 'Our Christian Life and Ministry — Meeting Workbook' : 'Select a week to schedule';
+    $('meetingSub').textContent = state.program.reading ? 'Our Christian Life and Ministry — Meeting Workbook' : 'Use the official workbook to check part titles';
     renderWeekStrip();
     if(state.activeView==='schedule')renderSchedule();
     if(state.activeView==='people')renderPeople();
     if(state.activeView==='preview'){renderPreview();renderLivePanel();}
-    root.querySelectorAll('.mws-nav-btn').forEach(b=>{const active=b.dataset.view===state.activeView;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
+    renderWorkflowStatus();
+    root.querySelectorAll('.mws-nav-btn').forEach(b=>{const active=b.dataset.view===state.activeView;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
     root.querySelectorAll('.mws-view').forEach(v=>v.classList.toggle('mws-active',v.id===state.activeView+'View'));
   }
   function renderWeekStrip(){
-    $('weekStrip').innerHTML=state.weekKeys.map(w=>{
+    $('weekStrip').innerHTML=state.weekKeys.filter(w=>w!==state.currentWeek).map(w=>{
       const data=state.assignments[w]||{}; const count=ALL_FIELDS.filter(id=>data[id]?.personId).length;
       const current=w===state.currentWeek; const info=PROGRAM_LIBRARY[w];
-      return `<button class="week-chip ${current?'current':''}" onclick="window.setSchedulerWeek('${w}')"><small>${current?'Selected week':(w===state.weekKeys[0]?'Previous':'Upcoming')}</small><strong>${esc((info?.range)||weekLabel(w))}${count?` <span style="color:#6b747c;font-weight:700">· ${count}</span>`:''}${info?.event?'<span class="chip-dot"></span>':''}</strong></button>`;
+      return `<button class="week-chip" onclick="window.setSchedulerWeek('${w}')"><small>${w===state.weekKeys[0]?'Previous week':'Upcoming week'}</small><strong>${esc((info?.range)||weekLabel(w))}</strong><span class="meta">${count?`${count} assignments`:'No assignments yet'}</span></button>`;
     }).join('');
   }
 
@@ -2567,7 +2623,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         const rec=recordFor(f.id);
         return !f.optional || program || rec.personId;
       });
-      const assigned=visibleFields.filter(f=>recordFor(f.id).personId).length;
+      const assigned=visibleFields.filter(f=>personById(recordFor(f.id).personId)).length;
       return `<article class="section ${section.key}" data-section="${section.key}">
         <div class="section-head"><div class="section-title-wrap"><span class="section-marker"></span><div><div class="section-name">${esc(section.title)}</div><div class="section-sub">${esc(section.sub)}</div></div></div><div class="section-count">${assigned}/${visibleFields.length} assigned</div></div>
         <div class="rows">${visibleFields.map((f,i)=>renderAssignmentRow(f,section.key,i+1)).join('')}</div>
@@ -2592,7 +2648,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <button class="assignee ${person?'':'unassigned'}" onclick="window.openAssign('${field.id}')" aria-label="Assign ${esc(field.label)}">
           <span class="assignee-copy"><span class="assignee-label">${person?'Assigned to':'Tap to assign'}</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
         </button>
-        ${person?`<button class="clear-btn" onclick="window.clearAssignment('${field.id}')" aria-label="Remove this assignment" title="Remove this assignment">×</button>`:''}
+        ${person?`<button class="clear-btn" onclick="window.clearAssignment('${field.id}')" title="Clear assignment" aria-label="Clear ${esc(field.label)} assignment">×</button>`:''}
       </div>
     </div>${field.assistant && person ? renderAssistantRow(field.assistant,sectionKey) : ''}`;
   }
@@ -2631,22 +2687,22 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   function ensureWeekData(){ if(!state.assignments[state.currentWeek])state.assignments[state.currentWeek]={}; return state.assignments[state.currentWeek]; }
   function setAssignment(fieldId,personId){
-    const data=ensureWeekData(); if(!personId){delete data[fieldId];} else {data[fieldId]={personId,customTitle:data[fieldId]?.customTitle||''};}
-    save(); renderAll();
+    rememberEdit(); const data=ensureWeekData(); if(!personId){data[fieldId]={customTitle:data[fieldId]?.customTitle||''};} else {data[fieldId]={personId,customTitle:data[fieldId]?.customTitle||''};}
+    const saved=save(); renderAll(); return saved;
   }
-  function setPartTitle(fieldId,title){ const data=ensureWeekData(); data[fieldId]={...(data[fieldId]||{}),customTitle:String(title||'').trim()}; save(); renderAll(); }
-  function clearAssignment(fieldId){setAssignment(fieldId,''); toast('Assignment cleared');}
+  function setPartTitle(fieldId,title){ rememberEdit(); const data=ensureWeekData(); data[fieldId]={...(data[fieldId]||{}),customTitle:String(title||'').trim()}; save(); renderAll(); }
+  function clearAssignment(fieldId){if(setAssignment(fieldId,''))toast('Assignment cleared. Part title kept.');}
   function autoAssign(){
-    const data=ensureWeekData(); let count=0;
+    rememberEdit(); const data=ensureWeekData(); let count=0;
     for(const section of SECTIONS){ for(const field of section.fields){
       if(field.optional && !state.program.parts?.[field.id] && !data[field.id]?.personId) continue;
       if(data[field.id]?.personId) continue;
       const p=suggestPerson(ROLE_MAP[field.id]||field.role,field.id); if(p){data[field.id]={personId:p.id,customTitle:data[field.id]?.customTitle||''};count++;}
       if(field.assistant && data[field.id]?.personId && !data[field.assistant]?.personId){ const a=suggestPerson('Assistant',field.assistant); if(a)data[field.assistant]={personId:a.id,customTitle:''}; }
     }}
-    save(); renderAll(); toast(count?`Assigned ${count} remaining part${count===1?'':'s'}.`:'No unassigned qualified parts found.');
+    const saved=save(); renderAll(); if(saved)toast(count?`Suggested ${count} remaining assignment${count===1?'':'s'}. Review before publishing.`:'No available qualified people for the remaining parts. Check your roster.');
   }
-  function clearWeek(){ if(!confirm('Clear all assignments for this week?'))return; delete state.assignments[state.currentWeek]; save(); renderAll(); toast('Week cleared'); }
+  function clearWeek(){ if(!confirm('Clear the device draft for this week? The published schedule stays unchanged until you publish again. You can undo this change.'))return; rememberEdit(); delete state.assignments[state.currentWeek]; const saved=save(); renderAll(); if(saved)toast('Device draft cleared. Use Undo to restore it.'); }
 
   function renderPeople(){
     const q=($('personSearch')?.value||'').toLowerCase().trim();
@@ -2663,7 +2719,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     e.preventDefault(); const id=$('editPersonId').value.trim(); const name=$('personName').value.trim(); if(!name)return;
     const phone=$('personPhone').value.trim(); const gender=$('personGender').value; const appointment=$('personAppointment').value; const roles=[...$('roleChecks').querySelectorAll('input:checked')].map(x=>x.value);
     if(id){const p=personById(id); if(p)Object.assign(p,{name,phone,gender,appointment,roles});} else {state.personnel.push({id:'p_'+Date.now(),name,phone,gender,appointment,roles});}
-    save(); closeModal('personModal'); renderAll(); toast(id?'Person updated':'Person added');
+    const saved=save(); if(saved)closeModal('personModal'); renderAll(); if(saved)toast(id?'Person updated':'Person added');
   }
   function editPerson(id){ const p=personById(id); if(p)openPersonModal(p); }
   function deletePerson(id){ const p=personById(id); if(!p)return; if(confirm(`Remove ${p.name} from the roster?`)){state.personnel=state.personnel.filter(x=>x.id!==id); Object.values(state.assignments).forEach(w=>Object.keys(w||{}).forEach(k=>{if(w[k]?.personId===id)delete w[k];})); save(); renderAll(); toast('Person removed');} }
@@ -2681,14 +2737,20 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     publishing=true;const button=$('publishWeekBtn');button.disabled=true;button.textContent='Publishing…';
     try{
       const payload=livePayload(weeks);
+      const draftSignatures=Object.fromEntries(weeks.map(w=>[w,draftSignature(w)]));
       const publication=await window.PublicLinks.publish(payload);
-      state.publishedWeeks=weeks;state.publication=publication;save();renderLivePanel();$('publishFeedback').textContent='Published successfully. Open the live schedule below to check it.';
-      toast('Published. The same live link now shows this update.');
-    }catch(error){const message=error.message||'Publishing failed. The previous live schedule is unchanged.';$('publishFeedback').textContent=message;toast(message);}
-    finally{publishing=false;button.disabled=false;renderLivePanel();}
+      state.publishedWeeks=weeks;state.publication={...publication,draftSignatures};
+      const saved=save(); $('schedulerPublishError').hidden=true;renderLivePanel();renderWorkflowStatus();
+      toast(saved?'Published. The same live link now shows this update.':'Published online, but the device copy could not be saved. Retry saving before leaving.');
+    }catch(error){
+      const message=error.message||'Connection unavailable';
+      $('schedulerPublishError').textContent=`Publishing failed: ${message}. Your device draft is still here. The previous live schedule is unchanged. Try publishing again.`;
+      $('schedulerPublishError').hidden=false; toast(message);
+    }
+    finally{publishing=false;button.disabled=false;renderLivePanel();renderWorkflowStatus();}
   }
   function publishCurrentWeek(){return commitPublication([...new Set([...state.publishedWeeks,state.currentWeek])].sort());}
-  function unpublishWeek(week){return commitPublication(state.publishedWeeks.filter(w=>w!==week));}
+  function unpublishWeek(week){if(!confirm('Remove this week from the shared schedule? Your device draft will remain.'))return;return commitPublication(state.publishedWeeks.filter(w=>w!==week));}
   function utf8ToBase64(str){ const bytes=new TextEncoder().encode(str); let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
   function base64ToUtf8(str){ const bin=atob(str); const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(bytes); }
   function livePayload(weeks=state.publishedWeeks){
@@ -2702,7 +2764,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function renderLivePanel(){
     const box=$('publishedWeeks'); if(!box)return;
     box.innerHTML=state.publishedWeeks.length ? state.publishedWeeks.map(w=>`<span class="published-chip">${esc(PROGRAM_LIBRARY[w]?.range||weekLabel(w))}<button onclick="window.unpublishWeek('${w}')" aria-label="Unpublish">×</button></span>`).join('') : '<span class="live-note">No weeks published yet.</span>';
-    const b=$('publishWeekBtn'); if(b)b.textContent=state.publishedWeeks.includes(state.currentWeek)?'Update live schedule':'Publish to live schedule'; updateLiveLink();
+    const b=$('publishWeekBtn'); if(b)b.textContent=publishing?'Publishing…':state.publishedWeeks.includes(state.currentWeek)?'Update this week':'Publish this week'; updateLiveLink();
+    const link=liveLink(); $('copyLiveLinkBtn').disabled=!link; $('openLiveSchedule').hidden=!link; if(link)$('openLiveSchedule').setAttribute('href',link);
   }
   function renderLiveViewer(payload){
     root.classList.add('mws-live-mode');
@@ -2740,11 +2803,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   // Events
   root.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
-  $('prevWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,-1)); $('nextWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,1)); $('todayBtn').onclick=()=>setWeek(weekId(new Date())); $('autoRemaining').onclick=autoAssign; if($('mobilePreview')) $('mobilePreview').onclick=()=>showView('preview'); if($('mobileAuto')) $('mobileAuto').onclick=autoAssign;
+  $('prevWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,-1)); $('nextWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,1)); $('todayBtn').onclick=()=>setWeek(weekId(new Date())); $('reviewScheduleBtn').onclick=()=>showView('preview'); $('autoRemaining').onclick=autoAssign;
+  $('undoSchedule').onclick=undoSchedule; $('setupSchedulerPeople').onclick=()=>showView('people'); $('retrySchedulerSave').onclick=()=>{if(save())toast('Your draft is now saved on this device.');renderAll();};
+  root.querySelectorAll('.mws-nav-btn').forEach((button,index,buttons)=>button.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%buttons.length;else if(event.key==='ArrowLeft')next=(index+buttons.length-1)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;else return;event.preventDefault();showView(buttons[next].dataset.view);buttons[next].focus();}));
   $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week to the cloud first. Older snapshot links do not update.');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
   $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
   $('addPersonBtn').onclick=()=>openPersonModal(null); $('closePerson').onclick=()=>closeModal('personModal'); $('cancelPerson').onclick=()=>closeModal('personModal'); $('personForm').addEventListener('submit',savePerson); $('personSearch').addEventListener('input',renderPeople);
-
   ['assignModal','personModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('assignModal');closeModal('personModal')}});
 
