@@ -213,6 +213,22 @@ async function run(profile) {
             await publicPage.waitForFunction(()=>window.ui?.publicLinkToken).catch(async error=>{await publicPage.screenshot({path:path.join(output,`${profile.name}-public-${mode}-failure.png`)});throw new Error(`${mode}: ${error.message}; public status: ${await publicPage.locator('body').innerText()}`);});assert.equal(await publicPage.locator('#tab-'+tab).isVisible(),true);assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);
             assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'New public forms directly read private tables');
         }
+        // Run fresh-backend startup separately from the legacy password fixture.
+        await publicContext.route('**/app-config.js',route=>route.fulfill({contentType:'application/javascript',body:'window.CA_CONFIG={secureBackend:true,supabaseUrl:"https://ejosykrxjvwrhxfnputo.supabase.co",supabaseAnonKey:"publishable-acceptance-fixture"};'}));
+        await publicPage.addInitScript(()=>{sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');});
+        for(const query of ['?cong=qa-congregation','?cong=qa-congregation&mode=attendance','?cong=qa-congregation&mode=overseer&group=Group%201']) {
+            await publicPage.goto(new URL(sharedURL).origin+new URL(sharedURL).pathname+query);
+            if(query.includes('overseer')) {
+                await publicPage.waitForFunction(()=>document.getElementById('auth-screen')&&!document.getElementById('auth-screen').classList.contains('hidden')&&sessionStorage.getItem('fs_auth')===null);
+                assert.equal(await publicPage.locator('#overseer-auth-screen').isVisible(),false);
+            } else {
+                await publicPage.waitForFunction(()=>document.getElementById('public-link-status')?.textContent.includes('older link'));
+                assert.equal(await publicPage.locator('#tab-s4').isVisible(),false);
+                assert.equal(await publicPage.locator('#tab-public-attendance').isVisible(),false);
+            }
+            assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Secure legacy route read private tables');
+        }
+        await publicPage.screenshot({path:path.join(output,`${profile.name}-secure-legacy-login.png`)});
         await publicContext.close();
         if(profile.mobile){await nav('publishers');await page.locator('#m-btn-tab-menu').click();for(const section of ['Main','Field Service','Attendance','OCLM','More'])assert(await page.locator('[data-menu-section="'+section+'"]').isVisible(),'Mobile section missing '+section);await page.locator('#menu-item-install').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-notifications').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app').getByRole('button',{name:'Settings help',exact:true}).click();assert.match(await page.locator('#notification-status').innerText(),/Do Not Disturb/);await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();}
         await page.evaluate(async()=>{await window.auth.googleLogin();});
