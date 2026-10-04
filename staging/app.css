@@ -410,3 +410,7 @@ body[data-theme] #ca-midweek-root :is(.search,.sheet-search,.field-input,.field-
  .main-content :is(input,select,textarea), [role="dialog"] :is(input,select,textarea) { font-size: 16px; }
  #ca-midweek-root :is(input,select,textarea) { font-size: 16px; }
 }
+
+/* Keep expanded account sign-in forms reachable on short mobile screens. */
+#auth-screen{overflow-y:auto;justify-content:flex-start!important;}
+#auth-screen>.glass-panel{margin-block:auto;flex-shrink:0;}
