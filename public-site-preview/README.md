@@ -1,1 +1,1 @@
-Public website redesign preview. The original Congregation-Assistant_Public repository currently denies this GitHub connection write access (403). This copy enables review and browser validation until its repository access is enabled. Trial requests prepare email drafts; nothing is sent automatically.
+Public website redesign preview, also maintained in `photographicode/Congregation-Assistant_Public`. Repository write access was verified on 4 October 2026. Trial requests prepare email drafts; nothing is sent automatically.

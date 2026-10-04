@@ -26,6 +26,6 @@ Advisor references: [anonymous privileged functions](https://supabase.com/docs/g
 
 ## Website deployment
 
-The application and redesigned preview can be deployed through the connected app repository. GitHub rejects writes to `Congregation-Assistant_Public` with HTTP 403, so its original landing page has not been replaced. Enable that repository in the GitHub integration before publishing its prepared redesign.
+The application and redesigned preview can be deployed through the connected app repository. GitHub write access to `Congregation-Assistant_Public` was verified on 4 October after updating the connection. Its redesigned page is tracked in public-repository pull request #1. See `pilot-status.md` for current deployment and authentication gates.
 
 Enable the Google provider with callback `https://ejosykrxjvwrhxfnputo.supabase.co/auth/v1/callback`, verify redirect URLs and real owner sign-in, back up current data, then activate the new public configuration in a reviewed deployment. Never publish service-role keys, database passwords, or Google client secrets.

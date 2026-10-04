@@ -10,6 +10,8 @@ const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
   await context.route('**/formsubmit.co/**',route=>route.abort());
   await page.goto(published||`http://localhost:${server.address().port}`);assert.equal(await page.locator('h1').count(),1);assert.match(await page.locator('.price').innerText(),/1,499/);
   assert(await page.locator('.hero-actions a').first().getAttribute('href')==='#start');
+  const previewTabs=await page.locator('[data-preview]').evaluateAll(tabs=>tabs.map(tab=>tab.dataset.preview));
+  assert.deepEqual(previewTabs,['records','attendance','schedule'],'Preview tabs must be unique and appear once');
   for(const tab of ['attendance','schedule','records']){await page.locator('[data-preview="'+tab+'"]').click();assert.equal(await page.locator('[data-preview="'+tab+'"]').getAttribute('aria-selected'),'true');assert(await page.locator('#preview-screen').innerText());}
   await page.locator('[data-preview="records"]').focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('[data-preview="attendance"]').getAttribute('aria-selected'),'true');
   if(mobile){for(const width of [320,375,390,430]){await page.setViewportSize({width,height:viewport.height});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Website overflows '+width);}await page.setViewportSize(viewport);await page.locator('#menu-toggle').click();assert(await page.locator('#mobile-menu').isVisible());await page.keyboard.press('Escape');assert.equal(await page.locator('#mobile-menu').isVisible(),false);}
