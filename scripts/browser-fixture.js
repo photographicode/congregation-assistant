@@ -42,5 +42,5 @@
         }
     }) };
     if(new URLSearchParams(location.search).get('cong')||new URLSearchParams(location.search).get('token')||location.hash.startsWith('#live='))return;
-    for (const [key, value] of Object.entries({ fs_auth: 'true', fs_auth_type: 'admin', fs_role: 'admin', fs_cong_id: cong.id, fs_cong_name: cong.name, fs_last_activity: String(Date.now()) })) sessionStorage.setItem(key, value);
+    if(sessionStorage.getItem('ca_signed_out')!=='true')for (const [key, value] of Object.entries({ fs_auth: 'true', fs_auth_type: 'admin', fs_role: 'admin', fs_cong_id: cong.id, fs_cong_name: cong.name, fs_last_activity: String(Date.now()) })) sessionStorage.setItem(key, value);
 })();

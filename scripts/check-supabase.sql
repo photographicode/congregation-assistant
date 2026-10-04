@@ -3,6 +3,9 @@
 create role anon nologin;create role authenticated nologin;
 create schema auth;
 create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb $$;
+create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);
+create function auth.uid() returns uuid language sql stable as $$ select nullif(auth.jwt()->>'sub','')::uuid $$;
+grant execute on function auth.uid() to anon,authenticated;
 grant usage on schema auth to anon,authenticated;
 grant execute on function auth.jwt() to anon,authenticated;
 \i supabase/fresh-project.sql
@@ -68,3 +71,21 @@ set role anon;
 select test.assert(public.get_oclm_public_snapshot(:'schedule_token') is null,'expired tenant no longer exposes publication');
 reset role;
 \echo PASS isolated database: owner provisioning, thirty-day trials, tenant isolation, role restrictions, verified Google identities, stable publications, scoped public forms, revocation and expiry
+
+-- Password owners require a matching actual confirmed account; role members still use Google.
+reset role;
+insert into auth.users values('1ecbe517-2305-4929-9f99-6f7dd03f5983','password-owner@example.invalid',now());
+insert into public.ca_superadmins(email) values('password-owner@example.invalid');
+set request.jwt.claims='{"sub":"1ecbe517-2305-4929-9f99-6f7dd03f5983","email":"password-owner@example.invalid","app_metadata":{"provider":"email"}}';
+set role authenticated;
+select test.assert(public.ca_is_superadmin(),'confirmed password owner accepted');
+reset role;
+update public.ca_superadmins set active=false where email='password-owner@example.invalid';
+set role authenticated;
+select test.assert(not public.ca_is_superadmin(),'disabled password owner rejected');
+reset role;
+update public.ca_superadmins set active=true where email='password-owner@example.invalid';
+update auth.users set email_confirmed_at=null where email='password-owner@example.invalid';
+set role authenticated;
+select test.assert(not public.ca_is_superadmin(),'unconfirmed password owner rejected');
+reset role;
