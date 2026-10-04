@@ -286,7 +286,7 @@ async function run(profile) {
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
-        await page.evaluate(()=>{window.currentCongId='demo-cong';window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
+        await page.evaluate(()=>{window.currentCongId='demo-cong';sessionStorage.setItem('fs_auth_type','admin');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.db.currentCongData={id:'demo-cong',name:'Demo Congregation',feature_oclm:true};window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         assert.equal(await page.locator('#publicationState').innerText(),'Demo published');
         assert.equal(await page.evaluate(()=>window.__demoCloudCalls),0);
