@@ -985,17 +985,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <div class="glass-panel p-8 sm:p-10 rounded-3xl text-center max-w-md w-full border border-teal-500/30 shadow-2xl">
             <div class="w-16 h-16 rounded-2xl bg-teal-500/20 flex items-center justify-center text-teal-300 font-bold border border-teal-500/30 shadow-lg mx-auto mb-6 text-2xl">CA</div>
             <h2 class="text-2xl font-bold text-white mb-2">Congregation Assistant</h2>
-            <p class="text-teal-200/70 text-sm mb-6">Enter your Congregation ID to access your portal.</p>
+            <p class="text-teal-200/70 text-sm mb-6">Enter your username or congregation ID to sign in.</p>
             <form onsubmit="event.preventDefault(); window.auth.login();">
-                <input type="text" id="auth-cong-id" placeholder="Congregation ID" required class="w-full px-5 py-3 rounded-xl mb-4 text-center">
-                <input type="password" id="auth-pass" placeholder="Password" required class="w-full px-5 py-3 rounded-xl mb-6 text-center">
+                <input type="text" id="auth-cong-id" autocomplete="username" placeholder="Username or congregation ID" required class="w-full px-5 py-3 rounded-xl mb-4 text-center">
+                <input type="password" id="auth-pass" autocomplete="current-password" placeholder="Password" required class="w-full px-5 py-3 rounded-xl mb-6 text-center">
                 <button type="submit" id="auth-btn" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)]">Unlock Database</button>
                 <div class="flex items-center gap-3 my-4 text-[10px] text-white/30 uppercase tracking-widest"><span class="h-px flex-1 bg-white/10"></span>or<span class="h-px flex-1 bg-white/10"></span></div>
                 <button id="auth-google-btn" type="button" onclick="window.auth.googleLogin()" class="w-full bg-white text-slate-900 px-6 py-3 rounded-xl font-bold transition-all shadow-lg hover:bg-slate-100">Continue with Google</button>
                 <p id="google-auth-status" class="hidden ca-auth-status" role="alert"></p>
                 <p class="text-[10px] text-teal-100/40 mt-3">Authorized brothers — including Main admins — can sign in with their Google account. Access is granted only to email addresses entered by a Main admin.</p>
             </form>
-            <details id="super-password-panel" class="mt-5 text-left"><summary class="cursor-pointer font-bold py-3">SuperAdmin password sign-in</summary><p class="text-sm my-3">Use your approved owner email and password. Google sign-in is not required.</p><form id="super-password-form" onsubmit="window.auth.superPasswordLogin(event)"><label for="super-email">Owner email</label><input id="super-email" value="photographicode@gmail.com" type="email" autocomplete="username" required class="w-full px-5 py-3 rounded-xl mb-4"/><label for="super-password">Password</label><input id="super-password" type="password" autocomplete="current-password" required class="w-full px-5 py-3 rounded-xl mb-4"/><button type="button" id="super-password-toggle" class="ca-secondary-action mb-4" aria-controls="super-password" aria-pressed="false" onclick="window.auth.toggleSuperPassword()">Show password</button><p id="super-password-status" class="ca-auth-status mb-4" role="alert" hidden></p><a class="block underline mb-4" href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#superadmin" target="_blank" rel="noopener">Password setup and sign-in help ↗</a><button id="super-password-btn" type="submit" class="ca-primary-action w-full">Sign in as SuperAdmin</button></form><a class="block underline py-3" href="https://photographicode.github.io/congregation-assistant/staging/?superadmin=1">Open secure SuperAdmin sign-in</a><p class="text-sm">The secure workspace uses the new backend. Existing legacy congregation data is not migrated.</p></details>
+
         </div>
     </div>
 
@@ -1224,7 +1224,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
                     <input id="access-email-input" type="email" placeholder="brother@gmail.com" class="w-full px-4 py-3 rounded-xl">
-                    <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main Admin</option><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
+                    <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
                 <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">Google account setup</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. Provider activation and database permissions require your Supabase administrator. Setup instructions are included in the repository.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy account setup SQL</button></div>
@@ -2850,14 +2850,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <script type="module">
         const createClient = window.supabase?.createClient;
         
+        const OWNER_BACKEND={supabaseUrl:'https://ejosykrxjvwrhxfnputo.supabase.co',supabaseAnonKey:'sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C'};
+        if(sessionStorage.getItem('ca_owner_backend')==='true')window.CA_CONFIG={...window.CA_CONFIG,...OWNER_BACKEND,secureBackend:true};
         const SUPABASE_URL = window.CA_CONFIG?.supabaseUrl || 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
         const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
         
         const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
         const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
-        document.getElementById('super-password-form').hidden=!window.CA_CONFIG?.secureBackend;
-        if(new URLSearchParams(location.search).get('superadmin')==='1')document.getElementById('super-password-panel').open=true;
-        const supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+        let supabaseClient = isCloudEnabled ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
@@ -2930,10 +2930,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 
                 window.auth.expireIfIdle();
-                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(['role','super'].includes(type)&&!window.auth.roleReady)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
+                if (sessionStorage.getItem('fs_auth') === 'true') { const type=sessionStorage.getItem('fs_auth_type'); if(!type){sessionStorage.removeItem('fs_auth');return false;} if(['role','super'].includes(type)&&!window.auth.roleReady)return false;if(type==='super'&&!window.auth.verifiedOwner)return false;window.auth.touchActivity(); document.getElementById('auth-screen').classList.add('hidden'); return true; }
                 return false;
             },
             roleReady: false,
+            verifiedRoles: [],
+            verifiedOwner: false,
             googleAccess: [],
             showGoogleStatus: message => {
                 const status=document.getElementById('google-auth-status');
@@ -2943,17 +2945,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             clearGoogleRole: (force=false) => {
                 if(force||sessionStorage.getItem('fs_auth_type')==='role')for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
-                window.auth.roleReady=false;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedOwner=false;
             },
             activateGoogleRole: async congId => {
                 if(window.auth.googleSwitching)throw new Error('Please wait for your congregation to open.');
                 window.auth.googleSwitching=true;
                 try{
-                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId);
+                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId&&row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
                 if(!grants.length)throw new Error('This Google account has no active access to that congregation.');
                 const {data:cong,error}=await supabaseClient.from('congregations').select('id,name,status,created_at,trial_days,feature_attendance,feature_emergency_contacts,feature_oclm').eq('id',congId).single();
                 if(error||!cong)throw new Error('Your congregation could not be opened. Ask an administrator to check your access.');
-                const roles=[...new Set(grants.map(row=>row.role))],role=roles.includes('admin')?'admin':roles[0];
+                const roles=[...new Set(grants.map(row=>row.role))];window.auth.verifiedRoles=roles;window.auth.verifiedOwner=false;const role=roles.includes('admin')?'admin':roles[0];
                 window.auth.roleReady=true;window.currentCongId=cong.id;window.db.currentCongData=cong;
                 sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','role');sessionStorage.setItem('fs_role',role);sessionStorage.setItem('fs_roles',JSON.stringify(roles));sessionStorage.setItem('fs_cong_id',cong.id);sessionStorage.setItem('fs_cong_name',cong.name);sessionStorage.setItem('fs_last_activity',String(Date.now()));
                 document.getElementById('auth-screen')?.classList.add('hidden');window.ui.closeModal('modal-google-congregation');
@@ -2970,7 +2972,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     if(sessionError)throw sessionError;
                     const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
                     const {data:superAccess,error:superError}=await supabaseClient.rpc('ca_is_superadmin');
-                    if(!superError && superAccess===true){sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
+                    if(!superError && superAccess===true){window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
                     const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
                     window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
@@ -2990,7 +2992,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 
                 btn.textContent = "Authenticating..."; btn.disabled = true;
 
-                if(cid==='SUPERADMIN'){window.auth.showGoogleStatus('Use the SuperAdmin email and password form below. Google is optional for SuperAdmin.');document.getElementById('super-password-panel').open=true;btn.disabled=false;btn.textContent='Unlock Database';return;}
+                if(cid.toLowerCase()==='superadmin'){await window.auth.ownerLogin(document.getElementById('auth-pass').value);return;}
 
                 if(window.CA_CONFIG?.secureBackend){window.auth.showGoogleStatus('Use Continue with Google and your approved account.');btn.disabled=false;btn.textContent='Unlock Database';return;}
                 if (!isCloudEnabled) { window.ui.showToast("Cloud connection required for SaaS", "error"); btn.textContent = "Unlock Database"; btn.disabled = false; return; }
@@ -3056,10 +3058,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             endSession: async () => {
                 sessionStorage.setItem('ca_signed_out','true');
                 for(const storage of [sessionStorage,localStorage]) {
-                    for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_cong_id','fs_cong_name','fs_last_activity','fs_trial_days'])storage.removeItem(key);
-                    for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(key.startsWith('ov_auth_'))storage.removeItem(key);
+                    for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_cong_id','fs_cong_name','fs_last_activity','fs_trial_days','ca_owner_backend'])storage.removeItem(key);
+                    for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(key.startsWith('ov_auth_')||key.startsWith('ca_cache_'))storage.removeItem(key);
                 }
-                window.auth.roleReady=false;window.auth.googleAccess=[];window.currentCongId=null;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
                 for(const key of ['publishers','reports','congregations'])window.db[key]=[];
                 window.db.currentCongData=null;
                 document.getElementById('auth-screen').classList.remove('hidden');
@@ -3067,22 +3069,24 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 for(const storage of [localStorage,sessionStorage])for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(/^sb-.*-auth-token/.test(key))storage.removeItem(key);
                 location.href=window.location.href.split(/[?#]/)[0];
             },
-            toggleSuperPassword: () => {const field=document.getElementById('super-password'),button=document.getElementById('super-password-toggle');const visible=field.type!=='text';field.type=visible?'text':'password';button.textContent=visible?'Hide password':'Show password';button.setAttribute('aria-pressed',String(visible));},
-            superPasswordLogin: async (event) => {
-                event.preventDefault();
-                const button=document.getElementById('super-password-btn');if(button.disabled)return;button.disabled=true;button.textContent='Signing in…';
-                const status=document.getElementById('super-password-status');status.hidden=true;status.textContent='';
-                const password=document.getElementById('super-password');
+            ownerLogin: async password => {
+                const button=document.getElementById('auth-btn');button.disabled=true;button.textContent='Signing in…';
+                let ownerClient;
                 try {
-                    if(!window.CA_CONFIG?.secureBackend)throw new Error('Open the secure SuperAdmin sign-in page below.');
-                    const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('super-email').value.trim().toLowerCase(),password:password.value});
-                    if(error || !data?.session)throw new Error('Sign-in failed. Check your email and password. The owner account must first be created in Supabase Authentication.');
-                    const access=await supabaseClient.rpc('ca_is_superadmin');
-                    if(access.error || access.data!==true){await supabaseClient.auth.signOut({scope:'local'});throw new Error('This account does not have SuperAdmin access.');}
-                    sessionStorage.removeItem('ca_signed_out');
+                    if(!isCloudEnabled)throw new Error('Cloud connection is required to sign in.');
+                    ownerClient=SUPABASE_URL===OWNER_BACKEND.supabaseUrl?supabaseClient:createClient(OWNER_BACKEND.supabaseUrl,OWNER_BACKEND.supabaseAnonKey);
+                    const response=await window.fetch(OWNER_BACKEND.supabaseUrl+'/functions/v1/owner-password-session',{method:'POST',headers:{'Content-Type':'application/json',apikey:OWNER_BACKEND.supabaseAnonKey},body:JSON.stringify({username:'superadmin',password})});
+                    const result=await response.json();
+                    if(!response.ok || !result.session?.access_token || !result.session?.refresh_token)throw new Error('Sign-in failed. Check your username and password, then try again.');
+                    const sessionResult=await ownerClient.auth.setSession({access_token:result.session.access_token,refresh_token:result.session.refresh_token});
+                    if(sessionResult.error)throw sessionResult.error;
+                    const access=await ownerClient.rpc('ca_is_superadmin');
+                    if(access.error || access.data!==true){await ownerClient.auth.signOut({scope:'local'});throw new Error('This account does not have access.');}
+                    sessionStorage.removeItem('ca_signed_out');sessionStorage.setItem('ca_owner_backend','true');
+                    window.CA_CONFIG={...window.CA_CONFIG,...OWNER_BACKEND,secureBackend:true};supabaseClient=ownerClient;window.PublicLinks?.install(ownerClient);
                     await window.auth.resumeGoogleRole();
-                } catch(error){status.textContent=error.message;status.hidden=false;document.getElementById('auth-screen').classList.remove('hidden');}
-                finally {password.value='';password.type='password';document.getElementById('super-password-toggle').textContent='Show password';document.getElementById('super-password-toggle').setAttribute('aria-pressed','false');button.disabled=false;button.textContent='Sign in as SuperAdmin';}
+                } catch(error){window.auth.showGoogleStatus(error.message || 'Sign-in could not be completed.');}
+                finally {document.getElementById('auth-pass').value='';button.disabled=false;button.textContent='Unlock Database';}
             },
 
             overseerLogin: async () => {
@@ -3291,6 +3295,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             initAdmin: async (congId, congName) => {
+                document.body.classList.remove('super-admin-theme');window.db.congregations=[];
+                document.getElementById('nav-superadmin')?.classList.add('hidden');
+                const titleButton=document.getElementById('nav-mobile-title');if(titleButton)titleButton.onclick=()=>window.ui.openModal('modal-profile-menu');
                 if (window.db.currentCongData?.id !== congId) window.db.currentCongData = null;
                 window.db.syncState = 'syncing';
                 window.currentCongId = congId;
@@ -3579,6 +3586,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 } catch (e) { console.warn(`Local ${type} cache read failed:`, e); return null; }
             },
             restoreLocalCaches: () => {
+                const allowed=window.ui.getAllowedTabs();
+                const readable={publishers:allowed.includes('publishers'),reports:allowed.includes('analytics')||allowed.includes('groups'),attendance:allowed.includes('attendance')};
+                for(const type of ['publishers','reports','attendance'])if(!readable[type])localStorage.removeItem(window.db.cacheKey(type));
                 const pubs = window.db.readLocalCache('publishers');
                 const reps = window.db.readLocalCache('reports');
                 const att = window.db.readLocalCache('attendance');
@@ -4269,19 +4279,24 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             getRoleGrants: () => {
+                if(window.auth.roleReady&&window.auth.verifiedOwner)return ['admin'];
+                if(window.auth.roleReady&&window.auth.verifiedRoles.length)return [...window.auth.verifiedRoles];
+                if(['role','super'].includes(sessionStorage.getItem('fs_auth_type')))return [];
                 let roles; try{roles=JSON.parse(sessionStorage.getItem('fs_roles')||'null');}catch{}
-                if(sessionStorage.getItem('fs_auth_type')==='super')return ['admin'];
+
                 const fallback=sessionStorage.getItem('fs_role')||'admin';
                 return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm'].includes(role)))];
             },
             getAllowedTabs: () => {
-                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['dashboard','publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm']};
-                if(sessionStorage.getItem('fs_auth_type')==='super')return ['superadmin'];
+                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm']};
+                if(window.auth.roleReady&&window.auth.verifiedOwner)return ['superadmin'];
                 return [...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];
             },
             canManageAccess: () => window.ui.getRoleGrants().includes('admin'),
             applyRoleNavigation: () => {
-                const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs(),isSuper=sessionStorage.getItem('fs_auth_type')==='super';
+                const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs(),isSuper=window.auth.verifiedOwner===true&&window.auth.roleReady;
+                document.querySelectorAll('.tab-content.active').forEach(panel=>{if(!allowed.includes(panel.id.replace('tab-','')))panel.classList.remove('active');});
+                document.getElementById('nav-superadmin')?.classList.toggle('hidden',!isSuper);
                 const sections={main:allowed.some(tab=>['dashboard','publishers','emergency'].includes(tab)),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
                 document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{
                     const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();
@@ -4298,7 +4313,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     button.classList.toggle('hidden',!(permission==='support'||permission==='super'&&isSuper||!isSuper&&(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
                 document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
-                const names={admin:'Administrator',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
+                const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
                 const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
 
@@ -4306,7 +4321,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             loadRoleAccess: async () => {
                 if(!window.ui.canManageAccess())return;const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main Admin',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
             },
             addRoleAccess: async () => {
                 if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');

@@ -245,14 +245,20 @@ async function run(profile) {
         const oauth=await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1));assert.equal(oauth.provider,'google');assert.equal(new URL(oauth.options.redirectTo).search,'');assert.equal(new URL(oauth.options.redirectTo).hash,'');
         for(const role of ['field_service','attendance','oclm']) {
             await page.evaluate(async role=>{
-                window.__qaBackend.session={user:{email:'qa@example.com'}};
+                window.__qaBackend.reads=[];window.__qaBackend.session={user:{email:'qa@example.com'}};
                 window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true}];
                 await window.auth.resumeGoogleRole();
             },role);
+            if(role==='oclm'){
+                const reads=await page.evaluate(()=>window.__qaBackend.reads);assert(!reads.includes('reports'),'OCLM fetched reports');
+                await page.evaluate(()=>{sessionStorage.setItem('fs_roles','["admin"]');sessionStorage.setItem('fs_role','admin');window.ui.applyRoleNavigation();window.ui.switchTab('analytics');});
+                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm']);
+                assert.equal(await page.locator('#tab-oclm').isVisible(),true);assert.equal(await page.locator('#tab-analytics').isVisible(),false);
+            }
             if(!profile.mobile){
                 assert.equal(await page.locator('#btn-tab-access').isVisible(),false,'Restricted desktop role sees access management');
                 assert.equal(await page.locator('#btn-tab-emergency').isVisible(),false,'Restricted desktop role sees emergency records');
-                assert.equal(await page.locator('#btn-tab-dashboard').isVisible(),role==='field_service','Desktop overview visibility does not match its role');
+                assert.equal(await page.locator('#btn-tab-dashboard').isVisible(),false,'Desktop overview visibility does not match its role');
                 assert.equal(await page.locator('#btn-tab-publishers').isVisible(),role==='field_service','Desktop publisher visibility does not match its role');
                 await page.screenshot({path:path.join(output,`${profile.name}-${role}-navigation.png`)});
             }
@@ -260,7 +266,7 @@ async function run(profile) {
                 assert.equal(await page.locator('#m-btn-tab-menu').isVisible(),true,'Menu missing for '+role);await page.locator('#m-btn-tab-menu').click();
                 assert.equal(await page.locator('.ca-mobile-menu-content').evaluate(el=>el.scrollTop),0,'Navigation reopens with its first sections scrolled away');
                 assert.equal(await page.locator('#menu-item-access').isVisible(),false);assert.equal(await page.locator('#menu-item-emergency').isVisible(),false);
-                assert.equal(await page.locator('#menu-item-home').isVisible(),role==='field_service');
+                assert.equal(await page.locator('#menu-item-home').isVisible(),false);
                 assert.equal(await page.locator('#menu-item-publishers').isVisible(),role==='field_service');
                 for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
                 assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':'oclm')).isVisible(),true);
@@ -286,7 +292,7 @@ async function run(profile) {
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
-        await page.evaluate(()=>{window.currentCongId='demo-cong';sessionStorage.setItem('fs_auth_type','admin');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.db.currentCongData={id:'demo-cong',name:'Demo Congregation',feature_oclm:true};window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
+        await page.evaluate(()=>{window.auth.verifiedOwner=false;window.auth.verifiedRoles=['admin'];window.currentCongId='demo-cong';sessionStorage.setItem('fs_auth_type','admin');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.db.currentCongData={id:'demo-cong',name:'Demo Congregation',feature_oclm:true};window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         assert.equal(await page.locator('#publicationState').innerText(),'Demo published');
         assert.equal(await page.evaluate(()=>window.__demoCloudCalls),0);
@@ -301,25 +307,18 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);
         assert.equal(await page.locator('#auth-screen').isVisible(),true);
-        await page.route('**/app-config.js',route=>route.fulfill({contentType:'application/javascript',body:'window.CA_CONFIG={secureBackend:true,supabaseUrl:"https://ejosykrxjvwrhxfnputo.supabase.co",supabaseAnonKey:"publishable-acceptance-fixture"};'}));
-        const ownerURL=new URL(page.url());ownerURL.search='?superadmin=1';await page.goto(ownerURL.href);
-        await page.waitForFunction(()=>document.getElementById('super-password-panel').open);
-        assert.equal(await page.locator('#super-password-form').isVisible(),true);
-        await page.locator('#super-password-btn').scrollIntoViewIfNeeded();
-        const ownerButton=await page.locator('#super-password-btn').boundingBox();assert(ownerButton.y>=0 && ownerButton.y+ownerButton.height<=await page.evaluate(()=>innerHeight),'Password sign-in is unreachable');
-        await page.locator('#super-email').fill('owner@example.com');await page.locator('#super-password').fill('wrong-password');
-        await page.locator('#super-password-toggle').click();assert.equal(await page.locator('#super-password').getAttribute('type'),'text');
-        await page.locator('#super-password-btn').click();await page.waitForFunction(()=>!document.getElementById('super-password-btn').disabled);
-        assert.equal(await page.locator('#super-password-status').isVisible(),true);assert.equal(await page.locator('#super-password').inputValue(),'');
-        assert.equal(await page.locator('#super-password').getAttribute('type'),'password');
-        await page.locator('#super-password').fill('qa-owner-password');await page.locator('#super-password-btn').click();
-        await page.waitForFunction(()=>!document.getElementById('super-password-btn').disabled);
-        assert.match(await page.locator('#super-password-status').innerText(),/does not have SuperAdmin access/);
-        await page.evaluate(()=>{window.__qaBackend.superadmin=true;});
-        await page.locator('#super-password').fill('qa-owner-password');await page.locator('#super-password-btn').click();
+        await page.route('**/functions/v1/owner-password-session',route=>{
+            const body=route.request().postDataJSON(),ok=body.username==='superadmin'&&body.password==='qa-owner-password';
+            return route.fulfill({status:ok?200:401,contentType:'application/json',body:JSON.stringify(ok?{session:{access_token:'qa-access',refresh_token:'qa-refresh'}}:{error:'Sign-in failed'})});
+        });
+        assert.equal(await page.locator('#super-password-panel').count(),0,'Main login advertises a separate owner form');
+        await page.locator('#auth-cong-id').fill('superadmin');await page.locator('#auth-pass').fill('wrong-password');await page.locator('#auth-btn').click();
+        await page.waitForFunction(()=>!document.getElementById('auth-btn').disabled);assert.match(await page.locator('#google-auth-status').innerText(),/Sign-in failed/);
+        await page.locator('#auth-pass').fill('qa-owner-password');await page.locator('#auth-btn').click();
+        await page.waitForFunction(()=>!document.getElementById('auth-btn').disabled);assert.match(await page.locator('#google-auth-status').innerText(),/does not have access/);
+        await page.evaluate(()=>{window.__qaBackend.superadmin=true;});await page.locator('#auth-pass').fill('qa-owner-password');await page.locator('#auth-btn').click();
         await page.waitForFunction(()=>document.getElementById('auth-screen').classList.contains('hidden'));
-        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);
-        assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.length),0,'Password sign-in requested Google');
+        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.length),0,'Owner password login requested Google');
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });

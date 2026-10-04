@@ -120,23 +120,33 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('visible sign-out clears current sessions even if the auth server fails',async()=>{
         const qa=createHarness();qa.window.currentCongId='logout-test';qa.window.auth.roleReady=true;
         for(const storage of [qa.sessionStorage,qa.localStorage])for(const key of ['fs_auth','fs_auth_type','fs_role','fs_cong_id','ov_auth_logout-test_A','sb-test-auth-token'])storage.setItem(key,'saved');
-        qa.localStorage.setItem('ca_midweek_logout-test_jw_scheduler_assignments','draft');
+        qa.localStorage.setItem('ca_midweek_logout-test_jw_scheduler_assignments','draft');qa.localStorage.setItem('ca_cache_reports_logout-test','private');
         qa.window.supabase.createClient().auth.signOut=async()=>{throw new Error('Offline');};
         qa.window.ui.confirmLogout();await qa.window.ui.handleSysPromptConfirm();
         assert.equal(qa.sessionStorage.getItem('fs_auth'),null);assert.equal(qa.localStorage.getItem('fs_auth'),null);
         assert.equal(qa.sessionStorage.getItem('ov_auth_logout-test_A'),null);assert.equal(qa.localStorage.getItem('sb-test-auth-token'),null);
         assert.equal(qa.window.auth.roleReady,false);assert.equal(qa.window.currentCongId,null);
         assert.equal(await qa.window.auth.resumeGoogleRole(),false);assert.equal(qa.window.auth.check(),false);
-        assert.equal(qa.localStorage.getItem('ca_midweek_logout-test_jw_scheduler_assignments'),'draft');
+        assert.equal(qa.localStorage.getItem('ca_midweek_logout-test_jw_scheduler_assignments'),'draft');assert.equal(qa.localStorage.getItem('ca_cache_reports_logout-test'),null);
     });
-    await test('password SuperAdmin requires both a verified session and server owner approval',async()=>{
-        const qa=createHarness();qa.window.CA_CONFIG={secureBackend:true};
-        qa.elements.get('super-email').value='owner@example.com';qa.elements.get('super-password').value='fixture-password';
-        qa.window.supabase.createClient().auth.signInWithPassword=async()=>({data:{session:{user:{email:'owner@example.com'}}},error:null});
+    await test('main username login rejects failed owner authentication and verifies server approval',async()=>{
+        const qa=createHarness();qa.elements.get('auth-cong-id').value='superadmin';qa.elements.get('auth-pass').value='fixture-password';
         let opened=false;qa.window.auth.resumeGoogleRole=async()=>{opened=true;return true;};
-        qa.setCloud({data:false,error:null});await qa.window.auth.superPasswordLogin({preventDefault(){}});assert.equal(opened,false);
-        qa.elements.get('super-password').value='fixture-password';qa.setCloud({data:true,error:null});
-        await qa.window.auth.superPasswordLogin({preventDefault(){}});assert.equal(opened,true);assert.equal(qa.elements.get('super-password').value,'');
+        qa.window.supabase.createClient().auth.setSession=async()=>({data:{},error:null});
+        qa.window.fetch=async()=>({ok:false,json:async()=>({})});await qa.window.auth.login();assert.equal(opened,false);
+        qa.window.fetch=async()=>({ok:true,json:async()=>({session:{access_token:'fixture-access',refresh_token:'fixture-refresh'}})});
+        qa.setCloud({data:false,error:null});await qa.window.auth.login();assert.equal(opened,false);
+        qa.setCloud({data:true,error:null});await qa.window.auth.login();assert.equal(opened,true);
+        assert.equal(qa.sessionStorage.getItem('ca_owner_backend'),'true');assert.equal(qa.elements.get('auth-pass').value,'');
+    });
+    await test('verified OCLM roles cannot gain reports by editing cached browser flags',()=>{
+        const qa=createHarness();qa.sessionStorage.setItem('fs_auth_type','role');qa.sessionStorage.setItem('fs_roles','["admin"]');qa.sessionStorage.setItem('fs_role','admin');
+        qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['oclm'];
+        assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);assert.equal(qa.window.ui.canManageAccess(),false);
+        qa.window.ui.currentTab='oclm';qa.window.ui.switchTab('analytics');assert.equal(qa.window.ui.currentTab,'oclm');
+        qa.sessionStorage.setItem('fs_auth_type','admin');assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);
+        qa.sessionStorage.setItem('fs_auth_type','role');qa.window.auth.roleReady=false;assert.deepEqual(qa.window.ui.getAllowedTabs(),[]);
+        qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['admin'];assert(qa.window.ui.getAllowedTabs().includes('emergency'));
     });
     await test('editing during publication remains an unpublished draft',async()=>{
         const qa=createHarness();qa.window.currentCongId='publish-race';qa.window.initMidweekScheduler();

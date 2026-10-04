@@ -6,7 +6,7 @@
     const tables = { congregations: [cong], publishers, reports: [], meeting_attendance: [], congregation_access: [], group_access: [] };
     const backend = window.__qaBackend = { tables, writes: [], rejectWrites: false, delay: 0, session: null, oauthRequests: [], rpcCalls: [], publications: {}, publicLinks: {}, reads: [] };
     window.supabase = { createClient: () => ({
-        auth: { getSession: async () => ({ data: { session: backend.session } }), signInWithOAuth: async options => { backend.oauthRequests.push(options); return { error: null }; }, signInWithPassword: async ({email,password}) => {if(password!=="qa-owner-password")return {data:{session:null},error:{message:"Invalid login credentials"}};backend.session={user:{email}};return {data:{session:backend.session},error:null};}, signOut: async () => {backend.session=null;return {error:null};} },
+        auth: { getSession: async () => ({ data: { session: backend.session } }), signInWithOAuth: async options => { backend.oauthRequests.push(options); return { error: null }; }, setSession: async () => {backend.session={user:{email:"owner@example.com"}};return {data:{session:backend.session},error:null};}, signInWithPassword: async ({email,password}) => {if(password!=="qa-owner-password")return {data:{session:null},error:{message:"Invalid login credentials"}};backend.session={user:{email}};return {data:{session:backend.session},error:null};}, signOut: async () => {backend.session=null;return {error:null};} },
         from(table) {
             const operations = [];backend.reads.push(table);
             const chain = new Proxy({}, { get: (_, method) => method === 'then' ? (resolve, reject) => {
