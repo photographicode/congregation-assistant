@@ -14,7 +14,7 @@ Current phase: deployed secure staging, preparing for a small congregation pilot
 
 ## Still pending
 
-1. Google provider configuration, exact redirects and Google test-user list. The last live settings check had Google disabled. The client secret belongs only in the provider dashboard; rotate any secret shared in chat.
+1. Finish interactive Google sign-in and Google test-user approval. On 5 October, the user saved provider/URL settings and supplied screenshots of the correct Google origin and callback. A live readiness check verified Google enabled and the authorization redirect using the intended Client ID and Supabase callback. This does not prove an actual account login works. Add the staging directory URL explicitly to allowed redirects and keep pilot users on staging. The client secret belongs only in the provider dashboard; rotate any secret shared in chat.
 2. Create the approved owner's Supabase Auth password account privately. Owner approval exists; a metadata query confirmed the account does not. Use the normal username login after activation, without Google.
 3. Actual Google sign-in by two approved test accounts in different congregations. Test direct API access with real sessions, unauthorized and revoked accounts, sign-out, expired-session recovery, failed saves, schedule publication and live links.
 4. Review the old backend and prepare a backed-up, tested data migration before changing the main software configuration. Current connection cannot audit the old project. Do not treat the legacy root as the secure pilot.
