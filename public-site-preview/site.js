@@ -18,7 +18,7 @@
     document.getElementById('trial-form').addEventListener('submit',event=>{
         event.preventDefault();const form=event.currentTarget;if(!form.reportValidity())return;const fields=new FormData(form);
         request=`30-day Congregation Assistant trial request\n\nName: ${fields.get('name')}\nCongregation: ${fields.get('congregation')}\nContact email: ${fields.get('email')}\nContact phone: ${fields.get('phone')||'Not supplied'}\nCongregation authorization: confirmed\nOffer: ₹1,499/year after a 30-day trial; no automatic purchase.\n\nPlease help us arrange account setup.`;
-        document.getElementById('email-request').href='mailto:photographicode@gmail.com?subject='+encodeURIComponent('Congregation Assistant — 30-day trial request')+'&body='+encodeURIComponent(request);
+        document.getElementById('email-request').href='mailto:congregationassistant0@gmail.com?subject='+encodeURIComponent('Congregation Assistant — 30-day trial request')+'&body='+encodeURIComponent(request);
         document.getElementById('request-result').hidden=false;document.getElementById('request-result').scrollIntoView({behavior:'smooth',block:'nearest'});
     });
     document.getElementById('copy-request').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(request);document.getElementById('copy-request').textContent='Request copied';}catch{const area=document.createElement('textarea');area.value=request;area.setAttribute('aria-label','Select and copy your trial request');document.getElementById('request-result').append(area);area.select();}});

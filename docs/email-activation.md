@@ -3,7 +3,7 @@
 The request/outbox/reminder code is prepared, but messages are not yet delivered. Do not paste API keys into chat or commit them.
 
 1. Register a free Brevo account. Use your business identity and contact details.
-2. After buying your domain, verify a sender such as `hello@congregationassistant.com` in Brevo. Add exactly the DNS records Brevo supplies (including DKIM/DMARC); do not guess DNS values. Verify them before sending. A domain you have not bought cannot be verified.
+2. Verify the intended sender `congregationassistant0@gmail.com` in Brevo using the verification email. The owner has approved preparing Brevo activation. A Gmail address cannot have custom domain DNS records changed by this app; follow Brevo’s current sender requirements and confirm that this sender is accepted before sending. If Brevo requires an owned domain, stop and present that concrete requirement rather than inventing or buying a domain.
 3. Create a transactional API key in Brevo.
 4. In Supabase → Edge Functions → Secrets, privately add `BREVO_API_KEY` and `CA_MAIL_SENDER` (the verified sender address). The function uses Supabase's server-provided URL/service-role environment variables; no browser service key is needed.
 5. Schedule `transactional-mail` every 15 minutes using Supabase Cron/Edge invocation. POST to its project function URL. It requires `Authorization: Bearer <server service-role JWT>`; store that credential in Supabase Vault and use a server-side invocation. Never put it in website JavaScript, screenshots, source or chat. If using the newer secret-key invocation model, adapt/verify the worker authentication first; this deployment explicitly checks the service-role JWT.

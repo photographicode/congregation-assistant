@@ -4,6 +4,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium, webkit } = require('playwright');
 const { PDFDocument } = require('pdf-lib');
+const AxeBuilder = require('@axe-core/playwright').default;
 const root = path.resolve(__dirname, '..');
 const output = path.join(root, 'artifacts/browser');
 fs.mkdirSync(output, { recursive: true });
@@ -107,7 +108,9 @@ async function run(profile) {
         await page.locator('#mws-tab-preview').click();
         await page.locator('#publishWeekBtn').scrollIntoViewIfNeeded();
         assert(await page.locator('#publishWeekBtn').isVisible(),'Publish button must be visible on every device');
-        const reviewOrder=await page.evaluate(()=>document.getElementById('paper').getBoundingClientRect().bottom<=document.getElementById('publishWeekBtn').getBoundingClientRect().top);
+        if(profile.mobile)assert(await page.locator('#publishWeekBtn').evaluate(button=>{const r=button.getBoundingClientRect(),hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return button===hit||button.contains(hit);}), 'Publish must be reachable above bottom navigation');
+        assert.equal(await page.locator('.mws-review-paper').getAttribute('open'),null,'Full preview should be optional so publication stays easy to find');
+        const reviewOrder=await page.evaluate(()=>!!(document.getElementById('paper').compareDocumentPosition(document.getElementById('publishWeekBtn')) & Node.DOCUMENT_POSITION_FOLLOWING));
         assert(reviewOrder,'Publish follows the schedule review');
         const frames=await page.locator('#s3-render-area, #s88-render-area').evaluateAll(els=>els.every(el=>getComputedStyle(el).display==='none'));
         assert(frames,'PDF rendering frames must not leave blank screen space');
@@ -326,10 +329,11 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         await page.evaluate(()=>{window.__qaOriginalConfig=window.CA_CONFIG;window.CA_CONFIG={...window.CA_CONFIG,secureBackend:true};window.CAOnboarding.request();});assert(await page.locator('#ca-trial-request').isVisible());await page.locator('#ca-trial-request [name=congregation]').fill('Fictional Request');await page.locator('#ca-trial-request [name=authorized]').check();await page.locator('#ca-trial-request button').click();await page.waitForFunction(()=>document.querySelector('#ca-trial-request [role=status]').textContent.includes('339f299d'));assert.match(await page.locator('#ca-trial-request [role=status]').innerText(),/No payment/);await page.evaluate(()=>{window.CA_CONFIG=window.__qaOriginalConfig;});
         await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});
-        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
+        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);assert(await page.locator('.ca-owner-primary').evaluate(button=>{const r=button.getBoundingClientRect();return r.top>=0&&r.bottom<innerHeight;}),'Owner primary action must be visible without searching below the dashboard');
         assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
-        await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
+        const ownerScan=await new AxeBuilder({page}).include('#tab-superadmin').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(ownerScan.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],'Owner dashboard accessibility');
+        await page.waitForFunction(()=>!document.getElementById('toast').classList.contains('show'));await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
 
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
         await page.evaluate(()=>{window.auth.verifiedOwner=false;window.auth.verifiedRoles=['admin'];window.currentCongId='demo-cong';sessionStorage.setItem('fs_auth_type','admin');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.db.currentCongData={id:'demo-cong',name:'Demo Congregation',feature_oclm:true};window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
