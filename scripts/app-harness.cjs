@@ -23,7 +23,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
             addEventListener(name, callback) { this['on' + name] = callback; },
             setAttribute: (key, value) => attributes.set(key, String(value)), getAttribute: key => attributes.get(key) ?? null, removeAttribute: key => attributes.delete(key), hasAttribute: key => attributes.has(key),
             querySelector(selector) { return selector.startsWith('#') ? elements.get(selector.slice(1)) || null : null; }, querySelectorAll() { return []; },
-            reset() {}, focus() { document.activeElement = result; }, select() {}, click() {}, blur() {}, scrollIntoView() {},
+            replaceChildren(...items) { this.children=items;this.innerHTML=''; }, reset() {}, focus() { document.activeElement = result; }, select() {}, click() {}, blur() {}, scrollIntoView() {},
             insertAdjacentElement(position, child) { (this.adjacentElements ||= []).push(child); }, appendChild(child) { this.children.push(child); }, remove() { this.isConnected = false; }, closest() { return null; }, contains() { return true; },
             getClientRects() { return this.classList.contains('hidden') ? [] : [{}]; }, getBoundingClientRect() { return { x: 0, y: 0, left: 0, top: 0, right: 100, bottom: 100, width: 100, height: 100 }; }
         };
@@ -73,6 +73,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     execute(fs.readFileSync(path.join(root, 'app-support.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root,'app-reminders.js'),'utf8'));
     execute(fs.readFileSync(path.join(root,'app-guide.js'),'utf8'));
+    execute(fs.readFileSync(path.join(root,'app-attendance.js'),'utf8'));
     execute(scripts[1][2] + '\nwindow.__exports={s21:buildS21OriginalPdf,s3:buildS3OriginalPdf};');
     const toast = window.ui.showToast;
     window.ui.showToast = (text, type = 'success') => { messages.push({ text, type }); toast(text, type); };

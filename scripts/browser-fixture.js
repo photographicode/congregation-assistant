@@ -31,6 +31,9 @@
             return chain;
         }, rpc: async (name,args) => {
             backend.rpcCalls.push({name,args});
+            if(name==='get_attendance_meeting')return {data:backend.meetingContext||{configured:true,date:'2026-10-05',kind:'midweek',serviceYear:2027,month:9,week:1,timezone:'Asia/Kolkata',canSubmit:true,count:82},error:null};
+            if(name==='submit_current_attendance')return backend.rejectWrites?{data:null,error:{message:'Acceptance test: save rejected'}}:{data:true,error:null};
+            if(name==='get_attendance_calendar')return {data:{settings:{timezone:'Asia/Kolkata',midweek_day:3,weekend_day:0},events:[],memorials:[{meeting_date:'2026-04-02',service_year:2026,attendance:149}]},error:null};
             if(name==='ca_is_superadmin')return {data:backend.superadmin===true,error:null};
             if(name==='upsert_oclm_public_snapshot'){
                 if(backend.rejectWrites)return {data:null,error:{message:'Acceptance test: publication rejected'}};
