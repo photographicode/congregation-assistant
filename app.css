@@ -434,3 +434,14 @@ body:is([data-theme="light"],[data-theme="scheduler"]) .ca-help-dialog{color:#17
 #att-save-btn{background:#0f766e!important;color:#fff!important}#ca-midweek-root .brand-mark,#ca-midweek-root .live-brand-mark{background:#134e46!important;color:#fff!important}#mobile-nav button{color:#c6e6dd!important}#mobile-nav button>span:last-child{color:#c6e6dd!important;opacity:1!important}body:not([data-theme="light"]):not([data-theme="scheduler"]) .text-emerald-200\/50,body:not([data-theme="light"]):not([data-theme="scheduler"]) .text-cyan-200\/50{color:#bfded9!important}body:not([data-theme="light"]):not([data-theme="scheduler"]) .ca-nav-section-title{color:#bfded9!important}body[data-theme="light"] .main-content button.bg-slate-800,body[data-theme="scheduler"] .main-content button.bg-slate-800{background:#e7f2ed!important;color:#173f35!important}#tab-attendance .flex.flex-col.sm\:flex-row{flex-wrap:wrap!important}#tab-attendance .flex.gap-2.w-full.sm\:w-auto{flex-wrap:wrap;width:100%;max-width:100%;min-width:0}#tab-attendance .flex.gap-2.w-full.sm\:w-auto button{flex:1 1 160px!important;min-width:0;white-space:normal}#tab-attendance .grid>*{min-width:0}#tab-attendance .overflow-x-auto{max-width:100%;min-width:0}@media(max-width:360px){#tab-attendance #att-stats-container{grid-template-columns:1fr!important}}
 
 body[data-theme="light"] #mobile-nav,body[data-theme="scheduler"] #mobile-nav{background:#fff!important}body[data-theme="light"] #mobile-nav button,body[data-theme="scheduler"] #mobile-nav button,body[data-theme="light"] #mobile-nav button>span:last-child,body[data-theme="scheduler"] #mobile-nav button>span:last-child{color:#17463c!important}
+/* Optional reading size also enlarges small labels; layouts wrap instead of clipping. */
+body.ca-large-text{font-size:20px;line-height:1.6}
+body.ca-large-text :is(p,li,label,input,select,textarea,button,.text-xs,.text-sm,.meta,.tag,.candidate-tag,.person-sub,.role-tag){font-size:1rem!important;line-height:1.55!important}
+body.ca-large-text :is(button,input,select,textarea){min-height:48px}
+body.ca-large-text :is(.row-right,.ca-reminder-actions,.settings-theme-buttons){flex-wrap:wrap}
+body.ca-large-text #ca-midweek-root :is(.assign-row,.row-main,.row-right){min-width:0}
+body.ca-large-text #ca-midweek-root .row-right{align-items:flex-start}
+body.ca-large-text #ca-midweek-root .assign-row{grid-template-columns:24px minmax(0,1fr)}
+body.ca-large-text #ca-midweek-root .row-right{grid-column:2}
+body.ca-large-text :is(.print-title,.print-person){font-size:1rem!important}
+@media(max-width:480px){body.ca-large-text :is(.ca-mobile-menu-content,.ca-help-dialog){overflow-wrap:anywhere}body.ca-large-text .ca-mobile-menu-content small{font-size:1rem!important}}

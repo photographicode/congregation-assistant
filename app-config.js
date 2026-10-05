@@ -1,9 +1,8 @@
-/* Public configuration only. Never put a service-role key, password, or OAuth secret here. */
+/* Public configuration. Private records require approved Google accounts and server permissions. */
 window.CA_CONFIG = Object.freeze({
-    // Leave these blank to keep the current project until the new project is ready.
-    supabaseUrl: '',
-    supabaseAnonKey: '',
-    secureBackend: false,
-    trialDays: 30,
-    introductoryAnnualPrice: 1499
+  "supabaseUrl": "https://ejosykrxjvwrhxfnputo.supabase.co",
+  "supabaseAnonKey": "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C",
+  "secureBackend": true,
+  "trialDays": 30,
+  "introductoryAnnualPrice": 1499
 });

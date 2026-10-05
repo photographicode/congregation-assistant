@@ -184,7 +184,7 @@ async function run(profile) {
             await page.screenshot({path:path.join(output,`${profile.name}-all-sections.png`)});
             await page.locator('#menu-item-groups').click();assert.equal(await page.locator('#tab-groups').isVisible(),true);
             await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-access').click();
-            await page.waitForFunction(()=>document.getElementById('access-manager-list').textContent.includes('No role accounts'));
+            await page.waitForFunction(()=>document.getElementById('access-manager-list').textContent.includes('qa-admin@example.com'));
             assert.equal(await page.locator('#modal-mobile-menu').isVisible(),false);
             await page.locator('#modal-access-manager button[onclick*=closeModal]').click();
         } else {

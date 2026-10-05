@@ -10,3 +10,4 @@ exclude:
   - package-lock.json
   - README.md
   - research
+  - archive

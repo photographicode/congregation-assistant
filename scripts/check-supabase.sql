@@ -119,3 +119,7 @@ alter table auth.users add column raw_app_meta_data jsonb;
 
 \i supabase/shared-oclm.sql
 \i scripts/check-shared-oclm.sql
+\i supabase/publisher-home.sql
+\i scripts/check-publisher-home.sql
+\i supabase/workspace-recovery.sql
+\i scripts/check-workspace-recovery.sql

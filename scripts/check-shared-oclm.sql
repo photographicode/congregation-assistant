@@ -26,3 +26,9 @@ reset role;
 select test.assert((select count(*)>=1 from public.ca_oclm_assignment_events where cong_id='shared-a'),'assignment lifecycle events recorded');
 rollback;
 \echo PASS shared drafts, assistants, private fields, stale saves, per-week publishing, immutable history, rollback and congregation isolation
+-- Persistent synthetic sample exists only in the isolated acceptance database.
+set request.jwt.claims='{"email":"scheduler-a@example.com","app_metadata":{"provider":"google"}}';
+update public.congregations set status='active' where id='a';set role authenticated;
+select public.save_oclm_workspace('a',0,'{"personnel":[{"id":"recovery-person","publisherId":"pub-a","name":"Recovery Sample","roles":["Prayer"]}],"assignments":{"2026-W41":{"OpeningPrayer":{"personId":"recovery-person"}}},"additionalDuties":[]}');
+select public.publish_oclm_week('a','2026-W41',1,(public.get_oclm_workspace('a')->'publication'->>'version')::bigint);
+reset role;

@@ -8,3 +8,8 @@ set request.jwt.claims='{"email":"scheduler-a@example.com","app_metadata":{"prov
 select test.assert((select count(*)=0 from public.publishers),'restored OCLM cannot read private publisher rows');
 select test.assert(jsonb_array_length(public.get_oclm_roster('a'))>=1,'restored limited OCLM roster works');
 reset role;
+set request.jwt.claims='{"email":"scheduler-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select test.assert(public.get_oclm_workspace('a')->>'revision'='1','restored shared draft revision');
+select test.assert(jsonb_array_length(public.get_oclm_publication_history('a'))>=1,'restored immutable publication history');
+select test.assert(public.get_oclm_workspace('a')->'draft'->'personnel'->0->>'name'='Recovery Sample','restored scheduling qualifications and people');
+reset role;
