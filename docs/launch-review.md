@@ -26,7 +26,7 @@ Bundled weekly workbook titles have been removed. No scraper has been added. Obt
 | Weak contrast | Attendance save button, scheduler badge, navigation labels and light/dark-theme controls corrected. |
 | Tiny website mockups | Large task screenshots with Desktop/Tablet/Phone selector; fictional demo data only. |
 
-51 local regression checks pass before the last CI pass. First accessibility matrix: 252 combinations, 14 overflow cases, 126 cases with a critical finding. Second pass: zero overflow/critical cases; it identified a remaining light-theme navigation contrast issue, subsequently corrected. Final CI artifacts establish the final result; do not describe a pass before that run completes.
+Final acceptance run 37350234721 passed 55 regression checks, three cloud-conflict checks, encrypted recovery checks, browser/PDF/database contracts and all 504 theme/viewport/text-mode accessibility cases with zero overflow or WCAG findings. Earlier failing layouts and contrast findings were repaired. Representative test coverage does not establish compatibility with every device.
 
 ## Verification scope and remaining tests
 
@@ -38,7 +38,7 @@ Automated accessibility checks do not prove that every button, settings dialog, 
 
 Use a small congregation without depending on the software as its sole record. Prove: Google login → correct roles → save records → assign/review/publish → independent live link → edit without changing publication → rejected save preserves data → logout/revocation blocks private access → restore a backup.
 
-The approved owner's real Google sign-in is observed in Auth. Two-congregation/role isolation is tested with synthetic authenticated claims and rolled-back data, not two independently signed-in people. Browser acceptance uses isolated data and never writes real reports. Two real Google accounts in two test congregations, actual sender delivery and a real backup recovery rehearsal remain distinct launch gates. A successful simulated pilot is valuable evidence, but it cannot honestly be relabeled a completed real congregation pilot.
+Real Google sign-in records are observed for all three nominated identities. Two-congregation/role isolation is tested using their real user IDs with trusted authenticated claims and rolled-back data; this is not an interactive browser test on behalf of those people. Browser acceptance uses isolated data and never writes real reports. Two real Google accounts in two test congregations, actual sender delivery and a real backup recovery rehearsal remain distinct launch gates. A successful simulated pilot is valuable evidence, but it cannot honestly be relabeled a completed real congregation pilot.
 
 ## Security in plain language
 
@@ -46,9 +46,9 @@ Google checks who you are. The database checks which congregation and job you ma
 
 Traffic uses HTTPS; access restrictions are enforced on the server. This is not end-to-end encryption and no software can promise zero risk. Sign-out clears account sessions and cloud-record caches. OCLM device drafts remain on the device for recovery: use your own secured device, not a shared kiosk, and do not describe those drafts as encrypted. Exports and imported calendars need separate care. Enable Google two-step verification for administrators. Collect only needed data, document retention/deletion, and test restores.
 
-Priority security/operations backlog: retire/migrate the unaudited legacy password backend; shared encrypted/recoverable draft storage with edit conflict detection; audit log for grant/publication/deletion changes; MFA policy for admins; provider rate limits/captcha if anonymous requests are introduced; dependency/CSP hardening and removing runtime CDN reliance; annual entitlement expiry/refunds; scheduled backups and restore drills; incident contacts and data-processing/privacy terms. Rotate the OAuth client secret previously shared in chat privately.
+The unused legacy configuration is archived and secure production is active. Shared draft conflict checks and publication/assignment history are implemented. Priority security/operations backlog: broader audit logging for grant/deletion changes; MFA policy for admins; provider rate limits/captcha if anonymous requests are introduced; dependency/CSP hardening and removing runtime CDN reliance; annual entitlement expiry/refunds; scheduled backups and restore drills; incident contacts and data-processing/privacy terms. Rotate the OAuth client secret previously shared in chat privately.
 
-Supabase security advisors flag intentionally exposed security-definer RPCs. These need explicit grants, fixed search paths and role/token checks (not blanket suppression). Leaked-password protection is also reported disabled: [Supabase remediation](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Secure-workspace users now use Google; legacy password risks remain a separate migration gate.
+Supabase security advisors flag intentionally exposed security-definer RPCs. These need explicit grants, fixed search paths and role/token checks (not blanket suppression). Leaked-password protection is also reported disabled: [Supabase remediation](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Secure-workspace users now use Google. The unused legacy backend is retired from software configuration; its former configuration is archived.
 
 ## Request, email and account workflow
 
@@ -83,12 +83,12 @@ For budgeting, divide actual monthly hosting + email + domain + support costs by
 
 See [competitor review](competitor-review.md). Organized is a substantial free alternative with a modern UI, roles, offline access and many workflows; claims that all competitors have poor UX are unsupported. NW Scheduler/NW Publisher, Hourglass, TerritoryHelper and specialized tools serve different workflows.
 
-Our immediate value: clear role-specific tools, simple setup, easy name search, hierarchy of additional duties, useful recovery messages, readable mobile controls and responsive help. Highest-value next product work: shared OCLM drafts, availability/time-off and conflict warnings, assignment acknowledgment, weekend public-talk workflow, multilingual accessible exports, monitoring and tested restoration. Territory mapping is a later dedicated scope. Avoid adding every competitor feature before reliability is proven.
+Our immediate value: clear role-specific tools, simple setup, easy name search, hierarchy of additional duties, useful recovery messages, readable mobile controls and responsive help. Shared OCLM drafts, availability and conflict warnings are now implemented. Next product work: assignment acknowledgment, weekend public-talk workflow, multilingual accessible exports, operational monitoring and real restoration drills. Territory mapping is a later dedicated scope. Avoid adding every competitor feature before reliability is proven.
 
 ## Paid-launch gates
 
 - Independent permission or replacement for distributed copyrighted form assets/content.
-- One authoritative secure production deployment; legacy migration explicitly tested.
+- One authoritative secure production deployment (now verified); unused legacy retirement documented, with no record migration required.
 - Two real congregation/account checks and small real congregation pilot.
 - Actual email acknowledgments, welcome/reminder delivery and failure monitoring.
 - Tested annual entitlement, captured-payment webhooks, receipts and refunds.

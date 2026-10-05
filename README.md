@@ -96,32 +96,32 @@ If a browser still shows an older interface after a successful deployment, reloa
 
 ## Navigation and Google accounts
 
-The mobile Menu includes every permitted section, plus help, announcements, appearance settings, and sign-out for all roles. Large labeled controls and a scrolling menu sheet keep options reachable on small screens. Desktop sections stay together without a spacer. S-3 name/month fields now have 4pt of left padding.
+Production and staging now use secure project `ejosykrxjvwrhxfnputo`. Google sign-in is enabled and observed for all three pilot identities. Main administrators assign accounts one or several roles; the server enforces congregation, group and section boundaries. See [current pilot status](supabase/pilot-status.md) for release evidence and remaining human acceptance steps.
 
-Google sign-in handles multiple roles, congregation selection, denied memberships, and expired sessions. Limited-role sessions fetch only their relevant data categories, and changing navigation context cannot grant extra screens. Backend RLS must enforce the same permissions. See [Google provider activation and account setup](supabase/google-sign-in.md); the new Google provider must be enabled in the dashboard before activating the project.
+The owner uses the same **Continue with Google** button with congregationassistant0@gmail.com. Active server approval grants SuperAdmin; no username, password account or separate owner login is needed. Sign-out clears the local Google session, role state and cloud-record caches, including when the auth server fails.
 
-## New backend and public website
+The mobile Menu includes permitted sections, help, notices, appearance and sign-out. Larger text is optional. Limited roles fetch only permitted data; changing browser navigation flags cannot grant server access.
 
-See [new-project.md](supabase/new-project.md) for a guarded fresh schema, Google owner setup, data migration boundaries, and a one-command CLI setup once secure administrative access is connected. The new project `ejosykrxjvwrhxfnputo` is configured and connected. Its Google provider is disabled, so activation remains pending. `app-config.js` retains the current project until a tested new one is configured. New congregations default to a 30-day trial, with an introductory ₹1,499/year offer and manual payment records; there is no payment gateway or automatic charge. The separate public site is maintained in `photographicode/Congregation-Assistant_Public`.
+## Secure backend and public website
 
-The app can be added to a home screen through its manifest and Install app menu item. Its service worker caches public app files only and checks the network first; it does not cache Supabase responses or provide offline cloud editing.
+The legacy project is unused by the owner's confirmation. Its former configuration is retained in `archive/` and Git history, excluded from Pages. Existing secure records are preserved. Fresh-project instructions are for a new empty project, not for rerunning destructive setup on this live database.
+
+New congregations have a 30-day trial and an introductory annual ceiling of ₹1,499. Owner billing fields are protected; a payment gateway, captured-payment webhooks and automatic paid entitlement are not activated. The separate website is `photographicode/Congregation-Assistant_Public`.
+
+The software runs in a web browser without installation. Optional Home Screen installation uses supported browser flows. Native mobile apps are not available. The service worker caches public application files only, checks the network first and does not cache Supabase responses or provide offline cloud editing.
 
 ## Integrated midweek workspace
 
-The midweek scheduler follows the selected CA theme, with one week selector and Schedule, Review & publish, and People sections. Nearby weeks are optional. Review highlights missing parts, assistants, repeated names, and missing workbook details. Workbook content is only preloaded for the weeks in the embedded library; users must check other weeks against the official workbook and edit titles.
+The scheduler follows the selected theme with Schedule, Review & publish and People sections. Private drafts, qualifications, away periods, reviewed programs and additional duties save online within the congregation, with role-scoped assistant access and revision checks. Browser storage remains a recovery copy. Conflicting edits must be reviewed; they never silently replace another device's draft.
 
-Drafts remain device-local. A persistent Retry save warning preserves the in-memory draft after browser storage fails. Assignment clearing retains edited titles, and Undo restores recent schedule changes within the current congregation. Publishing remains explicit: the page distinguishes device drafts, published versions, and unpublished changes. Failed publication leaves its error visible and preserves the previous live schedule. Changes made while publishing remain unpublished until the next publication. Removing a published week requires confirmation.
+Publishing uses the server draft for the selected week and preserves previously published weeks. Version checks, immutable history and rollback retain the stable live link. Failed saves/publications stay visible and keep draft recovery. Qualification exceptions override appointment defaults, away periods exclude suggestions, and assignment completion is recorded explicitly. Reviewed program imports support variable parts and durations; no JW.org/WOL scraper or bundled copyrighted workbook library is included.
 
-### Personal reminders and role guides
+The publisher-facing S-140 presentation has name search across all published weeks, songs, comments, auxiliary assignments and Additional Duties. Roster synchronization uses a limited names/IDs/appointment RPC without contacts or reports. Additional Duties support custom sections and sub-duties with 1–4 people each.
 
-`app-reminders.js` offers personal device schedules, filtered by verified role: weekly OCLM planning three weeks ahead; midweek/weekend attendance and attendance-form sharing; monthly service report and report-form sharing on the 1st. Users enable and save times explicitly in My reminders. Open-app alerts require notification permission; closed-app alerts use an explicitly imported `.ics` calendar with alarms. No automatic messages, background push delivery or synchronized reminder preferences are claimed. Calendar imports must be updated/deleted separately.
+## Role workspaces, reminders and recovery
 
-How to use opens an in-app guide filtered to assigned tools, with links to the matching `Congregation-Assistant_Public/how-to-use.html` topic. Install app remains optional and works through supported browser installation/Home Screen flows.
+Ordinary publisher accounts bind to a same-congregation publisher record and see their own assignments, duties, report status and notices. Combined roles share one login. Main Admin Home highlights missing reports, scheduling and attendance tasks. Group overseers can save bulk reports only for their assigned group; they cannot edit profiles, attendance or account access. Section assistants keep their assigned permissions without main-admin access.
 
-Secure group account setup requires `supabase/group-overseer.sql` after the reviewed fresh project migrations. Main admin assigns the exact group name through Access & Roles. The group role is read-only for its own publishers/reports and may create only its own scoped report form link. It cannot read attendance, edit records or change access. `scripts/check-group-access.sql` verifies the live backend in a rollback transaction. Google provider configuration remains required for congregation role accounts; the legacy backend is not silently migrated.
+My reminders includes first-of-month service reports, weekly OCLM planning three weeks ahead, and meeting attendance/form times. Device alerts and explicit calendar imports are available. Private server email/push queues and workers are deployed/prepared, but private sender/VAPID configuration, scheduled workers and real delivery verification remain required. See [email activation](docs/email-activation.md) and [push activation](docs/push-activation.md). Do not claim closed-app delivery is active before it is tested.
 
-### Owner identity, Google roles and Additional Duties
-
-The software owner is congregationassistant0@gmail.com, approved only as SuperAdmin. The normal username alias is superadmin and uses an owner password account; it does not require Google. Supabase Auth account activation and Google provider setup still need dashboard steps in [google-sign-in.md](supabase/google-sign-in.md). The previous owner email approval is retired; website support contact is a separate setting.
-
-Section assistants keep the same explicitly assigned role permissions and cannot receive Main admin as an assistant. An email may receive several section grants and sees their combined tools in one login. OCLM Additional Duties are configurable per congregation/device, support 1–4 people each, require explicit qualifications, and are included in reviewed publication with safe definitions and assigned names. Editable drafts are not a shared cloud draft.
+How to use opens a role-specific app guide linked to the website's feature instructions. Main administrators can download encrypted workspace backups and restore records, settings and schedules with conflict/scope checks. Existing access, billing and live tokens are retained. This does not replace operational backup and disaster recovery of the entire database.

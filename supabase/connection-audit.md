@@ -1,4 +1,6 @@
-# New project connection review — 3 October 2026
+# Historical connection review — 3 October 2026
+
+**Superseded operational status:** see [pilot-status.md](pilot-status.md). Google is enabled with real sign-ins, secure production is deployed, the owner is Google-only and existing secure records are preserved. The dated observations below describe the original empty-project audit, not the current configuration.
 
 Project: `ejosykrxjvwrhxfnputo`, Mumbai (`ap-south-1`), free plan.
 
