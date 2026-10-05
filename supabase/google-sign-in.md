@@ -20,7 +20,7 @@ Sign in to Supabase with the dashboard account that already owns or manages the 
 
    `https://ejosykrxjvwrhxfnputo.supabase.co/auth/v1/callback`
 
-7. Create the client. Keep its Client ID and Client secret private. In [Supabase](https://supabase.com/dashboard/project/ejosykrxjvwrhxfnputo/auth/providers), select the secure project → Authentication → Sign In / Providers → Google. Enable Google, paste the Client ID and Client secret, and Save. Paste the secret only in Supabase, not in this chat or software source.
+7. Create the client. Keep its Client ID and Client secret private. Replace any client secret shared in chat; enter the replacement only in the provider dashboard. In [Supabase](https://supabase.com/dashboard/project/ejosykrxjvwrhxfnputo/auth/providers), select the secure project → Authentication → Sign In / Providers → Google. Enable Google, paste the Client ID and Client secret, and Save. Paste the secret only in Supabase, not in this chat or software source.
 8. Open Authentication → URL Configuration. For this secure pilot, set **Site URL** to:
 
    `https://photographicode.github.io/congregation-assistant/staging/`

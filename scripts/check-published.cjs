@@ -21,6 +21,7 @@ const expected = new Map(names.map(name => [name, digest(fs.readFileSync(path.jo
         }));
         const pending = last.filter(result => !result.matches);
         if (!pending.length) {
+            if(!process.env.CA_CHECK_ASSET_ROOT){for(const name of ['supabase/google-sign-in.md','supabase/functions/owner-password-session/index.ts','scripts/check-app.cjs']){const response=await fetch(new URL(name,base),{signal:AbortSignal.timeout(15000)});if(response.status!==404)throw new Error('Internal source remains served by Pages: '+name+' ('+response.status+')');}console.log('PASS owner setup, backend source and tests are excluded from the public software deployment');}
             const output = path.join(root, 'artifacts/published');fs.mkdirSync(output, { recursive: true });
             fs.writeFileSync(path.join(output, 'deployment.json'), JSON.stringify({ url: base, checkedAt: new Date().toISOString(), files: last }, null, 2));
             console.log('PASS published HTML, CSS, and JavaScript match the checked-out commit:', base);

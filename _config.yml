@@ -1,0 +1,12 @@
+# Publish the runtime only. Owner setup, SQL and tests belong in source, not Pages.
+exclude:
+  - supabase
+  - scripts
+  - public-site-preview/scripts
+  - public-site-preview/README.md
+  - node_modules
+  - artifacts
+  - package.json
+  - package-lock.json
+  - README.md
+  - research
