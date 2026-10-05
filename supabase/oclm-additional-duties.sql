@@ -14,7 +14,7 @@ create or replace function public.upsert_oclm_public_snapshot(p_cong_id text,p_s
   select coalesce(jsonb_agg(jsonb_build_object('id',p->>'id','name',left(p->>'name',150))),'[]') into people
    from jsonb_array_elements(p_snapshot->'people') p where exists(select 1 from jsonb_each(assignments) w,jsonb_each(w.value) a where a.value->>'personId'=p->>'id');
   if p_snapshot ? 'additionalDuties' and jsonb_typeof(p_snapshot->'additionalDuties')<>'array' then raise exception 'Invalid additional duties';end if;
-  select coalesce(jsonb_agg(jsonb_build_object('id',d->>'id','name',left(trim(d->>'name'),100),'slots',(d->>'slots')::integer)),'[]') into duties from (
+  select coalesce(jsonb_agg(jsonb_build_object('id',d->>'id','name',left(trim(d->>'name'),100),'section',case when jsonb_typeof(d->'section')='string' and length(trim(d->>'section'))>0 then left(trim(d->>'section'),100) else 'Additional Duties' end,'slots',(d->>'slots')::integer)),'[]') into duties from (
    select distinct on (d->>'id') d from jsonb_array_elements(coalesce(p_snapshot->'additionalDuties','[]')) d
     where d->>'id' ~ '^Duty_[a-f0-9]{32}$' and length(trim(d->>'name')) between 1 and 100 and d->>'slots' ~ '^[1-4]$' order by d->>'id' limit 20) checked;
   clean=jsonb_build_object('v',2,'kind','midweek','additionalDuties',duties,'congregation',(select name from public.congregations where id=p_cong_id),'defaultWeek',p_snapshot->>'defaultWeek','publishedWeeks',weeks,'assignments',assignments,'people',people,'generatedAt',p_snapshot->'generatedAt');

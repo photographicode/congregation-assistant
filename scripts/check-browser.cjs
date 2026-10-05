@@ -184,8 +184,8 @@ async function run(profile) {
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
         await nav('oclm');
-        await page.locator('#mws-tab-schedule').click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
-        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.slots,2);
+        await page.locator('#mws-tab-schedule').click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutySection').fill('AV');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
+        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.section,'AV');assert.equal(duty.slots,2);
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
         await page.locator('details:has(#roleChecks) summary').click();
