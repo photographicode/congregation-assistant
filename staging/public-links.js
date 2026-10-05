@@ -1,13 +1,13 @@
 /* Stable public URLs contain capabilities, never a roster or private credentials. */
 (() => {
-    let client, timer, refreshing = false;
+    let client, timer, refreshing = false, revision=null, revisionToken=null;
     const base = () => new URL(location.pathname, location.origin).href;
     const tokenURL = (mode, token) => { const url = new URL(base()); url.searchParams.set('mode', mode); url.searchParams.set('token', token); return url.href; };
     const result = data => Array.isArray(data) ? data[0] : data;
     const rpc = async (name, args) => {
         if (!client) throw new Error('Cloud connection unavailable. Reload and try again.');
         const { data, error } = await client.rpc(name, args);
-        if (error) throw new Error(error.code === 'PGRST202' ? 'The database needs the public-link setup. Ask your administrator to run the provided SQL setup.' : error.message || 'The cloud request failed.');
+        if (error) throw Object.assign(new Error(error.code === 'PGRST202' ? 'The database needs the public-link setup. Ask your administrator to run the provided SQL setup.' : error.message || 'The cloud request failed.'),{code:error.code});
         return result(data);
     };
     const publicShell = () => {
@@ -42,7 +42,9 @@
         if (refreshing || (document.hidden && !initial)) return;
         refreshing = true;
         try {
+            if(!initial&&revisionToken===token){try{const latest=await rpc('get_oclm_public_revision',{p_token:token});if(latest===null){document.getElementById('liveSections').replaceChildren();status('This schedule link is no longer available. Ask the overseer for a current link.',true);return;}if(revision&&latest===revision)return;}catch(error){if(error.code!=='PGRST202')throw error;}}
             const row = await rpc('get_oclm_public_snapshot', { p_token: token });
+            revision=row?.updated_at||null;revisionToken=token;
             openSnapshot(row?.snapshot);
             status('Showing the latest published schedule. Updates are checked every 30 seconds.');
         } catch (error) {

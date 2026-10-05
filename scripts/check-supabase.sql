@@ -104,3 +104,8 @@ reset role;
 
 \i supabase/attendance-calendar.sql
 \i scripts/check-attendance-calendar.sql
+
+\i supabase/oclm-roster-group-bulk.sql
+\i scripts/check-roster-group-bulk.sql
+\i supabase/billing-fields-public-revision.sql
+\i scripts/check-billing-boundaries.sql
