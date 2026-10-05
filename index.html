@@ -2199,8 +2199,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             </div>
             <div class="px-6 sm:px-8 py-4 border-b border-white/10 flex flex-wrap gap-3 items-center shrink-0">
                 <label class="text-xs text-teal-200/80 font-bold uppercase tracking-wider">Filter Group</label>
-                <select id="bulk-entry-group-filter" onchange="window.ui.openBulkEntry()" class="px-3 py-2 rounded-xl text-sm"></select>
-                <input id="bulk-entry-search" type="search" oninput="window.ui.openBulkEntry()" placeholder="🔍 Search publisher..." class="px-3 py-2 rounded-xl text-sm min-w-[220px] flex-1">
+                <select id="bulk-entry-group-filter" aria-label="Service group" onchange="window.ui.openBulkEntry()" class="px-3 py-2 rounded-xl text-sm"></select>
+                <input id="bulk-entry-search" aria-label="Publisher name for bulk entry" type="search" oninput="window.ui.openBulkEntry()" placeholder="🔍 Search publisher..." class="px-3 py-2 rounded-xl text-sm min-w-[220px] flex-1">
             </div>
             <div class="overflow-y-auto custom-scrollbar p-6 sm:p-8 flex-1">
                 <table class="w-full text-left text-sm whitespace-nowrap">
@@ -5412,11 +5412,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         renderedRows.push(`
                             <tr class="border-b border-white/5 hover:bg-white/5" data-pubid="${window.ui.escapeHtml(p.id)}">
                                 <td class="px-3 py-2 font-medium text-white">${window.ui.escapeHtml(p.name)}</td>
-                                <td class="px-3 py-2 text-center"><input type="checkbox" class="bulk-shared accent-teal-500 w-4 h-4" onchange="window.ui.toggleBulkRow(this)" ${isShared ? 'checked' : ''}></td>
-                                <td class="px-3 py-2 text-center"><input type="number" min="0" class="bulk-studies att-input" style="width:70px" value="${studiesVal}" ${disAttr}></td>
-                                <td class="px-3 py-2 text-center"><input type="number" min="0" step="0.25" class="bulk-hours att-input" style="width:70px" value="${hoursVal}" ${disAttr}></td>
-                                <td class="px-3 py-2 text-center"><input type="checkbox" class="bulk-ap accent-emerald-500 w-4 h-4" ${r && r.isAP ? 'checked' : ''} ${disAttr}></td>
-                                <td class="px-3 py-2"><input type="text" class="bulk-comments att-input" style="text-align:left" value="${window.ui.escapeHtml(commentsVal)}" ${disAttr}></td>
+                                <td class="px-3 py-2 text-center"><input type="checkbox" aria-label="Shared in ministry: ${window.ui.escapeHtml(p.name)}" class="bulk-shared accent-teal-500 w-4 h-4" onchange="window.ui.toggleBulkRow(this)" ${isShared ? 'checked' : ''}></td>
+                                <td class="px-3 py-2 text-center"><input type="number" min="0" aria-label="Bible studies: ${window.ui.escapeHtml(p.name)}" class="bulk-studies att-input" style="width:70px" value="${studiesVal}" ${disAttr}></td>
+                                <td class="px-3 py-2 text-center"><input type="number" min="0" step="0.25" aria-label="Hours: ${window.ui.escapeHtml(p.name)}" class="bulk-hours att-input" style="width:70px" value="${hoursVal}" ${disAttr}></td>
+                                <td class="px-3 py-2 text-center"><input type="checkbox" aria-label="Auxiliary pioneer: ${window.ui.escapeHtml(p.name)}" class="bulk-ap accent-emerald-500 w-4 h-4" ${r && r.isAP ? 'checked' : ''} ${disAttr}></td>
+                                <td class="px-3 py-2"><input type="text" aria-label="Remarks: ${window.ui.escapeHtml(p.name)}" class="bulk-comments att-input" style="text-align:left" value="${window.ui.escapeHtml(commentsVal)}" ${disAttr}></td>
                             </tr>
                         `);
                     });

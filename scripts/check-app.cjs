@@ -378,5 +378,13 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const cards=fe.get('liveSections').innerHTML;assert.equal((cards.match(/live-s140-paper/g)||[]).length,2);assert(cards.includes('<mark>Alex Example</mark>'));
         fe.get('livePublisherSearch').value='missing name';fe.get('livePublisherSearch').oninput();assert(!fe.get('liveSections').innerHTML.includes('s140-paper'));
     });
+    await test('OCLM roster synchronization preserves assignments and qualifications without importing contacts',()=>{
+        const f=createHarness(),fw=f.window;fw.currentCongId='roster';
+        f.localStorage.setItem('ca_midweek_roster_jw_scheduler_personnel',JSON.stringify([{id:'old-scheduler',name:'Alex Example',appointment:'Other',roles:['BibleReading'],phone:'manual contact'}]));
+        fw.initMidweekScheduler();fw.setAssignment('BibleReading','old-scheduler');fw.MidweekScheduler.syncRoster([{id:'publisher-a',name:'Alex Example',gender:'Male',isElder:false,isMS:false},{id:'publisher-b',name:'Beth New',gender:'Female',isElder:false,isMS:false}]);
+        const saved=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_personnel'));assert.equal(saved[0].id,'old-scheduler');assert.equal(saved[0].publisherId,'publisher-a');assert.deepEqual([...saved[0].roles],['BibleReading']);assert.equal(saved[1].phone,'');
+        const assignments=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_assignments'));assert.equal(Object.values(assignments)[0].BibleReading.personId,'old-scheduler');
+        fw.MidweekScheduler.syncRoster([{id:'publisher-b',name:'Beth Renamed',gender:'Female'}]);const updated=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_personnel'));assert(updated[0].archived);assert.equal(updated[1].name,'Beth Renamed');
+    });
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});

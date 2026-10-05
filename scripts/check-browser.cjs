@@ -288,6 +288,14 @@ async function run(profile) {
                 assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['overseer']);
                 assert.equal(await page.evaluate(()=>window.db.publishers.length),100);assert(await page.evaluate(()=>window.db.publishers.every(p=>p.group==='Group 1')));
                 assert.equal(await page.locator('#overseer-password-action').isVisible(),false);
+                await page.evaluate(()=>{window.__qaOriginalConfig=window.CA_CONFIG;window.CA_CONFIG={...window.CA_CONFIG,secureBackend:true};window.ui.renderOverseerView('Group 1');});assert(await page.locator('#group-bulk-entry').isVisible());await page.locator('#group-bulk-entry').click();
+                assert.equal(await page.locator('#bulk-entry-table-body tr[data-pubid]').count(),100);
+                const firstRow=page.locator('#bulk-entry-table-body tr[data-pubid]').first();await firstRow.locator('.bulk-shared').check();await firstRow.locator('.bulk-studies').fill('3');await firstRow.locator('.bulk-comments').fill('Own group test');
+                await page.evaluate(()=>window.__qaBackend.rejectWrites=true);await page.locator('#modal-bulk-entry').getByRole('button',{name:'Save All Reports',exact:true}).click();
+                assert(await page.locator('#modal-bulk-entry').isVisible());assert.equal(await firstRow.locator('.bulk-studies').inputValue(),'3');
+                await page.evaluate(()=>window.__qaBackend.rejectWrites=false);await page.locator('#modal-bulk-entry').getByRole('button',{name:'Save All Reports',exact:true}).click();await page.waitForFunction(()=>document.getElementById('modal-bulk-entry').classList.contains('hidden'));
+                const groupSave=await page.evaluate(()=>window.__qaBackend.rpcCalls.filter(r=>r.name==='save_group_reports').at(-1));assert.equal(groupSave.args.p_reports.length,100);await page.evaluate(()=>{window.CA_CONFIG=window.__qaOriginalConfig;});
+
             }
             await page.evaluate(()=>window.CAReminders.open());
             const expected=role==='oclm'?['oclm']:role==='attendance'?['attendance_midweek','attendance_weekend','attendance_link']:['reports','report_link'];
@@ -311,6 +319,7 @@ async function run(profile) {
         await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#auth-screen').isVisible(),true);assert.match(await page.locator('#google-auth-status').innerText(),/no approved access/);
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
+        await page.evaluate(()=>{window.__qaOriginalConfig=window.CA_CONFIG;window.CA_CONFIG={...window.CA_CONFIG,secureBackend:true};window.CAOnboarding.request();});assert(await page.locator('#ca-trial-request').isVisible());await page.locator('#ca-trial-request [name=congregation]').fill('Fictional Request');await page.locator('#ca-trial-request [name=authorized]').check();await page.locator('#ca-trial-request button').click();await page.waitForFunction(()=>document.querySelector('#ca-trial-request [role=status]').textContent.includes('339f299d'));assert.match(await page.locator('#ca-trial-request [role=status]').innerText(),/No payment/);await page.evaluate(()=>{window.CA_CONFIG=window.__qaOriginalConfig;});
         await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
         assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');

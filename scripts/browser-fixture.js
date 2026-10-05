@@ -35,6 +35,13 @@
             if(name==='get_attendance_meeting')return {data:backend.meetingContext||{configured:true,date:'2026-10-05',kind:'midweek',serviceYear:2027,month:9,week:1,timezone:'Asia/Kolkata',canSubmit:true,count:82},error:null};
             if(name==='submit_current_attendance')return backend.rejectWrites?{data:null,error:{message:'Acceptance test: save rejected'}}:{data:true,error:null};
             if(name==='get_attendance_calendar')return {data:{settings:{timezone:'Asia/Kolkata',midweek_day:3,weekend_day:0},events:[],memorials:[{meeting_date:'2026-04-02',service_year:2026,attendance:149}]},error:null};
+            if(name==='request_congregation_trial')return backend.rejectWrites?{data:null,error:{message:'Acceptance test: request rejected'}}:{data:{reference:'339f299d-a5db-4b6e-9d87-067dabfd67ad',status:'pending',emailQueued:true},error:null};
+            if(name==='get_trial_requests')return {data:[],error:null};
+            if(name==='save_group_reports'){
+                if(backend.rejectWrites)return {data:null,error:{message:'Acceptance test: save rejected'}};
+                const saved=args.p_reports.map((r,i)=>({...r,id:'group-report-'+i,cong_id:args.p_cong_id,service_year:args.p_year,month:args.p_month}));
+                tables.reports.push(...saved);backend.writes.push({table:'reports',method:'rpc',payload:saved});return {data:saved,error:null};
+            }
             if(name==='get_oclm_roster')return {data:tables.publishers.filter(p=>p.cong_id===args.p_cong_id).map(p=>({id:p.id,name:p.name,gender:p.gender,isElder:p.is_elder,isMS:p.is_ms})),error:null};
             if(name==='get_oclm_public_revision')return {data:(backend.publications[args.p_token]||window.__qaPublicationsSeed?.[args.p_token])?.updated_at||null,error:null};
             if(name==='ca_is_superadmin')return {data:backend.superadmin===true,error:null};
