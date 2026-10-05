@@ -1238,6 +1238,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Command centre</h2>
                     <p class="text-teal-200/70 mt-1 text-slate-400">Congregations, trials, access, and published tools at a glance</p>
                 </div>
+                <button type="button" class="ca-owner-primary" onclick="window.CAOnboarding?.requests()">Review workspace requests</button>
                 <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
                     <details class="ca-owner-options"><summary>Appearance</summary><div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1" aria-label="Theme">
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('default')">Default</button>
@@ -1256,7 +1257,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </div>
             </div>
             
-            <div id="saas-overview" class="ca-admin-overview"></div><button type="button" class="ca-owner-primary" onclick="window.CAOnboarding?.requests()">Review workspace requests</button><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div id="saas-overview" class="ca-admin-overview"></div><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <!-- Populated via JS -->
             </div>
         </div>
