@@ -231,6 +231,7 @@ async function run(profile) {
         const updated=await page.evaluate(()=>window.__qaBackend.publications);
         await publicPage.evaluate(value=>{window.__qaPublicationsSeed=value;window.dispatchEvent(new Event('focus'));},updated);
         await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('Updated published title'));
+        assert.equal(await publicPage.locator('#ca-midweek-root > .ca-planning-note').isVisible(),false,'Publisher link exposes scheduler preparation controls');const AxeBuilder=require('@axe-core/playwright').default;const publicScan=await new AxeBuilder({page:publicPage}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(publicScan.violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)})),[],'Published S-140 accessibility');
         await publicPage.screenshot({path:path.join(output,`${profile.name}-public-live-updated.png`)});
         await page.evaluate(()=>{window.__qaBackend.rejectWrites=true;window.setPartTitle('Chairman','Rejected update');});await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
         assert.equal(await page.locator('#schedulerPublishError').isVisible(),true,'Publishing errors must stay visible');

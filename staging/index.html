@@ -2409,6 +2409,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(persist){save();renderAll();}
   }
   function save(sync=true){
+    for(const [week,data] of Object.entries(state.assignments))for(const [id,record] of Object.entries(data||{}))if(record?.personId)record.assignmentType=assignmentType(week,id,record);
     try{
       localStorage.setItem(storageKey('jw_scheduler_personnel'),JSON.stringify(state.personnel));
       localStorage.setItem(storageKey('jw_scheduler_assignments'),JSON.stringify(state.assignments));
@@ -2580,6 +2581,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function assignmentUseCount(personId){
     let c=0; Object.values(state.assignments).forEach(week=>Object.values(week||{}).forEach(r=>{if(r?.personId===personId&&!['cancelled','reassigned'].includes(r.status))c++;})); return c;
   }
+  function completedUseCount(personId){return Object.values(state.assignments).flatMap(w=>Object.values(w||{})).filter(a=>a.personId===personId&&a.status==='completed').length;}
   function weekUseCount(personId){ return allFields().filter(id=>recordFor(id).personId===personId).length; }
   function personHasDifferentPart(personId,currentField){ return allFields().some(id=>id!==currentField && recordFor(id).personId===personId); }
 
@@ -2664,7 +2666,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(!people.length){$('candidateList').innerHTML='<div style="padding:28px;text-align:center;font-size:10px;color:#8d969d">No qualified people found.</div>';return;}
     $('candidateList').innerHTML=people.map(p=>{
       const recommended=suggestion?.id===p.id; const same=personHasDifferentPart(p.id,fieldId); const weekCount=weekUseCount(p.id); const historic=assignmentUseCount(p.id);
-      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta"><span class="candidate-tag green">Qualified</span>${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span><span class="candidate-tag">${historic} scheduled</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
+      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta"><span class="candidate-tag green">Qualified</span>${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span><span class="candidate-tag">${historic} scheduled</span><span class="candidate-tag">${completedUseCount(p.id)} completed</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
     }).join('');
   }
 
@@ -2713,7 +2715,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function s140Markup(data,week,people,duties,congregation,publicView=false,q='',program=state.programs[week]){
     const details=meetingDetails(data),aux=details.auxiliary||auxiliarySections(data).length>0;
     const person=id=>{const name=people.find(p=>p.id===data[id]?.personId)?.name||(publicView?'':'Unassigned');return q&&name.toLowerCase().includes(q)?`<mark>${esc(name)}</mark>`:esc(name);};
-    let html=`<div class="paper-head"><div><div class="paper-kicker">${esc(congregation)}</div><div class="paper-title">Midweek Meeting Schedule</div><div class="paper-sub">Week of ${esc(weekLabel(week))}</div></div><div class="paper-meta">Congregation Assistant<br>S-140 reference layout</div></div>`+meetingDetailSummary(data,'');
+    let html=`<div class="paper-head"><div><div class="paper-kicker">${esc(congregation)}</div><div class="paper-title">Midweek Meeting Schedule</div><div class="paper-sub">Week of ${esc(weekLabel(week))}</div></div>${publicView?'':'<div class="paper-meta">Congregation Assistant<br>S-140 reference layout</div>'}</div>`+meetingDetailSummary(data,'');
     html+=`<div class="s140-opening"><span><strong>${esc(data.Chairman?.customTitle||'Chairman')}:</strong> ${person('Chairman')}</span>${aux?`<span><strong>Auxiliary counselor:</strong> ${person('AuxiliaryCounselor')}</span>`:''}<span><strong>Opening song:</strong> ${esc(details.opening||'—')} · <strong>Prayer:</strong> ${person('OpeningPrayer')}</span><span><strong>Opening comments:</strong> 1 min.${details.openingComments?' · '+esc(details.openingComments):''}</span></div>`;
     let number=1;
     for(const section of programSections(week,program)){html+=`<section class="print-section ${section.key}"><div class="print-bar">${esc(section.title)}</div>`;if(section.key==='living')html+=`<div class="s140-song">Song ${esc(details.middle||'—')}</div>`;if(aux&&['treasures','field'].includes(section.key))html+='<div class="s140-column-labels"><span>Part</span><span>Main hall</span><span>Auxiliary classroom</span></div>';

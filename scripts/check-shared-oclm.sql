@@ -20,6 +20,8 @@ select test.assert(jsonb_array_length(public.get_oclm_publication_history('share
 set request.jwt.claims='{"email":"assistant-shared@example.com","app_metadata":{"provider":"google"}}';
 select test.assert(public.get_oclm_workspace('shared-a')->>'revision'='1','assistant reads shared workspace');
 select public.save_oclm_workspace('shared-a',1,public.get_oclm_workspace('shared-a')->'draft');
+select public.save_oclm_workspace('shared-a',2,jsonb_set(jsonb_set(public.get_oclm_workspace('shared-a')->'draft','{programs}','{"2026-W43":{"parts":[{"id":"FollowingUp","type":"Conversation","section":"field","title":"Independent demo conversation","minutes":2}]}}'),'{assignments,2026-W43}','{"FollowingUp":{"personId":"person1","assignmentType":"FollowingUp","status":"scheduled"}}'));
+select test.assert(public.get_oclm_workspace('shared-a')->'draft'->'assignments'->'2026-W43'->'FollowingUp'->>'assignmentType'='Conversation','actual reviewed type overrides misleading old slot type');
 set request.jwt.claims='{"email":"other-shared@example.com","app_metadata":{"provider":"google"}}';
 do $$begin begin perform public.get_oclm_workspace('shared-a');raise exception 'cross congregation read';exception when insufficient_privilege then null;end;begin perform public.publish_oclm_week('shared-a','2026-W41',2,3);raise exception 'cross congregation publish';exception when insufficient_privilege then null;end;end$$;
 reset role;

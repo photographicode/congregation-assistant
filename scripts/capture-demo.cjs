@@ -1,4 +1,4 @@
-/* Capture real application UI with fictional demo records and an isolated backend. */
+/* Capture the simplified public S-140 and real application UI with fictional demo records and an isolated backend. */
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('playwright');const root=path.resolve(__dirname,'..'),output=path.join(root,'artifacts/demo-screens');fs.mkdirSync(output,{recursive:true});
 const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname.replace(/^\/$/,'/index.html'));if(!p.startsWith(root+path.sep)||!fs.existsSync(p)){res.writeHead(404).end();return;}res.setHeader('Content-Type',p.endsWith('.js')?'application/javascript':p.endsWith('.css')?'text/css':'text/html');fs.createReadStream(p).pipe(res);});
