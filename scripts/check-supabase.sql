@@ -1,10 +1,11 @@
 \set ON_ERROR_STOP on
 -- Isolated PostgreSQL emulates Supabase JWT claims; never points at a production database.
-create role anon nologin;create role authenticated nologin;
+create role anon nologin;create role authenticated nologin;create role service_role nologin;
 create schema auth;
 create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb $$;
 create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);
 create function auth.uid() returns uuid language sql stable as $$ select nullif(auth.jwt()->>'sub','')::uuid $$;
+create function auth.role() returns text language sql stable as $$ select auth.jwt()->>'role' $$;
 grant execute on function auth.uid() to anon,authenticated;
 grant usage on schema auth to anon,authenticated;
 grant execute on function auth.jwt() to anon,authenticated;
@@ -109,3 +110,9 @@ reset role;
 \i scripts/check-roster-group-bulk.sql
 \i supabase/billing-fields-public-revision.sql
 \i scripts/check-billing-boundaries.sql
+
+alter table auth.users add column raw_app_meta_data jsonb;
+\i supabase/onboarding-mail.sql
+\i scripts/check-onboarding-mail.sql
+\i supabase/google-only-owner.sql
+\i scripts/check-google-only-owner.sql

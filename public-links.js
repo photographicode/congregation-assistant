@@ -7,7 +7,7 @@
     const rpc = async (name, args) => {
         if (!client) throw new Error('Cloud connection unavailable. Reload and try again.');
         const { data, error } = await client.rpc(name, args);
-        if (error) throw Object.assign(new Error(error.code === 'PGRST202' ? 'The database needs the public-link setup. Ask your administrator to run the provided SQL setup.' : error.message || 'The cloud request failed.'),{code:error.code});
+        if (error) throw Object.assign(new Error(error.code === 'PGRST202' ? 'This link is unavailable. Ask your administrator to check sharing.' : error.message || 'The cloud request failed.'),{code:error.code});
         return result(data);
     };
     const publicShell = () => {
@@ -61,7 +61,7 @@
         install(cloudClient) { client = cloudClient; },
         async publish(snapshot) {
             const row = await rpc('upsert_oclm_public_snapshot', {p_cong_id:String(window.currentCongId),p_snapshot:snapshot});
-            if (!row?.token || typeof row.token !== 'string') throw new Error('Publishing was not confirmed. The database needs the OCLM public-link setup.');
+            if (!row?.token || typeof row.token !== 'string') throw new Error('Publishing was not confirmed. Your draft is preserved. Ask your administrator to check sharing.');
             return {token:row.token,publishedAt:row.updated_at || new Date().toISOString()};
         },
         async create(kind, group = '', publisher = '') {

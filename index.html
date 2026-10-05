@@ -1256,7 +1256,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </div>
             </div>
             
-            <div id="saas-overview" class="ca-admin-overview"></div><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div id="saas-overview" class="ca-admin-overview"></div><button type="button" class="ca-secondary-action" onclick="window.CAOnboarding?.requests()">Review workspace requests</button><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <!-- Populated via JS -->
             </div>
         </div>
@@ -2802,6 +2802,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <script src="app-config.js"></script>
     <script src="app-install.js"></script>
     <script src="app-reminders.js"></script>
+    <script src="app-onboarding.js"></script>
     <script src="app-attendance.js"></script>
     <script src="app-guide.js"></script>
     <script src="public-links.js"></script>
@@ -2821,7 +2822,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
-        window.AttendanceCalendar?.install(supabaseClient);
+        window.AttendanceCalendar?.install(supabaseClient);window.CAOnboarding?.install(supabaseClient);
         window.sysPromptState = { actionCallback: null, requiresPassword: false };
         window.currentCongId = null;
 
@@ -2943,7 +2944,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group,is_assistant':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
                     window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer'].includes(row.role));
-                    if(!window.auth.googleAccess.length){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
+                    if(!window.auth.googleAccess.length){window.CAOnboarding?.request();window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
                     const ids=[...new Set(window.auth.googleAccess.map(row=>row.cong_id))],saved=sessionStorage.getItem('fs_cong_id');
                     if(ids.length===1||ids.includes(saved)){await window.auth.activateGoogleRole(ids.includes(saved)?saved:ids[0]);return true;}
                     window.auth.clearGoogleRole(true);window.auth.verifiedEmail=email;const box=document.getElementById('google-congregation-list');

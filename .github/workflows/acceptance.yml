@@ -69,6 +69,14 @@ jobs:
       - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
         env:
           PGPASSWORD: acceptance-only
+      - name: Restore an isolated synthetic database backup
+        run: |
+          createdb -h localhost -U postgres ca_restore_check
+          pg_dump -h localhost -U postgres --no-owner ca_acceptance -f /tmp/ca-synthetic-backup.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -d ca_restore_check -f /tmp/ca-synthetic-backup.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -d ca_restore_check -f scripts/check-restored-backup.sql
+        env:
+          PGPASSWORD: acceptance-only
 
   accessibility-matrix:
     runs-on: ubuntu-latest
