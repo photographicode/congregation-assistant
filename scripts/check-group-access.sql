@@ -1,0 +1,32 @@
+-- Test fixtures use a transaction; no persistent congregation data is created.
+begin;
+create schema ca_group_check;
+create function ca_group_check.assert(ok boolean,label text) returns void language plpgsql as $$ begin if ok is distinct from true then raise exception 'FAILED: %',label;end if;end $$;
+grant usage on schema ca_group_check to authenticated;grant execute on function ca_group_check.assert(boolean,text) to authenticated;
+insert into public.congregations(id,name,status) values('group-check-a','Group test A','active'),('group-check-b','Group test B','active');
+insert into public.publishers(id,cong_id,name,service_group) values('group-own','group-check-a','Own member','One'),('group-other','group-check-a','Other group','Two'),('group-tenant','group-check-b','Other tenant','One');
+insert into public.reports(id,cong_id,pub_id,service_year,month) values('report-own','group-check-a','group-own',2026,8),('report-other','group-check-a','group-other',2026,8),('report-tenant','group-check-b','group-tenant',2026,8);
+insert into public.congregation_access(cong_id,email,role,service_group) values('group-check-a','group-check@example.com','group_overseer','One');
+set request.jwt.claims='{"email":"group-check@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select ca_group_check.assert((select count(*)=1 from public.publishers),'group account reads one assigned group only');
+select ca_group_check.assert((select count(*)=1 from public.reports),'group account reads its own reports only');
+select ca_group_check.assert((select count(*)=0 from public.meeting_attendance),'group account cannot read attendance');
+select ca_group_check.assert((select count(*)=1 from public.congregations),'group account cannot read another congregation');
+select public.create_public_link('group-check-a','report','One',null);
+do $$ begin
+ begin perform public.create_public_link('group-check-a','report',null,null);raise exception 'Unscoped link accepted';exception when insufficient_privilege then null;end;
+ begin perform public.create_public_link('group-check-a','report','Two',null);raise exception 'Other group link accepted';exception when insufficient_privilege then null;end;
+ begin perform public.create_public_link('group-check-b','report','One',null);raise exception 'Other congregation link accepted';exception when insufficient_privilege then null;end;
+ begin perform public.create_public_link('group-check-a','attendance',null,null);raise exception 'Attendance link accepted';exception when insufficient_privilege then null;end;
+ begin perform public.create_public_link('group-check-a','report','One','group-other');raise exception 'Other publisher link accepted';exception when insufficient_privilege then null;end;
+ begin insert into public.reports(id,cong_id,pub_id,service_year,month) values('group-bad','group-check-a','group-own',2027,8);raise exception 'Group account wrote a report';exception when insufficient_privilege then null;end;
+ update public.publishers set name='Bad edit' where id='group-own';if found then raise exception 'Group account edited publisher';end if;
+ update public.congregation_access set role='admin' where email='group-check@example.com';if found then raise exception 'Group account escalated itself';end if;
+end $$;
+reset role;
+update public.congregation_access set active=false where email='group-check@example.com';
+set role authenticated;
+select ca_group_check.assert((select count(*)=0 from public.publishers),'revoked group membership immediately loses read access');
+reset role;
+rollback;
+select 'PASS exact group scope, tenant isolation, denied writes/link escalation and immediate revocation' as result;

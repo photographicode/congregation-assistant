@@ -71,6 +71,8 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     execute(fs.readFileSync(path.join(root, 'public-links.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root, 'pdf-tools.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root, 'app-support.js'), 'utf8'));
+    execute(fs.readFileSync(path.join(root,'app-reminders.js'),'utf8'));
+    execute(fs.readFileSync(path.join(root,'app-guide.js'),'utf8'));
     execute(scripts[1][2] + '\nwindow.__exports={s21:buildS21OriginalPdf,s3:buildS3OriginalPdf};');
     const toast = window.ui.showToast;
     window.ui.showToast = (text, type = 'success') => { messages.push({ text, type }); toast(text, type); };

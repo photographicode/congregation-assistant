@@ -299,6 +299,31 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         await fw.auth.activateGoogleRole('qa');assert.deepEqual(JSON.parse(fixture.sessionStorage.getItem('fs_roles')),['attendance','field_service']);assert.equal(fw.auth.roleReady,true);
         await assert.rejects(fw.auth.activateGoogleRole('other'),/no active access/);
     });
+    await test('reminders handle first-of-month, weekly rollover and three-week planning across years',()=>{
+        const qa=createHarness(),fw=qa.window,r=fw.CAReminders;fw.currentCongId='reminder-test';qa.sessionStorage.setItem('fs_auth','true');fw.auth.roleReady=true;fw.auth.verifiedRoles=['admin'];
+        const monthly={monthly:true,time:'09:00'},weekly={day:1,time:'09:00'};
+        assert.equal(r.occurrence(monthly,new Date(2026,0,31,15),true).getMonth(),1);assert.equal(r.occurrence(monthly,new Date(2026,11,31,15),true).getFullYear(),2027);
+        assert.equal(r.occurrence(monthly,new Date(2026,0,1,8),false).getMonth(),11);
+        assert.equal(r.occurrence(weekly,new Date(2026,9,5,8),true).getDate(),5);assert.equal(r.occurrence(weekly,new Date(2026,9,5,10),true).getDate(),12);
+        assert.equal(r.weekId(r.planningDate(new Date(2026,11,20))),'2027-W01');
+    });
+    await test('role reminders, calendar contents and dismissals stay within account and congregation',()=>{
+        const qa=createHarness(),fw=qa.window,r=fw.CAReminders;fw.currentCongId='reminder-test';qa.sessionStorage.setItem('fs_auth','true');fw.auth.roleReady=true;fw.auth.verifiedEmail='private@example.com';fw.auth.verifiedRoles=['oclm'];
+        const key='ca_reminders_v1_'+JSON.stringify(['reminder-test','private@example.com',[]]);
+        qa.localStorage.setItem(key,JSON.stringify({oclm:{enabled:true,day:1,time:'09:00'},reports:{enabled:true,time:'09:00'}}));
+        assert.deepEqual(r.settings().map(x=>x.id),['oclm']);assert.equal(r.due(new Date(2026,9,5,10)).length,1);
+        const ics=r.calendar(new Date(2026,9,5,8)).replace(/\r\n /g,'');assert(ics.includes('RRULE:FREQ=WEEKLY;BYDAY=MO'));assert(ics.includes('BEGIN:VALARM'));assert(!ics.includes('private@example.com'));assert(!ics.includes('reports —'));assert(!ics.includes('?token='));
+        const event=r.due(new Date(2026,9,5,10))[0];r.done('oclm',event.date.toISOString());assert.equal(r.due(new Date(2026,9,5,11)).length,0);
+        fw.auth.verifiedEmail='other@example.com';assert.equal(r.settings()[0].enabled,false);fw.auth.verifiedEmail='private@example.com';fw.currentCongId='other';assert.equal(r.settings()[0].enabled,false);
+        fw.currentCongId='reminder-test';fw.auth.verifiedRoles=['attendance'];assert.deepEqual(r.settings().map(x=>x.id),['attendance_midweek','attendance_weekend','attendance_link']);fw.auth.verifiedRoles=['group_overseer'];assert.deepEqual(r.settings().map(x=>x.id),['reports','report_link']);
+        qa.sessionStorage.setItem('ca_signed_out','true');assert.equal(r.settings().length,0);
+    });
+    await test('group view rejects private caches from a previous wider role and escapes report text',()=>{
+        const qa=createHarness(),fw=qa.window;fw.currentCongId='group-test';fw.auth.roleReady=true;fw.auth.verifiedRoles=['group_overseer'];fw.auth.verifiedGroups=['One'];qa.sessionStorage.setItem('fs_auth_type','role');
+        qa.localStorage.setItem('ca_cache_publishers_group-test','[{"name":"Other group"}]');qa.localStorage.setItem('ca_cache_reports_group-test','[{"comments":"Private"}]');fw.db.restoreLocalCaches();assert.equal(fw.db.publishers.length,0);assert.equal(fw.db.reports.length,0);
+        fw.db.publishers=[{id:'own',name:'A <script>',group:'One'},{id:'other',name:'Other group hidden',group:'Two'}];const info=fw.utils.getISTPreviousMonthInfo();fw.db.reports=[{pubId:'own',serviceYear:info.serviceYear,month:info.month,sharedInMinistry:true,comments:'<script>bad</script>'}];fw.ui.renderOverseerView('One');const view=qa.elements.get('overseer-detail').innerHTML;assert(!view.includes('Other group hidden'));assert(!view.includes('<script>'));assert(view.includes('&lt;script&gt;'));
+        assert.deepEqual(fw.ui.getAllowedTabs(),['overseer']);qa.sessionStorage.setItem('fs_roles','["admin"]');assert.deepEqual(fw.ui.getAllowedTabs(),['overseer']);
+    });
     await test('PDF text fitting stays within fields and unsupported scripts fail clearly', async () => {
         const pdf=await PDFDocument.create(),font=await pdf.embedFont(StandardFonts.Helvetica);
         const fitted=w.PdfTools.fit('Long congregation '.repeat(20),font,128,8.5,6.5);assert(fitted.width<=128);assert(fitted.size>=6.5);
