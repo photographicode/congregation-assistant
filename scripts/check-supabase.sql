@@ -116,3 +116,6 @@ alter table auth.users add column raw_app_meta_data jsonb;
 \i scripts/check-onboarding-mail.sql
 \i supabase/google-only-owner.sql
 \i scripts/check-google-only-owner.sql
+
+\i supabase/shared-oclm.sql
+\i scripts/check-shared-oclm.sql

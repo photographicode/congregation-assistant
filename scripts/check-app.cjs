@@ -386,5 +386,16 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const assignments=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_assignments'));assert.equal(Object.values(assignments)[0].BibleReading.personId,'old-scheduler');
         fw.MidweekScheduler.syncRoster([{id:'publisher-b',name:'Beth Renamed',gender:'Female'}]);const updated=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_personnel'));assert(updated[0].archived);assert.equal(updated[1].name,'Beth Renamed');
     });
+    await test('explicit qualification exclusions beat appointments and away periods exclude overlapping weeks',()=>{
+        const f=createHarness(),fw=f.window;fw.currentCongId='exceptions';
+        f.localStorage.setItem('ca_midweek_exceptions_jw_scheduler_personnel',JSON.stringify([
+          {id:'excluded',name:'Excluded Elder',appointment:'Elder',roles:[],exceptions:{Chairman:false}},
+          {id:'away',name:'Away Elder',appointment:'Elder',roles:[],availability:[{from:'2026-01-01',to:'2026-12-31'}]},
+          {id:'available',name:'Available Brother',appointment:'MS',roles:[],exceptions:{Chairman:true}}
+        ]));fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W41');
+        assert.equal(fw.MidweekScheduler.isEligible('excluded','Chairman'),false);assert.equal(fw.MidweekScheduler.isEligible('excluded','Prayer'),true);
+        assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),false);assert.equal(fw.MidweekScheduler.isEligible('available','Chairman'),true);
+        fw.setSchedulerWeek('2027-W02');assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),true);
+    });
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});
