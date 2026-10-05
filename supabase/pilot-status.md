@@ -15,10 +15,10 @@ Current phase: deployed secure staging, preparing for a small congregation pilot
 ## Still pending
 
 1. Finish interactive Google sign-in and Google test-user approval. On 5 October, the user saved provider/URL settings and supplied screenshots of the correct Google origin and callback. A live readiness check verified Google enabled and the authorization redirect using the intended Client ID and Supabase callback. This does not prove an actual account login works. Add the staging directory URL explicitly to allowed redirects and keep pilot users on staging. The client secret belongs only in the provider dashboard; rotate any secret shared in chat.
-2. Create the approved owner's Supabase Auth password account privately. Owner approval exists; a metadata query confirmed the account does not. Use the normal username login after activation, without Google.
+2. Complete an actual owner Google sign-in using Continue with Google. The owner-password route is retired; no password account setup is required. The server checks the approved Google identity before opening SuperAdmin. Verify sign-out and a fresh login.
 3. Actual Google sign-in by two approved test accounts in different congregations. Test direct API access with real sessions, unauthorized and revoked accounts, sign-out, expired-session recovery, failed saves, schedule publication and live links.
 4. Review the old backend and prepare a backed-up, tested data migration before changing the main software configuration. Current connection cannot audit the old project. Do not treat the legacy root as the secure pilot.
-5. Review the official OCLM DOCX when supplied. Keep Additional Duties separate from the official meeting program and preserve the current usable workflow.
+5. The supplied S-140 DOCX has been reviewed as a format reference. New review/print layout supports opening and closing items, numbered parts, durations, weekly reading, songs and an optional auxiliary classroom. Validate a real week with the overseer. Keep Additional Duties separate from the official meeting program and preserve the current usable workflow.
 6. Full backup and restore rehearsal, shared-draft strategy for OCLM assistants, plain-language privacy/retention/support terms, and pilot user acceptance.
 7. Define server-enforced paid entitlement and trial expiry before Razorpay. Prefer one clear congregation plan; do not implement three tiers without a concrete feature mapping. Complete the small pilot and resolve critical issues before paid launch.
 
