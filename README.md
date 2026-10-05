@@ -119,3 +119,9 @@ Drafts remain device-local. A persistent Retry save warning preserves the in-mem
 How to use opens an in-app guide filtered to assigned tools, with links to the matching `Congregation-Assistant_Public/how-to-use.html` topic. Install app remains optional and works through supported browser installation/Home Screen flows.
 
 Secure group account setup requires `supabase/group-overseer.sql` after the reviewed fresh project migrations. Main admin assigns the exact group name through Access & Roles. The group role is read-only for its own publishers/reports and may create only its own scoped report form link. It cannot read attendance, edit records or change access. `scripts/check-group-access.sql` verifies the live backend in a rollback transaction. Google provider configuration remains required for congregation role accounts; the legacy backend is not silently migrated.
+
+### Owner identity, Google roles and Additional Duties
+
+The software owner is congregationassistant0@gmail.com, approved only as SuperAdmin. The normal username alias is superadmin and uses an owner password account; it does not require Google. Supabase Auth account activation and Google provider setup still need dashboard steps in [google-sign-in.md](supabase/google-sign-in.md). The previous owner email approval is retired; website support contact is a separate setting.
+
+Section assistants keep the same explicitly assigned role permissions and cannot receive Main admin as an assistant. An email may receive several section grants and sees their combined tools in one login. OCLM Additional Duties are configurable per congregation/device, support 1–4 people each, require explicit qualifications, and are included in reviewed publication with safe definitions and assigned names. Editable drafts are not a shared cloud draft.

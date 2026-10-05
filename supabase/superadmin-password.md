@@ -9,3 +9,5 @@ For a fresh owner, the initial password digest is configured privately in ca_pri
 Password activation is pending clarification of the trailing dots in the supplied credential. Configure the exact initial password only after that answer. Verify actual sign-in, denied credentials, reload, sign-out, and disabled owner behavior.
 
 Approved congregation identities use server-loaded roles. Main admin / Secretary has all congregation sections; field service has publishers/groups/reports; attendance has attendance; OCLM has only scheduling. Help, appearance and sign-out remain available. Multiple deliberately assigned roles combine. The new backend enforces role permissions and tenant isolation; the legacy backend still needs its authorization audit.
+
+Owner identity: congregationassistant0@gmail.com. This is the SuperAdmin account only and must not be granted a congregation admin role automatically. Existing owner email approval is retired when replacing the owner. The username alias remains superadmin; no Google login is required for this password account.

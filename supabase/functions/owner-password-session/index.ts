@@ -10,7 +10,7 @@ Deno.serve(async request => {
     const {username,password}=JSON.parse(raw);
     if(typeof username!=='string'||username.trim().toLowerCase()!=='superadmin'||typeof password!=='string'||!password.length||password.length>128)return fail();
     const url=Deno.env.get('SUPABASE_URL')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,anon=Deno.env.get('SUPABASE_ANON_KEY')!;
-    const email='photographicode@gmail.com';
+    const email='congregationassistant0@gmail.com';
     const serviceHeaders={'apikey':service,'Authorization':'Bearer '+service,'Content-Type':'application/json'};
     const signIn=()=>fetch(url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:anon,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
     let login=await signIn();
