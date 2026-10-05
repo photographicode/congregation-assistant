@@ -27,7 +27,7 @@
  }
  function planningDate(now=new Date()){const d=new Date(now);d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+21);return d;}
  function due(now=new Date()){const saved=read();return settings().filter(r=>r.enabled).map(rule=>({rule,date:occurrence(rule,now)})).filter(item=>now-item.date>=0&&now-item.date<86400000&&saved[item.rule.id]?.done!==item.date.toISOString());}
- function open(){window.ui.openModal('modal-reminders');render();}
+ function open(){window.ui.openModal('modal-reminders');render();window.CAOnboarding?.mailSettings();}
  function render(){
   const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||'device time';document.getElementById('reminder-timezone').textContent='Times use this device’s time zone: '+zone+'. Choose your actual meeting days and times.';
   const rules=settings(),box=document.getElementById('reminder-settings');

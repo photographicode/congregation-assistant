@@ -1,0 +1,12 @@
+begin;
+insert into public.ca_superadmins(email) values('google-only-owner@example.invalid');
+set request.jwt.claims='{"email":"google-only-owner@example.invalid","app_metadata":{"provider":"email","providers":["email","google"]}}';set local role authenticated;
+do $$begin if public.ca_is_superadmin() then raise exception 'Password session gained owner rights';end if;end $$;
+reset role;
+set request.jwt.claims='{"email":"google-only-owner@example.invalid","app_metadata":{"provider":"google"}}';set local role authenticated;
+do $$begin if not public.ca_is_superadmin() then raise exception 'Approved Google owner rejected';end if;end $$;
+reset role;
+update public.ca_superadmins set active=false where email='google-only-owner@example.invalid';
+set local role authenticated;
+do $$begin if public.ca_is_superadmin() then raise exception 'Revoked owner accepted';end if;end $$;
+rollback;
