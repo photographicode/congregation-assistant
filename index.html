@@ -1046,6 +1046,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">Field Service</div>
                         <button onclick="window.ui.switchTab('groups', false, 'field')" id="btn-tab-groups" data-nav-context="field" data-nav-tab="groups" class="ca-nav-item" aria-label="Groups"><span class="ca-nav-icon">♧</span><span class="ca-nav-label">Groups</span></button>
+                        <button onclick="window.ui.switchTab('overseer', false, 'field')" id="btn-tab-overseer" data-nav-context="field" data-nav-tab="overseer" class="ca-nav-item" aria-label="My group"><span class="ca-nav-icon">♧</span><span class="ca-nav-label">My group</span></button>
                         <button onclick="window.ui.switchTab('analytics', false, 'field')" id="btn-tab-analytics" data-nav-context="field" data-nav-tab="analytics" class="ca-nav-item" aria-label="Analytics"><span class="ca-nav-icon">▥</span><span class="ca-nav-label">Analytics</span></button>
                     </div>
                     <div class="ca-nav-divider"></div>
@@ -1062,6 +1063,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <div class="ca-nav-section">
                         <div class="ca-nav-section-title">More</div>
                         <button onclick="window.ui.openAnnouncements()" id="btn-announcements" class="ca-nav-item ca-announcements-item" aria-label="Announcements"><span class="ca-nav-icon">🔔</span><span class="ca-nav-label">Announcements</span><span id="ca-announcements-dot" class="ca-notification-dot hidden"></span></button>
+                        <button type="button" onclick="window.CAReminders.open()" id="btn-reminders" class="ca-nav-item" aria-label="My reminders"><span class="ca-nav-icon">◴</span><span class="ca-nav-label">My reminders</span><span id="reminder-badge" hidden></span></button><button type="button" onclick="window.installCongregationApp()" id="btn-install-app" class="ca-nav-item" aria-label="Install app"><span class="ca-nav-icon">↓</span><span class="ca-nav-label">Install app</span></button>
                         <button onclick="window.ui.startHowToUse()" id="btn-how-to-use" class="ca-nav-item" aria-label="How to use"><span class="ca-nav-icon">?</span><span class="ca-nav-label">How to use</span></button>
                         <button onclick="window.ui.openModal('modal-about')" id="btn-about" class="ca-nav-item" aria-label="About the application"><span class="ca-nav-icon">i</span><span class="ca-nav-label">About the application</span></button>
                     </div>
@@ -1146,23 +1148,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     </div>
 
     <!-- Guided "How to use?" tour -->
-    <div id="modal-how-to-use" class="hidden fixed inset-0 bg-black/65 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border border-teal-400/20">
-            <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-                <div><h3 class="text-xl font-bold text-white">How to use Congregation Assistant</h3><p class="text-sm text-teal-200/60 mt-1">A quick walkthrough from setup to daily reporting.</p></div>
-                <button type="button" onclick="window.ui.closeModal('modal-how-to-use')" class="text-teal-200/50 hover:text-white">✕</button>
-            </div>
-            <div class="p-6 space-y-3">
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">1. Add a publisher</b><p class="text-sm text-white/65 mt-1">Open Publishers, choose <b>Add Publisher</b>, enter the person's details and save. The new record is then available to reports, groups and analytics.</p></div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">2. Record monthly reports</b><p class="text-sm text-white/65 mt-1">From Home, use the monthly submissions area to review reports. Missing reports can be identified and reminders can be sent.</p></div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">3. Use Groups &amp; Analytics</b><p class="text-sm text-white/65 mt-1">Groups keeps people organised, while Analytics provides roster and service summaries.</p></div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><b class="text-teal-300">4. Attendance &amp; Emergency Contacts</b><p class="text-sm text-white/65 mt-1">When enabled for your congregation, these modules appear automatically in the navigation.</p></div>
-                <div class="rounded-2xl bg-teal-500/10 border border-teal-400/20 p-4"><b class="text-teal-300">Demo congregation</b><p class="text-sm text-white/65 mt-1">Try midweek scheduling with fictional people. Demo publishing stays on your device and creates no public link.</p></div>
-                <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="window.ui.closeModal('modal-how-to-use')" class="px-4 py-2 rounded-xl bg-white/10 text-white font-bold">Close</button><button type="button" onclick="window.ui.closeModal('modal-how-to-use'); window.ui.startGuidedTour()" class="px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold">Start guided tour</button></div>
-            </div>
-        </div>
-    </div>
-
+    <div id="modal-how-to-use" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="ca-guide-title"><div class="ca-help-dialog"><div class="ca-help-header"><h2 id="ca-guide-title">How to use</h2><button type="button" class="ca-secondary-action" onclick="window.ui.closeModal('modal-how-to-use')" aria-label="Close usage guide">✕</button></div><p>Choose the task you need. Each guide opens on our website with clear steps.</p><div id="ca-role-guide"></div><p><a href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html" target="_blank" rel="noopener noreferrer">Browse every feature on the website ↗</a></p></div></div>
+    <div id="modal-reminders" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="reminder-title"><div class="ca-help-dialog"><div class="ca-help-header"><h2 id="reminder-title">My reminders</h2><button type="button" class="ca-secondary-action" onclick="window.ui.closeModal('modal-reminders')" aria-label="Close reminders">✕</button></div><p>Choose when to be reminded about your assigned work. These are personal settings on this device.</p><p id="reminder-timezone"></p><div class="ca-help-warning"><strong>When will alerts arrive?</strong><p>App reminders are checked while you are signed in with the app open. For alerts when it is closed, download and import the calendar reminders, then check your calendar’s notification settings. Background push and automatic messages are not configured.</p></div><h3>Due now</h3><div id="reminder-due" aria-live="polite"></div><div id="reminder-settings"></div><div class="ca-reminder-actions"><button type="button" class="ca-secondary-action" onclick="window.CAReminders.save()">Save reminder times</button><button type="button" class="ca-secondary-action" onclick="window.CAReminders.download()">Download calendar reminders</button><button type="button" class="ca-secondary-action" onclick="window.ui.openModal('modal-install-app')">Device notification settings</button></div><p id="reminder-save-status" role="status"></p><h3>Next reminders</h3><ul id="reminder-upcoming"></ul><p>Calendar exports use local times and contain no publisher names or private form links. If you change times, remove the old imported CA reminders before importing the new file. Sign-out does not remove reminders already imported into a calendar.</p><p><a href="https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#reminders" target="_blank" rel="noopener noreferrer">Reminder instructions ↗</a></p></div></div>
     <div id="modal-coming-soon" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
         <div class="glass-panel max-w-sm w-full rounded-3xl p-7 text-center border border-white/10">
             <div class="w-14 h-14 rounded-2xl bg-white/10 text-white/50 flex items-center justify-center mx-auto mb-4 text-2xl">◌</div>
@@ -1172,7 +1159,6 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         </div>
     </div>
 
-    <!-- Mobile "More" Menu Modal -->
     <div id="modal-mobile-menu" class="hidden sm:hidden fixed inset-0 bg-black/80 z-[1000] flex items-end justify-center" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
         <div class="glass-panel ca-mobile-menu-sheet">
             <div class="ca-mobile-menu-heading"><div><h2 id="mobile-menu-title">All sections</h2><p id="mobile-menu-role">Choose where you want to go.</p></div><button type="button" onclick="window.ui.closeModal('modal-mobile-menu')" aria-label="Close navigation menu">×</button></div>
@@ -1188,7 +1174,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <button type="button" id="menu-item-emergency" data-menu-permission="emergency" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('emergency',false,'main')"><span class="ca-menu-icon" aria-hidden="true">!</span><span><strong>Emergency Contacts</strong><small>Contact details and printable lists</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-access" data-menu-permission="admin" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openAccessManager()"><span class="ca-menu-icon" aria-hidden="true">⌁</span><span><strong>Access & Roles</strong><small>Manage approved Google accounts</small></span><span aria-hidden="true">›</span></button>
                 </section>
-                <section class="ca-mobile-menu-section" data-menu-section="Field Service"><h3>Field Service</h3>
+                <section class="ca-mobile-menu-section" data-menu-section="Field Service"><h3>Field Service</h3><button type="button" id="menu-item-overseer" data-menu-permission="overseer" class="ca-menu-item" onclick="window.ui.switchTab('overseer',false,'field')"><span class="ca-menu-icon">♧</span><span><strong>My group</strong><small>Assigned members and missing reports</small></span><span>›</span></button>
                     <button type="button" id="menu-item-groups" data-menu-permission="groups" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('groups',false,'field')"><span class="ca-menu-icon" aria-hidden="true">♧</span><span><strong>Groups</strong><small>Service groups and group reports</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-analytics" data-menu-permission="analytics" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.switchTab('analytics',false,'field')"><span class="ca-menu-icon" aria-hidden="true">▥</span><span><strong>Analytics & Rosters</strong><small>Review totals and publisher rosters</small></span><span aria-hidden="true">›</span></button>
                 </section>
@@ -1203,7 +1189,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <button type="button" id="menu-item-help" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.startHowToUse()"><span class="ca-menu-icon" aria-hidden="true">?</span><span><strong>How to use</strong><small>Step-by-step help for this application</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-about" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-about')"><span class="ca-menu-icon" aria-hidden="true">i</span><span><strong>About the application</strong><small>Application information and support</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-settings" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.openModal('modal-settings')"><span class="ca-menu-icon" aria-hidden="true">⚙</span><span><strong>Settings & Appearance</strong><small>Choose a theme, font and account settings</small></span><span aria-hidden="true">›</span></button>
-                    <button type="button" id="menu-item-notifications" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.ui.openModal('modal-install-app')"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>Notification settings</strong><small>Enable notifications, get help, or send a test</small></span><span aria-hidden="true">›</span></button>
+                    <button type="button" id="menu-item-notifications" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.CAReminders.open()"><span class="ca-menu-icon" aria-hidden="true">🔔</span><span><strong>My reminders</strong><small>Choose times for your assigned work</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-install" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu');window.installCongregationApp()"><span class="ca-menu-icon" aria-hidden="true">↓</span><span><strong>Install app</strong><small>Add this workspace to your home screen</small></span><span aria-hidden="true">›</span></button>
                     <button type="button" id="menu-item-logout" data-menu-permission="support" class="ca-menu-item" onclick="window.ui.closeModal('modal-mobile-menu'); window.ui.confirmLogout()"><span class="ca-menu-icon" aria-hidden="true">↪</span><span><strong>Sign out</strong><small>Leave this account safely</small></span><span aria-hidden="true">›</span></button>
                 </section>
@@ -1211,7 +1197,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         </div>
     </div>
 
-    <div id="modal-install-app" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="install-app-title"><div class="glass-panel max-w-lg w-full rounded-2xl p-6"><h2 id="install-app-title" class="text-xl font-bold">App &amp; notification settings</h2><p class="mt-4">Android: open your browser menu and choose Install app or Add to Home screen.</p><p class="mt-4">iPhone or iPad: open this website in Safari, tap Share, then Add to Home Screen.</p><p class="mt-4">Internet is needed for cloud records and publishing.</p><hr class="my-4"><h3 class="font-bold">Notifications</h3><p id="notification-status" class="mt-2" role="status">Check your device notification settings.</p><div class="flex gap-2 mt-4 flex-wrap"><button class="ca-secondary-action" onclick="window.CANotifications.enable()">Enable notifications</button><button class="ca-secondary-action" onclick="window.CANotifications.test()">Send test notification</button><button class="ca-secondary-action" onclick="window.CANotifications.guide()">Settings help</button></div><p id="notification-help" class="mt-4 text-sm">Android: allow notifications for this site in your browser settings. iPhone/iPad: use iOS 16.4 or later, add the app to your Home Screen, then open the installed app to enable notifications. Remote alerts need the server delivery setup.</p><button class="ca-secondary-action mt-6" onclick="window.ui.closeModal('modal-install-app')">Got it</button></div></div>
+    <div id="modal-install-app" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="install-app-title"><div class="glass-panel max-w-lg w-full rounded-2xl p-6"><h2 id="install-app-title" class="text-xl font-bold">App &amp; notification settings</h2><p class="mt-4">Android: open your browser menu and choose Install app or Add to Home screen.</p><p class="mt-4">iPhone or iPad: open this website in Safari, tap Share, then Add to Home Screen.</p><p class="mt-4">Internet is needed for cloud records and publishing.</p><hr class="my-4"><h3 class="font-bold">Notifications</h3><p id="notification-status" class="mt-2" role="status">Check your device notification settings.</p><div class="flex gap-2 mt-4 flex-wrap"><button class="ca-secondary-action" onclick="window.CANotifications.enable()">Enable notifications</button><button class="ca-secondary-action" onclick="window.CANotifications.test()">Send test notification</button><button class="ca-secondary-action" onclick="window.CANotifications.guide()">Settings help</button></div><p id="notification-help" class="mt-4 text-sm">Android: allow notifications for this site in your browser settings. iPhone/iPad: use iOS 16.4 or later, add the app to your Home Screen, then open the installed app to enable notifications. App reminders are checked while open. Import calendar reminders for alerts when closed. Remote push delivery is not configured.</p><button class="ca-secondary-action mt-6" onclick="window.ui.closeModal('modal-install-app')">Got it</button></div></div>
     <div id="modal-google-congregation" class="hidden fixed inset-0 bg-black/80 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="google-congregation-title">
         <div class="glass-panel w-full max-w-lg rounded-2xl p-6"><h2 id="google-congregation-title" class="text-xl font-bold">Choose your congregation</h2><p class="mt-2">Your Google account has access to more than one congregation.</p><div id="google-congregation-list" class="mt-4 space-y-3"></div><button type="button" class="ca-secondary-action mt-4" onclick="window.ui.closeModal('modal-google-congregation')">Cancel</button></div>
     </div>
@@ -1224,9 +1210,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
                     <input id="access-email-input" type="email" placeholder="brother@gmail.com" class="w-full px-4 py-3 rounded-xl">
-                    <select id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance</option><option value="oclm">OCLM</option></select>
+                    <select onchange="document.getElementById('access-group-field').hidden=this.value!=='group_overseer'" id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance overseer</option><option value="oclm">OCLM overseer</option><option value="group_overseer">Group overseer — assigned group only</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
+                <label id="access-group-field" hidden>Assigned group (match its exact name)<input id="access-group-input" maxlength="100" placeholder="e.g. Group 1" class="w-full px-4 py-3 rounded-xl"><span class="text-sm">Group overseers can read their own group and create its report form link. They cannot edit records or see congregation totals.</span></label>
                 <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">Google account setup</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. Provider activation and database permissions require your Supabase administrator. Setup instructions are included in the repository.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy account setup SQL</button></div>
             </div>
         </div>
@@ -1359,6 +1346,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <!-- MEETINGS / OCLM TAB -->
         <div id="tab-oclm" class="tab-content space-y-4">
 <div id="ca-midweek-root" class="mws-root">
+<div class="ca-planning-note"><strong>Plan at least three weeks ahead.</strong><p>Assign, review, and publish early so everyone has time to prepare. This target does not assign people automatically.</p><button type="button" class="ca-secondary-action" onclick="window.setSchedulerWeek(window.CAReminders.weekId(window.CAReminders.planningDate()))">Plan the week three weeks ahead</button><button type="button" class="ca-secondary-action" onclick="window.CAReminders.open()">Set my planning reminder</button></div>
   <div class="mws-heading"><div><div class="eyebrow">Meeting preparation</div><h1>Midweek meeting</h1><p>Prepare assignments. Review the week. Share one live schedule.</p></div><span class="mws-draft-badge" id="publicationState">Device draft</span></div>
   <div class="mws-notice mws-save-error" id="schedulerSaveError" role="alert" hidden><div><strong>Your changes are not saved.</strong><p>They are still on this screen. Retry saving before leaving or reloading.</p></div><button class="btn" id="retrySchedulerSave" type="button">Retry save</button></div>
   <div class="mws-topbar"><div class="topbar-inner">
@@ -1816,11 +1804,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         <p class="text-teal-200/70 text-sm mt-1" id="overseer-subtitle"></p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="window.ui.openModal('modal-overseer-password')" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all border border-white/10">🔑 Change Password</button>
-                        <button onclick="window.auth.overseerLogout()" class="bg-rose-900/50 hover:bg-rose-800 text-rose-200 px-4 py-2 rounded-lg text-sm font-bold transition-all border border-rose-500/40">Log Out</button>
+                        <button id="overseer-password-action" onclick="window.ui.openModal('modal-overseer-password')" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all border border-white/10">🔑 Change Password</button>
+                        <button onclick="sessionStorage.getItem('fs_auth_type')==='role'?window.auth.logout():window.auth.overseerLogout()" class="bg-rose-900/50 hover:bg-rose-800 text-rose-200 px-4 py-2 rounded-lg text-sm font-bold transition-all border border-rose-500/40">Log Out</button>
                     </div>
                 </div>
-                <div id="overseer-detail" class="glass-panel p-4 sm:p-8 rounded-2xl"></div>
+                <div class="flex gap-2 flex-wrap"><button class="ca-secondary-action" onclick="window.CAReminders.open()">My report reminders</button><button class="ca-secondary-action" onclick="window.ui.copyGroupLink(window.auth.verifiedGroups[0]||window.ui.overseerGroup)">Copy group report form link</button></div><div id="overseer-detail" class="glass-panel p-4 sm:p-8 rounded-2xl"></div>
             </div>
         </div>
 
@@ -2844,6 +2832,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
     <script src="app-config.js"></script>
     <script src="app-install.js"></script>
+    <script src="app-reminders.js"></script>
+    <script src="app-guide.js"></script>
     <script src="public-links.js"></script>
     <script src="pdf-tools.js"></script>
     <script src="app-support.js"></script>
@@ -2935,6 +2925,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             roleReady: false,
             verifiedRoles: [],
+            verifiedGroups: [],
+            verifiedEmail: null,
             verifiedOwner: false,
             googleAccess: [],
             showGoogleStatus: message => {
@@ -2945,16 +2937,18 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             clearGoogleRole: (force=false) => {
                 if(force||sessionStorage.getItem('fs_auth_type')==='role')for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
-                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedOwner=false;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;
             },
             activateGoogleRole: async congId => {
                 if(window.auth.googleSwitching)throw new Error('Please wait for your congregation to open.');
                 window.auth.googleSwitching=true;
                 try{
-                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId&&row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
+                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId&&row.active===true&&['admin','field_service','attendance','oclm','group_overseer'].includes(row.role));
                 if(!grants.length)throw new Error('This Google account has no active access to that congregation.');
                 const {data:cong,error}=await supabaseClient.from('congregations').select('id,name,status,created_at,trial_days,feature_attendance,feature_emergency_contacts,feature_oclm').eq('id',congId).single();
                 if(error||!cong)throw new Error('Your congregation could not be opened. Ask an administrator to check your access.');
+                window.auth.verifiedGroups=[...new Set(grants.filter(row=>row.role==='group_overseer'&&typeof row.service_group==='string'&&row.service_group.trim()).map(row=>row.service_group))];
+                if(grants.some(row=>row.role==='group_overseer')&&!window.auth.verifiedGroups.length)throw new Error('Your group access needs an assigned group. Ask your administrator to complete it.');
                 const roles=[...new Set(grants.map(row=>row.role))];window.auth.verifiedRoles=roles;window.auth.verifiedOwner=false;const role=roles.includes('admin')?'admin':roles[0];
                 window.auth.roleReady=true;window.currentCongId=cong.id;window.db.currentCongData=cong;
                 sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','role');sessionStorage.setItem('fs_role',role);sessionStorage.setItem('fs_roles',JSON.stringify(roles));sessionStorage.setItem('fs_cong_id',cong.id);sessionStorage.setItem('fs_cong_name',cong.name);sessionStorage.setItem('fs_last_activity',String(Date.now()));
@@ -2973,13 +2967,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
                     const {data:superAccess,error:superError}=await supabaseClient.rpc('ca_is_superadmin');
                     if(!superError && superAccess===true){window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
-                    const {data,error}=await supabaseClient.from('congregation_access').select('cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
+                    const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
-                    window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm'].includes(row.role));
+                    window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer'].includes(row.role));
                     if(!window.auth.googleAccess.length){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
                     const ids=[...new Set(window.auth.googleAccess.map(row=>row.cong_id))],saved=sessionStorage.getItem('fs_cong_id');
                     if(ids.length===1||ids.includes(saved)){await window.auth.activateGoogleRole(ids.includes(saved)?saved:ids[0]);return true;}
-                    window.auth.clearGoogleRole(true);const box=document.getElementById('google-congregation-list');
+                    window.auth.clearGoogleRole(true);window.auth.verifiedEmail=email;const box=document.getElementById('google-congregation-list');
                     box.innerHTML=ids.map(id=>`<button type="button" class="ca-secondary-action w-full" onclick="window.auth.activateGoogleRole(${window.ui.jsArg(id)})">${window.ui.escapeHtml(id)}</button>`).join('');
                     window.auth.showGoogleStatus('Choose a congregation to continue.');window.ui.openModal('modal-google-congregation');return true;
                 }catch(error){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus(error.message||'Google sign-in could not be completed. Please try again.');return true;}
@@ -3061,7 +3055,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_cong_id','fs_cong_name','fs_last_activity','fs_trial_days','ca_owner_backend'])storage.removeItem(key);
                     for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(key.startsWith('ov_auth_')||key.startsWith('ca_cache_'))storage.removeItem(key);
                 }
-                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
                 for(const key of ['publishers','reports','congregations'])window.db[key]=[];
                 window.db.currentCongData=null;
                 document.getElementById('auth-screen').classList.remove('hidden');
@@ -3310,7 +3304,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (legacyAvatar) legacyAvatar.textContent = (congName || 'C').trim().charAt(0).toUpperCase();
 
                 window.db.restoreLocalCaches();
-                const allowedTabs=window.ui.getAllowedTabs(),needsPublishers=allowedTabs.some(tab=>['dashboard','publishers','groups','analytics','emergency'].includes(tab));
+                const allowedTabs=window.ui.getAllowedTabs(),groupOnly=allowedTabs.includes('overseer')&&!allowedTabs.includes('publishers'),needsPublishers=allowedTabs.some(tab=>['dashboard','publishers','groups','analytics','emergency','overseer'].includes(tab));
                 if(!needsPublishers){window.db.publishers=[];window.db.reports=[];}if(!allowedTabs.includes('attendance'))window.db.attendance=[];
                 if (isCloudEnabled) {
                     try {
@@ -3321,15 +3315,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         }
 
                         if(needsPublishers){
-                        const { data: pData, error: pError } = await supabaseClient.from('publishers').select('*').eq('cong_id', congId);
+                        let publisherQuery=supabaseClient.from('publishers').select('*').eq('cong_id',congId);if(groupOnly)publisherQuery=publisherQuery.in('service_group',window.auth.verifiedGroups);
+                        const { data: pData, error: pError } = await publisherQuery;
                         if (pError) throw pError;
                         window.db.publishers = (pData || []).map(window.db.mapPubFromDB);
-                        window.db.writeLocalCache('publishers');
+                        if(!groupOnly)window.db.writeLocalCache('publishers');
 
-                        const { data: rData, error: rError } = await supabaseClient.from('reports').select('*').eq('cong_id', congId);
+                        let reportQuery=supabaseClient.from('reports').select('*').eq('cong_id',congId);if(groupOnly)reportQuery=reportQuery.in('pub_id',window.db.publishers.map(p=>p.id));
+                        const { data: rData, error: rError } = groupOnly&&!window.db.publishers.length?{data:[],error:null}:await reportQuery;
                         if (rError) throw rError;
                         window.db.reports = (rData || []).map(window.db.mapRepFromDB);
-                        window.db.writeLocalCache('reports');
+                        if(!groupOnly)window.db.writeLocalCache('reports');
 
                         }
                         if(allowedTabs.includes('attendance')){
@@ -4036,7 +4032,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.openModal('modal-announcements');
             },
             showComingSoon: (name) => { const t=document.getElementById('coming-soon-title'); if(t) t.textContent=`${name} — Coming Soon`; window.ui.openModal('modal-coming-soon'); },
-            startHowToUse: () => { window.open('https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html', '_blank', 'noopener,noreferrer'); },
+            startHowToUse: () => window.CAGuide.open(),
             startGuidedTour: () => {
                 const steps = [
                     {id:'btn-tab-publishers', title:'1. Start with Publishers', text:'Add each publisher first. The Publisher database is the foundation for reports, groups, filtering and S-21 downloads.'},
@@ -4285,10 +4281,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 let roles; try{roles=JSON.parse(sessionStorage.getItem('fs_roles')||'null');}catch{}
 
                 const fallback=sessionStorage.getItem('fs_role')||'admin';
-                return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm'].includes(role)))];
+                return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm','group_overseer'].includes(role)))];
             },
             getAllowedTabs: () => {
-                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm']};
+                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm'],field_service:['publishers','groups','analytics'],attendance:['attendance'],oclm:['oclm'],group_overseer:['overseer']};
                 if(window.auth.roleReady&&window.auth.verifiedOwner)return ['superadmin'];
                 return [...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];
             },
@@ -4297,7 +4293,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const roles=window.ui.getRoleGrants(),allowed=window.ui.getAllowedTabs(),isSuper=window.auth.verifiedOwner===true&&window.auth.roleReady;
                 document.querySelectorAll('.tab-content.active').forEach(panel=>{if(!allowed.includes(panel.id.replace('tab-','')))panel.classList.remove('active');});
                 document.getElementById('nav-superadmin')?.classList.toggle('hidden',!isSuper);
-                const sections={main:allowed.some(tab=>['dashboard','publishers','emergency'].includes(tab)),field:roles.includes('admin')||roles.includes('field_service'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
+                const sections={main:allowed.some(tab=>['dashboard','publishers','emergency'].includes(tab)),field:roles.includes('admin')||roles.includes('field_service')||roles.includes('group_overseer'),attendance:allowed.includes('attendance'),oclm:allowed.includes('oclm'),more:true};
                 document.querySelectorAll('#nav-admin .ca-nav-section').forEach(section=>{
                     const title=section.querySelector('.ca-nav-section-title')?.textContent?.trim().toLowerCase();
                     const key=title==='field service'?'field':title==='main'?'main':title==='attendance'?'attendance':title==='oclm'?'oclm':'more';
@@ -4313,7 +4309,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     button.classList.toggle('hidden',!(permission==='support'||permission==='super'&&isSuper||!isSuper&&(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
                 document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
-                const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'Midweek Scheduler'};
+                const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM overseer',group_overseer:'Group overseer'};
                 const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]).join(' · ')||'No assigned sections';
             },
 
@@ -4321,15 +4317,18 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             loadRoleAccess: async () => {
                 if(!window.ui.canManageAccess())return;const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance overseer',oclm:'OCLM overseer',group_overseer:'Group overseer'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}${r.role==='group_overseer'?' · '+window.ui.oclmEscape(r.service_group||'Group not assigned'):''}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
             },
             addRoleAccess: async () => {
                 if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');
                 const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase(),role=document.getElementById('access-role-input')?.value;
                 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Enter a valid Google account email.');
-                if(!['admin','field_service','attendance','oclm'].includes(role))throw new Error('Choose a valid role.');
+                if(!['admin','field_service','attendance','oclm','group_overseer'].includes(role))throw new Error('Choose a valid role.');
                 if(!isCloudEnabled)throw new Error('Cloud connection is required to manage access.');
-                const {error}=await supabaseClient.from('congregation_access').upsert({id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});
+                const serviceGroup=role==='group_overseer'?(document.getElementById('access-group-input')?.value||'').trim():null;
+                if(role==='group_overseer'&&(!serviceGroup||serviceGroup.length>100))throw new Error('Enter the exact assigned group name.');
+                if(role==='group_overseer'&&!window.CA_CONFIG?.secureBackend)throw new Error('Group account access requires the secure backend setup. Existing group links are unchanged.');
+                const {error}=await supabaseClient.from('congregation_access').upsert({...window.CA_CONFIG?.secureBackend?{service_group:serviceGroup}:{},id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});
                 if(error)throw new Error('Account access was not saved. '+error.message);
                 document.getElementById('access-email-input').value='';await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');
             },
@@ -4391,6 +4390,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.ui.closeModal('modal-mobile-menu');
                 window.AppSupport.reconcileDialogs();
 
+                window.CAReminders?.tick();
+                if(tabId==='overseer')window.ui.renderOverseerView(window.auth.verifiedGroups[0]||window.ui.overseerGroup);
                 if (tabId === 'dashboard') window.ui.renderDashboard();
                 if (tabId === 'publishers') window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL',window.ui.currentPubFilterValue || '');
                 if (tabId === 'groups') window.ui.renderGroups();
@@ -5373,11 +5374,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             renderOverseerView: (groupName) => {
-                document.getElementById('overseer-title').textContent = `${groupName} Group`;
+                document.getElementById('overseer-password-action')?.classList.toggle('hidden',sessionStorage.getItem('fs_auth_type')==='role');
+                document.getElementById('overseer-title').textContent = `${groupName||'Assigned'} Group`;
                 const istInfo = window.utils.getISTPreviousMonthInfo();
                 document.getElementById('overseer-subtitle').textContent = `Read-only view · Data for ${istInfo.displayString}`;
 
-                const pubs = window.db.getPublishers();
+                const pubs=window.db.getPublishers().filter(p=>p.group===groupName);
                 const pubIds = pubs.map(p => p.id);
                 const reports = window.db.getReports(istInfo.serviceYear, istInfo.month).filter(r => pubIds.includes(r.pubId));
                 let stats = { elders: 0, rps: 0, aps: 0 }; let pending = [], membersList = [], tableHtml = '';
@@ -5389,12 +5391,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         if(r.isAP) stats.aps++;
                         const gH = parseFloat(r.hours || 0); const gS = parseInt(r.studies || 0);
                         const gIsShared = r.sharedInMinistry || gH > 0 || gS > 0;
-                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? (r.comments||'') : 'Not Participated'}</td></tr>`;
+                        tableHtml += `<tr class="border-b border-white/5 hover:bg-white/5"><td class="py-2 px-3 font-medium text-white">${window.ui.escapeHtml(p.name)}</td><td class="py-2 px-3 text-center text-emerald-400">${gIsShared?'✔':'No'}</td><td class="py-2 px-3 text-center">${gIsShared && gS>0 ? gS : '-'}</td><td class="py-2 px-3 text-center">${gIsShared && gH>0 ? gH : '-'}</td><td class="py-2 px-3 text-center text-xs truncate max-w-[150px] text-teal-100/70">${gIsShared ? window.ui.escapeHtml(r.comments||'') : 'Not Participated'}</td></tr>`;
                     } else { pending.push(p.name); tableHtml += `<tr class="border-b border-white/5 text-teal-100/50 bg-black/20"><td class="py-2 px-3">${window.ui.escapeHtml(p.name)}</td><td colspan="4" class="py-2 px-3 text-center italic text-xs">Pending</td></tr>`; }
                 });
 
-                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${name}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
-                document.getElementById('overseer-detail').innerHTML = `<div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
+                let pendingHtml = pending.length > 0 ? `<ol class="list-decimal pl-5 space-y-1 text-rose-300 text-sm">${pending.map(name => `<li>${window.ui.escapeHtml(name)}</li>`).join('')}</ol>` : '<div class="text-emerald-400 text-sm">All submitted!</div>';
+                document.getElementById('overseer-detail').innerHTML = `<div class="grid grid-cols-4 gap-3 mb-6 text-center text-white"><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold">${pubs.length}</div><div class="text-xs text-teal-100/60">Members</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-cyan-300">${stats.elders}</div><div class="text-xs text-teal-100/60">Elders</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-teal-300">${stats.rps}</div><div class="text-xs text-teal-100/60">RPs</div></div><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="text-2xl font-bold text-amber-300">${stats.aps}</div><div class="text-xs text-amber-100/60">APs</div></div></div><div class="grid grid-cols-2 gap-4 mb-6"><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Pending Reports</h4>${pendingHtml}</div><div class="bg-black/20 p-4 rounded-lg border border-white/5"><h4 class="font-medium text-white mb-2 text-sm border-b border-white/10 pb-1">Members</h4><div class="text-sm text-teal-100/70">${membersList.map(window.ui.escapeHtml).join('<br>')}</div></div></div><div class="bg-black/30 rounded-lg border border-white/5 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-black/40 text-teal-100/60"><tr><th class="px-3 py-2">Publisher</th><th class="px-3 py-2 text-center">Shared</th><th class="px-3 py-2 text-center">Studies</th><th class="px-3 py-2 text-center">Hours</th><th class="px-3 py-2 text-center">Remarks</th></tr></thead><tbody class="divide-y divide-white/5">${tableHtml}</tbody></table></div>`;
             },
 
             copyGroupLink: async (groupName) => {

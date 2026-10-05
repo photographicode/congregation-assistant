@@ -34,3 +34,9 @@ In GitHub Settings → Applications → Installed GitHub Apps, configure the app
 - Complete the small congregation pilot and resolve critical issues before paid launch. Legacy backend authorization remains unaudited.
 
 The authorized publication includes the safe-area adjustment for mobile notifications and browser assertions for notification overlap and duplicate public preview tabs. Real-account OAuth remains a separate acceptance gate.
+
+## Role reminders and scoped group overseers — 5 October 2026
+
+Secure backend adds `group_overseer` with a required exact group name. Live rollback tests verified other-group/other-congregation denial, report/attendance link scope, denied edits and immediate revocation. The permission helper's authenticated SECURITY DEFINER advisor warning is intentional: it checks the current Google identity, active membership, congregation status and exact group, returns only a boolean, uses an empty search path, and denies anonymous execution. Other prior public-link advisor warnings remain under the existing narrow token contracts.
+
+Personal reminder settings are local to an account/congregation/device. Reminders are opt-in; weekly OCLM prompts target three weeks ahead, attendance/form-sharing days and times are configurable, and service reports/form sharing repeat on the 1st. Calendar export supports closed-app alerts after import and permission checks. Automatic server push and messages remain unconfigured. This does not verify OAuth or turn the legacy backend into the secure pilot.

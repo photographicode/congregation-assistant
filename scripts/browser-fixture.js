@@ -22,7 +22,7 @@
                             if (index < 0) list.push({ ...row }); else list[index] = { ...list[index], ...row };
                         }
                     }
-                    let data = (tables[table] || []).filter(row => operations.filter(([name]) => name === 'eq').every(([, field, value]) => row[field] === value));
+                    let data = (tables[table] || []).filter(row => operations.filter(([name]) => name === 'eq').every(([, field, value]) => row[field] === value)&&operations.filter(([name])=>name==='in').every(([,field,values])=>values.includes(row[field])));
                     if (operations.some(([name]) => name === 'single' || name === 'maybeSingle')) data = data[0] || null;
                     return { data, error: null };
                 };

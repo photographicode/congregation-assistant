@@ -1,6 +1,6 @@
 /* Only public application files are cached. No API responses or congregation records. */
-const CACHE='ca-shell-review-publish-2';
-const names=['index.html','app.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','manifest.webmanifest'];
+const CACHE='ca-shell-roles-reminders-3';
+const names=['index.html','app.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','app-reminders.js','app-guide.js','manifest.webmanifest'];
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('ca-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));
 self.addEventListener('fetch',event=>{

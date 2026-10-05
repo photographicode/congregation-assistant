@@ -2,7 +2,7 @@
  let installPrompt;
  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
  window.installCongregationApp=async()=>{
-  if(matchMedia('(display-mode: standalone)').matches){window.ui.showToast('The app is already installed.');return;}
+  if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){window.ui.showToast('The app is already installed.');return;}
   if(installPrompt){await installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return;}
   window.ui.openModal('modal-install-app');
  };
@@ -23,8 +23,9 @@
    await registration();
    if(Notification.permission==='denied'){this.guide();return;}
    const permission=await Notification.requestPermission();
-   status(permission==='granted'?'Device permission is enabled. Send a test to check it. Remote SuperAdmin alerts still need server delivery setup.':'Notifications are not enabled. Tap Settings help to allow them.');
+   status(permission==='granted'?'Device permission is enabled. Send a test to check it. Reminders can alert while the app is open. Use calendar reminders when it is closed.':'Notifications are not enabled. Tap Settings help to allow them.');
   }catch(error){status(error.message);}},
+  async sendReminder(title,body){const reg=await registration();if(Notification.permission!=='granted')return;await reg.showNotification('Congregation Assistant',{body:title+' — '+body,icon:'assets/icon-192.png',tag:'ca-personal-reminder',data:{url:new URL('./',location.href).href}});},
   async test(){try{
    const reg=await registration();if(Notification.permission!=='granted')throw new Error('Tap Enable notifications first. If previously blocked, use Settings help.');
    await reg.showNotification('Congregation Assistant — test',{body:'Your device can display notifications. This checks device permission; remote delivery is not yet configured.',icon:'assets/icon-192.png',tag:'ca-notification-test',data:{url:new URL('./',location.href).href}});

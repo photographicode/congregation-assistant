@@ -240,13 +240,13 @@ async function run(profile) {
             assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'New public forms directly read private tables');
         }
         await publicContext.close();
-        if(profile.mobile){await nav('publishers');await page.locator('#m-btn-tab-menu').click();for(const section of ['Main','Field Service','Attendance','OCLM','More'])assert(await page.locator('[data-menu-section="'+section+'"]').isVisible(),'Mobile section missing '+section);await page.locator('#menu-item-install').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-notifications').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app').getByRole('button',{name:'Settings help',exact:true}).click();assert.match(await page.locator('#notification-status').innerText(),/Do Not Disturb/);await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();}
+        if(profile.mobile){await nav('publishers');await page.locator('#m-btn-tab-menu').click();for(const section of ['Main','Field Service','Attendance','OCLM','More'])assert(await page.locator('[data-menu-section="'+section+'"]').isVisible());await page.locator('#menu-item-install').click();assert(await page.locator('#modal-install-app').isVisible());await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-notifications').click();assert(await page.locator('#modal-reminders').isVisible());await page.locator('#modal-reminders').getByRole('button',{name:'Device notification settings',exact:true}).click();await page.locator('#modal-install-app').getByRole('button',{name:'Settings help',exact:true}).click();assert.match(await page.locator('#notification-status').innerText(),/Do Not Disturb/);await page.locator('#modal-install-app').getByRole('button',{name:'Got it',exact:true}).click();await page.evaluate(()=>window.ui.closeModal('modal-reminders'));}
         await page.evaluate(async()=>{await window.auth.googleLogin();});
         const oauth=await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1));assert.equal(oauth.provider,'google');assert.equal(new URL(oauth.options.redirectTo).search,'');assert.equal(new URL(oauth.options.redirectTo).hash,'');
-        for(const role of ['field_service','attendance','oclm']) {
+        for(const role of ['field_service','attendance','oclm','group_overseer']) {
             await page.evaluate(async role=>{
                 window.__qaBackend.reads=[];window.__qaBackend.session={user:{email:'qa@example.com'}};
-                window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true}];
+                window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role,active:true,service_group:role==='group_overseer'?'Group 1':null}];
                 await window.auth.resumeGoogleRole();
             },role);
             if(role==='oclm'){
@@ -269,10 +269,24 @@ async function run(profile) {
                 assert.equal(await page.locator('#menu-item-home').isVisible(),false);
                 assert.equal(await page.locator('#menu-item-publishers').isVisible(),role==='field_service');
                 for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
-                assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':'oclm')).isVisible(),true);
+                assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':role==='group_overseer'?'overseer':'oclm')).isVisible(),true);
                 await page.screenshot({path:path.join(output,`${profile.name}-${role}-menu.png`)});
                 await page.locator('#modal-mobile-menu button[aria-label="Close navigation menu"]').click();
             }
+            if(role==='group_overseer'){
+                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['overseer']);
+                assert.equal(await page.evaluate(()=>window.db.publishers.length),100);assert(await page.evaluate(()=>window.db.publishers.every(p=>p.group==='Group 1')));
+                assert.equal(await page.locator('#overseer-password-action').isVisible(),false);
+            }
+            await page.evaluate(()=>window.CAReminders.open());
+            const expected=role==='oclm'?['oclm']:role==='attendance'?['attendance_midweek','attendance_weekend','attendance_link']:['reports','report_link'];
+            assert.deepEqual(await page.locator('#reminder-settings input[type="checkbox"]').evaluateAll(nodes=>nodes.map(n=>n.id.replace('reminder-enable-',''))),expected);
+            const first=expected[0];await page.locator('#reminder-enable-'+first).check();await page.locator('#reminder-time-'+first).fill('10:15');await page.locator('#modal-reminders').getByRole('button',{name:'Save reminder times',exact:true}).click();assert.match(await page.locator('#reminder-save-status').innerText(),/Saved/);
+            const calendarDownload=page.waitForEvent('download');await page.locator('#modal-reminders').getByRole('button',{name:'Download calendar reminders',exact:true}).click();assert.equal((await calendarDownload).suggestedFilename(),'congregation-assistant-reminders.ics');
+            await page.evaluate(()=>window.ui.closeModal('modal-reminders'));
+            await page.evaluate(()=>window.ui.startHowToUse());assert(await page.locator('#modal-how-to-use').isVisible());
+            assert(await page.locator('#ca-role-guide a[href$="#reminders"]').isVisible());assert.equal(await page.locator('#ca-role-guide a[href$="#midweek"]').count(),role==='oclm'?1:0);
+            await page.screenshot({path:path.join(output,`${profile.name}-${role}-usage-guide.png`)});await page.evaluate(()=>window.ui.closeModal('modal-how-to-use'));
             const before=await page.evaluate(()=>window.ui.currentTab);await page.evaluate(()=>window.ui.switchTab('emergency',false,'field'));assert.equal(await page.evaluate(()=>window.ui.currentTab),before,'Navigation context bypassed role');
             assert.equal(await page.locator('#auth-screen').isVisible(),false);
         }
