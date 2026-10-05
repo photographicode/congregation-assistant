@@ -1213,6 +1213,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <select onchange="document.getElementById('access-group-field').hidden=this.value!=='group_overseer'" id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance overseer</option><option value="oclm">OCLM overseer</option><option value="group_overseer">Group overseer — assigned group only</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
+                <label class="flex gap-3 items-center"><input type="checkbox" id="access-assistant-input"> Optional assistant for this section (same section tools; no access-management permission)</label>
                 <label id="access-group-field" hidden>Assigned group (match its exact name)<input id="access-group-input" maxlength="100" placeholder="e.g. Group 1" class="w-full px-4 py-3 rounded-xl"><span class="text-sm">Group overseers can read their own group and create its report form link. They cannot edit records or see congregation totals.</span></label>
                 <div class="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4"><div class="font-bold text-amber-100 text-sm">Google account setup</div><p class="text-xs text-amber-100/55 mt-1">Enable Google provider in Supabase Authentication and create the <code class="text-amber-200">congregation_access</code> table with Row Level Security. Provider activation and database permissions require your Supabase administrator. Setup instructions are included in the repository.</p><button onclick="window.ui.copyAccessSQL()" class="mt-3 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">Copy account setup SQL</button></div>
             </div>
@@ -1395,7 +1396,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 </div>
 <details class="mws-week-browser"><summary>Browse nearby weeks</summary><div class="week-strip" id="weekStrip"></div></details>
 <div class="mws-empty-state" id="schedulerEmpty" hidden><strong>Start with your meeting roster.</strong><p>Add people and their qualifications. Then choose assignments or let the scheduler suggest them.</p><button class="btn primary" id="setupSchedulerPeople">Add people</button></div>
-<div class="meeting" id="meetingSections"></div>
+<details id="additionalDutiesSettings" class="ca-planning-note"><summary><strong>Additional Duties</strong></summary><p>Choose responsibilities for your congregation, such as microphones, sound, stage or attendants. Set how many people are needed. In People, mark who is qualified for each duty, then assign them below.</p><div class="ca-duty-form"><label>Duty name<input id="additionalDutyName" maxlength="100" placeholder="e.g. Microphones"></label><label>People needed<select id="additionalDutySlots"><option value="1">1 person</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">4 people</option></select></label><button type="button" class="btn primary" onclick="window.addAdditionalDuty()">Add duty</button></div><div id="additionalDutiesList"></div><p>Definitions and drafts stay on this device for this congregation. Disabling a duty preserves its existing assignments. Extra duties and assigned names appear on the live schedule only after publishing.</p></details><div class="meeting" id="meetingSections"></div>
 <div class="mws-next-step"><span>Your draft stays on this device until you publish.</span><button class="btn primary" id="reviewScheduleBtn">Review this week →</button></div>
 </section>
 <!-- People -->
@@ -2391,7 +2392,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       {id:'ClosingPrayer',label:'Concluding Comments / Prayer',role:'Prayer',duration:''}
     ]}
   ];
-  const ALL_FIELDS = SECTIONS.flatMap(s => s.fields.flatMap(f => [f.id, ...(f.assistant ? [f.assistant] : [])]));
+  const allFields = () => sections().flatMap(s => s.fields.flatMap(f => [f.id, ...(f.assistant ? [f.assistant] : [])]));
   const DEFAULT_PERSONNEL = [
     {id:'p1',name:'Gabriel Silva',phone:'919876543210',gender:'Male',appointment:'Elder',roles:['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleReading','Conversation','FollowingUp','Disciples','Beliefs','Assistant','ChristianParts','BibleStudy','BibleStudyReader']},
     {id:'p2',name:'David Miller',phone:'918765432109',gender:'Male',appointment:'Elder',roles:['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleReading','Conversation','FollowingUp','Disciples','Beliefs','Assistant','ChristianParts','BibleStudy','BibleStudyReader']},
@@ -2423,7 +2424,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   const state = {
     currentWeek:weekId(new Date()), personnel:[], assignments:{}, template:DEFAULT_TEMPLATE, activeView:'schedule', selectedField:null, publishedWeeks:[],
-    program:{}, weekKeys:[], publication:null
+    program:{}, weekKeys:[], publication:null, additionalDuties:[]
   };
 
   const root = document.getElementById('ca-midweek-root');
@@ -2458,6 +2459,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     state.weekKeys=buildWeeks(state.currentWeek);
     state.program=PROGRAM_LIBRARY[state.currentWeek]||{range:weekLabel(state.currentWeek),reading:'',theme:'Life and Ministry Meeting',parts:{}};
     state.publication=storageGet('jw_scheduler_publication',null);
+    state.additionalDuties=cleanDuties(storageGet('jw_scheduler_additional_duties',[]));
     loadedCongregation=congregation;
   }
   function save(){
@@ -2467,6 +2469,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       localStorage.setItem(storageKey('jw_scheduler_published_weeks'),JSON.stringify(state.publishedWeeks));
       localStorage.setItem(storageKey('jw_scheduler_template'),state.template);
       localStorage.setItem(storageKey('jw_scheduler_publication'),JSON.stringify(state.publication));
+      localStorage.setItem(storageKey('jw_scheduler_additional_duties'),JSON.stringify(state.additionalDuties));
       storageFailed=false;
       $('schedulerSaveError').hidden=true;
       if($('saveStateLabel'))$('saveStateLabel').textContent='Saved on this device';
@@ -2508,22 +2511,36 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function setWeek(weekStr){
     state.currentWeek=weekStr; state.program=PROGRAM_LIBRARY[weekStr] || {range:weekLabel(weekStr),reading:'',theme:'Life and Ministry Meeting',parts:{}}; state.weekKeys=buildWeeks(weekStr); renderAll();
   }
+  function cleanDuties(value){
+    if(!Array.isArray(value))return [];const seen=new Set();return value.filter(d=>d&&/^Duty_[a-f0-9]{32}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim()&&d.name.length<=100&&Number.isInteger(d.slots)&&d.slots>=1&&d.slots<=4&&!seen.has(d.id)&&seen.add(d.id)).slice(0,20).map(d=>({id:d.id,name:d.name.trim(),slots:d.slots,enabled:d.enabled!==false}));
+  }
+  function dutySections(duties){return duties.length?[{key:'additional',title:'ADDITIONAL DUTIES',sub:'Responsibilities chosen by your congregation',fields:duties.flatMap(d=>Array.from({length:d.slots},(_,i)=>({id:d.id+'_'+(i+1),role:d.id,label:d.name+(d.slots>1?' '+(i+1):''),duration:''})))}]:[];}
+  function sections(){return [...SECTIONS,...dutySections(state.additionalDuties.filter(d=>d.enabled||Array.from({length:d.slots},(_,i)=>recordFor(d.id+'_'+(i+1)).personId).some(Boolean)))];}
+  function renderAdditionalDuties(){const box=$('additionalDutiesList');if(!box)return;box.innerHTML=state.additionalDuties.map(d=>`<div class="ca-duty-item"><label>Duty name<input id="duty-name-${d.id}" value="${esc(d.name)}" maxlength="100"></label><button type="button" class="btn" onclick="window.renameAdditionalDuty('${d.id}')">Save name</button><label><input type="checkbox" ${d.enabled?'checked':''} onchange="window.toggleAdditionalDuty('${d.id}',this.checked)"> Active for new weeks</label><span>${d.slots} person${d.slots>1?'s':''}</span></div>`).join('')||'<p>No extra duties yet. Add only what your congregation needs.</p>';}
+  function addAdditionalDuty(){
+    const name=$('additionalDutyName').value.trim(),slots=Number($('additionalDutySlots').value);if(!name||name.length>100){toast('Enter a duty name, up to 100 characters.');return;}if(!Number.isInteger(slots)||slots<1||slots>4){toast('Choose 1 to 4 people.');return;}if(state.additionalDuties.length>=20){toast('Up to 20 duties can be configured. Disable an existing duty when it is no longer needed.');return;}if(state.additionalDuties.some(d=>d.name.toLowerCase()===name.toLowerCase())){toast('This duty already exists.');return;}
+    state.additionalDuties.push({id:'Duty_'+crypto.randomUUID().replace(/-/g,''),name,slots,enabled:true});save();$('additionalDutyName').value='';renderAll();toast('Duty added. In People, mark who is qualified before assigning it.');
+  }
+  function renameAdditionalDuty(id){const duty=state.additionalDuties.find(d=>d.id===id);if(!duty)return;const name=$('duty-name-'+id).value.trim();if(!name||name.length>100){toast('Enter a duty name, up to 100 characters.');return;}duty.name=name;save();renderAll();toast('Name updated in your draft. Review and publish to change the live schedule.');}
+  function toggleAdditionalDuty(id,enabled){const duty=state.additionalDuties.find(d=>d.id===id);if(!duty)return;duty.enabled=enabled===true;save();renderAll();toast(duty.enabled?'Duty enabled.':'Duty disabled for unassigned weeks. Existing assignments stay in the draft.');}
+  window.addAdditionalDuty=addAdditionalDuty;window.renameAdditionalDuty=renameAdditionalDuty;window.toggleAdditionalDuty=toggleAdditionalDuty;
+
   function getWeekData(){ return state.assignments[state.currentWeek] || {}; }
   function recordFor(field){ return getWeekData()[field] || {}; }
   function personById(id){ return state.personnel.find(p=>p.id===id); }
-  function currentAssignmentsCount(){ return ALL_FIELDS.filter(id=>recordFor(id).personId && personById(recordFor(id).personId)).length; }
+  function currentAssignmentsCount(){ return allFields().filter(id=>recordFor(id).personId && personById(recordFor(id).personId)).length; }
 
-  function visibleFields(){return SECTIONS.flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));}
+  function visibleFields(){return sections().flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));}
   function weekReview(){
     const fields=visibleFields(), missing=fields.filter(f=>!personById(recordFor(f.id).personId));
     const assistants=fields.filter(f=>f.assistant && personById(recordFor(f.id).personId) && !personById(recordFor(f.assistant).personId));
-    const assigned=ALL_FIELDS.map(id=>recordFor(id).personId).filter(id=>id && personById(id));
+    const assigned=allFields().map(id=>recordFor(id).personId).filter(id=>id && personById(id));
     const repeated=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
     return {fields,missing,assistants,repeated};
   }
   function draftSignature(week){
     const assignments=state.assignments[week]||{};
-    return JSON.stringify({assignments,people:state.personnel.filter(p=>Object.values(assignments).some(a=>a.personId===p.id)).map(p=>({id:p.id,name:p.name}))});
+    return JSON.stringify({assignments,additionalDuties:state.additionalDuties,people:state.personnel.filter(p=>Object.values(assignments).some(a=>a.personId===p.id)).map(p=>({id:p.id,name:p.name}))});
   }
   function renderWorkflowStatus(){
     const review=weekReview(); const total=review.fields.length, assigned=total-review.missing.length;
@@ -2563,6 +2580,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     $('readingBadge').textContent = state.program.reading || 'CLM';
     $('meetingTheme').textContent = state.program.theme || 'Life and Ministry Meeting';
     $('meetingSub').textContent = state.program.reading ? 'Our Christian Life and Ministry — Meeting Workbook' : 'Use the official workbook to check part titles';
+    renderAdditionalDuties();
     renderWeekStrip();
     if(state.activeView==='schedule')renderSchedule();
     if(state.activeView==='people')renderPeople();
@@ -2573,7 +2591,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
   function renderWeekStrip(){
     $('weekStrip').innerHTML=state.weekKeys.filter(w=>w!==state.currentWeek).map(w=>{
-      const data=state.assignments[w]||{}; const count=ALL_FIELDS.filter(id=>data[id]?.personId).length;
+      const data=state.assignments[w]||{}; const count=allFields().filter(id=>data[id]?.personId).length;
       const current=w===state.currentWeek; const info=PROGRAM_LIBRARY[w];
       return `<button class="week-chip" onclick="window.setSchedulerWeek('${w}')"><small>${w===state.weekKeys[0]?'Previous week':'Upcoming week'}</small><strong>${esc((info?.range)||weekLabel(w))}</strong><span class="meta">${count?`${count} assignments`:'No assignments yet'}</span></button>`;
     }).join('');
@@ -2585,6 +2603,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     return custom || programTitle || field.label;
   }
   function allowedPerson(p,role){
+    if(String(role||'').startsWith('Duty_'))return (p.roles||[]).includes(role);
     // Default appointment rules: Elders may handle every part; ministerial servants may handle every part except chairman; sisters are eligible only for Apply Yourself to the Field Ministry parts. Custom/Other people fall back to their manually selected qualifications.
     if(p.appointment==='Elder') return true;
     if(p.appointment==='MS') return role!=='Chairman';
@@ -2594,8 +2613,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function assignmentUseCount(personId){
     let c=0; Object.values(state.assignments).forEach(week=>Object.values(week||{}).forEach(r=>{if(r?.personId===personId)c++;})); return c;
   }
-  function weekUseCount(personId){ return ALL_FIELDS.filter(id=>recordFor(id).personId===personId).length; }
-  function personHasDifferentPart(personId,currentField){ return ALL_FIELDS.some(id=>id!==currentField && recordFor(id).personId===personId); }
+  function weekUseCount(personId){ return allFields().filter(id=>recordFor(id).personId===personId).length; }
+  function personHasDifferentPart(personId,currentField){ return allFields().some(id=>id!==currentField && recordFor(id).personId===personId); }
 
   function lastPartWeek(personId,fieldId){
     const role=ROLE_MAP[fieldId];
@@ -2614,7 +2633,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
 
   function renderSchedule(){
-    const html=SECTIONS.map(section=>{
+    const html=sections().map(section=>{
       const visibleFields=section.fields.filter(f=>{
         const program=state.program.parts?.[f.id];
         const rec=recordFor(f.id);
@@ -2627,7 +2646,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       </article>`;
     }).join('');
     $('meetingSections').innerHTML=html;
-    const visible=SECTIONS.flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));
+    const visible=sections().flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));
     const assigned=visible.filter(f=>recordFor(f.id).personId).length; const total=visible.length;
     $('statusNumber').textContent=`${assigned}/${total}`;
     $('statusText').textContent=assigned===0?'Ready to schedule':assigned===total?'Week complete':`${total-assigned} part${total-assigned===1?'':'s'} remaining`;
@@ -2662,7 +2681,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
 
   function openAssign(fieldId){
-    state.selectedField=fieldId; const field=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===fieldId) || {id:fieldId,label:LABELS[fieldId],role:ROLE_MAP[fieldId]};
+    state.selectedField=fieldId; const field=sections().flatMap(s=>s.fields).find(f=>f.id===fieldId) || {id:fieldId,label:LABELS[fieldId],role:ROLE_MAP[fieldId]};
     const role=ROLE_MAP[fieldId]||field.role; const suggestion=suggestPerson(role,fieldId);
     $('sheetKicker').textContent=role ? `Choose ${role}` : 'Assign part';
     $('sheetTitle').textContent=effectiveTitle(field); $('sheetSub').textContent=`${LABELS[fieldId]||field.label}${field.duration?` · ${field.duration}`:''}`;
@@ -2670,7 +2689,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     renderCandidates(suggestion); openModal('assignModal');
   }
   function renderCandidates(suggestion){
-    const fieldId=state.selectedField; const field=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===fieldId)||{role:ROLE_MAP[fieldId]}; const role=ROLE_MAP[fieldId]||field.role; const q=$('candidateSearch').value.toLowerCase().trim();
+    const fieldId=state.selectedField; const field=sections().flatMap(s=>s.fields).find(f=>f.id===fieldId)||{role:ROLE_MAP[fieldId]}; const role=ROLE_MAP[fieldId]||field.role; const q=$('candidateSearch').value.toLowerCase().trim();
     const people=state.personnel.filter(p=>allowedPerson(p,role) && p.name.toLowerCase().includes(q)).sort((a,b)=>{
       const aOther=personHasDifferentPart(a.id,fieldId)?1:0, bOther=personHasDifferentPart(b.id,fieldId)?1:0; if(aOther!==bOther)return aOther-bOther;
       return compareRecency(a,b,fieldId)||a.name.localeCompare(b.name);
@@ -2691,7 +2710,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function clearAssignment(fieldId){if(setAssignment(fieldId,''))toast('Assignment cleared. Part title kept.');}
   function autoAssign(){
     rememberEdit(); const data=ensureWeekData(); let count=0;
-    for(const section of SECTIONS){ for(const field of section.fields){
+    for(const section of sections()){ for(const field of section.fields){
       if(field.optional && !state.program.parts?.[field.id] && !data[field.id]?.personId) continue;
       if(data[field.id]?.personId) continue;
       const p=suggestPerson(ROLE_MAP[field.id]||field.role,field.id); if(p){data[field.id]={personId:p.id,customTitle:data[field.id]?.customTitle||''};count++;}
@@ -2706,9 +2725,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const people=state.personnel.filter(p=>p.name.toLowerCase().includes(q));
     $('peopleGrid').innerHTML=people.map(p=>`<article class="person-card"><div class="avatar">${initials(p.name)}</div><div><div class="person-name">${esc(p.name)}</div><div class="person-sub">${p.appointment==='MS'?'Ministerial Servant':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}${p.phone?` · +${esc(p.phone)}`:''}</div><div class="role-tags">${(p.roles||[]).map(r=>`<span class="role-tag">${esc(labelRole(r))}</span>`).join('')}</div></div><div class="person-actions"><button class="mini-icon" onclick="window.editPerson('${p.id}')" title="Edit">✎</button><button class="mini-icon" onclick="window.deletePerson('${p.id}')" title="Delete">×</button></div></article>`).join('') || '<div style="grid-column:1/-1;text-align:center;padding:35px;color:#8d969d;font-size:10px">No people found.</div>';
   }
-  function labelRole(r){return ({TreasuresTalk:'Treasures Talk',SpiritualGems:'Spiritual Gems',BibleReading:'Bible Reading',ChristianParts:'Living as Christians',BibleStudy:'Bible Study',BibleStudyReader:'Bible Study Reader'}[r]||r);}
+  function labelRole(r){const duty=state.additionalDuties.find(d=>d.id===r);if(duty)return duty.name;return ({TreasuresTalk:'Treasures Talk',SpiritualGems:'Spiritual Gems',BibleReading:'Bible Reading',ChristianParts:'Living as Christians',BibleStudy:'Bible Study',BibleStudyReader:'Bible Study Reader'}[r]||r);}
   const roleOptions=['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleReading','Conversation','FollowingUp','Disciples','Beliefs','Assistant','ChristianParts','BibleStudy','BibleStudyReader'];
-  function renderRoleChecks(selected=[]){ $('roleChecks').innerHTML=roleOptions.map(r=>`<label class="check-row"><input type="checkbox" value="${r}" ${selected.includes(r)?'checked':''}> <span>${esc(labelRole(r))}</span></label>`).join(''); }
+  function renderRoleChecks(selected=[]){ $('roleChecks').innerHTML=[...roleOptions,...state.additionalDuties.map(d=>d.id)].map(r=>`<label class="check-row"><input type="checkbox" value="${r}" ${selected.includes(r)?'checked':''}> <span>${esc(labelRole(r))}</span></label>`).join(''); }
   function openPersonModal(person){
     $('personModalTitle').textContent=person?'Edit person':'Add person'; $('editPersonId').value=person?.id||''; $('personName').value=person?.name||''; $('personPhone').value=person?.phone||''; $('personGender').value=person?.gender||'Male'; $('personAppointment').value=person?.appointment || (person?.gender==='Female'?'Sister':'Other'); renderRoleChecks(person?.roles||[]); openModal('personModal'); setTimeout(()=>$('personName').focus(),60);
   }
@@ -2724,7 +2743,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function renderPreview(){
     const data=getWeekData(); const rowsFor=(section)=>section.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || data[f.id]?.personId);
     let html=`<div class="paper-head"><div><div class="paper-kicker">Christian Life and Ministry Meeting</div><div class="paper-title">Week of ${esc(state.program.range||weekLabel(state.currentWeek))}</div><div class="paper-sub">${esc(state.program.theme||'')}</div></div><div class="paper-meta">${esc(state.program.reading||'')}<br>Congregation Assistant</div></div>`;
-    for(const s of SECTIONS){ const fields=rowsFor(s); html+=`<section class="print-section ${s.key}"><div class="print-bar">${esc(s.title)}</div>`; const visible=fields.filter(f=>data[f.id]?.personId || data[f.id]?.customTitle || state.program.parts?.[f.id]?.title); if(!visible.length){html+='<div class="print-empty">No assignments yet.</div>';} else {for(const f of visible){const p=personById(data[f.id]?.personId); const a=f.assistant?personById(data[f.assistant]?.personId):null; html+=`<div class="print-row"><div><div class="print-title">${esc(effectiveTitle(f))}</div>${a?`<div class="meta" style="margin-top:3px">Assistant: ${esc(a.name)}</div>`:''}</div><div class="print-person">${esc(p?.name||'Unassigned')}</div></div>`;}} html+='</section>';}
+    for(const s of sections()){ const fields=rowsFor(s); html+=`<section class="print-section ${s.key}"><div class="print-bar">${esc(s.title)}</div>`; const visible=fields.filter(f=>data[f.id]?.personId || data[f.id]?.customTitle || state.program.parts?.[f.id]?.title); if(!visible.length){html+='<div class="print-empty">No assignments yet.</div>';} else {for(const f of visible){const p=personById(data[f.id]?.personId); const a=f.assistant?personById(data[f.assistant]?.personId):null; html+=`<div class="print-row"><div><div class="print-title">${esc(effectiveTitle(f))}</div>${a?`<div class="meta" style="margin-top:3px">Assistant: ${esc(a.name)}</div>`:''}</div><div class="print-person">${esc(p?.name||'Unassigned')}</div></div>`;}} html+='</section>';}
     $('paper').innerHTML=html;
   }
 
@@ -2754,7 +2773,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const assignments={}; weeks.forEach(w=>{assignments[w]=state.assignments[w]||{};});
     const ids=new Set(Object.values(assignments).flatMap(week=>Object.values(week).map(part=>part.personId).filter(Boolean)));
     const people=state.personnel.filter(p=>ids.has(p.id)).map(p=>({id:p.id,name:p.name}));
-    return {v:2,kind:'midweek',congregation:window.db?.currentCongData?.name||'Congregation',defaultWeek:state.currentWeek,publishedWeeks:weeks,assignments,people,generatedAt:Date.now()};
+    return {v:2,kind:'midweek',additionalDuties:state.additionalDuties.map(({id,name,slots})=>({id,name,slots})),congregation:window.db?.currentCongData?.name||'Congregation',defaultWeek:state.currentWeek,publishedWeeks:weeks,assignments,people,generatedAt:Date.now()};
   }
   function liveLink(){return !isDemo() && state.publication?.token?window.PublicLinks.tokenURL('oclm',state.publication.token):'';}
   function updateLiveLink(){ const el=$('liveLinkInput'); if(el)el.value=liveLink();const link=$('openLiveLink');if(link){link.hidden=!liveLink();if(liveLink())link.href=liveLink();} }
@@ -2780,8 +2799,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
       const w=select.value; const q=search.value.toLowerCase().trim(); const data=payload.assignments[w]||{}; const program=PROGRAM_LIBRARY[w]||{range:weekLabel(w),reading:'',theme:'Life and Ministry Meeting',parts:{}};
       $('liveWeekTitle').textContent=`Week of ${program.range||weekLabel(w)}`; $('liveWeekSub').textContent=program.reading?`${program.reading} · ${program.theme||'Life and Ministry Meeting'}`:'Life and Ministry Meeting';
       let found=0;
-      $('liveSections').innerHTML=SECTIONS.map(sec=>{
-        const fields=sec.fields.filter(f=>(sec.key!=='field' || data[f.id]?.personId) && (!f.optional || program.parts?.[f.id] || data[f.id]?.personId));
+      $('liveSections').innerHTML=[...SECTIONS,...dutySections(cleanDuties(payload.additionalDuties))].map(sec=>{
+        const fields=sec.fields.filter(f=>(!['field','additional'].includes(sec.key) || data[f.id]?.personId) && (!f.optional || program.parts?.[f.id] || data[f.id]?.personId));
         const rows=fields.map(f=>{ const r=data[f.id]||{}; const p=personBy(r.personId); const a=f.assistant?personBy(data[f.assistant]?.personId):null; const title=r.customTitle||program.parts?.[f.id]?.title||f.label; const hay=`${p?.name||''} ${title} ${LABELS[f.id]||f.label}`.toLowerCase(); if(q&&!hay.includes(q))return ''; found++; return `<div class="live-row"><div><div class="live-part">${esc(title)}</div>${a?`<div class="live-assistant">Assistant: ${esc(a.name)}</div>`:''}</div><div class="live-person">${esc(p?.name||'')}</div></div>`;}).join('');
         if(!rows)return ''; return `<section class="live-section"><div class="live-section-head ${sec.key}">${esc(sec.title)}</div>${rows}</section>`;
       }).join('') || '<div class="live-info"><div class="live-info-sub">No matching publisher or assignment found.</div></div>';
@@ -2807,9 +2826,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   $('prevWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,-1)); $('nextWeek').onclick=()=>setWeek(addWeeks(state.currentWeek,1)); $('todayBtn').onclick=()=>setWeek(weekId(new Date())); $('reviewScheduleBtn').onclick=()=>showView('preview'); $('autoRemaining').onclick=autoAssign;
   $('undoSchedule').onclick=undoSchedule; $('setupSchedulerPeople').onclick=()=>showView('people'); $('retrySchedulerSave').onclick=()=>{if(save())toast('Your draft is now saved on this device.');renderAll();};
   root.querySelectorAll('.mws-nav-btn').forEach((button,index,buttons)=>button.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%buttons.length;else if(event.key==='ArrowLeft')next=(index+buttons.length-1)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;else return;event.preventDefault();showView(buttons[next].dataset.view);buttons[next].focus();}));
-  $('resetSchedulerDemo').onclick=()=>{if(!isDemo() || !confirm('Reset this demo’s people and assignments on this device?'))return;state.personnel=DEFAULT_PERSONNEL.map(p=>({...p,phone:'',roles:[...p.roles]}));state.assignments={};state.publishedWeeks=[];state.publication=null;undoStack.length=0;save();$('schedulerPublishError').hidden=true;renderAll();toast('Demo reset');};
+  $('resetSchedulerDemo').onclick=()=>{if(!isDemo() || !confirm('Reset this demo’s people and assignments on this device?'))return;state.personnel=DEFAULT_PERSONNEL.map(p=>({...p,phone:'',roles:[...p.roles]}));state.assignments={};state.additionalDuties=[];state.publishedWeeks=[];state.publication=null;undoStack.length=0;save();$('schedulerPublishError').hidden=true;renderAll();toast('Demo reset');};
   $('clearWeek').onclick=clearWeek; $('publishWeekBtn').onclick=publishCurrentWeek; $('copyLiveLinkBtn').onclick=async()=>{const link=liveLink(); if(!link){toast('Publish a week to the cloud first. Older snapshot links do not update.');return;} try{await navigator.clipboard.writeText(link);toast('Live link copied');}catch{ $('liveLinkInput').select(); document.execCommand('copy'); toast('Live link copied');}}; window.unpublishWeek=unpublishWeek;
-  $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=SECTIONS.flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
+  $('closeAssign').onclick=()=>closeModal('assignModal'); $('candidateSearch').addEventListener('input',()=>{const f=sections().flatMap(s=>s.fields).find(f=>f.id===state.selectedField); renderCandidates(suggestPerson(ROLE_MAP[state.selectedField]||f?.role,state.selectedField));});
   $('addPersonBtn').onclick=()=>openPersonModal(null); $('closePerson').onclick=()=>closeModal('personModal'); $('cancelPerson').onclick=()=>closeModal('personModal'); $('personForm').addEventListener('submit',savePerson); $('personSearch').addEventListener('input',renderPeople);
   ['assignModal','personModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('assignModal');closeModal('personModal')}});
@@ -2926,6 +2945,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             roleReady: false,
             verifiedRoles: [],
             verifiedGroups: [],
+            verifiedAssistants: [],
             verifiedEmail: null,
             verifiedOwner: false,
             googleAccess: [],
@@ -2937,7 +2957,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             clearGoogleRole: (force=false) => {
                 if(force||sessionStorage.getItem('fs_auth_type')==='role')for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_last_activity'])sessionStorage.removeItem(key);
-                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;
             },
             activateGoogleRole: async congId => {
                 if(window.auth.googleSwitching)throw new Error('Please wait for your congregation to open.');
@@ -2949,6 +2969,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if(error||!cong)throw new Error('Your congregation could not be opened. Ask an administrator to check your access.');
                 window.auth.verifiedGroups=[...new Set(grants.filter(row=>row.role==='group_overseer'&&typeof row.service_group==='string'&&row.service_group.trim()).map(row=>row.service_group))];
                 if(grants.some(row=>row.role==='group_overseer')&&!window.auth.verifiedGroups.length)throw new Error('Your group access needs an assigned group. Ask your administrator to complete it.');
+                window.auth.verifiedAssistants=grants.filter(row=>row.is_assistant===true).map(row=>row.role);
                 const roles=[...new Set(grants.map(row=>row.role))];window.auth.verifiedRoles=roles;window.auth.verifiedOwner=false;const role=roles.includes('admin')?'admin':roles[0];
                 window.auth.roleReady=true;window.currentCongId=cong.id;window.db.currentCongData=cong;
                 sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','role');sessionStorage.setItem('fs_role',role);sessionStorage.setItem('fs_roles',JSON.stringify(roles));sessionStorage.setItem('fs_cong_id',cong.id);sessionStorage.setItem('fs_cong_name',cong.name);sessionStorage.setItem('fs_last_activity',String(Date.now()));
@@ -2967,7 +2988,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
                     const {data:superAccess,error:superError}=await supabaseClient.rpc('ca_is_superadmin');
                     if(!superError && superAccess===true){window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
-                    const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
+                    const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group,is_assistant':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
                     window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer'].includes(row.role));
                     if(!window.auth.googleAccess.length){window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
@@ -3055,7 +3076,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     for(const key of ['fs_auth','fs_auth_type','fs_role','fs_roles','fs_cong_id','fs_cong_name','fs_last_activity','fs_trial_days','ca_owner_backend'])storage.removeItem(key);
                     for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(key.startsWith('ov_auth_')||key.startsWith('ca_cache_'))storage.removeItem(key);
                 }
-                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
+                window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
                 for(const key of ['publishers','reports','congregations'])window.db[key]=[];
                 window.db.currentCongData=null;
                 document.getElementById('auth-screen').classList.remove('hidden');
@@ -4310,27 +4331,28 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 });
                 document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
                 const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM overseer',group_overseer:'Group overseer'};
-                const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]).join(' · ')||'No assigned sections';
+                const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]+(window.auth.verifiedAssistants.includes(role)?' (assistant)':'')).join(' · ')||'No assigned sections';
             },
 
             openAccessManager: async () => { if(!window.ui.canManageAccess()){window.ui.showToast('Only administrators can manage access.','error');return;} window.ui.openModal('modal-access-manager'); await window.ui.loadRoleAccess(); },
             loadRoleAccess: async () => {
                 if(!window.ui.canManageAccess())return;const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance overseer',oclm:'OCLM overseer',group_overseer:'Group overseer'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}${r.role==='group_overseer'?' · '+window.ui.oclmEscape(r.service_group||'Group not assigned'):''}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance overseer',oclm:'OCLM overseer',group_overseer:'Group overseer'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}${r.is_assistant===true?' · Assistant':''}${r.role==='group_overseer'?' · '+window.ui.oclmEscape(r.service_group||'Group not assigned'):''}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Role access table is not configured yet. Use “Copy account setup SQL”, run it in Supabase SQL Editor, then reopen this panel.</div>';}
             },
             addRoleAccess: async () => {
                 if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');
                 const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase(),role=document.getElementById('access-role-input')?.value;
                 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Enter a valid Google account email.');
                 if(!['admin','field_service','attendance','oclm','group_overseer'].includes(role))throw new Error('Choose a valid role.');
+                const assistant=document.getElementById('access-assistant-input')?.checked===true;if(assistant&&!window.CA_CONFIG?.secureBackend)throw new Error('Section assistants require the secure workspace setup.');if(assistant&&role==='admin')throw new Error('Assign assistants to Service, OCLM, Attendance or Group, not Main admin.');
                 if(!isCloudEnabled)throw new Error('Cloud connection is required to manage access.');
                 const serviceGroup=role==='group_overseer'?(document.getElementById('access-group-input')?.value||'').trim():null;
                 if(role==='group_overseer'&&(!serviceGroup||serviceGroup.length>100))throw new Error('Enter the exact assigned group name.');
                 if(role==='group_overseer'&&!window.CA_CONFIG?.secureBackend)throw new Error('Group account access requires the secure backend setup. Existing group links are unchanged.');
-                const {error}=await supabaseClient.from('congregation_access').upsert({...window.CA_CONFIG?.secureBackend?{service_group:serviceGroup}:{},id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});
+                const {error}=await supabaseClient.from('congregation_access').upsert({...window.CA_CONFIG?.secureBackend?{service_group:serviceGroup,is_assistant:assistant}:{},id:window.utils.generateUUID(),cong_id:window.currentCongId,email,role,active:true},{onConflict:'cong_id,email,role'});
                 if(error)throw new Error('Account access was not saved. '+error.message);
-                document.getElementById('access-email-input').value='';await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');
+                document.getElementById('access-email-input').value='';document.getElementById('access-assistant-input').checked=false;await window.ui.loadRoleAccess();window.ui.showToast('Authorized account added.');
             },
             removeRoleAccess: async id => {
                 if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');if(!id)return;

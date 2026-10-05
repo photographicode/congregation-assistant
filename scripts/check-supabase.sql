@@ -10,6 +10,8 @@ grant usage on schema auth to anon,authenticated;
 grant execute on function auth.jwt() to anon,authenticated;
 \i supabase/fresh-project.sql
 \i supabase/group-overseer.sql
+\i supabase/section-assistants.sql
+\i supabase/oclm-additional-duties.sql
 create schema test;
 create function test.assert(ok boolean,label text) returns void language plpgsql as $$ begin if ok is distinct from true then raise exception 'FAILED: %',label;end if;end $$;
 grant usage on schema test to anon,authenticated;grant execute on function test.assert(boolean,text) to anon,authenticated;
@@ -97,3 +99,5 @@ select test.assert(not public.ca_is_superadmin(),'unconfirmed password owner rej
 reset role;
 
 \i scripts/check-group-access.sql
+
+\i scripts/check-additional-features.sql

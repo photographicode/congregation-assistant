@@ -184,12 +184,14 @@ async function run(profile) {
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
         await nav('oclm');
+        await page.locator('#mws-tab-schedule').click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
+        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.slots,2);
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
         await page.locator('details:has(#roleChecks) summary').click();
-        await page.locator('#roleChecks input[value="Chairman"]').check();
+        await page.locator('#roleChecks input[value="Chairman"]').check();await page.locator('#roleChecks input[value="'+duty.id+'"]').check();
         await page.locator('#personForm button[type="submit"]').click();
-        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');});
+        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');window.setAssignment(window.MidweekScheduler.getPayload().additionalDuties[0].id+'_1',person.id);});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
         assert.equal(await page.locator('#publicationState').innerText(),'Published');
@@ -207,6 +209,7 @@ async function run(profile) {
         await publicPage.goto(sharedURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('First published title'));
         assert.equal(await publicPage.locator('#liveView').isVisible(),true,'Published schedule is hidden');
         assert.equal(await publicPage.locator('#tab-oclm').evaluate(el=>getComputedStyle(el).opacity),'1','Published schedule is transparent');
+        assert.match(await publicPage.locator('#liveSections').innerText(),/Microphones 1/);assert.match(await publicPage.locator('#liveSections').innerText(),/Sample Schedule Person/);
         assert.equal(await publicPage.evaluate(()=>sessionStorage.getItem('fs_auth')),null,'Public URL needs a private session');
         assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
         assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);
@@ -290,8 +293,8 @@ async function run(profile) {
             const before=await page.evaluate(()=>window.ui.currentTab);await page.evaluate(()=>window.ui.switchTab('emergency',false,'field'));assert.equal(await page.evaluate(()=>window.ui.currentTab),before,'Navigation context bypassed role');
             assert.equal(await page.locator('#auth-screen').isVisible(),false);
         }
-        await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'field_service',active:true}];await window.auth.resumeGoogleRole();});
-        const grants=await page.evaluate(()=>window.ui.getAllowedTabs());assert(grants.includes('attendance')&&grants.includes('groups'));
+        await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'field_service',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'oclm',active:true,is_assistant:true}];await window.auth.resumeGoogleRole();});
+        const grants=await page.evaluate(()=>window.ui.getAllowedTabs());assert(grants.includes('attendance')&&grants.includes('groups')&&grants.includes('oclm'));assert.equal(await page.evaluate(()=>window.ui.canManageAccess()),false);assert.deepEqual(await page.evaluate(()=>window.auth.verifiedAssistants),['oclm']);
         await page.evaluate(async()=>{
             sessionStorage.removeItem('fs_cong_id');window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-second',email:'qa@example.com',role:'attendance',active:true}];await window.auth.resumeGoogleRole();
         });

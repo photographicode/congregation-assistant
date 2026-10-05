@@ -11,6 +11,7 @@
   ['emergency','emergency','Emergency contacts','Keep contact details current and use the authorized printable directory.'],
   ['admin','roles','Access and roles','Approve accounts and assign each person the correct responsibility.'],
   ['publishers','imports','Imports and exports','Use supported file formats and check your exported copies.'],
+  ['support','google','Google sign-in','Use one approved account for all assigned sections and optional assistant duties.'],
   ['support','reminders','My reminders','Choose meeting days and times, monthly reminders, and calendar alerts.'],
   ['support','install','Install as an app','Use the browser or add the software to your home screen.'],
   ['support','settings','Settings and announcements','Choose readable text and themes; read notices and get support.'],
