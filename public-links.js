@@ -46,7 +46,7 @@
             const row = await rpc('get_oclm_public_snapshot', { p_token: token });
             revision=row?.updated_at||null;revisionToken=token;
             openSnapshot(row?.snapshot);
-            status('Showing the latest published schedule. Updates are checked every 30 seconds.');
+            status('Published schedule — updates appear here automatically.');
         } catch (error) {
             if (initial) {
                 document.body.classList.remove('mws-public-mode'); window.ui.switchTab('public-oclm');

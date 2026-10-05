@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node scripts/check-public-safety.cjs && node scripts/check-app.cjs",
+    "test": "node scripts/check-public-safety.cjs && node scripts/check-app.cjs && node scripts/check-cloud-draft.cjs && node scripts/check-recovery-encryption.cjs",
     "test:browser": "node scripts/check-browser.cjs"
   },
   "devDependencies": {

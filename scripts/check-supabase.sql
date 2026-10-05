@@ -116,3 +116,16 @@ alter table auth.users add column raw_app_meta_data jsonb;
 \i scripts/check-onboarding-mail.sql
 \i supabase/google-only-owner.sql
 \i scripts/check-google-only-owner.sql
+
+\i supabase/shared-oclm.sql
+\i scripts/check-shared-oclm.sql
+\i supabase/publisher-home.sql
+\i scripts/check-publisher-home.sql
+\i supabase/workspace-recovery.sql
+\i scripts/check-workspace-recovery.sql
+\i supabase/server-push.sql
+\i scripts/check-server-push.sql
+\i supabase/admin-home.sql
+begin;set request.jwt.claims='{"email":"admin-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select test.assert((public.get_admin_home_tasks('a')->>'reportsMissing')::integer>=0,'administrator home calculates missing reports');
+reset role;rollback;

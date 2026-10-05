@@ -1,0 +1,1 @@
+(()=>{'use strict';function set(enabled){document.body.classList.toggle('ca-large-text',!!enabled);try{localStorage.setItem('ca_large_text',String(!!enabled));}catch{}const control=document.getElementById('ca-large-text');if(control)control.checked=!!enabled;}window.CAReadability={set};try{set(localStorage.getItem('ca_large_text')==='true');}catch{set(false);}})();

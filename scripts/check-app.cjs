@@ -131,7 +131,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('owner uses Google and server approval; sign-out blocks restoration even with a stale OAuth session',async()=>{
         const qa=createHarness(),fw=qa.window;let request;fw.supabase.createClient().auth.signInWithOAuth=async value=>{request=value;return {error:null};};
-        await fw.auth.googleLogin();assert.equal(request.provider,'google');assert.equal(request.options.redirectTo,'https://photographicode.github.io/congregation-assistant/staging/index.html');assert.equal(request.options.queryParams.prompt,'select_account');
+        await fw.auth.googleLogin();assert.equal(request.provider,'google');assert.equal(request.options.redirectTo,'https://photographicode.github.io/congregation-assistant/index.html');assert.equal(request.options.queryParams.prompt,'select_account');
         fw.supabase.createClient().auth.getSession=async()=>({data:{session:{user:{email:'congregationassistant0@gmail.com'}}},error:null});fw.db.initSuperAdmin=async()=>{};
         qa.setCloud({data:false,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,false);
         qa.setCloud({data:true,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,true);assert.equal(fw.auth.verifiedEmail,'congregationassistant0@gmail.com');assert.equal(qa.sessionStorage.getItem('fs_auth_type'),'super');
@@ -386,5 +386,18 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const assignments=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_assignments'));assert.equal(Object.values(assignments)[0].BibleReading.personId,'old-scheduler');
         fw.MidweekScheduler.syncRoster([{id:'publisher-b',name:'Beth Renamed',gender:'Female'}]);const updated=JSON.parse(f.localStorage.getItem('ca_midweek_roster_jw_scheduler_personnel'));assert(updated[0].archived);assert.equal(updated[1].name,'Beth Renamed');
     });
+    await test('explicit qualification exclusions beat appointments and away periods exclude overlapping weeks',()=>{
+        const f=createHarness(),fw=f.window;fw.currentCongId='exceptions';
+        f.localStorage.setItem('ca_midweek_exceptions_jw_scheduler_personnel',JSON.stringify([
+          {id:'excluded',name:'Excluded Elder',appointment:'Elder',roles:[],exceptions:{Chairman:false}},
+          {id:'away',name:'Away Elder',appointment:'Elder',roles:[],availability:[{from:'2026-01-01',to:'2026-12-31'}]},
+          {id:'available',name:'Available Brother',appointment:'MS',roles:[],exceptions:{Chairman:true}}
+        ]));fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W41');
+        assert.equal(fw.MidweekScheduler.isEligible('excluded','Chairman'),false);assert.equal(fw.MidweekScheduler.isEligible('excluded','Prayer'),true);
+        assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),false);assert.equal(fw.MidweekScheduler.isEligible('available','Chairman'),true);
+        fw.setSchedulerWeek('2027-W02');assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),true);
+    });
+    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm']);assert(!w.ui.canManageAccess());});
+    await test('first shared draft preserves published weeks, identities, qualifications and device edits',()=>{const f=createHarness(),w=f.window;w.currentCongId='first-shared';f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_personnel',JSON.stringify([{id:'publisher-uuid',publisherId:'publisher-uuid',name:'Known Person',appointment:'Other',roles:['Prayer']} ]));f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_assignments',JSON.stringify({'2026-W42':{OpeningPrayer:{personId:'publisher-uuid',customTitle:'Device change'}}}));w.initMidweekScheduler();w.MidweekScheduler.adoptPublished({kind:'midweek',people:[{id:'published-id',name:'Known Person'}],publishedWeeks:['2026-W41','2026-W42'],assignments:{'2026-W41':{OpeningPrayer:{personId:'published-id'}},'2026-W42':{OpeningPrayer:{personId:'published-id',customTitle:'Old live title'}}},additionalDuties:[]});const draft=w.MidweekScheduler.getDraft();assert.equal(draft.personnel[0].id,'published-id');assert.equal(draft.personnel[0].publisherId,'publisher-uuid');assert(draft.personnel[0].roles.includes('Prayer'));assert.equal(draft.assignments['2026-W41'].OpeningPrayer.personId,'published-id');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.customTitle,'Device change');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.personId,'published-id');});
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});

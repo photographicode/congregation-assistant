@@ -184,7 +184,7 @@ async function run(profile) {
             await page.screenshot({path:path.join(output,`${profile.name}-all-sections.png`)});
             await page.locator('#menu-item-groups').click();assert.equal(await page.locator('#tab-groups').isVisible(),true);
             await page.locator('#m-btn-tab-menu').click();await page.locator('#menu-item-access').click();
-            await page.waitForFunction(()=>document.getElementById('access-manager-list').textContent.includes('No role accounts'));
+            await page.waitForFunction(()=>document.getElementById('access-manager-list').textContent.includes('qa-admin@example.com'));
             assert.equal(await page.locator('#modal-mobile-menu').isVisible(),false);
             await page.locator('#modal-access-manager button[onclick*=closeModal]').click();
         } else {
@@ -199,7 +199,7 @@ async function run(profile) {
         await page.locator('details:has(#roleChecks) summary').click();
         await page.locator('#roleChecks input[value="Chairman"]').check();await page.locator('#roleChecks input[value="'+duty.id+'"]').check();
         await page.locator('#personForm button[type="submit"]').click();
-        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key))[0];window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');window.setAssignment(window.MidweekScheduler.getPayload().additionalDuties[0].id+'_1',person.id);});
+        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key)).find(p=>p.name==='Sample Schedule Person');window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');window.setAssignment(window.MidweekScheduler.getPayload().additionalDuties[0].id+'_1',person.id);});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
         assert.equal(await page.locator('#publicationState').innerText(),'Published');
@@ -231,6 +231,7 @@ async function run(profile) {
         const updated=await page.evaluate(()=>window.__qaBackend.publications);
         await publicPage.evaluate(value=>{window.__qaPublicationsSeed=value;window.dispatchEvent(new Event('focus'));},updated);
         await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('Updated published title'));
+        assert.equal(await publicPage.locator('#ca-midweek-root > .ca-planning-note').isVisible(),false,'Publisher link exposes scheduler preparation controls');const AxeBuilder=require('@axe-core/playwright').default;const publicScan=await new AxeBuilder({page:publicPage}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(publicScan.violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)})),[],'Published S-140 accessibility');
         await publicPage.screenshot({path:path.join(output,`${profile.name}-public-live-updated.png`)});
         await page.evaluate(()=>{window.__qaBackend.rejectWrites=true;window.setPartTitle('Chairman','Rejected update');});await page.locator('#publishWeekBtn').click();await page.waitForFunction(()=>!document.getElementById('publishWeekBtn').disabled);
         assert.equal(await page.locator('#schedulerPublishError').isVisible(),true,'Publishing errors must stay visible');
@@ -316,6 +317,10 @@ async function run(profile) {
         });
         assert.equal(await page.locator('#modal-google-congregation').isVisible(),true);assert.equal(await page.locator('#google-congregation-list button').count(),2);
         await page.locator('#google-congregation-list button').first().click();await page.waitForFunction(()=>document.getElementById('auth-screen').classList.contains('hidden')&&!window.auth.googleSwitching);
+        await page.evaluate(async()=>{window.__qaBackend.reads=[];window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'publisher',publisher_id:'qa-1',active:true}];sessionStorage.removeItem('fs_cong_id');await window.auth.resumeGoogleRole();});
+        await page.waitForFunction(()=>document.getElementById('publisher-personal-home').textContent.includes('Personal Sample Publisher'));assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['personal']);assert.equal(await page.locator('#tab-publishers').isVisible(),false);assert.equal(await page.locator('#tab-analytics').isVisible(),false);const personalReads=await page.evaluate(()=>window.__qaBackend.reads);assert(!personalReads.includes('publishers')&&!personalReads.includes('reports'),'Personal workspace read the congregation database');
+        await page.locator('#personal-report-form [name=shared]').check();await page.locator('#personal-report-form [name=studies]').fill('2');await page.evaluate(()=>window.__qaBackend.rejectWrites=true);await page.locator('#personal-report-form button').click();await page.waitForFunction(()=>document.querySelector('#personal-report-form [role=status]').textContent.includes('Could not save'));assert.equal(await page.locator('#personal-report-form [name=studies]').inputValue(),'2');await page.evaluate(()=>window.__qaBackend.rejectWrites=false);await page.locator('#personal-report-form button').click();await page.waitForFunction(()=>document.querySelector('#personal-report-form [role=status]').textContent.includes('Saved online'));await page.screenshot({path:path.join(output,`${profile.name}-publisher-home.png`)});
+        await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access.push({cong_id:'qa-congregation',email:'qa@example.com',role:'oclm',active:true});await window.auth.resumeGoogleRole();});const personalCombined=await page.evaluate(()=>window.ui.getAllowedTabs());assert(personalCombined.includes('personal')&&personalCombined.includes('oclm')&&!personalCombined.includes('analytics'));
         await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});
         assert.equal(await page.locator('#auth-screen').isVisible(),true);assert.match(await page.locator('#google-auth-status').innerText(),/no approved access/);
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
@@ -343,7 +348,7 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);
         assert.equal(await page.locator('#auth-screen').isVisible(),true);
         assert.equal(await page.locator('#super-password-panel').count(),0,'Login advertises a separate owner form');
-        await page.locator('#auth-google-btn').click();assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).provider),'google');assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).options.redirectTo),'https://photographicode.github.io/congregation-assistant/staging/index.html');
+        await page.locator('#auth-google-btn').click();assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).provider),'google');assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).options.redirectTo),new URL(page.url()).pathname.includes('/staging/')?'https://photographicode.github.io/congregation-assistant/staging/index.html':'https://photographicode.github.io/congregation-assistant/index.html');
         await page.evaluate(async()=>{window.__qaBackend.session={user:{email:'congregationassistant0@gmail.com'}};window.__qaBackend.superadmin=false;window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});assert.equal(await page.evaluate(()=>window.auth.verifiedOwner),false);
         await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});assert.equal(await page.locator('#tab-superadmin').isVisible(),true);
         await page.evaluate(()=>window.ui.confirmLogout());await Promise.all([page.waitForNavigation(),page.locator('#sys-prompt-confirm-btn').click()]);await page.waitForFunction(()=>window.auth&&!window.auth.check());assert.equal(await page.evaluate(()=>window.auth.verifiedOwner),false);assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);assert(await page.locator('#auth-screen').isVisible());

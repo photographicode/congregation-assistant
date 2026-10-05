@@ -1,6 +1,6 @@
 /* Only public application files are cached. No API responses or congregation records. */
-const CACHE='ca-shell-role-roster-s140-9';
-const names=['index.html','app.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','app-attendance.js','app-onboarding.js','app-reminders.js','app-guide.js','manifest.webmanifest'];
+const CACHE='ca-shell-shared-oclm-10';
+const names=['index.html','app.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','app-attendance.js','app-onboarding.js','app-oclm-cloud.js','app-reminders.js','app-guide.js','app-readability.js','app-publisher-home.js','app-recovery.js','app-push.js','app-home.js','manifest.webmanifest'];
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('ca-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));
 self.addEventListener('fetch',event=>{
