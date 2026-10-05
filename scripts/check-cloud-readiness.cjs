@@ -41,8 +41,8 @@ async function check(target) {
   fetch(ownerURL,{method:'POST',headers:{apikey:next.supabaseAnonKey,'Content-Type':'application/json'},body:JSON.stringify({username:'invalid',password:'invalid-test-password'}),signal:AbortSignal.timeout(15000)}),
   fetch(ownerURL,{method:'POST',headers:{apikey:next.supabaseAnonKey,'Content-Type':'application/json'},body:JSON.stringify({username:'superadmin',password:'invalid-test-password'}),signal:AbortSignal.timeout(15000)})
  ]);
- if(ownerChecks.some(r=>r.status!==401))throw new Error('Owner login endpoint did not reject invalid credentials.');
- console.log('PASS live owner login rejects invalid username and password');
+ if(ownerChecks.some(r=>![401,410].includes(r.status)))throw new Error('Retired owner-password endpoint remains available.');
+ console.log('PASS retired owner-password endpoint rejects all requests');
  const output={active:activeResult,newProject:newResult,websites:{originalLanding,previewLanding}};
  fs.mkdirSync('artifacts/cloud',{recursive:true});fs.writeFileSync('artifacts/cloud/readiness.json',JSON.stringify(output,null,2));
  console.log(JSON.stringify(output));

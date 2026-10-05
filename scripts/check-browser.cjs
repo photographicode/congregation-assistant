@@ -184,7 +184,7 @@ async function run(profile) {
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
         await nav('oclm');
-        await page.locator('#mws-tab-schedule').click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutySection').fill('AV');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
+        await page.locator('#mws-tab-schedule').click();await page.locator('#meetingDetailsSettings summary').click();await page.locator('#meetingStartTime').fill('19:00');await page.locator('#meetingReading').fill('Jeremiah 40–41');await page.locator('#meetingOpeningSong').fill('10');await page.locator('#meetingMiddleSong').fill('20');await page.locator('#meetingClosingSong').fill('30');await page.locator('#meetingAuxiliary').check();await page.getByRole('button',{name:'Save meeting details',exact:true}).click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutySection').fill('AV');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
         const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.section,'AV');assert.equal(duty.slots,2);
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
@@ -209,7 +209,7 @@ async function run(profile) {
         await publicPage.goto(sharedURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('First published title'));
         assert.equal(await publicPage.locator('#liveView').isVisible(),true,'Published schedule is hidden');
         assert.equal(await publicPage.locator('#tab-oclm').evaluate(el=>getComputedStyle(el).opacity),'1','Published schedule is transparent');
-        assert.match(await publicPage.locator('#liveSections').innerText(),/Microphones 1/);assert.match(await publicPage.locator('#liveSections').innerText(),/Sample Schedule Person/);
+        assert.match(await publicPage.locator('#liveSections').innerText(),/19:00/);assert.match(await publicPage.locator('#liveSections').innerText(),/10 \/ 20 \/ 30/);assert.match(await publicPage.locator('#liveSections').innerText(),/Microphones 1/);assert.match(await publicPage.locator('#liveSections').innerText(),/Sample Schedule Person/);
         assert.equal(await publicPage.evaluate(()=>sessionStorage.getItem('fs_auth')),null,'Public URL needs a private session');
         assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
         assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);
@@ -308,6 +308,7 @@ async function run(profile) {
         assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
+
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
         await page.evaluate(()=>{window.auth.verifiedOwner=false;window.auth.verifiedRoles=['admin'];window.currentCongId='demo-cong';sessionStorage.setItem('fs_auth_type','admin');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.db.currentCongData={id:'demo-cong',name:'Demo Congregation',feature_oclm:true};window.ui.switchTab('oclm');window.initMidweekScheduler();window.__qaBackend.rejectWrites=true;window.__demoCloudCalls=0;window.PublicLinks.publish=async()=>{window.__demoCloudCalls++;throw new Error('Demo must never publish online');};});
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
@@ -324,18 +325,11 @@ async function run(profile) {
         assert.equal(await page.evaluate(()=>sessionStorage.getItem('fs_auth')),null);
         assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);
         assert.equal(await page.locator('#auth-screen').isVisible(),true);
-        await page.route('**/functions/v1/owner-password-session',route=>{
-            const body=route.request().postDataJSON(),ok=body.username==='superadmin'&&body.password==='qa-owner-password';
-            return route.fulfill({status:ok?200:401,contentType:'application/json',body:JSON.stringify(ok?{session:{access_token:'qa-access',refresh_token:'qa-refresh'}}:{error:'Sign-in failed'})});
-        });
-        assert.equal(await page.locator('#super-password-panel').count(),0,'Main login advertises a separate owner form');
-        await page.locator('#auth-cong-id').fill('superadmin');await page.locator('#auth-pass').fill('wrong-password');await page.locator('#auth-btn').click();
-        await page.waitForFunction(()=>!document.getElementById('auth-btn').disabled);assert.match(await page.locator('#google-auth-status').innerText(),/Sign-in failed/);
-        await page.locator('#auth-pass').fill('qa-owner-password');await page.locator('#auth-btn').click();
-        await page.waitForFunction(()=>!document.getElementById('auth-btn').disabled);assert.match(await page.locator('#google-auth-status').innerText(),/does not have access/);
-        await page.evaluate(()=>{window.__qaBackend.superadmin=true;});await page.locator('#auth-pass').fill('qa-owner-password');await page.locator('#auth-btn').click();
-        await page.waitForFunction(()=>document.getElementById('auth-screen').classList.contains('hidden'));
-        assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.length),0,'Owner password login requested Google');
+        assert.equal(await page.locator('#super-password-panel').count(),0,'Login advertises a separate owner form');
+        await page.locator('#auth-google-btn').click();assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).provider),'google');assert.equal(await page.evaluate(()=>window.__qaBackend.oauthRequests.at(-1).options.redirectTo),'https://photographicode.github.io/congregation-assistant/staging/index.html');
+        await page.evaluate(async()=>{window.__qaBackend.session={user:{email:'congregationassistant0@gmail.com'}};window.__qaBackend.superadmin=false;window.__qaBackend.tables.congregation_access=[];await window.auth.resumeGoogleRole();});assert.equal(await page.evaluate(()=>window.auth.verifiedOwner),false);
+        await page.evaluate(async()=>{window.__qaBackend.superadmin=true;await window.auth.resumeGoogleRole();});assert.equal(await page.locator('#tab-superadmin').isVisible(),true);
+        await page.evaluate(()=>window.ui.confirmLogout());await Promise.all([page.waitForNavigation(),page.locator('#sys-prompt-confirm-btn').click()]);await page.waitForFunction(()=>window.auth&&!window.auth.check());assert.equal(await page.evaluate(()=>window.auth.verifiedOwner),false);assert.equal(await page.evaluate(()=>window.auth.resumeGoogleRole()),false);assert(await page.locator('#auth-screen').isVisible());
         assert.deepEqual(blockedProduction, [], 'Unexpected production database request');
         assert.deepEqual(errors, [], 'Browser console/page errors');
         reports.push({ profile: profile.name, status: 'passed', timings });

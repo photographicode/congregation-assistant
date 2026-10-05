@@ -31,3 +31,5 @@ The application and redesigned preview can be deployed through the connected app
 Enable the Google provider with callback `https://ejosykrxjvwrhxfnputo.supabase.co/auth/v1/callback`, verify redirect URLs and real owner sign-in, back up current data, then activate the new public configuration in a reviewed deployment. Never publish service-role keys, database passwords, or Google client secrets.
 
 5 October update: software owner approval is now congregationassistant0@gmail.com; the previous owner approval is disabled. The new owner Auth password account has not yet been created. See google-sign-in.md for separate owner-password and congregation-Google setup.
+
+Latest owner update: Google-only SuperAdmin sign-in replaces the earlier password plan. The normal Google button routes to the secure backend, active owner approval remains server-enforced, and the old password endpoint is retired. No owner password account setup is needed.

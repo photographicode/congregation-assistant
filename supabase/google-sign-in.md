@@ -1,10 +1,10 @@
 # Google sign-in: simple setup
 
-Owner / SuperAdmin: **congregationassistant0@gmail.com**. This is not a congregation account. SuperAdmin uses the ordinary software login: username **superadmin** and the owner password. Google is required only for congregation role accounts. The new owner email is approved, but its Supabase Auth password account does not yet exist.
+Owner / SuperAdmin: **congregationassistant0@gmail.com**. This is not a congregation account. SuperAdmin uses the same **Continue with Google** button as congregation users. The server approves the owner separately from congregation roles. No owner password setup is required.
 
-## 1. Activate the owner password privately, if needed
+## 1. Owner sign-in: Google only
 
-Sign in to Supabase with the dashboard account that already owns or manages the secure project. Your new software SuperAdmin email does not automatically grant Supabase dashboard access. In that project, open Authentication → Users → Add user/Create new user. Enter `congregationassistant0@gmail.com`, choose the intended strong password privately, and enable Auto confirm user/email confirmation for this owner you control. Do not put the password in chat or a repository. The owner email already has server approval. Open the normal software login and sign in as `superadmin` with that password. Test sign-out and a fresh sign-in. This does not require enabling Google.
+Open the software and choose **Continue with Google**, then select `congregationassistant0@gmail.com`. The main software button routes to the secure staging backend. Google creates the Auth account on first successful sign-in; no separate password account or owner form is needed. The server checks active owner approval before showing SuperAdmin. This email is not assigned as a congregation administrator. The old owner-password endpoint is retired.
 
 ## 2. One-time Google setup, by you
 
@@ -35,7 +35,7 @@ Sign in to Supabase with the dashboard account that already owns or manages the 
 
 ## 3. Create a congregation and its main admin
 
-1. You sign in as SuperAdmin through the normal password form.
+1. You choose Continue with Google and select the approved SuperAdmin email.
 2. Choose Add congregation. Set its unique **congregation ID**, congregation name, and the **Main Admin / Secretary’s Google email**.
 3. Save and check confirmation. The secure backend creates the congregation and its admin grant together. Do not assign your SuperAdmin email as a congregation admin.
 4. That person opens the secure pilot URL → Continue with Google → chooses that exact approved account.
@@ -62,4 +62,4 @@ OCLM drafts and Additional Duties definitions remain on the device for that cong
 
 If Google says access denied while in Testing, add the exact email to Google's Test users. If redirect_uri_mismatch appears, check the Google callback URI in step 6. If Google sign-in succeeds but software access is denied, check Access & Roles, the exact email, and active congregation status.
 
-5 October verification: Google is enabled, and a live public-metadata check confirms that the authorization redirect uses the intended Client ID and Supabase callback. The user supplied matching Google Cloud origin/callback screenshots. An actual approved Google account login, test-user approval and two-congregation isolation with real sessions still require testing. The new owner password account remains missing. Do not treat provider readiness as completed OAuth acceptance.
+5 October verification: Google is enabled, and a live public-metadata check confirms that the authorization redirect uses the intended Client ID and Supabase callback. The user supplied matching Google Cloud origin/callback screenshots. An actual approved Google account login, test-user approval and two-congregation isolation with real sessions still require testing. Owner sign-in now uses Google; creating a separate password account is no longer required. Do not treat provider readiness as completed OAuth acceptance.
