@@ -1239,24 +1239,24 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <p class="text-teal-200/70 mt-1 text-slate-400">Congregations, trials, access, and published tools at a glance</p>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-                    <div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1" aria-label="Theme">
+                    <details class="ca-owner-options"><summary>Appearance</summary><div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1" aria-label="Theme">
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('default')">Default</button>
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('blue')">Blue</button>
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('crimson')">Crimson</button>
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('dark')">Dark</button>
-                    </div>
-                    <input type="text" id="saas-search" oninput="window.ui.renderSuperAdmin()" placeholder="Search ID or Name..." class="flex-1 sm:w-56 px-4 py-2.5 rounded-xl border border-white/10 text-white bg-black/50 placeholder-slate-500 focus:outline-none focus:border-amber-400 shadow-sm transition-all">
-                    <select id="saas-filter" onchange="window.ui.renderSuperAdmin()" class="px-3 py-2.5 rounded-xl text-sm">
+                    </div></details>
+                    <input type="text" id="saas-search" aria-label="Search congregation name or ID" oninput="window.ui.renderSuperAdmin()" placeholder="Search ID or Name..." class="flex-1 sm:w-56 px-4 py-2.5 rounded-xl border border-white/10 text-white bg-black/50 placeholder-slate-500 focus:outline-none focus:border-amber-400 shadow-sm transition-all">
+                    <select id="saas-filter" aria-label="Show congregations by status or feature" onchange="window.ui.renderSuperAdmin()" class="px-3 py-2.5 rounded-xl text-sm">
                         <option value="ALL">All Congregations</option><option value="ACTIVE">Active</option><option value="TRIAL">Trial</option><option value="EXPIRED">Expired</option><option value="ATTENDANCE">Attendance Enabled</option><option value="EMERGENCY">Emergency Enabled</option><option value="OCLM">OCLM Enabled</option>
                     </select>
-                    <button onclick="window.ui.selectAllSuperAdmin(true)" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-amber-200 border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20">Select Visible</button><button onclick="window.ui.selectAllSuperAdmin(false); window.db.congregations.forEach(c=>window.ui.superAdminSelected.add(c.id)); window.ui.renderSuperAdmin();" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-fuchsia-200 border border-fuchsia-500/30 bg-fuchsia-500/10 hover:bg-fuchsia-500/20">Select all congregations</button>
-                    <button onclick="window.ui.openNotificationComposer()" class="shrink-0 bg-gradient-to-r from-fuchsia-500 to-amber-400 hover:from-fuchsia-400 hover:to-amber-300 text-slate-900 px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg">📢 Send Notification</button>
-                    <button onclick="window.ui.openModal('modal-add-cong')" class="shrink-0 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black px-5 py-2.5 rounded-xl font-bold">+ New congregation</button>
+                    <details class="ca-owner-options"><summary>Select congregations</summary><button onclick="window.ui.selectAllSuperAdmin(true)" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-amber-200 border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20">Select Visible</button><button onclick="window.ui.selectAllSuperAdmin(false); window.db.congregations.forEach(c=>window.ui.superAdminSelected.add(c.id)); window.ui.renderSuperAdmin();" class="shrink-0 px-3 py-2.5 rounded-xl font-bold text-sm text-fuchsia-200 border border-fuchsia-500/30 bg-fuchsia-500/10 hover:bg-fuchsia-500/20">Select all congregations</button></details>
+                    <button onclick="window.ui.openNotificationComposer()" class="ca-secondary-action">Write a notice</button>
+                    <button onclick="window.ui.openModal('modal-add-cong')" class="ca-secondary-action">Add a congregation manually</button>
                     <button onclick="window.ui.confirmLogout()" class="shrink-0 px-4 py-2.5 rounded-xl font-bold text-sm text-rose-300 border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20">Log Out</button>
                 </div>
             </div>
             
-            <div id="saas-overview" class="ca-admin-overview"></div><button type="button" class="ca-secondary-action" onclick="window.CAOnboarding?.requests()">Review workspace requests</button><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div id="saas-overview" class="ca-admin-overview"></div><button type="button" class="ca-owner-primary" onclick="window.CAOnboarding?.requests()">Review workspace requests</button><div class="ca-admin-offer"><strong>Launch offer · ₹1,499/year</strong><span>New congregations start with a 30-day trial. Payments are recorded manually; no automatic billing.</span></div><p id="saas-results" role="status"></p><div id="saas-cong-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <!-- Populated via JS -->
             </div>
         </div>

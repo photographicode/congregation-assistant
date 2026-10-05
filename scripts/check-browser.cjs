@@ -4,6 +4,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium, webkit } = require('playwright');
 const { PDFDocument } = require('pdf-lib');
+const AxeBuilder = require('@axe-core/playwright').default;
 const root = path.resolve(__dirname, '..');
 const output = path.join(root, 'artifacts/browser');
 fs.mkdirSync(output, { recursive: true });
@@ -331,6 +332,7 @@ async function run(profile) {
         assert.equal(await page.locator('#tab-superadmin').isVisible(),true);assert.equal(await page.locator('.ca-admin-stat').count(),4);
         assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['superadmin'],'Superadmin exposes an unselected congregation workspace');
         assert(!(await page.locator('#saas-cong-grid').innerText()).includes('Password:'));
+        const ownerScan=await new AxeBuilder({page}).include('#tab-superadmin').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(ownerScan.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],'Owner dashboard accessibility');
         await page.screenshot({path:path.join(output,`${profile.name}-superadmin.png`)});
 
         if(profile.mobile){await page.locator('#m-btn-tab-menu').click();assert(await page.locator('#menu-item-super-overview').isVisible());assert.equal(await page.locator('#menu-item-publishers').isVisible(),false);await page.locator('#menu-item-super-create').click();assert(await page.locator('#modal-add-cong').isVisible());await page.locator('#modal-add-cong button[onclick*=closeModal]').first().click();}
