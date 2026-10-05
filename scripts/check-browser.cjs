@@ -294,7 +294,7 @@ async function run(profile) {
                 await page.evaluate(()=>window.__qaBackend.rejectWrites=true);await page.locator('#modal-bulk-entry').getByRole('button',{name:'Save All Reports',exact:true}).click();
                 assert(await page.locator('#modal-bulk-entry').isVisible());assert.equal(await firstRow.locator('.bulk-studies').inputValue(),'3');
                 await page.evaluate(()=>window.__qaBackend.rejectWrites=false);await page.locator('#modal-bulk-entry').getByRole('button',{name:'Save All Reports',exact:true}).click();await page.waitForFunction(()=>document.getElementById('modal-bulk-entry').classList.contains('hidden'));
-                const groupSave=await page.evaluate(()=>window.__qaBackend.rpcCalls.filter(r=>r.name==='save_group_reports').at(-1));assert.equal(groupSave.args.p_reports.length,100);await page.evaluate(()=>{window.CA_CONFIG=window.__qaOriginalConfig;});
+                const groupSave=await page.evaluate(()=>window.__qaBackend.rpcCalls.filter(r=>r.name==='save_group_reports').at(-1));assert.equal(groupSave.args.p_reports.length,1,'Untouched missing reports must remain missing');assert.equal(groupSave.args.p_reports[0].comments,'Own group test');assert.equal(groupSave.args.p_reports[0].studies,3);await page.evaluate(()=>{window.CA_CONFIG=window.__qaOriginalConfig;});
 
             }
             await page.evaluate(()=>window.CAReminders.open());
