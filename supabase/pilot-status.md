@@ -1,44 +1,31 @@
-# Pilot verification — 4 October 2026
+# Pilot status — 5 October 2026
 
-The pilot is not ready for congregation use yet. No staging deployment or actual Google sign-in was verified in this session.
+Current phase: deployed secure staging, preparing for a small congregation pilot. Paid launch is not ready. This replaces older notes that deployment and browser testing were unverified.
 
 ## Verified
 
-- The connected new project `ejosykrxjvwrhxfnputo` is ACTIVE_HEALTHY.
-- A live publishing defect rejected valid week keys because the deployed regular expression was overescaped. Migration `preserve_valid_published_week_keys` replaces it with explicit digit classes. `fix-published-week-filter.sql` records the replacement and the fresh schema uses the same filter.
-- `scripts/check-staging-contract.sql` passed on the live new project, using simulated Google JWT claims and two synthetic congregations. It covers tenant isolation, cross-tenant writes and publishing, field-service and attendance restrictions, owner provisioning, payment-date retention, stable updated public snapshots, privacy filtering, public submissions, revoked links, disabled memberships, provider rejection, and trial expiry.
-- All SQL fixtures rolled back. A subsequent query confirmed zero congregations, auth users, and schedule publications, and removal of the test helper schema.
-- The checked-out app passes **34** command-line regression checks, including publishing failure recovery and absence of a shared browser Superadmin password. The reported 42 checks were not reproduced here.
+- Software and Website are published on GitHub Pages. The secure staging version is separate from the legacy main backend. Published asset checks and desktop Chromium, mobile Chromium and mobile WebKit acceptance passed on the previous release.
+- 48 regression checks cover scheduling, publication failure recovery, actual session cleanup on sign-out, role workspaces, combined Google roles, assistants, reminders, Additional Duties and PDF generation.
+- Secure backend row-level security is enabled on every application table. Anonymous direct reads are denied on all private tables, including owner approval, roles, publishers, reports and attendance.
+- Live rollback contracts verify two-congregation isolation with simulated identities, section and group boundaries, immediate grant revocation, stable schedule links, failed publication recovery and private-field filtering. These do not prove real Google OAuth works.
+- Additional Duties support custom sections (Attendant, AV, Cleaning) and sub-duties with 1–4 people each. Stable identifiers preserve qualifications and past assignments when names change.
+- Role-based reminder settings and browser installation are available. Closed-app alarms require importing calendar reminders; automatic background push or messaging is not configured.
+- Website provides a feature guide, trial email draft, fictional previews and one introductory annual offer capped at ₹1,499. It does not send requests or charge automatically.
 
-## Staging artifact
+## Still pending
 
-Run `node scripts/prepare-staging.cjs`. The deployment includes the generated files at the separate `/staging/` path. Its deployment still requires verification. Its `app-config.js` selects the new backend and `secureBackend: true`; the main app configuration remains on the legacy backend. `verification-manifest.json` records file hashes and explicitly marks deployment and OAuth unverified. No privileged keys are included.
+1. Google provider configuration, exact redirects and Google test-user list. The last live settings check had Google disabled. The client secret belongs only in the provider dashboard; rotate any secret shared in chat.
+2. Create the approved owner's Supabase Auth password account privately. Owner approval exists; a metadata query confirmed the account does not. Use the normal username login after activation, without Google.
+3. Actual Google sign-in by two approved test accounts in different congregations. Test direct API access with real sessions, unauthorized and revoked accounts, sign-out, expired-session recovery, failed saves, schedule publication and live links.
+4. Review the old backend and prepare a backed-up, tested data migration before changing the main software configuration. Current connection cannot audit the old project. Do not treat the legacy root as the secure pilot.
+5. Review the official OCLM DOCX when supplied. Keep Additional Duties separate from the official meeting program and preserve the current usable workflow.
+6. Full backup and restore rehearsal, shared-draft strategy for OCLM assistants, plain-language privacy/retention/support terms, and pilot user acceptance.
+7. Define server-enforced paid entitlement and trial expiry before Razorpay. Prefer one clear congregation plan; do not implement three tiers without a concrete feature mapping. Complete the small pilot and resolve critical issues before paid launch.
 
-After choosing the staging URL, add its exact URL to Supabase Authentication redirect URLs. Follow `google-sign-in.md` to configure the Google provider and callback. The database connector cannot configure OAuth or perform an interactive Google account sign-in. Current provider state could not be rechecked from this executor because its HTTP proxy was unreachable; the last recorded state was disabled.
+## Publication safeguards
 
-Use two Google test accounts assigned to separate test congregations. Check direct API reads and insert/update/delete attempts with each actual JWT, then disabled membership and an unapproved account. Run scheduling → review → publish → open live token link, republish at the same link, and a rejected publish that preserves the previous publication. Verify mobile and desktop readability, obvious actions, visible errors, expired-session recovery, and reload behavior.
+The new release adds no-referrer on app and website, noindex on software, a recognized-secret scan, and Pages exclusions for setup documents, SQL, tests and internal source. Verify the exclusions against deployed URLs before calling them live. Search indexing controls do not provide access control. The public repository and its history remain public; no repository visibility change is claimed.
 
-## Public repository connection
+Anyone possessing a published schedule token can read its assigned names and duty details. Report/attendance tokens grant scoped form operations. Keep tokens private to intended recipients and use revocation where supported. Current storage and transport protections are not end-to-end encryption.
 
-Target: https://github.com/photographicode/Congregation-Assistant_Public
-
-The earlier branch creation attempt returned **403 Resource not accessible by integration**. After the connection was updated, actual branch creation and commit writes succeeded on 4 October. The public redesign is tracked in pull request #1.
-
-In GitHub Settings → Applications → Installed GitHub Apps, configure the app used by this ChatGPT/Codex GitHub connection. Include `Congregation-Assistant_Public` in its repository selection and grant the required repository Contents read/write permission if supported. Reconnect the GitHub connection if it remains read-only. Then verify branch creation and publish the prepared `public-site-preview` files through a reviewed pull request. That preview already points to the application's GitHub Pages URL. Do not advertise the pilot as ready until actual authentication and deployment checks pass.
-
-## Remaining release gates
-
-- Local browser acceptance failed at HTTP server startup with `EPERM`; no desktop/mobile result is claimed. Outbound HTTP also failed because the configured proxy was unreachable. Live frontend asset hashes were not checked.
-- Basic/Standard/Premium are not defined or enforced in the reviewed schema. Current authorization checks membership roles and trial/active status; feature flags do not establish paid-tier enforcement. Define the tier feature mapping and verify server-side denials before Razorpay integration. The annual price remains ₹1,499.
-- The security advisor still warns about deliberately callable privileged RPCs. The rollback suite checks several authorization boundaries; it is not a clean security audit. References: https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable and https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable.
-- Complete the small congregation pilot and resolve critical issues before paid launch. Legacy backend authorization remains unaudited.
-
-The authorized publication includes the safe-area adjustment for mobile notifications and browser assertions for notification overlap and duplicate public preview tabs. Real-account OAuth remains a separate acceptance gate.
-
-## Role reminders and scoped group overseers — 5 October 2026
-
-Secure backend adds `group_overseer` with a required exact group name. Live rollback tests verified other-group/other-congregation denial, report/attendance link scope, denied edits and immediate revocation. The permission helper's authenticated SECURITY DEFINER advisor warning is intentional: it checks the current Google identity, active membership, congregation status and exact group, returns only a boolean, uses an empty search path, and denies anonymous execution. Other prior public-link advisor warnings remain under the existing narrow token contracts.
-
-Personal reminder settings are local to an account/congregation/device. Reminders are opt-in; weekly OCLM prompts target three weeks ahead, attendance/form-sharing days and times are configurable, and service reports/form sharing repeat on the 1st. Calendar export supports closed-app alerts after import and permission checks. Automatic server push and messages remain unconfigured. This does not verify OAuth or turn the legacy backend into the secure pilot.
-
-Owner identity replaced by congregationassistant0@gmail.com (not congregation admin); old owner approval disabled. New owner password Auth user does not yet exist. Optional section assistant metadata and Additional Duties publication sanitizer deployed. Live rollback checks verified combined roles, assistant boundaries, denied cross-congregation publication and removal of private fields from duty snapshots. Google provider activation remains pending dashboard credentials.
+The advisor reports intentional privileged RPC warnings. Role RPCs validate active identity and membership; public-link RPCs operate under token contracts. A clean security audit is not claimed. Review advisor guidance at https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable and https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable.
