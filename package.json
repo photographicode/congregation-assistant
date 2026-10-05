@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "test": "node scripts/check-public-safety.cjs && node scripts/check-app.cjs && node scripts/check-cloud-draft.cjs && node scripts/check-recovery-encryption.cjs",
-    "test:browser": "node scripts/check-browser.cjs"
+    "test:browser": "node scripts/check-browser.cjs",
+    "build:styles": "tailwindcss -i scripts/styles/utilities.css -o app-utilities.css --minify"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "pdf-lib": "1.17.1",
-    "playwright": "1.62.1"
+    "playwright": "1.62.1",
+    "tailwindcss": "3.4.17"
   }
 }

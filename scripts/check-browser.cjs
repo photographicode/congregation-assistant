@@ -107,7 +107,9 @@ async function run(profile) {
         await page.locator('#mws-tab-preview').click();
         await page.locator('#publishWeekBtn').scrollIntoViewIfNeeded();
         assert(await page.locator('#publishWeekBtn').isVisible(),'Publish button must be visible on every device');
-        const reviewOrder=await page.evaluate(()=>document.getElementById('paper').getBoundingClientRect().bottom<=document.getElementById('publishWeekBtn').getBoundingClientRect().top);
+        if(profile.mobile)assert(await page.locator('#publishWeekBtn').evaluate(button=>{const r=button.getBoundingClientRect(),hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return button===hit||button.contains(hit);}), 'Publish must be reachable above bottom navigation');
+        assert.equal(await page.locator('.mws-review-paper').getAttribute('open'),null,'Full preview should be optional so publication stays easy to find');
+        const reviewOrder=await page.evaluate(()=>!!(document.getElementById('paper').compareDocumentPosition(document.getElementById('publishWeekBtn')) & Node.DOCUMENT_POSITION_FOLLOWING));
         assert(reviewOrder,'Publish follows the schedule review');
         const frames=await page.locator('#s3-render-area, #s88-render-area').evaluateAll(els=>els.every(el=>getComputedStyle(el).display==='none'));
         assert(frames,'PDF rendering frames must not leave blank screen space');

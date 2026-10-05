@@ -23,6 +23,7 @@
    await registration();
    if(Notification.permission==='denied'){this.guide();return;}
    const permission=await Notification.requestPermission();
+   if(permission==='granted'&&window.CA_CONFIG?.pushPublicKey){await window.CAPush.enable();return;}
    status(permission==='granted'?'Device permission is enabled. Send a test to check it. Reminders can alert while the app is open. Use calendar reminders when it is closed.':'Notifications are not enabled. Tap Settings help to allow them.');
   }catch(error){status(error.message);}},
   async sendReminder(title,body){const reg=await registration();if(Notification.permission!=='granted')return;await reg.showNotification('Congregation Assistant',{body:title+' — '+body,icon:'assets/icon-192.png',tag:'ca-personal-reminder',data:{url:new URL('./',location.href).href}});},

@@ -37,6 +37,7 @@ jobs:
       - run: npm install --ignore-scripts
       - run: npx playwright install --with-deps chromium webkit
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: npm run build:styles && git diff --exit-code -- app-utilities.css
       - run: npm test
         env:
           CA_CHECK_OUTPUT: artifacts/pdf-check
