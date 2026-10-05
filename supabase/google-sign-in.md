@@ -62,4 +62,4 @@ OCLM drafts and Additional Duties definitions remain on the device for that cong
 
 If Google says access denied while in Testing, add the exact email to Google's Test users. If redirect_uri_mismatch appears, check the Google callback URI in step 6. If Google sign-in succeeds but software access is denied, check Access & Roles, the exact email, and active congregation status.
 
-Current provider activation still requires your Google Client ID/secret in the Supabase dashboard. Database and synthetic browser checks do not establish that real Google sign-in works.
+5 October verification: Google is enabled, and a live public-metadata check confirms that the authorization redirect uses the intended Client ID and Supabase callback. The user supplied matching Google Cloud origin/callback screenshots. An actual approved Google account login, test-user approval and two-congregation isolation with real sessions still require testing. The new owner password account remains missing. Do not treat provider readiness as completed OAuth acceptance.
