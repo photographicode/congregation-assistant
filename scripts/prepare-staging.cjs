@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const output = path.join(root, 'artifacts/staging');
 const backend = JSON.parse(fs.readFileSync(path.join(root, 'supabase/new-project-public.json'), 'utf8'));
 if (backend.supabaseUrl !== 'https://ejosykrxjvwrhxfnputo.supabase.co' || !backend.supabaseAnonKey.startsWith('sb_publishable_')) throw new Error('Expected the reviewed pilot project and a public key.');
-const files = ['index.html', 'app.css', 'app-support.js', 'pdf-tools.js', 'public-links.js', 'app-install.js','app-attendance.js','app-onboarding.js','app-oclm-cloud.js','app-reminders.js','app-guide.js','app-readability.js','app-publisher-home.js','app-recovery.js', 'service-worker.js', 'manifest.webmanifest', 'assets/icon-192.png', 'assets/icon-512.png'];
+const files = ['index.html', 'app.css', 'app-support.js', 'pdf-tools.js', 'public-links.js', 'app-install.js','app-attendance.js','app-onboarding.js','app-oclm-cloud.js','app-reminders.js','app-guide.js','app-readability.js','app-publisher-home.js','app-recovery.js','app-push.js','app-home.js', 'service-worker.js', 'manifest.webmanifest', 'assets/icon-192.png', 'assets/icon-512.png'];
 fs.mkdirSync(output, {recursive: true});
 for (const file of files) {
     fs.mkdirSync(path.dirname(path.join(output, file)), {recursive: true});

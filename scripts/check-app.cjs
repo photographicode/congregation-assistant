@@ -397,5 +397,6 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),false);assert.equal(fw.MidweekScheduler.isEligible('available','Chairman'),true);
         fw.setSchedulerWeek('2027-W02');assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),true);
     });
+    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm']);assert(!w.ui.canManageAccess());});
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});

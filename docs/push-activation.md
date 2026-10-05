@@ -1,0 +1,7 @@
+Server push is prepared, but delivery is not activated. No browser permission test proves remote delivery.
+
+An operator must generate a VAPID key pair privately (`npx web-push generate-vapid-keys`), put `CA_PUSH_PRIVATE_KEY`, `CA_PUSH_PUBLIC_KEY`, and `CA_PUSH_SUBJECT=mailto:congregationassistant0@gmail.com` in the secure project's Edge Function secrets, and publish only the public key as `pushPublicKey` in app-config.js. Never paste the private key into a chat, a repository, or browser source.
+
+Deploy `workspace-push` with JWT verification. Schedule a private server job every five minutes using the server service-role credential in Supabase Vault. The browser must never contain or call the worker credential. Activate only after a synthetic registered browser receives a server notification with the app closed; test revocation, cancellations, retries, duplicate leases and iOS Home Screen support. Current queue supports personal published assignment changes, role report reminders, schedule planning, attendance and owner notices. Delivery is at least once: duplicates are possible after uncertain network receipts.
+
+Remote push depends on browser support, OS notification permissions, power management and connectivity. Google-account removal stops queued delivery on the next worker pass. Prefer generic notification text; names and personal reports stay inside the signed-in workspace. Current calendar reminders remain available during activation.

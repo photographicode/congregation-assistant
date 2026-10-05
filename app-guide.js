@@ -1,6 +1,7 @@
 (() => {
  const base='https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html#';
  const topics=[
+  ['personal','reports','My assignments and report','See your own published duties, submit your report and read notices.'],
   ['dashboard','start','Start here','Find your assigned tools, check saves, and sign out safely.'],
   ['publishers','publishers','Publisher records','Add, search, edit, and check publisher records.'],
   ['groups','groups','Groups and report links','Organize groups, check missing reports, and share a scoped form.'],

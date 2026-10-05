@@ -25,3 +25,6 @@ insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_minist
 return jsonb_build_object('saved',true,'period',home->'report'->>'period');end $$;
 revoke all on function public.get_my_publisher_home(text),public.submit_my_publisher_report(text,boolean,integer,numeric,text,boolean) from public,anon,authenticated;
 grant execute on function public.get_my_publisher_home(text),public.submit_my_publisher_report(text,boolean,integer,numeric,text,boolean) to authenticated;
+-- A password login linked to Google must not inherit Google-only congregation grants.
+create or replace function public.ca_google_identity() returns boolean language sql stable set search_path='' as $$select coalesce(auth.jwt()->'app_metadata'->>'provider'='google',false) and auth.jwt()->>'email' is not null;$$;
+revoke all on function public.ca_google_identity() from public,anon;grant execute on function public.ca_google_identity() to authenticated;
