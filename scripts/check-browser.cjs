@@ -89,6 +89,14 @@ async function run(profile) {
             assert((await PDFDocument.load(fs.readFileSync(location))).getPageCount() > 0);
             await page.waitForFunction(id => !document.getElementById(id).disabled, id);
         }
+        await page.evaluate(()=>{window.ui.publicLinkToken='qa-attendance-token';window.ui.switchTab('public-attendance');});
+        await page.waitForFunction(()=>!document.getElementById('pub-att-submit-btn').disabled);
+        assert.equal(await page.locator('#pub-att-year,#pub-att-month,#pub-att-week,#pub-att-mid-type').count(),0);
+        assert.match(await page.locator('#pub-att-context').innerText(),/Midweek meeting.*2026–2027/);
+        await page.locator('#pub-att-count').fill('91');await page.locator('#pub-att-submit-btn').click();await page.waitForFunction(()=>!document.getElementById('pub-att-success-msg').classList.contains('hidden'));
+        const submission=await page.evaluate(()=>window.__qaBackend.rpcCalls.find(c=>c.name==='submit_current_attendance'));assert.deepEqual(submission.args,{p_token:'qa-attendance-token',p_date:'2026-10-05',p_count:91});
+        await page.evaluate(()=>{window.__qaBackend.meetingContext={configured:true,date:'2026-10-05',kind:'RC',serviceYear:2027,month:9,week:1,timezone:'Asia/Kolkata',canSubmit:false};window.ui.loadPublicAttendance();});await page.waitForFunction(()=>document.getElementById('pub-att-context').textContent.includes('Regional convention'));assert(await page.locator('#pub-att-submit-btn').isDisabled());
+        await page.evaluate(()=>{window.ui.publicLinkToken=null;});
         await nav('oclm');
         assert.equal(await page.locator('#ca-midweek-root h1').count(),1,'Scheduler must have one page heading');
         assert.equal(await page.locator('#autoTop,#previewBtn').count(),0,'Duplicate scheduler actions returned');

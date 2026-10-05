@@ -101,3 +101,6 @@ reset role;
 \i scripts/check-group-access.sql
 
 \i scripts/check-additional-features.sql
+
+\i supabase/attendance-calendar.sql
+\i scripts/check-attendance-calendar.sql

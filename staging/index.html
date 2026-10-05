@@ -1486,69 +1486,17 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         <span class="text-4xl sm:text-5xl text-emerald-500">✓</span>
                     </div>
                     <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="color: #0f172a;">Attendance Saved</h2>
-                    <p class="text-base mb-8" style="color: #64748b;">The attendance numbers for this week have been securely recorded.</p>
-                    <button onclick="location.reload()" class="px-8 py-3 bg-teal-500 hover:bg-teal-400 rounded-xl transition-all text-white font-bold shadow-lg w-full">Submit Another Week</button>
+                    <p class="text-base mb-8" style="color: #64748b;">The attendance count for this meeting has been recorded.</p>
+                    <button onclick="location.reload()" class="px-8 py-3 bg-teal-500 hover:bg-teal-400 rounded-xl transition-all text-white font-bold shadow-lg w-full">Return to meeting form</button>
                 </div>
             </div>
 
             <div id="pub-att-form-area" class="s4-modern-wrapper">
                 <div class="s4-modern-card">
                     <h2>Meeting Attendance</h2>
-                    <p class="subtitle">Choose the week and enter meeting attendance. Leave a count blank to keep its saved value.</p>
-
-                    <div class="s4-form-group s4-grid-2">
-                        <div>
-                            <label class="s4-label">Year</label>
-                            <select id="pub-att-year" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-default text-center bg-slate-50 text-slate-500"></select>
-                        </div>
-                        <div>
-                            <label class="s4-label">Month</label>
-                            <select id="pub-att-month" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-default text-center bg-slate-50 text-slate-500">
-                                <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
-                                <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
-                                <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="s4-form-group">
-                        <label class="s4-label">Target Week</label>
-                        <select id="pub-att-week" onchange="window.ui.loadPublicAttendance()" class="s4-input cursor-pointer text-center font-bold text-teal-700">
-                            <option value="1">Week 1</option>
-                            <option value="2">Week 2</option>
-                            <option value="3">Week 3</option>
-                            <option value="4">Week 4</option>
-                            <option value="5">Week 5</option>
-                        </select>
-                        <span class="s4-help-text" id="pub-att-current-week-msg"></span>
-                    </div>
-
-                    <div id="pub-att-mid-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
-                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Midweek Meeting</h4>
-                        <div class="flex flex-col gap-2">
-                            <select id="pub-att-mid-type" onchange="window.ui.togglePubAttInput('mid')" class="s4-input cursor-pointer text-sm py-2">
-                                <option value="count">Numeric Count</option>
-                                <option value="CA">Circuit Assembly</option>
-                                <option value="RC">Regional Convention</option>
-                                <option value="Memorial">Memorial</option>
-                            </select>
-                            <input type="number" id="pub-att-mid-val" min="0" placeholder="Enter attendance count" class="s4-input">
-                        </div>
-                    </div>
-
-                    <div id="pub-att-end-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6 hidden">
-                        <h4 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Weekend Meeting</h4>
-                        <div class="flex flex-col gap-2">
-                            <select id="pub-att-end-type" onchange="window.ui.togglePubAttInput('end')" class="s4-input cursor-pointer text-sm py-2">
-                                <option value="count">Numeric Count</option>
-                                <option value="CA">Circuit Assembly</option>
-                                <option value="RC">Regional Convention</option>
-                                <option value="Memorial">Memorial</option>
-                            </select>
-                            <input type="number" id="pub-att-end-val" min="0" placeholder="Enter attendance count" class="s4-input">
-                        </div>
-                    </div>
-
+                    <p class="subtitle">Your congregation’s calendar chooses today’s meeting. Enter only the attendance count.</p>
+                    <div id="pub-att-context" role="status" class="s4-form-group">Checking today’s meeting…</div>
+                    <div id="pub-att-count-area" class="s4-form-group hidden"><label for="pub-att-count" class="s4-label">Attendance count</label><input id="pub-att-count" type="number" min="0" max="99999" step="1" inputmode="numeric" class="s4-input" placeholder="Enter the total number attending"></div>
                     <button onclick="window.db.savePublicAttendance()" id="pub-att-submit-btn" class="s4-submit-btn">Save Attendance</button>
                 </div>
             </div>
@@ -1571,6 +1519,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 </div>
             </div>
 
+            <div id="att-calendar" class="ca-att-calendar" hidden></div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 mb-4" id="att-stats-container">
                 <!-- Populated via JS -->
             </div>
@@ -2866,6 +2815,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <script src="app-config.js"></script>
     <script src="app-install.js"></script>
     <script src="app-reminders.js"></script>
+    <script src="app-attendance.js"></script>
     <script src="app-guide.js"></script>
     <script src="public-links.js"></script>
     <script src="pdf-tools.js"></script>
@@ -2884,6 +2834,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
+        window.AttendanceCalendar?.install(supabaseClient);
         window.sysPromptState = { actionCallback: null, requiresPassword: false };
         window.currentCongId = null;
 
@@ -3001,7 +2952,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     if(sessionError)throw sessionError;
                     const email=session?.user?.email?.toLowerCase();if(!email){window.auth.clearGoogleRole();return false;}
                     const {data:superAccess,error:superError}=await supabaseClient.rpc('ca_is_superadmin');
-                    if(!superError && superAccess===true){window.auth.verifiedEmail=email;window.currentCongId=null;window.db.currentCongData=null;window.auth.googleAccess=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
+                    if(!superError && superAccess===true){window.auth.verifiedEmail=email;window.currentCongId=null;window.db.currentCongData=null;window.db.attendance=[];window.AttendanceCalendar?.clear();window.auth.googleAccess=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
                     const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group,is_assistant':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
                     window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer'].includes(row.role));
@@ -3093,7 +3044,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 window.auth.roleReady=false;window.auth.verifiedRoles=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedEmail=null;window.auth.verifiedOwner=false;window.auth.googleAccess=[];window.currentCongId=null;
                 for(const key of ['publishers','reports','congregations'])window.db[key]=[];
-                window.db.currentCongData=null;
+                window.db.currentCongData=null;window.db.attendance=[];window.AttendanceCalendar?.clear();
                 document.getElementById('auth-screen').classList.remove('hidden');
                 try { await Promise.race([supabaseClient?.auth?.signOut({scope:'local'}),new Promise(resolve=>setTimeout(resolve,2000))]); } catch(e) {}
                 for(const storage of [localStorage,sessionStorage])for(const key of (typeof storage.keys==='function'?storage.keys():Object.keys(storage)))if(/^sb-.*-auth-token/.test(key))storage.removeItem(key);
@@ -3536,35 +3487,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }catch(error){window.ui.setSyncStatus('error','Attendance not saved');throw error;}
             },
 
-            savePublicAttendance: async () => {
-                const sy=Number(document.getElementById('pub-att-year').value),month=Number(document.getElementById('pub-att-month').value),week=Number(document.getElementById('pub-att-week').value);
-                if(!Number.isInteger(sy)||!Number.isInteger(month)||month<0||month>11||!Number.isInteger(week)||week<1||week>5)throw new Error('Select a year, month and week.');
-                const id=`${window.currentCongId}_${sy}_${month}`,changes={};
-                for(const meeting of ['mid','end']){
-                    const type=document.getElementById(`pub-att-${meeting}-type`).value;
-                    const value=type==='count'?document.getElementById(`pub-att-${meeting}-val`).value:type;
-                    if(value==='')continue;
-                    if(type==='count' && (!Number.isInteger(Number(value))||Number(value)<0)) throw new Error('Attendance counts must be whole numbers of zero or more.');
-                    changes[`w${week}_${meeting}`]=value;
-                }
-                if(!Object.keys(changes).length)throw new Error('Enter a count or select a meeting event. Blank counts leave saved values unchanged.');
-                if(!isCloudEnabled)throw new Error('Cloud connection required to save attendance.');
-                if(window.ui.publicLinkToken){await window.PublicLinks.submitAttendance(sy,month,changes);document.getElementById('pub-att-form-area').classList.add('hidden');document.getElementById('pub-att-success-msg').classList.remove('hidden');return;}
-                const {data:existing,error:readError}=await supabaseClient.from('meeting_attendance').select('*').eq('id',id).eq('cong_id',window.currentCongId).maybeSingle();
-                if(readError)throw readError;
-                // Updating only entered fields preserves other weeks and blank meeting counts.
-                const base={id,cong_id:window.currentCongId,service_year:sy,month};
-                const {error}=existing
-                    ?await supabaseClient.from('meeting_attendance').update(changes).eq('id',id).eq('cong_id',window.currentCongId)
-                    :await supabaseClient.from('meeting_attendance').insert([{...base,...changes}]);
-                if(error)throw error;
-                const record={...base,...existing,...changes};
-                const index=window.db.attendance.findIndex(a=>a.id===id);
-                if(index<0)window.db.attendance.push(record);else window.db.attendance[index]=record;
-                window.db.writeLocalCache('attendance');
-                document.getElementById('pub-att-form-area').classList.add('hidden');
-                document.getElementById('pub-att-success-msg').classList.remove('hidden');
-            },
+            savePublicAttendance: async () => window.AttendanceCalendar.submit(),
 
             getSFTSOverrides: () => {
                 try { return JSON.parse(localStorage.getItem(`sfts_overrides_${window.currentCongId || 'global'}`) || '{}') || {}; } catch(e) { return {}; }
@@ -4585,6 +4508,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             closeModal: (id) => document.getElementById(id)?.classList.add('hidden'),
 
             renderAttendance: () => {
+                window.AttendanceCalendar?.renderAdmin();
                 const tbody = document.getElementById('att-table-body');
                 const statsContainer = document.getElementById('att-stats-container');
                 if(!tbody || !statsContainer) return;
@@ -4713,10 +4637,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             copyAttendanceLink: async () => {
                 if(window.CA_CONFIG?.secureBackend){const url=await window.PublicLinks.create('attendance');await window.ui.copyText(url);return;}
-                const baseUrl = window.location.href.split(/[?#]/)[0]; 
-                const url = `${baseUrl}?cong=${encodeURIComponent(window.currentCongId)}&mode=attendance`;
-                const textArea = document.createElement("textarea"); textArea.value = url; document.body.appendChild(textArea);
-                textArea.focus(); textArea.select(); try { document.execCommand('copy'); window.ui.showToast('Attendance Form Link Copied!'); } catch (err) { console.error(err); } document.body.removeChild(textArea);
+                throw new Error('Use the secure Google workspace to create a protected attendance form.');
             },
 
             /* ===== OCLM core state + week helpers ===== */
@@ -4982,75 +4903,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             copyText: async text => {try{await navigator.clipboard.writeText(text);window.ui.showToast('Copied to clipboard.');}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const copied=document.execCommand('copy');if(copied){ta.remove();window.ui.showToast('Copied to clipboard.');}else{ta.setAttribute('aria-label','Select and copy this text');window.ui.showToast('Automatic copy is unavailable. Select and copy the displayed text.','error');}}},
 
-            setupPublicAttendance: () => {
-                const syInfo = window.utils.getCurrentServiceYearInfo(); const istInfo = { serviceYear: syInfo.serviceYear, month: syInfo.month };
-                
-                const ySel = document.getElementById('pub-att-year');
-                if (ySel && ySel.options.length === 0) {
-                    for (let i = syInfo.serviceYear - 1; i <= syInfo.serviceYear + 1; i++) { ySel.innerHTML += `<option value="${i}">${i-1}-${i}</option>`; }
-                    ySel.value = istInfo.serviceYear;
-                }
-                const mSel = document.getElementById('pub-att-month');
-                if (mSel && !mSel.hasAttribute('data-init')) { mSel.value = istInfo.month; mSel.setAttribute('data-init', 'true');}
-
-                const today = new Date();
-                const currentWeekIdx = Math.min(5, Math.max(1, Math.ceil(today.getDate() / 7)));
-                document.getElementById('pub-att-week').value = currentWeekIdx;
-                document.getElementById('pub-att-current-week-msg').textContent = `Defaulted to current week (${currentWeekIdx})`;
-
-                document.getElementById('pub-att-end-container').classList.remove('hidden');
-                document.getElementById('pub-att-mid-container').classList.remove('hidden');
-
-                window.ui.loadPublicAttendance();
-            },
-
-            loadPublicAttendance: async () => {
-                const sy = parseInt(document.getElementById('pub-att-year').value);
-                const month = parseInt(document.getElementById('pub-att-month').value);
-                const week = parseInt(document.getElementById('pub-att-week').value);
-                const id = `${window.currentCongId}_${sy}_${month}`;
-
-                // Reset fields
-                document.getElementById('pub-att-mid-type').value = 'count';
-                document.getElementById('pub-att-mid-val').value = '';
-                document.getElementById('pub-att-end-type').value = 'count';
-                document.getElementById('pub-att-end-val').value = '';
-                window.ui.togglePubAttInput('mid'); window.ui.togglePubAttInput('end');
-
-                if (isCloudEnabled) {
-                    try {
-                        const { data } = window.ui.publicLinkToken ? await supabaseClient.rpc('get_public_attendance',{p_token:window.ui.publicLinkToken,p_year:sy,p_month:month}) : await supabaseClient.from('meeting_attendance').select('*').eq('id', id).single();
-                        if (data) {
-                            const mVal = data[`w${week}_mid`] || '';
-                            const eVal = data[`w${week}_end`] || '';
-
-                            const setFields = (v, prefix) => {
-                                if (['CA', 'RC', 'Memorial'].includes(v)) {
-                                    document.getElementById(`pub-att-${prefix}-type`).value = v;
-                                } else {
-                                    document.getElementById(`pub-att-${prefix}-type`).value = 'count';
-                                    document.getElementById(`pub-att-${prefix}-val`).value = v;
-                                }
-                            };
-                            
-                            setFields(mVal, 'mid');
-                            setFields(eVal, 'end');
-                            window.ui.togglePubAttInput('mid'); window.ui.togglePubAttInput('end');
-                        }
-                    } catch (e) { /* No existing data for this month, perfectly fine. */ }
-                }
-            },
-
-            togglePubAttInput: (m) => {
-                const type = document.getElementById(`pub-att-${m}-type`).value;
-                const inp = document.getElementById(`pub-att-${m}-val`);
-                if(type === 'count') {
-                    inp.style.display = 'block';
-                } else {
-                    inp.style.display = 'none';
-                    inp.value = '';
-                }
-            },
+            setupPublicAttendance: () => window.AttendanceCalendar.loadPublic(),
+            loadPublicAttendance: () => window.AttendanceCalendar.loadPublic(),
 
             saveAttendanceStateLocally: () => {
                 const n = document.getElementById('att-cong-name').value;
