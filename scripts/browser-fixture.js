@@ -23,6 +23,7 @@
                         }
                     }
                     let data = (tables[table] || []).filter(row => operations.filter(([name]) => name === 'eq').every(([, field, value]) => row[field] === value)&&operations.filter(([name])=>name==='in').every(([,field,values])=>values.includes(row[field])));
+                    const order=operations.find(([name])=>name==='order');if(order)data.sort((a,b)=>String(a[order[1]]).localeCompare(String(b[order[1]])));const range=operations.find(([name])=>name==='range');if(range)data=data.slice(range[1],range[2]+1);
                     if (operations.some(([name]) => name === 'single' || name === 'maybeSingle')) data = data[0] || null;
                     return { data, error: null };
                 };

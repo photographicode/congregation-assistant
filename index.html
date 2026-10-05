@@ -1269,8 +1269,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <p class="text-teal-200/70 mt-1">Monthly reports and service totals</p>
                 </div>
                 <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
-                    <select id="dash-year" class="ca-service-select " onchange="window.ui.renderDashboard()"></select>
-                    <select id="dash-month" class="ca-service-select " onchange="window.ui.renderDashboard()">
+                    <select id="dash-year" aria-label="Dashboard service year" class="ca-service-select " onchange="window.ui.renderDashboard()"></select>
+                    <select id="dash-month" aria-label="Dashboard reporting month" class="ca-service-select " onchange="window.ui.renderDashboard()">
                         <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
                         <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
                         <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
@@ -1283,7 +1283,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-6">
                 <div class="glass-panel rounded-2xl overflow-hidden border border-cyan-500/30">
                     <div class="bg-black/30 px-4 sm:px-5 py-3 border-b border-cyan-500/20 text-cyan-300 font-bold">Regular Pioneers Log</div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Scrollable data table">
                         <table class="w-full text-left text-sm whitespace-nowrap text-white">
                             <thead class="bg-black/40 text-cyan-100/60 text-xs uppercase">
                                 <tr><th class="px-4 sm:px-5 py-2">Name</th><th class="px-4 sm:px-5 py-2 text-center w-16 sm:w-20">Hours</th><th class="px-4 sm:px-5 py-2 text-center w-16 sm:w-20">Studies</th></tr>
@@ -1298,7 +1298,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         <span>Auxiliary Pioneer Review Log</span>
                         <span class="text-[9px] sm:text-[10px] uppercase text-emerald-200/50">Review mapped APs</span>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Scrollable data table">
                         <table class="w-full text-left text-sm whitespace-nowrap text-white">
                             <thead class="bg-black/40 text-emerald-100/60 text-xs uppercase">
                                 <tr><th class="px-4 sm:px-5 py-2">Publisher</th><th class="px-4 sm:px-5 py-2 text-center w-16 sm:w-20">Hours</th><th class="px-4 sm:px-5 py-2 text-center w-16 sm:w-20">Studies</th><th class="px-4 sm:px-5 py-2 text-right">Admin Action</th></tr>
@@ -1510,8 +1510,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <p class="text-teal-200/70 mt-1">Record weekly statistics and generate S-3-E form</p>
                 </div>
                 <div class="flex gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-                    <select id="att-year" class="ca-service-select " onchange="window.ui.renderAttendance()"></select>
-                    <select id="att-month" class="ca-service-select " onchange="window.ui.renderAttendance()">
+                    <select id="att-year" aria-label="Attendance service year" class="ca-service-select " onchange="window.ui.renderAttendance()"></select>
+                    <select id="att-month" aria-label="Attendance month" class="ca-service-select " onchange="window.ui.renderAttendance()">
                         <option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option>
                         <option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option>
                         <option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option>
@@ -1525,7 +1525,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             </div>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-black/20 p-4 rounded-xl border border-white/5">
-                <input type="text" id="att-cong-name" class="w-full sm:max-w-xs px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-sm font-semibold text-white focus:border-teal-400 outline-none" placeholder="Congregation Print Name" onchange="window.ui.saveAttendanceStateLocally()">
+                <input type="text" id="att-cong-name" aria-label="Congregation name for attendance reports" class="w-full sm:max-w-xs px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-sm font-semibold text-white focus:border-teal-400 outline-none" placeholder="Congregation Print Name" onchange="window.ui.saveAttendanceStateLocally()">
                 <div class="flex gap-2 w-full sm:w-auto">
                     <button onclick="window.ui.copyAttendanceLink()" class="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex justify-center items-center gap-2 border border-white/10">🔗 Copy Public Link</button>
                     <button id="att-print-btn" onclick="window.ui.printS3()" class="flex-1 sm:flex-none bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)] flex items-center justify-center gap-2">
@@ -1588,7 +1588,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <input type="text" id="emergency-search" oninput="window.ui.renderEmergencyContacts()" placeholder="🔍 Search by name..." class="w-full px-4 py-2.5 rounded-xl text-sm">
             </div>
             <div class="glass-panel rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Scrollable data table">
                     <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="bg-black/50 text-teal-100/70">
                             <tr>
@@ -1662,7 +1662,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <input id="publisher-search" type="search" oninput="window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL', window.ui.currentPubFilterValue || '')" placeholder="🔍 Search publishers by name or group..." class="w-full px-4 py-3 rounded-xl text-sm glass-panel">
             </div>
             <div class="glass-panel rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Scrollable data table">
                     <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="bg-black/50 text-teal-100/70">
                             <tr>
@@ -2675,7 +2675,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   function renderPeople(){
     const q=($('personSearch')?.value||'').toLowerCase().trim();
-    const people=state.personnel.filter(p=>p.name.toLowerCase().includes(q));
+    const people=state.personnel.filter(p=>!p.archived&&p.name.toLowerCase().includes(q));
     $('peopleGrid').innerHTML=people.map(p=>`<article class="person-card"><div class="avatar">${initials(p.name)}</div><div><div class="person-name">${esc(p.name)}</div><div class="person-sub">${p.appointment==='MS'?'Ministerial Servant':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}${p.phone?` · +${esc(p.phone)}`:''}</div><div class="role-tags">${(p.roles||[]).map(r=>`<span class="role-tag">${esc(labelRole(r))}</span>`).join('')}</div></div><div class="person-actions"><button class="mini-icon" onclick="window.editPerson('${p.id}')" title="Edit">✎</button><button class="mini-icon" onclick="window.deletePerson('${p.id}')" title="Delete">×</button></div></article>`).join('') || '<div style="grid-column:1/-1;text-align:center;padding:35px;color:#8d969d;font-size:10px">No people found.</div>';
   }
   function labelRole(r){const duty=state.additionalDuties.find(d=>d.id===r);if(duty)return (duty.section&&duty.section!=='Additional Duties'&&duty.section!==duty.name?duty.section+' · ':'')+duty.name;return ({TreasuresTalk:'Treasures Talk',SpiritualGems:'Spiritual Gems',BibleReading:'Bible Reading',ChristianParts:'Living as Christians',BibleStudy:'Bible Study',BibleStudyReader:'Bible Study Reader'}[r]||r);}
@@ -2697,7 +2697,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const details=meetingDetails(data),aux=details.auxiliary||auxiliarySections(data).length>0;
     const person=id=>{const name=people.find(p=>p.id===data[id]?.personId)?.name||(publicView?'':'Unassigned');return q&&name.toLowerCase().includes(q)?`<mark>${esc(name)}</mark>`:esc(name);};
     let html=`<div class="paper-head"><div><div class="paper-kicker">${esc(congregation)}</div><div class="paper-title">Midweek Meeting Schedule</div><div class="paper-sub">Week of ${esc(weekLabel(week))}</div></div><div class="paper-meta">Congregation Assistant<br>S-140 reference layout</div></div>`+meetingDetailSummary(data,'');
-    html+=`<div class="s140-opening"><span><strong>Chairman:</strong> ${person('Chairman')}</span>${aux?`<span><strong>Auxiliary counselor:</strong> ${person('AuxiliaryCounselor')}</span>`:''}<span><strong>Opening song:</strong> ${esc(details.opening||'—')} · <strong>Prayer:</strong> ${person('OpeningPrayer')}</span><span><strong>Opening comments:</strong> 1 min.${details.openingComments?' · '+esc(details.openingComments):''}</span></div>`;
+    html+=`<div class="s140-opening"><span><strong>${esc(data.Chairman?.customTitle||'Chairman')}:</strong> ${person('Chairman')}</span>${aux?`<span><strong>Auxiliary counselor:</strong> ${person('AuxiliaryCounselor')}</span>`:''}<span><strong>Opening song:</strong> ${esc(details.opening||'—')} · <strong>Prayer:</strong> ${person('OpeningPrayer')}</span><span><strong>Opening comments:</strong> 1 min.${details.openingComments?' · '+esc(details.openingComments):''}</span></div>`;
     let number=1;
     for(const section of SECTIONS){html+=`<section class="print-section ${section.key}"><div class="print-bar">${esc(section.title)}</div>`;if(section.key==='living')html+=`<div class="s140-song">Song ${esc(details.middle||'—')}</div>`;if(aux&&['treasures','field'].includes(section.key))html+='<div class="s140-column-labels"><span>Part</span><span>Main hall</span><span>Auxiliary classroom</span></div>';
       const fields=section.fields.filter(f=>!['Chairman','OpeningPrayer','BibleStudyReader','ClosingPrayer'].includes(f.id)&&(!f.optional||data[f.id]?.personId)&&(!publicView||section.key!=='field'||data[f.id]?.personId||data[f.assistant]?.personId));
@@ -3242,6 +3242,16 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
             },
 
+            readScopedRows: async factory => {
+                const rows=[],seen=new Set(),size=500;
+                for(let offset=0;offset<50000;offset+=size){
+                    const {data,error}=await factory().order('id',{ascending:true}).range(offset,offset+size-1);
+                    if(error)throw error;const batch=data||[];
+                    for(const row of batch){if(seen.has(row.id))throw Error('Records changed while loading. Refresh to load a consistent list.');seen.add(row.id);rows.push(row);}
+                    if(batch.length<size)return rows;
+                }
+                throw Error('This workspace needs a larger-data review. No partial list was saved.');
+            },
             initAdmin: async (congId, congName) => {
                 document.body.classList.remove('super-admin-theme');window.db.congregations=[];
                 document.getElementById('nav-superadmin')?.classList.add('hidden');
@@ -3269,23 +3279,18 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         }
 
                         if(needsPublishers){
-                        let publisherQuery=supabaseClient.from('publishers').select('*').eq('cong_id',congId);if(groupOnly)publisherQuery=publisherQuery.in('service_group',window.auth.verifiedGroups);
-                        const { data: pData, error: pError } = await publisherQuery;
-                        if (pError) throw pError;
+                        const pData=await window.db.readScopedRows(()=>{let query=supabaseClient.from('publishers').select('*').eq('cong_id',congId);return groupOnly?query.in('service_group',window.auth.verifiedGroups):query;});
                         window.db.publishers = (pData || []).map(window.db.mapPubFromDB);
                         if(!groupOnly)window.db.writeLocalCache('publishers');
 
-                        let reportQuery=supabaseClient.from('reports').select('*').eq('cong_id',congId);if(groupOnly)reportQuery=reportQuery.in('pub_id',window.db.publishers.map(p=>p.id));
-                        const { data: rData, error: rError } = groupOnly&&!window.db.publishers.length?{data:[],error:null}:await reportQuery;
-                        if (rError) throw rError;
+                        const rData=groupOnly&&!window.db.publishers.length?[]:await window.db.readScopedRows(()=>{let query=supabaseClient.from('reports').select('*').eq('cong_id',congId);return groupOnly?query.in('pub_id',window.db.publishers.map(p=>p.id)):query;});
                         window.db.reports = (rData || []).map(window.db.mapRepFromDB);
                         if(!groupOnly)window.db.writeLocalCache('reports');
 
                         }
                         if(allowedTabs.includes('oclm')&&window.CA_CONFIG?.secureBackend){const {data:roster,error:rosterError}=await supabaseClient.rpc('get_oclm_roster',{p_cong_id:congId});if(rosterError)throw rosterError;window.db.oclmRoster=roster||[];}
                         if(allowedTabs.includes('attendance')){
-                        const { data: aData, error: aError } = await supabaseClient.from('meeting_attendance').select('*').eq('cong_id', congId);
-                        if (aError) throw aError;
+                        const aData=await window.db.readScopedRows(()=>supabaseClient.from('meeting_attendance').select('*').eq('cong_id',congId));
                         window.db.attendance = aData || [];
                         window.db.writeLocalCache('attendance');
                         }
@@ -4269,7 +4274,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             copyAccessSQL: async () => {window.ui.copyText("-- Review audit-access.sql results before running this migration in Supabase SQL Editor.\n-- Configures account membership only; other data tables/RPCs need their own verified RLS.\nbegin;\ncreate table if not exists public.congregation_access (\n id uuid primary key default gen_random_uuid(),\n cong_id text not null,\n email text not null,\n role text not null,\n active boolean not null default true,\n created_at timestamptz not null default now(),\n unique(cong_id,email,role)\n);\n-- Refuse to run over unknown policies rather than silently preserving a public bypass.\ndo $$\nbegin\n if exists(select 1 from pg_catalog.pg_policies where schemaname='public'\n  and tablename='congregation_access' and policyname not in\n  ('ca_access_read','ca_access_insert','ca_access_update','ca_access_delete')) then\n  raise exception 'Existing access policies require review. Run audit-access.sql first.';\n end if;\nend $$;\nalter table public.congregation_access drop constraint if exists congregation_access_role_check;\nalter table public.congregation_access add constraint congregation_access_role_check\n check (role in ('admin','field_service','attendance','oclm'));\nupdate public.congregation_access set email=lower(trim(email)) where email<>lower(trim(email));\n-- Case-normalized identity uniqueness; duplicate historical emails stop this migration.\ncreate unique index if not exists ca_access_email_role_unique\n on public.congregation_access(cong_id,lower(email),role);\nalter table public.congregation_access enable row level security;\n\ncreate or replace function public.ca_is_congregation_admin(_cong_id text)\nreturns boolean language sql stable security definer set search_path=''\nas $$\n select exists(select 1 from public.congregation_access a\n  where a.cong_id=_cong_id and a.active and a.role='admin'\n  and lower(a.email)=lower(auth.jwt()->>'email')\n  and (auth.jwt()->'app_metadata'->>'provider'='google'\n   or (auth.jwt()->'app_metadata'->'providers') ? 'google'));\n$$;\nrevoke all on function public.ca_is_congregation_admin(text) from public,anon;\ngrant execute on function public.ca_is_congregation_admin(text) to authenticated;\nrevoke all on public.congregation_access from anon;\ngrant select,insert,update,delete on public.congregation_access to authenticated;\n\ndrop policy if exists ca_access_read on public.congregation_access;\ncreate policy ca_access_read on public.congregation_access for select to authenticated\n using ((active and lower(email)=lower(auth.jwt()->>'email')\n  and (auth.jwt()->'app_metadata'->>'provider'='google'\n   or (auth.jwt()->'app_metadata'->'providers') ? 'google')) or public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_insert on public.congregation_access;\ncreate policy ca_access_insert on public.congregation_access for insert to authenticated\n with check (public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_update on public.congregation_access;\ncreate policy ca_access_update on public.congregation_access for update to authenticated\n using (public.ca_is_congregation_admin(cong_id)) with check (public.ca_is_congregation_admin(cong_id));\ndrop policy if exists ca_access_delete on public.congregation_access;\ncreate policy ca_access_delete on public.congregation_access for delete to authenticated\n using (public.ca_is_congregation_admin(cong_id));\ncommit;\n\n-- Bootstrap the first Google administrator ONLY from this trusted SQL editor.\n-- Replace both values with the actual congregation ID and the administrator's Google email.\n-- insert into public.congregation_access(cong_id,email,role,active)\n-- values ('YOUR_CONGREGATION_ID','admin@example.com','admin',true)\n-- on conflict(cong_id,email,role) do update set active=true;\n");window.ui.showToast('Account membership SQL copied. Review existing policies before running it.');},
 
-            refreshOCLMRoster: async () => {if(!window.CA_CONFIG?.secureBackend||!window.ui.getAllowedTabs().includes('oclm'))return;const cong=window.currentCongId;try{const {data,error}=await supabaseClient.rpc('get_oclm_roster',{p_cong_id:cong});if(error)throw error;if(cong!==window.currentCongId)return;window.db.oclmRoster=data||[];window.MidweekScheduler.syncRoster(window.db.oclmRoster);}catch(e){window.ui.showToast('People could not sync. Your existing schedule is preserved.','error');}},
+            refreshOCLMRoster: async () => {if(!window.CA_CONFIG?.secureBackend||!window.ui.getAllowedTabs().includes('oclm'))return;const cong=window.currentCongId;try{const {data,error}=await supabaseClient.rpc('get_oclm_roster',{p_cong_id:cong});if(error)throw error;if(cong!==window.currentCongId||!window.ui.getAllowedTabs().includes('oclm'))return;window.db.oclmRoster=data||[];window.MidweekScheduler.syncRoster(window.db.oclmRoster);}catch(e){window.ui.showToast('People could not sync. Your existing schedule is preserved.','error');}},
             openOCLM: async () => {
                 const role=sessionStorage.getItem('fs_role')||'admin';
                 if (window.db.currentCongData?.feature_oclm !== true && !window.ui.getRoleGrants().includes('oclm')) { window.ui.showOCLMComingSoon(); return; }

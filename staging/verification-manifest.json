@@ -1,11 +1,11 @@
 {
-  "preparedAt": "2026-10-05T09:31:32.218Z",
+  "preparedAt": "2026-10-05T09:41:24.411Z",
   "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "deploymentVerified": false,
   "oauthVerified": false,
   "files": {
-    "index.html": "bdd3b96411dc630499263365121efee6b45835d2348490ea2083afa0d71363d3",
-    "app.css": "34b5606cf03e9e727d61961a7e69c1dd04edac2d18a75f1d39883a70a2aefd02",
+    "index.html": "25cb7cfcd8c9d8cfe8548cff13063b4fbd2c01683e40bbf045c8742198d9e280",
+    "app.css": "f60e0575ff71224dc50a3365748ee3274f1cc85aba9a6f2a31d9810a3f1c071b",
     "app-support.js": "1d98cf1adda3f355d6d0e8a7152f14c996bed8466c9b5f6cfc06a207cd6f588c",
     "pdf-tools.js": "728086d8fc78bb886b7c70d7f98a1c9b5bafdebdb277923401f6fa93a3da3ad9",
     "public-links.js": "1bf89404a046a62204440d36e259f631f01c8aa3db1dd2bf10f75a751d6011b5",

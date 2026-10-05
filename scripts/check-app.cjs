@@ -364,5 +364,19 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const bytes=await w.PdfTools.emergency([{headName:'Example',members}],'Example congregation');const pdf=await PDFDocument.load(bytes);assert(pdf.getPageCount()>=3);
         for(const page of pdf.getPages()){assert(Math.abs(page.getWidth()-841.89)<1);assert(Math.abs(page.getHeight()-595.28)<1);}fs.writeFileSync(path.join(artifactDir,'emergency.pdf'),bytes);
     });
+    await test('cloud pagination loads every row and rejects repeated partial pages',async()=>{
+        const rows=Array.from({length:1205},(_,i)=>({id:'row-'+i}));
+        let calls=0;const factory=()=>({order(){return this;},range(a,b){calls++;return Promise.resolve({data:rows.slice(a,b+1),error:null});}});
+        assert.equal((await w.db.readScopedRows(factory)).length,1205);assert.equal(calls,3);
+        await assert.rejects(()=>w.db.readScopedRows(()=>({order(){return this;},range(){return Promise.resolve({data:rows.slice(0,500),error:null});}})),/Records changed/);
+    });
+    await test('published name search matches every week including auxiliary assignments',()=>{
+        const f=createHarness(),fw=f.window,fe=f.elements;
+        fw.MidweekScheduler.showPublic({congregation:'Example',publishedWeeks:['2026-W40','2026-W41','2026-W42'],people:[{id:'a',name:'Alex Example'},{id:'b',name:'Beth Example'}],assignments:{'2026-W40':{BibleReading:{personId:'a'}},'2026-W41':{Conversation:{personId:'b'},ConversationAssistant:{personId:'a'}},'2026-W42':{BibleReading:{personId:'b'}}}});
+        assert(!f.markup.includes('id="liveWeekSelect"'));
+        fe.get('livePublisherSearch').value='Alex';fe.get('livePublisherSearch').oninput();
+        const cards=fe.get('liveSections').innerHTML;assert.equal((cards.match(/live-s140-paper/g)||[]).length,2);assert(cards.includes('<mark>Alex Example</mark>'));
+        fe.get('livePublisherSearch').value='missing name';fe.get('livePublisherSearch').oninput();assert(!fe.get('liveSections').innerHTML.includes('s140-paper'));
+    });
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});
