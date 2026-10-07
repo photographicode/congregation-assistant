@@ -2,7 +2,7 @@
 
 Status: local changes and draft pull requests only. Not merged, deployed, or applied to a live database. No real records, paid resources, sender activation, live key changes, or outgoing messages were used. The user’s uploaded master prompt explicitly changes the earlier release instruction to draft-only work and permits coherent packages with a durable handoff for the larger backlog.
 
-Review links: [App draft #27](https://github.com/photographicode/congregation-assistant/pull/27) · [Website draft #12](https://github.com/photographicode/Congregation-Assistant_Public/pull/12). The prior website CI passed; fresh hosted CI for this update must be inspected at its exact commit. Local checks below are separate from hosted and deployed checks.
+Review links: [App draft #28](https://github.com/photographicode/congregation-assistant/pull/28) · [Website draft #12](https://github.com/photographicode/Congregation-Assistant_Public/pull/12). The prior website CI passed; fresh hosted CI for this update must be inspected at its exact commit. Local checks below are separate from hosted and deployed checks.
 
 ## Baseline
 
@@ -61,3 +61,5 @@ No complete WebKit run, physical printer test, exact Realme 12 maximum display-s
 Review the additive weekly model and its rollback plan. Complete a fresh hosted Chromium/WebKit acceptance run and the remaining date-specific meeting/event model before any broader release. Separately review the encryption plan, select a maintained group protocol and recovery custodians, then implement fictional multi-device enrollment/recovery/revocation before proposing a reviewed live migration. PDF calibration/native scripts, conventional security, notification adapters and rejected policy/business decisions remain as listed above.
 
 Local work: /workspace/ca-noticeboard and /workspace/ca-noticeboard-site. Baseline copies: /workspace/ca-departments and /workspace/ca-departments-site. Fictional screenshot/PDF evidence: app artifacts/noticeboard and artifacts/pdf-check. These artifacts are not proof of live deployment. No automatic resumption or background job is promised by this document.
+
+Local handoff update: #28 supersedes closed #27 after GitHub returned internal errors for updates to its original branch. That branch is preserved. Current review branch codex/noticeboard-webkit-review-20261007 includes the 320 px doubled-text WebKit flex-child correction and failure diagnostics. Current commit 0aa903a2378994879991f80f727ae08e12474e31; current tree d2fdafcd9beb97cfd456528de45c8011285a942e. Current-head hosted WebKit confirmation remains pending. Website exact-commit CI passed. No live release or production E2EE occurred.
