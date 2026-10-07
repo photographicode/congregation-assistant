@@ -1,13 +1,30 @@
 (() => {
  let installPrompt;
- window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
- window.installCongregationApp=async()=>{
-  if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){window.ui.showToast('The app is already installed.');return;}
-  if(installPrompt){await installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return;}
-  window.ui.openModal('modal-install-app');
+ const installed=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+ const guidance=()=>{
+  const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+  if(ios){const safari=/Safari/.test(ua)&&!/(CriOS|FxiOS|OPiOS|EdgiOS)/.test(ua);return safari?{title:'Add to your Home Screen',steps:['Tap the Share button in Safari.','Choose Add to Home Screen. If needed, scroll down the Share menu.','Tap Add, then open Congregation Assistant from its new icon.']}:{title:'Install on iPhone or iPad',steps:['Open this website in Safari.','Tap Share, then Add to Home Screen.','Tap Add and open the new Congregation Assistant icon.']};}
+  if(/Android/.test(ua))return {title:'Install on your Android phone',steps:['Open your browser menu (⋮ or the menu icon).','Choose Install app or Add to Home screen. The wording depends on your browser.','Confirm, then open Congregation Assistant from its icon. If your browser has no install option, try Chrome.']};
+  return {title:'Install Congregation Assistant',steps:['Open your browser menu or the install icon in the address bar.','Choose Install Congregation Assistant or Install app.','If this browser has no install option, you can continue using the website.']};
  };
- window.addEventListener('load',()=>{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('service-worker.js').catch(()=>{ /* The website remains usable when installation is unavailable. */ });});
+ const renderGuide=()=>{const box=document.getElementById('app-install-guide');if(!box)return;const g=guidance();box.replaceChildren();const heading=document.createElement('h3');heading.textContent=g.title;const list=document.createElement('ol');for(const step of g.steps){const li=document.createElement('li');li.textContent=step;list.append(li);}box.append(heading,list);};
+ window.CAInstall={guidance,installed};
+ window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
+ window.addEventListener('appinstalled',()=>{installPrompt=null;document.getElementById('ca-install-nudge')?.remove();window.ui?.showToast('Installed. Open Congregation Assistant from its icon.');});
+ window.installCongregationApp=async()=>{
+  if(installed()){window.ui.showToast('The app is already installed.');return;}
+  if(installPrompt){try{await installPrompt.prompt();const choice=await installPrompt.userChoice;installPrompt=null;if(choice.outcome==='accepted')document.getElementById('ca-install-nudge')?.remove();}catch{renderGuide();window.ui.openModal('modal-install-app');}return;}
+  renderGuide();window.ui.openModal('modal-install-app');
+ };
+ const nudge=()=>{
+  if(installed()||document.getElementById('ca-install-nudge')||innerWidth>1023||!window.currentCongId||document.body.matches('.public-mode,.overseer-mode,.mws-public-mode'))return;
+  let dismissed=0;try{dismissed=Number(localStorage.getItem('ca_install_reminder_after')||0);}catch{}if(Date.now()<dismissed)return;
+  const home=document.getElementById('tab-dashboard');if(!home||!home.getClientRects().length)return;
+  const box=document.createElement('aside');box.id='ca-install-nudge';box.className='ca-install-nudge';box.setAttribute('aria-label','Install the app');box.innerHTML='<div><strong>Open more easily next time</strong><p>Add Congregation Assistant to your Home Screen. You can keep using the website too.</p></div><button type="button" data-install>Install or see steps</button><button type="button" data-dismiss>Later</button>';box.querySelector('[data-install]').onclick=()=>window.installCongregationApp();box.querySelector('[data-dismiss]').onclick=()=>{try{localStorage.setItem('ca_install_reminder_after',String(Date.now()+7*86400000));}catch{}box.remove();};home.prepend(box);
+ };
+ window.addEventListener('load',()=>{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('service-worker.js').catch(()=>{});renderGuide();setTimeout(nudge,12000);if(window.ui?.switchTab){const previous=window.ui.switchTab;window.ui.switchTab=function(...args){const result=previous.apply(this,args);if(args[0]==='dashboard')setTimeout(nudge,600);return result;};}});
 })();
+
 (() => {
  const status = message => { const el=document.getElementById('notification-status');if(el)el.textContent=message; };
  const installed = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;

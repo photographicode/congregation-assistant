@@ -1,5 +1,5 @@
 /* Only public application files are cached. No API responses or congregation records. */
-const CACHE='ca-shell-independent-noticeboard-17';
+const CACHE='ca-shell-oclm-simple-18';
 const names=['index.html','app.css','app-utilities.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','app-attendance.js','app-onboarding.js','app-oclm-cloud.js','app-reminders.js','app-guide.js','app-readability.js','app-publisher-home.js','app-recovery.js','app-push.js','app-home.js','app-demo.js','app-departments.js','app-transfer.js','assets/vendor/fontkit-1.1.1.min.js','assets/fonts/NotoSans-Regular.ttf','assets/fonts/NotoSans-Bold.ttf','app-imports.js','manifest.webmanifest'];
 const pdfAssets=['assets/vendor/fontkit-1.1.1.min.js','assets/fonts/NotoSans-Regular.ttf','assets/fonts/NotoSans-Bold.ttf'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.all(pdfAssets.map(async name=>{try{const response=await fetch(new URL(name,self.location.href),{cache:'no-cache'});if(response.ok)await cache.put(new URL(name,self.location.href).href,response);}catch{ /* Activation retains an existing public font copy when offline. */ }}));await self.skipWaiting();})()));

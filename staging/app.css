@@ -37,8 +37,8 @@ body:is([data-theme="light"],[data-theme="scheduler"]) :is([class*="text-cyan-"]
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="text-rose-"] { color: #9f1239 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(#mobile-top-header,#mobile-nav) { background: #fff !important; border-color: #cbd5e1; color: #172033; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(.oclm-search-box input,.oclm-rail-search input,.oclm-big-select) { color: #172033 !important; background: #fff !important; }
-/* Match the fixed desktop sidebar; hover must not cover the workspace. */
-@media (min-width: 641px) {
+/* Match the fixed desktop sidebar; tablet navigation has no sidebar offset. */
+@media (min-width: 1024px) {
     body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) #app-header:hover ~ .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode).sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
     #app-header:focus-within { width: var(--ca-sidebar-fixed) !important; }
 }
@@ -566,3 +566,24 @@ body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){box-si
 
 /* Public links have no desktop sidebar, including while WebKit retains hover state. */
 body:is(.public-mode,.mws-public-mode,.overseer-mode) .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode) #app-header:hover ~ .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode).sidebar-expanded .main-content{margin-left:0!important;width:100%!important;max-width:100%!important;min-width:0;transition:none!important}
+
+/* A meeting section is a single accessible review group; names retain full width. */
+#ca-midweek-root .ca-section-toggle{display:flex;align-items:center;gap:12px;justify-content:space-between;width:100%;padding:16px;text-align:left;min-height:56px;color:inherit;background:transparent;border:0;cursor:pointer;flex-wrap:wrap}
+#ca-midweek-root .ca-section-toggle .section-title-wrap{flex:1 1 180px;min-width:0}
+#ca-midweek-root .ca-section-toggle .section-name{white-space:normal;overflow-wrap:normal}
+#ca-midweek-root .ca-section-toggle[aria-expanded="false"] .ca-section-arrow{transform:rotate(-90deg)}
+#ca-midweek-root .rows[hidden]{display:none!important}
+.ca-install-guide ol{list-style:decimal;margin:16px 0;padding-left:24px}
+.ca-install-guide li{margin:12px 0;line-height:1.6}
+.ca-install-nudge{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px;margin-bottom:20px;border:1px solid #6b9590;border-radius:16px;background:#123f39;color:#fff}
+.ca-install-nudge>div{flex:1 1 220px;min-width:0}.ca-install-nudge p{margin-top:8px;line-height:1.6}
+.ca-install-nudge button{padding:12px 16px;border-radius:10px;white-space:normal;min-height:48px;background:#def3ec;color:#123f39}.ca-install-nudge [data-dismiss]{background:transparent;color:#fff;border:1px solid #6b9590}
+
+#ca-midweek-root .ca-part-timing{flex-basis:100%;font-size:14px}#ca-midweek-root .ca-part-timing label{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}#ca-midweek-root .ca-part-timing input{max-width:100px;padding:10px;border:1px solid currentColor;border-radius:8px;background:transparent;color:inherit}
+
+.ca-away-dates{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:12px 0}.ca-away-dates label{display:flex;flex-direction:column;gap:6px;flex:1 1 150px;min-width:0}.ca-away-dates input{width:100%;max-width:100%;min-height:48px;background:var(--surface);color:var(--text);padding:10px;border:1px solid var(--line);border-radius:8px}
+#ca-install-nudge button[data-install]{background:#def3ec!important;color:#123f39!important}#ca-install-nudge button[data-dismiss]{background:#123f39!important;color:#fff!important}#ca-install-nudge strong,#ca-install-nudge p{color:#fff!important}
+@media(min-width:1024px){#ca-install-nudge{display:none}}
+
+#ca-midweek-root [hidden]{display:none!important}#ca-midweek-root .ca-week-select{max-width:100%;width:100%;min-height:48px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);background:var(--surface);font-size:16px;white-space:normal}#ca-midweek-root .week-main{min-width:0;width:min(100%,360px)}
+body.ca-large-text #ca-midweek-root .section-name{font-size:1.25rem!important;line-height:1.55}
