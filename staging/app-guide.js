@@ -8,7 +8,7 @@
   ['overseer','groups','My group','Review your assigned group’s members and missing reports.'],
   ['analytics','reports','Reports and PDFs','Check periods and totals; download S-21 and review printable reports.'],
   ['attendance','attendance','Meeting attendance','Enter counts, share the form, and download S-3 or S-88.'],
-  ['attendant','duties','Attendant duties','Request eligible publishers, assign approved people and save for OCLM review.'],
+  ['attendant','duties','Attendant duties','Request eligible publishers, assign approved people and publish independently to the shared notice board.'],
   ['av','duties','Audio Video duties','Set up your duty names, request publisher approval and assign the week.'],
   ['cleaning','duties','Cleaning duties','Assign your congregation’s cleaning responsibilities in the shared schedule.'],
   ['oclm','midweek','OCLM scheduling','Plan three weeks ahead, assign parts, review, publish, and open the live link.'],

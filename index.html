@@ -1357,7 +1357,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="mobile-brand"><div class="brand-mark">CA</div><span>Midweek Scheduler</span></div>
 <div class="week-nav">
 <button hidden aria-label="Previous week" class="week-arrow" id="prevWeek">‹</button>
-<div class="week-main"><label class="week-caption" for="mwsWeekSelect">Choose week</label><select id="mwsWeekSelect" class="ca-week-select"></select><div class="week-title" id="weekTitle" hidden>—</div></div>
+<div class="week-main"><label id="mwsWeekCaption" class="week-caption" for="mwsWeekSelect">Choose week</label><select id="mwsWeekSelect" class="ca-week-select"></select><div class="week-title" id="weekTitle" hidden>—</div></div>
 <button hidden aria-label="Next week" class="week-arrow" id="nextWeek">›</button>
 </div>
 <div class="top-actions">
@@ -2556,7 +2556,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     root.querySelectorAll('.mws-view').forEach(v=>v.classList.toggle('mws-active',v.id===state.activeView+'View'));
   }
   function renderWeekStrip(){
-    const weeks=[...new Set([...Array.from({length:17},(_,i)=>addWeeks(weekId(new Date()),i-4)),...Object.keys(state.assignments),state.currentWeek])].sort();$('mwsWeekSelect').innerHTML=weeks.map(w=>`<option value="${w}">${esc(weekLabel(w))}</option>`).join('');$('mwsWeekSelect').value=state.currentWeek;
+    const weeks=[...new Set([...Array.from({length:17},(_,i)=>addWeeks(weekId(new Date()),i-4)),...Object.keys(state.assignments),state.currentWeek])].sort();const short=w=>{const start=mondayOf(w),end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const fmt=d=>d.toLocaleDateString(undefined,{month:"short",day:"numeric",timeZone:"UTC"});return fmt(start)+"–"+(start.getUTCMonth()===end.getUTCMonth()?end.getUTCDate():fmt(end));};$("mwsWeekSelect").innerHTML=weeks.map(w=>`<option value="${w}" title="${esc(weekLabel(w))}">${esc(short(w))}${w.slice(0,4)!==state.currentWeek.slice(0,4)?" · "+w.slice(0,4):""}</option>`).join("");$("mwsWeekSelect").value=state.currentWeek;$("mwsWeekCaption").textContent="Choose week · "+state.currentWeek.slice(0,4);$("mwsWeekSelect").setAttribute("aria-label","Choose meeting week. Selected: "+weekLabel(state.currentWeek));
     $('weekStrip').innerHTML=state.weekKeys.filter(w=>w!==state.currentWeek).map(w=>{
       const data=state.assignments[w]||{}; const count=allFields().filter(id=>data[id]?.personId).length;
       const current=w===state.currentWeek; const info=PROGRAM_LIBRARY[w];

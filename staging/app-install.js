@@ -19,10 +19,10 @@
  const nudge=()=>{
   if(installed()||document.getElementById('ca-install-nudge')||innerWidth>1023||!window.currentCongId||document.body.matches('.public-mode,.overseer-mode,.mws-public-mode'))return;
   let dismissed=0;try{dismissed=Number(localStorage.getItem('ca_install_reminder_after')||0);}catch{}if(Date.now()<dismissed)return;
-  const home=document.getElementById('tab-dashboard');if(!home||!home.getClientRects().length)return;
+  const allowed=window.ui?.getAllowedTabs?.()||[];const primary=allowed.includes('dashboard')?'dashboard':allowed.includes('personal')?'personal':allowed[0];const home=document.getElementById('tab-'+primary);if(!home||!home.getClientRects().length)return;
   const box=document.createElement('aside');box.id='ca-install-nudge';box.className='ca-install-nudge';box.setAttribute('aria-label','Install the app');box.innerHTML='<div><strong>Open more easily next time</strong><p>Add Congregation Assistant to your Home Screen. You can keep using the website too.</p></div><button type="button" data-install>Install or see steps</button><button type="button" data-dismiss>Later</button>';box.querySelector('[data-install]').onclick=()=>window.installCongregationApp();box.querySelector('[data-dismiss]').onclick=()=>{try{localStorage.setItem('ca_install_reminder_after',String(Date.now()+7*86400000));}catch{}box.remove();};home.prepend(box);
  };
- window.addEventListener('load',()=>{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('service-worker.js').catch(()=>{});renderGuide();setTimeout(nudge,12000);if(window.ui?.switchTab){const previous=window.ui.switchTab;window.ui.switchTab=function(...args){const result=previous.apply(this,args);if(args[0]==='dashboard')setTimeout(nudge,600);return result;};}});
+ window.addEventListener('load',()=>{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('service-worker.js').catch(()=>{});renderGuide();setTimeout(nudge,12000);if(window.ui?.switchTab){const previous=window.ui.switchTab;window.ui.switchTab=function(...args){const result=previous.apply(this,args);setTimeout(nudge,600);return result;};}});
 })();
 
 (() => {

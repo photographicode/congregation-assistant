@@ -587,3 +587,10 @@ body:is(.public-mode,.mws-public-mode,.overseer-mode) .main-content,body:is(.pub
 
 #ca-midweek-root [hidden]{display:none!important}#ca-midweek-root .ca-week-select{max-width:100%;width:100%;min-height:48px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);background:var(--surface);font-size:16px;white-space:normal}#ca-midweek-root .week-main{min-width:0;width:min(100%,360px)}
 body.ca-large-text #ca-midweek-root .section-name{font-size:1.25rem!important;line-height:1.55}
+/* The only visible week control occupies the whole header column on phones. */
+#ca-midweek-root .week-nav{display:block!important;flex:1 1 280px;min-width:0;width:100%}#ca-midweek-root .week-main{width:100%!important;max-width:360px;text-align:left}#ca-midweek-root .week-caption{display:block;white-space:normal;margin-bottom:8px}
+@media(max-width:1023px){#ca-midweek-root .week-main{max-width:none}}
+/* Confirmation text and buttons must reflow in WebKit at enlarged text sizes. */
+#sys-prompt-overlay>div{min-width:0;box-sizing:border-box}#sys-prompt-overlay :is(h2,p){overflow-wrap:anywhere}#sys-prompt-form>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#sys-prompt-form button{min-width:0;max-width:100%;overflow-wrap:anywhere}
+@media(max-width:640px){#sys-prompt-form>div{grid-template-columns:minmax(0,1fr)}}
+#ca-midweek-root .topbar-inner{flex-wrap:wrap;align-items:center}#ca-midweek-root .week-nav{flex:1 0 280px;min-width:min(100%,280px)}#ca-midweek-root .top-actions{max-width:100%;min-width:0;flex-wrap:wrap}
