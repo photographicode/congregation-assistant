@@ -1,11 +1,11 @@
 {
-  "preparedAt": "2026-10-07T01:38:07.436Z",
+  "preparedAt": "2026-10-07T01:50:53.432Z",
   "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "deploymentVerified": false,
   "oauthVerified": false,
   "files": {
-    "index.html": "0d05bd876de334edb7b6f2f645a2d8026cdbd26281994d924c09ada9fb62e0c0",
-    "app.css": "51851c34482e277e2de8a9724d755a0d7da26d801ec67dd369c737d1089dbd10",
+    "index.html": "8ebe54e758f44a572b7d2a71b9af8b4e706d695323e51f085c9f72bdb16c3cc6",
+    "app.css": "051292cc7d5b9f73d6f241a0456c789a6e0c16458dce3dc31a0279379679610c",
     "app-utilities.css": "da3c855adddc74ad9b86341e8d166bb245147333d73a4318b8a79d9029571eeb",
     "app-support.js": "1d98cf1adda3f355d6d0e8a7152f14c996bed8466c9b5f6cfc06a207cd6f588c",
     "pdf-tools.js": "728086d8fc78bb886b7c70d7f98a1c9b5bafdebdb277923401f6fa93a3da3ad9",
@@ -16,7 +16,7 @@
     "app-oclm-cloud.js": "e896d5ec187944c1b9e0b91776224689b7fee326206961861d9f13a2d79e2f4d",
     "app-reminders.js": "5a0f6dca05da230bd88c7cee60a131a3c71a5eadcae0dabb965e76f43d151cb6",
     "app-guide.js": "91feb73e2997f1771438d51e050e68d4f3e4bbbd1c2775e5508c05e9c1356eb4",
-    "app-readability.js": "153797785d8c0890e1c22f1fe6f06c36385b737f113af3649aee0f8e141190e8",
+    "app-readability.js": "3474aa92fca9a8ec451bf708c6c37edce147b1c350ed06e3da45bed0ee8f3a3b",
     "app-publisher-home.js": "5a050dcbd45a6176658133c005023333f3a719af8407ded5da0d4754e51cf735",
     "app-recovery.js": "654da7712493e028f3de7bb3cf3c02799b97c876e7cae5085cac368557166c6b",
     "app-push.js": "99163462f0ea13b13caa57a5e466283619f60b35ae29a00c85de642b7c5b497d",

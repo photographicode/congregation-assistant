@@ -496,3 +496,4 @@ body.ca-large-text #ca-midweek-root .row-right{grid-column:1/-1}
 #ca-midweek-root .mws-subnav .mws-nav-btn{height:auto;min-height:48px;padding:10px 8px;line-height:1.4;white-space:normal}
 #ca-midweek-root .mws-nav-btn span{line-height:inherit}
 @media(max-width:1023px){#mobile-nav.ca-roomy-nav{display:block!important}#mobile-nav.ca-roomy-nav>div{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));height:auto!important}#mobile-nav.ca-roomy-nav button{width:auto!important;height:auto!important}#mobile-nav.ca-roomy-nav button>span{line-height:1.35}#ca-midweek-root .week-main{flex:1;min-width:0}#ca-midweek-root .week-arrow{flex:none}}
+#ca-midweek-root :is(.section-name,.section-count,.person-name,.candidate-name,.context-title,.sheet-title,.print-bar,.tag){line-height:1.4}
