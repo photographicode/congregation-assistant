@@ -57,7 +57,7 @@ end $$;
 create or replace function public.save_department_duty(p_cong_id text,p_department text,p_expected_revision bigint,p_id text,p_name text,p_slots integer,p_enabled boolean default true) returns jsonb language plpgsql security definer set search_path='' as $$
 declare w public.ca_oclm_workspaces;data jsonb;duty jsonb;duties jsonb;d_id text;section text;begin
  if not ca_private.can_manage_department(p_cong_id,p_department) then raise exception 'Department access required' using errcode='42501';end if;
- if length(trim(coalesce(p_name,''))) not between 1 and 100 or p_slots not between 1 and 4 or p_enabled is null then raise exception 'Enter a duty name and choose 1 to 4 people';end if;
+ if length(trim(coalesce(p_name,''))) not between 1 and 100 or p_slots is null or p_slots not between 1 and 4 or p_enabled is null then raise exception 'Enter a duty name and choose 1 to 4 people';end if;
  perform pg_advisory_xact_lock(hashtextextended('oclm:'||p_cong_id,0));select * into w from public.ca_oclm_workspaces where cong_id=p_cong_id;
  if p_expected_revision is distinct from coalesce(w.revision,0) then raise exception 'The schedule changed. Reload before saving; your entry is kept.' using errcode='40001';end if;
  data=coalesce(w.data,'{"v":3,"personnel":[],"assignments":{},"additionalDuties":[],"programs":{},"template":"modern"}'::jsonb);d_id=coalesce(nullif(p_id,''),'Duty_'||replace(gen_random_uuid()::text,'-',''));

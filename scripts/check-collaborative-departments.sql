@@ -13,6 +13,7 @@ select test.department_denied($q$select public.get_department_workspace('b','av'
 select test.department_denied($q$select public.get_department_workspace('a','attendant')$q$);
 select public.request_department_person('a','av','department-a-1');
 select test.department_denied($q$select public.decide_department_person('a','av','department-a-1',true)$q$);
+do $$begin perform public.save_department_duty('a','av',(public.get_department_workspace('a','av')->>'revision')::bigint,null,'Invalid places',null,true);raise exception 'FAILED null places accepted';exception when raise_exception then if SQLERRM not like 'Enter a duty name%' then raise;end if;end $$;
 select public.save_department_duty('a','av',(public.get_department_workspace('a','av')->>'revision')::bigint,null,'Sample Audio',1,true);
 select test.department_denied(format('select public.save_department_assignments(''a'',''av'',%s,''2026-W43'',%L::jsonb)',(public.get_department_workspace('a','av')->>'revision'),jsonb_build_object((public.get_department_workspace('a','av')->'duties'->0->>'id')||'_1','department-a-1')));
 reset role;
