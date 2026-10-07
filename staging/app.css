@@ -500,3 +500,5 @@ body.ca-large-text #ca-midweek-root .row-right{grid-column:1/-1}
 #sys-prompt-overlay :is(h2,p,button){line-height:1.5}
 body.ca-large-text #ca-midweek-root .assignee-name{font-size:1.25rem}body.ca-large-text #ca-midweek-root .assignee-label{font-size:1rem}
 body.ca-large-text #mobile-nav button>span:last-child{font-size:1.25rem}#mobile-nav.ca-roomy-nav button>span:last-child{max-width:100%;overflow-wrap:break-word}@media(max-width:360px){#mobile-nav.ca-roomy-nav>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Give the longer Attendance label the spare space in the second row. */
+@media(min-width:361px) and (max-width:639px){#mobile-nav.ca-roomy-nav:has(#m-btn-tab-publishers:not(.hidden)) #m-btn-tab-attendance{grid-column:span 2}}
