@@ -2403,12 +2403,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
   function syncRoster(roster,persist=true){
     if(!Array.isArray(roster)||isDemo())return;
+    const before=JSON.stringify(state.personnel);
     for(const item of roster){if(!item?.id||!item.name)continue;let person=state.personnel.find(p=>p.publisherId===item.id||p.id===item.id);if(!person){const matches=state.personnel.filter(p=>!p.publisherId&&p.name.toLowerCase().trim()===item.name.toLowerCase().trim());if(matches.length===1)person=matches[0];}
       if(person){person.publisherId=item.id;person.name=item.name;person.gender=item.gender||person.gender;person.archived=false;}
       else state.personnel.push({id:item.id,publisherId:item.id,name:item.name,gender:item.gender||'',phone:'',appointment:item.isElder?'Elder':item.isMS?'MS':item.gender==='Female'?'Sister':'Other',roles:[],archived:false});
     }
     const ids=new Set(roster.map(p=>p.id));for(const p of state.personnel)if(p.publisherId&&!ids.has(p.publisherId))p.archived=true;
-    if(persist){save();renderAll();}
+    if(persist&&before!==JSON.stringify(state.personnel)){save();renderAll();}
   }
   function save(sync=true){
     for(const [week,data] of Object.entries(state.assignments))for(const [id,record] of Object.entries(data||{}))if(record?.personId)record.assignmentType=assignmentType(week,id,record);
@@ -2828,7 +2829,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(!root) return;
     root.classList.remove('mws-live-mode');
     if(loadedCongregation!==(window.currentCongId || 'local')) load();
-    syncRoster(window.db?.oclmRoster||[],false);renderAll();window.CAOCLMCloud?.open(sharedAdapter());
+    if(!window.CAOCLMCloud?.enabled())syncRoster(window.db?.oclmRoster||[],false);renderAll();return window.CAOCLMCloud?.open(sharedAdapter());
   };
 
   load();
@@ -4373,7 +4374,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (tabId === 'dashboard') window.ui.renderDashboard();
                 if (tabId === 'publishers') window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL',window.ui.currentPubFilterValue || '');
                 if (tabId === 'groups') window.ui.renderGroups();
-                if (tabId === 'oclm') { window.initMidweekScheduler?.();window.ui.refreshOCLMRoster?.();window.CADepartments?.managedLoad();window.CAOCLMCloud?.refreshIfChanged(); }
+                if (tabId === 'oclm') { (async()=>{await window.initMidweekScheduler?.();if(window.ui.currentTab!=='oclm')return;await window.CAOCLMCloud?.refreshIfChanged();await window.ui.refreshOCLMRoster?.();window.CADepartments?.managedLoad();})().catch(()=>window.ui.showToast('Could not refresh the schedule. Your draft is kept. Try again.','error')); }
                 if (tabId === 's4') window.ui.setupS4Tab();
                 if (tabId === 'attendance') window.ui.renderAttendance();
                 if(['attendant','av','cleaning'].includes(tabId))window.CADepartments.open(tabId);if(tabId==='duties')window.CADepartments.hub();

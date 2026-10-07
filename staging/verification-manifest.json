@@ -1,10 +1,10 @@
 {
-  "preparedAt": "2026-10-07T05:45:55.335Z",
+  "preparedAt": "2026-10-07T05:52:03.239Z",
   "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "deploymentVerified": false,
   "oauthVerified": false,
   "files": {
-    "index.html": "b8a212a95a1247c9b9fee706182c8bff13d802594c3c4c5d568d604db594f1bf",
+    "index.html": "5f60819ef4458386efd265947566f07bd14812b2a291bb14a98b68c3ce1c2ae4",
     "app.css": "b994007d4a6e7852684ca88d3126e1d71c1b29171962773e53cb00795f0fad13",
     "app-utilities.css": "da3c855adddc74ad9b86341e8d166bb245147333d73a4318b8a79d9029571eeb",
     "app-support.js": "01e794988f18af143d94a01801248bc6e4ca612c43b01afcd3d34cf00b1a631a",
@@ -13,7 +13,7 @@
     "app-install.js": "35446eeec5d9cff89c5b61e3a4d8f8b783e4cb23877bb21d1e624a1396331176",
     "app-attendance.js": "f3658c73b1f24d14d6b153916590df15c1f38e8aa94201e184121e468f18d33d",
     "app-onboarding.js": "bb27ab0280dbbef49624c8be180c36c7179362c0031e4e6886cf4293524c1167",
-    "app-oclm-cloud.js": "aab4e2a60c3ca7642bb475abd7ad210313a834fbeda50bc9924fa57468be6ef4",
+    "app-oclm-cloud.js": "d6ea743c0df189b64d7a8f93548d9a47f49729a2a4ff36a8bb66e4243d83b5ff",
     "app-reminders.js": "5a0f6dca05da230bd88c7cee60a131a3c71a5eadcae0dabb965e76f43d151cb6",
     "app-guide.js": "4b589773100df861686b01ac84e84f3498431bdc12cbe4cfac71744f0b03da43",
     "app-readability.js": "3474aa92fca9a8ec451bf708c6c37edce147b1c350ed06e3da45bed0ee8f3a3b",
