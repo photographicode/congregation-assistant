@@ -54,7 +54,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
         auth: { getSession: async () => ({ data: { session: null } }), signInWithOAuth: async () => ({ error: null }), signOut: async () => ({ error: null }) }
     };
     const window = {
-        document, PDFLib: require('pdf-lib'), location: { search: '', hash: '', href: 'http://localhost/index.html',origin:'http://localhost',pathname:'/index.html' }, innerWidth: 1280, innerHeight: 800,
+        document, PDFLib: require('pdf-lib'), fontkit: require('@pdf-lib/fontkit'), location: { search: '', hash: '', href: 'http://localhost/index.html',origin:'http://localhost',pathname:'/index.html' }, innerWidth: 1280, innerHeight: 800,
         addEventListener(name, callback) { const group = events.get('window:' + name) || []; group.push(callback); events.set('window:' + name, group); }, removeEventListener() {}, scrollTo() {}, open() {}
     };
     if (cloudAvailable) window.supabase = { createClient: () => client };
@@ -63,6 +63,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
         window, document, localStorage, sessionStorage, location: window.location,
         navigator: { clipboard: { writeText: async () => {} } }, CSS: { escape: s => s },
         console: { log() {}, warn() {}, error: (...items) => consoleErrors.push(items) }, URL, URLSearchParams, Blob, Uint8Array, Array, atob, btoa,
+        fetch: async file => { if(!/^assets\/fonts\/[A-Za-z-]+\.ttf$/.test(String(file))) throw Error('Network disabled in this fixture');const bytes=fs.readFileSync(path.join(root,file));return {ok:true,arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)}; },
         TextEncoder, TextDecoder, Date: date, Math, JSON, Intl, crypto: crypto.webcrypto, confirm: () => true, prompt: () => null,
         setTimeout: (callback, delay) => { timers.push({ callback, delay }); return timers.length; }, clearTimeout() {}, setInterval: () => 1, queueMicrotask
     };

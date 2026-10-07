@@ -44,6 +44,8 @@ jobs:
       - run: node scripts/check-noticeboard-view.cjs
       - run: node scripts/check-unicode-pdf.cjs
       - run: python3 scripts/check-pdf-layout.py artifacts/pdf-check --render
+      - run: python3 scripts/check-s21-alignment.py artifacts/pdf-check/s21.pdf
+      - run: python3 scripts/check-s21-alignment.py artifacts/pdf-check/s21-zeros.pdf
       - run: node scripts/check-scheduling-simplicity.cjs
       - run: node scripts/check-departments.cjs
       - run: node scripts/check-noticeboard.cjs

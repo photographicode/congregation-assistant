@@ -3778,7 +3778,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             // template artwork in the generated PDF.
             const [embedded] = await out.embedPdf(sourceBytes);
             const splitYTop = srcH / 2;
-            const {font,bold:fontBold}=await window.PdfTools.fonts(out,[...publishers.map(p=>p.name),...reportRecords.map(r=>r.comments||'')]);
+            const {font,bold:fontBold}=await window.PdfTools.fonts(out,[...publishers.map(p=>p.name),...reportRecords.map(r=>r.comments||'')],{precise:true});
             const dark = rgb(0.04, 0.04, 0.04);
 
             const continuationNotes = [];
@@ -3786,8 +3786,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (text === '' || text === null || text === undefined) return;
                 const fitted = window.PdfTools.fit(text,fontObj,maxWidth,size,7);
                 const low = Math.min(bottom,top), high = Math.max(bottom,top);
-                const y = window.PdfTools.baseline(fontObj,fitted.size,low,high);
-                page.drawText(fitted.text, { x: cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
+                const y = window.PdfTools.baseline(fontObj,fitted.size,low,high,fitted.text);
+                const inkBounds=/^[+−-]?\d+(?:[.,]\d+)*(?:[–-]\d+)?$/.test(fitted.text)?fontObj.caInkBounds?.(fitted.text,fitted.size):null;
+                page.drawText(fitted.text, { x: inkBounds?cx-(inkBounds.minX+inkBounds.maxX)/2:cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
             };
             const drawLeft = (page, text, x, topBaseline, size=9, fontObj=font, maxWidth=480) => {
                 if (text === '' || text === null || text === undefined) return;
@@ -3834,10 +3835,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 };
 
                 // Header fields.
-                const nameField=window.PdfTools.fit(pub.name||'',font,480,9.5,7);if(nameField.truncated)continuationNotes.push({name:pub.name,label:'Full publisher name',text:pub.name});drawB(pub.name||'',53,49.5,9.5);
-                drawLeft(page,pub.dob||'',92,toOutY(64),9.5,font,265);
+                const nameField=window.PdfTools.fit(pub.name||'',font,480,10.74,7);if(nameField.truncated)continuationNotes.push({name:pub.name,label:'Full publisher name',text:pub.name});drawB(pub.name||'',53,48.85,10.74);
+                drawLeft(page,pub.dob||'',92,toOutY(63.28),10.74,font,265);
                 const bapText=!pub.baptized?'UBP':(pub.baptized||'');
-                drawLeft(page,bapText,109,toOutY(78.5),9.5,font,248);
+                drawLeft(page,bapText,109,toOutY(77.8),10.74,font,248);
 
                 // Identity/role checkboxes — the original boxes remain untouched.
                 const checkboxCenters=[
@@ -3849,7 +3850,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 checkboxCenters.forEach(([x,top,yes])=>{ if(yes) check(page,x,toOutY(top)); });
 
                 // Service year sits under the SERVICE YEAR heading, on the original table.
-                drawT(`${sy-1}-${sy}`,col.service,146.0,158.35,8.8,false,1.7);
+                drawT(`${sy-1}–${sy}`,col.service,141.0,157.2,9.5,true,0);
 
                 reports.forEach((r,i)=>{
                     const row=monthRows[i];

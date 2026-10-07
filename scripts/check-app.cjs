@@ -356,6 +356,11 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         const pdf=await PDFDocument.load(bytes);assert.equal(pdf.getPageCount(),2);assert(Math.abs(pdf.getPage(0).getHeight()-420.95)<1);
         fs.writeFileSync(path.join(artifactDir,'s21.pdf'),bytes);
     });
+    await test('S-21 preserves zero and decimal values with centred numeric ink', async () => {
+        const hours=[0,.5,1,11,100,20.25,50,49,8,4,2,0],reports=hours.map((hours,i)=>({id:'centre'+i,pubId:'centre',serviceYear:2027,month:[8,9,10,11,0,1,2,3,4,5,6,7][i],hours,studies:i%3,comments:'',sharedInMinistry:true}));
+        const bytes=await w.__exports.s21([{id:'centre',name:'Sample Grace Montgomery',dob:'1980-01-01',baptized:'2000-01-01',gender:'Female',hope:'Other Sheep',isRP:true}],2027,reports);
+        assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s21-zeros.pdf'),bytes);
+    });
     await test('S-3 generates with long names and meeting-event markers', async () => {
         w.db.attendance=[{id:'test_2026_8',service_year:2026,month:8,w1_mid:'100',w1_end:'115',w2_mid:'RC',w2_end:'123'}];
         const bytes=await w.__exports.s3(2026,8,'A very long congregation name that should stay inside its field');

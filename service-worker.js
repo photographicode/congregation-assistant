@@ -1,5 +1,5 @@
 /* Only public application files are cached. No API responses or congregation records. */
-const CACHE='ca-shell-independent-noticeboard-16';
+const CACHE='ca-shell-independent-noticeboard-17';
 const names=['index.html','app.css','app-utilities.css','app-support.js','pdf-tools.js','app-config.js','public-links.js','app-install.js','app-attendance.js','app-onboarding.js','app-oclm-cloud.js','app-reminders.js','app-guide.js','app-readability.js','app-publisher-home.js','app-recovery.js','app-push.js','app-home.js','app-demo.js','app-departments.js','app-transfer.js','assets/vendor/fontkit-1.1.1.min.js','assets/fonts/NotoSans-Regular.ttf','assets/fonts/NotoSans-Bold.ttf','app-imports.js','manifest.webmanifest'];
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('ca-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));

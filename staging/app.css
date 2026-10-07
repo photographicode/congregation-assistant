@@ -39,7 +39,7 @@ body:is([data-theme="light"],[data-theme="scheduler"]) :is(#mobile-top-header,#m
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(.oclm-search-box input,.oclm-rail-search input,.oclm-big-select) { color: #172033 !important; background: #fff !important; }
 /* Match the fixed desktop sidebar; hover must not cover the workspace. */
 @media (min-width: 641px) {
-    .main-content, #app-header:hover ~ .main-content, body.sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
+    body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) #app-header:hover ~ .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode).sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
     #app-header:focus-within { width: var(--ca-sidebar-fixed) !important; }
 }
 body button.bg-gradient-to-r.text-slate-900 { color: #0f172a !important; }
@@ -439,7 +439,7 @@ body.ca-large-text{font-size:20px;line-height:1.6}
 body.ca-large-text :is(p,li,label,input,select,textarea,button,.text-xs,.text-sm,.meta,.tag,.candidate-tag,.person-sub,.role-tag){font-size:1.25rem!important;line-height:1.55!important}
 body.ca-large-text :is(button,input,select,textarea){min-height:48px}
 body.ca-large-text :is(.row-right,.ca-reminder-actions,.settings-theme-buttons){flex-wrap:wrap}
-body.ca-large-text #ca-midweek-root :is(.assign-row,.row-main,.row-right){min-width:0}
+body.ca-large-text #ca-midweek-root :is(.assign-row,.row-main,.row-right){min-width:0;transition:none!important}
 body.ca-large-text #ca-midweek-root .row-right{align-items:flex-start}
 body.ca-large-text #ca-midweek-root .assign-row{grid-template-columns:24px minmax(0,1fr)}
 body.ca-large-text #ca-midweek-root .row-right{grid-column:2}
@@ -474,7 +474,7 @@ body.mws-public-mode #ca-midweek-root .live-search::placeholder{color:#50615b;op
 #ca-midweek-root .row-right{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;width:100%}
 #ca-midweek-root .assign-row{grid-template-columns:28px minmax(0,1fr) minmax(220px,34%)}
 #ca-midweek-root .assignee{width:100%;min-width:0;max-width:none;min-height:60px;height:auto;flex-shrink:0}
-#ca-midweek-root .assignee-copy{display:block;flex:1;min-width:0}
+#ca-midweek-root .assignee-copy{display:block;flex:1;min-width:0;transition:none!important}
 #ca-midweek-root .assignee-label{display:block;font-size:.75rem;letter-spacing:0;text-transform:none;line-height:1.5}
 #ca-midweek-root .assignee-name{font-size:1rem;line-height:1.5;word-break:normal;overflow-wrap:break-word;white-space:normal;overflow:visible}
 #ca-midweek-root .assignee-arrow{flex:none}
@@ -519,7 +519,7 @@ body.ca-large-text #ca-midweek-root :is(.candidate-name,.sheet-title,.sheet-sub,
 .ca-dept-tabs{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}.ca-dept-tabs button{font:inherit;min-height:3rem;padding:.65rem 1rem;border:1px solid #738a94;border-radius:.8rem;background:#122e37!important;color:#f8fafc!important;white-space:normal;line-height:1.5}
 .ca-dept-tabs button[aria-pressed=true],.ca-dept-tabs button[aria-current=page]{background:#d5edf0!important;color:#08252e!important;font-weight:700}
 .ca-dept-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:1rem;margin:1rem 0}
-.ca-dept-cards article,.ca-dept-people article,.ca-dept-setup,.ca-import-review{background:#102c35;border:1px solid #738a94;border-radius:1rem;padding:1rem;min-width:0}
+.ca-dept-cards article,.ca-dept-people article,.ca-dept-setup,.ca-import-review{background:#102c35;border:1px solid #738a94;border-radius:1rem;padding:1rem;min-width:0;transition:none!important}
 .ca-dept-people article,.ca-dept-setup article{display:flex;flex-direction:column;gap:.5rem;margin:.8rem 0}.ca-dept-people strong{overflow-wrap:break-word}.ca-dept-people article>div,.ca-import-review>div{display:flex;flex-wrap:wrap;gap:.6rem}
 .ca-department .ca-primary-action,.ca-import-review .ca-primary-action{background:#d5edf0;color:#08252e;font-weight:700;border-color:#d5edf0}.ca-dept-setup{margin:1.5rem 0}.ca-dept-setup summary{font-weight:700;cursor:pointer;min-height:3rem}.ca-dept-request{margin:1rem 0}.ca-dept-week{max-width:30rem}
 .ca-dept-hub-button{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;width:100%;margin:1rem 0;text-align:left}.ca-department [role=alert]{border-left:4px solid #facc15;padding:.7rem 1rem;background:#283021;color:#fef9c3}
@@ -558,8 +558,11 @@ body.mws-public-mode #ca-midweek-root .live-view :is(div,p,span,label,strong,h1,
 body.mws-public-mode #ca-midweek-root .live-top{align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand{min-width:0;align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand-mark{flex:none}
-body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0}
+body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0;transition:none!important}
 /* WebKit needs shrinking on flex children as well as their containers at large font sizes. */
 body.mws-public-mode #ca-midweek-root :is(.live-brand,.live-brand>div:not(.live-brand-mark),.live-info,.paper-head>div,.s140-details>span,.s140-opening>span,.s140-closing>span){min-width:0;max-width:100%;overflow-wrap:break-word}
 body.mws-public-mode #ca-midweek-root .live-brand>div:not(.live-brand-mark){flex:1}
 body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){box-sizing:border-box;display:block;width:100%}
+
+/* Public links have no desktop sidebar, including while WebKit retains hover state. */
+body:is(.public-mode,.mws-public-mode,.overseer-mode) .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode) #app-header:hover ~ .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode).sidebar-expanded .main-content{margin-left:0!important;width:100%!important;max-width:100%!important;min-width:0;transition:none!important}
