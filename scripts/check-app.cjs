@@ -140,9 +140,9 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('verified OCLM roles cannot gain reports by editing cached browser flags',()=>{
         const qa=createHarness();qa.sessionStorage.setItem('fs_auth_type','role');qa.sessionStorage.setItem('fs_roles','["admin"]');qa.sessionStorage.setItem('fs_role','admin');
         qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['oclm'];
-        assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm','cleaning','duties']);assert.equal(qa.window.ui.canManageAccess(),false);
+        assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);assert.equal(qa.window.ui.canManageAccess(),false);
         qa.window.ui.currentTab='oclm';qa.window.ui.switchTab('analytics');assert.equal(qa.window.ui.currentTab,'oclm');
-        qa.sessionStorage.setItem('fs_auth_type','admin');assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm','cleaning','duties']);
+        qa.sessionStorage.setItem('fs_auth_type','admin');assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);
         qa.sessionStorage.setItem('fs_auth_type','role');qa.window.auth.roleReady=false;assert.deepEqual(qa.window.ui.getAllowedTabs(),[]);
         qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['admin'];assert(qa.window.ui.getAllowedTabs().includes('emergency'));
     });
@@ -342,6 +342,14 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         for (const line of w.PdfTools.wrap('LongAddressWithoutSpaces'.repeat(10),font,100,8.5)) assert(font.widthOfTextAtSize(line,8.5)<=100);
         assert.throws(()=>w.PdfTools.fit('தமிழ்',font,100),/Unicode font/);
     });
+    await test('transfer defaults use actual records across the September service-year boundary',()=>{
+        const record={reports:[{service_year:2027,hours:0},{service_year:2026,hours:0},{service_year:2025,hours:0}]};
+        assert.equal(w.CATransfer.serviceYear(new Date(2026,7,31)),2026);
+        assert.equal(w.CATransfer.serviceYear(new Date(2026,8,1)),2027);
+        assert.deepEqual([...w.CATransfer.defaultYears(record,new Date(2026,8,1))],[2027,2026]);
+        assert.deepEqual([...w.CATransfer.defaultYears({reports:[]},new Date(2026,8,1))],[]);
+        assert.deepEqual([...w.CATransfer.defaultYears({reports:[{service_year:2025}]},new Date(2026,8,1))],[]);
+    });
     await test('S-21 preserves long remarks on continuation pages and service-year order', async () => {
         w.db.reports=Array.from({length:12},(_,month)=>({id:'r'+month,pubId:'p1',serviceYear:2026,month,hours:month+1,studies:2,comments:month===8?'Long remark '.repeat(35):'',sharedInMinistry:true}));
         const bytes=await w.__exports.s21([{id:'p1',name:'Alexandra Catherine Montgomery-Wellington',dob:'1986-05-17',baptized:'2000-01-19',gender:'Female',hope:'Other Sheep',isRP:true}],2026);
@@ -351,7 +359,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('S-3 generates with long names and meeting-event markers', async () => {
         w.db.attendance=[{id:'test_2026_8',service_year:2026,month:8,w1_mid:'100',w1_end:'115',w2_mid:'RC',w2_end:'123'}];
         const bytes=await w.__exports.s3(2026,8,'A very long congregation name that should stay inside its field');
-        assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
+        assert.equal((await PDFDocument.load(bytes)).getPageCount(),2);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
     });
     await test('S-88 export generates and restores its button', async () => {
         el.get('att-year').value='2026';el.get('att-print88-btn').innerHTML='Download S-88';el.get('att-print88-btn').disabled=false;
@@ -397,7 +405,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),false);assert.equal(fw.MidweekScheduler.isEligible('available','Chairman'),true);
         fw.setSchedulerWeek('2027-W02');assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),true);
     });
-    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm','cleaning','duties']);assert(!w.ui.canManageAccess());});
+    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm']);assert(!w.ui.canManageAccess());});
     await test('first shared draft preserves published weeks, identities, qualifications and device edits',()=>{const f=createHarness(),w=f.window;w.currentCongId='first-shared';f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_personnel',JSON.stringify([{id:'publisher-uuid',publisherId:'publisher-uuid',name:'Known Person',appointment:'Other',roles:['Prayer']} ]));f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_assignments',JSON.stringify({'2026-W42':{OpeningPrayer:{personId:'publisher-uuid',customTitle:'Device change'}}}));w.initMidweekScheduler();w.MidweekScheduler.adoptPublished({kind:'midweek',people:[{id:'published-id',name:'Known Person'}],publishedWeeks:['2026-W41','2026-W42'],assignments:{'2026-W41':{OpeningPrayer:{personId:'published-id'}},'2026-W42':{OpeningPrayer:{personId:'published-id',customTitle:'Old live title'}}},additionalDuties:[]});const draft=w.MidweekScheduler.getDraft();assert.equal(draft.personnel[0].id,'published-id');assert.equal(draft.personnel[0].publisherId,'publisher-uuid');assert(draft.personnel[0].roles.includes('Prayer'));assert.equal(draft.assignments['2026-W41'].OpeningPrayer.personId,'published-id');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.customTitle,'Device change');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.personId,'published-id');});
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});

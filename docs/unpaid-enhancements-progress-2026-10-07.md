@@ -1,0 +1,51 @@
+# Unpaid enhancements — review handoff, 7 October 2026
+
+Status: local changes and draft pull requests only. Not merged, deployed, or applied to a live database. No real records, paid resources, sender activation, live key changes, or outgoing messages were used. The user’s uploaded master prompt explicitly changes the earlier release instruction to draft-only work and permits coherent packages with a durable handoff for the larger backlog.
+
+## Baseline
+
+App main: f9486a5f45cf39c107f7bd7d666bb51c592ca1f1.
+Website main: bf98f6f463b8bd1317dc318a182bf2fa508c60fc.
+GitHub tree reads on this resume confirmed those revisions. Existing local baseline and unfinished work were preserved. The existing production project is ejosykrxjvwrhxfnputo; no live migrations were applied in this resume.
+
+## Implemented review package
+
+- Publisher transfer is secondary: Publishers → More options → Prepare transfer. It is main-administrator-only, not an everyday toolbar action.
+- The package contains personal details and selected actual S-21 records. Current and previous September service years are selected only when records exist; recorded zeros count. Older years are optional. Missing months are not invented. The screen explains coverage and private sharing. Group and assignment history are excluded.
+- Download and review leave membership unchanged. “After the publisher leaves” contains a separate, explicit confirmation. The server checks fresh publisher/report details, archives the publisher, removes active group/eligibility/future assignments, revokes personal account grants and personal report links, and retains previous reports and schedules. No receiving workspace is provisioned, and no transfer email is sent.
+- PDF download no longer fails from a helper shadowing the browser document object. S-21 recorded zero hours/studies and zero totals remain visible. S-3 zero values are preserved and long congregation names get a full-name continuation page. Long S-21 remarks remain on continuation pages. Check marks use a curved black vector, not emoji.
+- Font coverage is checked before export. Bundled Noto Sans provides tested Latin/Greek/Cyrillic fixtures. The prepared Indian font files do not cover the English labels alongside Indian names; those exports currently stop clearly. A verified fallback/shaping implementation and native-language review remain release gates. No claim of complete Unicode support is made.
+- Department publication is independent: each overseer can publish a department’s week to the same stable notice board without the OCLM overseer republishing. Cleaning has its own role and does not require publisher eligibility approval. AV and Attendant eligibility remain main-admin-approved. Assistants can save but are denied publication by the server unless they have an ordinary authorized overseer grant.
+- Public department projection exposes only intended duty fields and publisher IDs/names, including when a restored snapshot carries extra fields. Draft assignments remain private. Current/future transferred assignments are removed; earlier history remains.
+- Department choices autosave with conflict protection; restored/contested choices require deliberate review before saving. Failed work is retained. An explicit publication confirmation and lasting published time/link are shown.
+- Regular pioneer hours below 50 get yellow, labelled attention; infirm publishers are exempt from that low-hours warning. Infirm status survives contact import/export and workspace recovery.
+- Website account request is a direct, rate-bounded database request with contact email and congregation Gmail, not a copy/paste email. Only SuperAdmin can review and create the approved workspace. Google sign-in instructions, not passwords, go into welcome letters and the private queue. Contact notices exclude credentials and private records.
+- SuperAdmin separates requests, congregations, and delivery readiness; request approval creates a workspace atomically and provides a downloadable welcome letter. Queue counts do not claim delivery. Email remains unconfigured.
+- Website help describes independent publication and includes a genuine fictional transfer screenshot. Existing dark device frames remain.
+
+## Verification performed locally
+
+- 56 application checks, cloud draft/conflict checks, encrypted-backup roundtrip, incorrect-password and tamper rejection.
+- Isolated PostgreSQL 17 acceptance bootstrap; repeated independent-publication, personal-link, and application-request migrations; role isolation, rejected stale publication, Cleaning no-approval, public/draft separation, transfer revocation, and SuperAdmin-only creation/queued welcomes.
+- Existing department browser checks also passed at normal and doubled text: rejected-save recovery, role scope, isolated demo/reset, imports, backup review/cancel/failure, and western/eastern week boundaries.
+- New notice-board browser tasks in Chromium at 320, 390 and 1440 px with doubled text: Cleaning chooser/autosave/publish, transfer preparation with actual fictional zero/previous-year records and separate departure confirmation, SuperAdmin approval/welcome PDF. Axe checks on these scopes passed.
+- PDF text page-bound checks and 300 DPI renders for S-21, S-3, S-88, emergency directory and Latin/Greek/Cyrillic fixtures. Page bounds are not proof that every printed field is aligned to 0.5 pt. Template hashes/geometry are recorded in review-evidence/pdf-template-inventory.json.
+- Public website desktop/mobile request and guide fixture checks passed after the final help additions. Tests block production writes and use fictional fixtures.
+
+No complete WebKit run, physical printer test, exact Realme 12 maximum display-size test, or novice younger/older user session is claimed. Existing CI contains the broader browser and accessibility suites; its outcome must be inspected separately from these local checks.
+
+## Not finished — do not release this entire draft as complete
+
+1. **Department drafts remain coupled to the existing OCLM revision.** Publication is separate, but the complete independent draft model is not integrated. Experimental `supabase/department-drafts.sql` exists only in the workspace, outside this draft package and acceptance bootstrap. It prepares separate revisions and dated sessions, but needs public event aggregation, date/timezone UI, independent demo fixtures, backup/restore, transfer integration, immutable revision history, conflict/availability tests and reviewed rollback. Do not apply it live.
+2. **PDF calibration:** extract actual field/checkbox rectangles into named versioned renderer profiles, compare matching before/after fixtures at 300 DPI, cover zero S-88 aggregates, dates, long identities, statuses and native scripts, and obtain independent human review. The current generic bounds test does not certify all field placements or printer settings. Print at actual size/100%, not “fit to page”; printer correctness remains an acceptance task.
+3. **E2EE:** no encrypted database migration or multi-user protocol has been implemented or enabled. Define threat model/access matrix and compare audited protocol options before a fictional prototype. Include scoped/epoch-bound AEAD vectors, trusted device verification, role changes/revocation, recovery and compatibility. Web-server operators who control served JavaScript cannot be fully excluded by browser encryption. Existing password-encrypted backup exports are not database encryption or end-to-end encryption.
+4. **Authentication/security expansion:** staged TOTP entitlement/setup/recovery, a complete fresh RLS/RPC/XSS/CSV/public-token/dependency audit and wider permission/recovery checks remain. Existing server guards are retained; this package does not certify the whole security backlog.
+5. **Notification abstraction:** provider-independent adapters, delivery/bounce/complaint callbacks, suppression and replay-safe status reconciliation are still pending. Existing private queues, leases, retries and operator health display are retained. Queued, provider accepted and delivered must stay distinct. Brevo/domain/VAPID setup is not complete; no message has been sent or actual delivery tested.
+6. **Website/business:** do not publish previously rejected Privacy/Terms wording. Contact is congregationassistant0@gmail.com. Retention/refund decisions remain unspecified. Reconcile final screenshots/help after the full department draft model. Do not add checkout, paid hosting, domain purchase or unsupported security/delivery claims.
+7. **Live operations:** inspect current deployment/run metadata and fresh security advisors before an eventual release plan. Rehearse full synthetic restore and a reviewed function rollback that preserves added records, tokens and history. Apply no rollback that deletes new department data. The new form requires its server RPC before the website can be released.
+
+## Exact next action
+
+Finish department draft independence as a separate coherent package: start with the experimental SQL file, keep existing IDs and published snapshots, add a minimal dated meeting identity with congregation timezone, and test that AV/Attendant/Cleaning saves and publications do not increment or conflict with the OCLM draft revision. Then integrate public dated sessions, transfer cancellation, own backup/restore and demo state before proposing activation. Keep the transfer/PDF package independently reviewable.
+
+Local work: /workspace/ca-noticeboard and /workspace/ca-noticeboard-site. Baseline copies: /workspace/ca-departments and /workspace/ca-departments-site. Fictional screenshot/PDF evidence: app artifacts/noticeboard and artifacts/pdf-check. These artifacts are not proof of live deployment. No automatic resumption or background job is promised by this document.

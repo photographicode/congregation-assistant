@@ -74,7 +74,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     execute(fs.readFileSync(path.join(root,'app-reminders.js'),'utf8'));
     execute(fs.readFileSync(path.join(root,'app-guide.js'),'utf8'));
     execute(fs.readFileSync(path.join(root,'app-attendance.js'),'utf8'));
-    for(const file of ['app-demo.js','app-departments.js','app-imports.js'])execute(fs.readFileSync(path.join(root,file),'utf8'));
+    for(const file of ['app-demo.js','app-departments.js','app-transfer.js','app-imports.js'])execute(fs.readFileSync(path.join(root,file),'utf8'));
     execute(scripts[1][2] + '\nwindow.__exports={s21:buildS21OriginalPdf,s3:buildS3OriginalPdf};');
     const toast = window.ui.showToast;
     window.ui.showToast = (text, type = 'success') => { messages.push({ text, type }); toast(text, type); };
