@@ -499,3 +499,4 @@ body.ca-large-text #ca-midweek-root .row-right{grid-column:1/-1}
 #ca-midweek-root :is(.section-name,.section-count,.person-name,.candidate-name,.context-title,.sheet-title,.print-bar,.tag){line-height:1.4}
 #sys-prompt-overlay :is(h2,p,button){line-height:1.5}
 body.ca-large-text #ca-midweek-root .assignee-name{font-size:1.25rem}body.ca-large-text #ca-midweek-root .assignee-label{font-size:1rem}
+body.ca-large-text #mobile-nav button>span:last-child{font-size:1.25rem}#mobile-nav.ca-roomy-nav button>span:last-child{max-width:100%;overflow-wrap:break-word}@media(max-width:360px){#mobile-nav.ca-roomy-nav>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
