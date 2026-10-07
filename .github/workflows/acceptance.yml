@@ -42,6 +42,7 @@ jobs:
         env:
           CA_CHECK_OUTPUT: artifacts/pdf-check
       - run: node scripts/check-noticeboard-view.cjs
+      - run: node scripts/check-pdf-offline.cjs
       - run: node scripts/check-unicode-pdf.cjs
       - run: python3 scripts/check-pdf-layout.py artifacts/pdf-check --render
       - run: python3 scripts/check-s21-alignment.py artifacts/pdf-check/s21.pdf
