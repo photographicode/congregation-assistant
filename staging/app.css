@@ -559,3 +559,7 @@ body.mws-public-mode #ca-midweek-root .live-top{align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand{min-width:0;align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand-mark{flex:none}
 body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0}
+/* WebKit needs shrinking on flex children as well as their containers at large font sizes. */
+body.mws-public-mode #ca-midweek-root :is(.live-brand,.live-brand>div:not(.live-brand-mark),.live-info,.paper-head>div,.s140-details>span,.s140-opening>span,.s140-closing>span){min-width:0;max-width:100%;overflow-wrap:break-word}
+body.mws-public-mode #ca-midweek-root .live-brand>div:not(.live-brand-mark){flex:1}
+body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){box-sizing:border-box;display:block;width:100%}
