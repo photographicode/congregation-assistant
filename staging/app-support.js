@@ -195,7 +195,7 @@
         });
         window.addEventListener('unhandledrejection', event => { event.preventDefault(); notify(event.reason); });
         window.addEventListener('offline', () => window.ui.setSyncStatus('error', 'Offline'));
-        window.addEventListener('online', () => window.ui.setSyncStatus('error', 'Online · reload to sync'));
+        window.addEventListener('online', () => {window.ui.setSyncStatus('syncing','Online · refreshing');window.CAOnlineSync?.refresh();});
         if (!cloudAvailable) {
             const banner = document.createElement('div');
             banner.className = 'ca-connection-banner'; banner.setAttribute('role', 'alert');

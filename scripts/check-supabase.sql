@@ -132,3 +132,13 @@ reset role;rollback;
 
 \i supabase/collaborative-departments.sql
 \i scripts/check-collaborative-departments.sql
+
+\i supabase/independent-noticeboard.sql
+\i supabase/transfer-public-links.sql
+\i supabase/workspace-applications.sql
+\i scripts/seed-department-adoption.sql
+\i supabase/department-drafts.sql
+\i supabase/noticeboard-attention.sql
+\i scripts/check-department-adoption.sql
+\i scripts/check-independent-noticeboard.sql
+\i scripts/check-workspace-applications.sql

@@ -45,4 +45,4 @@ for file in sorted(args.directory.glob('*.pdf')):
         renderer = '/usr/bin/pdftoppm' if Path('/usr/bin/pdftoppm').exists() else shutil.which('pdftoppm')
         if not renderer:
             raise SystemExit('Install Poppler to render sample PDFs.')
-        subprocess.run([renderer, '-scale-to', '1600', '-png', str(file), str(file.with_suffix(''))], check=True, stderr=subprocess.DEVNULL)
+        subprocess.run([renderer, '-r', '300', '-png', str(file), str(file.with_suffix(''))], check=True, stderr=subprocess.DEVNULL)

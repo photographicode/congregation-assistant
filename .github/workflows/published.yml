@@ -29,6 +29,8 @@ jobs:
       - run: node scripts/check-cloud-readiness.cjs
       - run: node scripts/check-scheduling-simplicity.cjs
       - run: node scripts/check-departments.cjs
+      - run: node scripts/check-noticeboard.cjs
+      - run: node scripts/check-noticeboard-view.cjs
       - run: npm run test:browser
       - run: node public-site-preview/scripts/check-site.cjs
         env:

@@ -1,0 +1,68 @@
+[
+  {
+    "template": "S21",
+    "sha256": "9e68cd8c15c65b9e8799ca150f748a403bd2d7ab8ea9db49847ed738cec8c608",
+    "pages": [
+      {
+        "mediaBox": [
+          0,
+          0,
+          595.2,
+          841.9
+        ],
+        "cropBox": [
+          0,
+          0,
+          595.2,
+          841.9
+        ],
+        "rotation": 0,
+        "userUnit": 1
+      }
+    ]
+  },
+  {
+    "template": "S3",
+    "sha256": "346bf1c9e3a861a7b996f6f8a682dbd38a4988644797117324840f38ff38aee4",
+    "pages": [
+      {
+        "mediaBox": [
+          0,
+          0,
+          320.3,
+          240.9
+        ],
+        "cropBox": [
+          0,
+          0,
+          320.3,
+          240.9
+        ],
+        "rotation": 0,
+        "userUnit": 1
+      }
+    ]
+  },
+  {
+    "template": "S88",
+    "sha256": "126375db9627c8cbb8bd82d7557d369feb9331e0e2659e53bdbb95d1c83fd2e6",
+    "pages": [
+      {
+        "mediaBox": [
+          0,
+          0,
+          595.2,
+          841.9
+        ],
+        "cropBox": [
+          0,
+          0,
+          595.2,
+          841.9
+        ],
+        "rotation": 0,
+        "userUnit": 1
+      }
+    ]
+  }
+]

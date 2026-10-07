@@ -1212,7 +1212,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
                     <label id="access-publisher-field" hidden>Publisher record<select id="access-publisher-input"></select></label><input id="access-email-input" type="email" placeholder="brother@gmail.com" class="w-full px-4 py-3 rounded-xl">
-                    <select onchange="document.getElementById('access-group-field').hidden=this.value!=='group_overseer';document.getElementById('access-publisher-field').hidden=this.value!=='publisher'" id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance overseer</option><option value="oclm">OCLM overseer</option><option value="attendant">Attendant duties overseer</option><option value="av">Audio Video overseer</option><option value="group_overseer">Group overseer — assigned group only</option><option value="publisher">Publisher — personal workspace</option></select>
+                    <select onchange="document.getElementById('access-group-field').hidden=this.value!=='group_overseer';document.getElementById('access-publisher-field').hidden=this.value!=='publisher'" id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance overseer</option><option value="oclm">OCLM overseer</option><option value="attendant">Attendant duties overseer</option><option value="av">Audio Video overseer</option><option value="cleaning">Cleaning overseer</option><option value="group_overseer">Group overseer — assigned group only</option><option value="publisher">Publisher — personal workspace</option></select>
                     <button onclick="window.ui.addRoleAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">+ Add</button>
                 </div>
                 <label class="flex gap-3 items-center"><input type="checkbox" id="access-assistant-input"> Optional assistant for this section (same section tools; no access-management permission)</label>
@@ -1238,7 +1238,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Command centre</h2>
                     <p class="text-teal-200/70 mt-1 text-slate-400">Congregations, trials, access, and published tools at a glance</p>
                 </div>
-                <button type="button" class="ca-owner-primary" onclick="window.CAOnboarding?.requests()">Review workspace requests</button>
+                <button type="button" class="ca-owner-primary" onclick="window.CAOnboarding?.view('requests')">Review workspace requests</button>
                 <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
                     <details class="ca-owner-options"><summary>Appearance</summary><div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1" aria-label="Theme">
                         <button type="button" class="px-2 py-1 rounded-lg text-xs font-bold" onclick="window.ui.setTheme('default')">Default</button>
@@ -1399,7 +1399,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 </div>
 <details class="mws-week-browser"><summary>Browse nearby weeks</summary><div class="week-strip" id="weekStrip"></div></details>
 <div class="mws-empty-state" id="schedulerEmpty" hidden><strong>Start with your meeting roster.</strong><p>Add people and their qualifications. Then choose assignments or let the scheduler suggest them.</p><button class="btn primary" id="setupSchedulerPeople">Add people</button></div>
-<details class="ca-planning-note"><summary><strong>Reviewed monthly program import</strong></summary><p>Import a JSON file you are allowed to use. Review every week, part type and duration before publishing. This does not download workbook text.</p><input type="file" id="reviewedProgramFile" accept=".json,application/json" aria-label="Reviewed monthly program JSON"><button type="button" onclick="window.importReviewedPrograms()">Review import</button><p id="programImportResult" role="status"></p></details><details class="ca-planning-note" id="meetingDetailsSettings"><summary><strong>Meeting details &amp; auxiliary classroom</strong></summary><p>Use your approved S-140 and weekly workbook as the reference. These details belong to this week. Additional Duties remain separate.</p><div class="ca-duty-form"><label>Meeting starts<input type="time" id="meetingStartTime"></label><label>Weekly Bible reading<input id="meetingReading" maxlength="150" placeholder="e.g. Jeremiah 40–41"></label><label>Opening comments<input id="meetingOpeningComments" maxlength="150" placeholder="Optional comments"></label><label>Concluding comments<input id="meetingClosingComments" maxlength="150" placeholder="Optional comments"></label><label>Opening song<input type="number" id="meetingOpeningSong" min="1" max="999"></label><label>Middle song<input type="number" id="meetingMiddleSong" min="1" max="999"></label><label>Closing song<input type="number" id="meetingClosingSong" min="1" max="999"></label><label><input type="checkbox" id="meetingAuxiliary"> Use an auxiliary classroom</label><button type="button" class="btn primary" onclick="window.saveMeetingDetails()">Save meeting details</button></div><p>Review and publish to change the live schedule. Part durations must be checked against the weekly workbook.</p></details><details id="additionalDutiesSettings" class="ca-planning-note"><summary><strong>Additional Duties setup</strong></summary><p>Attendant, Audio Video and Cleaning now have their own department workspaces. Open Duties from navigation. Department overseers request eligible publishers; the main administrator approves them before assignment.</p><button type="button" class="btn" onclick="window.ui.switchTab('duties')">Open department duties</button><details><summary>Other responsibilities and existing duty names</summary><p>Use this only for duties outside those departments. Existing assignments are preserved.</p><div class="ca-duty-form"><label>Section<input id="additionalDutySection" maxlength="100" list="additionalDutySections" placeholder="Other responsibility"><datalist id="additionalDutySections"><option value="Other responsibility"></datalist></label><label>Sub-duty (optional)<input id="additionalDutyName" maxlength="100" placeholder="e.g. Microphones or Bathroom"></label><label>People needed<select id="additionalDutySlots"><option value="1">1 person</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">4 people</option></select></label><button type="button" class="btn primary" onclick="window.addAdditionalDuty()">Add duty</button></div><div id="additionalDutiesList"></div></details><p>Save department assignments online, then review and publish the complete OCLM week.</p></details><div class="meeting" id="meetingSections"></div>
+<details class="ca-planning-note"><summary><strong>Reviewed monthly program import</strong></summary><p>Import a JSON file you are allowed to use. Review every week, part type and duration before publishing. This does not download workbook text.</p><input type="file" id="reviewedProgramFile" accept=".json,application/json" aria-label="Reviewed monthly program JSON"><button type="button" onclick="window.importReviewedPrograms()">Review import</button><p id="programImportResult" role="status"></p></details><details class="ca-planning-note" id="meetingDetailsSettings"><summary><strong>Meeting details &amp; auxiliary classroom</strong></summary><p>Use your approved S-140 and weekly workbook as the reference. These details belong to this week. Additional Duties remain separate.</p><div class="ca-duty-form"><label>Meeting starts<input type="time" id="meetingStartTime"></label><label>Weekly Bible reading<input id="meetingReading" maxlength="150" placeholder="e.g. Jeremiah 40–41"></label><label>Opening comments<input id="meetingOpeningComments" maxlength="150" placeholder="Optional comments"></label><label>Concluding comments<input id="meetingClosingComments" maxlength="150" placeholder="Optional comments"></label><label>Opening song<input type="number" id="meetingOpeningSong" min="1" max="999"></label><label>Middle song<input type="number" id="meetingMiddleSong" min="1" max="999"></label><label>Closing song<input type="number" id="meetingClosingSong" min="1" max="999"></label><label><input type="checkbox" id="meetingAuxiliary"> Use an auxiliary classroom</label><button type="button" class="btn primary" onclick="window.saveMeetingDetails()">Save meeting details</button></div><p>Review and publish to change the live schedule. Part durations must be checked against the weekly workbook.</p></details><details id="additionalDutiesSettings" class="ca-planning-note"><summary><strong>Additional Duties setup</strong></summary><p>Attendant, Audio Video and Cleaning now have their own department workspaces. Open Duties from navigation. AV and Attendant eligibility needs main-administrator approval. Cleaning does not. Each department publishes independently to the same notice board.</p><button type="button" class="btn" onclick="window.ui.switchTab('duties')">Open department duties</button><details><summary>Other responsibilities and existing duty names</summary><p>Use this only for duties outside those departments. Existing assignments are preserved.</p><div class="ca-duty-form"><label>Section<input id="additionalDutySection" maxlength="100" list="additionalDutySections" placeholder="Other responsibility"><datalist id="additionalDutySections"><option value="Other responsibility"></datalist></label><label>Sub-duty (optional)<input id="additionalDutyName" maxlength="100" placeholder="e.g. Microphones or Bathroom"></label><label>People needed<select id="additionalDutySlots"><option value="1">1 person</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">4 people</option></select></label><button type="button" class="btn primary" onclick="window.addAdditionalDuty()">Add duty</button></div><div id="additionalDutiesList"></div></details><p>Your OCLM publication covers meeting parts. Department overseers publish their own duties independently.</p></details><div class="meeting" id="meetingSections"></div>
 <div class="mws-next-step"><span>Check the save status above. Publishing makes this week visible on the shared link.</span><button class="btn primary" id="reviewScheduleBtn">Review this week →</button></div>
 </section>
 <!-- People -->
@@ -1424,7 +1424,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <label class="field-label mws-link-label" for="liveLinkInput">Shared schedule link</label>
 <div class="live-link-row"><input class="live-link-input" id="liveLinkInput" placeholder="Your link appears after publishing" readonly=""/><button class="btn" id="copyLiveLinkBtn">Copy link</button><a class="btn" id="openLiveSchedule" target="_blank" rel="noopener" hidden>Open live ↗</a></div>
 <div class="published-weeks" id="publishedWeeks"></div><details id="publicationHistory" class="ca-planning-note" hidden><summary><strong>Publication history and recovery</strong></summary><p>Restore a previous live version. This does not replace shared drafts.</p><button type="button" onclick="window.loadPublicationHistory()">View published versions</button><div id="publicationHistoryList" role="status"></div></details>
-<div id="publicationPrivacyNote" class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Check the save status to see whether your draft is saved on this device or online.</div>
+<div id="publicationPrivacyNote" class="live-note">Anyone with this link can see published names and assignments. Private contact details are excluded. Publish again after editing; the same link updates. Changes save online automatically while connected. Unsent work is kept safely until it can save.</div>
 </div>
 </section>
 
@@ -1460,7 +1460,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="live-shell">
 <div class="live-top"><div class="live-brand"><div class="live-brand-mark">CA</div><div><div class="live-brand-title">Congregation Assistant</div><div class="live-brand-sub">Midweek Meeting Schedule</div></div></div></div>
 <div class="live-info"><div class="live-info-title" id="liveWeekTitle">Meeting schedule</div><div class="live-info-sub" id="liveWeekSub"></div></div>
-<div class="live-week-picker"><input autocomplete="off" class="live-search" id="livePublisherSearch" placeholder="Search your name across all weeks…" aria-label="Publisher name" type="search"/></div>
+<div class="live-week-picker"><label for="liveWeekSelect">Choose week</label><select id="liveWeekSelect" class="live-week-select"></select><input autocomplete="off" class="live-search" id="livePublisherSearch" placeholder="Find a name" aria-label="Publisher name" type="search"/></div>
 <div class="live-note" id="liveResultNote" style="margin:0 0 9px 2px"></div>
 <div class="live-sections" id="liveSections"></div>
 </div>
@@ -2097,7 +2097,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         <div class="flex flex-wrap gap-3 sm:gap-5">
                             <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-elder" class="accent-teal-500 rounded w-4 h-4"> Elder</label>
                             <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-ms" class="accent-teal-500 rounded w-4 h-4"> Min. Servant</label>
-                            <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-rp" class="accent-teal-500 rounded w-4 h-4"> Reg. Pioneer</label>
+                            <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-rp" class="accent-teal-500 rounded w-4 h-4"> Reg. Pioneer</label><label class="check-row"><input type="checkbox" id="pub-infirm"> Infirm regular pioneer <small>(no low-hour warning)</small></label>
                             <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-sp" onchange="if(this.checked) document.getElementById('pub-sfts').checked=true" class="accent-teal-500 rounded w-4 h-4"> Spec. Pioneer</label>
                             <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-sfts" class="accent-amber-500 rounded w-4 h-4"> SFTS</label>
                             <label class="flex items-center gap-2 text-sm text-white cursor-pointer"><input type="checkbox" id="pub-fm" class="accent-teal-500 rounded w-4 h-4"> Field Miss.</label>
@@ -2462,8 +2462,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function setWeek(weekStr){
     state.currentWeek=weekStr; refreshProgram(); state.weekKeys=buildWeeks(weekStr); renderAll();
   }
-  function cleanDuties(value){
-    if(!Array.isArray(value))return [];const seen=new Set();return value.filter(d=>d&&/^Duty_[a-f0-9]{32}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim()&&d.name.length<=100&&Number.isInteger(d.slots)&&d.slots>=1&&d.slots<=4&&!seen.has(d.id)&&seen.add(d.id)).slice(0,20).map(d=>({id:d.id,name:d.name.trim(),section:typeof d.section==='string'&&d.section.trim()?d.section.trim().slice(0,100):'Additional Duties',slots:d.slots,enabled:d.enabled!==false}));
+  function cleanDuties(value,limit=20){
+    if(!Array.isArray(value))return [];const seen=new Set();return value.filter(d=>d&&/^Duty_[a-f0-9]{32}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim()&&d.name.length<=100&&Number.isInteger(d.slots)&&d.slots>=1&&d.slots<=4&&!seen.has(d.id)&&seen.add(d.id)).slice(0,limit).map(d=>({id:d.id,name:d.name.trim(),section:typeof d.section==='string'&&d.section.trim()?d.section.trim().slice(0,100):'Additional Duties',slots:d.slots,enabled:d.enabled!==false}));
   }
   function dutySections(duties){const groups=new Map();for(const d of duties){const section=d.section||'Additional Duties',key=section.toLocaleLowerCase();if(!groups.has(key))groups.set(key,{key:'additional',title:section==='Additional Duties'?'ADDITIONAL DUTIES':'ADDITIONAL DUTIES · '+section,sub:'Responsibilities chosen by your congregation',fields:[]});groups.get(key).fields.push(...Array.from({length:d.slots},(_,i)=>({id:d.id+'_'+(i+1),role:d.id,label:d.name+(d.slots>1?' '+(i+1):''),duration:''})));}return [...groups.values()];}
   const MEETING_DETAIL_FIELDS={MeetingStart:'meetingStartTime',WeeklyReading:'meetingReading',OpeningSong:'meetingOpeningSong',MiddleSong:'meetingMiddleSong',ClosingSong:'meetingClosingSong',OpeningComments:'meetingOpeningComments',ClosingComments:'meetingClosingComments'};
@@ -2496,13 +2496,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   function visibleFields(){return sections().flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));}
   function weekReview(){
-    const fields=visibleFields(), missing=fields.filter(f=>!personById(recordFor(f.id).personId)||['cancelled','reassigned'].includes(recordFor(f.id).status));
+    const fields=visibleFields().filter(f=>!window.CADepartments?.owner(f.id)), missing=fields.filter(f=>!personById(recordFor(f.id).personId)||['cancelled','reassigned'].includes(recordFor(f.id).status));
     const assistants=fields.filter(f=>f.assistant && personById(recordFor(f.id).personId) && !personById(recordFor(f.assistant).personId));
-    const assigned=allFields().map(id=>recordFor(id).personId).filter(id=>id && personById(id));
+    const assigned=allFields().filter(id=>!window.CADepartments?.owner(id)).map(id=>recordFor(id).personId).filter(id=>id && personById(id));
     const repeated=[...new Set(assigned.filter((id,i)=>assigned.indexOf(id)!==i))];
     const eligibility=fields.filter(f=>{const p=personById(recordFor(f.id).personId);return p&&!['cancelled','reassigned'].includes(recordFor(f.id).status)&&!allowedPerson(p,f.role||ROLE_MAP[f.id]);});return {fields,missing,assistants,repeated,eligibility};
   }
-  function publicationSignature(assignments,duties,program,people){const clean=Object.fromEntries(Object.entries(assignments).filter(([id,a])=>!['cancelled','reassigned'].includes(a.status)).map(([id,a])=>[id,{personId:a.personId||null,customTitle:a.customTitle||''}]));const value={assignments:clean,additionalDuties:duties.map(({id,name,section,slots,enabled})=>({id,name,section:section||'Additional Duties',slots,enabled:enabled!==false})),program,people:people.filter(p=>Object.values(clean).some(a=>a.personId===p.id)).map(({id,name})=>({id,name})).sort((a,b)=>a.id.localeCompare(b.id))};return JSON.stringify(value,(key,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.keys(value).sort().map(k=>[k,value[k]])):value);}
+  function publicationSignature(assignments,duties,program,people){const clean=Object.fromEntries(Object.entries(assignments).filter(([id,a])=>!window.CADepartments?.owner(id)&&!['cancelled','reassigned'].includes(a.status)).map(([id,a])=>[id,{personId:a.personId||null,customTitle:a.customTitle||''}]));const value={assignments:clean,additionalDuties:duties.filter(d=>!window.CADepartments?.owner(d.id)).map(({id,name,section,slots,enabled})=>({id,name,section:section||'Additional Duties',slots,enabled:enabled!==false})),program,people:people.filter(p=>Object.values(clean).some(a=>a.personId===p.id)).map(({id,name})=>({id,name})).sort((a,b)=>a.id.localeCompare(b.id))};return JSON.stringify(value,(key,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.keys(value).sort().map(k=>[k,value[k]])):value);}
   function draftSignature(week){
     return publicationSignature(state.assignments[week]||{},state.additionalDuties,state.programs[week]||null,state.personnel);
   }
@@ -2520,9 +2520,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const published=state.publishedWeeks.includes(state.currentWeek);
     const signature=state.publication?.draftSignatures?.[state.currentWeek];
     const changed=published && signature!==draftSignature(state.currentWeek);
-    $('publicationState').textContent=published?(changed?'Unpublished changes':'Published'):'Device draft';
+    $('publicationState').textContent=published?(changed?'Unpublished changes':'Published'):'Not published';
     $('publicationHeading').textContent=published?(changed?'Your draft has unpublished changes':'This week is published'):'This week is a draft';
-    $('publicationDescription').textContent=published?(changed?'Publish again to update the same live link.':'The live link shows this version. Editing creates a new device draft.'):'Publish when you are ready for others to see it.';
+    $('publicationDescription').textContent=published?(changed?'Publish again to update the same live link.':'The live link shows this version. Edits save online; publish again when ready.'):'Publish when you are ready for others to see it.';
     if(isDemo()){
       $('publicationState').textContent=published?(changed?'Demo changes':'Demo published'):'Demo draft';
       $('publicationHeading').textContent=published?'Demo only — publication simulated':'Try publishing this demo';
@@ -2621,7 +2621,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     const missing=['Attendant (Attendance Department)','Audio Video Department','Cleaning'].filter(name=>!state.additionalDuties.some(d=>d.section===name));
     $('meetingSections').innerHTML=html.replace(/(<article class="section additional)/,'<h2 class="ca-additional-heading">Additional Duties</h2>$1')+(extra?'':'<h2 class="ca-additional-heading">Additional Duties</h2>')+missing.map(name=>`<article class="ca-duty-empty"><h3>${name}</h3><p>No duties assigned for this week.</p></article>`).join('');
 
-    const visible=sections().flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));
+    const visible=sections().filter(s=>s.key!=='additional').flatMap(s=>s.fields.filter(f=>!f.optional || state.program.parts?.[f.id] || recordFor(f.id).personId));
     const assigned=visible.filter(f=>recordFor(f.id).personId).length; const total=visible.length;
     $('statusNumber').textContent=`${assigned}/${total}`;
     $('statusText').textContent=assigned===0?'Ready to schedule':assigned===total?'Week complete':`${total-assigned} part${total-assigned===1?'':'s'} remaining`;
@@ -2724,7 +2724,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   function s140Markup(data,week,people,duties,congregation,publicView=false,q='',program=state.programs[week]){
     const details=meetingDetails(data),aux=details.auxiliary||auxiliarySections(data).length>0;
-    const person=id=>{const name=people.find(p=>p.id===data[id]?.personId)?.name||(publicView?'':'Unassigned');return q&&name.toLowerCase().includes(q)?`<mark>${esc(name)}</mark>`:esc(name);};
+    const person=id=>{const name=people.find(p=>p.id===data[id]?.personId)?.name||(id.startsWith('Duty_')?'Not assigned':publicView?'':'Unassigned');return q&&name.toLowerCase().includes(q)?`<mark>${esc(name)}</mark>`:esc(name);};
     let html=`<div class="paper-head"><div><div class="paper-kicker">${esc(congregation)}</div><div class="paper-title">Midweek Meeting Schedule</div><div class="paper-sub">Week of ${esc(weekLabel(week))}</div></div>${publicView?'':'<div class="paper-meta">Congregation Assistant<br>S-140 reference layout</div>'}</div>`+meetingDetailSummary(data,'');
     html+=`<div class="s140-opening"><span><strong>${esc(data.Chairman?.customTitle||'Chairman')}:</strong> ${person('Chairman')}</span>${aux?`<span><strong>Auxiliary counselor:</strong> ${person('AuxiliaryCounselor')}</span>`:''}<span><strong>Opening song:</strong> ${esc(details.opening||'—')} · <strong>Prayer:</strong> ${person('OpeningPrayer')}</span><span><strong>Opening comments:</strong> 1 min.${details.openingComments?' · '+esc(details.openingComments):''}</span></div>`;
     let number=1;
@@ -2780,13 +2780,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
   function renderLiveViewer(payload){
     root.classList.add('mws-live-mode');
-    const weeks=(payload.publishedWeeks||[]).filter(w=>/^\d{4}-W\d{2}$/.test(w)&&payload.assignments?.[w]).sort(),people=payload.people||[],search=$('livePublisherSearch');
-    $('liveWeekTitle').textContent=payload.congregation||'Midweek meeting schedules';$('liveWeekSub').textContent='Published meeting schedules · Search a name to find every assigned week';
-    function draw(){const q=search.value.toLowerCase().trim(),matched=new Set(people.filter(p=>p.name?.toLowerCase().includes(q)).map(p=>p.id));let count=0;const shown=weeks.filter(w=>!q||Object.values(payload.assignments[w]).some(a=>matched.has(a?.personId)));
-      $('liveSections').innerHTML=shown.map(w=>{const data=payload.assignments[w];count+=Object.values(data).filter(a=>matched.has(a?.personId)).length;return `<article class="paper live-s140-paper" aria-label="Week of ${esc(weekLabel(w))}">${s140Markup(data,w,people,cleanDuties(payload.weekDetails?.[w]?.additionalDuties||payload.additionalDuties),payload.congregation||'Congregation',true,q,payload.weekDetails?.[w]?.program||null)}</article>`;}).join('')||'<p class="live-empty">'+(weeks.length?'No published weeks match that name.':'No schedules have been published yet.')+'</p>';
-      $('liveResultNote').textContent=q?`${shown.length} week${shown.length===1?'':'s'} · ${count} assignment${count===1?'':'s'} matching this name`:`${weeks.length} published week${weeks.length===1?'':'s'}`;
+    const weeks=(payload.publishedWeeks||[]).filter(w=>/^\d{4}-W\d{2}$/.test(w)&&payload.assignments?.[w]&&w>=(payload.currentWeek||weekId(new Date()))).sort(),people=payload.people||[],search=$('livePublisherSearch'),picker=$('liveWeekSelect');
+    const shortWeek=w=>{const start=mondayOf(w),end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const format=d=>d.toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'});return format(start)+'–'+(end.getUTCMonth()===start.getUTCMonth()?end.getUTCDate():format(end));};const previousWeek=picker.value;picker.innerHTML=weeks.map(w=>`<option value="${w}" title="Week of ${esc(weekLabel(w))}">${esc(shortWeek(w))}</option>`).join('')+'<option value="all">All upcoming weeks</option>';picker.value=previousWeek==='all'||search.value.trim()?'all':weeks.includes(previousWeek)?previousWeek:weeks.includes(payload.defaultWeek)?payload.defaultWeek:weeks[0]||'all';
+    $('liveWeekTitle').textContent=payload.congregation||'Midweek meeting schedules';$('liveWeekSub').textContent='Notice board · Choose a week or find a name';
+    function draw(){const q=search.value.toLowerCase().trim(),matched=new Set(people.filter(p=>p.name?.toLowerCase().includes(q)).map(p=>p.id));let count=0;const shown=weeks.filter(w=>(picker.value==='all'||w===picker.value)&&(!q||Object.values(payload.assignments[w]).some(a=>matched.has(a?.personId))));
+      $('liveSections').innerHTML=shown.map(w=>{const data=payload.assignments[w];count+=Object.values(data).filter(a=>matched.has(a?.personId)).length;return `<article class="paper live-s140-paper" aria-label="Week of ${esc(weekLabel(w))}">${payload.weekDetails?.[w]?.oclmPublished===false?'<p class="live-note">Meeting parts have not been published for this week. Department duties are below.</p>':''}${s140Markup(data,w,people,cleanDuties(payload.weekDetails?.[w]?.additionalDuties||payload.additionalDuties,63),payload.congregation||'Congregation',true,q,payload.weekDetails?.[w]?.program||null)}</article>`;}).join('')||'<p class="live-empty">'+(weeks.length?'No published weeks match that name.':'No upcoming schedules have been published yet.')+'</p>';
+      $('liveResultNote').textContent=q?`${shown.length} week${shown.length===1?'':'s'} · ${count} assignment${count===1?'':'s'} matching this name`:picker.value==='all'?`${weeks.length} upcoming week${weeks.length===1?'':'s'}`:weeks.length?'Week of '+weekLabel(picker.value):'No upcoming weeks';
     }
-    search.oninput=draw;draw();
+    search.oninput=()=>{if(search.value.trim())picker.value='all';draw();};picker.onchange=draw;draw();
   }
   function readLivePayload(){
     const hash=location.hash; if(!hash.startsWith('#live='))return null;
@@ -2822,7 +2823,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     apply:data=>{state.personnel=data.personnel;state.assignments=data.assignments;state.additionalDuties=cleanDuties(data.additionalDuties);state.programs=data.programs||{};refreshProgram();state.template=data.template;syncRoster(window.db?.oclmRoster||[],false);save(false);renderAll();},
     status:text=>{if($('saveStateLabel'))$('saveStateLabel').textContent=text;},
     publication:p=>{if(!p)return;state.publishedWeeks=p.snapshot.publishedWeeks||[];state.publication={...p,draftSignatures:Object.fromEntries((p.snapshot.publishedWeeks||[]).map(w=>[w,publicationSignature(p.snapshot.assignments[w],p.snapshot.weekDetails?.[w]?.additionalDuties||p.snapshot.additionalDuties,p.snapshot.weekDetails?.[w]?.program||null,p.snapshot.people)]))};save(false);renderAll();},
-    conflict:visible=>{let box=$('schedulerCloudConflict');if(!box){box=document.createElement('div');box.id='schedulerCloudConflict';box.className='mws-review-item warning';box.setAttribute('role','alert');box.innerHTML='<p>The shared draft needs review. Keep your recovery copy before loading the shared version.</p><button type="button" onclick="window.CAOCLMCloud.recovery()">Download recovery copy</button><button type="button" onclick="if(confirm(\'Replace this device draft with the latest shared draft? Download your recovery copy first.\'))window.CAOCLMCloud.reload().catch(e=>window.ui.showToast(e.message,\'error\'))">Load shared draft</button>'; $('schedulerSaveError').after(box);}box.hidden=!visible;}
+    conflict:visible=>{let box=$('schedulerCloudConflict');if(!box){box=document.createElement('div');box.id='schedulerCloudConflict';box.className='mws-review-item warning';box.setAttribute('role','alert');box.innerHTML='<p>Another device changed the draft. Your work is kept here. Review the online version before saving. A recovery download is optional.</p><button type="button" onclick="window.CAOCLMCloud.recovery()">Download recovery copy</button><button type="button" onclick="if(confirm(\'Replace this device draft with the latest shared draft? Your unsent edits will be replaced. You may cancel and download a recovery copy first.\'))window.CAOCLMCloud.reload().catch(e=>window.ui.showToast(e.message,\'error\'))">Load shared draft</button>'; $('schedulerSaveError').after(box);}box.hidden=!visible;}
   };}
   window.renderMidweekScheduler=renderAll;window.reloadSchedulerDemo=()=>{if(isDemo()){load();renderAll();}};
   window.initMidweekScheduler = () => {
@@ -2841,7 +2842,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
     <script src="app-config.js"></script>
     <script src="app-demo.js"></script>
-    <script src="app-departments.js"></script>
+    <script src="app-departments.js"></script><script src="app-transfer.js"></script>
     <script src="app-imports.js"></script>
     <script src="app-install.js"></script>
     <script src="app-reminders.js"></script>
@@ -2855,7 +2856,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     <script src="app-push.js"></script>
     <script src="app-home.js"></script>
     <script src="public-links.js"></script>
-    <script src="pdf-tools.js"></script>
+    <script src="assets/vendor/fontkit-1.1.1.min.js"></script><script src="pdf-tools.js"></script>
     <script src="app-support.js"></script>
     <script type="module">
         const createClient = window.supabase?.createClient;
@@ -2871,7 +2872,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
-        window.AttendanceCalendar?.install(supabaseClient);window.CAOnboarding?.install(supabaseClient);window.CAOCLMCloud?.install(supabaseClient);window.CAPublisherHome?.install(supabaseClient);window.CARecovery?.install(supabaseClient);window.CAPush?.install(supabaseClient);window.CAHome?.install(supabaseClient);window.CADepartments?.install(supabaseClient);
+        window.AttendanceCalendar?.install(supabaseClient);window.CAOnboarding?.install(supabaseClient);window.CAOCLMCloud?.install(supabaseClient);window.CAPublisherHome?.install(supabaseClient);window.CARecovery?.install(supabaseClient);window.CAPush?.install(supabaseClient);window.CAHome?.install(supabaseClient);window.CADepartments?.install(supabaseClient);window.CATransfer?.install(supabaseClient);window.CAOnlineSync?.install(supabaseClient);
         window.sysPromptState = { actionCallback: null, requiresPassword: false };
         window.currentCongId = null;
 
@@ -2966,7 +2967,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if(window.auth.googleSwitching)throw new Error('Please wait for your congregation to open.');
                 window.auth.googleSwitching=true;
                 try{
-                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId&&row.active===true&&['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av'].includes(row.role));
+                const grants=window.auth.googleAccess.filter(row=>row.cong_id===congId&&row.active===true&&['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av','cleaning'].includes(row.role));
                 if(!grants.length)throw new Error('This Google account has no active access to that congregation.');
                 const {data:cong,error}=await supabaseClient.from('congregations').select('id,name,status,created_at,trial_days,feature_attendance,feature_emergency_contacts,feature_oclm').eq('id',congId).single();
                 if(error||!cong)throw new Error('Your congregation could not be opened. Ask an administrator to check your access.');
@@ -2993,7 +2994,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     if(!superError && superAccess===true){window.auth.verifiedEmail=email;window.currentCongId=null;window.db.currentCongData=null;window.db.attendance=[];window.db.oclmRoster=[];window.AttendanceCalendar?.clear();window.CADepartments?.clear();window.auth.googleAccess=[];window.auth.verifiedGroups=[];window.auth.verifiedAssistants=[];window.auth.verifiedOwner=true;window.auth.verifiedRoles=[];sessionStorage.setItem('fs_auth','true');sessionStorage.setItem('fs_auth_type','super');sessionStorage.setItem('fs_role','admin');sessionStorage.removeItem('fs_roles');window.auth.roleReady=true;window.auth.touchActivity();document.getElementById('auth-screen').classList.add('hidden');document.getElementById('global-loader')?.classList.add('hidden');await window.db.initSuperAdmin();return true;}
                     const {data,error}=await supabaseClient.from('congregation_access').select(window.CA_CONFIG?.secureBackend?'cong_id,role,active,service_group,is_assistant':'cong_id,role,active').eq('email',email).eq('active',true).order('role',{ascending:true});
                     if(error)throw new Error('Google sign-in succeeded, but account permissions could not be loaded. Ask an administrator to complete access setup.');
-                    window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av'].includes(row.role));
+                    window.auth.verifiedEmail=email;window.auth.googleAccess=(data||[]).filter(row=>row.active===true&&['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av','cleaning'].includes(row.role));
                     if(!window.auth.googleAccess.length){window.CAOnboarding?.request();window.auth.clearGoogleRole(true);window.auth.showGoogleStatus('Your Google account is signed in but has no approved access. Ask your congregation administrator to add your email and role, then try again.');return true;}
                     const ids=[...new Set(window.auth.googleAccess.map(row=>row.cong_id))],saved=sessionStorage.getItem('fs_cong_id');
                     if(ids.length===1||ids.includes(saved)){await window.auth.activateGoogleRole(ids.includes(saved)?saved:ids[0]);return true;}
@@ -3254,7 +3255,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (isCloudEnabled) {
                     const { data } = await supabaseClient.from('congregations').select('*').order('created_at', { ascending: false });
                     if (data) window.db.congregations = data;
-                    window.ui.renderSuperAdmin();
+                    window.ui.renderSuperAdmin();window.CAOnboarding?.view('requests');
                 }
             },
 
@@ -3548,8 +3549,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (enabled) map[pubId] = true; else delete map[pubId];
                 localStorage.setItem(`sfts_overrides_${window.currentCongId || 'global'}`, JSON.stringify(map));
             },
-            mapPubToDB: (p) => ({ id: p.id, cong_id: window.currentCongId, name: p.name, service_group: p.group, gender: p.gender, hope: p.hope, dob: p.dob || null, baptized: p.baptized || null, is_elder: p.isElder, is_ms: p.isMS, is_rp: p.isRP, is_sp: p.isSP, is_fm: p.isFM, phone: p.phone, address: p.address || null, emergency_name: p.emergencyName || null, emergency_relationship: p.emergencyRelationship || null, emergency_phone: p.emergencyPhone || null, spiritual_status: p.spiritualStatus || null, family_head_id: p.familyHeadId || null }),
-            mapPubFromDB: (r) => ({ id: r.id, name: r.name, group: r.service_group, gender: r.gender, hope: r.hope, dob: r.dob, baptized: r.baptized, isElder: r.is_elder, isMS: r.is_ms, isRP: r.is_rp, isSP: r.is_sp, isSFTS: window.db.isSFTS(r.id, r.is_sp), isFM: r.is_fm, phone: r.phone, address: r.address, emergencyName: r.emergency_name, emergencyRelationship: r.emergency_relationship, emergencyPhone: r.emergency_phone, spiritualStatus: r.spiritual_status, familyHeadId: r.family_head_id }),
+            mapPubToDB: (p) => ({ id: p.id, cong_id: window.currentCongId, name: p.name, service_group: p.group, gender: p.gender, hope: p.hope, dob: p.dob || null, baptized: p.baptized || null, is_elder: p.isElder, is_ms: p.isMS, is_rp: p.isRP, is_infirm:!!p.isInfirm,is_sfts:!!p.isSFTS, is_sp: p.isSP, is_fm: p.isFM, phone: p.phone, address: p.address || null, emergency_name: p.emergencyName || null, emergency_relationship: p.emergencyRelationship || null, emergency_phone: p.emergencyPhone || null, spiritual_status: p.spiritualStatus || null, family_head_id: p.familyHeadId || null }),
+            mapPubFromDB: (r) => ({ id: r.id, name: r.name, group: r.service_group, gender: r.gender, hope: r.hope, dob: r.dob, baptized: r.baptized, isElder: r.is_elder, isMS: r.is_ms, isRP: r.is_rp,isInfirm:r.is_infirm,transferredAt:r.transferred_at, isSP: r.is_sp, isSFTS: !!r.is_sfts || window.db.isSFTS(r.id, r.is_sp), isFM: r.is_fm, phone: r.phone, address: r.address, emergencyName: r.emergency_name, emergencyRelationship: r.emergency_relationship, emergencyPhone: r.emergency_phone, spiritualStatus: r.spiritual_status, familyHeadId: r.family_head_id }),
             mapRepToDB: (r) => ({ id: r.id, cong_id: window.currentCongId, pub_id: r.pubId, service_year: r.serviceYear, month: r.month, shared_in_ministry: !!r.sharedInMinistry, studies: r.studies ? parseInt(r.studies) : 0, hours: r.hours ? parseFloat(r.hours) : 0, comments: r.comments || '', is_ap: !!r.isAP }),
             mapRepFromDB: (r) => ({ id: r.id, pubId: r.pub_id, serviceYear: r.service_year, month: r.month, sharedInMinistry: r.shared_in_ministry, studies: r.studies, hours: r.hours, comments: r.comments, isAP: r.is_ap }),
 
@@ -3578,7 +3579,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 window.db.reports = Array.isArray(reps) ? reps : [];
                 window.db.attendance = Array.isArray(att) ? att : [];
             },
-            getPublishers: () => window.db.publishers,
+            getPublishers: () => window.db.publishers.filter(p=>!p.transferredAt),
             getReports: (sy, month) => {
                 let r = window.db.reports;
                 if (sy !== undefined && month !== undefined) return r.filter(x => x.serviceYear === sy && x.month === month);
@@ -3697,7 +3698,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const previous=matches[0]||[...drafts.values()].find(p=>p.name.toLowerCase()===name.toLowerCase())||{};
                     const id=previous.id||window.utils.generateUUID(); if(sourceId)importedIds.set(sourceId,id);
                     const publisher={...previous,id,name,phone:col(row,'Phone',previous.phone),dob:col(row,'DOB',previous.dob),baptized:col(row,'Baptized',previous.baptized),
-                        isElder:bool(row,'Elder',previous.isElder),isMS:bool(row,'MS',previous.isMS),isRP:bool(row,'RP',previous.isRP),
+                        isElder:bool(row,'Elder',previous.isElder),isMS:bool(row,'MS',previous.isMS),isRP:bool(row,'RP',previous.isRP),isInfirm:bool(row,'Infirm',previous.isInfirm),
                         gender:bool(row,'Male',previous.gender!=='Female')?'Male':'Female',isSP:bool(row,'Special Pioneer',previous.isSP),isSFTS:bool(row,'SFTS',previous.isSFTS),isFM:bool(row,'Field Missionary',previous.isFM),
                         hope:bool(row,'Anointed',previous.hope==='Anointed')?'Anointed':'Other Sheep',group:col(row,'Group',previous.group),address:col(row,'Address',previous.address),
                         emergencyName:col(row,'Emergency Name',previous.emergencyName),emergencyRelationship:col(row,'Emergency Relationship',previous.emergencyRelationship),emergencyPhone:col(row,'Emergency Phone',previous.emergencyPhone),
@@ -3764,7 +3765,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         // Build S-21 directly from the supplied two-card PDF. The source page is
         // split at its actual midpoint/bleed line, then each half becomes a page.
-        const buildS21OriginalPdf = async (publishers, sy) => {
+        const buildS21OriginalPdf = async (publishers, sy, reportRecords = window.db.getReports(sy)) => {
             const { PDFDocument, StandardFonts, rgb } = window.PdfTools.requireLibrary();
             const sourceBytes = Uint8Array.from(atob(S21_TEMPLATE_B64), c => c.charCodeAt(0));
             const srcDoc = await PDFDocument.load(sourceBytes);
@@ -3777,8 +3778,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             // template artwork in the generated PDF.
             const [embedded] = await out.embedPdf(sourceBytes);
             const splitYTop = srcH / 2;
-            const font = await out.embedFont(StandardFonts.Helvetica);
-            const fontBold = await out.embedFont(StandardFonts.HelveticaBold);
+            const {font,bold:fontBold}=await window.PdfTools.fonts(out,[...publishers.map(p=>p.name),...reportRecords.map(r=>r.comments||'')]);
             const dark = rgb(0.04, 0.04, 0.04);
 
             const continuationNotes = [];
@@ -3786,7 +3786,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 if (text === '' || text === null || text === undefined) return;
                 const fitted = window.PdfTools.fit(text,fontObj,maxWidth,size,7);
                 const low = Math.min(bottom,top), high = Math.max(bottom,top);
-                const y = low + (high-low-fitted.size)/2 + raise;
+                const y = window.PdfTools.baseline(fontObj,fitted.size,low,high);
                 page.drawText(fitted.text, { x: cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
             };
             const drawLeft = (page, text, x, topBaseline, size=9, fontObj=font, maxWidth=480) => {
@@ -3795,8 +3795,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 page.drawText(fitted.text,{x,y:topBaseline,size:fitted.size,font:fontObj,color:dark});
             };
             const check = (page, cx, cy) => {
-                page.drawLine({ start:{x:cx-3.0,y:cy}, end:{x:cx-0.8,y:cy-2.4}, thickness:1.15, color:dark });
-                page.drawLine({ start:{x:cx-0.8,y:cy-2.4}, end:{x:cx+3.4,y:cy+3.0}, thickness:1.15, color:dark });
+                window.PdfTools.checkbox(page,{x:cx-5,y:cy-5,width:10,height:10},true);
             };
 
             const col = { service:59.45, shared:136.71, studies:207.33, ap:277.90, hours:348.47, remarks:480.80 };
@@ -3814,7 +3813,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             const publisherRows = (pub, page, yOffset) => {
                 const reportYear = sy;
-                const reports = monthOrder.map(m => window.db.getReports(reportYear,m).find(r=>r.pubId===pub.id) || {});
+                const reports = monthOrder.map(m => reportRecords.find(r=>r.pubId===pub.id&&r.serviceYear===reportYear&&r.month===m) || {});
                 let totalHours=0, totalRemarksNum=0;
                 reports.forEach(r=>{
                     const h=parseFloat(r.hours||0); if(!isNaN(h)) totalHours+=h;
@@ -3835,7 +3834,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 };
 
                 // Header fields.
-                drawB(pub.name||'',53,49.5,9.5);
+                const nameField=window.PdfTools.fit(pub.name||'',font,480,9.5,7);if(nameField.truncated)continuationNotes.push({name:pub.name,label:'Full publisher name',text:pub.name});drawB(pub.name||'',53,49.5,9.5);
                 drawLeft(page,pub.dob||'',92,toOutY(64),9.5,font,265);
                 const bapText=!pub.baptized?'UBP':(pub.baptized||'');
                 drawLeft(page,bapText,109,toOutY(78.5),9.5,font,248);
@@ -3858,8 +3857,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const h=parseFloat(r.hours||0); const s=parseInt(r.studies||0);
                     const shared=hasReport && (r.sharedInMinistry || h>0 || s>0);
                     const remarks=hasReport ? (shared ? (r.comments||'') : 'Not Participated') : '';
-                    drawT(r.studies||'',col.studies,row.bottom,row.top,9,false,1.8);
-                    drawT(r.hours||'',col.hours,row.bottom,row.top,9,false,1.8);
+                    drawT(r.studies??'',col.studies,row.bottom,row.top,9,false,1.8);
+                    drawT(r.hours??'',col.hours,row.bottom,row.top,9,false,1.8);
                     const remarkLines=window.PdfTools.wrap(remarks,font,185,7.5);
                     const visible=remarkLines.slice(0,2);
                     if(remarkLines.length>2){
@@ -3877,7 +3876,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         const cy=toOutY((row.top+row.bottom)/2); check(page,col.ap,cy);
                     }
                 });
-                drawT(totalHours>0 ? totalHours : '',348.47,371.93,389.48,9,true,1.9);
+                drawT(reports.some(r=>r.id) ? totalHours : '',348.47,371.93,389.48,9,true,1.9);
                 const remarksOutput=totalRemarksNum>0 ? `Additional hours: ${totalRemarksNum}` : '';
                 drawCentered(page,remarksOutput,480.80,toOutY(389.48),toOutY(371.93),7.8,font,1.5,185);
             };
@@ -3892,24 +3891,25 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             return out.save();
         };
 
+        window.PdfTools.s21=buildS21OriginalPdf;
+
         const buildS3OriginalPdf = async (sy, month, congName) => {
             const { PDFDocument, StandardFonts, rgb } = window.PdfTools.requireLibrary();
             const bytes=Uint8Array.from(atob(S3_TEMPLATE_B64),c=>c.charCodeAt(0));
             const pdf=await PDFDocument.load(bytes);
             const page=pdf.getPage(0);
             const h=page.getHeight();
-            const font=await pdf.embedFont(StandardFonts.Helvetica);
-            const fontBold=await pdf.embedFont(StandardFonts.HelveticaBold);
+            const {font,bold:fontBold}=await window.PdfTools.fonts(pdf,[congName]);
             const dark=rgb(0.03,0.03,0.03);
             const monthOrder=[8,9,10,11,0,1,2,3,4,5,6,7];
             const id=`${window.currentCongId}_${sy}_${month}`;
             const rec=window.db.attendance.find(a=>a.id===id)||{};
             const viewYear=month>=8?sy-1:sy;
             const monthName=window.utils.getMonthName(month)+" "+viewYear;
-            const printObj=v=>{ if(['CA','RC','Memorial'].includes(v)) return {text:v,str:true}; const n=parseInt(v); return (!isNaN(n)&&n>0)?{text:n,str:false,num:n}:{text:'',str:false}; };
+            const printObj=v=>{ if(['CA','RC','Memorial'].includes(v)) return {text:v,str:true}; const n=parseInt(v); return (!isNaN(n)&&n>=0&&v!==''&&v!==null&&v!==undefined)?{text:n,str:false,num:n}:{text:'',str:false}; };
             let mTotal=0,mCount=0,eTotal=0,eCount=0;
             const w=[];
-            for(let i=1;i<=5;i++){ const a=printObj(rec[`w${i}_mid`]), b=printObj(rec[`w${i}_end`]); if(!a.str&&a.num){mTotal+=a.num;mCount++;} if(!b.str&&b.num){eTotal+=b.num;eCount++;} w.push({mid:a,end:b}); }
+            for(let i=1;i<=5;i++){ const a=printObj(rec[`w${i}_mid`]), b=printObj(rec[`w${i}_end`]); if(!a.str&&a.num!==undefined){mTotal+=a.num;mCount++;} if(!b.str&&b.num!==undefined){eTotal+=b.num;eCount++;} w.push({mid:a,end:b}); }
             const center=(text,cx,top,bottom,size=9,bold=false,raise=2.0)=>{
                 if(text===''||text==null)return;
                 const f=bold?fontBold:font;
@@ -3931,8 +3931,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             const rowBottoms=[166.91,166.91,166.91,166.91,166.91];
             xs.forEach((x,i)=>center(w[i].mid.text,x,127.57,166.91,9,false,2.0));
             xs.forEach((x,i)=>center(w[i].end.text,x,166.91,206.64,9,false,2.0));
-            center(mTotal||'',253.99,127.57,166.91,9,true,2.0); center(mCount?Math.round(mTotal/mCount):'',290.54,127.57,166.91,9,true,2.0);
-            center(eTotal||'',253.99,166.91,206.64,9,true,2.0); center(eCount?Math.round(eTotal/eCount):'',290.54,166.91,206.64,9,true,2.0);
+            center(mCount?mTotal:'',253.99,127.57,166.91,9,true,2.0); center(mCount?Math.round(mTotal/mCount):'',290.54,127.57,166.91,9,true,2.0);
+            center(eCount?eTotal:'',253.99,166.91,206.64,9,true,2.0); center(eCount?Math.round(eTotal/eCount):'',290.54,166.91,206.64,9,true,2.0);
+            if(window.PdfTools.fit(congName,font,124,8.5,6.5).truncated) window.PdfTools.appendNotes(pdf,font,fontBold,[{name:monthName,label:'Full congregation name',text:congName}], 'Attendance report · full details');
             return pdf.save();
         };
 
@@ -4255,10 +4256,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 let roles; try{roles=JSON.parse(sessionStorage.getItem('fs_roles')||'null');}catch{}
 
                 const fallback=sessionStorage.getItem('fs_role')||'admin';
-                return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av'].includes(role)))];
+                return [...new Set((Array.isArray(roles)?roles:[fallback]).filter(role=>['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av','cleaning'].includes(role)))];
             },
             getAllowedTabs: () => {
-                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm','duties','attendant','av','cleaning'],field_service:['publishers','groups','analytics'],attendance:['attendance','attendant','duties'],attendant:['attendant','duties'],av:['av','duties'],oclm:['oclm','cleaning','duties'],group_overseer:['overseer'],publisher:['personal']};
+                const map={admin:['dashboard','publishers','groups','analytics','emergency','attendance','oclm','duties','attendant','av','cleaning'],field_service:['publishers','groups','analytics'],attendance:['attendance','attendant','duties'],attendant:['attendant','duties'],av:['av','duties'],oclm:['oclm'],cleaning:['cleaning','duties'],group_overseer:['overseer'],publisher:['personal']};
                 if(window.auth.roleReady&&window.auth.verifiedOwner)return ['superadmin'];
                 return [...new Set(window.ui.getRoleGrants().flatMap(role=>map[role]||[]))];
             },
@@ -4284,7 +4285,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     button.classList.toggle('hidden',!(permission==='support'||permission==='super'&&isSuper||!isSuper&&(permission==='admin'?window.ui.canManageAccess():allowed.includes(permission))));
                 });
                 document.querySelectorAll('[data-menu-section]').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('[data-menu-permission]')].some(button=>!button.classList.contains('hidden'))));
-                const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM overseer',attendant:'Attendant duties',av:'Audio Video overseer',group_overseer:'Group overseer',publisher:'Publisher'};
+                const names={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance',oclm:'OCLM overseer',attendant:'Attendant duties',av:'Audio Video overseer',cleaning:'Cleaning overseer',group_overseer:'Group overseer',publisher:'Publisher'};
                 const label=document.getElementById('mobile-menu-role');if(label)label.textContent=isSuper?'Superadmin':roles.map(role=>names[role]+(window.auth.verifiedAssistants.includes(role)?' (assistant)':'')).join(' · ')||'No assigned sections';
             },
 
@@ -4292,13 +4293,13 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             loadRoleAccess: async () => {
                 if(!window.ui.canManageAccess())return;const box=document.getElementById('access-manager-list'); if(!box)return; box.innerHTML='<div class="text-xs text-teal-100/35 p-3">Loading authorized accounts…</div>';
                 if(!isCloudEnabled){box.innerHTML='<div class="text-xs text-rose-200/60 p-3">Cloud connection is required for role access.</div>';return;}
-                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance overseer',oclm:'OCLM overseer',attendant:'Attendant duties',av:'Audio Video overseer',group_overseer:'Group overseer',publisher:'Publisher'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}${r.is_assistant===true?' · Assistant':''}${r.role==='group_overseer'?' · '+window.ui.oclmEscape(r.service_group||'Group not assigned'):''}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Account access could not be loaded. Retry, or contact support if the problem continues.</div>';}
+                try{const {data,error}=await supabaseClient.from('congregation_access').select('*').eq('cong_id',window.currentCongId).order('role').order('email');if(error)throw error;const roleName={admin:'Main admin / Secretary',field_service:'Field Service',attendance:'Attendance overseer',oclm:'OCLM overseer',attendant:'Attendant duties',av:'Audio Video overseer',cleaning:'Cleaning overseer',group_overseer:'Group overseer',publisher:'Publisher'};box.innerHTML=(data||[]).length?(data||[]).map(r=>`<div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-black/20 border border-white/5"><div><div class="text-sm font-bold text-white">${window.ui.oclmEscape(r.email)}</div><div class="text-[10px] text-teal-300/70 mt-1">${roleName[r.role]||window.ui.oclmEscape(r.role)}${r.is_assistant===true?' · Assistant':''}${r.role==='group_overseer'?' · '+window.ui.oclmEscape(r.service_group||'Group not assigned'):''}</div></div><button onclick="window.ui.removeRoleAccess(${window.ui.jsArg(r.id||'')})" class="text-[10px] text-rose-300">Remove</button></div>`).join(''):'<div class="text-xs text-teal-100/35 p-3">No role accounts have been authorized yet.</div>';}catch(e){box.innerHTML='<div class="text-xs text-amber-100/60 p-3">Account access could not be loaded. Retry, or contact support if the problem continues.</div>';}
             },
             addRoleAccess: async () => {
                 if(!window.ui.canManageAccess())throw new Error('Only administrators can manage access.');
                 const email=(document.getElementById('access-email-input')?.value||'').trim().toLowerCase(),role=document.getElementById('access-role-input')?.value;
                 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Enter a valid Google account email.');
-                if(!['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av'].includes(role))throw new Error('Choose a valid role.');
+                if(!['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av','cleaning'].includes(role))throw new Error('Choose a valid role.');
                 const assistant=document.getElementById('access-assistant-input')?.checked===true;if(assistant&&!window.CA_CONFIG?.secureBackend)throw new Error('Section assistants require the secure workspace setup.');if(assistant&&['admin','publisher'].includes(role))throw new Error('Assign assistants to Service, OCLM, Attendance or Group, not Main admin.');
                 if(!isCloudEnabled)throw new Error('Cloud connection is required to manage access.');
                 const serviceGroup=role==='group_overseer'?(document.getElementById('access-group-input')?.value||'').trim():null;
@@ -4348,8 +4349,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const btn = [...document.querySelectorAll('#nav-admin .ca-nav-item')].find(el=>el.dataset.navContext===context&&el.dataset.navTab===tabId); if(btn){btn.classList.add('ca-nav-active');btn.classList.remove('hover:bg-white/10','text-teal-50/70');btn.classList.add('bg-teal-500/80','text-white','shadow-lg');}
                 
                 // Mobile Bottom Nav Styling
-                document.querySelectorAll('#mobile-nav button[id^="m-btn-tab-"]').forEach(el => { el.classList.remove('text-teal-300'); el.classList.add('text-teal-50/50'); });
-                const mBtn = document.getElementById(`m-btn-tab-${tabId}`); if (mBtn) { mBtn.classList.remove('text-teal-50/50'); mBtn.classList.add('text-teal-300'); }
+                document.querySelectorAll('#mobile-nav button[id^="m-btn-tab-"]').forEach(el => { el.classList.remove('text-teal-300'); el.classList.add('text-teal-50/50');el.removeAttribute('aria-current'); });
+                const mobileTab=['av','attendant','cleaning'].includes(tabId)?'duties':tabId;const directBtn=document.getElementById(`m-btn-tab-${mobileTab}`);const mBtn=directBtn&&!directBtn.classList.contains('hidden')?directBtn:document.getElementById('m-btn-tab-menu'); if (mBtn) { mBtn.classList.remove('text-teal-50/50'); mBtn.classList.add('text-teal-300');mBtn.setAttribute('aria-current','page'); }
 
                 window.ui.currentTab = tabId;
                 // Remember the user's last working tab so refresh/re-open returns there.
@@ -4984,7 +4985,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     baptized: document.getElementById('pub-baptized').value, 
                     isElder: document.getElementById('pub-elder').checked, 
                     isMS: document.getElementById('pub-ms').checked, 
-                    isRP: document.getElementById('pub-rp').checked, 
+                    isRP: document.getElementById('pub-rp').checked,isInfirm:document.getElementById('pub-infirm').checked, 
                     isSP: document.getElementById('pub-sp').checked, 
                     isSFTS: document.getElementById('pub-sfts').checked || document.getElementById('pub-sp').checked,
                     isFM: document.getElementById('pub-fm').checked, 
@@ -5010,7 +5011,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const gSel = document.querySelector(`input[name="pub-gender"][value="${pub.gender==='Female'?'Female':'Male'}"]`); if(gSel) gSel.checked = true;
                 const hSel = document.querySelector(`input[name="pub-hope"][value="${pub.hope==='Anointed'?'Anointed':'Other Sheep'}"]`); if(hSel) hSel.checked = true;
                 document.getElementById('pub-dob').value = pub.dob || ''; document.getElementById('pub-baptized').value = pub.baptized || '';
-                document.getElementById('pub-elder').checked = !!pub.isElder; document.getElementById('pub-ms').checked = !!pub.isMS; document.getElementById('pub-rp').checked = !!pub.isRP; document.getElementById('pub-sp').checked = !!pub.isSP; document.getElementById('pub-sfts').checked = !!pub.isSFTS || !!pub.isSP; document.getElementById('pub-fm').checked = !!pub.isFM;
+                document.getElementById('pub-elder').checked = !!pub.isElder; document.getElementById('pub-ms').checked = !!pub.isMS; document.getElementById('pub-rp').checked = !!pub.isRP;document.getElementById('pub-infirm').checked=!!pub.isInfirm; document.getElementById('pub-sp').checked = !!pub.isSP; document.getElementById('pub-sfts').checked = !!pub.isSFTS || !!pub.isSP; document.getElementById('pub-fm').checked = !!pub.isFM;
                 document.getElementById('pub-phone').value = pub.phone || ''; document.getElementById('pub-group').value = pub.group || '';
                 document.getElementById('pub-address').value = pub.address || ''; document.getElementById('pub-emergency-name').value = pub.emergencyName || '';
                 document.getElementById('pub-emergency-relationship').value = pub.emergencyRelationship || ''; document.getElementById('pub-emergency-phone').value = pub.emergencyPhone || '';
@@ -5021,9 +5022,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             downloadContacts: () => {
                 const publishers=window.db.getPublishers(); if(!publishers.length){window.ui.showToast('No contacts to export.','error');return;}
-                const header=['Name','Phone','DOB','Baptized','Elder','MS','RP','Male','Female','Special Pioneer','SFTS','Field Missionary','Anointed','Other Sheep','Group','Address','Emergency Name','Emergency Relationship','Emergency Phone','Spiritual Status','Family Head ID','ID'];
+                const header=['Name','Phone','DOB','Baptized','Elder','MS','RP','Male','Female','Special Pioneer','SFTS','Field Missionary','Anointed','Other Sheep','Group','Address','Emergency Name','Emergency Relationship','Emergency Phone','Spiritual Status','Family Head ID','ID','Infirm'];
                 const bool=v=>v?'TRUE':'FALSE';
-                const rows=publishers.map(p=>[p.name,p.phone,p.dob,p.baptized,bool(p.isElder),bool(p.isMS),bool(p.isRP),bool(p.gender==='Male'),bool(p.gender==='Female'),bool(p.isSP),bool(p.isSFTS||p.isSP),bool(p.isFM),bool(p.hope==='Anointed'),bool(p.hope!=='Anointed'),p.group,p.address,p.emergencyName,p.emergencyRelationship,p.emergencyPhone,p.spiritualStatus,p.familyHeadId,p.id]);
+                const rows=publishers.map(p=>[p.name,p.phone,p.dob,p.baptized,bool(p.isElder),bool(p.isMS),bool(p.isRP),bool(p.gender==='Male'),bool(p.gender==='Female'),bool(p.isSP),bool(p.isSFTS||p.isSP),bool(p.isFM),bool(p.hope==='Anointed'),bool(p.hope!=='Anointed'),p.group,p.address,p.emergencyName,p.emergencyRelationship,p.emergencyPhone,p.spiritualStatus,p.familyHeadId,p.id,bool(p.isInfirm)]);
                 const csv=[header,...rows].map(row=>row.map(window.AppSupport.csvCell).join(',')).join('\r\n');
                 window.AppSupport.download(csv,`${window.currentCongId}_Publishers_Backup.csv`,'text/csv;charset=utf-8');
             },
@@ -5192,7 +5193,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const age=p.dob ? window.utils.calculateAge(p.dob)+' yrs':'-';
                     const bapText=!p.baptized?'<span class="text-rose-300 font-semibold border border-rose-500/40 bg-rose-900/50 px-1.5 py-0.5 rounded text-[10px] uppercase">UBP</span>':p.baptized;
                     const safeId=esc(p.id);
-                    renderedRows.push(`<tr class="hover:bg-white/5 transition-colors border-b border-white/5"><td class="px-4 sm:px-6 py-4"><div class="font-bold text-white text-base">${window.ui.escapeHtml(p.name)}</div><div class="text-[11px] text-teal-300 mt-1 uppercase tracking-widest font-semibold">${window.ui.escapeHtml(p.group||'UNASSIGNED')}</div></td><td class="px-4 sm:px-6 py-4"><div class="flex flex-wrap gap-2">${badges.join('')}</div></td><td class="px-4 sm:px-6 py-4 text-teal-100/90 font-mono text-sm">${age}<br><span class="text-[11px] font-sans text-teal-100/60 mt-1 block">${bapText}</span></td><td class="px-4 sm:px-6 py-4 text-right"><div class="flex justify-end gap-2"><button onclick="window.ui.downloadS21Publisher('${safeId}')" class="text-teal-300 hover:text-teal-200 transition-colors px-2 py-1.5 rounded-lg bg-teal-900/30 border border-teal-500/30 text-xs font-bold" title="Download S-21">⬇️ S-21</button><button onclick="window.ui.editPublisher('${safeId}')" class="text-cyan-400 hover:text-cyan-300 transition-colors p-1" title="Edit"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 4 19.5l1.037-4.25L16.862 3.487zM15.5 5l3.5 3.5" /></svg></button><button onclick="window.db.deletePublisher('${safeId}')" class="text-rose-400 hover:text-rose-300 transition-colors p-1" title="Delete"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div></td></tr>`);
+                    renderedRows.push(`<tr class="hover:bg-white/5 transition-colors border-b border-white/5"><td class="px-4 sm:px-6 py-4"><div class="font-bold text-white text-base">${window.ui.escapeHtml(p.name)}</div><div class="text-[11px] text-teal-300 mt-1 uppercase tracking-widest font-semibold">${window.ui.escapeHtml(p.group||'UNASSIGNED')}</div></td><td class="px-4 sm:px-6 py-4"><div class="flex flex-wrap gap-2">${badges.join('')}</div></td><td class="px-4 sm:px-6 py-4 text-teal-100/90 font-mono text-sm">${age}<br><span class="text-[11px] font-sans text-teal-100/60 mt-1 block">${bapText}</span></td><td class="px-4 sm:px-6 py-4 text-right"><div class="flex justify-end gap-2"><button onclick="window.ui.downloadS21Publisher('${safeId}')" class="text-teal-300 hover:text-teal-200 transition-colors px-2 py-1.5 rounded-lg bg-teal-900/30 border border-teal-500/30 text-xs font-bold" title="Download S-21">⬇️ S-21</button><button onclick="window.ui.editPublisher('${safeId}')" class="text-cyan-400 hover:text-cyan-300 transition-colors p-1" title="Edit"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 4 19.5l1.037-4.25L16.862 3.487zM15.5 5l3.5 3.5" /></svg></button>${window.ui.canManageAccess()?`<details class="ca-publisher-options"><summary>More options</summary><button type="button" onclick="window.CATransfer.open('${safeId}')" class="ca-secondary-action">Prepare transfer</button></details>`:''}<button onclick="window.db.deletePublisher('${safeId}')" class="text-rose-400 hover:text-rose-300 transition-colors p-1" title="Delete"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div></td></tr>`);
                 });
                 window.AppSupport.renderRows(tbody,renderedRows,{key:`${filterType}_${filterValue}_${publisherSearch}_${serviceYear}_${month}`,label:'publishers'});
             },
@@ -5371,7 +5372,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         let h = parseFloat(r.hours || 0); let s = parseInt(r.studies || 0);
                         let isShared = r.sharedInMinistry || h > 0 || s > 0;
                         if(isShared) {
-                            const trHtml = `<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${window.ui.escapeHtml(p.name)}</td><td class="px-4 py-2 text-center">${h||'-'}</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`;
+                            const trHtml = `<tr class="border-b border-white/10 hover:bg-white/5"><td class="px-4 py-2">${window.ui.escapeHtml(p.name)}</td><td class="px-4 py-2 text-center ${p.isRP&&!p.isInfirm&&h<50?'ca-hours-attention':''}">${h||'-'}${p.isRP&&!p.isInfirm&&h<50?'<small class="ca-hours-note">Under 50 hours</small>':''}</td><td class="px-4 py-2 text-center">${s||'-'}</td></tr>`;
                             if (p.isRP || p.isSP || p.isFM) {
                                 rps.push(trHtml); 
                             } else if (r.isAP) {
