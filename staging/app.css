@@ -509,3 +509,5 @@ body.ca-large-text #mobile-nav button>span:last-child{font-size:1.25rem}#mobile-
 #ca-midweek-root #assignNone{width:100%}
 @media(max-width:768px){#ca-midweek-root .candidate{grid-template-columns:minmax(0,1fr);gap:8px}#ca-midweek-root .candidate-avatar{display:none}#ca-midweek-root .candidate>div{min-width:0}#ca-midweek-root .candidate-name{white-space:normal;overflow-wrap:break-word}#ca-midweek-root .candidate-right{text-align:left}}
 body.ca-large-text #ca-midweek-root :is(.candidate-name,.sheet-title,.sheet-sub,.sheet-kicker){font-size:1.25rem;line-height:1.5}
+#ca-midweek-root .candidate-tag{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+#ca-midweek-root .sheet-kicker{color:var(--muted)}
