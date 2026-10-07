@@ -1,5 +1,5 @@
 {
-  "preparedAt": "2026-10-07T05:41:47.676Z",
+  "preparedAt": "2026-10-07T05:45:55.335Z",
   "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "deploymentVerified": false,
   "oauthVerified": false,
@@ -22,7 +22,7 @@
     "app-push.js": "99163462f0ea13b13caa57a5e466283619f60b35ae29a00c85de642b7c5b497d",
     "app-home.js": "4027649145f50632dd646b8aa7e8cc6cab16f778b26e11c565a93fc3beecf982",
     "app-demo.js": "d277a8cd7bc5160800d9639ead39558bcd7812c0e7a20234dd17cb3e6162342e",
-    "app-departments.js": "9f9b35515daa3a5a0029ec93b7138b721bd27fdf5d8cdeb979f6d20cebac6056",
+    "app-departments.js": "773939bc9241c9c03187a641fb1b8cb177b4e2f6a019f9791a55084363160dcd",
     "app-imports.js": "817df658417f79b8d3b3260cb567e89b660af17dde9509da0b759f69347750fa",
     "service-worker.js": "ec293fa590379a3438cdc51cf2989d560ffcf7985e95732582497e0fd5e97cc8",
     "manifest.webmanifest": "3c4b56dca3e5534edae54aa221068be14e7ca11e3bdae885d860315c86d599ad",

@@ -5,7 +5,7 @@ const demo=()=>window.CADemo?.active===true;
 const admin=()=>window.ui.canManageAccess();
 function allowed(dept){const roles=window.ui.getRoleGrants();return admin()||dept==='attendant'&&roles.some(r=>['attendance','attendant'].includes(r))||dept==='av'&&roles.includes('av')||dept==='cleaning'&&roles.includes('oclm');}
 async function rpc(name,args){const {data,error}=await client.rpc(name,{p_cong_id:window.currentCongId,...args});if(error)throw Object.assign(Error(error.message||'Could not connect. Try again.'),{code:error.code});return data;}
-function currentWeek(date=new Date()){const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const year=d.getUTCFullYear();return year+'-W'+String(Math.ceil((((d-new Date(Date.UTC(year,0,1)))/86400000)+1)/7)).padStart(2,'0');}
+function currentWeek(date){const today=new Date(),d=date?new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate())):new Date(Date.UTC(today.getFullYear(),today.getMonth(),today.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const year=d.getUTCFullYear();return year+'-W'+String(Math.ceil((((d-new Date(Date.UTC(year,0,1)))/86400000)+1)/7)).padStart(2,'0');}
 function monday(week){const [y,w]=week.split('-W').map(Number),d=new Date(Date.UTC(y,0,4));d.setUTCDate(d.getUTCDate()-(d.getUTCDay()||7)+1+(w-1)*7);return d;}
 function weekLabel(week){return 'Week of '+monday(week).toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});}
 function status(dept,text,error=false){const s=el('department-status-'+dept);if(s){s.textContent=text;s.setAttribute('role',error?'alert':'status');}}
