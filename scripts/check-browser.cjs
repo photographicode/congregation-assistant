@@ -129,9 +129,7 @@ async function run(profile) {
         assert.equal(await page.locator('.row-title-input').first().inputValue(),'Unsaved browser title');
         await page.evaluate(()=>window.__restoreScheduleStorage());await page.locator('#retrySchedulerSave').click();
         assert.equal(await page.locator('#schedulerSaveError').isVisible(),false);
-        await page.locator('.mws-week-browser summary').click();
-        assert.equal(await page.locator('.week-chip').count(),3,'The week browser repeats the selected week');
-        await page.locator('.mws-week-browser summary').click();
+        assert(await page.locator('#mwsWeekSelect').isVisible(),'Choose week must be obvious');assert.equal(await page.locator('.mws-week-browser').isVisible(),false,'Duplicate week browser must be hidden');const weekChoices=await page.locator('#mwsWeekSelect option').evaluateAll(options=>options.map(o=>o.value));assert.equal(new Set(weekChoices).size,weekChoices.length,'Week selector must not repeat weeks');
         if(!profile.mobile)await page.screenshot({path:path.join(output,`${profile.name}-integrated-scheduler.png`),fullPage:false});
         if(profile.mobile) {
             await page.waitForFunction(() => !document.getElementById('toast').classList.contains('show'));
@@ -196,14 +194,11 @@ async function run(profile) {
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
         await nav('oclm');
-        await page.locator('#mws-tab-schedule').click();await page.locator('#meetingDetailsSettings summary').click();await page.locator('#meetingStartTime').fill('19:00');await page.locator('#meetingReading').fill('Jeremiah 40–41');await page.locator('#meetingOpeningSong').fill('10');await page.locator('#meetingMiddleSong').fill('20');await page.locator('#meetingClosingSong').fill('30');await page.locator('#meetingAuxiliary').check();await page.getByRole('button',{name:'Save meeting details',exact:true}).click();await page.locator('#additionalDutiesSettings > summary').click();await page.locator('#additionalDutiesSettings details > summary').click();await page.locator('#additionalDutySection').fill('Other responsibility');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
-        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.section,'Other responsibility');assert.equal(duty.slots,2);
-        await page.evaluate(()=>window.openPersonModal());
-        await page.locator('#personName').fill('Sample Schedule Person');
-        await page.locator('details:has(#roleChecks) summary').click();
-        await page.locator('#roleChecks input[value="Chairman"]').check();await page.locator('#roleChecks input[value="'+duty.id+'"]').check();
-        await page.locator('#personForm button[type="submit"]').click();
-        await page.evaluate(()=>{const key=Object.keys(localStorage).find(k=>k.endsWith('_jw_scheduler_personnel')&&k.includes('qa-congregation'));const person=JSON.parse(localStorage.getItem(key)).find(p=>p.name==='Sample Schedule Person');window.setAssignment('Chairman',person.id);window.setPartTitle('Chairman','First published title');window.setAssignment(window.MidweekScheduler.getPayload().additionalDuties[0].id+'_1',person.id);});
+        await page.locator('#mws-tab-schedule').click();await page.locator('#meetingDetailsSettings summary').click();await page.locator('#meetingStartTime').fill('19:00');await page.locator('#meetingOpeningSong').fill('10');await page.locator('#meetingMiddleSong').fill('20');await page.locator('#meetingClosingSong').fill('30');await page.locator('#meetingAuxiliary').check();await page.getByRole('button',{name:'Save meeting details',exact:true}).click();
+        assert.equal(await page.locator('#reviewedProgramFile,#meetingReading,#meetingOpeningComments,#meetingClosingComments,#additionalDutiesSettings').count(),0,'OCLM must omit imports, manual comments and department setup');
+        const person=await page.evaluate(()=>window.MidweekScheduler.getDraft().personnel.find(p=>p.publisherId&&!p.archived));assert(person,'Publisher roster must be available');
+        await page.evaluate(id=>window.editPerson(id),person.id);assert(await page.locator('#personAppointment').isDisabled(),'Appointment must come from publisher records');await page.locator('details:has(#roleChecks) summary').click();await page.locator('#roleChecks input[value="Chairman"]').check();await page.locator('#personForm button[type="submit"]').click();
+        await page.evaluate(id=>{window.setAssignment('Chairman',id);window.setPartTitle('Chairman','First published title');},person.id);
         await page.locator('#mws-tab-preview').click();await page.locator('#publishWeekBtn').click();
         await page.waitForFunction(()=>document.getElementById('liveLinkInput').value.includes('token=qa-live-token'));
         assert.equal(await page.locator('#publicationState').innerText(),'Published');
@@ -221,7 +216,7 @@ async function run(profile) {
         await publicPage.goto(sharedURL);await publicPage.waitForFunction(()=>document.getElementById('liveSections').textContent.includes('First published title'));
         assert.equal(await publicPage.locator('#liveView').isVisible(),true,'Published schedule is hidden');
         assert.equal(await publicPage.locator('#tab-oclm').evaluate(el=>getComputedStyle(el).opacity),'1','Published schedule is transparent');
-        assert.match(await publicPage.locator('#liveSections').innerText(),/19:00/);assert.match(await publicPage.locator('#liveSections').innerText(),/10 \/ 20 \/ 30/);assert.match(await publicPage.locator('#liveSections').innerText(),/Microphones 1/);assert.match(await publicPage.locator('#liveSections').innerText(),/Sample Schedule Person/);
+        assert.match(await publicPage.locator('#liveSections').innerText(),/19:00/);assert.match(await publicPage.locator('#liveSections').innerText(),/10 \/ 20 \/ 30/);assert((await publicPage.locator('#liveSections').innerText()).includes(person.name));
         assert.equal(await publicPage.evaluate(()=>sessionStorage.getItem('fs_auth')),null,'Public URL needs a private session');
         assert.equal(await publicPage.evaluate(()=>window.__qaBackend.reads.length),0,'Public schedule loads private tables');
         assert.equal(await publicPage.locator('#auth-screen').isVisible(),false);assert.equal(await publicPage.locator('#mobile-nav').isVisible(),false);

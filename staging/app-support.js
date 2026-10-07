@@ -121,7 +121,15 @@
         const previous = focusHistory.get(dialog);
         focusHistory.delete(dialog);
         reconcileDialogs();
-        if (!focusHistory.size && previous?.isConnected && previous.getClientRects().length && !previous.closest('.hidden')) previous.focus();
+        if (!focusHistory.size && previous) {
+            let target=previous;
+            if(!target.isConnected){
+                target=previous.id?document.getElementById(previous.id):null;
+                const action=previous.getAttribute?.('onclick');
+                if(!target&&action)target=[...document.querySelectorAll('button,a,[role=button]')].find(el=>el.getAttribute('onclick')===action&&el.getClientRects().length&&!el.closest('.hidden'));
+            }
+            if(target?.isConnected&&target.getClientRects().length&&!target.closest('.hidden'))target.focus();
+        }
     }
     function visibleDialogs() {
         return [...document.querySelectorAll('[role="dialog"], [id^="modal-"].fixed, #sys-prompt-overlay')]

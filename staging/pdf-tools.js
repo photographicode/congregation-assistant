@@ -36,17 +36,17 @@
         return window.PDFLib;
     }
     const fontBytes=new Map();
-    async function fonts(pdf,values){
+    async function fonts(pdf,values,{precise=false}={}){
         const {StandardFonts}=requireLibrary(),all=values.join(' '),latin=await pdf.embedFont(StandardFonts.Helvetica);
-        try{text(all,latin);return {font:latin,bold:await pdf.embedFont(StandardFonts.HelveticaBold)};}catch{}
+        if(!precise)try{text(all,latin);return {font:latin,bold:await pdf.embedFont(StandardFonts.HelveticaBold)};}catch{}
         const ranges=[['Tamil',/\p{Script=Tamil}/u],['Devanagari',/\p{Script=Devanagari}/u],['Malayalam',/\p{Script=Malayalam}/u]],scripts=ranges.filter(([,re])=>re.test(all));
         if(scripts.length>1)throw Error('This PDF combines different Indian scripts. Export each language separately; mixed-script shaping needs a further layout review.');
         if(scripts.length)throw Error('A verified Unicode font layout for Indian names alongside English labels is not available yet. No PDF was created. Contact support before exporting these records.');
         if(!window.fontkit)throw Error('The bundled Unicode font support could not load. Reload before exporting.');pdf.registerFontkit(window.fontkit);const family='NotoSans'+(scripts[0]?.[0]||'');
-        async function embed(weight){const path='assets/fonts/'+family+'-'+weight+'.ttf';if(!fontBytes.has(path)){const response=await fetch(path);if(!response.ok)throw Error('The required Unicode font could not load. Retry when connected.');fontBytes.set(path,new Uint8Array(await response.arrayBuffer()));}const font=await pdf.embedFont(fontBytes.get(path),{subset:true});font.caCharacters=new Set(font.getCharacterSet());text(all,font);return font;}
+        async function embed(weight){const path='assets/fonts/'+family+'-'+weight+'.ttf';if(!fontBytes.has(path)){const response=await fetch(path);if(!response.ok)throw Error('The required Unicode font could not load. Retry when connected.');fontBytes.set(path,new Uint8Array(await response.arrayBuffer()));}const font=await pdf.embedFont(fontBytes.get(path),{subset:true});font.caCharacters=new Set(font.getCharacterSet());const parsed=window.fontkit.create(fontBytes.get(path));font.caInkBounds=(value,size)=>{const run=parsed.layout(value);let pen=0;const bounds=run.glyphs.map(g=>{const b={minX:pen+g.bbox.minX,maxX:pen+g.bbox.maxX,minY:g.bbox.minY,maxY:g.bbox.maxY};pen+=g.advanceWidth;return b;});const unit=size/parsed.unitsPerEm;return {minX:Math.min(...bounds.map(b=>b.minX))*unit,maxX:Math.max(...bounds.map(b=>b.maxX))*unit,minY:Math.min(...bounds.map(b=>b.minY))*unit,maxY:Math.max(...bounds.map(b=>b.maxY))*unit};};text(all,font);return font;}
         return {font:await embed('Regular'),bold:await embed('Bold')};
     }
-    function baseline(font,size,bottom,top){const ascent=font.heightAtSize(size,{descender:false}),descent=ascent-font.heightAtSize(size,{descender:true});return (bottom+top)/2-(ascent+descent)/2;}
+    function baseline(font,size,bottom,top,value){const ascent=font.heightAtSize(size,{descender:false}),descent=ascent-font.heightAtSize(size,{descender:true});if(value!==undefined&&/^[+−-]?\d+(?:[.,]\d+)*(?:[–-]\d+)?$/.test(String(value))){const bounds=font.caInkBounds?.(String(value),size);return (bottom+top)/2-(bounds?(bounds.minY+bounds.maxY)/2:ascent/2);}return (bottom+top)/2-(ascent+descent)/2;}
     function field(page,value,rect,font,{size=9,minSize=7,align='center',color}={}){const inset=rect.padding??2,item=fit(value,font,rect.width-2*inset,size,minSize),x=align==='left'?rect.x+inset:align==='right'?rect.x+rect.width-inset-item.width:rect.x+(rect.width-item.width)/2,y=baseline(font,item.size,rect.y+inset,rect.y+rect.height-inset);page.drawText(item.text,{x,y,font,size:item.size,color:color||requireLibrary().rgb(0,0,0)});return {...item,x,y};}
     function checkbox(page,rect,state){if(state===false||state===null||state===undefined)return;if(state!==true)throw Error('Check the checkbox value before exporting.');const size=Math.min(rect.width,rect.height);if(size<4)throw Error('Checkbox is too small.');tick(page,rect.x+rect.width/2,rect.y+rect.height/2,Math.min(1,size/10));}
     async function emergency(families, congregation) {
@@ -129,7 +129,7 @@
     function tick(page,cx,cy,scale=1) {
         const {rgb}=requireLibrary();
         // Filled, curved black check; vector geometry avoids missing Unicode glyphs.
-        page.drawSvgPath('M -3 0 C -2.2 0.1 -1.5 0.9 -0.6 2.1 C 0.8 0 2.7 -2.4 4.1 -3.3 C 4.4 -3.5 4.8 -3.3 4.6 -2.8 C 3 -0.7 1.6 1.6 0.1 3.3 C -0.2 3.7 -0.8 3.8 -1.2 3.3 C -2.2 2 -2.9 1 -3.5 0.4 C -3.8 0.1 -3.5 -0.2 -3 0 Z',{x:cx,y:cy,scale,color:rgb(0,0,0)});
+        page.drawSvgPath('M -3.95 -0.55 C -4.3 -0.25 -4.35 0.2 -3.95 0.65 L -1.35 3.5 C -0.95 3.95 -0.4 3.9 -0.05 3.4 L 4.25 -3.1 C 4.5 -3.55 4.15 -3.85 3.8 -3.5 L -0.9 1.55 L -3.35 -0.55 C -3.55 -0.75 -3.8 -0.7 -3.95 -0.55 Z',{x:cx,y:cy,scale,color:rgb(0,0,0)});
     }
     async function makeDocument(title,sections) {
         const {PDFDocument,rgb}=requireLibrary(),pdf=await PDFDocument.create(),{font,bold}=await fonts(pdf,[title,...sections.flatMap(s=>[s.heading,...s.lines])]),ink=rgb(0,0,0);let page,y;

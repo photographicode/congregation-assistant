@@ -37,9 +37,9 @@ body:is([data-theme="light"],[data-theme="scheduler"]) :is([class*="text-cyan-"]
 body:is([data-theme="light"],[data-theme="scheduler"]) [class*="text-rose-"] { color: #9f1239 !important; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(#mobile-top-header,#mobile-nav) { background: #fff !important; border-color: #cbd5e1; color: #172033; }
 body:is([data-theme="light"],[data-theme="scheduler"]) :is(.oclm-search-box input,.oclm-rail-search input,.oclm-big-select) { color: #172033 !important; background: #fff !important; }
-/* Match the fixed desktop sidebar; hover must not cover the workspace. */
-@media (min-width: 641px) {
-    .main-content, #app-header:hover ~ .main-content, body.sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
+/* Match the fixed desktop sidebar; tablet navigation has no sidebar offset. */
+@media (min-width: 1024px) {
+    body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode) #app-header:hover ~ .main-content, body:not(.public-mode):not(.mws-public-mode):not(.overseer-mode).sidebar-expanded .main-content { margin-left: var(--ca-sidebar-fixed) !important; }
     #app-header:focus-within { width: var(--ca-sidebar-fixed) !important; }
 }
 body button.bg-gradient-to-r.text-slate-900 { color: #0f172a !important; }
@@ -439,7 +439,7 @@ body.ca-large-text{font-size:20px;line-height:1.6}
 body.ca-large-text :is(p,li,label,input,select,textarea,button,.text-xs,.text-sm,.meta,.tag,.candidate-tag,.person-sub,.role-tag){font-size:1.25rem!important;line-height:1.55!important}
 body.ca-large-text :is(button,input,select,textarea){min-height:48px}
 body.ca-large-text :is(.row-right,.ca-reminder-actions,.settings-theme-buttons){flex-wrap:wrap}
-body.ca-large-text #ca-midweek-root :is(.assign-row,.row-main,.row-right){min-width:0}
+body.ca-large-text #ca-midweek-root :is(.assign-row,.row-main,.row-right){min-width:0;transition:none!important}
 body.ca-large-text #ca-midweek-root .row-right{align-items:flex-start}
 body.ca-large-text #ca-midweek-root .assign-row{grid-template-columns:24px minmax(0,1fr)}
 body.ca-large-text #ca-midweek-root .row-right{grid-column:2}
@@ -474,7 +474,7 @@ body.mws-public-mode #ca-midweek-root .live-search::placeholder{color:#50615b;op
 #ca-midweek-root .row-right{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;width:100%}
 #ca-midweek-root .assign-row{grid-template-columns:28px minmax(0,1fr) minmax(220px,34%)}
 #ca-midweek-root .assignee{width:100%;min-width:0;max-width:none;min-height:60px;height:auto;flex-shrink:0}
-#ca-midweek-root .assignee-copy{display:block;flex:1;min-width:0}
+#ca-midweek-root .assignee-copy{display:block;flex:1;min-width:0;transition:none!important}
 #ca-midweek-root .assignee-label{display:block;font-size:.75rem;letter-spacing:0;text-transform:none;line-height:1.5}
 #ca-midweek-root .assignee-name{font-size:1rem;line-height:1.5;word-break:normal;overflow-wrap:break-word;white-space:normal;overflow:visible}
 #ca-midweek-root .assignee-arrow{flex:none}
@@ -519,7 +519,7 @@ body.ca-large-text #ca-midweek-root :is(.candidate-name,.sheet-title,.sheet-sub,
 .ca-dept-tabs{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}.ca-dept-tabs button{font:inherit;min-height:3rem;padding:.65rem 1rem;border:1px solid #738a94;border-radius:.8rem;background:#122e37!important;color:#f8fafc!important;white-space:normal;line-height:1.5}
 .ca-dept-tabs button[aria-pressed=true],.ca-dept-tabs button[aria-current=page]{background:#d5edf0!important;color:#08252e!important;font-weight:700}
 .ca-dept-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:1rem;margin:1rem 0}
-.ca-dept-cards article,.ca-dept-people article,.ca-dept-setup,.ca-import-review{background:#102c35;border:1px solid #738a94;border-radius:1rem;padding:1rem;min-width:0}
+.ca-dept-cards article,.ca-dept-people article,.ca-dept-setup,.ca-import-review{background:#102c35;border:1px solid #738a94;border-radius:1rem;padding:1rem;min-width:0;transition:none!important}
 .ca-dept-people article,.ca-dept-setup article{display:flex;flex-direction:column;gap:.5rem;margin:.8rem 0}.ca-dept-people strong{overflow-wrap:break-word}.ca-dept-people article>div,.ca-import-review>div{display:flex;flex-wrap:wrap;gap:.6rem}
 .ca-department .ca-primary-action,.ca-import-review .ca-primary-action{background:#d5edf0;color:#08252e;font-weight:700;border-color:#d5edf0}.ca-dept-setup{margin:1.5rem 0}.ca-dept-setup summary{font-weight:700;cursor:pointer;min-height:3rem}.ca-dept-request{margin:1rem 0}.ca-dept-week{max-width:30rem}
 .ca-dept-hub-button{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;width:100%;margin:1rem 0;text-align:left}.ca-department [role=alert]{border-left:4px solid #facc15;padding:.7rem 1rem;background:#283021;color:#fef9c3}
@@ -558,8 +558,39 @@ body.mws-public-mode #ca-midweek-root .live-view :is(div,p,span,label,strong,h1,
 body.mws-public-mode #ca-midweek-root .live-top{align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand{min-width:0;align-items:flex-start}
 body.mws-public-mode #ca-midweek-root .live-brand-mark{flex:none}
-body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0}
+body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0;transition:none!important}
 /* WebKit needs shrinking on flex children as well as their containers at large font sizes. */
 body.mws-public-mode #ca-midweek-root :is(.live-brand,.live-brand>div:not(.live-brand-mark),.live-info,.paper-head>div,.s140-details>span,.s140-opening>span,.s140-closing>span){min-width:0;max-width:100%;overflow-wrap:break-word}
 body.mws-public-mode #ca-midweek-root .live-brand>div:not(.live-brand-mark){flex:1}
 body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){box-sizing:border-box;display:block;width:100%}
+
+/* Public links have no desktop sidebar, including while WebKit retains hover state. */
+body:is(.public-mode,.mws-public-mode,.overseer-mode) .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode) #app-header:hover ~ .main-content,body:is(.public-mode,.mws-public-mode,.overseer-mode).sidebar-expanded .main-content{margin-left:0!important;width:100%!important;max-width:100%!important;min-width:0;transition:none!important}
+
+/* A meeting section is a single accessible review group; names retain full width. */
+#ca-midweek-root .ca-section-toggle{display:flex;align-items:center;gap:12px;justify-content:space-between;width:100%;padding:16px;text-align:left;min-height:56px;color:inherit;background:transparent;border:0;cursor:pointer;flex-wrap:wrap}
+#ca-midweek-root .ca-section-toggle .section-title-wrap{flex:1 1 180px;min-width:0}
+#ca-midweek-root .ca-section-toggle .section-name{white-space:normal;overflow-wrap:normal}
+#ca-midweek-root .ca-section-toggle[aria-expanded="false"] .ca-section-arrow{transform:rotate(-90deg)}
+#ca-midweek-root .rows[hidden]{display:none!important}
+.ca-install-guide ol{list-style:decimal;margin:16px 0;padding-left:24px}
+.ca-install-guide li{margin:12px 0;line-height:1.6}
+.ca-install-nudge{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px;margin-bottom:20px;border:1px solid #6b9590;border-radius:16px;background:#123f39;color:#fff}
+.ca-install-nudge>div{flex:1 1 220px;min-width:0}.ca-install-nudge p{margin-top:8px;line-height:1.6}
+.ca-install-nudge button{padding:12px 16px;border-radius:10px;white-space:normal;min-height:48px;background:#def3ec;color:#123f39}.ca-install-nudge [data-dismiss]{background:transparent;color:#fff;border:1px solid #6b9590}
+
+#ca-midweek-root .ca-part-timing{flex-basis:100%;font-size:14px}#ca-midweek-root .ca-part-timing label{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}#ca-midweek-root .ca-part-timing input{max-width:100px;padding:10px;border:1px solid currentColor;border-radius:8px;background:transparent;color:inherit}
+
+.ca-away-dates{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:12px 0}.ca-away-dates label{display:flex;flex-direction:column;gap:6px;flex:1 1 150px;min-width:0}.ca-away-dates input{width:100%;max-width:100%;min-height:48px;background:var(--surface);color:var(--text);padding:10px;border:1px solid var(--line);border-radius:8px}
+#ca-install-nudge button[data-install]{background:#def3ec!important;color:#123f39!important}#ca-install-nudge button[data-dismiss]{background:#123f39!important;color:#fff!important}#ca-install-nudge strong,#ca-install-nudge p{color:#fff!important}
+@media(min-width:1024px){#ca-install-nudge{display:none}}
+
+#ca-midweek-root [hidden]{display:none!important}#ca-midweek-root .ca-week-select{max-width:100%;width:100%;min-height:48px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);background:var(--surface);font-size:16px;white-space:normal}#ca-midweek-root .week-main{min-width:0;width:min(100%,360px)}
+body.ca-large-text #ca-midweek-root .section-name{font-size:1.25rem!important;line-height:1.55}
+/* The only visible week control occupies the whole header column on phones. */
+#ca-midweek-root .week-nav{display:block!important;flex:1 1 280px;min-width:0;width:100%}#ca-midweek-root .week-main{width:100%!important;max-width:360px;text-align:left}#ca-midweek-root .week-caption{display:block;white-space:normal;margin-bottom:8px}
+@media(max-width:1023px){#ca-midweek-root .week-main{max-width:none}}
+/* Confirmation text and buttons must reflow in WebKit at enlarged text sizes. */
+#sys-prompt-overlay>div{min-width:0;box-sizing:border-box}#sys-prompt-overlay :is(h2,p){overflow-wrap:anywhere}#sys-prompt-form>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#sys-prompt-form button{min-width:0;max-width:100%;overflow-wrap:anywhere}
+@media(max-width:640px){#sys-prompt-form>div{grid-template-columns:minmax(0,1fr)}}
+#ca-midweek-root .topbar-inner{flex-wrap:wrap;align-items:center}#ca-midweek-root .week-nav{flex:1 0 280px;min-width:min(100%,280px)}#ca-midweek-root .top-actions{max-width:100%;min-width:0;flex-wrap:wrap}
