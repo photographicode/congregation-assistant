@@ -2,6 +2,8 @@
 
 Status: local changes and draft pull requests only. Not merged, deployed, or applied to a live database. No real records, paid resources, sender activation, live key changes, or outgoing messages were used. The user’s uploaded master prompt explicitly changes the earlier release instruction to draft-only work and permits coherent packages with a durable handoff for the larger backlog.
 
+Review links: [App draft #27](https://github.com/photographicode/congregation-assistant/pull/27) · [Website draft #12](https://github.com/photographicode/Congregation-Assistant_Public/pull/12). Website CI passed. Initial app database/cloud jobs and the targeted Chromium/WebKit department/transfer suites passed; the broader browser job found an obsolete OCLM/Cleaning permission expectation, corrected in the follow-up test. The full current-head CI result must still be checked before release.
+
 ## Baseline
 
 App main: f9486a5f45cf39c107f7bd7d666bb51c592ca1f1.
@@ -42,7 +44,7 @@ No complete WebKit run, physical printer test, exact Realme 12 maximum display-s
 4. **Authentication/security expansion:** staged TOTP entitlement/setup/recovery, a complete fresh RLS/RPC/XSS/CSV/public-token/dependency audit and wider permission/recovery checks remain. Existing server guards are retained; this package does not certify the whole security backlog.
 5. **Notification abstraction:** provider-independent adapters, delivery/bounce/complaint callbacks, suppression and replay-safe status reconciliation are still pending. Existing private queues, leases, retries and operator health display are retained. Queued, provider accepted and delivered must stay distinct. Brevo/domain/VAPID setup is not complete; no message has been sent or actual delivery tested.
 6. **Website/business:** do not publish previously rejected Privacy/Terms wording. Contact is congregationassistant0@gmail.com. Retention/refund decisions remain unspecified. Reconcile final screenshots/help after the full department draft model. Do not add checkout, paid hosting, domain purchase or unsupported security/delivery claims.
-7. **Live operations:** inspect current deployment/run metadata and fresh security advisors before an eventual release plan. Rehearse full synthetic restore and a reviewed function rollback that preserves added records, tokens and history. Apply no rollback that deletes new department data. The new form requires its server RPC before the website can be released.
+7. **Live operations:** recheck deployment metadata and security advisors before an eventual release plan. A read-only advisor check on 7 October reported deny-all private tables, callable privileged entry points, and disabled leaked-password protection; see review-evidence/security-advisors-2026-10-07.md. These notices need contextual review, not permissive policies or blind API revocation. Rehearse full synthetic restore and a reviewed function rollback that preserves added records, tokens and history. Apply no rollback that deletes new department data. The new form requires its server RPC before the website can be released.
 
 ## Exact next action
 

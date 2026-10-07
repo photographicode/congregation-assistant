@@ -27,6 +27,7 @@ async function run(profile) {
     const errors = [], blockedProduction = [], timings = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { const rejectedOwner=message.location().url.includes('/functions/v1/owner-password-session')&&message.text().includes('401');if(message.type()==='error'&&!rejectedOwner&&!message.text().includes('Acceptance test: save rejected'))errors.push(message.text()); });
+    if(process.env.CA_LOCAL_CHROMIUM_ONLY) await context.route('**/fonts.googleapis.com/**',route=>route.fulfill({contentType:'text/css',body:'/* Explicit local fallback-font scenario; production CDN font checks remain in CI. */'}));
     await context.route('**/*.supabase.co/**', async route => { blockedProduction.push(route.request().url()); await route.abort('blockedbyclient'); });
     await context.route('**/npm/@supabase/supabase-js@2', route => route.fulfill({ contentType: 'application/javascript', body: '/* Isolated acceptance backend installed before boot. */' }));
     await context.route('**/pdf-lib.min.js', route => route.fulfill({ contentType: 'application/javascript', body: fs.readFileSync(require.resolve('pdf-lib/dist/pdf-lib.min.js'), 'utf8') }));
@@ -267,7 +268,7 @@ async function run(profile) {
             if(role==='oclm'){
                 const reads=await page.evaluate(()=>window.__qaBackend.reads);assert(!reads.includes('reports'),'OCLM fetched reports');
                 await page.evaluate(()=>{sessionStorage.setItem('fs_roles','["admin"]');sessionStorage.setItem('fs_role','admin');window.ui.applyRoleNavigation();window.ui.switchTab('analytics');});
-                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm','cleaning','duties']);
+                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm']);
                 assert.equal(await page.locator('#tab-oclm').isVisible(),true);assert.equal(await page.locator('#tab-analytics').isVisible(),false);
             }
             if(!profile.mobile){
@@ -313,6 +314,11 @@ async function run(profile) {
             const before=await page.evaluate(()=>window.ui.currentTab);await page.evaluate(()=>window.ui.switchTab('emergency',false,'field'));assert.equal(await page.evaluate(()=>window.ui.currentTab),before,'Navigation context bypassed role');
             assert.equal(await page.locator('#auth-screen').isVisible(),false);
         }
+        await page.evaluate(async()=>{window.__qaBackend.reads=[];window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'cleaning',active:true}];await window.auth.resumeGoogleRole();});
+        assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['cleaning','duties']);
+        assert(await page.locator('#tab-cleaning').isVisible());
+        assert(!(await page.evaluate(()=>window.__qaBackend.reads)).includes('reports'),'Cleaning fetched report records');
+        assert(!(await page.evaluate(()=>window.__qaBackend.reads)).includes('publishers'),'Cleaning fetched private publisher table');
         await page.evaluate(async()=>{window.__qaBackend.tables.congregation_access=[{cong_id:'qa-congregation',email:'qa@example.com',role:'attendance',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'field_service',active:true},{cong_id:'qa-congregation',email:'qa@example.com',role:'oclm',active:true,is_assistant:true}];await window.auth.resumeGoogleRole();});
         const grants=await page.evaluate(()=>window.ui.getAllowedTabs());assert(grants.includes('attendance')&&grants.includes('groups')&&grants.includes('oclm'));assert.equal(await page.evaluate(()=>window.ui.canManageAccess()),false);assert.deepEqual(await page.evaluate(()=>window.auth.verifiedAssistants),['oclm']);
         await page.evaluate(async()=>{
@@ -376,6 +382,6 @@ async function run(profile) {
             { name: 'desktop-chromium', engine: chromium, viewport: { width: 1440, height: 900 }, mobile: false },
             { name: 'mobile-chromium', engine: chromium, viewport: { width: 390, height: 844 }, mobile: true },
             { name: 'mobile-webkit', engine: webkit, viewport: { width: 375, height: 812 }, mobile: true }
-        ]) await run(profile);
+        ].filter(profile=>!process.env.CA_LOCAL_CHROMIUM_ONLY||profile.engine===chromium)) await run(profile);
     } finally { if (!publishedURL) server.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
