@@ -11,6 +11,7 @@
 - Department setup, assignments, qualification checkboxes and empty department cards are removed from the private OCLM editor and review. Independently published departments remain on the public notice board.
 - Linked publishers cannot be deleted through the secondary meeting roster. Archiving a legacy unlinked roster entry preserves every historical assignment. Publisher database deletion still has its named confirmation and history protection.
 - Browser-specific installation guidance has numbered steps. A dismissible Home reminder appears on mobile after login; installed/public views are excluded. Notification settings remain accessible directly from reminder settings and do not claim remote delivery.
+- Keyboard focus returns to the same assignment after choosing a person, even when the row is redrawn. Destructive confirmation buttons use separate rows on small screens, including WebKit with doubled text.
 - Tablet shell spacing was incorrectly treated as a desktop sidebar offset (250px). Desktop spacing now starts at 1024px; public layouts retain zero sidebar offset.
 - Website capture scripts hide only the demo-session banner. Real demo sessions retain it. Fictional-data captions and charcoal mockup frames remain.
 
