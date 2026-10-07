@@ -469,3 +469,30 @@ body.mws-public-mode #ca-midweek-root .live-search::placeholder{color:#50615b;op
 #tab-superadmin .ca-admin-stat,#tab-superadmin .ca-admin-offer{background:linear-gradient(145deg,#223040,#17212f);border-color:#798b9a66;box-shadow:0 8px 22px #0002;color:#f3f5f7}
 #tab-superadmin .ca-owner-primary{min-height:52px;padding:14px 20px;border-radius:12px;background:linear-gradient(135deg,#f2e0ae,#d7bd79);color:#20242a;font-size:17px;font-weight:750;box-shadow:0 6px 18px #0003}
 #tab-superadmin .ca-owner-options{border:1px solid #91a0ad66;border-radius:12px;padding:4px 12px;max-width:100%}#tab-superadmin .ca-owner-options>summary{min-height:44px;padding:10px 0;cursor:pointer;font-size:15px;color:#d8e0e8}#tab-superadmin .ca-owner-options[open]{flex-basis:100%}#tab-superadmin input,#tab-superadmin select{max-width:100%;min-height:48px;background:#182330!important;color:#f3f5f7!important}#tab-superadmin input::placeholder{color:#c4ced9!important}
+
+/* Assignment cards keep names readable when phone text is enlarged. */
+#ca-midweek-root .row-right{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;width:100%}
+#ca-midweek-root .assign-row{grid-template-columns:28px minmax(0,1fr) minmax(220px,34%)}
+#ca-midweek-root .assignee{width:100%;min-width:0;max-width:none;min-height:60px;height:auto;flex-shrink:0}
+#ca-midweek-root .assignee-copy{display:block;flex:1;min-width:0}
+#ca-midweek-root .assignee-label{display:block;font-size:.75rem;letter-spacing:0;text-transform:none;line-height:1.5}
+#ca-midweek-root .assignee-name{font-size:1rem;line-height:1.5;word-break:normal;overflow-wrap:break-word;white-space:normal;overflow:visible}
+#ca-midweek-root .assignee-arrow{flex:none}
+#ca-midweek-root .assignment-options{min-width:0;color:var(--muted)}
+#ca-midweek-root .assignment-options>summary{min-height:44px;padding:10px 4px;cursor:pointer;font-size:.875rem;line-height:1.5}
+#ca-midweek-root .assignment-options-body{display:grid;gap:12px;padding:10px 0}
+#ca-midweek-root .assignment-options-body label{display:grid;gap:6px;font-size:.875rem}
+#ca-midweek-root .assignment-options-body select{width:100%;max-width:100%;min-width:0;min-height:48px;font-size:1rem;padding:8px}
+#ca-midweek-root .assignment-options-body .clear-btn{width:auto;height:auto;min-height:48px;padding:10px;font-size:.875rem;color:var(--text);border:1px solid var(--line)}
+@media(max-width:1100px){#ca-midweek-root .assign-row{grid-template-columns:26px minmax(0,1fr);padding:16px 12px;gap:10px}#ca-midweek-root .row-right{grid-column:1/-1}#ca-midweek-root .assistant-row{margin-left:12px;flex-wrap:wrap}#ca-midweek-root .assistant-select{width:100%;min-width:0;height:auto}}
+body.ca-large-text #ca-midweek-root .row-right{grid-column:1/-1}
+#sys-prompt-overlay{overflow-y:auto}#sys-prompt-overlay>div{max-height:calc(100dvh - 32px);overflow-y:auto}#sys-prompt-form>div{flex-wrap:wrap}#sys-prompt-form button{min-width:120px;min-height:48px;white-space:normal}
+
+#ca-midweek-root .ca-planning-note>summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:650}
+@media(max-width:1023px){#mobile-nav.ca-roomy-nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));height:auto!important;padding-bottom:env(safe-area-inset-bottom)}#mobile-nav.ca-roomy-nav button{min-width:0;min-height:64px;padding:8px 4px;overflow-wrap:normal!important}#mobile-nav.ca-roomy-nav button>span:last-child{white-space:normal;line-height:1.35}body .main-content{padding-bottom:calc(var(--ca-nav-height,96px) + 100px)!important}#ca-midweek-root #publishWeekBtn{bottom:calc(var(--ca-nav-height,96px) + 12px)}body.ca-large-text #toast,#toast,body.ca-large-text #mwsToast,#ca-midweek-root .toast{bottom:calc(var(--ca-nav-height,96px) + 24px)!important}}
+/* Relative line heights let enlarged text expand its own containers. */
+#ca-midweek-root :is(h1,h2,h3,.week-title){line-height:1.25}
+#ca-midweek-root :is(p,.mws-draft-badge,.assignee-name){line-height:1.55}
+#ca-midweek-root .mws-subnav .mws-nav-btn{height:auto;min-height:48px;padding:10px 8px;line-height:1.4;white-space:normal}
+#ca-midweek-root .mws-nav-btn span{line-height:inherit}
+@media(max-width:1023px){#mobile-nav.ca-roomy-nav{display:block!important}#mobile-nav.ca-roomy-nav>div{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));height:auto!important}#mobile-nav.ca-roomy-nav button{width:auto!important;height:auto!important}#mobile-nav.ca-roomy-nav button>span{line-height:1.35}#ca-midweek-root .week-main{flex:1;min-width:0}#ca-midweek-root .week-arrow{flex:none}}

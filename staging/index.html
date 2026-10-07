@@ -1350,7 +1350,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         <!-- MEETINGS / OCLM TAB -->
         <div id="tab-oclm" class="tab-content space-y-4">
 <div id="ca-midweek-root" class="mws-root">
-<div class="ca-planning-note"><strong>Plan at least three weeks ahead.</strong><p>Assign, review, and publish early so everyone has time to prepare. This target does not assign people automatically.</p><button type="button" class="ca-secondary-action" onclick="window.setSchedulerWeek(window.CAReminders.weekId(window.CAReminders.planningDate()))">Plan the week three weeks ahead</button><button type="button" class="ca-secondary-action" onclick="window.CAReminders.open()">Set my planning reminder</button></div>
+<details class="ca-planning-note"><summary>Planning reminders</summary><strong>Plan at least three weeks ahead.</strong><p>Assign, review, and publish early so everyone has time to prepare. This target does not assign people automatically.</p><button type="button" class="ca-secondary-action" onclick="window.setSchedulerWeek(window.CAReminders.weekId(window.CAReminders.planningDate()))">Plan the week three weeks ahead</button><button type="button" class="ca-secondary-action" onclick="window.CAReminders.open()">Set my planning reminder</button></details>
   <div class="mws-heading"><div><div class="eyebrow">Meeting preparation</div><h1>Midweek meeting</h1><p>Prepare assignments. Review the week. Share one live schedule.</p></div><span class="mws-draft-badge" id="publicationState">Device draft</span></div>
   <div class="mws-notice mws-save-error" id="schedulerSaveError" role="alert" hidden><div><strong>Your changes are not saved.</strong><p>They are still on this screen. Retry saving before leaving or reloading.</p></div><button class="btn" id="retrySchedulerSave" type="button">Retry save</button></div>
   <div class="mws-topbar"><div class="topbar-inner">
@@ -2629,12 +2629,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(record.personId && !person) assignText='Unknown person';
     return `<div class="assign-row">
       <div class="row-num">${index}</div>
-      <div class="row-main"><div class="row-title-line"><input class="row-title-input" value="${esc(title)}" aria-label="Edit part title" onchange="window.setPartTitle('${field.id}',this.value)" onkeydown="if(event.key==='Enter'){this.blur();}"></div><div class="row-meta"><span class="meta">${esc(LABELS[field.id]||field.label)}</span>${contextParts.map(x=>`<span class="tag ${x==='Optional'?'optional':''}">${esc(x)}</span>`).join('')}</div></div>
+      <div class="row-main"><div class="row-title-line"><input class="row-title-input" value="${esc(title)}" aria-label="Edit part title" onchange="window.setPartTitle('${field.id}',this.value)" onkeydown="if(event.key==='Enter'){this.blur();}"></div><div class="row-meta">${title!==(LABELS[field.id]||field.label)?`<span class="meta">${esc(LABELS[field.id]||field.label)}</span>`:''}${contextParts.map(x=>`<span class="tag ${x==='Optional'?'optional':''}">${esc(x)}</span>`).join('')}</div></div>
       <div class="row-right">
-        <button class="assignee ${person?'':'unassigned'}" onclick="window.openAssign('${field.id}')" aria-label="Assign ${esc(field.label)}">
-          <span class="assignee-copy"><span class="assignee-label">${person?'Assigned to':'Tap to assign'}</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
+        <button class="assignee ${person?'':'unassigned'}" onclick="window.openAssign('${field.id}')" aria-label="${person?'Change':'Choose'} person for ${esc(field.label)}${person?': '+esc(person.name):''}">
+          <span class="assignee-copy"><span class="assignee-label">${person?'Assigned to':'Choose a person'}</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
         </button>
-        ${person?`<label class="meta">Status<select aria-label="Assignment status for ${esc(field.label)}" onchange="window.setAssignmentStatus('${field.id}',this.value)">${['scheduled','completed','cancelled'].map(status=>`<option value="${status}" ${(record.status||'scheduled')===status?'selected':''}>${status[0].toUpperCase()+status.slice(1)}</option>`).join('')}</select></label><button class="clear-btn" onclick="window.clearAssignment('${field.id}')" title="Clear assignment" aria-label="Clear ${esc(field.label)} assignment">×</button>`:''}
+        ${person?`<details class="assignment-options"><summary>Assignment options${record.status&&record.status!=='scheduled'?' · '+esc(record.status):''}</summary><div class="assignment-options-body"><label class="meta">Status<select aria-label="Assignment status for ${esc(field.label)}" onchange="window.setAssignmentStatus('${field.id}',this.value)">${['scheduled','completed','cancelled'].map(status=>`<option value="${status}" ${(record.status||'scheduled')===status?'selected':''}>${status[0].toUpperCase()+status.slice(1)}</option>`).join('')}</select></label><button class="clear-btn" onclick="window.clearAssignment('${field.id}')" title="Clear assignment" aria-label="Clear ${esc(field.label)} assignment">Remove assignment</button></div></details>`:''}
       </div>
     </div>${field.assistant && person ? renderAssistantRow(field.assistant,sectionKey) : ''}`;
   }
@@ -2667,7 +2667,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(!people.length){$('candidateList').innerHTML='<div style="padding:28px;text-align:center;font-size:10px;color:#8d969d">No qualified people found.</div>';return;}
     $('candidateList').innerHTML=people.map(p=>{
       const recommended=suggestion?.id===p.id; const same=personHasDifferentPart(p.id,fieldId); const weekCount=weekUseCount(p.id); const historic=assignmentUseCount(p.id);
-      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta"><span class="candidate-tag green">Qualified</span>${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span><span class="candidate-tag">${historic} scheduled</span><span class="candidate-tag">${completedUseCount(p.id)} completed</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
+      return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta">${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
     }).join('');
   }
 
@@ -3609,7 +3609,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             deletePublisher: async (id) => {
-                window.ui.openSysPrompt('Delete publisher', 'Delete this publisher? Remove their reports first. This action cannot be undone.', false, async () => {
+                const publisher = window.db.publishers.find(p => p.id === id);
+                if (!publisher) return;
+                window.ui.openSysPrompt('Delete publisher?', `You are about to permanently delete ${publisher.name}. This cannot be undone. Publishers with reports cannot be deleted. Choose Cancel to keep this publisher.`, false, async () => {
                     if (window.db.reports.some(r => r.pubId === id)) throw new Error('This publisher has reports. Keep the record to preserve service history.');
                     if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before deleting.');
                     if (isCloudEnabled) {
@@ -3620,6 +3622,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     window.db.writeLocalCache('publishers');
                     window.ui.renderPublishers(); window.ui.showToast('Publisher deleted.');
                 });
+                document.getElementById('sys-prompt-confirm-btn').textContent = 'Delete publisher';
+                document.querySelector('#sys-prompt-form button[type="button"]').focus();
             },
 
             revokeAP: async (reportId) => {
@@ -4384,6 +4388,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
 
             openSysPrompt: (title, desc, requiresPassword, callback) => {
+                document.getElementById('sys-prompt-confirm-btn').textContent = 'Confirm';
                 document.getElementById('sys-prompt-title').textContent = title;
                 document.getElementById('sys-prompt-desc').textContent = desc;
                 const pwdInput = document.getElementById('sys-prompt-input');

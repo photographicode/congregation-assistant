@@ -42,6 +42,7 @@ jobs:
         env:
           CA_CHECK_OUTPUT: artifacts/pdf-check
       - run: python3 scripts/check-pdf-layout.py artifacts/pdf-check --render
+      - run: node scripts/check-scheduling-simplicity.cjs
       - run: npm run test:browser
       - run: node public-site-preview/scripts/check-site.cjs
         env:
