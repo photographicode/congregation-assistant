@@ -502,3 +502,10 @@ body.ca-large-text #ca-midweek-root .assignee-name{font-size:1.25rem}body.ca-lar
 body.ca-large-text #mobile-nav button>span:last-child{font-size:1.25rem}#mobile-nav.ca-roomy-nav button>span:last-child{max-width:100%;overflow-wrap:break-word}@media(max-width:360px){#mobile-nav.ca-roomy-nav>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* Give the longer Attendance label the spare space in the second row. */
 @media(min-width:361px) and (max-width:639px){#mobile-nav.ca-roomy-nav:has(#m-btn-tab-publishers:not(.hidden)) #m-btn-tab-attendance{grid-column:span 2}}
+
+#ca-midweek-root .tag{height:auto;min-height:1.5em;padding:.15em .45em}
+#ca-midweek-root .sheet-tools{display:block}#ca-midweek-root .sheet-search{width:100%;min-width:0;max-width:100%;height:auto;min-height:48px;padding:10px;line-height:1.5}
+#ca-midweek-root .sheet-kicker{line-height:1.5;letter-spacing:0;text-transform:none}
+#ca-midweek-root #assignNone{width:100%}
+@media(max-width:768px){#ca-midweek-root .candidate{grid-template-columns:minmax(0,1fr);gap:8px}#ca-midweek-root .candidate-avatar{display:none}#ca-midweek-root .candidate>div{min-width:0}#ca-midweek-root .candidate-name{white-space:normal;overflow-wrap:break-word}#ca-midweek-root .candidate-right{text-align:left}}
+body.ca-large-text #ca-midweek-root :is(.candidate-name,.sheet-title,.sheet-sub,.sheet-kicker){font-size:1.25rem;line-height:1.5}

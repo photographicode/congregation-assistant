@@ -1435,9 +1435,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div><div class="sheet-kicker" id="sheetKicker">Assign part</div><div class="sheet-title" id="sheetTitle">—</div><div class="sheet-sub" id="sheetSub">—</div></div>
 <button class="close" id="closeAssign">×</button>
 </div>
-<div class="sheet-tools"><input autocomplete="off" class="sheet-search" id="candidateSearch" placeholder="Search people…" type="search"/><span class="filter-pill active" aria-label="Only qualified publishers are shown">Qualified</span></div>
+<div class="sheet-tools"><input aria-label="Search people for this part" autocomplete="off" class="sheet-search" id="candidateSearch" placeholder="Search people…" type="search"/></div>
 <div class="candidate-list" id="candidateList"></div>
-<div class="sheet-foot"><div class="sheet-foot-note" id="sheetFootNote">Suggested person is highlighted.</div><button class="btn small" id="assignNone">Leave unassigned</button></div>
+<div class="sheet-foot"><button class="btn small" id="assignNone">Leave unassigned</button></div>
 </div>
 </div>
 <div aria-hidden="true" aria-modal="true" class="modal-backdrop" id="personModal" role="dialog">
@@ -2653,8 +2653,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function openAssign(fieldId){
     state.selectedField=fieldId; const field=sections().flatMap(s=>s.fields).find(f=>f.id===fieldId) || {id:fieldId,label:LABELS[fieldId],role:ROLE_MAP[fieldId]};
     const role=field.role||ROLE_MAP[fieldId]; const suggestion=suggestPerson(role,fieldId);
-    $('sheetKicker').textContent=role ? `Choose ${role}` : 'Assign part';
-    $('sheetTitle').textContent=effectiveTitle(field); $('sheetSub').textContent=`${LABELS[fieldId]||field.label}${field.duration?` · ${field.duration}`:''}`;
+    $('sheetKicker').textContent='Choose a person';
+    $('sheetTitle').textContent=effectiveTitle(field); $('sheetSub').textContent='Qualified and available people.';
     $('candidateSearch').value=''; $('assignNone').onclick=()=>{setAssignment(fieldId,'');closeModal('assignModal');};
     renderCandidates(suggestion); openModal('assignModal');
   }
