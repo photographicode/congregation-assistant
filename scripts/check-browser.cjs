@@ -195,8 +195,8 @@ async function run(profile) {
             assert(gaps.every(gap=>gap<60),'Large desktop navigation spacer');
         }
         await nav('oclm');
-        await page.locator('#mws-tab-schedule').click();await page.locator('#meetingDetailsSettings summary').click();await page.locator('#meetingStartTime').fill('19:00');await page.locator('#meetingReading').fill('Jeremiah 40–41');await page.locator('#meetingOpeningSong').fill('10');await page.locator('#meetingMiddleSong').fill('20');await page.locator('#meetingClosingSong').fill('30');await page.locator('#meetingAuxiliary').check();await page.getByRole('button',{name:'Save meeting details',exact:true}).click();await page.locator('#additionalDutiesSettings summary').click();await page.locator('#additionalDutySection').fill('AV');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
-        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.section,'AV');assert.equal(duty.slots,2);
+        await page.locator('#mws-tab-schedule').click();await page.locator('#meetingDetailsSettings summary').click();await page.locator('#meetingStartTime').fill('19:00');await page.locator('#meetingReading').fill('Jeremiah 40–41');await page.locator('#meetingOpeningSong').fill('10');await page.locator('#meetingMiddleSong').fill('20');await page.locator('#meetingClosingSong').fill('30');await page.locator('#meetingAuxiliary').check();await page.getByRole('button',{name:'Save meeting details',exact:true}).click();await page.locator('#additionalDutiesSettings > summary').click();await page.locator('#additionalDutiesSettings details > summary').click();await page.locator('#additionalDutySection').fill('Other responsibility');await page.locator('#additionalDutyName').fill('Microphones');await page.locator('#additionalDutySlots').selectOption('2');await page.locator('#additionalDutiesSettings').getByRole('button',{name:'Add duty',exact:true}).click();
+        const duty=await page.evaluate(()=>window.MidweekScheduler.getPayload().additionalDuties[0]);assert.equal(duty.name,'Microphones');assert.equal(duty.section,'Other responsibility');assert.equal(duty.slots,2);
         await page.evaluate(()=>window.openPersonModal());
         await page.locator('#personName').fill('Sample Schedule Person');
         await page.locator('details:has(#roleChecks) summary').click();
@@ -267,7 +267,7 @@ async function run(profile) {
             if(role==='oclm'){
                 const reads=await page.evaluate(()=>window.__qaBackend.reads);assert(!reads.includes('reports'),'OCLM fetched reports');
                 await page.evaluate(()=>{sessionStorage.setItem('fs_roles','["admin"]');sessionStorage.setItem('fs_role','admin');window.ui.applyRoleNavigation();window.ui.switchTab('analytics');});
-                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm']);
+                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm','cleaning','duties']);
                 assert.equal(await page.locator('#tab-oclm').isVisible(),true);assert.equal(await page.locator('#tab-analytics').isVisible(),false);
             }
             if(!profile.mobile){

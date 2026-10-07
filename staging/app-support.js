@@ -56,7 +56,7 @@
             // Convert synchronous throws and rejected writes into a recoverable UI state.
             const task = (async () => {
                 try { await Promise.resolve(); return await original.apply(this, args); }
-                catch (error) { notify(error); return false; }
+                catch (error) { if(args[0]?.managed)throw error;notify(error); return false; }
                 finally {
                     if (button) {
                         button.disabled = wasDisabled;
