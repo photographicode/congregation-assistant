@@ -61,7 +61,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert(names.indexOf('Zach Never')<names.indexOf('Beth Older'));
         assert(names.indexOf('Beth Older')<names.indexOf('Aaron Recent'));
         assert(names.includes('Same part:'));
-        fw.MidweekScheduler.showPublic({publishedWeeks:['2026-W40'],defaultWeek:'2026-W40',people:[{id:'old',name:'Beth Older'}],assignments:{'2026-W40':{Conversation:{personId:'old'}}}});
+        fw.MidweekScheduler.showPublic({currentWeek:'2026-W40',publishedWeeks:['2026-W40'],defaultWeek:'2026-W40',people:[{id:'old',name:'Beth Older'}],assignments:{'2026-W40':{Conversation:{personId:'old'}}}});
         assert(fe.get('liveSections').innerHTML.includes('Beth Older'));
         assert(!fe.get('liveSections').innerHTML.includes('Making Disciples'));
         assert(!fe.get('liveSections').innerHTML.includes('Unassigned'));
@@ -380,8 +380,8 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('published name search matches every week including auxiliary assignments',()=>{
         const f=createHarness(),fw=f.window,fe=f.elements;
-        fw.MidweekScheduler.showPublic({congregation:'Example',publishedWeeks:['2026-W40','2026-W41','2026-W42'],people:[{id:'a',name:'Alex Example'},{id:'b',name:'Beth Example'}],assignments:{'2026-W40':{BibleReading:{personId:'a'}},'2026-W41':{Conversation:{personId:'b'},ConversationAssistant:{personId:'a'}},'2026-W42':{BibleReading:{personId:'b'}}}});
-        assert(!f.markup.includes('id="liveWeekSelect"'));
+        fw.MidweekScheduler.showPublic({currentWeek:'2026-W40',congregation:'Example',publishedWeeks:['2026-W40','2026-W41','2026-W42'],people:[{id:'a',name:'Alex Example'},{id:'b',name:'Beth Example'}],assignments:{'2026-W40':{BibleReading:{personId:'a'}},'2026-W41':{Conversation:{personId:'b'},ConversationAssistant:{personId:'a'}},'2026-W42':{BibleReading:{personId:'b'}}}});
+        assert(f.markup.includes('id="liveWeekSelect"'));assert.equal((fe.get('liveSections').innerHTML.match(/live-s140-paper/g)||[]).length,1);fe.get('liveWeekSelect').value='2026-W42';fe.get('liveWeekSelect').onchange();assert(fe.get('liveSections').innerHTML.includes('Beth Example'));
         fe.get('livePublisherSearch').value='Alex';fe.get('livePublisherSearch').oninput();
         const cards=fe.get('liveSections').innerHTML;assert.equal((cards.match(/live-s140-paper/g)||[]).length,2);assert(cards.includes('<mark>Alex Example</mark>'));
         fe.get('livePublisherSearch').value='missing name';fe.get('livePublisherSearch').oninput();assert(!fe.get('liveSections').innerHTML.includes('s140-paper'));

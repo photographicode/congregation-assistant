@@ -44,7 +44,7 @@
         try {
             if(!initial&&revisionToken===token){try{const latest=await rpc('get_oclm_public_revision',{p_token:token});if(latest===null){document.getElementById('liveSections').replaceChildren();status('This schedule link is no longer available. Ask the overseer for a current link.',true);return;}if(revision&&latest===revision)return;}catch(error){if(error.code!=='PGRST202')throw error;}}
             const row = await rpc('get_oclm_public_snapshot', { p_token: token });
-            revision=row?.updated_at||null;revisionToken=token;
+            revision=row?.revision||row?.updated_at||null;revisionToken=token;
             openSnapshot(row?.snapshot);
             status('Published schedule — updates appear here automatically.');
         } catch (error) {

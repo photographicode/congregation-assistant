@@ -1460,7 +1460,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 <div class="live-shell">
 <div class="live-top"><div class="live-brand"><div class="live-brand-mark">CA</div><div><div class="live-brand-title">Congregation Assistant</div><div class="live-brand-sub">Midweek Meeting Schedule</div></div></div></div>
 <div class="live-info"><div class="live-info-title" id="liveWeekTitle">Meeting schedule</div><div class="live-info-sub" id="liveWeekSub"></div></div>
-<div class="live-week-picker"><input autocomplete="off" class="live-search" id="livePublisherSearch" placeholder="Search your name across all weeks…" aria-label="Publisher name" type="search"/></div>
+<div class="live-week-picker"><label for="liveWeekSelect">Choose week</label><select id="liveWeekSelect" class="live-week-select"></select><input autocomplete="off" class="live-search" id="livePublisherSearch" placeholder="Find a name" aria-label="Publisher name" type="search"/></div>
 <div class="live-note" id="liveResultNote" style="margin:0 0 9px 2px"></div>
 <div class="live-sections" id="liveSections"></div>
 </div>
@@ -2462,8 +2462,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function setWeek(weekStr){
     state.currentWeek=weekStr; refreshProgram(); state.weekKeys=buildWeeks(weekStr); renderAll();
   }
-  function cleanDuties(value){
-    if(!Array.isArray(value))return [];const seen=new Set();return value.filter(d=>d&&/^Duty_[a-f0-9]{32}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim()&&d.name.length<=100&&Number.isInteger(d.slots)&&d.slots>=1&&d.slots<=4&&!seen.has(d.id)&&seen.add(d.id)).slice(0,20).map(d=>({id:d.id,name:d.name.trim(),section:typeof d.section==='string'&&d.section.trim()?d.section.trim().slice(0,100):'Additional Duties',slots:d.slots,enabled:d.enabled!==false}));
+  function cleanDuties(value,limit=20){
+    if(!Array.isArray(value))return [];const seen=new Set();return value.filter(d=>d&&/^Duty_[a-f0-9]{32}$/.test(d.id)&&typeof d.name==='string'&&d.name.trim()&&d.name.length<=100&&Number.isInteger(d.slots)&&d.slots>=1&&d.slots<=4&&!seen.has(d.id)&&seen.add(d.id)).slice(0,limit).map(d=>({id:d.id,name:d.name.trim(),section:typeof d.section==='string'&&d.section.trim()?d.section.trim().slice(0,100):'Additional Duties',slots:d.slots,enabled:d.enabled!==false}));
   }
   function dutySections(duties){const groups=new Map();for(const d of duties){const section=d.section||'Additional Duties',key=section.toLocaleLowerCase();if(!groups.has(key))groups.set(key,{key:'additional',title:section==='Additional Duties'?'ADDITIONAL DUTIES':'ADDITIONAL DUTIES · '+section,sub:'Responsibilities chosen by your congregation',fields:[]});groups.get(key).fields.push(...Array.from({length:d.slots},(_,i)=>({id:d.id+'_'+(i+1),role:d.id,label:d.name+(d.slots>1?' '+(i+1):''),duration:''})));}return [...groups.values()];}
   const MEETING_DETAIL_FIELDS={MeetingStart:'meetingStartTime',WeeklyReading:'meetingReading',OpeningSong:'meetingOpeningSong',MiddleSong:'meetingMiddleSong',ClosingSong:'meetingClosingSong',OpeningComments:'meetingOpeningComments',ClosingComments:'meetingClosingComments'};
@@ -2780,13 +2780,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   }
   function renderLiveViewer(payload){
     root.classList.add('mws-live-mode');
-    const weeks=(payload.publishedWeeks||[]).filter(w=>/^\d{4}-W\d{2}$/.test(w)&&payload.assignments?.[w]).sort(),people=payload.people||[],search=$('livePublisherSearch');
-    $('liveWeekTitle').textContent=payload.congregation||'Midweek meeting schedules';$('liveWeekSub').textContent='Published meeting schedules · Search a name to find every assigned week';
-    function draw(){const q=search.value.toLowerCase().trim(),matched=new Set(people.filter(p=>p.name?.toLowerCase().includes(q)).map(p=>p.id));let count=0;const shown=weeks.filter(w=>!q||Object.values(payload.assignments[w]).some(a=>matched.has(a?.personId)));
-      $('liveSections').innerHTML=shown.map(w=>{const data=payload.assignments[w];count+=Object.values(data).filter(a=>matched.has(a?.personId)).length;return `<article class="paper live-s140-paper" aria-label="Week of ${esc(weekLabel(w))}">${payload.weekDetails?.[w]?.oclmPublished===false?'<p class="live-note">Meeting parts have not been published for this week. Department duties are below.</p>':''}${s140Markup(data,w,people,cleanDuties(payload.weekDetails?.[w]?.additionalDuties||payload.additionalDuties),payload.congregation||'Congregation',true,q,payload.weekDetails?.[w]?.program||null)}</article>`;}).join('')||'<p class="live-empty">'+(weeks.length?'No published weeks match that name.':'No schedules have been published yet.')+'</p>';
-      $('liveResultNote').textContent=q?`${shown.length} week${shown.length===1?'':'s'} · ${count} assignment${count===1?'':'s'} matching this name`:`${weeks.length} published week${weeks.length===1?'':'s'}`;
+    const weeks=(payload.publishedWeeks||[]).filter(w=>/^\d{4}-W\d{2}$/.test(w)&&payload.assignments?.[w]&&w>=(payload.currentWeek||weekId(new Date()))).sort(),people=payload.people||[],search=$('livePublisherSearch'),picker=$('liveWeekSelect');
+    const shortWeek=w=>{const start=mondayOf(w),end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const format=d=>d.toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'});return format(start)+'–'+(end.getUTCMonth()===start.getUTCMonth()?end.getUTCDate():format(end));};const previousWeek=picker.value;picker.innerHTML=weeks.map(w=>`<option value="${w}" title="Week of ${esc(weekLabel(w))}">${esc(shortWeek(w))}</option>`).join('')+'<option value="all">All upcoming weeks</option>';picker.value=previousWeek==='all'||search.value.trim()?'all':weeks.includes(previousWeek)?previousWeek:weeks.includes(payload.defaultWeek)?payload.defaultWeek:weeks[0]||'all';
+    $('liveWeekTitle').textContent=payload.congregation||'Midweek meeting schedules';$('liveWeekSub').textContent='Notice board · Choose a week or find a name';
+    function draw(){const q=search.value.toLowerCase().trim(),matched=new Set(people.filter(p=>p.name?.toLowerCase().includes(q)).map(p=>p.id));let count=0;const shown=weeks.filter(w=>(picker.value==='all'||w===picker.value)&&(!q||Object.values(payload.assignments[w]).some(a=>matched.has(a?.personId))));
+      $('liveSections').innerHTML=shown.map(w=>{const data=payload.assignments[w];count+=Object.values(data).filter(a=>matched.has(a?.personId)).length;return `<article class="paper live-s140-paper" aria-label="Week of ${esc(weekLabel(w))}">${payload.weekDetails?.[w]?.oclmPublished===false?'<p class="live-note">Meeting parts have not been published for this week. Department duties are below.</p>':''}${s140Markup(data,w,people,cleanDuties(payload.weekDetails?.[w]?.additionalDuties||payload.additionalDuties,63),payload.congregation||'Congregation',true,q,payload.weekDetails?.[w]?.program||null)}</article>`;}).join('')||'<p class="live-empty">'+(weeks.length?'No published weeks match that name.':'No upcoming schedules have been published yet.')+'</p>';
+      $('liveResultNote').textContent=q?`${shown.length} week${shown.length===1?'':'s'} · ${count} assignment${count===1?'':'s'} matching this name`:picker.value==='all'?`${weeks.length} upcoming week${weeks.length===1?'':'s'}`:weeks.length?'Week of '+weekLabel(picker.value):'No upcoming weeks';
     }
-    search.oninput=draw;draw();
+    search.oninput=()=>{if(search.value.trim())picker.value='all';draw();};picker.onchange=draw;draw();
   }
   function readLivePayload(){
     const hash=location.hash; if(!hash.startsWith('#live='))return null;
@@ -2822,7 +2823,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     apply:data=>{state.personnel=data.personnel;state.assignments=data.assignments;state.additionalDuties=cleanDuties(data.additionalDuties);state.programs=data.programs||{};refreshProgram();state.template=data.template;syncRoster(window.db?.oclmRoster||[],false);save(false);renderAll();},
     status:text=>{if($('saveStateLabel'))$('saveStateLabel').textContent=text;},
     publication:p=>{if(!p)return;state.publishedWeeks=p.snapshot.publishedWeeks||[];state.publication={...p,draftSignatures:Object.fromEntries((p.snapshot.publishedWeeks||[]).map(w=>[w,publicationSignature(p.snapshot.assignments[w],p.snapshot.weekDetails?.[w]?.additionalDuties||p.snapshot.additionalDuties,p.snapshot.weekDetails?.[w]?.program||null,p.snapshot.people)]))};save(false);renderAll();},
-    conflict:visible=>{let box=$('schedulerCloudConflict');if(!box){box=document.createElement('div');box.id='schedulerCloudConflict';box.className='mws-review-item warning';box.setAttribute('role','alert');box.innerHTML='<p>The shared draft needs review. Keep your recovery copy before loading the shared version.</p><button type="button" onclick="window.CAOCLMCloud.recovery()">Download recovery copy</button><button type="button" onclick="if(confirm(\'Replace this device draft with the latest shared draft? Download your recovery copy first.\'))window.CAOCLMCloud.reload().catch(e=>window.ui.showToast(e.message,\'error\'))">Load shared draft</button>'; $('schedulerSaveError').after(box);}box.hidden=!visible;}
+    conflict:visible=>{let box=$('schedulerCloudConflict');if(!box){box=document.createElement('div');box.id='schedulerCloudConflict';box.className='mws-review-item warning';box.setAttribute('role','alert');box.innerHTML='<p>Another device changed the draft. Your work is kept here. Review the online version before saving. A recovery download is optional.</p><button type="button" onclick="window.CAOCLMCloud.recovery()">Download recovery copy</button><button type="button" onclick="if(confirm(\'Replace this device draft with the latest shared draft? Your unsent edits will be replaced. You may cancel and download a recovery copy first.\'))window.CAOCLMCloud.reload().catch(e=>window.ui.showToast(e.message,\'error\'))">Load shared draft</button>'; $('schedulerSaveError').after(box);}box.hidden=!visible;}
   };}
   window.renderMidweekScheduler=renderAll;window.reloadSchedulerDemo=()=>{if(isDemo()){load();renderAll();}};
   window.initMidweekScheduler = () => {
@@ -4348,8 +4349,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const btn = [...document.querySelectorAll('#nav-admin .ca-nav-item')].find(el=>el.dataset.navContext===context&&el.dataset.navTab===tabId); if(btn){btn.classList.add('ca-nav-active');btn.classList.remove('hover:bg-white/10','text-teal-50/70');btn.classList.add('bg-teal-500/80','text-white','shadow-lg');}
                 
                 // Mobile Bottom Nav Styling
-                document.querySelectorAll('#mobile-nav button[id^="m-btn-tab-"]').forEach(el => { el.classList.remove('text-teal-300'); el.classList.add('text-teal-50/50'); });
-                const mBtn = document.getElementById(`m-btn-tab-${tabId}`); if (mBtn) { mBtn.classList.remove('text-teal-50/50'); mBtn.classList.add('text-teal-300'); }
+                document.querySelectorAll('#mobile-nav button[id^="m-btn-tab-"]').forEach(el => { el.classList.remove('text-teal-300'); el.classList.add('text-teal-50/50');el.removeAttribute('aria-current'); });
+                const mobileTab=['av','attendant','cleaning'].includes(tabId)?'duties':tabId;const directBtn=document.getElementById(`m-btn-tab-${mobileTab}`);const mBtn=directBtn&&!directBtn.classList.contains('hidden')?directBtn:document.getElementById('m-btn-tab-menu'); if (mBtn) { mBtn.classList.remove('text-teal-50/50'); mBtn.classList.add('text-teal-300');mBtn.setAttribute('aria-current','page'); }
 
                 window.ui.currentTab = tabId;
                 // Remember the user's last working tab so refresh/re-open returns there.

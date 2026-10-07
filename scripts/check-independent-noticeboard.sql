@@ -5,14 +5,21 @@ insert into public.congregation_access(cong_id,email,role) values('a','board-av@
 insert into public.congregation_access(cong_id,email,role,is_assistant) values('a','board-assistant@example.com','av',true);
 insert into public.congregation_access(cong_id,email,role,publisher_id) values('a','board-person@example.com','publisher','board-a-1');
 create function test.board_denied(query text) returns void language plpgsql security invoker as $$begin execute query;raise exception 'FAILED: action permitted';exception when insufficient_privilege then null;end $$;
-grant execute on function test.board_denied(text) to authenticated;
+grant execute on function test.board_denied(text) to authenticated,anon;
 set request.jwt.claims='{"sub":"10000000-0000-0000-0000-000000000002","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select public.save_oclm_workspace('a',(public.get_oclm_workspace('a')->>'revision')::bigint,jsonb_set(coalesce(public.get_oclm_workspace('a')->'draft','{"v":3,"personnel":[],"assignments":{},"additionalDuties":[],"programs":{},"template":"modern"}'::jsonb),'{assignments,2026-W43}','{}'::jsonb));
+select public.request_department_person('a','cleaning','board-a-2');
+select test.assert(public.get_admin_home_tasks('a')->'requests' @> '[{"publisherId":"board-a-2","department":"cleaning","status":"pending"}]','Cleaning request visible in admin notification centre');
+select public.decide_department_person('a','cleaning','board-a-2',true);
 select public.request_department_person('a','av','board-a-1');select public.decide_department_person('a','av','board-a-1',true);
 select public.save_department_duty('a','av',(public.get_department_workspace('a','av')->>'revision')::bigint,null,'Audio',1,true);
 select public.save_department_duty('a','cleaning',(public.get_department_workspace('a','cleaning')->>'revision')::bigint,null,'Hall cleaning',2,true);
+select set_config('ca.board.oclm_initial_revision',public.get_oclm_workspace('a')->>'revision',true);
 reset role;
 set request.jwt.claims='{"sub":"10000000-0000-0000-0000-000000000001","email":"board-cleaning@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
-select test.assert((public.get_department_workspace('a','cleaning')->'people') @> '[{"id":"board-a-2","status":"approved"}]','Cleaning needs no approval');
+select test.board_denied($q$select public.decide_department_person('a','cleaning','board-a-2',true)$q$);
+select test.board_denied(format('select public.save_department_assignments(%L,%L,%s,%L,%L::jsonb)','a','cleaning',public.get_department_workspace('a','cleaning')->>'revision','2026-W43',jsonb_build_object((public.get_department_workspace('a','cleaning')->'duties'->0->>'id')||'_1','board-a-1')::text));
+select test.assert((public.get_department_workspace('a','cleaning')->'people') @> '[{"id":"board-a-2","status":"approved"}]','Cleaning requires and receives approval');
 select public.save_department_assignments('a','cleaning',(public.get_department_workspace('a','cleaning')->>'revision')::bigint,'2026-W43',jsonb_build_object((public.get_department_workspace('a','cleaning')->'duties'->0->>'id')||'_1','board-a-2'));
 select public.publish_department_week('a','cleaning','2026-W43',(public.get_department_workspace('a','cleaning')->>'revision')::bigint,0);
 select set_config('ca.board.token',public.get_department_workspace('a','cleaning')->>'token',true);
@@ -22,6 +29,7 @@ select test.board_denied($q$select public.get_department_workspace('a','av')$q$)
 select test.board_denied($q$select public.get_publisher_transfer('a','board-a-1')$q$);
 reset role;
 set request.jwt.claims='{"sub":"10000000-0000-0000-0000-000000000001","email":"board-av@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select set_config('ca.board.oclm_revision',public.get_department_workspace('a','av')->>'revision',true);
 select public.save_department_assignments('a','av',(public.get_department_workspace('a','av')->>'revision')::bigint,'2026-W43',jsonb_build_object((public.get_department_workspace('a','av')->'duties'->0->>'id')||'_1','board-a-1'));
 select test.assert(not (public.get_oclm_public_snapshot(current_setting('ca.board.token'))->'snapshot'->'assignments'->'2026-W43')::text like '%board-a-1%','AV draft remains private');
 select public.publish_department_week('a','av','2026-W43',(public.get_department_workspace('a','av')->>'revision')::bigint,0);
@@ -38,6 +46,10 @@ select public.publish_oclm_week('a','2026-W43',(public.get_oclm_workspace('a')->
 select test.assert((public.get_oclm_public_snapshot(current_setting('ca.board.token'))->'snapshot'->'assignments'->'2026-W43')::text like '%board-a-1%' and (public.get_oclm_public_snapshot(current_setting('ca.board.token'))->'snapshot'->'assignments'->'2026-W43')::text like '%board-a-2%','OCLM publish preserves independent publications');
 reset role;
 set request.jwt.claims='{"sub":"10000000-0000-0000-0000-000000000002","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
+select test.assert(public.get_oclm_workspace('a')->>'revision'=current_setting('ca.board.oclm_initial_revision'),'Both departments save and publish without changing OCLM revision');
+select test.assert(not(public.get_admin_home_tasks('a') ? 'reportsMissing'),'Notification centre omits missing reports');
+select test.assert(jsonb_array_length(public.get_admin_home_tasks('a')->'missingScheduleWeeks')<=3,'Only three upcoming schedule weeks considered');
+select set_config('ca.board.before_departure',public.export_congregation_workspace('a')::text,true);
 select set_config('ca.board.transfer',public.get_publisher_transfer('a','board-a-1')::text,true);
 select test.assert(not(public.get_publisher_transfer('a','board-a-1')->'publisher') ? 'service_group','Transfer excludes service group');
 do $$begin perform public.transfer_publisher('a','board-a-1','{}'::jsonb);raise exception 'FAILED stale transfer accepted';exception when serialization_failure then null;end $$;
@@ -45,9 +57,26 @@ select public.transfer_publisher('a','board-a-1',current_setting('ca.board.trans
 select test.assert(not(public.get_department_workspace('a','av')->'people') @> '[{"id":"board-a-1"}]','Transferred publisher excluded from duties');
 select test.assert(not(public.get_oclm_roster('a')) @> '[{"id":"board-a-1"}]','Transferred publisher excluded from OCLM roster');
 select test.assert(not (public.get_oclm_public_snapshot(current_setting('ca.board.token'))->'snapshot'->'assignments'->'2026-W43')::text like '%"personId": "board-a-1"%','Current and future published assignments revoked');
+select test.assert((public.export_congregation_workspace('a')->'data') ? 'departmentWorkspaces','Backup includes separate department drafts');
+select test.assert(not(public.get_department_workspace('a','av')->'assignments'->'2026-W43')::text like '%board-a-1%','Transfer removes upcoming department draft assignments');
 select test.assert((public.export_congregation_workspace('a')->'data') ? 'departmentPublications','Backup includes independent publications');
+-- Roundtrip new independent draft/publication data with reviewed fingerprint.
+select set_config('ca.board.backup',public.export_congregation_workspace('a')::text,true);
+select public.restore_congregation_workspace('a',current_setting('ca.board.backup')::jsonb->>'fingerprint',current_setting('ca.board.before_departure')::jsonb->'data');
+select test.assert(not(public.get_department_workspace('a','av')->'assignments'->'2026-W43')::text like '%board-a-1%','Restoring an older backup cannot resurrect transferred department assignments');
+select test.assert(public.get_department_workspace('a','cleaning')->'assignments'->'2026-W43' is not null,'Independent cleaning draft restored');
+select test.assert(public.get_department_workspace('a','cleaning')->>'token'=current_setting('ca.board.token'),'Restore preserves notice-board token');
+reset role;
+insert into ca_private.department_publications(cong_id,department,week,snapshot) values('a','cleaning','2020-W01','{"duties":[],"assignments":{},"people":[]}'::jsonb);
+select test.assert((public.get_oclm_public_snapshot(current_setting('ca.board.token'))->>'revision')::timestamptz=public.get_oclm_public_revision(current_setting('ca.board.token')),'Snapshot and polling revision match across week rollover');
+select test.assert(not(public.get_oclm_public_snapshot(current_setting('ca.board.token'))->'snapshot'->'publishedWeeks') @> '["2020-W01"]','Finished weeks hidden on public board');
+select test.assert(exists(select 1 from ca_private.department_publications where cong_id='a' and week='2020-W01'),'Finished weeks retained in history');
+select test.assert(exists(select 1 from ca_private.department_publication_history where cong_id='a' and department='cleaning'),'Independent publication history preserved');
+set role anon;
+select test.board_denied($q$select * from ca_private.department_workspaces$q$);
+select test.board_denied($q$select public.get_admin_home_tasks('a')$q$);
 reset role;
 select test.assert((select not active from public.congregation_access where publisher_id='board-a-1'),'Personal access revoked');
 select test.assert((select transferred_at is not null and service_group is null from public.publishers where id='board-a-1'),'Transfer archived and removed group');
 rollback;
-\echo PASS independent publication, no Cleaning approval, OCLM separation, published preservation, transfer exclusion and access revocation
+\echo PASS independent publication, approval in every department, OCLM separation, published preservation, transfer exclusion and access revocation

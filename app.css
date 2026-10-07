@@ -541,3 +541,21 @@ body[data-theme=light] .ca-department,body[data-theme=scheduler] .ca-department{
 .ca-owner-queue-filter button[aria-pressed="true"]{background:#efe2c6!important;color:#162231!important;border-color:#efe2c6!important;box-shadow:0 3px 12px #0002}.ca-owner-queue-filter button{border-radius:999px;padding:.65rem 1.1rem;line-height:1.45;white-space:normal}.super-admin-theme [hidden]{display:none!important}
 
 #publisher-transfer button{background:#d5edf0!important;color:#183b3c!important;border:1px solid #769995!important;min-height:48px;white-space:normal}#publisher-transfer .ca-primary-action{background:#b9ede6!important;color:#123c37!important}.ca-owner-request button{background:#d5edf0!important;color:#183b3c!important;border:1px solid #769995!important}.ca-publisher-options{text-align:left;min-width:6rem}.ca-publisher-options summary{padding:.65rem;min-height:44px;cursor:pointer}.ca-publisher-options button{display:block;margin-top:.5rem}
+
+/* Current location remains clear with large text and without relying on colour alone. */
+#mobile-nav button[aria-current="page"]{background:rgba(255,255,255,.16);color:#fff!important;border-radius:.8rem;box-shadow:inset 0 -4px 0 #fff;font-weight:800}
+#ca-midweek-root .live-week-picker{display:grid;grid-template-columns:minmax(0,1fr);gap:.6rem}
+#ca-midweek-root .live-week-select{width:100%;min-width:0;height:auto;min-height:48px;font-size:1rem;padding:.7rem;border:1px solid var(--line);color:var(--text);background:var(--paper,#fff)}
+#ca-midweek-root .live-week-picker label{font-weight:700;font-size:1rem}
+.ca-approval-request{padding:1rem;border:1px solid var(--border-soft,#d5e2df);border-radius:1rem;margin:.7rem 0}
+.ca-approval-request button{min-height:48px;margin:.4rem .4rem 0 0}
+
+body:is([data-theme="light"],[data-theme="scheduler"]) #mobile-nav button[aria-current="page"]{background:#dcece7!important;color:#17463c!important;box-shadow:inset 0 -4px 0 #17463c}
+body:not([data-theme="light"]):not([data-theme="scheduler"]) #mobile-nav button[aria-current="page"]>span{color:#fff!important}
+body.mws-public-mode #ca-midweek-root .live-week-select,body.mws-public-mode #ca-midweek-root .live-week-select option{background:#fff!important;color:#203b33!important;opacity:1;border-color:#829b90!important}
+/* Let enlarged public text grow vertically as well as horizontally. */
+body.mws-public-mode #ca-midweek-root .live-view :is(div,p,span,label,strong,h1,h2,h3){line-height:1.4}
+body.mws-public-mode #ca-midweek-root .live-top{align-items:flex-start}
+body.mws-public-mode #ca-midweek-root .live-brand{min-width:0;align-items:flex-start}
+body.mws-public-mode #ca-midweek-root .live-brand-mark{flex:none}
+body.mws-public-mode #ca-midweek-root :is(.live-week-select,.live-search){font-size:inherit!important;line-height:1.5;height:auto;min-height:3rem;padding:.65rem;max-width:100%;min-width:0}
