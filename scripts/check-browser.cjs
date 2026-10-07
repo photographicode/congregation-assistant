@@ -267,7 +267,7 @@ async function run(profile) {
             if(role==='oclm'){
                 const reads=await page.evaluate(()=>window.__qaBackend.reads);assert(!reads.includes('reports'),'OCLM fetched reports');
                 await page.evaluate(()=>{sessionStorage.setItem('fs_roles','["admin"]');sessionStorage.setItem('fs_role','admin');window.ui.applyRoleNavigation();window.ui.switchTab('analytics');});
-                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm']);
+                assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['oclm','cleaning','duties']);
                 assert.equal(await page.locator('#tab-oclm').isVisible(),true);assert.equal(await page.locator('#tab-analytics').isVisible(),false);
             }
             if(!profile.mobile){

@@ -129,3 +129,6 @@ alter table auth.users add column raw_app_meta_data jsonb;
 begin;set request.jwt.claims='{"email":"admin-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
 select test.assert((public.get_admin_home_tasks('a')->>'reportsMissing')::integer>=0,'administrator home calculates missing reports');
 reset role;rollback;
+
+\i supabase/collaborative-departments.sql
+\i scripts/check-collaborative-departments.sql

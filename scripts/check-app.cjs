@@ -140,9 +140,9 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('verified OCLM roles cannot gain reports by editing cached browser flags',()=>{
         const qa=createHarness();qa.sessionStorage.setItem('fs_auth_type','role');qa.sessionStorage.setItem('fs_roles','["admin"]');qa.sessionStorage.setItem('fs_role','admin');
         qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['oclm'];
-        assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);assert.equal(qa.window.ui.canManageAccess(),false);
+        assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm','cleaning','duties']);assert.equal(qa.window.ui.canManageAccess(),false);
         qa.window.ui.currentTab='oclm';qa.window.ui.switchTab('analytics');assert.equal(qa.window.ui.currentTab,'oclm');
-        qa.sessionStorage.setItem('fs_auth_type','admin');assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm']);
+        qa.sessionStorage.setItem('fs_auth_type','admin');assert.deepEqual(qa.window.ui.getAllowedTabs(),['oclm','cleaning','duties']);
         qa.sessionStorage.setItem('fs_auth_type','role');qa.window.auth.roleReady=false;assert.deepEqual(qa.window.ui.getAllowedTabs(),[]);
         qa.window.auth.roleReady=true;qa.window.auth.verifiedRoles=['admin'];assert(qa.window.ui.getAllowedTabs().includes('emergency'));
     });
@@ -275,7 +275,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('role navigation combines assignments and rejects context-based escalation', () => {
         const fixture=createHarness(), fw=fixture.window;
-        fixture.sessionStorage.setItem('fs_role','attendance');assert.deepEqual(fw.ui.getAllowedTabs(),['attendance']);
+        fixture.sessionStorage.setItem('fs_role','attendance');assert.deepEqual(fw.ui.getAllowedTabs(),['attendance','attendant','duties']);
         fw.ui.currentTab='attendance';fw.ui.switchTab('emergency',false,'attendance');assert.equal(fw.ui.currentTab,'attendance');
         fixture.sessionStorage.setItem('fs_roles',JSON.stringify(['attendance','field_service']));
         assert(fw.ui.getAllowedTabs().includes('groups'));assert(fw.ui.getAllowedTabs().includes('attendance'));assert(!fw.ui.canManageAccess());
@@ -397,7 +397,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),false);assert.equal(fw.MidweekScheduler.isEligible('available','Chairman'),true);
         fw.setSchedulerWeek('2027-W02');assert.equal(fw.MidweekScheduler.isEligible('away','Prayer'),true);
     });
-    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm']);assert(!w.ui.canManageAccess());});
+    await test('ordinary publishers have only their personal workspace and combined roles stay scoped',()=>{const f=createHarness(),w=f.window;w.auth.roleReady=true;w.auth.verifiedRoles=['publisher'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal']);w.auth.verifiedRoles=['publisher','oclm'];assert.deepEqual([...w.ui.getAllowedTabs()],['personal','oclm','cleaning','duties']);assert(!w.ui.canManageAccess());});
     await test('first shared draft preserves published weeks, identities, qualifications and device edits',()=>{const f=createHarness(),w=f.window;w.currentCongId='first-shared';f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_personnel',JSON.stringify([{id:'publisher-uuid',publisherId:'publisher-uuid',name:'Known Person',appointment:'Other',roles:['Prayer']} ]));f.localStorage.setItem('ca_midweek_first-shared_jw_scheduler_assignments',JSON.stringify({'2026-W42':{OpeningPrayer:{personId:'publisher-uuid',customTitle:'Device change'}}}));w.initMidweekScheduler();w.MidweekScheduler.adoptPublished({kind:'midweek',people:[{id:'published-id',name:'Known Person'}],publishedWeeks:['2026-W41','2026-W42'],assignments:{'2026-W41':{OpeningPrayer:{personId:'published-id'}},'2026-W42':{OpeningPrayer:{personId:'published-id',customTitle:'Old live title'}}},additionalDuties:[]});const draft=w.MidweekScheduler.getDraft();assert.equal(draft.personnel[0].id,'published-id');assert.equal(draft.personnel[0].publisherId,'publisher-uuid');assert(draft.personnel[0].roles.includes('Prayer'));assert.equal(draft.assignments['2026-W41'].OpeningPrayer.personId,'published-id');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.customTitle,'Device change');assert.equal(draft.assignments['2026-W42'].OpeningPrayer.personId,'published-id');});
     console.log(`\n${passed} checks passed. PDF samples: ${artifactDir}`);
 })().catch(error=>{console.error(error);process.exitCode=1;});
