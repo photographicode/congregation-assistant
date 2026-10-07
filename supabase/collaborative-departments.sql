@@ -15,6 +15,7 @@ create table if not exists ca_private.department_people(
  primary key(cong_id,department,publisher_id),
  foreign key(publisher_id,cong_id) references public.publishers(id,cong_id) on delete cascade
 );
+create index if not exists department_people_publisher_idx on ca_private.department_people(publisher_id,cong_id);
 alter table ca_private.department_duties enable row level security;
 alter table ca_private.department_people enable row level security;
 revoke all on ca_private.department_duties,ca_private.department_people from public,anon,authenticated;
