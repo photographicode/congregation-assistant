@@ -3619,7 +3619,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 try {
                     if (window.ui.publicLinkToken) {await window.PublicLinks.submitReport(report);window.ui.setSyncStatus('synced','Submitted');return report;}
                     else if (isCloudEnabled) {
-                        const { data, error } = await supabaseClient.rpc('save_congregation_reports', {p_cong_id:window.currentCongId,p_reports:[window.db.mapRepToDB(report)]});
+                        const payload=window.db.mapRepToDB(report);if(report.clearAuxiliary===true)payload.clear_auxiliary=true;
+                        const { data, error } = await supabaseClient.rpc('save_congregation_reports', {p_cong_id:window.currentCongId,p_reports:[payload]});
                         if (error) throw error;
                         if(!Array.isArray(data)||data.length!==1)throw Error('The report save could not be confirmed. Refresh and try again.');
                         report=window.db.mapRepFromDB(data[0]);
@@ -3653,7 +3654,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             revokeAP: async (reportId) => {
                 const report = window.db.reports.find(r => r.id === reportId);
                 if (!report) return;
-                await window.db.saveReport({ ...report, isAP: false, hours: 0, comments: '' });
+                await window.db.saveReport({ ...report, isAP: false, hours: 0, comments: '', clearAuxiliary:true });
                 window.ui.renderDashboard(); window.ui.showToast('Auxiliary pioneer hours and comments cleared.');
             },
 
