@@ -57,3 +57,20 @@ select test.assert(not has_function_privilege('anon','public.get_my_publisher_po
 select test.assert(not has_table_privilege('authenticated','ca_private.publisher_preferences','select'),'no direct preference table access');
 rollback;
 \echo PASS personal portal: own contacts, shared away dates, reminder conflicts, tenant denial, revoked and transferred accounts, assigned attendance only
+
+begin;
+update public.congregations set status='active' where id='a';
+insert into auth.users(id,email,email_confirmed_at) values('c1111111-1111-4111-8111-111111111111','queue-publisher@example.invalid',now());
+insert into public.congregation_access(cong_id,email,role,publisher_id) values('a','queue-publisher@example.invalid','publisher','pub-a');
+insert into ca_private.push_subscriptions(user_id,cong_id,email,endpoint,subscription,preferences) values('c1111111-1111-4111-8111-111111111111','a','queue-publisher@example.invalid','https://fcm.googleapis.com/fictional-never-send','{}','{"assignments":false}');
+insert into ca_private.publisher_preferences(cong_id,publisher_id,reminders) values('a','pub-a',jsonb_build_array(jsonb_build_object('id','private-reminder','title','PRIVATE PERSONAL TITLE','date',(now() at time zone 'Asia/Kolkata')::date,'time','00:00')));
+set request.jwt.claims='{"role":"service_role"}';
+select test.assert(public.queue_publisher_reminders()=1,'due personal reminder queues once');
+select test.assert(public.queue_publisher_reminders()=0,'queue producer deduplicates');
+select test.assert((select count(*)=1 and bool_and(body not like '%PRIVATE PERSONAL TITLE%') from ca_private.push_outbox where dedupe like 'publisher:%'),'push body contains no custom personal text');
+update public.congregation_access set active=false where email='queue-publisher@example.invalid';
+select public.queue_publisher_reminders();
+select test.assert((select count(*)=0 from ca_private.push_outbox where dedupe like 'publisher:%'),'revocation drops queued personal reminder');
+rollback;
+
+\echo PASS publisher queue dedupe, generic notification text and revoked-recipient cleanup
