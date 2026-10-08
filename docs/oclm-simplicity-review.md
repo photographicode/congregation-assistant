@@ -22,3 +22,7 @@ Representative regression flows cover sign-in/denial, role routing, publisher re
 Chromium and hosted WebKit suites cover representative phone, tablet and desktop widths, 100%/200% text, keyboard focus, visible active navigation, chooser and publish reachability. The full accessibility matrix spans seven themes and the built-in larger-text mode. Actual Realme 12 maximum display/font settings, iOS/Android installation and physical printing still need human acceptance; automated browser emulation does not certify every device or every accessibility criterion.
 
 No live data migration, provider switch, paid service or encryption-key migration is part of this UI release. Background push/email delivery remain inactive. The application is not E2EE; encrypted recovery exports are a separate feature.
+
+## Final data-preservation checks
+
+Saving away dates does not copy inferred appointment qualifications into permanent overrides. Only qualifications that the overseer actually changes create an override; previously explicit exceptions and role lists remain intact. Clearing meeting assignments retains part titles, songs, meeting start time, auxiliary settings and independent departmental records. Undo restores the people. The screenshot capture helper reads the fictional scheduler draft rather than assuming demo data lives in localStorage.
