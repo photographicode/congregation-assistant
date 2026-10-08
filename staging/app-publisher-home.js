@@ -56,4 +56,4 @@ window.CAPublisherLogin={
  ready(){if(!loginReady){status('pub-login-status','Check the login email before saving. Use Retry loading login.');return false;}return true;},
  async save(id){if(!window.ui.canManageAccess()||window.CADemo?.active)return true;const field=document.getElementById('pub-login-email'),email=field.value.trim().toLowerCase();if((loginExpected.length===0&&!email)||(loginExpected.length===1&&loginExpected[0]===email))return true;try{const {data,error}=await client.rpc('set_publisher_login',{p_cong_id:window.currentCongId,p_publisher_id:id,p_expected:loginExpected,p_email:email});if(error)throw Error(error.message);if(!Array.isArray(data))throw Error('Login could not be confirmed.');loginExpected=data;return true;}catch(e){status('pub-login-status','Publisher details saved, but login was not changed. Your email entry is kept. '+e.message);return false;}}
 };
-window.CAPublisherHome={install:c=>client=c,open,clear,hasUnsaved:()=>dirty};})();
+window.CAPublisherHome={install:c=>client=c,open,clear,goHome:()=>{if(home&&valid())selectView('home');},hasUnsaved:()=>dirty};})();
