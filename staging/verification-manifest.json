@@ -1,5 +1,5 @@
 {
-  "preparedAt": "2026-10-08T06:49:53.405Z",
+  "preparedAt": "2026-10-08T07:03:01.683Z",
   "backend": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "deploymentVerified": false,
   "oauthVerified": false,
@@ -22,7 +22,7 @@
     "app-push.js": "99163462f0ea13b13caa57a5e466283619f60b35ae29a00c85de642b7c5b497d",
     "app-home.js": "27568ad644b2e053d550d353f328314095da60c99c9b72f9186aeb64504d15c6",
     "app-demo.js": "8359d9c98c1635db7c57ca116ec42d447a0a5c0fd5b291b6a1b9e3a81ff4359f",
-    "app-departments.js": "363010eb08a2822cd5d77fb3b22d99af9db5ce3f5118245461e345a5fe6efcc8",
+    "app-departments.js": "92da3d8d149cd33d5c4043b66289887b29172d7d3331e1a713cfce3028f165e8",
     "app-transfer.js": "2c9f2235b4d30911c94da08485db628adc1b1cb3a043c9154c6d4ea00fd2698f",
     "app-imports.js": "817df658417f79b8d3b3260cb567e89b660af17dde9509da0b759f69347750fa",
     "service-worker.js": "e4910f8e91591e6c7445bcb7d9904fdbb78a3fdaf4481c1d200e60f8007c2f48",
