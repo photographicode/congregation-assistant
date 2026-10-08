@@ -144,3 +144,10 @@ reset role;rollback;
 \i scripts/check-workspace-applications.sql
 \i supabase/publisher-portal.sql
 \i scripts/check-publisher-portal.sql
+
+\i supabase/report-save.sql
+\i scripts/check-report-save.sql
+
+\i supabase/publisher-followup.sql
+
+\i scripts/check-publisher-followup.sql

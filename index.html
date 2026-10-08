@@ -1642,7 +1642,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Publishers</h2>
-                    <p class="text-teal-200/70 mt-1">Manage profiles for this congregation</p><button id="publisher-login-setup" type="button" class="ca-secondary-action" onclick="window.ui.openAccessManager(true)">Set up publisher login</button>
+                    <p class="text-teal-200/70 mt-1">Manage profiles for this congregation</p>
                 </div>
                 <div id="pub-filter-bar" class="flex gap-2 sm:gap-3 flex-wrap w-full sm:w-auto">
                     <select id="pub-s21-year" class="ca-service-select " onchange="window.ui.renderPublishers(window.ui.currentPubFilter || 'ALL', window.ui.currentPubFilterValue || '')" title="S-21 Service Year"></select>
@@ -2063,7 +2063,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             </div>
             <div class="overflow-y-auto custom-scrollbar p-6 sm:p-8">
                 <form id="form-publisher" onsubmit="window.ui.savePublisher(event)" class="space-y-5 sm:space-y-6">
-                    <input type="hidden" id="pub-id">
+                    <input type="hidden" id="pub-id"><div id="pub-login-section"><label for="pub-login-email">Google account email</label><input id="pub-login-email" type="email" maxlength="254" autocomplete="off" class="w-full px-4 py-2.5 rounded-xl"><p>This account opens this publisher’s personal pages. Leave blank to keep login disabled. Changing it removes the previous publisher login.</p><p id="pub-login-status" role="status"></p><button id="pub-login-retry" type="button" class="ca-secondary-action" hidden onclick="window.CAPublisherLogin.load(document.getElementById('pub-id').value)">Retry loading login</button></div>
                     <div class="grid grid-cols-2 gap-4 sm:gap-5">
                         <div class="col-span-2 md:col-span-1 space-y-2">
                             <label class="text-xs text-teal-200/80 font-bold uppercase tracking-wider">Full Name</label>
@@ -2161,7 +2161,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
                     <div class="pt-4 flex justify-end gap-3 sm:gap-4 border-t border-white/10 mt-2">
                         <button type="button" onclick="window.ui.closeModal('modal-add-publisher')" class="px-4 sm:px-6 py-2.5 rounded-xl text-sm font-medium text-teal-100/70 hover:bg-white/10 transition-all">Cancel</button>
-                        <button type="submit" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 sm:px-8 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(20,184,166,0.4)]">Commit Record</button>
+                        <button type="submit" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 sm:px-8 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(20,184,166,0.4)]">Save publisher</button>
                     </div>
                 </form>
             </div>
@@ -3613,16 +3613,18 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             saveReport: async (report) => {
                 if (!report.pubId || !Number.isInteger(Number(report.serviceYear)) || !Number.isInteger(Number(report.month)) || Number(report.month) < 0 || Number(report.month) > 11) throw new Error('Select a publisher, service year and month.');
                 if (Number(report.hours) < 0 || Number(report.studies) < 0) throw new Error('Hours and studies cannot be negative.');
-                report.id = `${report.pubId}_${report.serviceYear}_${report.month}`;
+                report = { ...report, id: window.db.reports.find(r=>r.pubId===report.pubId&&r.serviceYear===Number(report.serviceYear)&&r.month===Number(report.month))?.id || report.id || `${report.pubId}_${report.serviceYear}_${report.month}` };
                 if (isCloudConfigured && !isCloudEnabled) throw new Error('Cloud library unavailable. Reload before saving.');
                 window.ui.setSyncStatus('syncing', 'Saving…');
                 try {
                     if (window.ui.publicLinkToken) {await window.PublicLinks.submitReport(report);window.ui.setSyncStatus('synced','Submitted');return report;}
                     else if (isCloudEnabled) {
-                        const { error } = await supabaseClient.from('reports').upsert(window.db.mapRepToDB(report), { onConflict: 'id' });
+                        const { data, error } = await supabaseClient.rpc('save_congregation_reports', {p_cong_id:window.currentCongId,p_reports:[window.db.mapRepToDB(report)]});
                         if (error) throw error;
+                        if(!Array.isArray(data)||data.length!==1)throw Error('The report save could not be confirmed. Refresh and try again.');
+                        report=window.db.mapRepFromDB(data[0]);
                     }
-                    const idx = window.db.reports.findIndex(r => r.id === report.id);
+                    const idx = window.db.reports.findIndex(r => r.pubId===report.pubId&&r.serviceYear===report.serviceYear&&r.month===report.month);
                     if (idx > -1) window.db.reports[idx] = report; else window.db.reports.push(report);
                     window.db.writeLocalCache('reports');
                     window.ui.setSyncStatus(isCloudEnabled ? 'synced' : 'local', isCloudEnabled ? 'Synced' : 'Saved on this device');
@@ -3676,11 +3678,12 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     drafts.set(report.id,report);
                 }
                 if(!drafts.size) throw new Error('No reports match a publisher in this congregation.');
-                if(e.preview)return {kind:'reports',rows:[...drafts.values()],skipped,updates:[...drafts.values()].filter(r=>window.db.reports.some(p=>p.id===r.id)).length};
+                if(e.preview)return {kind:'reports',rows:[...drafts.values()],skipped,updates:[...drafts.values()].filter(r=>window.db.reports.some(p=>p.pubId===r.pubId&&p.serviceYear===r.serviceYear&&p.month===r.month)).length};
                 if(!isCloudEnabled) throw new Error('Cloud connection required to import reports.');
-                const {error}=await supabaseClient.from('reports').upsert([...drafts.values()].map(window.db.mapRepToDB),{onConflict:'id'});
+                const {data,error}=await supabaseClient.rpc('save_congregation_reports',{p_cong_id:window.currentCongId,p_reports:[...drafts.values()].map(window.db.mapRepToDB)});
                 if(error) throw error;
-                const merged=new Map(window.db.reports.map(r=>[r.id,r])); drafts.forEach((r,id)=>merged.set(id,r));
+                if(!Array.isArray(data)||data.length!==drafts.size)throw Error('The import could not be confirmed. Refresh before trying again.');
+                const key=r=>`${r.pubId}_${r.serviceYear}_${r.month}`,merged=new Map(window.db.reports.map(r=>[key(r),r])); data.map(window.db.mapRepFromDB).forEach(r=>merged.set(key(r),r));
                 window.db.reports=[...merged.values()]; window.db.writeLocalCache('reports');
                 window.ui.showToast(`Imported ${drafts.size} reports${skipped?`; skipped ${skipped} unmatched publishers`:''}.`);
                 window.ui.renderDashboard(); window.ui.renderAnalytics(); e.target.value='';
@@ -4514,7 +4517,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             openModal: (id, isEdit = false) => {
                 if(id === 'modal-add-publisher' && !isEdit) { document.getElementById('form-publisher').reset(); document.getElementById('pub-id').value = ''; document.getElementById('modal-pub-title').textContent = 'Publisher Record'; }
-                if(id === 'modal-add-publisher') {
+                if(id === 'modal-add-publisher') {window.CAPublisherLogin?.load(document.getElementById('pub-id').value);
                     const famSel = document.getElementById('pub-family-head');
                     const currentId = document.getElementById('pub-id').value;
                     const others = window.db.getPublishers().filter(p => p.id !== currentId).sort((a,b)=>a.name.localeCompare(b.name));
@@ -5006,7 +5009,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     spiritualStatus: document.getElementById('pub-spiritual-status').value,
                     familyHeadId: document.getElementById('pub-family-head').value || null
                 };
+                if(window.CAPublisherLogin&&!window.CAPublisherLogin.ready())return;
                 await window.db.savePublisher(pub);
+                if(window.CAPublisherLogin){document.getElementById('pub-id').value=pub.id;if(!await window.CAPublisherLogin.save(pub.id))return;}
                 window.db.setSFTS(pub.id, !!pub.isSFTS);
                 window.ui.showToast(id ? 'Profile updated!' : 'Profile successfully provisioned!'); 
                 window.ui.closeModal('modal-add-publisher'); 
@@ -5506,10 +5511,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     }
 
                     const report = { pubId: pubId, serviceYear: sy, month: month, sharedInMinistry: shared, studies: studies, hours: hours, comments: comments, isAP: isAP };
-                    if(groupOnly){if(!pub||!window.auth.verifiedGroups.includes(pub.group))throw new Error('Publisher is outside your assigned group.');batch.push(window.db.mapRepToDB(report));}else await window.db.saveReport(report);
+                    if(groupOnly&&(!pub||!window.auth.verifiedGroups.includes(pub.group)))throw new Error('Publisher is outside your assigned group.');batch.push(window.db.mapRepToDB(report));
                     count++;
                 }
-                if(groupOnly){const {data,error}=await supabaseClient.rpc('save_group_reports',{p_cong_id:window.currentCongId,p_year:sy,p_month:month,p_reports:batch});if(error)throw error;for(const r of data||[]){const record=window.db.mapRepFromDB(r);const i=window.db.reports.findIndex(x=>x.pubId===record.pubId&&x.serviceYear===sy&&x.month===month);if(i<0)window.db.reports.push(record);else window.db.reports[i]=record;}window.ui.renderOverseerView(window.auth.verifiedGroups[0]);}
+                if(batch.length){const {data,error}=await supabaseClient.rpc(groupOnly?'save_group_reports':'save_congregation_reports',groupOnly?{p_cong_id:window.currentCongId,p_year:sy,p_month:month,p_reports:batch}:{p_cong_id:window.currentCongId,p_reports:batch});if(error)throw error;if(!Array.isArray(data)||data.length!==batch.length)throw Error('The report batch could not be confirmed. Refresh before retrying.');for(const r of data){const record=window.db.mapRepFromDB(r);const i=window.db.reports.findIndex(x=>x.pubId===record.pubId&&x.serviceYear===sy&&x.month===month);if(i<0)window.db.reports.push(record);else window.db.reports[i]=record;}if(groupOnly)window.ui.renderOverseerView(window.auth.verifiedGroups[0]);}
                 window.ui.showToast(`Saved ${count} reports successfully!`);
                 window.ui.closeModal('modal-bulk-entry');
                 if(!groupOnly)window.ui.renderDashboard();
