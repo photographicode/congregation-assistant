@@ -606,3 +606,4 @@ body.ca-large-text #ca-midweek-root .section-name{font-size:1.25rem!important;li
 #publisher-personal-home .ca-personal-tabs button{background:#183f3a!important;color:#fff!important;border-color:#65827e!important}#publisher-personal-home .ca-personal-tabs button[aria-current="page"]{background:#d3f5ec!important;color:#123c34!important;border-color:#348a73!important}
 @media(prefers-reduced-motion:reduce){#publisher-personal-home,#publisher-personal-home *{transition:none!important;animation:none!important}}
 #publisher-personal-home .ca-personal-tabs{grid-template-columns:repeat(auto-fit,minmax(min(100%,8em),1fr))}.ca-publisher-report .s4-input{font-size:inherit!important}.ca-publisher-report p.s4-input{overflow-wrap:anywhere;white-space:normal}
+.ca-personal-header h1{font-size:1.4rem}.ca-personal-header{margin-top:1rem}.ca-personal-header p{overflow-wrap:anywhere}
