@@ -142,3 +142,5 @@ reset role;rollback;
 \i scripts/check-department-adoption.sql
 \i scripts/check-independent-noticeboard.sql
 \i scripts/check-workspace-applications.sql
+\i supabase/publisher-portal.sql
+\i scripts/check-publisher-portal.sql
