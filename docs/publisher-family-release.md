@@ -26,6 +26,6 @@ Before merge, run SQL contracts, meaningful app/PDF/recovery checks, Chromium/We
 
 ## Validation and limits
 
-Fixtures contain fictional people only. Tests cover tenant isolation, selected-report authorization, principal and delegated transfers, revocation, stale-save protection, existing report IDs, older backup restore, failed-save recovery, slow saves, double submission, navigation during saving, enlarged text, themes and searchable schedules. Browser handler timing measures local UI work, not end-to-end network latency.
+Fixtures contain fictional people only. Tests cover tenant isolation, selected-report authorization, principal and delegated transfers, revocation, stale-save protection, reporting-month rollover, existing report IDs, older backup restore, failed-save recovery, slow saves, double submission, navigation during saving, enlarged text, themes and searchable schedules. Browser handler timing measures local UI work, not end-to-end network latency.
 
 Background email/push delivery remains inactive pending provider configuration. This release does not activate encryption, migrate publisher data, change providers or billing, or publish unapproved policy wording. Physical Realme 12/iPhone testing and acceptance by younger and older users remain separate release acceptance work; browser simulation does not prove every device or browser combination.

@@ -53,7 +53,7 @@ declare principal text;result jsonb;begin
 end $$;
 
 create or replace function public.submit_family_report(p_cong_id text,p_publisher_id text,p_shared boolean,p_studies integer,p_hours numeric,p_comments text,p_expected jsonb) returns jsonb language plpgsql security definer set search_path='' as $$
-declare h jsonb;sy integer;mo integer;auxiliary boolean;begin
+declare h jsonb;sy integer;mo integer;auxiliary boolean;expected_record jsonb;begin
  -- Serialize with login changes and hold the publisher row against transfer/deletion.
  perform pg_advisory_xact_lock(hashtextextended('publisher-login:'||p_cong_id,0));
  perform 1 from public.publishers where cong_id=p_cong_id and id=p_publisher_id for share;
@@ -62,11 +62,13 @@ declare h jsonb;sy integer;mo integer;auxiliary boolean;begin
  sy=(h->'report'->>'serviceYear')::integer;mo=(h->'report'->>'month')::integer;
  perform pg_advisory_xact_lock(hashtextextended('publisher-report:'||p_cong_id||':'||p_publisher_id||':'||sy||':'||mo,0));
  h=public.get_my_family_report(p_cong_id,p_publisher_id);
- if coalesce(p_expected,'null'::jsonb) is distinct from coalesce(h->'report'->'record','null'::jsonb) then raise exception 'This report was already saved or changed on another device. Your entries are kept. Refresh and review the saved report before correcting it.' using errcode='40001';end if;
+ if p_expected->>'period' is distinct from h->'report'->>'period' then raise exception 'The reporting month changed. Your entries are kept. Review the current month before submitting.' using errcode='40001';end if;
+ expected_record=coalesce(p_expected->'record','null'::jsonb);
+ if expected_record is distinct from coalesce(h->'report'->'record','null'::jsonb) then raise exception 'This report was already saved or changed on another device. Your entries are kept. Refresh and review the saved report before correcting it.' using errcode='40001';end if;
  if not p_shared then p_studies=0;p_hours=0;p_comments='Not Participated';end if;
  auxiliary=p_shared and p_hours>0 and not (h->'report'->>'hoursRequired')::boolean;
  insert into public.reports as existing(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap) values(gen_random_uuid()::text,p_cong_id,p_publisher_id,sy,mo,p_shared,p_studies,p_hours,coalesce(p_comments,''),auxiliary)
- on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap where jsonb_build_object('shared',existing.shared_in_ministry,'studies',existing.studies,'hours',existing.hours,'comments',existing.comments,'auxiliaryPioneer',existing.is_ap) is not distinct from coalesce(p_expected,'null'::jsonb);
+ on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap where jsonb_build_object('shared',existing.shared_in_ministry,'studies',existing.studies,'hours',existing.hours,'comments',existing.comments,'auxiliaryPioneer',existing.is_ap) is not distinct from expected_record;
  if not found then raise exception 'This report changed while saving. Your entries are kept. Refresh and review before correcting it.' using errcode='40001';end if;
  return public.get_my_family_report(p_cong_id,p_publisher_id)||jsonb_build_object('saved',true);
 end $$;
