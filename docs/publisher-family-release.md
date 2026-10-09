@@ -10,7 +10,7 @@ Transferred principals lose account access, including family reporting. A transf
 
 ## Interface
 
-Publisher pages use Home, My parts, Schedule and Report, with Settings at the top. A compact next-assignment card and one obvious report action replace the stacked all-purpose page. Seven existing themes and larger-text settings remain available. Navigation wraps into two columns for large text, and notifications remain above it. OCLM part titles are readable headings; the title-edit field is secondary. Repeated last-assignment history lookups are cached within each scheduling render without changing qualification, availability or recency ordering.
+Publisher pages use Home, Assignments, Schedule and Report, with Settings at the top. A compact next-assignment card and one obvious report action replace the stacked all-purpose page. Seven existing themes and larger-text settings remain available. Navigation wraps into two columns for large text, and notifications remain above it. OCLM part titles are readable headings; the title-edit field is secondary. Repeated last-assignment history lookups are cached within each scheduling render without changing qualification, availability or recency ordering.
 
 The design uses familiar labelled navigation and text settings, informed by JW Library's Android help and W3C reflow/resize guidance:
 - https://www.jw.org/en/online-help/jw-library/android/features/
