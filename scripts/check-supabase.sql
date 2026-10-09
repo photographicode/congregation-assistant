@@ -151,3 +151,6 @@ reset role;rollback;
 \i supabase/publisher-followup.sql
 
 \i scripts/check-publisher-followup.sql
+
+\i supabase/publisher-family.sql
+\i scripts/check-publisher-family.sql

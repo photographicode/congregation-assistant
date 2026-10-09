@@ -2063,7 +2063,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             </div>
             <div class="overflow-y-auto custom-scrollbar p-6 sm:p-8">
                 <form id="form-publisher" onsubmit="window.ui.savePublisher(event)" class="space-y-5 sm:space-y-6">
-                    <input type="hidden" id="pub-id"><div id="pub-login-section"><label for="pub-login-email">Google account email</label><input id="pub-login-email" type="email" maxlength="254" autocomplete="off" class="w-full px-4 py-2.5 rounded-xl"><p>This account opens this publisher’s personal pages. Leave blank to keep login disabled. Changing it removes the previous publisher login.</p><p id="pub-login-status" role="status"></p><button id="pub-login-retry" type="button" class="ca-secondary-action" hidden onclick="window.CAPublisherLogin.load(document.getElementById('pub-id').value)">Retry loading login</button></div>
+                    <input type="hidden" id="pub-id"><div id="pub-login-section"><label for="pub-login-email">Google account email</label><input id="pub-login-email" type="email" maxlength="254" autocomplete="off" class="w-full px-4 py-2.5 rounded-xl"><p>Use the publisher’s Google email. The first publisher connected to an email has the personal pages. Using that email on another publisher also approves family report submission, without sharing their contact details or availability. Leave blank to remove this publisher’s access.</p><p id="pub-login-status" role="status"></p><button id="pub-login-retry" type="button" class="ca-secondary-action" hidden onclick="window.CAPublisherLogin.load(document.getElementById('pub-id').value)">Retry loading login</button></div>
                     <div class="grid grid-cols-2 gap-4 sm:gap-5">
                         <div class="col-span-2 md:col-span-1 space-y-2">
                             <label class="text-xs text-teal-200/80 font-bold uppercase tracking-wider">Full Name</label>
@@ -2590,9 +2590,11 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
   function weekUseCount(personId){ return allFields().filter(id=>recordFor(id).personId===personId).length; }
   function personHasDifferentPart(personId,currentField){ return allFields().some(id=>id!==currentField && recordFor(id).personId===personId); }
 
+  const partRecencyMemo=new Map();
   function lastPartWeek(personId,fieldId){
     const role=assignmentType(state.currentWeek,fieldId,recordFor(fieldId));
-    return Object.keys(state.assignments).filter(w=>w<state.currentWeek && Object.entries(state.assignments[w]||{}).some(([id,r])=>r?.personId===personId && !['cancelled','reassigned'].includes(r.status)&&(assignmentType(w,id,r)===role))).sort().at(-1)||'';
+    const key=personId+'|'+role;if(partRecencyMemo.has(key))return partRecencyMemo.get(key);
+    const result=Object.keys(state.assignments).filter(w=>w<state.currentWeek && Object.entries(state.assignments[w]||{}).some(([id,r])=>r?.personId===personId && !['cancelled','reassigned'].includes(r.status)&&(assignmentType(w,id,r)===role))).sort().at(-1)||'';partRecencyMemo.set(key,result);return result;
   }
   function compareRecency(a,b,fieldId){return lastPartWeek(a.id,fieldId).localeCompare(lastPartWeek(b.id,fieldId));}
   function suggestPerson(role,fieldId){
@@ -2608,6 +2610,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
   const collapsedSections=new Set(window.innerWidth<=640?['field','living','auxiliary']:[]);
   function renderSchedule(){
+    partRecencyMemo.clear();
     const html=sections().map(section=>{
       const visibleFields=section.fields.filter(f=>{
         const program=state.program.parts?.[f.id];
@@ -2639,7 +2642,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     if(record.personId && !person) assignText='Unknown person';
     return `<div class="assign-row">
       <div class="row-num">${index}</div>
-      <div class="row-main"><div class="row-title-line"><input class="row-title-input" value="${esc(title)}" aria-label="Edit part title" onchange="window.setPartTitle('${field.id}',this.value)" onkeydown="if(event.key==='Enter'){this.blur();}"></div><div class="row-meta">${title!==(LABELS[field.id]||field.label)?`<span class="meta">${esc(LABELS[field.id]||field.label)}</span>`:''}${contextParts.map(x=>`<span class="tag ${x==='Optional'?'optional':''}">${esc(x)}</span>`).join('')}${field.duration?`<details class="ca-part-timing"><summary>Change timing</summary><label>Minutes<input type="number" min="0" max="60" value="${parseInt(field.duration)||0}" aria-label="Minutes for ${esc(field.label)}" onchange="window.setPartMinutes('${field.id}',this.value)"></label></details>`:''}</div></div>
+      <div class="row-main"><div class="row-title-line"><strong class="ca-part-heading">${esc(title)}</strong><details class="ca-part-title-edit"><summary>Edit title</summary><input class="row-title-input" value="${esc(title)}" aria-label="Edit part title" onchange="window.setPartTitle('${field.id}',this.value)" onkeydown="if(event.key==='Enter'){this.blur();}"></details></div><div class="row-meta">${title!==(LABELS[field.id]||field.label)?`<span class="meta">${esc(LABELS[field.id]||field.label)}</span>`:''}${contextParts.map(x=>`<span class="tag ${x==='Optional'?'optional':''}">${esc(x)}</span>`).join('')}${field.duration?`<details class="ca-part-timing"><summary>Change timing</summary><label>Minutes<input type="number" min="0" max="60" value="${parseInt(field.duration)||0}" aria-label="Minutes for ${esc(field.label)}" onchange="window.setPartMinutes('${field.id}',this.value)"></label></details>`:''}</div></div>
       <div class="row-right">
         <button class="assignee ${person?'':'unassigned'}" onclick="window.openAssign('${field.id}')" aria-label="${person?'Change':'Choose'} person for ${esc(field.label)}${person?': '+esc(person.name):''}">
           <span class="assignee-copy"><span class="assignee-label">${person?'Assigned to':'Not assigned'}</span><span class="assignee-name">${esc(assignText)}</span></span><span class="assignee-arrow">›</span>
@@ -2676,7 +2679,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
     });
     if(!people.length){$('candidateList').innerHTML='<div style="padding:28px;text-align:center;font-size:10px;color:#8d969d">No qualified people found.</div>';return;}
     $('candidateList').innerHTML=people.map(p=>{
-      const recommended=suggestion?.id===p.id; const same=personHasDifferentPart(p.id,fieldId); const weekCount=weekUseCount(p.id); const historic=assignmentUseCount(p.id);
+      const recommended=suggestion?.id===p.id; const same=personHasDifferentPart(p.id,fieldId); const weekCount=weekUseCount(p.id);
       return `<button class="candidate ${recommended?'recommended':''}" onclick="window.setAssignment('${fieldId}','${p.id}');window.closeAssignModal()"><div class="candidate-avatar">${initials(p.name)}</div><div><div>${recommended?'<div class="recommend">Suggested</div>':''}<div class="candidate-name">${esc(p.name)}</div><div class="candidate-meta">${weekCount?`<span class="candidate-tag ${weekCount>1?'red':'gold'}">${weekCount} part${weekCount>1?'s':''} this week</span>`:''}${same?'<span class="candidate-tag red">Another part</span>':''}<span class="candidate-tag">Same part: ${lastPartWeek(p.id,fieldId)?esc(weekLabel(lastPartWeek(p.id,fieldId))):'Not previously assigned'}</span></div></div><div class="candidate-right">${p.appointment==='MS'?'MS':p.appointment==='Elder'?'Elder':p.gender==='Male'?'Brother':'Sister'}</div></button>`;
     }).join('');
   }
