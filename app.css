@@ -1,3 +1,5 @@
+@font-face{font-family:"Noto Sans";src:url("assets/fonts/NotoSans-Regular.woff2") format("woff2");font-style:normal;font-weight:100 600;font-display:swap}
+@font-face{font-family:"Noto Sans";src:url("assets/fonts/NotoSans-Bold.woff2") format("woff2");font-style:normal;font-weight:650 900;font-display:swap}
 /* Finishing layer: quiet surfaces, readable content, stable navigation. */
 :root { --ca-accent: #2dd4bf; --ca-ring: #5eead4; }
 body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
@@ -637,3 +639,42 @@ body.ca-publisher-workspace #ca-desktop-topbar{display:none!important;}
 #personal-report-readable-month{display:none;white-space:normal;overflow-wrap:break-word;}
 #publisher-personal-home[data-large=true] #personal-report-month,body.ca-large-text #personal-report-month{display:none;}
 #publisher-personal-home[data-large=true] #personal-report-readable-month,body.ca-large-text #personal-report-readable-month{display:block;}
+
+/* Publisher appearance is local to this workspace; OCLM keeps its own palette. */
+#publisher-personal-home[data-publisher-theme=glass]{--publisher-bg:#090b0f;--publisher-card:#1b1e25;--publisher-text:#f7f8fb;--publisher-muted:#c7cbd5;--publisher-border:#7b808e;--publisher-accent:#f3f4f7;--publisher-hero:#353a45;background:radial-gradient(ellipse at 95% 0,#ffffff12,transparent 42%),radial-gradient(ellipse at 0 60%,#65708c15,transparent 50%),linear-gradient(155deg,#14171e,#090b0f 70%);border-radius:1.5rem;}
+#publisher-personal-home[data-publisher-theme=default],#publisher-personal-home[data-publisher-theme=green]{--publisher-bg:#071d16;--publisher-card:#143b2d;--publisher-text:#f5faf3;--publisher-muted:#d0dfcc;--publisher-border:#648271;--publisher-accent:#d7eaa6;--publisher-hero:#27582f;}
+#publisher-personal-home[data-publisher-theme=blue]{--publisher-bg:#101d31;--publisher-card:#1b304c;--publisher-text:#f5f8ff;--publisher-muted:#d1ddf0;--publisher-border:#7890ad;--publisher-accent:#d1e1ff;--publisher-hero:#254564;}
+#publisher-personal-home[data-publisher-theme=crimson]{--publisher-bg:#25161d;--publisher-card:#40262f;--publisher-text:#fff4f7;--publisher-muted:#ead3da;--publisher-border:#a48b90;--publisher-accent:#f4d9c3;--publisher-hero:#63363f;}
+#publisher-personal-home[data-publisher-theme=dark]{--publisher-bg:#121b18;--publisher-card:#24342d;--publisher-text:#f5faf3;--publisher-muted:#d0dfcc;--publisher-border:#88978c;--publisher-accent:#d7eaa6;--publisher-hero:#32493b;}
+#publisher-personal-home:is([data-publisher-theme=light],[data-publisher-theme=scheduler]){--publisher-bg:#f3f6f1;--publisher-card:#fff;--publisher-text:#163b2b;--publisher-muted:#425e4e;--publisher-border:#718b7b;--publisher-accent:#d7eaa6;--publisher-hero:#e0edce;}
+.ca-publisher-congregation{display:block;font-size:.88em;line-height:1.5;color:var(--publisher-muted);margin-top:.3rem;overflow-wrap:break-word;}
+#publisher-personal-home[data-publisher-theme=glass] .ca-personal-card{background:linear-gradient(140deg,#ffffff0f,#ffffff03),#181b22ed;border:1px solid #757b88;box-shadow:inset 0 1px #ffffff20,0 16px 40px #0003;}
+#publisher-personal-home[data-publisher-theme=glass] .ca-personal-card:first-of-type:has(#personal-assignment-reminder){background:radial-gradient(ellipse at 100% 0,#ffffff15,transparent 65%),linear-gradient(140deg,#373b46,#181b22);}
+#publisher-personal-home[data-publisher-theme=glass] .ca-publisher-dock{background:linear-gradient(160deg,#333741ee,#151820f5);border-color:#818794;box-shadow:inset 0 1px #fff3,0 12px 36px #0006;}
+#publisher-personal-home[data-publisher-theme=glass] .ca-publisher-dock button[aria-current=page],#publisher-personal-home[data-publisher-theme=glass] .ca-publisher-avatar{background:linear-gradient(145deg,#fff,#d9dce4);color:#171a20;box-shadow:inset 0 -2px #b5bbc7;}
+#publisher-personal-home[data-publisher-theme=glass] .ca-personal-card .ca-primary-action{background:linear-gradient(145deg,#fff,#d9dce4)!important;color:#171a20!important;border-color:#d9dce4;box-shadow:0 5px 16px #0003;}
+#publisher-personal-home[data-publisher-theme=glass] .ca-publisher-icon{background:linear-gradient(145deg,#383d48,#171a21);color:#f7f8fb;border-color:#818794;box-shadow:inset 0 1px #ffffff25;}
+@supports(backdrop-filter:blur(12px)){#publisher-personal-home[data-publisher-theme=glass] :is(.ca-publisher-dock,.ca-personal-card){backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}}
+.ca-home-reminders{list-style:none;padding:0;margin:0;}.ca-home-reminders li{padding:.7rem 0;border-bottom:1px solid var(--publisher-border);}.ca-home-reminders span{display:block;color:var(--publisher-muted);margin-top:.3rem;}
+#publisher-personal-home :is(.ca-personal-card,.ca-original-report,.ca-personal-header){animation:ca-glass-arrive .18s ease-out;}
+#publisher-personal-home :is(.ca-publisher-icon,.ca-publisher-dock button,.ca-personal-card button){transition:background-color .15s ease,box-shadow .15s ease,transform .12s ease;}
+#publisher-personal-home :is(.ca-publisher-icon,.ca-publisher-dock button,.ca-personal-card button):active{transform:scale(.98);}
+@keyframes ca-glass-arrive{from{transform:translateY(5px);}to{transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){#publisher-personal-home,#publisher-personal-home *{animation:none!important;transition:none!important;}}
+/* The monochrome treatment stops at dashboard cards and navigation chrome. */
+body:not(.ca-publisher-workspace):not(.public-mode):not(.mws-public-mode) :is(#app-header,#mobile-nav,.mobile-top-header,#ca-desktop-topbar){background:linear-gradient(145deg,#272a33f5,#101319fa)!important;box-shadow:inset 0 1px #ffffff12,0 8px 28px #0003;border-color:#767d89;color:#f7f8fb;}
+body:is([data-theme=light],[data-theme=scheduler]):not(.ca-publisher-workspace) :is(#app-header,#mobile-nav,.mobile-top-header,#ca-desktop-topbar){background:linear-gradient(145deg,#fdfdfffa,#e8ebf2f5)!important;color:#19212e;}
+:is(#tab-dashboard,#tab-overseer)>.glass-panel,:is(#tab-dashboard,#tab-overseer) .ca-help-card{border-radius:1.4rem;box-shadow:inset 0 1px #ffffff20,0 12px 32px #0002;background-image:linear-gradient(145deg,#ffffff0d,#ffffff02);}
+.ca-workspace-congregation{font-size:.95rem;line-height:1.5;margin-top:.4rem;}
+#admin-publisher-reminders{padding:1.25rem;}#admin-publisher-reminders summary{min-height:48px;font-weight:700;cursor:pointer;}#admin-publisher-reminders p{line-height:1.6;margin-block:.8rem;}#admin-publisher-reminders label{display:flex;flex-direction:column;gap:.5rem;margin-block:.8rem;}#admin-publisher-reminders :is(input,select){width:100%;min-width:0;min-height:48px;padding:.75rem;border:1px solid currentColor;border-radius:.8rem;font:inherit;background:var(--ca-surface,#153b35);color:var(--ca-text,#f8fafc);}
+/* Owner command centre: one neutral palette, readable with every global theme. */
+body.super-admin-theme{background:radial-gradient(ellipse at top right,#343a47,#0b0d12 60%)!important;}
+body.super-admin-theme #tab-superadmin{color:#f8f9fc;background:linear-gradient(145deg,#ffffff0b,#ffffff01);border:1px solid #747c89;box-shadow:inset 0 1px #ffffff20,0 20px 55px #0004;}
+body.super-admin-theme #tab-superadmin :is(h1,h2,h3,h4,p,span,label,summary,small,strong){color:inherit!important;}
+body.super-admin-theme #tab-superadmin :is(.glass-panel,.ca-owner-request,.ca-admin-overview>div,.ca-admin-offer,.ca-owner-queue-filter){background:linear-gradient(145deg,#ffffff0c,#ffffff02),#171b23!important;color:#f8f9fc!important;border-color:#78808e!important;box-shadow:inset 0 1px #ffffff20,0 12px 32px #0003;border-radius:1.25rem;}
+body.super-admin-theme #tab-superadmin :is(input,select,textarea){background:#0e121a!important;color:#f8f9fc!important;border-color:#7b8495!important;min-height:48px;}
+body.super-admin-theme #tab-superadmin button{background:linear-gradient(145deg,#313743,#191e29)!important;color:#f8f9fc!important;border:1px solid #818998!important;min-height:48px;border-radius:.85rem;}
+body.super-admin-theme #tab-superadmin :is(.ca-owner-primary,.ca-primary-action,button[aria-pressed=true]){background:linear-gradient(145deg,#fff,#d9dfe9)!important;color:#121924!important;border-color:#e5e8ef!important;}
+body.super-admin-theme #tab-superadmin :is(.ca-owner-primary,.ca-primary-action,button[aria-pressed=true]) :is(span,strong){color:#121924!important;}
+body.super-admin-theme #tab-superadmin button:active{transform:translateY(1px);}
+@supports(backdrop-filter:blur(10px)){body.super-admin-theme #tab-superadmin :is(.glass-panel,.ca-owner-request,.ca-admin-overview>div){backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}}

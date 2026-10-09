@@ -1,3 +1,9 @@
+## Current release status — 9 October 2026
+
+The live app uses the reviewed Supabase project `ejosykrxjvwrhxfnputo`. Google approved-account access and congregation/role enforcement are active. Publisher personal pages and explicitly approved family report access are deployed. Email/push sender activation and end-to-end encryption remain inactive. The historical progress notes below describe earlier stages and must not be used as current setup instructions.
+
+The next release adds scoped publisher appearance, administrator reminders, Noto Sans web fonts, one-operation backup recovery, combined contact/report CSV review, and current-plus-previous COMPLETE service-year report retention. Its concrete rollout and test conditions are in [publisher-glass-rollout.md](docs/publisher-glass-rollout.md). Do not advertise a prepared release as deployed until its production verification passes. The public product guide uses fictional screenshots.
+
 # Congregation Assistant
 
 A static browser application for publisher records, service reports, attendance, emergency contacts, and midweek scheduling. There is no production build step. Serve `index.html`, `app.css`, `app-support.js`, and `pdf-tools.js` together.
