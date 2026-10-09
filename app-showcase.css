@@ -72,3 +72,6 @@ body{--showcase-action:#d1f3dd;--showcase-action-ink:#153426;}body[data-theme=bl
 #auth-screen[data-account-signin=google] .ca-legacy-signin{display:none;}
 @media(max-width:600px){#publisher-personal-home .ca-meeting-section .ca-personal-schedule-row{grid-template-columns:minmax(0,1fr);}}
 @media(forced-colors:active){#publisher-personal-home .ca-meeting-section :is(h3,.ca-personal-schedule-row){background:Canvas!important;color:CanvasText!important;}#publisher-personal-home .ca-meeting-section .ca-personal-schedule-row :is(strong,span){color:CanvasText!important;}}
+
+/* At enlarged text, keep the publisher name on a full-width row. */
+#publisher-personal-home[data-large=true] .ca-publisher-welcome{display:flex;}
