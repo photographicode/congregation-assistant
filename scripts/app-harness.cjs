@@ -50,7 +50,7 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
             const call = { table, operations: [] }; calls.push(call);
             const chain = new Proxy({}, { get: (_, key) => key === 'then' ? ((resolve, reject) => thrown ? reject(thrown) : resolve(typeof outcome === 'function' ? outcome(call) : outcome)) : (...args) => { call.operations.push([key, ...args]); return chain; } });
             return chain;
-        }, rpc: async (name, args) => { calls.push({ rpc: name, args }); if (thrown) throw thrown; return outcome; },
+        }, rpc: async (name, args) => { calls.push({ rpc: name, args }); if (thrown) throw thrown; if(name==='save_congregation_reports'&&!outcome.error&&(!outcome.data||(Array.isArray(outcome.data)&&!outcome.data.length)))return {data:args.p_reports.map(r=>({...r,id:r.id||'fixture-report-id'})),error:null}; return outcome; },
         auth: { getSession: async () => ({ data: { session: null } }), signInWithOAuth: async () => ({ error: null }), signOut: async () => ({ error: null }) }
     };
     const window = {
