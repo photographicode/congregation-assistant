@@ -627,3 +627,10 @@ body.ca-publisher-workspace :is(#mobile-nav,#nav-admin,#app-header,#mobile-top-h
 .ca-original-report .s4-custom-check input{inset:0;width:100%;height:100%;opacity:0;z-index:1;cursor:pointer;}
 #personal-report-chosen-name{display:none;margin-top:.5rem;color:#334155;overflow-wrap:anywhere;line-height:1.5;}#publisher-personal-home[data-large=true] #personal-report-chosen-name,body.ca-large-text #personal-report-chosen-name{display:block;}
 body.ca-publisher-workspace #ca-desktop-topbar{display:none!important;}
+/* At enlarged text sizes, give the person's name the full row. */
+#publisher-personal-home[data-large=true] .ca-publisher-toolbar{position:relative;align-items:flex-start;}
+#publisher-personal-home[data-large=true] .ca-publisher-welcome{flex-direction:column;align-items:flex-start;width:100%;gap:.75rem;}
+#publisher-personal-home[data-large=true] .ca-publisher-welcome>div{width:100%;}
+#publisher-personal-home[data-large=true] .ca-publisher-welcome small{display:none;}
+#publisher-personal-home[data-large=true] .ca-publisher-welcome strong{overflow-wrap:break-word;}
+#publisher-personal-home[data-large=true] #personal-settings{position:absolute;right:0;top:0;}
