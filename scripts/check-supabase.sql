@@ -154,3 +154,7 @@ reset role;rollback;
 
 \i supabase/publisher-family.sql
 \i scripts/check-publisher-family.sql
+
+\i scripts/check-administrator-reminders.sql
+
+\i scripts/check-report-retention.sql

@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -579,7 +579,7 @@ body.super-admin-theme .ca-topbar-actions::after{content:"SUPERADMIN";font-size:
     --sidebar:226px;
   }
   #ca-midweek-root *{box-sizing:border-box}
-  #ca-midweek-root html,#ca-midweek-root{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  #ca-midweek-root html,#ca-midweek-root{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",sans-serif;-webkit-font-smoothing:antialiased}
   #ca-midweek-root{overflow-x:hidden}
   #ca-midweek-root button,#ca-midweek-root input,#ca-midweek-root select,#ca-midweek-root textarea{font:inherit;color:inherit}
   #ca-midweek-root button{border:0;background:none;cursor:pointer}
@@ -1141,7 +1141,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Home and Analytics</div><p class="mt-1">Home brings together submission status, service totals and important congregation indicators. Analytics provides broader roster and service summaries from the information already stored in the database.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Forms and downloads</div><p class="mt-1">S-21, S-3-E and S-88-E are generated from their supplied form templates. Application theme settings do not alter the appearance of those official forms.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Settings and data portability</div><p class="mt-1">Settings contains account controls, subscription information, application appearance, font selection, data import/export and the data-management tools available to the current administrator.</p></div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Accessibility and appearance</div><p class="mt-1">The application provides four interface themes and a Noto Sans/Poppins font choice. Theme colors are intended for the interface only, with explicit contrast and focus treatment for interactive controls.</p></div>
+                <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Accessibility and appearance</div><p class="mt-1">The application uses Noto Sans for clear, consistent text and offers interface appearance choices. Theme colors are intended for the interface only, with explicit contrast and focus treatment for interactive controls.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Cloud synchronization</div><p class="mt-1">When cloud mode is configured, congregation records, publishers, reports and enabled modules are synchronized with the connected database. The sync indicator communicates the current application state.</p></div>
                 <div class="rounded-2xl bg-white/5 border border-white/10 p-4"><div class="font-bold text-teal-300">Subscription and access</div><p class="mt-1">Trial and active status control access to the application. An expired subscription is locked until an authorized administrator restores an eligible status.</p></div>
                 <div class="flex justify-end pt-1"><button type="button" onclick="window.ui.closeModal('modal-about')" class="px-5 py-2.5 rounded-xl bg-white/10 text-white font-bold">Close</button></div>
@@ -1263,10 +1263,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         </div>
 
         <!-- DASHBOARD TAB -->
-        <div id="tab-personal" class="tab-content"><div id="publisher-personal-home" class="space-y-4 p-4" aria-live="polite"></div></div><div id="tab-dashboard" class="tab-content space-y-6"><section id="admin-home-tasks" class="ca-help-card" aria-live="polite" hidden></section>
+        <div id="tab-personal" class="tab-content"><div id="publisher-personal-home" class="space-y-4 p-4" aria-live="polite"></div></div><div id="tab-dashboard" class="tab-content space-y-6"><section id="admin-home-tasks" class="ca-help-card" aria-live="polite" hidden></section><details id="admin-publisher-reminders" class="ca-help-card" hidden><summary>Give publishers a reminder</summary><p>Save a reminder to an approved publisher account, or to all approved publisher accounts. It appears when they open the app and can be included in their calendar reminders. Background push and email are not activated.</p><form id="admin-reminder-form"><label>Who is it for?<select name="publisher" id="admin-reminder-publisher"><option value="">All approved publisher accounts</option></select></label><label>Reminder<input name="title" maxlength="75" required placeholder="For example, bring your study material"></label><div class="ca-personal-fields"><label>Date<input name="date" type="date" required></label><label>Time<input name="time" type="time" value="09:00" required></label></div><button type="submit" class="ca-primary-action">Save reminder online</button><p id="admin-reminder-status" role="status"></p></form></details>
             <div class="flex justify-between items-end flex-wrap gap-4">
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Congregation Overview</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Congregation Overview</h2><p class="ca-workspace-congregation" id="admin-profile-congregation"></p>
                     <p class="text-teal-200/70 mt-1">Monthly reports and service totals</p>
                 </div>
                 <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
@@ -2023,9 +2023,9 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     <p class="text-[10px] text-teal-100/50">Changes the application interface only. S-21, S-3-E and S-88-E documents keep their original form fonts.</p>
                 </div>
 
-                <details id="workspace-recovery" class="ca-help-card ca-recovery-flow" hidden><summary><strong>Back up or restore everything</strong></summary><nav class="ca-dept-tabs" aria-label="Backup tools"><button type="button" onclick="window.CARecovery.mode('backup')">Make a backup</button><button type="button" onclick="window.CARecovery.mode('restore')">Restore a backup</button></nav><p>Use a full encrypted backup for records, schedules, duties and meeting settings. Use CSV imports below for publisher records or reports only.</p><label id="recovery-file-step" hidden>1. Choose your encrypted backup<input type="file" accept=".json" aria-label="Encrypted workspace backup"></label><label><span id="recovery-password-label">1. Choose a backup password — at least 12 characters</span><input type="password" autocomplete="new-password" aria-label="Backup password" minlength="12"></label><button id="recovery-export" type="button" onclick="window.CARecovery.export()">2. Download encrypted backup</button><button id="recovery-restore" type="button" onclick="window.CARecovery.restore()" hidden>Review backup</button><div id="recovery-review" hidden></div><p role="status"></p></details><!-- Data Import / Export -->
+                <details id="workspace-recovery" class="ca-help-card ca-recovery-flow" hidden><summary><strong>Back up or restore everything</strong></summary><nav class="ca-dept-tabs" aria-label="Backup tools"><button type="button" onclick="window.CARecovery.mode('backup')">Make a backup</button><button type="button" onclick="window.CARecovery.mode('restore')">Restore a backup</button></nav><p>Field service reports keep the current and previous complete service year. Older years are removed when the service year changes in September; restoration leaves expired reports out. Downloaded backups are separate: remove old copies from your devices and storage when no longer needed.</p><p>Use a full encrypted backup for records, schedules, duties and meeting settings. Use CSV imports below for publisher records or reports only.</p><label id="recovery-file-step" hidden>1. Choose your encrypted backup<input type="file" accept=".json" aria-label="Encrypted workspace backup"></label><label><span id="recovery-password-label">1. Choose a backup password — at least 12 characters</span><input type="password" autocomplete="new-password" aria-label="Backup password" minlength="12"></label><button id="recovery-export" type="button" onclick="window.CARecovery.export()">2. Download encrypted backup</button><button id="recovery-restore" type="button" onclick="window.CARecovery.restore()" hidden>Review backup</button><div id="recovery-review" hidden></div><p role="status"></p></details><!-- Data Import / Export -->
                 <div class="space-y-3 pb-5 border-b border-white/10">
-                    <h4 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Bring in or download records</h4><p>1. Choose a file · 2. Check the summary · 3. Import</p><p>Import publisher records first, then their reports. Existing matching records will be updated.</p><div id="import-review" class="ca-import-review" hidden></div>
+                    <h4 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Bring in or download records</h4><p>1. Choose a file · 2. Check the summary · 3. Import</p><p>Use one combined CSV to import publisher records and monthly reports together, or choose a separate file below. Check the summary first. Matching records will be updated; other records stay in place.</p><button type="button" class="ca-primary-action" onclick="document.getElementById('csv-combined-file').click()">Import publishers and reports together</button><details><summary>Get a sample spreadsheet</summary><p>Fictional examples only. Replace the sample values. Keep the same ID for each publisher; repeat their contact details identically for each monthly report. Dates: YYYY-MM-DD. Service year: ending year (September 2026 = 2027). Use full English month names and TRUE/FALSE. For existing records, start with your current export so empty cells do not clear information.</p><button type="button" onclick="window.CAImports.template('combined')">Combined sample CSV</button><button type="button" onclick="window.CAImports.template('contacts')">Publisher sample CSV</button><button type="button" onclick="window.CAImports.template('reports')">Report sample CSV</button><p>CSV contains unencrypted information. Keep files private. Importing an email does not approve account access.</p></details><input type="file" id="csv-combined-file" accept=".csv" class="hidden" onchange="window.CAImports.combined(event)"><div id="import-review" class="ca-import-review" hidden></div>
                     <div class="grid grid-cols-2 gap-2">
                         <button type="button" onclick="document.getElementById('csv-file').click()" class="w-full glass-panel px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-white/10">Import publisher records</button>
                         <button type="button" onclick="window.ui.downloadContacts()" class="w-full glass-panel px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-white/10">Download publisher records</button>
@@ -2880,7 +2880,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
-        window.AttendanceCalendar?.install(supabaseClient);window.CAOnboarding?.install(supabaseClient);window.CAOCLMCloud?.install(supabaseClient);window.CAPublisherHome?.install(supabaseClient);window.CARecovery?.install(supabaseClient);window.CAPush?.install(supabaseClient);window.CAHome?.install(supabaseClient);window.CADepartments?.install(supabaseClient);window.CATransfer?.install(supabaseClient);window.CAOnlineSync?.install(supabaseClient);
+        window.AttendanceCalendar?.install(supabaseClient);window.CAOnboarding?.install(supabaseClient);window.CAOCLMCloud?.install(supabaseClient);window.CAPublisherHome?.install(supabaseClient);window.CARecovery?.install(supabaseClient);window.CAImports?.install(supabaseClient);window.CAPush?.install(supabaseClient);window.CAHome?.install(supabaseClient);window.CADepartments?.install(supabaseClient);window.CATransfer?.install(supabaseClient);window.CAOnlineSync?.install(supabaseClient);
         window.sysPromptState = { actionCallback: null, requiresPassword: false };
         window.currentCongId = null;
 
@@ -3147,8 +3147,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 return '-';
             },
             getCurrentServiceYearInfo: () => {
-                const now = new Date(); const m = now.getMonth(); const y = now.getFullYear();
-                return { serviceYear: m >= 8 ? y + 1 : y, month: m };
+                if(window.CARecovery?.yearInfo)return window.CARecovery.yearInfo();
+                const parts=new Intl.DateTimeFormat('en',{year:'numeric',month:'numeric',timeZone:'Asia/Kolkata'}).formatToParts(new Date()),y=Number(parts.find(p=>p.type==='year').value),m=Number(parts.find(p=>p.type==='month').value)-1;return {serviceYear:m>=8?y+1:y,month:m};
             },
             getISTPreviousMonthInfo: () => {
                 const now = new Date(); const ist = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 5.5));
@@ -3341,6 +3341,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                         }
 
                         if(needsPublishers){
+                        await window.CARecovery?.loadPolicy(congId);
                         const pData=await window.db.readScopedRows(()=>{let query=supabaseClient.from('publishers').select('*').eq('cong_id',congId);return groupOnly?query.in('service_group',window.auth.verifiedGroups):query;});
                         window.db.publishers = (pData || []).map(window.db.mapPubFromDB);
                         if(!groupOnly)window.db.writeLocalCache('publishers');
@@ -3565,14 +3566,14 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             cacheKey: (type) => `ca_cache_${type}_${window.currentCongId || 'global'}`,
             writeLocalCache: (type) => {
                 try {
-                    const value = type === 'publishers' ? window.db.publishers : type === 'reports' ? window.db.reports : window.db.attendance;
+                    const value = type === 'publishers' ? window.db.publishers : type === 'reports' ? window.db.getReports() : window.db.attendance;
                     localStorage.setItem(window.db.cacheKey(type), JSON.stringify(value || []));
                 } catch (e) { console.warn(`Local ${type} cache write failed:`, e); }
             },
             readLocalCache: (type) => {
                 try {
                     const raw = localStorage.getItem(window.db.cacheKey(type));
-                    return raw ? JSON.parse(raw) : null;
+                    const parsed=raw?JSON.parse(raw):null;if(type==='reports'&&Array.isArray(parsed)){const current=window.utils.getCurrentServiceYearInfo().serviceYear,kept=parsed.filter(r=>r.serviceYear>=current-1&&r.serviceYear<=current);if(kept.length!==parsed.length)localStorage.setItem(window.db.cacheKey(type),JSON.stringify(kept));return kept;}return parsed;
                 } catch (e) { console.warn(`Local ${type} cache read failed:`, e); return null; }
             },
             restoreLocalCaches: () => {
@@ -3589,7 +3590,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             },
             getPublishers: () => window.db.publishers.filter(p=>!p.transferredAt),
             getReports: (sy, month) => {
-                let r = window.db.reports;
+                const current=window.utils.getCurrentServiceYearInfo().serviceYear;let r = window.db.reports.filter(x=>x.serviceYear>=current-1&&x.serviceYear<=current);
                 if (sy !== undefined && month !== undefined) return r.filter(x => x.serviceYear === sy && x.month === month);
                 if (sy !== undefined) return r.filter(x => x.serviceYear === sy);
                 return r;
@@ -3671,15 +3672,15 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const drafts=new Map(); let skipped=0;
                 for(const row of rows.slice(1)){
                     const id=col(row,'Publisher ID'),name=col(row,'Publisher Name');
-                    const mappedId=window.CAImports?.publisherId(id)||id;const matches=window.db.publishers.filter(p=>(id && p.id===mappedId)||(!id && p.name.toLowerCase()===name.toLowerCase()));
+                    const mappedId=e.publisherIds?.get(id)||window.CAImports?.publisherId(id)||id;const matches=(e.publishers||window.db.publishers).filter(p=>(id && p.id===mappedId)||(!id && p.name.toLowerCase()===name.toLowerCase()));
                     if(matches.length!==1){skipped++;continue;}
                     const sy=Number(col(row,'Service Year'));
                     const monthText=col(row,'Month');
                     const month=['January','February','March','April','May','June','July','August','September','October','November','December'].findIndex(m=>m.toLowerCase()===monthText.toLowerCase());
                     const hours=Number(col(row,'Hours')||0),studies=Number(col(row,'Studies')||0);
-                    if(!Number.isInteger(sy)||sy<1900||sy>2200||month<0||!Number.isFinite(hours)||hours<0||!Number.isInteger(studies)||studies<0) throw new Error('A report row has an invalid year, month, hours or studies. No rows were imported.');
+                    if(!Number.isInteger(sy)||sy<1900||sy>2200||month<0||!Number.isFinite(hours)||hours<0||hours>744||!Number.isInteger(studies)||studies<0||studies>1000) throw new Error('A report row has an invalid year, month, hours or studies. No rows were imported.');
                     const report={id:`${matches[0].id}_${sy}_${month}`,pubId:matches[0].id,serviceYear:sy,month,hours,studies,comments:col(row,'Remarks'),sharedInMinistry:col(row,'Shared In Ministry').toUpperCase()==='TRUE',isAP:col(row,'Is Auxiliary Pioneer').toUpperCase()==='TRUE'};
-                    drafts.set(report.id,report);
+                    if(drafts.has(report.id))throw Error('The same publisher and month appears twice. Keep one report per month. No rows were imported.');drafts.set(report.id,report);
                 }
                 if(!drafts.size) throw new Error('No reports match a publisher in this congregation.');
                 if(e.preview)return {kind:'reports',rows:[...drafts.values()],skipped,updates:[...drafts.values()].filter(r=>window.db.reports.some(p=>p.pubId===r.pubId&&p.serviceYear===r.serviceYear&&p.month===r.month)).length};
@@ -3719,7 +3720,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 }
                 if(!drafts.size) throw new Error('No named publishers were found in the CSV.');
                 for(const publisher of drafts.values()) if(publisher.familyHeadId) publisher.familyHeadId=importedIds.get(publisher.familyHeadId)||publisher.familyHeadId;
-                if(e.preview)return {kind:'contacts',rows:[...drafts.values()],skipped:0,updates:[...drafts.values()].filter(r=>window.db.publishers.some(p=>p.id===r.id)).length};
+                if(e.preview)return {kind:'contacts',rows:[...drafts.values()],sourceIds:[...importedIds],skipped:0,updates:[...drafts.values()].filter(r=>window.db.publishers.some(p=>p.id===r.id)).length};
                 if(!isCloudEnabled) throw new Error('Cloud connection required to import contacts.');
                 const {error}=await supabaseClient.from('publishers').upsert([...drafts.values()].map(window.db.mapPubToDB),{onConflict:'id'});
                 if(error) throw error;
@@ -4126,7 +4127,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     const el = document.getElementById(id);
                     if(el) {
                         el.innerHTML = '';
-                        for (let i = syInfo.serviceYear - 3; i <= syInfo.serviceYear + 1; i++) { el.innerHTML += `<option value="${i}">${i-1}-${i}</option>`; }
+                        for (let i = syInfo.serviceYear - (id === 'att-year' ? 3 : 1); i <= syInfo.serviceYear + (id === 'att-year' ? 1 : 0); i++) { el.innerHTML += `<option value="${i}">${i-1}-${i}</option>`; }
                         el.value = istInfo.serviceYear;
                     }
                 });
