@@ -942,7 +942,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 #ca-midweek-root,#ca-midweek-root *{box-sizing:border-box;}
 #ca-midweek-root{width:100%;max-width:1400px;margin:0 auto;}
 </style>
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="app.css"><link rel="stylesheet" href="app-showcase.css">
 </head>
 <body class="text-sm">
 
@@ -2875,8 +2875,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
         
         const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
-        const isCloudEnabled = isCloudConfigured && typeof createClient === 'function';
-        let supabaseClient = isCloudEnabled ? window.CADemo.wrap(createClient(SUPABASE_URL, SUPABASE_ANON_KEY)) : null;
+        const isCloudEnabled = isCloudConfigured && (typeof createClient === 'function' || window.CADemo.requested);
+        let supabaseClient = isCloudEnabled ? window.CADemo.wrap(window.CADemo.requested?{auth:{}}:createClient(SUPABASE_URL, SUPABASE_ANON_KEY)) : null;
 
         window.config = {};
         window.PublicLinks?.install(supabaseClient);
@@ -3085,6 +3085,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 
             logout: () => window.ui.openSysPrompt('Sign out', 'Sign out of this account on this device?', false, window.auth.endSession),
             endSession: async () => {
+                if(window.CADemo?.active){window.CADemo.leave();location.href=location.pathname;return;}
                 const wasDemo=window.CADemo?.active;window.CADemo?.leave();window.CAImports?.clear();window.CARecovery?.clear();window.CAPublisherHome?.clear();await Promise.race([wasDemo?Promise.resolve():window.CAPush?.disconnectOnLogout(),new Promise(resolve=>setTimeout(resolve,1500))]);
                 sessionStorage.setItem('ca_signed_out','true');
                 for(const storage of [sessionStorage,localStorage]) {
@@ -5799,6 +5800,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
             const urlParams = new URLSearchParams(window.location.search);
             const oauthError=urlParams.get('error_description')||new URLSearchParams(window.location.hash.slice(1)).get('error_description');
             if(oauthError){window.auth.clearGoogleRole();window.auth.showGoogleStatus('Google sign-in was not completed. Please try again or contact your administrator.');document.getElementById('global-loader')?.classList.add('hidden');history.replaceState(null,'',window.location.pathname);return;}
+            if(await window.CADemo?.boot())return;
             if(await window.PublicLinks?.boot()) return;
             if(window.CADemo?.active){await window.CADemo.resume();return;}
             const isPublicLink = !!urlParams.get('cong');

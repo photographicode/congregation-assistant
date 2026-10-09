@@ -1,0 +1,11 @@
+# Public demonstration and theme release
+
+Start from app main c2635cb329d4b15f054f5bd00e3963ee649744cc and website main 48086b354a3fa6dadfd5156abcb30d352187c47c.
+
+Two public entry links use ?demo=publisher and ?demo=admin. Public demonstration usernames demo-publisher/demo-admin and password TryCA2026 are a local entry exercise, not Supabase accounts or authorization secrets. Fields are prefilled to avoid typing. Explicit demo links construct no real auth client. Client calls remain intercepted by the demo sandbox. No paid plan, provider setup, real data mutation or new backend resources.
+
+Each new sign-in seeds a per-tab fictional congregation, twelve publishers, three groups, current and previous service-year reports, attendance, five OCLM weeks, customized departmental duties, approved/pending sample requests, publisher contact/away/reminders and a sample family report. Reload keeps this tab's edits. Reset begins fresh. Demo role determines navigation. Publisher demo only presents personal tools; admin roster is not loaded into its UI. Calendar exports are local demonstrations. No real public links, email or push delivery is created. Cloud concurrency, multiple-device sync and real account provisioning require a real authorized test workspace; the public sandbox is not a substitute for those tests.
+
+Themes add gradients, restrained translucent depth, tactile shadows, matching foreground/input/primary-action colours, reduced-motion and forced-colour fallbacks. Ten publisher palettes are scoped to the publisher root; OCLM palettes are preserved. Administrative navigation receives decorative depth without changing meeting contents. Existing standalone report markup is kept.
+
+Regression: actual demo entry without authenticated fixtures; rejected demo credential entry; twelve publishers/two report years/attendance; all department/OCLM tabs; family report and personal profile flows; ten theme contrast and 320px doubled-text checks; reload/reset and no production API requests. Existing app/permissions/browser/PDF/accessibility tests remain required. Photographs contain only inspected fictional demos. Updated twelve-page tagged PDF includes both links and public demonstration details; website changes remain minimal.

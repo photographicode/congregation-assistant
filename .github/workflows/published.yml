@@ -32,6 +32,7 @@ jobs:
       - run: node scripts/check-noticeboard.cjs
       - run: node scripts/check-noticeboard-view.cjs
       - run: node scripts/check-publisher-portal.cjs
+      - run: node scripts/check-showcase.cjs
       - run: npm run test:browser
       - run: node public-site-preview/scripts/check-site.cjs
         env:
