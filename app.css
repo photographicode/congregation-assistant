@@ -634,3 +634,6 @@ body.ca-publisher-workspace #ca-desktop-topbar{display:none!important;}
 #publisher-personal-home[data-large=true] .ca-publisher-welcome small{display:none;}
 #publisher-personal-home[data-large=true] .ca-publisher-welcome strong{overflow-wrap:break-word;}
 #publisher-personal-home[data-large=true] #personal-settings{position:absolute;right:0;top:0;}
+#personal-report-readable-month{display:none;white-space:normal;overflow-wrap:break-word;}
+#publisher-personal-home[data-large=true] #personal-report-month,body.ca-large-text #personal-report-month{display:none;}
+#publisher-personal-home[data-large=true] #personal-report-readable-month,body.ca-large-text #personal-report-readable-month{display:block;}
