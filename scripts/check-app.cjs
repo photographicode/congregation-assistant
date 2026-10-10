@@ -356,6 +356,18 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         for (const line of w.PdfTools.wrap('LongAddressWithoutSpaces'.repeat(10),font,100,8.5)) assert(font.widthOfTextAtSize(line,8.5)<=100);
         assert.throws(()=>w.PdfTools.fit('தமிழ்',font,100),/Unicode font/);
     });
+    await test('previous-month structure starts with blank titles and no people, keeps department work, and Undo restores the draft',()=>{
+        const qa=createHarness(),fw=qa.window;fw.currentCongId='structure-test';
+        const source={parts:[{id:'Conversation',type:'Conversation',section:'field',title:'Earlier user-supplied title',minutes:3,assistant:true},{id:'LocalPart',type:'ChristianParts',section:'living',title:'Earlier local discussion',minutes:12}],reading:'Earlier reading',reviewed:true};
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_programs',JSON.stringify({'2026-W38':source}));
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_assignments',JSON.stringify({'2026-W38':{Conversation:{personId:'old-person',customTitle:'Earlier user-supplied title'}},'2026-W42':{Duty_legacy_1:{personId:'department-person'}}}));
+        fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W42');assert.equal(fw.copyPreviousMonthStructure(),true);
+        const draft=fw.MidweekScheduler.getDraft();assert.equal(draft.programs['2026-W42'].reviewed,false);assert.equal(draft.programs['2026-W42'].reading,'');
+        assert(draft.programs['2026-W42'].parts.every(p=>p.title===''));assert.equal(draft.assignments['2026-W42'].Duty_legacy_1.personId,'department-person');assert.equal(draft.assignments['2026-W42'].Conversation,undefined);
+        assert.equal(draft.assignments['2026-W38'].Conversation.personId,'old-person');assert(qa.elements.get('mwsTitleHistory').innerHTML.includes('Earlier user-supplied title'));
+        qa.elements.get('undoSchedule').onclick();assert.equal(fw.MidweekScheduler.getDraft().programs['2026-W42'],undefined);assert.equal(fw.MidweekScheduler.getDraft().assignments['2026-W42'].Duty_legacy_1.personId,'department-person');
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_assignments',JSON.stringify({'2026-W42':{Chairman:{personId:'keep-person'}}}));fw.currentCongId='other-structure';fw.initMidweekScheduler();fw.currentCongId='structure-test';fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W42');const before=JSON.stringify(fw.MidweekScheduler.getDraft());assert.equal(fw.copyPreviousMonthStructure(),false);assert.equal(JSON.stringify(fw.MidweekScheduler.getDraft()),before);
+    });
     await test('transfer defaults use actual records across the September service-year boundary',()=>{
         const record={reports:[{service_year:2027,hours:0},{service_year:2026,hours:0},{service_year:2025,hours:0}]};
         assert.equal(w.CATransfer.serviceYear(new Date(2026,7,31)),2026);

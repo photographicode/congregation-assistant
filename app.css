@@ -678,3 +678,5 @@ body.super-admin-theme #tab-superadmin :is(.ca-owner-primary,.ca-primary-action,
 body.super-admin-theme #tab-superadmin :is(.ca-owner-primary,.ca-primary-action,button[aria-pressed=true]) :is(span,strong){color:#121924!important;}
 body.super-admin-theme #tab-superadmin button:active{transform:translateY(1px);}
 @supports(backdrop-filter:blur(10px)){body.super-admin-theme #tab-superadmin :is(.glass-panel,.ca-owner-request,.ca-admin-overview>div){backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}}
+
+.ca-part-tools{margin:14px 0;padding:12px;border:1px solid var(--line,#b8ccd0);border-radius:12px;font-size:14px;line-height:1.6}.ca-part-tools summary{cursor:pointer;font-weight:700;min-height:44px;display:list-item;padding-block:8px}.ca-part-tools p{margin:8px 0}.ca-part-tools button{min-height:48px}

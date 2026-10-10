@@ -15,8 +15,8 @@ Branch: `codex/workpackages-20261010`.
 | --- | --- | --- |
 | WP1 privacy/repository hygiene | Implementation complete; owner gates pending | 171 history commits, 33 Gmail-change commits audited. Personal source references replaced; one canonical support config with generated bundle copies. Proprietary notice and SECURITY.md added; required font-licence attribution preserved. History not rewritten; repo visibility/OAuth rotation need owner action. |
 | WP2 original PDF exports | Implementation complete; physical/legal acceptance pending | All three embedded constants/artwork-loading paths removed from root/staging; original Noto Sans A4 exports, overflow continuation and independent footer. 61 functional checks, PDF bounds, 25-cell pixel alignment, Chromium desktop/phone flows passed; 13-page catalogue regenerated with original sample. WebKit full release checks remain. |
-| WP3 branding | Pending | Audit app/site after replacements; documentation may discuss third parties. |
-| WP4 content | Pending | Audit fictional programmes; no official-content fetching or parsing. |
+| WP3 branding | Complete in source; ongoing regression | Runtime/site search has zero prohibited marks. Documentation references inventoried in branding-findings.md. Original CA branding preserved. |
+| WP4 content | Complete in source | Generic demo titles and blank demo songs; no official scraper/parser. Optional previous-month structure reuse starts with blank titles/no people, retains department work and Undo; title history suggests only congregation-entered text. Real/user-entered data not inspected or rewritten. |
 | WP5 claims | Pending | Evidence register and restrained wording. Do not invent a biography or support-access restriction. |
 | WP6 data minimization | Pending | Non-confidential notices, inactive/minor safeguards, authorization/access records and incident plan. No destructive live migration. |
 | WP7 hardening | Pending | Self-host libraries, remove inline handlers/scripts, CSP, synthetic function/hostile-import tests; provider-dependent anti-abuse activation remains separate. |
@@ -44,5 +44,5 @@ Branch: `codex/workpackages-20261010`.
 3. Continue the first unfinished implementation package. Keep owner-dependent activation pending while preparing independent work.
 4. Update the current action, test results and commit IDs after each package. Never call a pending gate complete.
 
-Current action: WP3 branding audit, then WP4 generic programme content and faster manual title entry. WP1 npm test passed 61 functional checks plus cloud/conflict/recovery/encryption checks; new privacy regression passed. Historical exposure is not erased by current-source cleanup.
+Current action: WP5 claims register, visible disclaimers and trial authorization. WP3/WP4 regressions pass, including a structure-copy/Undo/no-overwrite test. WP1 npm test passed 61 functional checks plus cloud/conflict/recovery/encryption checks; new privacy regression passed. Historical exposure is not erased by current-source cleanup.
 Release state: not deployed; main untouched for this work-package release.
