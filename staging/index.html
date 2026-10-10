@@ -1530,22 +1530,22 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="flex gap-2 w-full sm:w-auto">
                     <button onclick="window.ui.copyAttendanceLink()" class="flex-1 sm:flex-none bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex justify-center items-center gap-2 border border-white/10">🔗 Copy Public Link</button>
                     <button id="att-print-btn" onclick="window.ui.printS3()" class="flex-1 sm:flex-none bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(20,184,166,0.5)] flex items-center justify-center gap-2">
-                        Download attendance record-E
+                        Download monthly attendance
                     </button>
                     <button id="att-print88-btn" onclick="window.ui.printS88()" class="flex-1 sm:flex-none bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-slate-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(129,140,248,0.5)] flex items-center justify-center gap-2">
-                        Download attendance summary-E
+                        Download yearly attendance
                     </button>
                 </div>
             </div>
 
             <div class="glass-panel p-4 sm:p-6 rounded-2xl overflow-hidden mt-4">
                 <div class="overflow-x-auto pb-2">
-                    <table class="w-full text-left text-sm whitespace-nowrap min-w-[700px]">
+                    <table class="ca-attendance-table w-full text-left text-sm whitespace-nowrap min-w-[700px]" role="table">
                         <thead class="bg-black/40 text-teal-100/70 text-xs uppercase border-b border-white/10">
                             <tr>
-                                <th class="px-4 py-3 w-24">Week</th>
-                                <th class="px-4 py-3 text-center border-l border-white/10">Midweek Meeting</th>
-                                <th class="px-4 py-3 text-center border-l border-white/10">Weekend Meeting</th>
+                                <th scope="col" class="px-4 py-3 w-24">Week</th>
+                                <th scope="col" class="px-4 py-3 text-center border-l border-white/10">Midweek Meeting</th>
+                                <th scope="col" class="px-4 py-3 text-center border-l border-white/10">Weekend Meeting</th>
                             </tr>
                         </thead>
                         <tbody id="att-table-body" class="divide-y divide-white/10 text-teal-50">
@@ -4421,10 +4421,10 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                     tbody.innerHTML += `
                         <tr class="${w-1 === currentWeekIdx ? 'current-week-row' : ''} border-b border-white/5 hover:bg-white/5 transition">
                             <td class="px-4 py-4 font-bold text-teal-300">Week ${w}</td>
-                            <td class="px-4 py-4 border-l border-white/10 text-center">
+                            <td data-meeting-label="Midweek" class="px-4 py-4 border-l border-white/10 text-center">
                                 ${cellHtml('mid', mType, mNum)}
                             </td>
-                            <td class="px-4 py-4 border-l border-white/10 text-center">
+                            <td data-meeting-label="Weekend" class="px-4 py-4 border-l border-white/10 text-center">
                                 ${cellHtml('end', eType, eNum)}
                             </td>
                         </tr>

@@ -17,7 +17,7 @@ const results=[];
   if(tab===tabs[0])await page.screenshot({path:path.join(out,`${profile.name}-${role}-${tab}-initial.png`)});
   await page.waitForTimeout(2500);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`${profile.name}/${role}/${tab} overflows`);
-  await page.screenshot({path:path.join(out,`${profile.name}-${role}-${tab}-viewport.png`)});await page.screenshot({path:path.join(out,`${profile.name}-${role}-${tab}-settled.png`),fullPage:true});results.push({profile:profile.name,role,tab,settleMs:2500});
+  await page.screenshot({path:path.join(out,`${profile.name}-${role}-${tab}-viewport.png`)});await page.screenshot({path:path.join(out,`${profile.name}-${role}-${tab}-settled.png`),fullPage:true});results.push({profile:profile.name,role,tab,settleMs:2500});if(role==='admin'&&tab==='attendance'&&profile.width<600){const table=page.locator('.ca-attendance-table');assert(await table.evaluate(e=>e.scrollWidth<=e.clientWidth+2),'Attendance requires sideways scrolling');await table.scrollIntoViewIfNeeded();await page.waitForTimeout(2500);await page.screenshot({path:path.join(out,`${profile.name}-attendance-counts.png`)});}
  }
  assert.equal(apiCalls,0,'Visual review must not access production');assert.deepEqual(errors,[]);await c.close();console.log('PASS',profile.name,role,'delayed screenshots and no production calls');
 }}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1}).finally(()=>{fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(results,null,2));server.close();});
