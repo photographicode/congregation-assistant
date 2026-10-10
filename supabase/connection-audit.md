@@ -4,7 +4,7 @@
 
 Project: `ejosykrxjvwrhxfnputo`, Mumbai (`ap-south-1`), free plan.
 
-- Supabase management connection confirms `ACTIVE_HEALTHY`, PostgreSQL 17.11, ten application tables with RLS, and the initial owner at the time of this audit, `photographicode@gmail.com`.
+- Supabase management connection confirms `ACTIVE_HEALTHY`, PostgreSQL 17.11, ten application tables with RLS, and the initial owner at the time of this audit, `tester-32239@example.com`.
 - Public API verification returned 200 for the schedule RPC with a nonexistent token. Anonymous direct congregation-table access returned 401.
 - Google provider settings returned 200 with Google **disabled**. Supabase account login and application Google OAuth are separate configurations.
 - No congregation or authentication-user records existed at audit time. Real Google sign-in, the first workspace, and migration of existing records remain unverified.
@@ -32,6 +32,6 @@ The application and redesigned preview can be deployed through the connected app
 
 Enable the Google provider with callback `https://ejosykrxjvwrhxfnputo.supabase.co/auth/v1/callback`, verify redirect URLs and real owner sign-in, back up current data, then activate the new public configuration in a reviewed deployment. Never publish service-role keys, database passwords, or Google client secrets.
 
-5 October update: software owner approval is now congregationassistant0@gmail.com; the previous owner approval is disabled. The new owner Auth password account has not yet been created. See google-sign-in.md for separate owner-password and congregation-Google setup.
+5 October update: software owner approval is now sender@example.com; the previous owner approval is disabled. The new owner Auth password account has not yet been created. See google-sign-in.md for separate owner-password and congregation-Google setup.
 
 Latest owner update: Google-only SuperAdmin sign-in replaces the earlier password plan. The normal Google button routes to the secure backend, active owner approval remains server-enforced, and the old password endpoint is retired. No owner password account setup is needed.

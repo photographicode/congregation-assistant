@@ -1,6 +1,6 @@
 Server push is prepared, but delivery is not activated. No browser permission test proves remote delivery.
 
-An operator must generate a VAPID key pair privately (`npx web-push generate-vapid-keys`), put `CA_PUSH_PRIVATE_KEY`, `CA_PUSH_PUBLIC_KEY`, and `CA_PUSH_SUBJECT=mailto:congregationassistant0@gmail.com` in the secure project's Edge Function secrets, and publish only the public key as `pushPublicKey` in app-config.js. Never paste the private key into a chat, a repository, or browser source.
+An operator must generate a VAPID key pair privately (`npx web-push generate-vapid-keys`), put `CA_PUSH_PRIVATE_KEY`, `CA_PUSH_PUBLIC_KEY`, and `CA_PUSH_SUBJECT=mailto:sender@example.com` in the secure project's Edge Function secrets, and publish only the public key as `pushPublicKey` in app-config.js. Never paste the private key into a chat, a repository, or browser source.
 
 Deploy `workspace-push` with JWT verification. Schedule a private server job every five minutes using the server service-role credential in Supabase Vault. The browser must never contain or call the worker credential. Activate only after a synthetic registered browser receives a server notification with the app closed; test revocation, cancellations, retries, duplicate leases and iOS Home Screen support. Current queue supports personal published assignment changes, role report reminders, schedule planning, attendance and owner notices. Delivery is at least once: duplicates are possible after uncertain network receipts.
 

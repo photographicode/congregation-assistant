@@ -104,7 +104,7 @@ If a browser still shows an older interface after a successful deployment, reloa
 
 Production and staging now use secure project `ejosykrxjvwrhxfnputo`. Google sign-in is enabled and observed for all three pilot identities. Main administrators assign accounts one or several roles; the server enforces congregation, group and section boundaries. See [current pilot status](supabase/pilot-status.md) for release evidence and remaining human acceptance steps.
 
-The owner uses the same **Continue with Google** button with congregationassistant0@gmail.com. Active server approval grants SuperAdmin; no username, password account or separate owner login is needed. Sign-out clears the local Google session, role state and cloud-record caches, including when the auth server fails.
+The owner uses the same **Continue with Google** button with the Support option in the app. Active server approval grants SuperAdmin; no username, password account or separate owner login is needed. Sign-out clears the local Google session, role state and cloud-record caches, including when the auth server fails.
 
 The mobile Menu includes permitted sections, help, notices, appearance and sign-out. Larger text is optional. Limited roles fetch only permitted data; changing browser navigation flags cannot grant server access.
 

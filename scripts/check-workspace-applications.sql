@@ -1,10 +1,10 @@
 \set ON_ERROR_STOP on
 begin;
 set role anon;
-select test.assert((public.submit_workspace_application('Sample Contact','sample-contact@example.com','sample-congregation@gmail.com','Fictional Congregation','',true)->>'received')::boolean,'Public request submits without email app');
-select test.assert((public.submit_workspace_application('Sample Contact','sample-contact@example.com','sample-congregation@gmail.com','Fictional Congregation','',true)->>'received')::boolean,'Duplicate request does not duplicate');
+select test.assert((public.submit_workspace_application('Sample Contact','sample-contact@example.com','tester-43306@example.com','Fictional Congregation','',true)->>'received')::boolean,'Public request submits without email app');
+select test.assert((public.submit_workspace_application('Sample Contact','sample-contact@example.com','tester-43306@example.com','Fictional Congregation','',true)->>'received')::boolean,'Duplicate request does not duplicate');
 reset role;
-select test.assert((select count(*)=1 from ca_private.workspace_applications where admin_email='sample-congregation@gmail.com'),'Request deduplicated');
+select test.assert((select count(*)=1 from ca_private.workspace_applications where admin_email='tester-43306@example.com'),'Request deduplicated');
 set request.jwt.claims='{"sub":"10000000-0000-0000-0000-000000000002","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';set role authenticated;
 do $$begin perform public.get_workspace_applications();raise exception 'FAILED ordinary admin accepted';exception when insufficient_privilege then null;end $$;
 reset role;
@@ -16,7 +16,7 @@ select public.review_workspace_application((public.get_workspace_applications()-
 select test.assert((public.get_workspace_applications()->0->>'status')='approved','Approval creates workspace and finishes queue item');
 select test.assert((public.get_workspace_welcome((public.get_workspace_applications()->0->>'id')::uuid)->>'emailStatus')='queued','Welcome remains queued before sender activation');
 reset role;
-select test.assert((select count(*)=1 from public.congregation_access where cong_id='new-sample-workspace' and email='sample-congregation@gmail.com' and role='admin' and active),'Congregation Gmail is administrator');
+select test.assert((select count(*)=1 from public.congregation_access where cong_id='new-sample-workspace' and email='tester-43306@example.com' and role='admin' and active),'Congregation Gmail is administrator');
 select test.assert((select count(*)=2 from ca_private.mail_outbox where dedupe like 'application-welcome-%'),'Admin welcome and safe contact notice queued');
 rollback;
 \echo PASS direct account request, duplicate protection, SuperAdmin-only review, approved Gmail administrator and queued welcome letters

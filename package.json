@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node scripts/check-public-safety.cjs && node scripts/check-app.cjs && node scripts/check-cloud-draft.cjs && node scripts/check-recovery-encryption.cjs && node scripts/check-record-envelope.cjs",
+    "test": "node scripts/check-privacy.cjs && node scripts/check-public-safety.cjs && node scripts/check-app.cjs && node scripts/check-cloud-draft.cjs && node scripts/check-recovery-encryption.cjs && node scripts/check-record-envelope.cjs",
     "test:browser": "node scripts/check-browser.cjs",
     "build:styles": "tailwindcss -i scripts/styles/utilities.css -o app-utilities.css --minify"
   },

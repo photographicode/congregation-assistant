@@ -943,7 +943,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
 #ca-midweek-root{width:100%;max-width:1400px;margin:0 auto;}
 </style>
     <link rel="stylesheet" href="app.css"><link rel="stylesheet" href="app-showcase.css">
-</head>
+<script src="support-config.js"></script><script src="app-contact.js" defer></script></head>
 <body class="text-sm">
 
     <!-- Global Loading Screen -->
@@ -1211,7 +1211,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 <div class="rounded-2xl border border-cyan-400/15 bg-cyan-400/5 p-4"><div class="font-bold text-cyan-100 text-sm">Google sign-in</div><p class="text-xs text-cyan-100/55 mt-1">Sign in with an approved Google administrator account to manage access. The admin enters approved Gmail/Google accounts below; the brother then signs in with Google and sees only the sections assigned to him.</p></div>
                 <div id="access-manager-list" class="space-y-2"></div>
                 <div class="grid sm:grid-cols-[1fr_180px_auto] gap-2">
-                    <label id="access-publisher-field" hidden>1. Choose the publisher<input id="access-publisher-search" type="search" placeholder="Search publisher names" aria-label="Search publisher names" oninput="window.ui.filterAccessPublishers()"><select id="access-publisher-input" required></select></label><label>2. Their Google account email<input id="access-email-input" type="email" autocomplete="email" placeholder="name@gmail.com" class="w-full px-4 py-3 rounded-xl"></label>
+                    <label id="access-publisher-field" hidden>1. Choose the publisher<input id="access-publisher-search" type="search" placeholder="Search publisher names" aria-label="Search publisher names" oninput="window.ui.filterAccessPublishers()"><select id="access-publisher-input" required></select></label><label>2. Their Google account email<input id="access-email-input" type="email" autocomplete="email" placeholder="tester-10200@example.com" class="w-full px-4 py-3 rounded-xl"></label>
                     <label>Account access<select aria-label="Account access" onchange="document.getElementById('access-group-field').hidden=this.value!=='group_overseer';document.getElementById('access-publisher-field').hidden=this.value!=='publisher'" id="access-role-input" class="w-full px-4 py-3 rounded-xl"><option value="admin">Main admin / Secretary</option><option value="field_service">Field Service</option><option value="attendance">Attendance overseer</option><option value="oclm">OCLM overseer</option><option value="attendant">Attendant duties overseer</option><option value="av">Audio Video overseer</option><option value="cleaning">Cleaning overseer</option><option value="group_overseer">Group overseer — assigned group only</option><option value="publisher">Publisher — own Home only</option></select></label>
                     <button id="access-save-button" onclick="window.ui.saveAccountAccess()" class="px-4 py-3 rounded-xl bg-teal-500 text-slate-950 font-bold">3. Approve account</button><p id="access-save-status" role="status" class="col-span-full"></p><p class="col-span-full">Share the main app address once. The publisher chooses Continue with Google. Verify the email with the person before approving; never share one Google account between publishers.</p>
                 </div>
@@ -4959,7 +4959,7 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
                 const body=document.getElementById('oclm-feedback-body')?.value.trim()||''; const file=document.getElementById('oclm-feedback-media')?.files?.[0];
                 if(!body && !file){window.ui.showToast('Please add a message or media first.','error');return;}
                 const note=file?`\n\nMedia selected: ${file.name}. Your email app may require you to attach it manually.`:'';
-                window.location.href=`mailto:photographicode@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body+note)}`;
+                window.location.href=`mailto:${window.CA_SUPPORT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body+note)}`;
                 window.ui.showToast('Opening your email app.');
             },
             copyText: async text => {try{await navigator.clipboard.writeText(text);window.ui.showToast('Copied to clipboard.');}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const copied=document.execCommand('copy');if(copied){ta.remove();window.ui.showToast('Copied to clipboard.');}else{ta.setAttribute('aria-label','Select and copy this text');window.ui.showToast('Automatic copy is unavailable. Select and copy the displayed text.','error');}}},

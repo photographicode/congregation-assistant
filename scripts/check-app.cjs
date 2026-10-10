@@ -132,9 +132,9 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('owner uses Google and server approval; sign-out blocks restoration even with a stale OAuth session',async()=>{
         const qa=createHarness(),fw=qa.window;let request;fw.supabase.createClient().auth.signInWithOAuth=async value=>{request=value;return {error:null};};
         await fw.auth.googleLogin();assert.equal(request.provider,'google');assert.equal(request.options.redirectTo,'https://photographicode.github.io/congregation-assistant/index.html');assert.equal(request.options.queryParams.prompt,'select_account');
-        fw.supabase.createClient().auth.getSession=async()=>({data:{session:{user:{email:'congregationassistant0@gmail.com'}}},error:null});fw.db.initSuperAdmin=async()=>{};
+        fw.supabase.createClient().auth.getSession=async()=>({data:{session:{user:{email:'sender@example.com'}}},error:null});fw.db.initSuperAdmin=async()=>{};
         qa.setCloud({data:false,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,false);
-        qa.setCloud({data:true,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,true);assert.equal(fw.auth.verifiedEmail,'congregationassistant0@gmail.com');assert.equal(qa.sessionStorage.getItem('fs_auth_type'),'super');
+        qa.setCloud({data:true,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,true);assert.equal(fw.auth.verifiedEmail,'sender@example.com');assert.equal(qa.sessionStorage.getItem('fs_auth_type'),'super');
         fw.supabase.createClient().auth.signOut=async()=>{throw Error('Offline');};await fw.auth.endSession();assert.equal(fw.auth.verifiedOwner,false);assert.equal(await fw.auth.resumeGoogleRole(),false);assert.equal(fw.auth.check(),false);
     });
     await test('verified OCLM roles cannot gain reports by editing cached browser flags',()=>{
