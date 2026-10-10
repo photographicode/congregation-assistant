@@ -17,10 +17,10 @@ Branch: `codex/workpackages-20261010`.
 | WP2 original PDF exports | Implementation complete; physical/legal acceptance pending | All three embedded constants/artwork-loading paths removed from root/staging; original Noto Sans A4 exports, overflow continuation and independent footer. 61 functional checks, PDF bounds, 25-cell pixel alignment, Chromium desktop/phone flows passed; 13-page catalogue regenerated with original sample. WebKit full release checks remain. |
 | WP3 branding | Complete in source; ongoing regression | Runtime/site search has zero prohibited marks. Documentation references inventoried in branding-findings.md. Original CA branding preserved. |
 | WP4 content | Complete in source | Generic demo titles and blank demo songs; no official scraper/parser. Optional previous-month structure reuse starts with blank titles/no people, retains department work and Undo; title history suggests only congregation-entered text. Real/user-entered data not inspected or rewritten. |
-| WP5 claims | Pending | Evidence register and restrained wording. Do not invent a biography or support-access restriction. |
+| WP5 claims | In progress | Initial evidence register; direct-request instructions, confirmation wording and service-year description corrected. Full claim inventory and server-backed authorization role/date still pending. |
 | WP6 data minimization | Pending | Non-confidential notices, inactive/minor safeguards, authorization/access records and incident plan. No destructive live migration. |
 | WP7 hardening | Pending | Self-host libraries, remove inline handlers/scripts, CSP, synthetic function/hostile-import tests; provider-dependent anti-abuse activation remains separate. |
-| WP8 domain/hosting/email | Owner setup pending | Prepare plans only. Domain ownership/mailbox status unconfirmed; preserve old URLs. |
+| WP8 domain/hosting/email | Owner setup pending | Domain, Titan and protection purchased; owner confirms nothing configured. Mailbox, DNS and OAuth rotation pending. Preserve existing URLs/contact; setup checklist prepared. |
 | WP9 commercial/policies | Depends on WP1–WP8 and owner/legal decisions | Draft concrete policies; no billing, merchant activation or unapproved legal commitments. |
 | WP10 pilot | Owner acceptance/legal gate | Prepare protocol; no outreach, real-data pilot, or congregation names. |
 | WP11 verification | Pending | Mark each gate PASS/FAIL/NEEDS OWNER with precise evidence. |
