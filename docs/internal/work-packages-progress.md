@@ -14,7 +14,7 @@ Branch: `codex/workpackages-20261010`.
 | Package | State | Evidence / next action |
 | --- | --- | --- |
 | WP1 privacy/repository hygiene | Implementation complete; owner gates pending | 171 history commits, 33 Gmail-change commits audited. Personal source references replaced; one canonical support config with generated bundle copies. Proprietary notice and SECURITY.md added; required font-licence attribution preserved. History not rewritten; repo visibility/OAuth rotation need owner action. |
-| WP2 original PDF exports | Pending | Inventory embedded templates, replace with original Noto Sans layouts, preserve data and test pagination/print bounds. |
+| WP2 original PDF exports | Implementation complete; physical/legal acceptance pending | All three embedded constants/artwork-loading paths removed from root/staging; original Noto Sans A4 exports, overflow continuation and independent footer. 61 functional checks, PDF bounds, 25-cell pixel alignment, Chromium desktop/phone flows passed; 13-page catalogue regenerated with original sample. WebKit full release checks remain. |
 | WP3 branding | Pending | Audit app/site after replacements; documentation may discuss third parties. |
 | WP4 content | Pending | Audit fictional programmes; no official-content fetching or parsing. |
 | WP5 claims | Pending | Evidence register and restrained wording. Do not invent a biography or support-access restriction. |
@@ -32,6 +32,7 @@ Branch: `codex/workpackages-20261010`.
 - Founder facts approved previously: a brother based in India serving full-time in Jehovah’s organisation. The attachment’s spreadsheet biography is unverified and must not be used.
 - Public support contact currently verified; centralize it without changing to an unconfigured domain mailbox.
 - Existing privacy/terms drafts need owner changes and approval before publication. Thirty-day deletion, 72-hour incident targets and sixty-day post-expiry export are draft commitments until implemented and approved.
+- Owner confirmed domain, Titan and domain protection purchased on 10 October; nothing configured yet. Mailbox, OAuth rotation, DNS and redirect readiness remain unverified. Keep existing contact and URLs.
 - Repository privacy can affect free GitHub Pages. Record owner action; do not change visibility or hosting implicitly.
 - OAuth secret rotation, DNS/provider keys, paid plans, legal/accountant review and merchant KYC are owner-only gates.
 - Production E2EE remains inactive. Neither UI changes nor encrypted backup exports establish E2EE.
@@ -43,5 +44,5 @@ Branch: `codex/workpackages-20261010`.
 3. Continue the first unfinished implementation package. Keep owner-dependent activation pending while preparing independent work.
 4. Update the current action, test results and commit IDs after each package. Never call a pending gate complete.
 
-Current action: WP2 original PDF exports. WP1 npm test passed 61 functional checks plus cloud/conflict/recovery/encryption checks; new privacy regression passed. Historical exposure is not erased by current-source cleanup.
+Current action: WP3 branding audit, then WP4 generic programme content and faster manual title entry. WP1 npm test passed 61 functional checks plus cloud/conflict/recovery/encryption checks; new privacy regression passed. Historical exposure is not erased by current-source cleanup.
 Release state: not deployed; main untouched for this work-package release.

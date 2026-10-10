@@ -1,4 +1,4 @@
-"""Measure visible numeric ink in the fictional S-21 fixture, independently of font metrics."""
+"""Measure visible numeric ink in the original publisher-card fixture, independently of font metrics."""
 import json
 import re
 import subprocess
@@ -14,8 +14,8 @@ width, height = map(int, header.groups())
 pixels = raw[header.end():]
 assert len(pixels) == width * height
 scale = dpi / 72
-row_tops = [158.35,176.26,193.99,211.72,229.46,247.28,265.01,282.74,300.47,318.29,336.02,353.75,371.84]
-regions = [(f'{kind}-{i+1}', cx, row_tops[i], row_tops[i+1]) for i in range(12) for kind,cx in [('studies',207.33),('hours',348.47)]] + [('total-hours',348.47,371.93,389.48)]
+row_tops = [219 + 24*i for i in range(13)]
+regions = [(f'{kind}-{i+1}', cx, row_tops[i], row_tops[i+1]) for i in range(12) for kind,cx in [('studies',226),('hours',365)]] + [('total-hours',365,507,533)]
 results = []
 for label,cx,top,bottom in regions:
     x0,x1 = int((cx-25)*scale), int((cx+25)*scale)
@@ -29,4 +29,4 @@ for label,cx,top,bottom in regions:
     assert abs(dx) <= .5 and abs(dy) <= .5, f'{label} is off-centre: ({dx:.3f}, {dy:.3f}) pt'
     results.append({'cell':label,'dx':round(dx,3),'dy':round(dy,3)})
 file.with_name('s21-visible-ink-alignment.json').write_text(json.dumps(results,indent=2))
-print(f'PASS {len(results)} fictional S-21 numbers centred within 0.5 pt in the Poppler render; physical printing remains separate.')
+print(f'PASS {len(results)} original-card numeric values centred within 0.5 pt in the Poppler render; physical printing remains separate.')

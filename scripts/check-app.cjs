@@ -364,27 +364,27 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.deepEqual([...w.CATransfer.defaultYears({reports:[]},new Date(2026,8,1))],[]);
         assert.deepEqual([...w.CATransfer.defaultYears({reports:[{service_year:2025}]},new Date(2026,8,1))],[]);
     });
-    await test('S-21 preserves long remarks on continuation pages and service-year order', async () => {
+    await test('Original publisher card preserves long remarks on continuation pages and service-year order', async () => {
         w.db.reports=Array.from({length:12},(_,month)=>({id:'r'+month,pubId:'p1',serviceYear:2026,month,hours:month+1,studies:2,comments:month===8?'Long remark '.repeat(35):'',sharedInMinistry:true}));
         const bytes=await w.__exports.s21([{id:'p1',name:'Alexandra Catherine Montgomery-Wellington',dob:'1986-05-17',baptized:'2000-01-19',gender:'Female',hope:'Other Sheep',isRP:true}],2026);
-        const pdf=await PDFDocument.load(bytes);assert.equal(pdf.getPageCount(),2);assert(Math.abs(pdf.getPage(0).getHeight()-420.95)<1);
+        const pdf=await PDFDocument.load(bytes);assert.equal(pdf.getPageCount(),2);assert(Math.abs(pdf.getPage(0).getHeight()-595.28)<1);
         fs.writeFileSync(path.join(artifactDir,'s21.pdf'),bytes);
     });
-    await test('S-21 preserves zero and decimal values with centred numeric ink', async () => {
+    await test('Original publisher card preserves zero and decimal values with centred numeric ink', async () => {
         const hours=[0,.5,1,11,100,20.25,50,49,8,4,2,0],reports=hours.map((hours,i)=>({id:'centre'+i,pubId:'centre',serviceYear:2027,month:[8,9,10,11,0,1,2,3,4,5,6,7][i],hours,studies:i%3,comments:'',sharedInMinistry:true}));
         const bytes=await w.__exports.s21([{id:'centre',name:'Sample Grace Montgomery',dob:'1980-01-01',baptized:'2000-01-01',gender:'Female',hope:'Other Sheep',isRP:true}],2027,reports);
         assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s21-zeros.pdf'),bytes);
     });
-    await test('S-3 generates with long names and meeting-event markers', async () => {
+    await test('Original monthly attendance generates with long names and meeting-event markers', async () => {
         w.db.attendance=[{id:'test_2026_8',service_year:2026,month:8,w1_mid:'100',w1_end:'115',w2_mid:'RC',w2_end:'123'}];
         const bytes=await w.__exports.s3(2026,8,'A very long congregation name that should stay inside its field');
-        assert.equal((await PDFDocument.load(bytes)).getPageCount(),2);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
+        assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
     });
-    await test('S-88 export generates and restores its button', async () => {
+    await test('Original yearly attendance export generates and restores its button', async () => {
         el.get('att-year').value='2026';el.get('att-print88-btn').innerHTML='Download S-88';el.get('att-print88-btn').disabled=false;
         let blob;const originalURL=URL.createObjectURL;URL.createObjectURL=value=>{blob=value;return 'blob:test';};
         try{await w.ui.printS88();}finally{URL.createObjectURL=originalURL;}
-        assert(blob);const bytes=await blob.arrayBuffer();assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s88.pdf'),Buffer.from(bytes));assert.equal(el.get('att-print88-btn').innerHTML,'Download S-88');assert.equal(el.get('att-print88-btn').disabled,false);
+        assert(blob);const bytes=await blob.arrayBuffer();assert.equal((await PDFDocument.load(bytes)).getPageCount(),2);fs.writeFileSync(path.join(artifactDir,'s88.pdf'),Buffer.from(bytes));assert.equal(el.get('att-print88-btn').innerHTML,'Download S-88');assert.equal(el.get('att-print88-btn').disabled,false);
     });
     await test('emergency PDF paginates large families and extremely long addresses', async () => {
         const members=Array.from({length:36},(_,i)=>({id:'p'+i,name:'Publisher '+i,phone:'123456789',address:i===0?'A long address '.repeat(130):'17 Example Street',emergencyName:'Emergency Contact',emergencyRelationship:'Family member',emergencyPhone:'987654321',spiritualStatus:'Baptised'}));
