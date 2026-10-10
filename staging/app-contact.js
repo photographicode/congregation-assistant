@@ -1,0 +1,2 @@
+/* Contact text is populated from one public configuration, not repeated in content. */
+(()=>{function apply(){for(const node of document.querySelectorAll('[data-support-email]'))node.textContent=window.CA_SUPPORT.email;for(const a of document.querySelectorAll('[data-support-link]')){const url=new URL('mailto:'+window.CA_SUPPORT.email);if(a.dataset.supportSubject)url.searchParams.set('subject',a.dataset.supportSubject);a.href=url.href;}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();})();

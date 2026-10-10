@@ -1,14 +1,14 @@
 # Google sign-in: simple setup
 
-Owner / SuperAdmin: **congregationassistant0@gmail.com**. This is not a congregation account. SuperAdmin uses the same **Continue with Google** button as congregation users. The server approves the owner separately from congregation roles. No owner password setup is required.
+Owner / SuperAdmin: **sender@example.com**. This is not a congregation account. SuperAdmin uses the same **Continue with Google** button as congregation users. The server approves the owner separately from congregation roles. No owner password setup is required.
 
 ## 1. Owner sign-in: Google only
 
-Open the software and choose **Continue with Google**, then select `congregationassistant0@gmail.com`. The main software button routes to the secure staging backend. Google creates the Auth account on first successful sign-in; no separate password account or owner form is needed. The server checks active owner approval before showing SuperAdmin. This email is not assigned as a congregation administrator. The old owner-password endpoint is retired.
+Open the software and choose **Continue with Google**, then select `sender@example.com`. The main software button routes to the secure staging backend. Google creates the Auth account on first successful sign-in; no separate password account or owner form is needed. The server checks active owner approval before showing SuperAdmin. This email is not assigned as a congregation administrator. The old owner-password endpoint is retired.
 
 ## 2. One-time Google setup, by you
 
-1. Sign in to [Google Cloud Console](https://console.cloud.google.com/) with congregationassistant0@gmail.com. Create or select a project named **Congregation Assistant**.
+1. Sign in to [Google Cloud Console](https://console.cloud.google.com/) with sender@example.com. Create or select a project named **Congregation Assistant**.
 2. Open **Google Auth Platform** (or APIs & Services → OAuth consent screen). Choose Get started if needed. Set the app name to Congregation Assistant, support/contact email to your new email, and Audience to **External** so approved Gmail users from different congregations can sign in.
 3. For the pilot, keep the app in **Testing** and add each participating Google email under Audience → Test users. Being a Google test user does not grant congregation access; the software administrator must also approve their role.
 4. Open **Clients** (or Credentials) → Create OAuth client → **Web application**. Name it Congregation Assistant Web.

@@ -71,6 +71,8 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     execute(scripts[0][2]);
     execute(fs.readFileSync(path.join(root, 'public-links.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root, 'pdf-tools.js'), 'utf8'));
+    execute(fs.readFileSync(path.join(root, 'record-exports.js'), 'utf8'));
+    window.CA_SUPPORT=require(path.join(root,'support-config.js'));
     execute(fs.readFileSync(path.join(root, 'app-support.js'), 'utf8'));
     execute(fs.readFileSync(path.join(root,'app-reminders.js'),'utf8'));
     execute(fs.readFileSync(path.join(root,'app-guide.js'),'utf8'));

@@ -1,4 +1,4 @@
-/* Public staging configuration. */
+/* Public configuration. Private records require approved Google accounts and server permissions. */
 window.CA_CONFIG = Object.freeze({
   "supabaseUrl": "https://ejosykrxjvwrhxfnputo.supabase.co",
   "supabaseAnonKey": "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C",

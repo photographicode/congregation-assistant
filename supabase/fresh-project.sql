@@ -195,4 +195,4 @@ grant execute on function public.provision_congregation(jsonb,text),public.upser
 grant execute on function public.get_oclm_public_snapshot(text),public.get_public_link_context(text),public.submit_public_report(text,jsonb),public.get_public_attendance(text,integer,integer),public.submit_public_attendance(text,integer,integer,jsonb) to anon,authenticated;
 commit;
 -- Trusted editor only. Check the exact Google email before bootstrapping your owner.
--- insert into public.ca_superadmins(email) values ('photographicode@gmail.com');
+-- insert into public.ca_superadmins(email) values ('tester-32239@example.com');

@@ -54,7 +54,7 @@ The GitHub `Application acceptance` workflow runs the regression/PDF checks and 
 
 A read-only Supabase metadata audit and tenant/role verification checklist are in [supabase/README.md](supabase/README.md). The audit must be run against a configured project before an authorization migration can be designed safely.
 
-The PDF checks verify page bounds and the S-3 congregation/month field boundary. A human should still review alignment, print scaling, and physical printer margins.
+The PDF checks verify A4 page bounds, original table geometry and centred numeric ink. A human should still review alignment, print scaling, and physical printer margins.
 
 ## Interface and PDF behavior
 
@@ -62,13 +62,13 @@ The PDF checks verify page bounds and the S-3 congregation/month field boundary.
 - Forms retain their values after rejected saves. Busy buttons prevent repeated submissions, and errors remain visible long enough to read.
 - Public attendance accepts both meetings and lets the submitter select the reporting period. Blank counts leave existing counts unchanged, and saves update only entered fields.
 - CSV backups preserve quotes, commas, multiline remarks, publisher IDs, household links, and emergency fields. Legacy contacts files can still be imported. Imports commit locally after the cloud batch succeeds.
-- S-21 keeps the supplied official form, uses bounded fields, and moves overflowing remarks to a continuation page without losing the full text.
-- S-3 name and month entries sit above the dotted line, with measured width and baseline checks.
+- Original publisher record cards use landscape A4 and move overflowing notes to continuation pages without losing their full text.
+- Original monthly attendance records use portrait A4 with a weekly count grid and a monthly summary.
 - Dashboard, publisher, and missing-report tables show 50 records per page; exports still include the full selected dataset. Bulk-entry forms render in one batch and keep every input available to save.
 - Mobile navigation avoids redrawing hidden scheduler views and clears stale dialog scroll locks. Attendance drafts survive tab changes until saved, scoped to congregation and reporting month. Touch activity throttles synchronous storage writes, and mobile panels avoid expensive backdrop blur.
-- S-3 and S-88 keep their supplied official templates and use dark text suitable for printing.
+- Publisher record cards and attendance summaries use original code-drawn A4 layouts, bundled Noto Sans, and an independent-software footer. No official form templates are distributed.
 - Emergency contacts export as selectable PDF text with measured row heights, repeated page headers, family continuation labels, and grayscale rules. Long rows can continue onto another page.
-- The PDF fonts currently support the standard Helvetica character set. Names in unsupported scripts produce an explicit Unicode-font error; they are not silently replaced. Full multilingual PDF support still requires an embedded Unicode font and font shaping support where applicable.
+- The original record exports use bundled Noto Sans. Some other administrative exports retain a Latin-font fallback. Indian/mixed-script layouts are rejected clearly until a verified fallback/shaping implementation is available; names are not silently replaced.
 
 ## Backend setup and production blockers
 
@@ -104,7 +104,7 @@ If a browser still shows an older interface after a successful deployment, reloa
 
 Production and staging now use secure project `ejosykrxjvwrhxfnputo`. Google sign-in is enabled and observed for all three pilot identities. Main administrators assign accounts one or several roles; the server enforces congregation, group and section boundaries. See [current pilot status](supabase/pilot-status.md) for release evidence and remaining human acceptance steps.
 
-The owner uses the same **Continue with Google** button with congregationassistant0@gmail.com. Active server approval grants SuperAdmin; no username, password account or separate owner login is needed. Sign-out clears the local Google session, role state and cloud-record caches, including when the auth server fails.
+The owner uses the same **Continue with Google** button with the Support option in the app. Active server approval grants SuperAdmin; no username, password account or separate owner login is needed. Sign-out clears the local Google session, role state and cloud-record caches, including when the auth server fails.
 
 The mobile Menu includes permitted sections, help, notices, appearance and sign-out. Larger text is optional. Limited roles fetch only permitted data; changing browser navigation flags cannot grant server access.
 

@@ -132,9 +132,9 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     await test('owner uses Google and server approval; sign-out blocks restoration even with a stale OAuth session',async()=>{
         const qa=createHarness(),fw=qa.window;let request;fw.supabase.createClient().auth.signInWithOAuth=async value=>{request=value;return {error:null};};
         await fw.auth.googleLogin();assert.equal(request.provider,'google');assert.equal(request.options.redirectTo,'https://photographicode.github.io/congregation-assistant/index.html');assert.equal(request.options.queryParams.prompt,'select_account');
-        fw.supabase.createClient().auth.getSession=async()=>({data:{session:{user:{email:'congregationassistant0@gmail.com'}}},error:null});fw.db.initSuperAdmin=async()=>{};
+        fw.supabase.createClient().auth.getSession=async()=>({data:{session:{user:{email:'sender@example.com'}}},error:null});fw.db.initSuperAdmin=async()=>{};
         qa.setCloud({data:false,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,false);
-        qa.setCloud({data:true,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,true);assert.equal(fw.auth.verifiedEmail,'congregationassistant0@gmail.com');assert.equal(qa.sessionStorage.getItem('fs_auth_type'),'super');
+        qa.setCloud({data:true,error:null});await fw.auth.resumeGoogleRole();assert.equal(fw.auth.verifiedOwner,true);assert.equal(fw.auth.verifiedEmail,'sender@example.com');assert.equal(qa.sessionStorage.getItem('fs_auth_type'),'super');
         fw.supabase.createClient().auth.signOut=async()=>{throw Error('Offline');};await fw.auth.endSession();assert.equal(fw.auth.verifiedOwner,false);assert.equal(await fw.auth.resumeGoogleRole(),false);assert.equal(fw.auth.check(),false);
     });
     await test('verified OCLM roles cannot gain reports by editing cached browser flags',()=>{
@@ -356,6 +356,18 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         for (const line of w.PdfTools.wrap('LongAddressWithoutSpaces'.repeat(10),font,100,8.5)) assert(font.widthOfTextAtSize(line,8.5)<=100);
         assert.throws(()=>w.PdfTools.fit('தமிழ்',font,100),/Unicode font/);
     });
+    await test('previous-month structure starts with blank titles and no people, keeps department work, and Undo restores the draft',()=>{
+        const qa=createHarness(),fw=qa.window;fw.currentCongId='structure-test';
+        const source={parts:[{id:'Conversation',type:'Conversation',section:'field',title:'Earlier user-supplied title',minutes:3,assistant:true},{id:'LocalPart',type:'ChristianParts',section:'living',title:'Earlier local discussion',minutes:12}],reading:'Earlier reading',reviewed:true};
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_programs',JSON.stringify({'2026-W38':source}));
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_assignments',JSON.stringify({'2026-W38':{Conversation:{personId:'old-person',customTitle:'Earlier user-supplied title'}},'2026-W42':{Duty_legacy_1:{personId:'department-person'}}}));
+        fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W42');assert.equal(fw.copyPreviousMonthStructure(),true);
+        const draft=fw.MidweekScheduler.getDraft();assert.equal(draft.programs['2026-W42'].reviewed,false);assert.equal(draft.programs['2026-W42'].reading,'');
+        assert(draft.programs['2026-W42'].parts.every(p=>p.title===''));assert.equal(draft.assignments['2026-W42'].Duty_legacy_1.personId,'department-person');assert.equal(draft.assignments['2026-W42'].Conversation,undefined);
+        assert.equal(draft.assignments['2026-W38'].Conversation.personId,'old-person');assert(qa.elements.get('mwsTitleHistory').innerHTML.includes('Earlier user-supplied title'));
+        qa.elements.get('undoSchedule').onclick();assert.equal(fw.MidweekScheduler.getDraft().programs['2026-W42'],undefined);assert.equal(fw.MidweekScheduler.getDraft().assignments['2026-W42'].Duty_legacy_1.personId,'department-person');
+        qa.localStorage.setItem('ca_midweek_structure-test_jw_scheduler_assignments',JSON.stringify({'2026-W42':{Chairman:{personId:'keep-person'}}}));fw.currentCongId='other-structure';fw.initMidweekScheduler();fw.currentCongId='structure-test';fw.initMidweekScheduler();fw.setSchedulerWeek('2026-W42');const before=JSON.stringify(fw.MidweekScheduler.getDraft());assert.equal(fw.copyPreviousMonthStructure(),false);assert.equal(JSON.stringify(fw.MidweekScheduler.getDraft()),before);
+    });
     await test('transfer defaults use actual records across the September service-year boundary',()=>{
         const record={reports:[{service_year:2027,hours:0},{service_year:2026,hours:0},{service_year:2025,hours:0}]};
         assert.equal(w.CATransfer.serviceYear(new Date(2026,7,31)),2026);
@@ -364,27 +376,27 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
         assert.deepEqual([...w.CATransfer.defaultYears({reports:[]},new Date(2026,8,1))],[]);
         assert.deepEqual([...w.CATransfer.defaultYears({reports:[{service_year:2025}]},new Date(2026,8,1))],[]);
     });
-    await test('S-21 preserves long remarks on continuation pages and service-year order', async () => {
+    await test('Original publisher card preserves long remarks on continuation pages and service-year order', async () => {
         w.db.reports=Array.from({length:12},(_,month)=>({id:'r'+month,pubId:'p1',serviceYear:2026,month,hours:month+1,studies:2,comments:month===8?'Long remark '.repeat(35):'',sharedInMinistry:true}));
         const bytes=await w.__exports.s21([{id:'p1',name:'Alexandra Catherine Montgomery-Wellington',dob:'1986-05-17',baptized:'2000-01-19',gender:'Female',hope:'Other Sheep',isRP:true}],2026);
-        const pdf=await PDFDocument.load(bytes);assert.equal(pdf.getPageCount(),2);assert(Math.abs(pdf.getPage(0).getHeight()-420.95)<1);
+        const pdf=await PDFDocument.load(bytes);assert.equal(pdf.getPageCount(),2);assert(Math.abs(pdf.getPage(0).getHeight()-595.28)<1);
         fs.writeFileSync(path.join(artifactDir,'s21.pdf'),bytes);
     });
-    await test('S-21 preserves zero and decimal values with centred numeric ink', async () => {
+    await test('Original publisher card preserves zero and decimal values with centred numeric ink', async () => {
         const hours=[0,.5,1,11,100,20.25,50,49,8,4,2,0],reports=hours.map((hours,i)=>({id:'centre'+i,pubId:'centre',serviceYear:2027,month:[8,9,10,11,0,1,2,3,4,5,6,7][i],hours,studies:i%3,comments:'',sharedInMinistry:true}));
         const bytes=await w.__exports.s21([{id:'centre',name:'Sample Grace Montgomery',dob:'1980-01-01',baptized:'2000-01-01',gender:'Female',hope:'Other Sheep',isRP:true}],2027,reports);
         assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s21-zeros.pdf'),bytes);
     });
-    await test('S-3 generates with long names and meeting-event markers', async () => {
+    await test('Original monthly attendance generates with long names and meeting-event markers', async () => {
         w.db.attendance=[{id:'test_2026_8',service_year:2026,month:8,w1_mid:'100',w1_end:'115',w2_mid:'RC',w2_end:'123'}];
         const bytes=await w.__exports.s3(2026,8,'A very long congregation name that should stay inside its field');
-        assert.equal((await PDFDocument.load(bytes)).getPageCount(),2);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
+        assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s3.pdf'),bytes);
     });
-    await test('S-88 export generates and restores its button', async () => {
+    await test('Original yearly attendance export generates and restores its button', async () => {
         el.get('att-year').value='2026';el.get('att-print88-btn').innerHTML='Download S-88';el.get('att-print88-btn').disabled=false;
         let blob;const originalURL=URL.createObjectURL;URL.createObjectURL=value=>{blob=value;return 'blob:test';};
         try{await w.ui.printS88();}finally{URL.createObjectURL=originalURL;}
-        assert(blob);const bytes=await blob.arrayBuffer();assert.equal((await PDFDocument.load(bytes)).getPageCount(),1);fs.writeFileSync(path.join(artifactDir,'s88.pdf'),Buffer.from(bytes));assert.equal(el.get('att-print88-btn').innerHTML,'Download S-88');assert.equal(el.get('att-print88-btn').disabled,false);
+        assert(blob);const bytes=await blob.arrayBuffer();assert.equal((await PDFDocument.load(bytes)).getPageCount(),2);fs.writeFileSync(path.join(artifactDir,'s88.pdf'),Buffer.from(bytes));assert.equal(el.get('att-print88-btn').innerHTML,'Download S-88');assert.equal(el.get('att-print88-btn').disabled,false);
     });
     await test('emergency PDF paginates large families and extremely long addresses', async () => {
         const members=Array.from({length:36},(_,i)=>({id:'p'+i,name:'Publisher '+i,phone:'123456789',address:i===0?'A long address '.repeat(130):'17 Example Street',emergencyName:'Emergency Contact',emergencyRelationship:'Family member',emergencyPhone:'987654321',spiritualStatus:'Baptised'}));
