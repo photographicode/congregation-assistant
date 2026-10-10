@@ -55,6 +55,7 @@ jobs:
       - run: node scripts/check-showcase.cjs
       - run: node scripts/check-import-recovery.cjs
       - run: npm run test:browser
+      - run: node scripts/check-visual-review.cjs
       - run: node public-site-preview/scripts/check-site.cjs
         env:
           CA_SITE_OUTPUT: artifacts/public-site
