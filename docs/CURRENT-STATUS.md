@@ -36,8 +36,21 @@ Other gaps include complete reports/attendance/midweek/duties rewrites, group ad
 
 PR #38 merged to main at `26505567a26cbe0656b4c1dc330fd3e60bcfea8e`. Canonical website published from commit `6492274ec39b7e90b4a8b0b8e9f1b31a752f6f2f`.
 
-App hosting rollout: https://github.com/photographicode/congregation-assistant/actions/runs/38422005921
+App hosting rollout: https://github.com/photographicode/congregation-assistant/actions/runs/38424329526
 
-Website hosting rollout: https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/38422011651
+Website hosting rollout: https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/38424327036
 
 Public asset hashes and V2 browser acceptance are checked by the Published V2 verification workflow; canonical website acceptance checks local and published assets plus isolated request fixtures in desktop Chromium, mobile Chromium and mobile WebKit. No live requests or messages are sent by these fixtures.
+
+## Final deployment receipt
+
+Available unpaid features are deployed. Application runtime commit: `fb356dcc6ceb840d59cc506cf7d4ae548bb76e77`. Canonical website commit: `09413e2e3730c577d8f9cd86fa38bccf5451bab7`.
+
+- [Published V2 verification](https://github.com/photographicode/congregation-assistant/actions/runs/38424330170): **passed**. Public V2/site/catalogue/font/build-hash assets match the repository; live desktop/mobile V2 flows, dialogs, household guard, weekend, import undo, accessibility and enlarged-text checks pass.
+- [Canonical website acceptance](https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/38424327436): **passed**. Both local and published checks pass in desktop Chromium, mobile Chromium and mobile WebKit: canonical links, responsive widths, 200% reflow, isolated three-step request fixture and install guide.
+- Both GitHub Pages hosting deployments succeeded. Earlier website checks exposed WebKit enlarged-text overflow; preview tabs, wrapping and native privacy selector containment were corrected. No reflow requirement was removed.
+- Existing full regression run 38412366216 and V2 foundation run 38412366144 passed before publishing. Full legacy published regression is a separate queued workflow; its queue status does not represent completion of every master quality gate.
+
+The default root remains the stable legacy app with a V2 preview entry. Paid services, Private mode/E2EE claims, official importer and signed APK remain disabled/unavailable. Pending implementation and owner inputs above remain pending. Deployment is complete for the available unpaid feature set; the full master specification is not complete.
+
+Live status tracker: https://github.com/photographicode/congregation-assistant/issues/39
