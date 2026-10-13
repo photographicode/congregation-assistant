@@ -10,3 +10,7 @@
 Other products worth a separately verified comparison: KHS, CLM Explorer, TsWin, Eutaktos and Unitae. 'Zeal' has not been reliably identified from the user's description, so no product-specific claims are made. This is a representative comparison, not an exhaustive list of every application worldwide.
 
 Immediate paid value: approachable setup, role-specific workspaces, clear failure recovery, readable mobile controls, synchronized limited roster, searchable S-140-style publication and configurable additional duties. Next priorities: shared drafts and conflict detection, availability, assignment acknowledgment, weekend talks, accessible multilingual exports, full recovery drills and responsive support. Make free trial outcomes measurable: time to first successful report/schedule, number of failed saves, support requests, and whether users can complete tasks without an explanation.
+
+## V2 checkpoint — 2026-10-13
+
+The new shell follows general calendar/scheduler conventions: clear sections, week controls, expandable secondary details and draft-before-publish. No competitor branding, logos or proprietary assets were copied. A fresh competitor research pass has not been performed; do not infer parity from the interface alone.
