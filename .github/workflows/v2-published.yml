@@ -1,0 +1,27 @@
+name: Published V2 verification
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/check-v2-published.cjs
+      - run: npm run test:v2:browser
+        env:
+          CA_V2_BASE_URL: https://photographicode.github.io/congregation-assistant/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: published-v2-results
+          path: artifacts/v2/

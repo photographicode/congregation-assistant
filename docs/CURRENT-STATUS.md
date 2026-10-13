@@ -31,3 +31,13 @@ Other gaps include complete reports/attendance/midweek/duties rewrites, group ad
 ## Credentials and remaining owner inputs
 
 [REQUIREMENTS.md](REQUIREMENTS.md) names required variables, account locations and remaining setup. Existing connected GitHub/Supabase access was sufficient for this deployment. No secret credentials are exposed in this report. Optional missing external credentials were not fabricated or purchased.
+
+## Publication checkpoint
+
+PR #38 merged to main at `26505567a26cbe0656b4c1dc330fd3e60bcfea8e`. Canonical website published from commit `6492274ec39b7e90b4a8b0b8e9f1b31a752f6f2f`.
+
+App hosting rollout: https://github.com/photographicode/congregation-assistant/actions/runs/38422005921
+
+Website hosting rollout: https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/38422011651
+
+Public asset hashes and V2 browser acceptance are checked by the Published V2 verification workflow; canonical website acceptance checks local and published assets plus isolated request fixtures in desktop Chromium, mobile Chromium and mobile WebKit. No live requests or messages are sent by these fixtures.

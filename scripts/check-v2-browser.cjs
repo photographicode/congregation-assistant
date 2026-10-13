@@ -37,7 +37,7 @@ const server = http.createServer((req, res) => {
 (async () => {
   await new Promise((r) => server.listen(0, "127.0.0.1", r));
   const browser = await chromium.launch(),
-    base = "http://127.0.0.1:" + server.address().port;
+    base = process.env.CA_V2_BASE_URL?.replace(/\/$/, "") || "http://127.0.0.1:" + server.address().port;
   const results = [];
   try {
     for (const size of [
