@@ -464,3 +464,5 @@ input, select, textarea { min-width: 0; max-width: 100%; }
 .mini-tabs { flex-wrap: wrap; gap: 0.5rem; }
 .mini-tabs span { min-width: 0; overflow-wrap: anywhere; }
 .comparison-wrapper { min-width: 0; max-width: 100%; contain: inline-size; }
+body { overflow-wrap: anywhere; }
+.honeypot { left: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
