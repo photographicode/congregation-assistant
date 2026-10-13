@@ -54,3 +54,14 @@ Available unpaid features are deployed. Application runtime commit: `fb356dcc6ce
 The default root remains the stable legacy app with a V2 preview entry. Paid services, Private mode/E2EE claims, official importer and signed APK remain disabled/unavailable. Pending implementation and owner inputs above remain pending. Deployment is complete for the available unpaid feature set; the full master specification is not complete.
 
 Live status tracker: https://github.com/photographicode/congregation-assistant/issues/39
+
+## Scheduler/reports refresh fix — 2026-10-13
+
+[PR #40](https://github.com/photographicode/congregation-assistant/pull/40) is merged and deployed at runtime commit `e9b1716b909b072d76b4a8fccdedd11ee87241db`. Same-user Supabase SIGNED_IN and TOKEN_REFRESHED notifications previously reloaded V2 membership, unmounted the embedded legacy tools, and could cause a repeating reload. Access loading now depends on user identity, while session updates and sign-out still work. No SQL or record changes were needed.
+
+- [Foundation regression](https://github.com/photographicode/congregation-assistant/actions/runs/38445009408): passed.
+- [Published regression](https://github.com/photographicode/congregation-assistant/actions/runs/38445276783): passed. Authenticated scheduler and reports preserve unsaved input and iframe navigation count through repeated same-user auth events; sign-out removes protected tools. Fixtures use fictional sessions, mocked APIs and an isolated browser context.
+- [Hosting rollout](https://github.com/photographicode/congregation-assistant/actions/runs/38445276874): succeeded.
+- S-21, S-88 and S-3 remain available. Existing PDF checks generated these forms successfully, including S-21 long remarks/zero/decimal cases, S-3 long congregation names/event markers and S-88 export/button restoration.
+
+The owner states they have written authorization to scrape jw.org midweek meeting schedules. This statement is recorded in [the authorization record](permissions/jw-org-authorization.md). The permission wording/scope has been requested to determine languages, retrieval methods, caching/redistribution and expiry/rate terms. The official-content importer remains disabled; this hotfix does not enable it.
