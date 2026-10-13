@@ -133,7 +133,9 @@ function App() {
     return () => {
       active = false;
     };
-  }, [session]);
+  // Same-user SIGNED_IN/TOKEN_REFRESHED events also arrive from embedded
+  // legacy tools. Reloading access here would unmount and reopen that iframe.
+  }, [session?.user?.id, session?.user?.email]);
   useEffect(() => {
     if (cong && !demo) capabilities(cong).then(setCaps);
   }, [cong]);
