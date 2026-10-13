@@ -4,7 +4,7 @@ Last checkpoint: 2026-10-13. This is a foundation/preview, not the completed mas
 
 | README section | Evidence completed | Remaining gate |
 |---|---|---|
-| §0 autonomy/deployment | v2/all; logical commits; additive SQL applied after user's explicit SQL authorization; capability probe; legacy escape hatch | One review PR/CI pending; no main merge until all §16 gates; full rollout incomplete |
+| §0 autonomy/deployment | v2/all; logical commits; additive SQL applied after user's explicit SQL authorization; capability probe; legacy escape hatch | Owner authorized deployment of available unpaid foundation; full master rollout remains incomplete |
 | §1 verified audit | Legacy close button labels/hit areas; dialog-root inner ID collisions fixed; title labels simplified; PDF precache removed; explicit update prompt | Full XSS/anonymous-RPC/font/theme/emoji/duplicate-tree audit not complete |
 | §2 principles | Calm navigation, device typography, honest privacy, kept legacy business logic | Human usability acceptance |
 | §3 foundation | Vite/TypeScript/React18, Radix Dialog, TanStack Query, Zustand, Zod dependency, six token themes, contrast tests, local Noto, code-split workspace | Full monorepo move, Tailwind UI integration, full component/styleguide catalogue, strict legacy CSP and all local vendors |
@@ -56,4 +56,4 @@ Dependency checkpoint: production audit zero; remaining development-only Tailwin
 - Publisher email saving now carries the editor's expected login list; stale access changes reject atomically without changing contact details. The synthetic stale-login check passed with rollback.
 - Heavy accessibility matrices were moved to the requested nightly/manual CI path (03:00 Asia/Calcutta). Fast V2 checks remain on pull requests.
 
-This does not complete README §16: full Private mode, its end-to-end lifecycle/sentinel suite, the remaining UI/security/PWA work, human pilot acceptance and measured performance remain unfinished. No frontend was merged to main or deployed. The additive SQL is live; the frontend stays a draft preview in PR #38.
+This does not complete README §16: full Private mode, its end-to-end lifecycle/sentinel suite, the remaining UI/security/PWA work, human pilot acceptance and measured performance remain unfinished. The owner subsequently explicitly requested deployment of available unpaid work. The foundation is being published via PR #38; full Private mode and the remaining gates stay unfinished. See CURRENT-STATUS.md for current deployment evidence.

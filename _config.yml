@@ -11,3 +11,12 @@ exclude:
   - README.md
   - research
   - archive
+
+  - apps
+  - packages
+  - docs
+  - work
+  - dist
+  - AGENTS.md
+include:
+  - .well-known
