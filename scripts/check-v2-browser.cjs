@@ -40,6 +40,7 @@ const server = http.createServer((req, res) => {
     base = process.env.CA_V2_BASE_URL?.replace(/\/$/, "") || "http://127.0.0.1:" + server.address().port;
   const results = [];
   try {
+    await require("./check-v2-auth-refresh.cjs")(browser, base);
     for (const size of [
       { name: "phone", width: 390, height: 844 },
       { name: "desktop", width: 1440, height: 900 },

@@ -15,3 +15,5 @@ Complete only from actual written permission:
 - Revocation / kill-switch contact:
 
 The uploaded README asserts authorization but supplies no letter. This template does not establish it. No importer was enabled or official content retrieved by this task.
+
+Owner follow-up, 2026-10-13: the owner states they hold written authorization for retrieving the jw.org midweek meeting schedule. The letter and permitted languages, fields, retrieval methods, caching/redistribution, expiry and rate terms have been requested. This records the owner statement; it does not invent its scope. The importer remains disabled pending that information.
