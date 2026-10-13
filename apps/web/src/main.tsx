@@ -57,7 +57,7 @@ function App() {
     [online, setOnline] = useState(navigator.onLine);
   const appearance = useAppearance();
   useEffect(() => adapt(appearance), [appearance]);
-  React.useLayoutEffect(()=>window.scrollTo(0,0),[route,cong]);
+  React.useLayoutEffect(()=>{window.scrollTo(0,0);},[route,cong]);
   useEffect(() => {
     const handler = () => setOnline(navigator.onLine);
     window.addEventListener("online", handler);

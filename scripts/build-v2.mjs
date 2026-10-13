@@ -16,6 +16,12 @@ async function sourceFiles(dir) {
 }
 for (const file of [
   "public-config.json",
+  "apps/web/vite.config.ts",
+  "apps/web/index.html",
+  "scripts/build-v2.mjs",
+  "service-worker.js",
+  ...(await readdir(root)).filter(file=>/^(app.*\.(js|css)|index\.html|weekend\.html|weekend-public\.js|public-links\.js|pdf-tools\.js|offline\.html|robots\.txt|manifest\.webmanifest)$/.test(file)).sort(),
+  ...(await sourceFiles('assets')),
   "capabilities.json",
   "package-lock.json",
   ...(await sourceFiles("apps/web/src")),
