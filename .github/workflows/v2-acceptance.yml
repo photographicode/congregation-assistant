@@ -1,0 +1,60 @@
+name: V2 foundation acceptance
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v2-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check:v2
+      - run: npm test
+      - run: npm run build:v2
+      - run: node scripts/check-pdf-offline.cjs
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:v2:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v2-build-and-verification
+          path: |
+            dist/
+            artifacts/v2/
+          retention-days: 14
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: acceptance-only
+          POSTGRES_DB: ca_v2_acceptance
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Baseline SQL contracts and V2 migrations
+        env:
+          PGPASSWORD: acceptance-only
+        run: |
+          psql -h localhost -U postgres -d ca_v2_acceptance -f scripts/check-supabase.sql
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -c 'create schema if not exists extensions; create extension if not exists pgcrypto with schema extensions;'
+          for migration_file in supabase/migrations/*.sql; do
+            case "$migration_file" in *.down.sql) continue;; esac
+            psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -1 -f "$migration_file"
+          done
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-contract.sql
