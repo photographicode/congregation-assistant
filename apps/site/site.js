@@ -91,7 +91,12 @@
             apikey: "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C",
           },
           body: JSON.stringify({
-            p_choices:{version:2,delivery:v.get("delivery"),privacy:v.get("privacy"),modules:v.getAll("modules")},
+            p_choices: {
+              version: 2,
+              delivery: v.get("delivery"),
+              privacy: v.get("privacy"),
+              modules: v.getAll("modules"),
+            },
             p_name: v.get("name"),
             p_contact_email: v.get("email"),
             p_admin_email: v.get("adminEmail"),
@@ -120,7 +125,9 @@
       a.href = url;
       a.download = "congregation-requirements.json";
       a.textContent = "Download your selected requirements";
-      status.textContent = `Request received. Reference: ${result.reference || "recorded"}. Your delivery and module choices are recorded with a new request. Private mode remains unavailable. `;
+      status.textContent = result.reference
+        ? `Request received. Reference: ${result.reference}. Your delivery and module choices are recorded. Private mode remains unavailable. `
+        : "A pending request already exists. Its choices have not been overwritten. Download these preferences to share with support. ";
       status.append(a);
       submit.textContent = "Request received";
     } catch (error) {

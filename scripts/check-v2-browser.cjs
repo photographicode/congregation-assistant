@@ -69,7 +69,24 @@ const server = http.createServer((req, res) => {
           .getByRole("button", { name: label, exact: true })
           .click();
       await nav("Schedule");
-      await page.getByRole("button", { name: "Weekend", exact: true }).click();
+      try {
+        await page
+          .getByRole("heading", { name: "Make the week clear.", exact: true })
+          .waitFor({ timeout: 5000 });
+        await page
+          .getByRole("button", { name: "Weekend", exact: true })
+          .click();
+      } catch (error) {
+        console.error(
+          "Schedule diagnostics",
+          JSON.stringify({
+            errors,
+            url: page.url(),
+            main: await page.locator("#main-content").innerText(),
+          }),
+        );
+        throw error;
+      }
       await page.getByLabel("Public talk title").fill("Fictional weekend talk");
       await page.getByLabel("Public talk speaker").fill("Fictional Visitor");
       await page
@@ -92,7 +109,9 @@ const server = http.createServer((req, res) => {
       await page
         .getByRole("button", { name: "Save publisher & email", exact: true })
         .click();
-      await page.getByRole("button", { name: "Edit Synthetic Household", exact: true }).waitFor();
+      await page
+        .getByRole("button", { name: "Edit Synthetic Household", exact: true })
+        .waitFor();
       await page
         .getByRole("button", { name: "Add publisher", exact: true })
         .click();
@@ -115,7 +134,11 @@ const server = http.createServer((req, res) => {
         .getByRole("button", { name: "Discard changes", exact: true })
         .click();
       assert.equal(await page.getByRole("dialog").count(), 0);
-      await page.waitForFunction(()=>document.activeElement?.textContent.trim()==="Add publisher", null, {timeout:5000});
+      await page.waitForFunction(
+        () => document.activeElement?.textContent.trim() === "Add publisher",
+        null,
+        { timeout: 5000 },
+      );
       await page
         .getByRole("button", { name: "Import Center", exact: true })
         .click();
@@ -151,7 +174,7 @@ const server = http.createServer((req, res) => {
         false,
         "200% text overflow",
       );
-      await page.waitForFunction(()=>!document.querySelector('.notice'));
+      await page.waitForFunction(() => !document.querySelector(".notice"));
       await page.screenshot({
         path: path.join(output, size.name + "-200-text.png"),
       });
@@ -160,7 +183,10 @@ const server = http.createServer((req, res) => {
       results.push({ profile: size.name, passed: true, axeSerious: 0 });
       await context.close();
     }
-    const siteContext = await browser.newContext({viewport:{width:1280,height:900},serviceWorkers:"block"});
+    const siteContext = await browser.newContext({
+      viewport: { width: 1280, height: 900 },
+      serviceWorkers: "block",
+    });
     const site = await siteContext.newPage();
     await site.route("**/*.supabase.co/**", (route) => route.abort());
     await site.goto(base + "/site/");

@@ -121,23 +121,29 @@ function Pending({ name }: { name: string }) {
   );
 }
 function Legacy({ tab }: { tab: string }) {
+  const target =
+    tab === "reports"
+      ? "groups"
+      : tab === "midweek" || tab === "duties"
+        ? "oclm"
+        : tab;
+  const legacyURL =
+    "../?ui=legacy&tab=" +
+    encodeURIComponent(target) +
+    (demo ? "&demo=admin" : "");
   return (
     <>
       <p className="muted">
         Existing congregation tools remain available while this screen is being
         migrated.
       </p>
-      <a
-        href={`../?ui=legacy&tab=${encodeURIComponent(tab)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={legacyURL} target="_blank" rel="noopener noreferrer">
         Open existing {tab} tools
       </a>
       <iframe
         className="legacy-frame"
         title={`Existing ${tab} tools`}
-        src={`../?ui=legacy&tab=${encodeURIComponent(tab)}`}
+        src={legacyURL}
       />
     </>
   );
@@ -1567,14 +1573,18 @@ export default function Workspace({
                   setSetup((s: any) => ({ ...s, portal: e.target.checked }))
                 }
               />
-              Publisher portal enabled
+              Prefer publisher portal
             </label>
             <button
               disabled={busy}
               onClick={() => run(() => saveSetup(wizardStep))}
             >
-              Save delivery settings
+              Save delivery preferences
             </button>
+            <p className="muted">
+              These setup preferences do not change existing account access.
+              Manage active accounts in Access &amp; Links.
+            </p>
           </section>
           <section className="card">
             <h2>Privacy & protection</h2>

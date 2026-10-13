@@ -3,7 +3,7 @@ begin;
 insert into public.congregations(id,name,status) values('ca-v2-contract','V2 synthetic test','active');
 insert into public.congregation_access(cong_id,email,role,active) values('ca-v2-contract','v2-contract@example.invalid','admin',true);
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000123","email":"v2-contract@example.invalid","role":"authenticated","app_metadata":{"provider":"google","providers":["google"]}}',true);
-do $$declare g jsonb;result jsonb;draft jsonb;token text;batch uuid;begin
+do $$declare g jsonb;result jsonb;draft jsonb;token text;batch uuid;session_token text;begin
  if not (public.ca_v2_capabilities('ca-v2-contract')->>'groups')::boolean then raise exception 'Capability missing';end if;
  g=public.ca_v2_add_group('ca-v2-contract','  Group   A ');
  if g->>'name'<>'Group A' then raise exception 'Group normalization failed';end if;
@@ -20,6 +20,9 @@ do $$declare g jsonb;result jsonb;draft jsonb;token text;batch uuid;begin
  begin perform public.ca_v2_save_weekend('ca-v2-contract','2026-10-12',draft,0);raise exception 'Stale revision accepted';exception when serialization_failure then null;end;
  result=public.ca_v2_publish_weekend('ca-v2-contract','2026-10-12',draft,1);token=result->>'token';
  if length(token)<>64 then raise exception 'Invalid public token';end if;
+ session_token=public.ca_v2_exchange_weekend(token)->>'session';
+ if length(session_token)<>64 or public.ca_v2_weekend_session(session_token)->>'talkTitle'<>'Synthetic talk' then raise exception 'Scoped weekend session failed';end if;
+ if exists(select 1 from ca_private.weekend_sessions where token_hash=session_token) then raise exception 'Session stored without hashing';end if;
  if public.ca_v2_public_weekend(token)::text like '%DO_NOT_PUBLISH_THIS_PRIVATE_NOTE%' then raise exception 'Private note leaked';end if;
  if public.ca_v2_public_weekend(repeat('a',64)) is not null then raise exception 'Wrong token returned records';end if;
  result=public.ca_v2_import_people('ca-v2-contract','[{"name":"Synthetic Import","group":"Group A","email":""}]');batch=(result->>'batch_id')::uuid;
