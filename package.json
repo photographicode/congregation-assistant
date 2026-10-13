@@ -21,5 +21,8 @@
   "workspaces": [
     "apps/web",
     "packages/ui"
-  ]
+  ],
+  "overrides": {
+    "postcss-selector-parser": "7.1.6"
+  }
 }

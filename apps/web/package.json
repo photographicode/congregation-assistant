@@ -1,1 +1,25 @@
-{"name":"@ca/web","private":true,"version":"2.0.0","type":"module","dependencies":{"@radix-ui/react-dialog":"1.1.15","@supabase/supabase-js":"2.57.4","@tanstack/react-query":"5.90.5","date-fns":"4.1.0","libsodium-wrappers-sumo":"0.7.15","lucide-react":"0.468.0","react":"18.3.1","react-dom":"18.3.1","zod":"4.1.12","zustand":"5.0.8"},"devDependencies":{"@types/react":"18.3.12","@types/react-dom":"18.3.1","@vitejs/plugin-react":"4.7.0","typescript":"5.9.3","vite":"6.4.1"}}
+{
+  "name": "@ca/web",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.1.15",
+    "@supabase/supabase-js": "2.57.4",
+    "@tanstack/react-query": "5.90.5",
+    "date-fns": "4.1.0",
+    "libsodium-wrappers-sumo": "0.7.15",
+    "lucide-react": "0.468.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "zod": "4.1.12",
+    "zustand": "5.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.7.0",
+    "typescript": "5.9.3",
+    "vite": "6.4.4"
+  }
+}

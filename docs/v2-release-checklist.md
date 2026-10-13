@@ -43,3 +43,5 @@ Keep `V2_DEFAULT=false`, `E2EE_CLAIMS_ENABLED=false`, `JW_IMPORT_ENABLED=false`,
 ## Rollback
 
 Return to the legacy frontend/query path; never overwrite drafts automatically. Preserve V2 records and export them before any reviewed down migration. Reassign weekend roles before removing its schema. Reverse migrations only in a reviewed transaction after backup; no automatic production deletes. Keep the legacy escape hatch for at least 30 days after the eventual default flip.
+
+Dependency checkpoint: production audit zero; remaining development-only Tailwind/braces advisories are unresolved because no patched braces 3.x is available. Vite and selector parser were updated. Do not report the complete security gate passed.

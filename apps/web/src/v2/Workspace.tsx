@@ -1721,10 +1721,25 @@ export default function Workspace({
                 </select>
               </label>
             </div>
-            <h3>Sign-in & contact</h3>
             <label>
+              Gender
+              <select
+                value={editing.gender || "Male"}
+                onChange={(e) => {
+                  setEditing((p) => (p ? { ...p, gender: e.target.value } : p));
+                  setDirty(true);
+                }}
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </label>
+            <h3>Sign-in & contact</h3>
+            <label htmlFor="v2-publisher-email">
               Email (for sign-in)
               <input
+                id="v2-publisher-email"
+                aria-describedby="v2-publisher-email-hint"
                 type="email"
                 value={editing.email}
                 disabled={!admin && !demo}
@@ -1734,11 +1749,10 @@ export default function Workspace({
                   setShared(false);
                 }}
               />
-              <small>
-                Optional. A shared email grants household report submission
-                only.
-              </small>
             </label>
+            <small id="v2-publisher-email-hint">
+              Optional. A shared email grants household report submission only.
+            </small>
             {household.length > 0 && !shared && (
               <section className="banner">
                 <p>
