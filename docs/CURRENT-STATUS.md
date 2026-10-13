@@ -26,7 +26,7 @@ Other gaps include complete reports/attendance/midweek/duties rewrites, group ad
 - Existing full browser/PDF/database/cloud workflow: https://github.com/photographicode/congregation-assistant/actions/runs/38412366216 — passed after retry of a noticeboard timing failure.
 - 37 V2 checks, TypeScript, existing app checks and production build pass; browser checks cover desktop/mobile demo flows, dialogs, household guard, weekend, import undo, app/site accessibility and 200% reflow.
 - Production dependency audit: zero known vulnerabilities. Five high development-only advisories remain through Tailwind 3/braces.
-- Deployment verification will be appended with public asset checks and hosting run links.
+- Published V2 asset hashes and live browser checks passed in run 38422194266 and again after packaging guide downloads in run 38422509247.
 
 ## Credentials and remaining owner inputs
 
