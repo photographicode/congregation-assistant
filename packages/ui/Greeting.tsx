@@ -1,0 +1,17 @@
+import React from 'react';
+import { greetingModel, nextMinuteDelay } from '../../apps/web/src/v2/greeting.mjs';
+export function Greeting({name='', timezone, locale='en', clock='locale', subline}: {name?:string; timezone?:string; locale?:string; clock?:string; subline?:string}) {
+ const [now,setNow]=React.useState(()=>new Date());
+ React.useEffect(()=>{
+  let timer:ReturnType<typeof setTimeout>;
+  const sync=()=>{clearTimeout(timer);setNow(new Date());timer=setTimeout(sync,nextMinuteDelay(Date.now()));};
+  const resume=()=>{if(document.visibilityState==='visible')sync();};
+  sync(); document.addEventListener('visibilitychange',resume);window.addEventListener('pageshow',sync);window.addEventListener('focus',sync);
+  return()=>{clearTimeout(timer);document.removeEventListener('visibilitychange',resume);window.removeEventListener('pageshow',sync);window.removeEventListener('focus',sync);};
+ },[]);
+ let value;try {value=greetingModel(now,{name,timezone,locale,clock});}catch{value=greetingModel(now,{name});}
+ return <section className="card greeting" data-period={value.period} aria-label="Your day">
+  <div><h1>{value.greeting}</h1><time dateTime={value.dateISO}>{value.date}</time>{subline&&<p>{subline}</p>}</div>
+  <div className="greeting-clock"><time dateTime={now.toISOString()} aria-live="off">{value.time}</time>{value.differentZone&&<span className="chip">{value.zoneLabel} · congregation time</span>}</div>
+ </section>;
+}

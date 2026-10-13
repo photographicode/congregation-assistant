@@ -1,1 +1,7 @@
-{"SUPPORT_EMAIL":"congregationassistant0@gmail.com","PUBLIC_SITE_URL":"https://photographicode.github.io/Congregation-Assistant_Public/","APP_URL":"https://photographicode.github.io/congregation-assistant/","domainConfigured":false,"mailConfigured":false}
+{
+  "SUPPORT_EMAIL": "support@congregationassistant.com",
+  "PUBLIC_SITE_URL": "https://congregationassistant.com",
+  "APP_URL": "https://app.congregationassistant.com",
+  "domainConfigured": false,
+  "mailConfigured": false
+}

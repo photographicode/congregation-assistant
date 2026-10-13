@@ -4,12 +4,21 @@
   "private": true,
   "scripts": {
     "test": "node scripts/check-public-safety.cjs && node scripts/check-app.cjs && node scripts/check-cloud-draft.cjs && node scripts/check-recovery-encryption.cjs && node scripts/check-record-envelope.cjs",
-    "test:browser": "node scripts/check-browser.cjs",
+    "test:browser": "node scripts/check-cutover-browser.cjs",
     "build:styles": "tailwindcss -i scripts/styles/utilities.css -o app-utilities.css --minify",
     "dev:v2": "vite --config apps/web/vite.config.ts",
     "build:v2": "node scripts/build-v2.mjs",
     "check:v2": "node --test scripts/v2-tests/*.test.mjs && tsc -p apps/web/tsconfig.json --noEmit",
-    "test:v2:browser": "node scripts/check-v2-browser.cjs"
+    "test:v2:browser": "node scripts/check-cutover-browser.cjs",
+    "dev": "vite --config apps/web/vite.config.ts",
+    "build": "node scripts/build-v2.mjs",
+    "preview": "node scripts/serve-cutover.cjs",
+    "check": "npm run check:v2",
+    "lint": "tsc -p apps/web/tsconfig.json --noEmit",
+    "check:bundle": "node scripts/check-no-legacy.mjs --bundle",
+    "check:release": "node scripts/check-cutover-release.mjs",
+    "test:legacy:browser": "node scripts/check-browser.cjs",
+    "check:standalone": "node scripts/check-standalone.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

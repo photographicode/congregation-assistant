@@ -1,25 +1,30 @@
 name: Published V2 verification
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ['V2 root deployment']
+    types: [completed]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   verify:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
       - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
-      - run: node scripts/check-v2-published.cjs
-      - run: npm run test:v2:browser
+      - run: npm run build
         env:
-          CA_V2_BASE_URL: https://photographicode.github.io/congregation-assistant/
+          BASE_URL: ${{ vars.APP_BASE_URL || '/congregation-assistant/' }}
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/check-cutover-published.cjs
+        env:
+          CA_V2_BASE_URL: ${{ vars.APP_URL || 'https://photographicode.github.io/congregation-assistant/' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

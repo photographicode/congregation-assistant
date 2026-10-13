@@ -10,6 +10,7 @@ export const client = createClient(
 );
 export const demo = new URLSearchParams(location.search).has("demo");
 export async function rpc(name: string, args: Record<string, unknown> = {}) {
+  if (demo) throw Error("The fictional demo never calls the cloud.");
   const { data, error } = await client.rpc(name, args);
   if (error) throw Error(error.message);
   return data;
@@ -24,7 +25,7 @@ export async function capabilities(cong: string) {
       weekend: false,
       setup: false,
       private: false,
-      reason: "Update pending. Existing tools remain available.",
+      reason: "Database update required.",
     };
   }
 }

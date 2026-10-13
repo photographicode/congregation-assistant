@@ -19,11 +19,16 @@ import {
   ShieldCheck,
   Download,
 } from "lucide-react";
+import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
 import { client, demo, capabilities } from "./v2/client";
 import { useAppearance } from "./v2/store";
+import { UpdatePrompt } from "./v2/UpdatePrompt";
 import { adapt } from "./v2/accessibility";
 import "./v2/styles.css";
+const oldPrefix=import.meta.env.BASE_URL+"v2/";
+if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
+const PublicForm = lazy(() => import("./v2/PublicForm").then(m=>({default:m.PublicForm})));
 const Workspace = lazy(() => import("./v2/Workspace"));
 const routes = [
   { id: "home", label: "Home", icon: Home },
@@ -39,6 +44,7 @@ export type Context = {
   name: string;
   roles: string[];
   caps: any;
+  firstName?: string;
   notify: (s: string) => void;
 };
 function App() {
@@ -48,16 +54,17 @@ function App() {
     [memberships, setMemberships] = useState<any[]>([]),
     [cong, setCong] = useState(demo ? "demo" : ""),
     [caps, setCaps] = useState<any>({}),
-    [route, setRoute] = useState("home"),
+    [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
     [collapsed, setCollapsed] = useState(false),
     [more, setMore] = useState(false),
     [search, setSearch] = useState(false),
     [query, setQuery] = useState(""),
+    [email, setEmail] = useState(""),
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
   const appearance = useAppearance();
   useEffect(() => adapt(appearance), [appearance]);
-  React.useLayoutEffect(()=>{window.scrollTo(0,0);},[route,cong]);
+  React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
   useEffect(() => {
     const handler = () => setOnline(navigator.onLine);
     window.addEventListener("online", handler);
@@ -82,7 +89,7 @@ function App() {
       setMemberships([
         {
           cong_id: "demo",
-          role: "admin",
+          role: new URLSearchParams(location.search).get("demo") === "publisher" ? "publisher" : "admin",
           congregations: { name: "River Park Congregation" },
         },
       ]);
@@ -133,8 +140,7 @@ function App() {
     return () => {
       active = false;
     };
-  // Same-user SIGNED_IN/TOKEN_REFRESHED events also arrive from embedded
-  // legacy tools. Reloading access here would unmount and reopen that iframe.
+  // Avoid reloading membership on token refresh for the same account.
   }, [session?.user?.id, session?.user?.email]);
   useEffect(() => {
     if (cong && !demo) capabilities(cong).then(setCaps);
@@ -184,6 +190,7 @@ function App() {
       memberships.find((m) => m.cong_id === cong)?.congregations?.name ||
       "Congregation",
     roles,
+    firstName: demo ? "Daniel" : session?.user?.user_metadata?.full_name?.split(" ")[0],
     caps,
     notify: setNotice,
   };
@@ -239,16 +246,15 @@ function App() {
         >
           Continue with Google <ArrowRight />
         </button>
+        {features.flags.MAGIC_LINK_ENABLED && <form className="stack" onSubmit={async e=>{e.preventDefault();const {error}=await client.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+import.meta.env.BASE_URL}});if(error)setError(error.message);else setError("Check your email for the sign-in link.");}}><label>Email magic link<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><button>Email sign-in link</button></form>}
         <p className="muted">
           Independent and unofficial. Your congregation controls access.
         </p>
         <div className="actions">
           <a href="?demo=admin">Try the admin demo</a>
-          <a href="../?demo=publisher">Publisher demo</a>
+          <a href="?demo=publisher">Publisher demo</a>
         </div>
-        <p>
-          <a href="../?ui=legacy">Open existing app</a>
-        </p>
+
       </main>
     );
   if (!cong)
@@ -260,16 +266,19 @@ function App() {
           administrator to approve your email.
         </p>
         <button onClick={signOut}>Sign out</button>
-        <a href="../site/">Request a workspace</a>
+        <a href={import.meta.env.BASE_URL + "site/"}>Request a workspace</a>
       </main>
     );
   const go = (id: string) => {
+    if(!allowed.some(r=>r.id===id))return;
+    const url=new URL(location.href);url.searchParams.set("screen",id);history.replaceState(null,"",url.pathname+url.search);
     setRoute(id);
     setMore(false);
     setSearch(false);
   };
   return (
     <div className="app">
+      <UpdatePrompt />
       <aside className={"rail " + (collapsed ? "collapsed" : "")}>
         <div className="brand">
           <span className="brand-mark">
@@ -304,9 +313,7 @@ function App() {
             <PanelLeftClose />
             <span>Collapse</span>
           </button>
-          <a href="../?ui=legacy" className="muted">
-            Existing app
-          </a>
+
           {!demo && (
             <button onClick={signOut}>
               <LogOut />
@@ -349,11 +356,11 @@ function App() {
             <div className="banner" role="status">
               Update pending. New database tools will appear after the V2
               migration.{" "}
-              <a href="../?ui=legacy">Continue with existing tools</a>.
+              Contact your administrator to apply the database update.
             </div>
           )}
           <Suspense fallback={<p role="status">Loading tools…</p>}>
-            <Workspace key={cong} route={route} go={go} context={context} />
+            <Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />
           </Suspense>
         </main>
       </div>
@@ -388,7 +395,7 @@ function App() {
                 {r.label}
               </button>
             ))}
-          <a href="../?ui=legacy">Existing app</a>
+
           {!demo && <button onClick={signOut}>Sign out</button>}
         </div>
       </Dialog>
@@ -430,7 +437,7 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>Opening protected form…</main>}><PublicForm/></Suspense> : <App />}
     </QueryClientProvider>
   </React.StrictMode>,
 );

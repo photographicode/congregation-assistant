@@ -21,7 +21,7 @@ jobs:
       - run: npm run check:v2
       - run: npm test
       - run: npm run build:v2
-      - run: node scripts/check-pdf-offline.cjs
+      - run: npm run check:bundle
       - run: npx playwright install --with-deps chromium
       - run: npm run test:v2:browser
       - uses: actions/upload-artifact@v4
@@ -58,7 +58,8 @@ jobs:
           psql -h localhost -U postgres -d ca_v2_acceptance -f scripts/check-supabase.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -c 'create schema if not exists extensions; create extension if not exists pgcrypto with schema extensions;'
           for migration_file in supabase/migrations/*.sql; do
-            case "$migration_file" in *.down.sql) continue;; esac
+            case "$migration_file" in *.down.sql|*drop_legacy_auth.sql) continue;; esac
             psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -1 -f "$migration_file"
           done
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-contract.sql
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-cutover-auth.sql

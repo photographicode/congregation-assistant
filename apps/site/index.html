@@ -15,6 +15,14 @@
     <title>Congregation Assistant — More clarity. Less administration.</title>
     <link rel="stylesheet" href="site.css" />
     <script src="site.js" defer></script>
+    <script type="module" src="tour.js"></script>
+    <link rel="stylesheet" href="tour.css" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Congregation Assistant","applicationCategory":"ProductivityApplication","operatingSystem":"Web, Android, iOS","url":"https://congregationassistant.com","description":"Independent, unofficial congregation records and meeting scheduling tools."}</script>
+    <link rel="canonical" href="https://congregationassistant.com/" />
+    <meta property="og:title" content="Congregation Assistant — More clarity. Less administration." />
+    <meta property="og:description" content="People, reports and weekly schedules in one calm workspace. Independent and unofficial." />
+    <meta property="og:url" content="https://congregationassistant.com/" />
+    <meta name="twitter:card" content="summary" />
   </head>
   <body>
     <header>
@@ -35,9 +43,9 @@
           id="site-navigation"
           aria-label="Website navigation"
         >
-          <a href="#features">Features</a><a href="#privacy">Privacy</a
+          <button type="button" id="language-toggle" aria-label="Read the introduction in Hindi">हिन्दी</button><a href="#features">Features</a><a href="#privacy">Privacy</a
           ><a href="#pricing">Pricing</a><a href="android/">Install</a
-          ><a class="button" href="../v2/">Open app</a>
+          ><a class="button" href="https://app.congregationassistant.com/">Open app</a>
         </nav>
       </div>
     </header>
@@ -53,7 +61,7 @@
             </p>
             <div class="actions">
               <a class="button primary" href="#request">Request a workspace</a
-              ><a class="button" href="../v2/?demo=admin">Explore the demo</a>
+              ><a class="button" href="https://app.congregationassistant.com/?demo=admin">Explore the demo</a>
             </div>
             <p class="muted">
               Independent and unofficial. Designed for congregations of
@@ -62,35 +70,7 @@
             <span class="chip">Accessible by default</span>
             <span class="chip">Works on your phone</span>
           </div>
-          <div
-            class="device"
-            aria-label="Phone preview with fictional congregation and assignments"
-          >
-            <div class="top">
-              <span>River Park Congregation</span><span>Fictional preview</span>
-            </div>
-            <span class="eyebrow">Your week, at a glance</span>
-            <h3>Good to have<br />you here.</h3>
-            <div class="mini-card">
-              <strong>Next task</strong>
-              <p>Get this week ready.</p>
-              <span class="chip">Open schedule</span>
-            </div>
-            <div class="mini-row">
-              <strong>Midweek meeting</strong><span>Wednesday · 7:00 pm</span>
-            </div>
-            <div class="mini-row">
-              <strong>Weekend meeting</strong><span>Sunday · 10:00 am</span>
-            </div>
-            <div class="mini-row">
-              <strong>Public talk speaker</strong
-              ><span>Daniel Thomas · River Park</span>
-            </div>
-            <div class="mini-tabs">
-              <span>Home</span><span>Schedule</span><span>People</span
-              ><span>Reports</span><span>More</span>
-            </div>
-          </div>
+          <div class="device" id="product-tour" aria-label="Guided product tour using fictional data"><div class="top">River Park · Fictional demo</div><h3>Good morning, Daniel.</h3><p>People, reports and meeting assignments, together.</p><div class="mini-card"><strong>Midweek meeting</strong><p>Wednesday · 7:00 pm</p></div><div class="mini-card"><strong>Weekend meeting</strong><p>Sunday · 10:00 am</p></div><a href="https://app.congregationassistant.com/?demo=admin">Explore the app</a></div>
         </div>
       </div>
       <section class="alt" id="features">
@@ -99,9 +79,8 @@
             <span class="eyebrow">Everything has a place</span>
             <h2>Clear tools for the<br />work you do each week.</h2>
             <p>
-              The V2 preview brings a simpler interface and new modules.
-              Existing tools remain accessible while the release is being
-              verified.
+              Keep records organized, prepare each meeting and share the right
+              information with the right people.
             </p>
           </div>
           <div class="grid">
@@ -122,8 +101,8 @@
             <article class="card">
               <h3>Reports & attendance</h3>
               <p>
-                Existing service-report and attendance tools remain available
-                during the interface migration.
+                Enter monthly service reports, review missing submissions and
+                record weekly meeting attendance.
               </p>
             </article>
             <article class="card">
@@ -156,9 +135,8 @@
             <span class="eyebrow">Meet people where they are</span>
             <h2>Four ways to take part.</h2>
             <p>
-              Choose the congregation’s delivery preference. Some linked
-              delivery workflows are still being migrated; the preview explains
-              what each choice means.
+              Choose how your congregation works: approved accounts, protected
+              links, personal WhatsApp messages or printed schedules.
             </p>
           </div>
           <div class="grid four" id="delivery-cards">
@@ -240,7 +218,7 @@
           <div class="notice">
             <p>
               <strong>Private mode is not enabled.</strong> Do not enter data
-              expecting E2EE in this preview. Its full recovery, revocation and
+              expecting end-to-end encryption. Its full recovery, revocation and
               no-plaintext tests must pass first. Login emails, metadata, device
               compromise, printed exports and application-delivery trust remain
               outside E2EE.
@@ -263,19 +241,19 @@
               <h3>Congregation plan</h3>
               <div class="price">₹1,499 <span class="muted">/ year</span></div>
               <p>
-                Existing introductory annual price. USD pricing is quoted before
+                Annual congregation price. USD pricing is quoted before
                 purchase; it is not an automatic currency conversion.
               </p>
               <p>
-                People, reports, attendance and scheduling, with the existing
-                feature approvals.
+                People, reports, attendance and scheduling, subject to your approved
+                modules.
               </p>
               <a class="button primary" href="#request">Request a trial</a>
             </article>
             <article class="card">
               <h3>Optional WhatsApp Business add-on</h3>
               <p>
-                Not set up yet. Meta fees and provider costs apply. Pricing and
+                Optional provider service. Meta fees and provider costs apply. Pricing and
                 approved utility templates must be reviewed before activation.
               </p>
               <p>
@@ -327,17 +305,17 @@
             <p>
               Not yet. The importer remains disabled until written authorization
               and the centralized data pipeline are verified. Watchtower titles
-              currently show Not published yet.
+              are entered and reviewed by your meeting overseer.
             </p>
           </details>
           <details>
             <summary>What can we try today?</summary>
             <p>
-              Explore the fictional admin or publisher demo. The V2 release is
-              being verified; the existing app remains the production interface.
+              Explore the fictional admin or publisher demo. No real records are
+              used, and demo changes never reach the congregation database.
             </p>
-            <a href="../v2/?demo=admin">Admin demo</a> ·
-            <a href="../?demo=publisher">Publisher demo</a>
+            <a href="https://app.congregationassistant.com/?demo=admin">Admin demo</a> ·
+            <a href="https://app.congregationassistant.com/?demo=publisher">Publisher demo</a>
           </details>
         </div>
       </section>
@@ -351,9 +329,10 @@
               authorized request for review. No account is created
               automatically.
             </p>
-            <a href="../v2/">Already approved? Open your workspace</a>
+            <a href="https://app.congregationassistant.com/">Already approved? Open your workspace</a>
           </div>
           <div class="card">
+            <noscript><p>Email your congregation name, requested tools and contact details to <a href="mailto:support@congregationassistant.com">support@congregationassistant.com</a> to request a workspace.</p></noscript>
             <form id="request-form">
               <p class="step-label" id="step-label">
                 Step 1 of 3 · What you need
@@ -461,12 +440,12 @@
         >
         <nav>
           <a href="#privacy">Privacy</a><a href="android/">Install guide</a
-          ><a href="mailto:congregationassistant0@gmail.com">Support</a
-          ><a href="../v2/">Open app</a>
+          ><a data-support href="mailto:support@congregationassistant.com">Support</a
+          ><a href="https://app.congregationassistant.com/">Open app</a>
         </nav>
       </div>
       <p class="container muted">
-        Independent and unofficial. V2 preview; some features remain subject to
+        Independent and unofficial. Congregation Assistant; some features remain subject to
         release verification.
       </p>
     </footer>

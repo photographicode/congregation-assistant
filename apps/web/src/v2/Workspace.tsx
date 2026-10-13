@@ -30,6 +30,12 @@ import {
   formatMessage,
   whatsappURL,
 } from "./model.mjs";
+import { Greeting } from "../../../../packages/ui/Greeting";
+import { Reports } from "./Reports";
+import { Midweek } from "./Midweek";
+import { PublisherHome } from "./PublisherHome";
+import { Access } from "./Access";
+import { Backup } from "./Backup";
 import catalogue from "../../../../capabilities.json";
 type Person = {
   id: string;
@@ -117,36 +123,8 @@ function Pending({ name }: { name: string }) {
   return (
     <Empty
       title="Update pending"
-      detail={`${name} will be available when its database migration is applied. Existing tools remain available.`}
+      detail={`${name} will be available when its database migration is applied. Ask your administrator to apply the database update.`}
     />
-  );
-}
-function Legacy({ tab }: { tab: string }) {
-  const target =
-    tab === "reports"
-      ? "groups"
-      : tab === "midweek" || tab === "duties"
-        ? "oclm"
-        : tab;
-  const legacyURL =
-    "../?ui=legacy&tab=" +
-    encodeURIComponent(target) +
-    (demo ? "&demo=admin" : "");
-  return (
-    <>
-      <p className="muted">
-        Existing congregation tools remain available while this screen is being
-        migrated.
-      </p>
-      <a href={legacyURL} target="_blank" rel="noopener noreferrer">
-        Open existing {tab} tools
-      </a>
-      <iframe
-        className="legacy-frame"
-        title={`Existing ${tab} tools`}
-        src={legacyURL}
-      />
-    </>
   );
 }
 function download(value: unknown, name: string, type = "application/json") {
@@ -186,7 +164,7 @@ export default function Workspace({
       name: c.name,
       country: "IN",
       language: "en",
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: demo ? "Asia/Kolkata" : Intl.DateTimeFormat().resolvedOptions().timeZone,
       midweek: "Wednesday",
       weekend: "Sunday",
       midweekTime: "19:00",
@@ -343,7 +321,7 @@ export default function Workspace({
     if (!demo) {
       if (!c.caps.people)
         throw Error(
-          "Update pending. Use the existing publisher form until the atomic email migration is ready.",
+          "Database update required for atomic publisher and email saves.",
         );
       await rpc("ca_v2_save_person", {
         p_cong_id: c.cong,
@@ -376,8 +354,7 @@ export default function Workspace({
       if (publish)
         if (result.token)
           setPublished(
-            new URL("../weekend.html?token=" + result.token, location.href)
-              .href,
+            location.origin + import.meta.env.BASE_URL + "?form=weekend#token=" + encodeURIComponent(result.token),
           );
     } else {
       setWeekendRevision((r) => r + 1);
@@ -414,7 +391,7 @@ export default function Workspace({
       throw Error("Fix flagged rows before importing.");
     if (!demo) {
       if (!c.caps.people)
-        throw Error("Update pending. Use the existing import tools.");
+        throw Error("Database update required for import saves.");
       const data = await rpc("ca_v2_import_people", {
         p_cong_id: c.cong,
         p_rows: rows,
@@ -489,13 +466,11 @@ export default function Workspace({
     );
   }
   let body: React.ReactNode;
-  if (route === "home")
+  if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
+  else if (route === "home")
     body = (
       <>
-        <Heading
-          eyebrow={format(new Date(), "EEEE, d MMMM")}
-          title="Good to have you here."
-        />
+        <Greeting name={c.firstName} timezone={setup.timezone} locale={setup.language} clock={appearance.clock} />
         <div className="grid">
           <section className="card hero">
             <span className="eyebrow">Next task</span>
@@ -508,25 +483,23 @@ export default function Workspace({
           <section className="card">
             <h2>Needs attention</h2>
             <div className="list">
-              <button
+              {admin && (<button
                 onClick={() => {
                   setWizard(true);
                   setDirty(false);
                 }}
               >
                 Continue setup guide <ArrowRight />
-              </button>
-              <button
+              </button>)}
+              {canWeekend && (<button
                 onClick={() => {
                   setSub("weekend");
                   go("schedule");
                 }}
               >
                 Review weekend assignments <ArrowRight />
-              </button>
-              <button onClick={() => go("reports")}>
-                Check service reports <ArrowRight />
-              </button>
+              </button>)}
+              {c.roles.some(r=>["admin","field_service","attendance","group_overseer"].includes(r)) && <button onClick={() => go("reports")}>Check service reports <ArrowRight /></button>}
             </div>
           </section>
           <section className="card">
@@ -594,9 +567,7 @@ export default function Workspace({
                   <Plus /> Add publisher
                 </button>
               )}
-              <button onClick={() => go("messages")}>
-                <MessageCircle /> Share a reminder
-              </button>
+              {admin && <button onClick={() => go("messages")}><MessageCircle /> Share a reminder</button>}
               <button
                 onClick={() => {
                   setSub("print");
@@ -634,7 +605,7 @@ export default function Workspace({
             </button>
           )}
         </Heading>
-        <div className="segmented" aria-label="People sections">
+        <div className="segmented" role="group" aria-label="People sections">
           {["publishers", "groups", "import"].map((s) => (
             <button
               key={s}
@@ -931,7 +902,7 @@ export default function Workspace({
     body = (
       <>
         <Heading eyebrow="Schedule" title="Make the week clear." />
-        <div className="segmented" aria-label="Schedule sections">
+        <div className="segmented" role="group" aria-label="Schedule sections">
           {["midweek", "weekend", "duties", "print"].map((s) => (
             <button
               key={s}
@@ -1245,9 +1216,7 @@ export default function Workspace({
                 <button className="primary" onClick={() => window.print()}>
                   Print / Save PDF
                 </button>
-                <a href="../?ui=legacy&tab=oclm">
-                  Midweek and official-form exports
-                </a>
+
               </div>
             </section>
             <div style={{ fontSize: Number(printScale) / 100 + "em" }}>
@@ -1255,15 +1224,14 @@ export default function Workspace({
             </div>
           </div>
         ) : (
-          <Legacy tab={sub === "duties" ? "oclm" : sub} />
+          <Midweek context={c} duties={sub === "duties"} />
         )}
       </>
     );
   else if (route === "reports")
     body = (
       <>
-        <Heading eyebrow="Reports" title="Keep reporting simple." />
-        <Legacy tab="reports" />
+        <Reports context={c} />
       </>
     );
   else if (route === "messages")
@@ -1412,58 +1380,7 @@ export default function Workspace({
       </>
     );
   else if (route === "access")
-    body = (
-      <>
-        <Heading
-          eyebrow="Access & Links"
-          title="The right access. One place."
-        />
-        <div className="grid">
-          <section className="card">
-            <h2>Roles and invites</h2>
-            <p>
-              Approve accounts and review exactly what each person can access.
-            </p>
-            <a href="../?ui=legacy&tab=groups">Open existing role management</a>
-            <ul>
-              {[
-                "Main Admin",
-                "Midweek Overseer & Assistant",
-                "Weekend Meeting Overseer & Assistant",
-                "Group Overseer & Assistant",
-                "Attendance / AV / Cleaning",
-                "Publisher",
-              ].map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
-          </section>
-          <section className="card">
-            <h2>Links Hub</h2>
-            <p>Use scoped links for schedules, report forms and attendance.</p>
-            <a href="../?ui=legacy&tab=oclm">
-              Manage current live schedule links
-            </a>
-            <p className="muted">
-              New 256-bit weekend links are issued when you publish. The legacy
-              links hub is still being migrated.
-            </p>
-            {published.startsWith("https:") && (
-              <button
-                onClick={() =>
-                  run(async () => {
-                    await navigator.clipboard.writeText(published);
-                    c.notify("Weekend link copied.");
-                  })
-                }
-              >
-                Copy weekend link
-              </button>
-            )}
-          </section>
-        </div>
-      </>
-    );
+    body = <><Heading eyebrow="Access & Links" title="The right access. One place."/><Access context={c}/></>;
   else
     body = (
       <>
@@ -1533,6 +1450,10 @@ export default function Workspace({
                 Reduce glass
               </label>
             </div>
+            <label>Fit to my screen<select value={appearance.fit} onChange={e=>appearance.set({fit:e.target.value as typeof appearance.fit})}>{["auto","compact","comfortable","large"].map(f=><option key={f} value={f}>{f[0].toUpperCase()+f.slice(1)}</option>)}</select></label>
+            <p className="chip">{appearance.fit === "auto" ? "Automatically adjusted for screen size and text" : "Your chosen screen fit"}</p>
+            <label>Time format<select value={appearance.clock} onChange={e=>appearance.set({clock:e.target.value as typeof appearance.clock})}><option value="locale">Follow language</option><option value="12">12 hour</option><option value="24">24 hour</option></select></label>
+            <Greeting name={c.firstName} timezone={setup.timezone} locale={setup.language} clock={appearance.clock}/>
             <h3>Adapted to your device</h3>
             <label className="check">
               <input
@@ -1627,7 +1548,7 @@ export default function Workspace({
             >
               Export loaded publisher records
             </button>
-            <a href="../?ui=legacy">Encrypted backup and existing data tools</a>
+            {admin && <Backup context={c} />}
             <p className="muted">
               Exports contain personal information. Store and share them
               carefully.
@@ -1649,16 +1570,16 @@ export default function Workspace({
             >
               Install app
             </button>
-            <a href="../site/android/">Android and iOS installation guide</a>
+            <a href={import.meta.env.BASE_URL+"site/android/"}>Android and iOS installation guide</a>
             <a href={`mailto:${config.SUPPORT_EMAIL}`}>Contact support</a>
             <p className="muted">
               Build: {import.meta.env.VITE_BUILD_HASH || "development"} ·
               Independent and unofficial.
             </p>
-            <a href="../.well-known/build-hash.txt">
+            <a href={import.meta.env.BASE_URL+".well-known/build-hash.txt"}>
               Verify published build hash
             </a>
-            <a href="../?ui=legacy">Use existing interface</a>
+
           </section>
         </div>
       </>
@@ -1824,16 +1745,6 @@ export default function Workspace({
                 />
               </label>
             </div>
-            <details>
-              <summary>More details</summary>
-              <p>
-                Emergency contacts, appointments and spiritual details remain in
-                the existing publisher form during migration.
-              </p>
-              <a href="../?ui=legacy&tab=publishers">
-                Open full publisher tools
-              </a>
-            </details>
             {error && (
               <p role="alert" className="error">
                 {error}
@@ -1864,7 +1775,7 @@ export default function Workspace({
         title={`Setup guide · ${wizardStep + 1} of 11`}
         dirty={dirty}
       >
-        <div className="progress" aria-label={`Step ${wizardStep + 1} of 11`}>
+        <div className="progress" role="progressbar" aria-label="Setup progress" aria-valuemin={1} aria-valuemax={11} aria-valuenow={wizardStep + 1}>
           {steps.map((s, i) => (
             <span key={s} className={i <= wizardStep ? "done" : ""} />
           ))}
@@ -1979,7 +1890,7 @@ export default function Workspace({
           <>
             <p>
               Invite main administrators and overseers using approved accounts.
-              Password-based group access is being retired.
+              Use approved accounts rather than shared passwords.
             </p>
             <button
               onClick={() => {
@@ -2024,7 +1935,7 @@ export default function Workspace({
               Android: browser menu → Install app. iPhone: Share → Add to Home
               Screen. Desktop: use the browser’s install button.
             </p>
-            <a href="../site/android/">View installation guide</a>
+            <a href={import.meta.env.BASE_URL+"site/android/"}>View installation guide</a>
           </>
         ) : (
           <>

@@ -1,13 +1,12 @@
-# Owner inputs
+# Owner setup and release tasks
 
-See `REQUIREMENTS.md` for account setup and secret names. No private credential values are required in chat.
+The implementation report and PARITY contain product work that still blocks release. Account setup alone will not satisfy those gates.
 
-- Configure DNS/Titan and transactional email. Keep the current support address until the new mailbox is verified.
-- Record written JW.org/WOL permission including whether it covers official forms. Keep import disabled meanwhile.
-- Optional: Meta Business credentials/approved utility templates, narrow-parser key and explicit message budget. Do not enable AI intake for Private mode.
-- Optional: Android signing identity and Play eligibility. Never automatically publish to Play.
-- Activate Razorpay only after KYC and reviewed payment/webhook integration.
-- Arrange legal review of Terms/Privacy/key-responsibility text.
-- Arrange real phone tests with younger/older users and a pilot congregation.
-
-These inputs do not account for all remaining work. The implementation gaps and failed/unrun release gates are documented in `v2-release-checklist.md`; credentials alone will not complete them.
+1. Restore a writable GitHub CLI/application connection. Current CLI reports invalid GH_TOKEN. Read-only tools cannot open/merge the cutover PR or resolve PRs #7/#37 and issue #39.
+2. Configure the chosen Cloudflare account and two Pages projects, then follow domain-and-email.md for GoDaddy nameservers, app/website hostnames and TLS. No provider-assigned nameservers or pages.dev targets are known yet.
+3. Create and verify support@congregationassistant.com. Configure provider-issued MX/SPF/DKIM and appropriate DMARC; transactional email is separate.
+4. Verify Supabase project ejosykrxjvwrhxfnputo, Google OAuth and magic-link settings; add the custom app redirect after domains work. The connected Supabase tool can read project metadata; browser/project network and real login acceptance are still unverified. Email-link UI stays off until approved-email authorization/callbacks are implemented.
+5. Complete native parity, full role/public abuse/PDF/layout/performance tests and encryption lifecycle. Private mode/importer flags stay off.
+6. Review and run SQL on isolated staging first. Auth-removal SQL is guarded, destructive and not automatically selected by the migration script. Production changes remain owner-run.
+7. After acceptance, open one v2/cutover PR, resolve other PRs/issues with comments, merge and verify actual production root, redirects and cache replacement. Then make the GitHub repository private in Settings → General → Change visibility and use Cloudflare Pages for hosting. Repo privacy is an owner click; verify your plan's hosting/access constraints before switching.
+8. Signing/store/payment/WhatsApp Business credentials remain optional and disabled. No mailbox, purchase, deployment, DNS mutation or account activation was completed here.

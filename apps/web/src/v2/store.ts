@@ -6,6 +6,8 @@ type Appearance = {
   weight: string;
   solid: boolean;
   auto: boolean;
+  fit: "auto" | "compact" | "comfortable" | "large";
+  clock: "locale" | "12" | "24";
 };
 const initial: Appearance = {
   theme: "auto",
@@ -14,6 +16,8 @@ const initial: Appearance = {
   weight: "regular",
   solid: false,
   auto: true,
+  fit: "auto",
+  clock: "locale",
 };
 let saved = {};
 try {
@@ -37,6 +41,8 @@ export const useAppearance = create<
             weight: next.weight,
             solid: next.solid,
             auto: next.auto,
+            fit: next.fit,
+            clock: next.clock,
           }),
         );
       } catch {}

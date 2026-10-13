@@ -471,3 +471,8 @@ body { overflow-wrap: anywhere; }
 label:has(> select) { min-width: 0; overflow: hidden; }
 select { text-overflow: ellipsis; }
 select:focus-visible { outline-offset: -4px; }
+
+/* Calm mesh, with a stable phone and motion preferences respected. */
+.hero{position:relative;isolation:isolate;overflow:hidden}.hero::before{content:"";position:absolute;inset:-15%;z-index:-1;background:radial-gradient(ellipse at 20% 40%,var(--accent-soft),transparent 55%),radial-gradient(ellipse at 80% 70%,var(--surface-pressed),transparent 60%);animation:mesh-drift 18s ease-in-out infinite alternate;pointer-events:none}@keyframes mesh-drift{to{transform:translate(3%,2%) scale(1.03)}}
+:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px}.device{min-width:0}.hero-grid>div{min-width:0}a,button{min-height:44px}h1,h2,h3,p,a,label{overflow-wrap:anywhere}.hero-grid .actions{gap:.75rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero::before{animation:none}*,*::before,*::after{transition:none!important}}

@@ -1,0 +1,29 @@
+name: Native V2 layout matrix
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 20 * * *'
+permissions:
+  contents: read
+jobs:
+  native-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check && npm run build && npm run check:bundle
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+        env:
+          CA_LAYOUT_FULL: ${{ github.event_name == 'schedule' && '1' || '0' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-cutover-layout
+          path: work/cutover-browser

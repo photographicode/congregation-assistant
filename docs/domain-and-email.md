@@ -1,24 +1,35 @@
-# Domain and email rollout
+# congregationassistant.com domain and email setup
 
-Current verified app address: https://photographicode.github.io/congregation-assistant/
-Current public site: https://photographicode.github.io/Congregation-Assistant_Public/
-Keep these until DNS and hosting have been verified. Source configuration is `public-config.json` (and the compatibility `app-config.js`).
+The domain is purchased at GoDaddy. Prepared source targets:
 
-Planned names:
-- `congregationassistant.com`: public site.
-- `www.congregationassistant.com`: redirect to apex.
-- `app.congregationassistant.com`: application.
-- `mail.congregationassistant.com`: transactional sender, separate SPF/DKIM.
-- Optional `status.congregationassistant.com`: service status.
+| Host | Purpose | Output |
+| --- | --- | --- |
+| congregationassistant.com | Public website | dist-site |
+| www.congregationassistant.com | Redirect to public website | Hosting redirect |
+| app.congregationassistant.com | V2 app | dist |
 
-For Titan / GoDaddy mailbox delivery, configure MX `mx1.titan.email` priority 10 and `mx2.titan.email` priority 20. Apex SPF: one TXT record `v=spf1 include:spf.titan.email ~all`. Obtain the exact DKIM selector and value from Titan, rather than inventing either. Begin DMARC with `p=none` and a working `rua` mailbox; monitor 2–4 weeks before tightening. Create `hello@`, `support@`, `billing@`, `dmarc@`. Never create multiple SPF records on the same hostname. The transactional subdomain uses the selected provider's verified records, not copied Titan records.
+**No DNS, hosting, certificate or mailbox change has been made.** Exact assigned Cloudflare nameservers and project hostnames do not exist in this session, so they must not be invented.
 
-Before switching URLs:
-1. Configure hosted site domain and TLS; verify apex/www redirect and app links.
-2. Add verified domains, privacy/terms URLs, app branding and correct origins to Google OAuth consent configuration. Review verification requirements.
-3. Set exact Supabase Auth Site URL and allowed callback URLs for app/staging. Avoid broad wildcard callbacks in production. Test Google login on the final origin.
-4. Verify SMTP sender, provider API secret, bounce/complaint handling and an actual delivered test email.
-5. Verify CORS for the app and request form; check cache/header policy on the final domain.
-6. Update public configuration only after the endpoints work. Preserve the old address during rollout.
+## Recommended Cloudflare Pages setup
 
-DNS and mail changes were not applied because no DNS/Titan access was available. SMTP/provider keys cannot be retrieved from public records.
+1. Create a Cloudflare zone for congregationassistant.com and copy the two nameservers Cloudflare actually assigns. Import/review existing DNS records, including MX/TXT records if mail is already configured.
+2. In GoDaddy → Domain → DNS → Nameservers, enter those two assigned nameservers. Registration stays at GoDaddy; DNS moves to Cloudflare. Do not delete existing email records during the switch.
+3. Create two Pages projects from this repository. Both run `npm ci && npm run build` with Node 22. App output directory is `dist`; website output directory is `dist-site`. Set `BASE_URL=/`.
+4. Add congregationassistant.com under the website project's Custom domains. Add app.congregationassistant.com under the app project's Custom domains. Let Cloudflare create their CNAME records using the actual project pages.dev hostnames. Add www to the website project and a permanent www → apex redirect preserving path/query.
+5. Wait for both domain states and certificates to become active. Test HTTPS website, app sign-in, app demos and a deep-link refresh. Keep deployment gated until PARITY is complete.
+
+Cloudflare requires the apex domain to be a zone on the same account, with Cloudflare nameservers. A subdomain can instead stay on GoDaddy DNS: first associate it in Pages, then add `CNAME app → <actual-app-project>.pages.dev` at GoDaddy. Do not place a made-up target or an apex CNAME into GoDaddy DNS.
+
+Verified reference: https://developers.cloudflare.com/pages/configuration/custom-domains/
+
+## Authentication URLs
+
+In Supabase Auth URL Configuration, add exact approved redirects for `https://app.congregationassistant.com/` and set that as the production Site URL once the release is live. Retain the existing Pages callback while validating. Google OAuth's authorized redirect URI is the Supabase provider callback, `https://ejosykrxjvwrhxfnputo.supabase.co/auth/v1/callback`, not the website domain. Confirm actual project/provider settings in its dashboard before saving.
+
+Google approved-account sign-in and email magic links require their providers to be enabled and verified. Magic links must not confer SuperAdmin privilege. The proposed auth-removal migration keeps SuperAdmin approved Google only.
+
+## Mailbox and sending
+
+Create support@congregationassistant.com with the chosen mailbox provider. Buying the domain alone does not create it. Use only the provider-issued MX, SPF and DKIM records and verify receiving/sending. Add DMARC initially according to the provider's guidance; tighten after deliverability verification. Do not add invented MX hosts or multiple SPF records. Transactional app mail uses separately configured SMTP/sending credentials; a support mailbox does not configure Supabase mail automatically.
+
+Update `domainConfigured` and `mailConfigured` in public-config.json only after verification. Values remain false now. There is no automatic DNS/API integration in this branch.

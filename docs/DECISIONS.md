@@ -17,3 +17,14 @@
 11. Nightly accessibility matrix runs at 03:00 Asia/Calcutta; PRs keep bounded V2 checks. Legacy footer labels are preserved, and icon Close labels are standardized consistently. Browser scroll effects explicitly return no cleanup value to remain compatible with browser APIs returning promises.
 12. Published weekend capabilities exchange to expiring scoped sessions before URL cleanup. Session tokens are hashed on the server and retained only in tab session storage for clean-URL reloads.
 13. Do not merge/deploy the full release: the detailed master checklist remains incomplete, especially actual Private mode and its end-to-end suite. A passing foundation suite is not authorization to bypass the user's release gates.
+
+## V2 cutover decisions — 14 October 2026 (client date)
+
+1. Work in `v2/cutover`; the uploaded cutover specification supersedes the preview/escape-hatch plan.
+2. Generate the V2 app at `dist/` root and the public website at `dist-site/`. Do not package any V1 entry, iframe, bridge, vendor script or duplicate deployment tree.
+3. Use `congregationassistant.com` for the website and `app.congregationassistant.com` for the app. Keep domain/mail readiness false until externally verified. Use the intended support mailbox as configuration, without pretending it exists.
+4. Port report, household, attendance and shared scheduling calls against established server contracts. Use per-workspace repository factories and Zod; preserve existing revision/expected-record checks rather than inventing alternate tables.
+5. Keep incomplete encryption and importer features disabled. Backup-file encryption is separate from Private mode for cloud records.
+6. Preserve legacy source until *all* native parity is complete, as required by A.2 “After parity.” Basic native screens do not meet the exhaustive cutover requirement. No premature source deletion, merge or production switch.
+7. GitHub CLI access fails; the connected read-only GitHub tools allow PR/issue inspection but cannot close, comment or merge. No GoDaddy/Cloudflare credentials or virtual-screen tool is available. Record those constraints and provide an offline review package and domain instructions.
+8. Proposed legacy-auth migration is owner-run and guarded. Down restores empty structures only, never deleted password data or password authorization.
