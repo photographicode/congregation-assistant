@@ -12,3 +12,5 @@
 :root[data-large-text=true] .topbar>.actions{width:100%;justify-content:flex-start;gap:.5rem}
 .notice{pointer-events:none}
 @media(max-width:700px){:root[data-large-text=true] .topbar button[aria-label="Appearance and settings"]{display:none}:root[data-large-text=true] .bottom-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}:root[data-large-text=true] .notice{bottom:calc(9rem + env(safe-area-inset-bottom))}}
+
+body{font-size:calc(1rem * var(--text-scale))}#root{font-size:inherit}

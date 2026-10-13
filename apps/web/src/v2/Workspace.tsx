@@ -252,7 +252,7 @@ export default function Workspace({
     if (peopleQuery.data) setPeople(peopleQuery.data as Person[]);
   }, [peopleQuery.data]);
   useEffect(() => {
-    if (!demo && c.caps.groups)
+    if (!demo && c.caps.groups && c.roles.some(role=>["admin","field_service","oclm","weekend","group_overseer"].includes(role)))
       rpc("ca_v2_groups", { p_cong_id: c.cong })
         .then(setGroups)
         .catch((e) => setError(e.message));
@@ -577,7 +577,7 @@ export default function Workspace({
           <section className="card">
             <h2>Quick actions</h2>
             <div className="actions">
-              {canPeople && (
+              {admin && (
                 <button
                   onClick={() => {
                     setEditing({
@@ -614,7 +614,7 @@ export default function Workspace({
     body = (
       <>
         <Heading eyebrow="People" title="A place for everyone.">
-          {canPeople && (
+          {admin && (
             <button
               className="primary"
               onClick={() => {
@@ -911,7 +911,7 @@ export default function Workspace({
                             </span>
                           )}
                       </div>
-                      <button onClick={() => edit(p)}>
+                      <button disabled={!admin} onClick={() => edit(p)}>
                         Edit<span className="sr-only"> {p.name}</span>
                       </button>
                     </div>
