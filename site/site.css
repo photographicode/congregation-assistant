@@ -466,3 +466,8 @@ input, select, textarea { min-width: 0; max-width: 100%; }
 .comparison-wrapper { min-width: 0; max-width: 100%; contain: inline-size; }
 body { overflow-wrap: anywhere; }
 .honeypot { left: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* WebKit's native select value must stay inside the visible control. */
+label:has(> select) { min-width: 0; overflow: hidden; }
+select { text-overflow: ellipsis; }
+select:focus-visible { outline-offset: -4px; }

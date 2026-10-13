@@ -369,13 +369,14 @@
                     <option value="admin">Admin-only</option>
                   </select></label
                 ><label
-                  >Privacy preference<select name="privacy">
-                    <option value="standard">Standard — available</option>
+                  >Privacy preference<select name="privacy" aria-describedby="privacy-availability">
+                    <option value="standard">Standard</option>
                     <option value="private">
-                      Private — register interest, not released
+                      Private
                     </option>
                   </select></label
                 >
+                <p class="muted" id="privacy-availability">Standard mode is available. Private mode records interest only and is not released.</p>
                 <p class="muted" id="consequences">
                   Approved account access and a personal portal.
                 </p>
