@@ -5,3 +5,10 @@
 :root[data-large-text=true] .grid,:root[data-large-text=true] .grid.three,:root[data-large-text=true] .form-grid{grid-template-columns:minmax(0,1fr)}:root[data-large-text=true] .actions{align-items:stretch}:root[data-coarse=true]{--tap-min:3rem}
 @media print{.rail,.topbar,.bottom-tabs,.no-print,button,.notice{display:none!important}.main-content{padding:0;max-width:none}.app{display:block}.card{box-shadow:none;break-inside:avoid;border-color:var(--print-border)}body{background:var(--print-bg);color:var(--print-text)}.grid{display:block}.card{margin-bottom:1rem}a{color:var(--print-text)}.legacy-frame{display:none}.banner{display:none}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Larger system text needs a flowing header and readable navigation labels. */
+:root[data-large-text=true] .topbar{position:relative;flex-wrap:wrap;align-items:flex-start}
+:root[data-large-text=true] .topbar>strong{flex-basis:100%;overflow-wrap:normal}
+:root[data-large-text=true] .topbar>.actions{width:100%;justify-content:flex-start;gap:.5rem}
+.notice{pointer-events:none}
+@media(max-width:700px){:root[data-large-text=true] .topbar button[aria-label="Appearance and settings"]{display:none}:root[data-large-text=true] .bottom-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}:root[data-large-text=true] .notice{bottom:calc(9rem + env(safe-area-inset-bottom))}}

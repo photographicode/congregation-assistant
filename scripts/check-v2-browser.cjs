@@ -115,7 +115,7 @@ const server = http.createServer((req, res) => {
         .getByRole("button", { name: "Discard changes", exact: true })
         .click();
       assert.equal(await page.getByRole("dialog").count(), 0);
-      await page.waitForFunction(()=>document.activeElement?.textContent.trim()==="Add publisher", {timeout:5000});
+      await page.waitForFunction(()=>document.activeElement?.textContent.trim()==="Add publisher", null, {timeout:5000});
       await page
         .getByRole("button", { name: "Import Center", exact: true })
         .click();
@@ -151,6 +151,7 @@ const server = http.createServer((req, res) => {
         false,
         "200% text overflow",
       );
+      await page.waitForFunction(()=>!document.querySelector('.notice'));
       await page.screenshot({
         path: path.join(output, size.name + "-200-text.png"),
       });
