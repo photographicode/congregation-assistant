@@ -1,0 +1,1 @@
+-- Keep this security fix on rollback. To remove V2 entirely use the foundation down migration.

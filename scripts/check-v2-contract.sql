@@ -1,0 +1,32 @@
+-- Synthetic fixtures only; all changes rolled back. Run on an isolated DB or via reviewed MCP SQL.
+begin;
+insert into public.congregations(id,name,status) values('ca-v2-contract','V2 synthetic test','active');
+insert into public.congregation_access(cong_id,email,role,active) values('ca-v2-contract','v2-contract@example.invalid','admin',true);
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000123","email":"v2-contract@example.invalid","role":"authenticated","app_metadata":{"provider":"google","providers":["google"]}}',true);
+do $$declare g jsonb;result jsonb;draft jsonb;token text;batch uuid;begin
+ if not (public.ca_v2_capabilities('ca-v2-contract')->>'groups')::boolean then raise exception 'Capability missing';end if;
+ g=public.ca_v2_add_group('ca-v2-contract','  Group   A ');
+ if g->>'name'<>'Group A' then raise exception 'Group normalization failed';end if;
+ begin perform public.ca_v2_add_group('ca-v2-contract','group a');raise exception 'Duplicate accepted';exception when unique_violation then null;end;
+ perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person","name":"Synthetic Maria","group":"Group A","email":"v2-person@example.invalid","phone":"","address":""}',false);
+ if public.get_publisher_login('ca-v2-contract','ca-v2-person')->>0<>'v2-person@example.invalid' then raise exception 'Atomic email save failed';end if;
+ begin perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person2","name":"Synthetic Daniel","group":"Group A","email":"v2-person@example.invalid"}',false);raise exception 'Household accepted without confirmation';exception when raise_exception then if sqlerrm='Household accepted without confirmation' then raise;end if;end;
+ perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person2","name":"Synthetic Daniel","group":"Group A","email":"v2-person@example.invalid"}',true);
+ perform public.ca_v2_save_setup('ca-v2-contract',3,'{"privacy":"standard","delivery":"digital"}');
+ if (public.ca_v2_get_setup('ca-v2-contract')->>'step')::int<>3 then raise exception 'Setup resume failed';end if;
+ draft='{"chairman":"Synthetic Daniel","speaker":"Synthetic Visitor","speakerCongregation":"Synthetic Park","talkTitle":"Synthetic talk","conductor":"Synthetic Elder","reader":"Synthetic Reader","prayer":"Synthetic Daniel","openingSong":1,"closingSong":2,"notes":"DO_NOT_PUBLISH_THIS_PRIVATE_NOTE","meetingTime":"10:00","exception":"normal","duties":[]}';
+ result=public.ca_v2_save_weekend('ca-v2-contract','2026-10-12',draft,0);
+ if result->>'revision'<>'1' then raise exception 'Wrong revision';end if;
+ begin perform public.ca_v2_save_weekend('ca-v2-contract','2026-10-12',draft,0);raise exception 'Stale revision accepted';exception when serialization_failure then null;end;
+ result=public.ca_v2_publish_weekend('ca-v2-contract','2026-10-12',draft,1);token=result->>'token';
+ if length(token)<>64 then raise exception 'Invalid public token';end if;
+ if public.ca_v2_public_weekend(token)::text like '%DO_NOT_PUBLISH_THIS_PRIVATE_NOTE%' then raise exception 'Private note leaked';end if;
+ if public.ca_v2_public_weekend(repeat('a',64)) is not null then raise exception 'Wrong token returned records';end if;
+ result=public.ca_v2_import_people('ca-v2-contract','[{"name":"Synthetic Import","group":"Group A","email":""}]');batch=(result->>'batch_id')::uuid;
+ perform public.ca_v2_undo_import('ca-v2-contract',batch);
+ if exists(select 1 from public.publishers where cong_id='ca-v2-contract' and name='Synthetic Import') then raise exception 'Undo failed';end if;
+ perform set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000124","email":"unapproved@example.invalid","role":"authenticated","app_metadata":{"provider":"google"}}',true);
+ begin perform public.ca_v2_get_weekend('ca-v2-contract','2026-10-12');raise exception 'Cross-account access accepted';exception when insufficient_privilege then null;end;
+end $$;
+rollback;
+select 'V2 contract: all fixture writes rolled back' as result;

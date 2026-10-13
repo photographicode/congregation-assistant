@@ -1,0 +1,1 @@
+-- Reverting the verified contract fix is not recommended. Restore the original function definition from the preceding migration only in an isolated test database.
