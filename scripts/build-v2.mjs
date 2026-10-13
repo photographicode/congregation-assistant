@@ -1,5 +1,5 @@
 import { build } from "vite";
-import { cp, mkdir, readFile, writeFile, readdir } from "node:fs/promises";
+import { cp, mkdir, readFile, writeFile, readdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
@@ -35,6 +35,7 @@ for (const file of await readdir(root))
   )
     await cp(file, "dist/" + file);
 await cp("assets", "dist/assets", { recursive: true });
+for(const file of await readdir('dist/v2/assets'))if(/^NotoSans-.*\.woff2$/.test(file))await rm('dist/v2/assets/'+file);
 await cp("public-site-preview", "dist/public-site-preview", {
   recursive: true,
   filter: (src) => !src.includes("/scripts/"),
