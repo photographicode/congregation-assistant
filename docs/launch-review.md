@@ -108,3 +108,7 @@ Ordinary publisher accounts are bound to one same-congregation publisher ID, hav
 Private Web Push queues/workers are prepared for published assignment changes/cancellations, role reminders and owner notices. VAPID private configuration, private worker scheduling and real closed-app delivery remain activation requirements. Transactional email likewise requires a verified private sender and scheduler. Neither is advertised as delivered while unconfigured. No service-role credential, signing key or OAuth client secret is public. Browser notifications are opt-in and best effort, with generic text.
 
 Paid launch remains gated by the actual congregation pilot, operational backup monitoring/recovery, official-form redistribution permissions, and server-verified Razorpay merchant/webhook setup. Preserve the ₹1,499 annual ceiling and avoid a security feature paywall. Do not equate automated fixture tests or Google-provider sign-ins with completed end-to-end human pilot acceptance.
+
+## V2 checkpoint — 2026-10-13
+
+Foundation/preview only. Existing data retained while additive SQL enables groups, weekend drafts and request preferences. Full §16 gates, real-device/human checks and Private mode are unfinished. Default UI and E2EE claims must remain false; no full production release is approved by a passing primitive suite alone.

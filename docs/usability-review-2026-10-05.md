@@ -28,3 +28,7 @@ Existing workers are deployed, but deployment does not establish delivery. Prepa
 
 ## Human acceptance still required
 Use fictional records with a younger first-time user and an older first-time user. Without coaching, ask each to sign in, find their next assignment, submit the named month's report, record attendance, publish one week and check its live schedule, then retry a failed save without losing work. Observe wrong turns, missed confirmations, text enlargement and device notification settings. Automated checks are not a substitute for these sessions.
+
+## V2 checkpoint — 2026-10-13
+
+New shell uses seven everyday sections, labelled phone tabs, larger targets, six themes and normal contact/email fields. Dialog dirty guard and focus restoration have new CI acceptance coverage. This is source/automated review; older/younger first-time human tests and under-10-minute setup at 200% phone text have not been performed. Do not label those release criteria passed.

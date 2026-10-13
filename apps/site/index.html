@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://ejosykrxjvwrhxfnputo.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta
+      name="description"
+      content="People, reports, midweek and weekend schedules. Calm, accessible congregation tools with simple sharing."
+    />
+    <title>Congregation Assistant — More clarity. Less administration.</title>
+    <link rel="stylesheet" href="site.css" />
+    <script src="site.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="#top"
+          ><span class="mark">CA</span
+          ><span>Congregation<br />Assistant</span></a
+        ><button
+          class="mobile-toggle"
+          id="menu-toggle"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          Menu
+        </button>
+        <nav
+          class="nav-links"
+          id="site-navigation"
+          aria-label="Website navigation"
+        >
+          <a href="#features">Features</a><a href="#privacy">Privacy</a
+          ><a href="#pricing">Pricing</a><a href="android/">Install</a
+          ><a class="button" href="../v2/">Open app</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="hero" id="top">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">A little less administration</span>
+            <h1>More time for<br /><em>what matters.</em></h1>
+            <p class="lead">
+              People, reports and weekly schedules, together in one calm
+              workspace. Easy to find. Comfortable to read. Simple to share.
+            </p>
+            <div class="actions">
+              <a class="button primary" href="#request">Request a workspace</a
+              ><a class="button" href="../v2/?demo=admin">Explore the demo</a>
+            </div>
+            <p class="muted">
+              Independent and unofficial. Designed for congregations of
+              Jehovah’s Witnesses.
+            </p>
+            <span class="chip">Accessible by default</span>
+            <span class="chip">Works on your phone</span>
+          </div>
+          <div
+            class="device"
+            aria-label="Phone preview with fictional congregation and assignments"
+          >
+            <div class="top">
+              <span>River Park Congregation</span><span>Fictional preview</span>
+            </div>
+            <span class="eyebrow">Your week, at a glance</span>
+            <h3>Good to have<br />you here.</h3>
+            <div class="mini-card">
+              <strong>Next task</strong>
+              <p>Get this week ready.</p>
+              <span class="chip">Open schedule</span>
+            </div>
+            <div class="mini-row">
+              <strong>Midweek meeting</strong><span>Wednesday · 7:00 pm</span>
+            </div>
+            <div class="mini-row">
+              <strong>Weekend meeting</strong><span>Sunday · 10:00 am</span>
+            </div>
+            <div class="mini-row">
+              <strong>Public talk speaker</strong
+              ><span>Daniel Thomas · River Park</span>
+            </div>
+            <div class="mini-tabs">
+              <span>Home</span><span>Schedule</span><span>People</span
+              ><span>Reports</span><span>More</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="alt" id="features">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Everything has a place</span>
+            <h2>Clear tools for the<br />work you do each week.</h2>
+            <p>
+              The V2 preview brings a simpler interface and new modules.
+              Existing tools remain accessible while the release is being
+              verified.
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <h3>People & households</h3>
+              <p>
+                A group dropdown and a normal email field. Confirm shared
+                reporting when a household uses one sign-in.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Midweek & weekend</h3>
+              <p>
+                Chairmen, visiting speakers, Watchtower conductors and readers.
+                Prepare drafts, review, publish and print.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Reports & attendance</h3>
+              <p>
+                Existing service-report and attendance tools remain available
+                during the interface migration.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Review before importing</h3>
+              <p>
+                Paste spreadsheet rows or upload CSV and phone contacts. Fix
+                names, emails and groups before saving.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Thoughtful reminders</h3>
+              <p>
+                Preview personalized WhatsApp messages and send them yourself.
+                No API subscription required for Smart Share.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Comfortable for everyone</h3>
+              <p>
+                Six themes, larger text, device adaptation, visible close
+                controls and layouts that fit a phone.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section id="delivery">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Meet people where they are</span>
+            <h2>Four ways to take part.</h2>
+            <p>
+              Choose the congregation’s delivery preference. Some linked
+              delivery workflows are still being migrated; the preview explains
+              what each choice means.
+            </p>
+          </div>
+          <div class="grid four" id="delivery-cards">
+            <article class="card">
+              <h3>Full digital</h3>
+              <p>An approved account and a personal publisher portal.</p>
+            </article>
+            <article class="card">
+              <h3>One link</h3>
+              <p>A scoped link without another password to remember.</p>
+            </article>
+            <article class="card">
+              <h3>WhatsApp</h3>
+              <p>User-initiated reminders and schedule sharing.</p>
+            </article>
+            <article class="card">
+              <h3>Admin-only</h3>
+              <p>Printed schedules and administrator-managed records.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="alt" id="privacy">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Privacy, plainly explained</span>
+            <h2>You should know<br />who can read your data.</h2>
+            <p>
+              The current app uses HTTPS and server access controls. End-to-end
+              encryption is being implemented and is not released yet.
+            </p>
+          </div>
+          <div class="comparison-wrapper">
+            <table class="comparison">
+              <caption>
+                Current protection and planned Private mode
+              </caption>
+              <thead>
+                <tr>
+                  <th>What matters</th>
+                  <th>Current Standard mode</th>
+                  <th>Private mode — pending verification</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Sensitive records</th>
+                  <td>Stored on the service with access controls</td>
+                  <td>Encrypted on the device before upload</td>
+                </tr>
+                <tr>
+                  <th>Service operator access</th>
+                  <td>Technically possible</td>
+                  <td>Cannot read covered encrypted records</td>
+                </tr>
+                <tr>
+                  <th>Lost device</th>
+                  <td>Account recovery</td>
+                  <td>Recovery phrase or approved second device</td>
+                </tr>
+                <tr>
+                  <th>Server search and named emails</th>
+                  <td>Available where configured</td>
+                  <td>Device search and generic reminders</td>
+                </tr>
+                <tr>
+                  <th>WhatsApp Smart Share</th>
+                  <td>Available</td>
+                  <td>User-initiated sharing</td>
+                </tr>
+                <tr>
+                  <th>WhatsApp AI intake</th>
+                  <td>Optional, not configured</td>
+                  <td>Disabled</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="notice">
+            <p>
+              <strong>Private mode is not enabled.</strong> Do not enter data
+              expecting E2EE in this preview. Its full recovery, revocation and
+              no-plaintext tests must pass first. Login emails, metadata, device
+              compromise, printed exports and application-delivery trust remain
+              outside E2EE.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="pricing">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Simple pricing</span>
+            <h2>One congregation.<br />One plan.</h2>
+            <p>
+              Begin with a 30-day trial. No automatic charge or payment details
+              required by this form.
+            </p>
+          </div>
+          <div class="grid two">
+            <article class="card">
+              <h3>Congregation plan</h3>
+              <div class="price">₹1,499 <span class="muted">/ year</span></div>
+              <p>
+                Existing introductory annual price. USD pricing is quoted before
+                purchase; it is not an automatic currency conversion.
+              </p>
+              <p>
+                People, reports, attendance and scheduling, with the existing
+                feature approvals.
+              </p>
+              <a class="button primary" href="#request">Request a trial</a>
+            </article>
+            <article class="card">
+              <h3>Optional WhatsApp Business add-on</h3>
+              <p>
+                Not set up yet. Meta fees and provider costs apply. Pricing and
+                approved utility templates must be reviewed before activation.
+              </p>
+              <p>
+                Free Smart Share works without this add-on. AI intake will be
+                unavailable in Private mode.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="alt" id="questions">
+        <div class="container">
+          <div class="section-head"><h2>A few good questions.</h2></div>
+          <details>
+            <summary>Is this an official organization application?</summary>
+            <p>
+              No. Congregation Assistant is independent and unofficial. It does
+              not use JW logos and is not endorsed by the organization.
+            </p>
+          </details>
+          <details>
+            <summary>Can publishers use a shared email?</summary>
+            <p>
+              Yes, when the administrator explicitly confirms household
+              reporting. Reporting access does not share another person’s
+              contact details or availability.
+            </p>
+          </details>
+          <details>
+            <summary>Is Private mode available now?</summary>
+            <p>
+              No. The cryptographic foundation is under development. Full device
+              approval, recovery, revocation, migration and sentinel
+              verification must pass before release.
+            </p>
+          </details>
+          <details>
+            <summary>Do we need an Android app store account?</summary>
+            <p>
+              No. Install the progressive web app from your browser for free. A
+              signed APK is optional and requires signing configuration. Google
+              Play publication is a separate owner action.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Are official meeting titles imported automatically?
+            </summary>
+            <p>
+              Not yet. The importer remains disabled until written authorization
+              and the centralized data pipeline are verified. Watchtower titles
+              currently show Not published yet.
+            </p>
+          </details>
+          <details>
+            <summary>What can we try today?</summary>
+            <p>
+              Explore the fictional admin or publisher demo. The V2 release is
+              being verified; the existing app remains the production interface.
+            </p>
+            <a href="../v2/?demo=admin">Admin demo</a> ·
+            <a href="../?demo=publisher">Publisher demo</a>
+          </details>
+        </div>
+      </section>
+      <section id="request">
+        <div class="container grid two">
+          <div>
+            <span class="eyebrow">Your next step</span>
+            <h2>A calmer week<br />starts here.</h2>
+            <p>
+              Choose how your congregation wants to use the app, then submit an
+              authorized request for review. No account is created
+              automatically.
+            </p>
+            <a href="../v2/">Already approved? Open your workspace</a>
+          </div>
+          <div class="card">
+            <form id="request-form">
+              <p class="step-label" id="step-label">
+                Step 1 of 3 · What you need
+              </p>
+              <div class="wizard-panel" data-step="0">
+                <h3>Choose your tools</h3>
+                <div id="module-options"></div>
+                <label
+                  >Delivery preference<select name="delivery">
+                    <option value="digital">Full digital</option>
+                    <option value="link">One link</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="admin">Admin-only</option>
+                  </select></label
+                ><label
+                  >Privacy preference<select name="privacy">
+                    <option value="standard">Standard — available</option>
+                    <option value="private">
+                      Private — register interest, not released
+                    </option>
+                  </select></label
+                >
+                <p class="muted" id="consequences">
+                  Approved account access and a personal portal.
+                </p>
+              </div>
+              <div class="wizard-panel" data-step="1" hidden>
+                <h3>About your congregation</h3>
+                <label
+                  >Your name<input
+                    name="name"
+                    autocomplete="name"
+                    maxlength="100"
+                    required /></label
+                ><label
+                  >Congregation name<input
+                    name="congregation"
+                    maxlength="150"
+                    required /></label
+                ><label
+                  >Contact email<input
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="150"
+                    required /></label
+                ><label
+                  >Administrator Google account email<input
+                    name="adminEmail"
+                    type="email"
+                    maxlength="150"
+                    required /></label
+                ><label
+                  >Phone (optional)<input
+                    name="phone"
+                    type="tel"
+                    maxlength="30"
+                /></label>
+              </div>
+              <div class="wizard-panel" data-step="2" hidden>
+                <h3>Review & authorize</h3>
+                <p id="request-summary"></p>
+                <label class="check"
+                  ><input name="authorized" type="checkbox" required /><span
+                    >I have my congregation’s authorization to request this
+                    workspace.</span
+                  ></label
+                >
+                <p class="muted">
+                  The service administrator will review the request. Optional
+                  services are not activated by this form, and Private mode
+                  remains unavailable.
+                </p>
+              </div>
+              <label class="honeypot" aria-hidden="true"
+                >Leave empty<input
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
+              /></label>
+              <div class="actions">
+                <button type="button" id="request-back" hidden>Back</button
+                ><button type="button" id="request-next" class="primary">
+                  Continue</button
+                ><button
+                  type="submit"
+                  id="request-submit"
+                  class="primary"
+                  hidden
+                >
+                  Submit authorized request
+                </button>
+              </div>
+              <p id="request-result" class="status" role="status"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container footer-inner">
+        <a class="brand" href="#top"
+          ><span class="mark">CA</span>Congregation Assistant</a
+        >
+        <nav>
+          <a href="#privacy">Privacy</a><a href="android/">Install guide</a
+          ><a href="mailto:congregationassistant0@gmail.com">Support</a
+          ><a href="../v2/">Open app</a>
+        </nav>
+      </div>
+      <p class="container muted">
+        Independent and unofficial. V2 preview; some features remain subject to
+        release verification.
+      </p>
+    </footer>
+  </body>
+</html>

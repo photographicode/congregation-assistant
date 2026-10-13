@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+const css=readFileSync('packages/ui/tokens.css','utf8');
+const rgb=h=>{h=h.slice(1);if(h.length===3)h=h.split('').map(x=>x+x).join('');return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16)/255)};
+const lum=h=>rgb(h).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+const contrast=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const tokens=body=>Object.fromEntries([...body.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]{3,8})/g)].map(m=>[m[1],m[2]]));
+const base=tokens(css.match(/:root\{([^}]+)\}/)[1]),dark=tokens(css.match(/:root\[data-ca-theme=slate\],[^{]+\{([^}]+)\}/)[1]);
+for(const theme of ['paper','daylight','lagoon','slate','midnight','dusk'])for(const tone of ['soft','standard','sharp'])test(`${theme} ${tone} contrast pairings`,()=>{const match=css.match(new RegExp(':root\\[data-ca-theme='+theme+'\\]\\{([^}]+)\\}'));const t={...base,...(['slate','midnight','dusk'].includes(theme)?dark:{}),...(match?tokens(match[1]):{})};if(tone==='sharp'){t['text-2']=t['text-1'];t['text-3']=t['text-1']}for(const text of ['text-1','text-2','text-3'])for(const surface of ['bg','surface'])assert(contrast(t[text],t[surface])>=(tone==='sharp'?7:4.5),`${text}/${surface}: ${contrast(t[text],t[surface])}`);assert(contrast(t['text-on-accent'],t.accent)>=4.5);assert(contrast(t.link,t.surface)>=4.5)});

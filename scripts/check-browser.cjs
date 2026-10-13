@@ -282,7 +282,7 @@ async function run(profile) {
                 for(const id of ['help','settings','logout']) assert(await page.locator('#menu-item-'+id).isVisible(),'Support option missing for '+role);
                 assert.equal(await page.locator('#menu-item-'+(role==='field_service'?'groups':role==='attendance'?'attendance':role==='group_overseer'?'overseer':'oclm')).isVisible(),true);
                 await page.screenshot({path:path.join(output,`${profile.name}-${role}-menu.png`)});
-                await page.locator('#modal-mobile-menu button[aria-label="Close navigation menu"]').click();
+                await page.locator('#modal-mobile-menu button[aria-label="Close"]').click();
             }
             if(role==='group_overseer'){
                 assert.deepEqual(await page.evaluate(()=>window.ui.getAllowedTabs()),['overseer']);

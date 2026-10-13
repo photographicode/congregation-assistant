@@ -1,0 +1,28 @@
+name: Optional Cloudflare Pages deployment
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: npm run check:v2 && npm test && npm run build:v2
+      - name: Deploy only when configured
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CA_PAGES_PROJECT" ]; then
+            echo 'Cloudflare Pages not set up; existing hosting remains in use.'
+            exit 0
+          fi
+          npx --yes wrangler@4.45.0 pages deploy dist --project-name "$CA_PAGES_PROJECT"

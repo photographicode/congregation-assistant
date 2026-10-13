@@ -323,7 +323,7 @@ async function test(name, run) { await run(); passed++; console.log('PASS', name
     });
     await test('legacy additional duties stay public but are absent from OCLM editing',()=>{
         const qa=createHarness(),fw=qa.window,el=qa.elements;fw.currentCongId='duties-test';
-        const id='Duty_'+'a'.repeat(32),week='2026-W41';
+        const id='Duty_'+'a'.repeat(32),week='2099-W41';
         qa.localStorage.setItem('ca_midweek_duties-test_jw_scheduler_additional_duties',JSON.stringify([{id,name:'Microphones <team>',section:'AV',slots:2,enabled:true}]));
         qa.localStorage.setItem('ca_midweek_duties-test_jw_scheduler_personnel',JSON.stringify([{id:'qualified',name:'Qualified duty person',appointment:'Other',roles:[id]}]));
         qa.localStorage.setItem('ca_midweek_duties-test_jw_scheduler_assignments',JSON.stringify({[week]:{[id+'_1']:{personId:'qualified'}}}));
