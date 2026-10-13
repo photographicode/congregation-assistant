@@ -82,7 +82,7 @@ const server = http.createServer((req, res) => {
           JSON.stringify({
             errors,
             url: page.url(),
-            main: await page.locator("#main-content").innerText(),
+            body: await page.evaluate(()=>document.body.innerText),
           }),
         );
         throw error;
