@@ -159,9 +159,8 @@ const server = http.createServer((req, res) => {
       results.push({ profile: size.name, passed: true, axeSerious: 0 });
       await context.close();
     }
-    const site = await browser.newPage({
-      viewport: { width: 1280, height: 900 },
-    });
+    const siteContext = await browser.newContext({viewport:{width:1280,height:900},serviceWorkers:"block"});
+    const site = await siteContext.newPage();
     await site.route("**/*.supabase.co/**", (route) => route.abort());
     await site.goto(base + "/site/");
     await site
@@ -180,7 +179,7 @@ const server = http.createServer((req, res) => {
       path: path.join(output, "website.png"),
       fullPage: true,
     });
-    await site.close();
+    await siteContext.close();
     fs.writeFileSync(
       path.join(output, "results.json"),
       JSON.stringify(results, null, 2),
