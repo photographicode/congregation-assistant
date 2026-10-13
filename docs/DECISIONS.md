@@ -28,3 +28,5 @@
 6. Preserve legacy source until *all* native parity is complete, as required by A.2 “After parity.” Basic native screens do not meet the exhaustive cutover requirement. No premature source deletion, merge or production switch.
 7. GitHub CLI access fails; the connected read-only GitHub tools allow PR/issue inspection but cannot close, comment or merge. No GoDaddy/Cloudflare credentials or virtual-screen tool is available. Record those constraints and provide an offline review package and domain instructions.
 8. Proposed legacy-auth migration is owner-run and guarded. Down restores empty structures only, never deleted password data or password authorization.
+
+9. Git transport successfully pushed the implementation branch. A separate draft-PR API attempt failed with GraphQL Forbidden; do not equate Git transport access with API readiness. No merge or production switch occurred.

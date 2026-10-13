@@ -41,7 +41,7 @@ Read-only GitHub tools inspected:
 - PR #7: draft security repair, conflicting head. Preserve its security intentions; old UI changes need native equivalents.
 - Issue #39: accurate deployed-preview status and outstanding requirements. It is not completed by this branch.
 
-The GitHub CLI reports invalid GH_TOKEN/forbidden access. No writable alternative is exposed. Neither PR was merged/closed/commented on, no issue was changed, and no cutover PR was opened.
+The GitHub CLI reports invalid GH_TOKEN/forbidden access. Git transport nevertheless successfully pushed v2/cutover. Creating the draft PR with gh failed with `Post https://api.github.com/graphql: Forbidden`. Neither existing PR was merged/closed/commented on, no issue was changed, and no cutover PR was opened. The pushed branch is available for review.
 
 ## Domain and preview status
 

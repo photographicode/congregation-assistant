@@ -17,7 +17,7 @@ Audit date: 14 October 2026 (client timezone). Starting evidence is the owner's 
 
 ## Access and review findings
 
-- GitHub CLI reports invalid GH_TOKEN / forbidden API access. Read-only connected GitHub tools could inspect two open PRs and the open issue. No write/merge/close action occurred.
+- GitHub CLI reports invalid GH_TOKEN / forbidden API access. Read-only connected GitHub tools could inspect two open PRs and the open issue. Git transport later pushed the branch successfully; CLI draft-PR creation still returned GraphQL Forbidden. No PR/issue write, merge or close action occurred.
 - PR #37: mobile/PDF/usability work, conflicting head and original record layouts. Useful design/export logic to port; incompatible with a wholesale cutover merge without review.
 - PR #7: draft, conflicting head, legacy-auth/security fixes. The new implementation should retain its security intentions; direct merge is not appropriate for native cutover.
 - Issue #39 accurately states preview deployment and outstanding master requirements. Update after a verified release; do not close it as completed now.

@@ -2,7 +2,7 @@
 
 The implementation report and PARITY contain product work that still blocks release. Account setup alone will not satisfy those gates.
 
-1. Restore a writable GitHub CLI/application connection. Current CLI reports invalid GH_TOKEN. Read-only tools cannot open/merge the cutover PR or resolve PRs #7/#37 and issue #39.
+1. Restore GitHub API access for PR/issue actions. Current CLI GraphQL requests are Forbidden, though Git transport successfully pushed v2/cutover. The attempted draft PR was not created. Read-only tools cannot open/merge the cutover PR or resolve PRs #7/#37 and issue #39.
 2. Configure the chosen Cloudflare account and two Pages projects, then follow domain-and-email.md for GoDaddy nameservers, app/website hostnames and TLS. No provider-assigned nameservers or pages.dev targets are known yet.
 3. Create and verify support@congregationassistant.com. Configure provider-issued MX/SPF/DKIM and appropriate DMARC; transactional email is separate.
 4. Verify Supabase project ejosykrxjvwrhxfnputo, Google OAuth and magic-link settings; add the custom app redirect after domains work. The connected Supabase tool can read project metadata; browser/project network and real login acceptance are still unverified. Email-link UI stays off until approved-email authorization/callbacks are implemented.
