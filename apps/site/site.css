@@ -454,3 +454,9 @@ footer {
     max-width: 21rem;
   }
 }
+/* Preserve reflow when system text grows, including WebKit form controls. */
+[hidden] { display: none !important; }
+h1, h2, h3, .brand { overflow-wrap: anywhere; }
+.hero-grid > *, .grid > *, .form-grid > *, .brand { min-width: 0; }
+.device { max-width: 100%; }
+input, select, textarea { min-width: 0; max-width: 100%; }
