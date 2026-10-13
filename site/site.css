@@ -463,3 +463,4 @@ input, select, textarea { min-width: 0; max-width: 100%; }
 
 .mini-tabs { flex-wrap: wrap; gap: 0.5rem; }
 .mini-tabs span { min-width: 0; overflow-wrap: anywhere; }
+.comparison-wrapper { min-width: 0; max-width: 100%; contain: inline-size; }
