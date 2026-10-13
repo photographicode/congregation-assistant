@@ -50,6 +50,7 @@ await writeFile(
 await mkdir("dist/assets/fonts", { recursive: true });
 for (const name of ["NotoSans-Regular.woff2", "NotoSans-Bold.woff2"])
   await cp("assets/fonts/" + name, "dist/assets/fonts/" + name);
+await rm("dist/site", {recursive:true,force:true});
 await mkdir("dist/site", { recursive: true });
 await cp("apps/site", "dist/site", { recursive: true });
 await cp("capabilities.json", "dist/capabilities.json");

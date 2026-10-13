@@ -115,10 +115,7 @@ const server = http.createServer((req, res) => {
         .getByRole("button", { name: "Discard changes", exact: true })
         .click();
       assert.equal(await page.getByRole("dialog").count(), 0);
-      assert.equal(
-        await page.evaluate(() => document.activeElement.textContent.trim()),
-        "Add publisher",
-      );
+      await page.waitForFunction(()=>document.activeElement?.textContent.trim()==="Add publisher", {timeout:5000});
       await page
         .getByRole("button", { name: "Import Center", exact: true })
         .click();
