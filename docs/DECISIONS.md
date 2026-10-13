@@ -13,3 +13,7 @@
 8. User subsequently authorized SQL updates. Read-only inspection found 116 publishers and 4 congregations. Additive V2 migrations were applied through the authenticated Supabase connector; no real publishers/congregations deleted. Synthetic rollback tests exposed and fixed two PL/pgSQL naming ambiguities before marking SQL verified.
 9. The pre-existing additional-duties unit fixture used a week that expired on 2026-10-12. Public views correctly omit old weeks. Move that one synthetic fixture to a future week; do not change the public filtering behavior.
 10. The current public site repository was fetched read-only as the source template. apps/site preserves its assets and guide and adds honest V2 feature/status copy. The USD charge is not invented: quote before purchase; retain the existing ₹1,499 introductory price.
+
+11. Nightly accessibility matrix runs at 03:00 Asia/Calcutta; PRs keep bounded V2 checks. Legacy footer labels are preserved, and icon Close labels are standardized consistently. Browser scroll effects explicitly return no cleanup value to remain compatible with browser APIs returning promises.
+12. Published weekend capabilities exchange to expiring scoped sessions before URL cleanup. Session tokens are hashed on the server and retained only in tab session storage for clean-URL reloads.
+13. Do not merge/deploy the full release: the detailed master checklist remains incomplete, especially actual Private mode and its end-to-end suite. A passing foundation suite is not authorization to bypass the user's release gates.

@@ -8,7 +8,7 @@ Updated 2026-10-13. Never paste private keys or passwords into chat, commit them
 |---|---|---|
 | GitHub `photographicode/congregation-assistant` | Git transport and connected GitHub app | Branch `v2/all` can be pushed; one review PR is used. Existing Pages destination retained. |
 | GitHub `photographicode/Congregation-Assistant_Public` | Read-only clone verified | Website source/template copied to `apps/site`. Separate canonical site publication has not occurred. |
-| Supabase `ejosykrxjvwrhxfnputo` | Authenticated Supabase connector | Additive foundation/fix migrations applied; rollback contract tests pass; existing records preserved. |
+| Supabase `ejosykrxjvwrhxfnputo` | Authenticated Supabase connector | Additive foundation/fix/session/login-revision migrations applied; rollback contract tests pass; existing records preserved. |
 | Public Supabase URL/key | Publishable client configuration | Already available in app configuration; not a server credential. |
 | npm | Registry access | Dependencies installed with committed lockfile; production dependency audit reports zero vulnerabilities. |
 
@@ -46,3 +46,12 @@ These are unfinished implementation/verification, not things a missing API key w
 ## Local commands
 
 Node 22+ and npm are needed. `npm ci --ignore-scripts`, `npm run check:v2`, `npm test`, `npm run build:v2`. CI runs Playwright with an isolated/demo backend. Do not point browser fixtures at production records. For database rollout use `docs/DB-ROLLOUT.md` and the dry-run/apply script; direct SQL credentials are not needed for the connector path already used here.
+
+## Review links
+
+- Source review: https://github.com/photographicode/congregation-assistant/pull/38
+- Foundation verification: https://github.com/photographicode/congregation-assistant/actions/runs/38400859574
+- Updated specification: docs/V2-MASTER-README.md
+- Requirement-by-requirement status: docs/v2-release-checklist.md
+
+The full master release is not finished. No frontend deployment is claimed. Source and compiled preview artifacts are available for review; production UI stays unchanged until the original release gates are met.

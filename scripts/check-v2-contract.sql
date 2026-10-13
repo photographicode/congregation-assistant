@@ -10,6 +10,8 @@ do $$declare g jsonb;result jsonb;draft jsonb;token text;batch uuid;session_toke
  begin perform public.ca_v2_add_group('ca-v2-contract','group a');raise exception 'Duplicate accepted';exception when unique_violation then null;end;
  perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person","name":"Synthetic Maria","group":"Group A","email":"v2-person@example.invalid","phone":"","address":""}',false);
  if public.get_publisher_login('ca-v2-contract','ca-v2-person')->>0<>'v2-person@example.invalid' then raise exception 'Atomic email save failed';end if;
+ begin perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person","name":"Stale edit must not save","group":"Group A","email":"other@example.invalid","expected_login":[]}',false);raise exception 'Stale login expectation accepted';exception when serialization_failure then null;end;
+ if (select name from public.publishers where id='ca-v2-person')<>'Synthetic Maria' then raise exception 'Stale save changed contacts';end if;
  begin perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person2","name":"Synthetic Daniel","group":"Group A","email":"v2-person@example.invalid"}',false);raise exception 'Household accepted without confirmation';exception when raise_exception then if sqlerrm='Household accepted without confirmation' then raise;end if;end;
  perform public.ca_v2_save_person('ca-v2-contract','{"id":"ca-v2-person2","name":"Synthetic Daniel","group":"Group A","email":"v2-person@example.invalid"}',true);
  perform public.ca_v2_save_setup('ca-v2-contract',3,'{"privacy":"standard","delivery":"digital"}');

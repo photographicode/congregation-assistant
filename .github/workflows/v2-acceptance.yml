@@ -31,6 +31,10 @@ jobs:
           path: |
             dist/
             artifacts/v2/
+            docs/REQUIREMENTS.md
+            docs/V2-MASTER-README.md
+            docs/v2-release-checklist.md
+            docs/DB-ROLLOUT.md
           retention-days: 14
   database:
     runs-on: ubuntu-latest

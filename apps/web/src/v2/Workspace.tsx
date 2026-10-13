@@ -41,6 +41,7 @@ type Person = {
   gender?: string;
   isElder?: boolean;
   isMS?: boolean;
+  expected_login?: string[];
 };
 const samplePeople: Person[] = [
   {
@@ -311,7 +312,11 @@ export default function Workspace({
           p_cong_id: c.cong,
           p_publisher_id: person.id,
         });
-        setEditing((p) => (p ? { ...p, email: emails?.[0] || "" } : p));
+        setEditing((p) =>
+          p?.id === person.id
+            ? { ...p, email: emails?.[0] || "", expected_login: emails }
+            : p,
+        );
       });
   }
   const household = editing?.email
@@ -326,6 +331,7 @@ export default function Workspace({
     const person = {
       ...editing,
       email: normalizeEmail(editing.email),
+      expected_login: editing.expected_login || [],
       name: editing.name.trim(),
     };
     if (!person.name) throw Error("Name is required.");
@@ -1752,7 +1758,7 @@ export default function Workspace({
                 aria-describedby="v2-publisher-email-hint"
                 type="email"
                 value={editing.email}
-                disabled={!admin && !demo}
+                disabled={busy || (!admin && !demo)}
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, email: e.target.value } : p));
                   setDirty(true);

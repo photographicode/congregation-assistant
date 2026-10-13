@@ -45,3 +45,15 @@ Keep `V2_DEFAULT=false`, `E2EE_CLAIMS_ENABLED=false`, `JW_IMPORT_ENABLED=false`,
 Return to the legacy frontend/query path; never overwrite drafts automatically. Preserve V2 records and export them before any reviewed down migration. Reassign weekend roles before removing its schema. Reverse migrations only in a reviewed transaction after backup; no automatic production deletes. Keep the legacy escape hatch for at least 30 days after the eventual default flip.
 
 Dependency checkpoint: production audit zero; remaining development-only Tailwind/braces advisories are unresolved because no patched braces 3.x is available. Vite and selector parser were updated. Do not report the complete security gate passed.
+
+## Verified foundation checkpoint
+
+- V2 foundation CI run [38400859574](https://github.com/photographicode/congregation-assistant/actions/runs/38400859574) passed: build, model/crypto/contrast/source/public-session tests, TypeScript, phone/desktop demo flows, household confirmation, dialog dirty guard and focus return, weekend saving, import undo, axe serious/critical checks, 200% reflow and website axe.
+- Local V2 suite is now 37 tests. Built V2 JS gzip upper bound is about 126.7 KB.
+- One combined phone/desktop contact sheet was reviewed; the enlarged phone header and navigation were revised. A second affected-sheet review is pending collection of the green CI images.
+- Full legacy CI passed cloud readiness, isolated SQL and accessibility matrix, but its browser run encountered the old `Close navigation menu` selector after close labels were intentionally standardized. That fixture now targets the scoped `Close` button; the final legacy run must pass before any claim of complete regression verification.
+- Weekend sessions now exchange hashed 256-bit publication capabilities for expiring, hashed scoped sessions. Clean URLs can reload via tab session state. Synthetic session checks passed with rollback.
+- Publisher email saving now carries the editor's expected login list; stale access changes reject atomically without changing contact details. The synthetic stale-login check passed with rollback.
+- Heavy accessibility matrices were moved to the requested nightly/manual CI path (03:00 Asia/Calcutta). Fast V2 checks remain on pull requests.
+
+This does not complete README §16: full Private mode, its end-to-end lifecycle/sentinel suite, the remaining UI/security/PWA work, human pilot acceptance and measured performance remain unfinished. No frontend was merged to main or deployed. The additive SQL is live; the frontend stays a draft preview in PR #38.

@@ -2,6 +2,8 @@ name: Application acceptance
 on:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: '30 21 * * *'
 permissions:
   contents: read
 concurrency:
@@ -92,6 +94,7 @@ jobs:
           PGPASSWORD: acceptance-only
 
   accessibility-matrix:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
