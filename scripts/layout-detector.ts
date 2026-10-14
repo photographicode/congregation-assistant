@@ -3,7 +3,7 @@ export function inspectLayout(){
  const width=document.documentElement.clientWidth,height=window.visualViewport?.height||innerHeight;
  const dialog=document.querySelector('[role=dialog]');
  const failures:string[]=[];if(document.documentElement.scrollWidth>width+1)failures.push('Document horizontal overflow');
- for(const el of document.querySelectorAll<HTMLElement>('body *')){if(dialog&&!dialog.contains(el)&&el!==dialog)continue;const r=el.getBoundingClientRect(),s=getComputedStyle(el);if(s.display==='none'||s.visibility==='hidden'||!r.width||!r.height||el.closest('.sr-only')||s.position==='absolute'&&r.width<=1)continue;
+ for(const el of document.querySelectorAll<HTMLElement>('body *')){if(dialog&&!dialog.contains(el)&&el!==dialog)continue;const closed=el.closest('details:not([open])');if(closed&&el!==closed&&!closed.querySelector(':scope > summary')?.contains(el))continue;const r=el.getBoundingClientRect(),s=getComputedStyle(el);if(s.display==='none'||s.visibility==='hidden'||!r.width||!r.height||el.closest('.sr-only')||s.position==='absolute'&&r.width<=1)continue;
   if(r.left< -1||r.right>width+1)failures.push('Horizontal overflow: '+el.tagName+' '+el.className);
   if(el.matches('[role=dialog]')&&(r.top< -1||r.bottom>height+1))failures.push('Dialog outside visible viewport');
   let visibleTop=Math.max(r.top,0),visibleBottom=Math.min(r.bottom,height);for(let parent=el.parentElement;parent;parent=parent.parentElement){const style=getComputedStyle(parent);if(['auto','scroll','hidden'].includes(style.overflowY)){const box=parent.getBoundingClientRect();visibleTop=Math.max(visibleTop,box.top);visibleBottom=Math.min(visibleBottom,box.bottom);}}

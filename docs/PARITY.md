@@ -26,7 +26,7 @@ Release gate: **not satisfied**. A checked item means the stated scope has a loc
 | Weekend chairman, songs, custom title, speaker, conductor/reader, duties | Existing native Weekend editor; PublicForm weekend | Local demo/model and server SQL source tests; live public-session refresh/PDF/history pending |
 | Appearance themes and accessibility | Settings, Layout Doctor | 55 unit checks, including ten themes; reduced 48-screen browser matrix passes |
 | CSV/vCard import review and undo | People → Import | Parser, import and formula-safe CSV checks; JSON/CSV records archive includes native groups/weekend/setup. Report CSV import still pending. |
-| Subscription details, expiry, renewal and trial | No complete native billing/lock screen | Unchecked |
+| Subscription details, expiry, renewal and trial | Subscription details and server-backed lock screen | Server status and expired-admin export identity tested; operator renewal uses existing controlled billing contract. |
 | Encrypted backup/restore and portable export | Settings → Backup; existing export/restore RPC + Argon2id AEAD | Cryptographic round-trip plus formula-safe native records archive; V2 recovery-format parity still pending |
 | Feedback, wipe-data confirmation | Support mail link | Wipe transactional backend and native confirmation missing |
 | Announcements and role-specific help | Website guide and support link | Announcements UI missing; guide still contains historical V1 instructions |

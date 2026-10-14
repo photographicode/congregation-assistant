@@ -41,3 +41,4 @@ body{min-height:100dvh}.main-content{padding-bottom:calc(var(--nav-h) + var(--sa
 :root[data-ca-theme^="glass-"] body{background-image:var(--gradient);background-attachment:fixed}:root[data-ca-theme^="glass-"] .card{background:var(--surface-glass);backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-raise),var(--glow)}
 @supports not (backdrop-filter:blur(1px)){:root[data-ca-theme^="glass-"] .card{background:var(--surface)}}
 @media(max-height:499px) and (min-width:480px) and (max-width:1023px){:root[data-short=true][data-large-text=true] .greeting{grid-template-columns:minmax(0,1fr)}}
+input[type=checkbox]{flex:0 0 var(--tap-min);min-inline-size:var(--tap-min);min-block-size:var(--tap-min)}

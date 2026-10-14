@@ -1,14 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import publicConfig from "../../../../public-config.json";
 export const config = publicConfig;
+export const demo = new URLSearchParams(location.search).has("demo");
 export const client = createClient(
   "https://ejosykrxjvwrhxfnputo.supabase.co",
   "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C",
   {
-    auth: { flowType: "pkce", persistSession: true, detectSessionInUrl: true },
+    auth: { flowType: "pkce", persistSession: !demo, autoRefreshToken: !demo, detectSessionInUrl: !demo },
   },
 );
-export const demo = new URLSearchParams(location.search).has("demo");
 export async function rpc(name: string, args: Record<string, unknown> = {}) {
   if (demo) throw Error("The fictional demo never calls the cloud.");
   const { data, error } = await client.rpc(name, args);

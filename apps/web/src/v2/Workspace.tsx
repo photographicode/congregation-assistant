@@ -36,8 +36,9 @@ import { Midweek } from "./Midweek";
 import { PublisherHome } from "./PublisherHome";
 import { Access } from "./Access";
 import { Backup } from "./Backup";
+import {Subscription} from "./Subscription";
 import { RecordsExport } from "./RecordsExport";
-import { Sessions,AdminIdleTimeout } from "./Sessions";
+import { Sessions } from "./Sessions";
 import catalogue from "../../../../capabilities.json";
 const PdfStudio=lazy(()=>import("./PdfStudio"));
 type Person = {
@@ -1556,7 +1557,7 @@ export default function Workspace({
             >
               Export loaded publisher records
             </button>
-            {admin && <><Sessions context={c}/><RecordsExport context={c}/><Backup context={c} /></>}
+            {admin && <>{c.plan&&<Subscription context={c} plan={c.plan} standalone={false}/>}<Sessions context={c}/><RecordsExport context={c}/><Backup context={c} /></>}
             <p className="muted">
               Exports contain personal information. Store and share them
               carefully.
@@ -1614,7 +1615,6 @@ export default function Workspace({
         </div>
       )}
       {body}
-      <AdminIdleTimeout enabled={admin} notify={c.notify}/>
       <Dialog
         open={!!editing}
         title={

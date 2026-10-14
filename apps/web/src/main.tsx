@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider,useQueryClient } from "@tanstack/react-query";
 import {
   Home,
   CalendarDays,
@@ -22,8 +22,11 @@ import {
 } from "lucide-react";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { client, demo, capabilities } from "./v2/client";
+import { rpc,client, demo, capabilities } from "./v2/client";
 import { useAppearance } from "./v2/store";
+import {authScope} from "./v2/auth-scope.mjs";
+import {AdminIdleTimeout} from "./v2/Sessions";
+import {Subscription,planSchema,type WorkspacePlan} from "./v2/Subscription";
 import { UpdatePrompt } from "./v2/UpdatePrompt";
 import { adapt } from "./v2/accessibility";
 import "./v2/styles.css";
@@ -47,6 +50,7 @@ export type Context = {
   roles: string[];
   caps: any;
   firstName?: string;
+  plan?: WorkspacePlan;
   notify: (s: string) => void;
 };
 function App() {
@@ -56,6 +60,7 @@ function App() {
     [memberships, setMemberships] = useState<any[]>([]),
     [cong, setCong] = useState(demo ? "demo" : ""),
     [caps, setCaps] = useState<any>({}),
+    [plan,setPlan]=useState<WorkspacePlan|null>(null),[planError,setPlanError]=useState(""),
     [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
     [collapsed, setCollapsed] = useState(false),
     [more, setMore] = useState(false),
@@ -64,6 +69,8 @@ function App() {
     [email, setEmail] = useState(""),
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
+  const queryClient=useQueryClient();
+  const accountScope=React.useMemo(()=>authScope(queryClient,()=>{setMemberships([]);setCaps({});setPlan(null);}),[queryClient]);
   const appearance = useAppearance();
   useEffect(() => adapt(appearance), [appearance]);
   React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
@@ -107,13 +114,13 @@ function App() {
     let active = true;
     client.auth.getSession().then(({ data, error }) => {
       if (active) {
-        setSession(data.session);
+        accountScope(data.session);setSession(data.session);
         if (error) setError(error.message);
         setLoading(false);
       }
     });
     const { data } = client.auth.onAuthStateChange((_event, value) => {
-      if (active) setSession(value);
+      if (active) {accountScope(value);setSession(value);}
     });
     return () => {
       active = false;
@@ -147,6 +154,7 @@ function App() {
   useEffect(() => {
     if (cong && !demo) capabilities(cong).then(setCaps);
   }, [cong]);
+  useEffect(()=>{let active=true;setPlan(null);setPlanError('');if(!cong)return;if(demo){const expired=new URLSearchParams(location.search).get('demo')==='expired';setPlan({congregation:cong,name:'River Park Congregation',status:expired?'expired':'active',trialEndsAt:new Date().toISOString(),paymentDate:null,locked:expired,serverTime:new Date().toISOString()});return;}rpc('ca_v2_workspace_plan',{p_cong_id:cong}).then(value=>{const parsed=planSchema.parse(value);if(parsed.congregation!==cong)throw Error('Workspace status did not match. Reload before continuing.');if(active)setPlan(parsed);}).catch(e=>{if(active)setPlanError(e.message);});return()=>{active=false;};},[cong,session?.user?.id]);
   useEffect(() => {
     if (notice) {
       const timer = setTimeout(() => setNotice(""), 7000);
@@ -189,7 +197,8 @@ function App() {
   );
   const context: Context = {
     cong,
-    name:
+    plan:plan?.congregation===cong?plan:undefined,
+    name:plan?.congregation===cong?plan.name:
       memberships.find((m) => m.cong_id === cong)?.congregations?.name ||
       "Congregation",
     roles,
@@ -281,7 +290,7 @@ function App() {
   };
   return (
     <div className="app">
-      <UpdatePrompt />
+      <UpdatePrompt /><AdminIdleTimeout enabled={admin} notify={setNotice}/>
       <aside className={"rail " + (collapsed ? "collapsed" : "")}>
         <div className="brand">
           <span className="brand-mark">
@@ -355,7 +364,7 @@ function App() {
               retain unsaved work.
             </div>
           )}
-          {!demo && caps.schema_version !== 2 && (
+          {!demo && Number(caps.schema_version||0)<2&&!plan?.locked && (
             <div className="banner" role="status">
               Update pending. New database tools will appear after the V2
               migration.{" "}
@@ -363,7 +372,7 @@ function App() {
             </div>
           )}
           <Suspense fallback={<p role="status">Loading tools…</p>}>
-            <Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />
+            {planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
           </Suspense>
         </main>
       </div>
