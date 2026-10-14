@@ -24,7 +24,7 @@ import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
 import { rpc,client, demo, capabilities } from "./v2/client";
 import { useAppearance } from "./v2/store";
-import {authScope} from "./v2/auth-scope.mjs";
+import {authScope,displayFirstName} from "./v2/auth-scope.mjs";
 import {AdminIdleTimeout} from "./v2/Sessions";
 import {Subscription,planSchema,type WorkspacePlan} from "./v2/Subscription";
 import { UpdatePrompt } from "./v2/UpdatePrompt";
@@ -202,7 +202,7 @@ function App() {
       memberships.find((m) => m.cong_id === cong)?.congregations?.name ||
       "Congregation",
     roles,
-    firstName: demo ? "Daniel" : session?.user?.user_metadata?.full_name?.split(" ")[0],
+    firstName: demo ? "Daniel" : displayFirstName(session?.user?.user_metadata),
     caps,
     notify: setNotice,
   };

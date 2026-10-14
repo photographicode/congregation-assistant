@@ -30,3 +30,5 @@ node scripts/check-pdf-browser.cjs
 ```
 
 Golden recapture requires the tag worktree and `scripts/capture-v1-pdf-golden.mjs`. Do not recapture goldens to make a failing native result pass. Browser evidence verifies a real download, emergency regeneration offline after first use and zero demo backend requests.
+
+The browser fixture now downloads one document containing the eight script samples and verifies each extracted name, rather than relying only on Node generation. Browser regeneration after font-cache preparation passes offline with no failed resources. PDF Studio offers these fictional samples behind its publisher-selection disclosure for owner review.
