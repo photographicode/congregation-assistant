@@ -10,3 +10,11 @@ The implementation report and PARITY contain product work that still blocks rele
 6. Review and run SQL on isolated staging first. Auth-removal SQL is guarded, destructive and not automatically selected by the migration script. Production changes remain owner-run.
 7. After acceptance, open one v2/cutover PR, resolve other PRs/issues with comments, merge and verify actual production root, redirects and cache replacement. Then make the GitHub repository private in Settings → General → Change visibility and use Cloudflare Pages for hosting. Repo privacy is an owner click; verify your plan's hosting/access constraints before switching.
 8. Signing/store/payment/WhatsApp Business credentials remain optional and disabled. No mailbox, purchase, deployment, DNS mutation or account activation was completed here.
+
+## Current custom-domain and review handoff
+
+The repository is already private; do not make it public for preview. Review at https://congregation-assistant-review.cherryshore32.chatgpt.site/?demo=admin using the owner's ChatGPT account. The website is included under `/site/`.
+
+Cloudflare deploy currently skips because CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are absent. GoDaddy nameservers, Titan DKIM/mailboxes, Supabase redirect/SMTP settings and Google consent/origins need the dashboard access described in DOMAIN-SETUP.md. Confirm those real results before changing configuration readiness flags. PDF embedded-font differences are documented for review in PDF-PARITY.md. Public legal pages need qualified legal review. Operator name/response-time and account 2FA are not invented or asserted.
+
+The current native records archive contains V2 groups/weekend/setup in addition to the established server export. It is deliberately not presented as the existing automatic restore format; full V2 recovery-format parity is still on the release checklist. Account sessions can be listed, global sign-out is provided, and admin idle timeout is a per-device option. Supabase may keep already-issued sign-in access alive briefly after refresh-token revocation; the UI explains this limit.

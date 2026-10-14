@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format, startOfWeek, addWeeks } from "date-fns";
 import {
@@ -36,7 +36,10 @@ import { Midweek } from "./Midweek";
 import { PublisherHome } from "./PublisherHome";
 import { Access } from "./Access";
 import { Backup } from "./Backup";
+import { RecordsExport } from "./RecordsExport";
+import { Sessions,AdminIdleTimeout } from "./Sessions";
 import catalogue from "../../../../capabilities.json";
+const PdfStudio=lazy(()=>import("./PdfStudio"));
 type Person = {
   id: string;
   name: string;
@@ -48,6 +51,7 @@ type Person = {
   isElder?: boolean;
   isMS?: boolean;
   expected_login?: string[];
+  dob?: string; baptized?: string; hope?: string; familyHeadId?: string; emergencyName?: string; emergencyRelationship?: string; emergencyPhone?: string; spiritualStatus?: string; isRP?: boolean; isSP?: boolean; isFM?: boolean;
 };
 const samplePeople: Person[] = [
   {
@@ -466,7 +470,8 @@ export default function Workspace({
     );
   }
   let body: React.ReactNode;
-  if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
+  if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
+  else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
   else if (route === "home")
     body = (
       <>
@@ -570,8 +575,7 @@ export default function Workspace({
               {admin && <button onClick={() => go("messages")}><MessageCircle /> Share a reminder</button>}
               <button
                 onClick={() => {
-                  setSub("print");
-                  go("schedule");
+                  go("pdf");
                 }}
               >
                 <FileDown /> Print schedule
@@ -1402,6 +1406,10 @@ export default function Workspace({
                   "slate",
                   "midnight",
                   "dusk",
+                  "glass-lagoon",
+                  "glass-arctic",
+                  "glass-aurora",
+                  "glass-lagoon-dark",
                 ].map((t) => (
                   <option key={t}>{t[0].toUpperCase() + t.slice(1)}</option>
                 ))}
@@ -1548,7 +1556,7 @@ export default function Workspace({
             >
               Export loaded publisher records
             </button>
-            {admin && <Backup context={c} />}
+            {admin && <><Sessions context={c}/><RecordsExport context={c}/><Backup context={c} /></>}
             <p className="muted">
               Exports contain personal information. Store and share them
               carefully.
@@ -1606,6 +1614,7 @@ export default function Workspace({
         </div>
       )}
       {body}
+      <AdminIdleTimeout enabled={admin} notify={c.notify}/>
       <Dialog
         open={!!editing}
         title={
@@ -1628,6 +1637,7 @@ export default function Workspace({
             }}
           >
             <h3>Basics</h3>
+            <label>Gender<select value={editing.gender||"Male"} onChange={e=>{setEditing(p=>p?{...p,gender:e.target.value}:p);setDirty(true);}}><option>Male</option><option>Female</option></select></label>
             <div className="form-grid">
               <label>
                 Full name
@@ -1745,6 +1755,13 @@ export default function Workspace({
                 />
               </label>
             </div>
+            <details><summary>Household, emergency contact & publisher record</summary>
+            {demo||c.caps.extended_people?<div className="stack">
+              <div className="form-grid">{([['dob','Date of birth'],['baptized','Date of baptism'],['emergencyName','Emergency contact name'],['emergencyRelationship','Relationship'],['emergencyPhone','Emergency phone'],['spiritualStatus','Publisher status']] as const).map(([key,label])=><label key={key}>{label}<input type={key==='dob'||key==='baptized'?'date':key==='emergencyPhone'?'tel':'text'} value={editing[key]||''} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.value}:p);setDirty(true);}}/></label>)}</div>
+              <label>Household head<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">This person is the household head</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
+              <label>Hope<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">Not recorded</option><option>Other Sheep</option><option>Anointed</option></select></label>
+              {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary']] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}
+            </div>:<p>Ask your administrator to apply the extended publisher database update, then reopen this record.</p>}</details>
             {error && (
               <p role="alert" className="error">
                 {error}

@@ -12,5 +12,5 @@ export function UpdatePrompt() {
   navigator.serviceWorker.addEventListener('controllerchange',changed);
   return()=>{active=false;navigator.serviceWorker.removeEventListener('controllerchange',changed);};
  },[]);
- return waiting?<aside className="update-prompt" role="status"><strong>Updated — reload</strong><p>A new version is ready. Save your work before reloading.</p><button onClick={()=>{sessionStorage.setItem('ca-update-requested','1');waiting.postMessage({type:'ACTIVATE_UPDATE'});}}>Reload app</button></aside>:null;
+ return waiting?<aside className="update-prompt" role="status"><strong>Update available</strong><p>A new version is ready. Save your work before reloading.</p><button onClick={()=>{sessionStorage.setItem('ca-update-requested','1');waiting.postMessage({type:'ACTIVATE_UPDATE'});}}>Reload app</button></aside>:null;
 }

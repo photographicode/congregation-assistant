@@ -1,0 +1,11 @@
+{
+  "OWNER_NAME": null,
+  "OWNER_CITY_OPTIONAL": null,
+  "RESPONSE_TIME": null,
+  "DATA_REGION": "Mumbai, India (Supabase ap-south-1)",
+  "SUPPORT_ACCESS_ENABLED": false,
+  "ACTIVITY_LOG_ENABLED": false,
+  "E2EE_CLAIMS_ENABLED": false,
+  "INDEPENDENT_REVIEW": "planned",
+  "LAST_UPDATED": "2026-10-14"
+}

@@ -1,0 +1,97 @@
+{
+  "tag": "v1-final",
+  "date": "2026-10-14T06:00:00.000Z",
+  "fixtures": [
+    {
+      "name": "s21-ordinary",
+      "kind": "s21",
+      "bytes": 41996
+    },
+    {
+      "name": "s21-long-name",
+      "kind": "s21",
+      "bytes": 43378
+    },
+    {
+      "name": "s21-long-remarks",
+      "kind": "s21",
+      "bytes": 55752
+    },
+    {
+      "name": "s21-all-months",
+      "kind": "s21",
+      "bytes": 41996
+    },
+    {
+      "name": "s21-auxiliary",
+      "kind": "s21",
+      "bytes": 42071
+    },
+    {
+      "name": "s21-regular",
+      "kind": "s21",
+      "bytes": 42009
+    },
+    {
+      "name": "s21-unbaptised",
+      "kind": "s21",
+      "bytes": 42301
+    },
+    {
+      "name": "s21-large-family",
+      "kind": "s21",
+      "bytes": 56519
+    },
+    {
+      "name": "s3-full",
+      "kind": "s3",
+      "bytes": 13058
+    },
+    {
+      "name": "s88-full",
+      "kind": "s88",
+      "bytes": 299754
+    },
+    {
+      "name": "s3-partial",
+      "kind": "s3",
+      "bytes": 12730
+    },
+    {
+      "name": "s88-partial",
+      "kind": "s88",
+      "bytes": 297093
+    },
+    {
+      "name": "s3-special",
+      "kind": "s3",
+      "bytes": 13082
+    },
+    {
+      "name": "s88-special",
+      "kind": "s88",
+      "bytes": 299758
+    },
+    {
+      "name": "emergency-1",
+      "kind": "emergency",
+      "bytes": 5060
+    },
+    {
+      "name": "emergency-50",
+      "kind": "emergency",
+      "bytes": 16736
+    },
+    {
+      "name": "emergency-500",
+      "kind": "emergency",
+      "bytes": 127961
+    }
+  ],
+  "tagCommit": "76978c4fbe56658b8b856cb7218b5c4a212cd1f0",
+  "templates": {
+    "s21.pdf": "9e68cd8c15c65b9e8799ca150f748a403bd2d7ab8ea9db49847ed738cec8c608",
+    "s3.pdf": "346bf1c9e3a861a7b996f6f8a682dbd38a4988644797117324840f38ff38aee4",
+    "s88.pdf": "126375db9627c8cbb8bd82d7557d369feb9331e0e2659e53bdbb95d1c83fd2e6"
+  }
+}

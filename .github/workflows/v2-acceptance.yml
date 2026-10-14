@@ -61,5 +61,8 @@ jobs:
             case "$migration_file" in *.down.sql|*drop_legacy_auth.sql) continue;; esac
             psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -1 -f "$migration_file"
           done
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-records-export.sql
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-own-sessions.sql
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-extended-person.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-contract.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-cutover-auth.sql

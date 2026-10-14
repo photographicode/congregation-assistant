@@ -1,0 +1,134 @@
+{
+  "fixtures": [
+    {
+      "fixture": "emergency-1",
+      "pages": 3,
+      "maxCoordinateDeltaPt": 1.152000000000001,
+      "maxChangedPixelFraction": 0.042486749116607776,
+      "textEqual": true
+    },
+    {
+      "fixture": "emergency-50",
+      "pages": 6,
+      "maxCoordinateDeltaPt": 1.152000000000001,
+      "maxChangedPixelFraction": 0.06481007067137809,
+      "textEqual": true
+    },
+    {
+      "fixture": "emergency-500",
+      "pages": 40,
+      "maxCoordinateDeltaPt": 1.152000000000001,
+      "maxChangedPixelFraction": 0.06585468197879858,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-all-months",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-auxiliary",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-large-family",
+      "pages": 12,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-long-name",
+      "pages": 2,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-long-remarks",
+      "pages": 13,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-ordinary",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-regular",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s21-unbaptised",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true
+    },
+    {
+      "fixture": "s3-full",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5759999999999934,
+      "maxChangedPixelFraction": 0.012900747508305648,
+      "textEqual": true
+    },
+    {
+      "fixture": "s3-partial",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5439999999999969,
+      "maxChangedPixelFraction": 0.006528239202657807,
+      "textEqual": true
+    },
+    {
+      "fixture": "s3-special",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5759999999999934,
+      "maxChangedPixelFraction": 0.013860049833887044,
+      "textEqual": true
+    },
+    {
+      "fixture": "s88-full",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5760000000000218,
+      "maxChangedPixelFraction": 0.017053886925795052,
+      "textEqual": true
+    },
+    {
+      "fixture": "s88-partial",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5760000000000218,
+      "maxChangedPixelFraction": 0.0038074204946996464,
+      "textEqual": true
+    },
+    {
+      "fixture": "s88-special",
+      "pages": 1,
+      "maxCoordinateDeltaPt": 0.5760000000000218,
+      "maxChangedPixelFraction": 0.015918727915194348,
+      "textEqual": true
+    }
+  ],
+  "passed": 17,
+  "total": 17,
+  "renderPixels": 800,
+  "coordinateTolerancePt": {
+    "s21": 0.01,
+    "embeddedLatinBounds": 1.5
+  },
+  "pixelTolerance": {
+    "s21": 0.001,
+    "embeddedLatinOutlines": 0.08
+  }
+}

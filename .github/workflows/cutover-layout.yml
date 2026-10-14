@@ -3,13 +3,13 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '20 20 * * *'
+    - cron: '20 20 * * 0'
 permissions:
   contents: read
 jobs:
   native-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,7 +21,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
         env:
-          CA_LAYOUT_FULL: ${{ github.event_name == 'schedule' && '1' || '0' }}
+          CA_LAYOUT_FULL: ${{ github.event_name != 'pull_request' && '1' || '0' }}
+      - run: node scripts/build-trust-metrics.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

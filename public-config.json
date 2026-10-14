@@ -3,5 +3,7 @@
   "PUBLIC_SITE_URL": "https://congregationassistant.com",
   "APP_URL": "https://app.congregationassistant.com",
   "domainConfigured": false,
-  "mailConfigured": false
+  "mailConfigured": false,
+  "SECURITY_EMAIL": "security@congregationassistant.com",
+  "BASE_URL": "/"
 }

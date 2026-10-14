@@ -36,3 +36,8 @@ body{min-height:100dvh}.main-content{padding-bottom:calc(var(--nav-h) + var(--sa
 .greeting-clock{grid-template-columns:minmax(0,1fr)}.greeting-clock>time{min-inline-size:0;max-inline-size:100%;font-size:min(2.75rem,20cqi)}.greeting-clock .chip{display:block;min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;padding-inline:.7em}
 :root[data-size-class=xs][data-large-text=true] .greeting{--card-pad:1rem}
 @media(max-height:499px) and (min-width:480px) and (max-width:1023px){:root[data-short=true] .main-content{margin-bottom:0}:root[data-short=true] .notice,:root[data-short=true] .update-prompt{bottom:1rem}}
+.pdf-preview{width:100%;height:min(70dvh,44rem);border:1px solid var(--border);border-radius:var(--radius-m)}progress{width:100%;accent-color:var(--accent)}
+
+:root[data-ca-theme^="glass-"] body{background-image:var(--gradient);background-attachment:fixed}:root[data-ca-theme^="glass-"] .card{background:var(--surface-glass);backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-raise),var(--glow)}
+@supports not (backdrop-filter:blur(1px)){:root[data-ca-theme^="glass-"] .card{background:var(--surface)}}
+@media(max-height:499px) and (min-width:480px) and (max-width:1023px){:root[data-short=true][data-large-text=true] .greeting{grid-template-columns:minmax(0,1fr)}}

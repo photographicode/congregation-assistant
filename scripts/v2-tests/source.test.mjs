@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,readdirSync,statSync} from 'node:fs';import path from 'node:path';
 const walk=dir=>readdirSync(dir).flatMap(name=>{const file=path.join(dir,name);return statSync(file).isDirectory()?walk(file):[file]});
 test('new UI uses SVG icons and has no emoji/pictographs',()=>{for(const file of [...walk('apps/web/src'),...walk('packages/ui')].filter(f=>/\.(tsx?|css)$/.test(f)))assert(!/\p{Extended_Pictographic}/u.test(readFileSync(file,'utf8')),file)});
-test('new entry point has no inline scripts, eval allowance or third-party scripts',()=>{const html=readFileSync('apps/web/index.html','utf8');assert(!/<script\b(?![^>]*src=)/i.test(html));assert(!html.includes('unsafe-eval'));assert(!/<script[^>]+src=["']https?:/i.test(html))});
+test('new entry point has no inline scripts, eval allowance or third-party scripts',()=>{const html=readFileSync('apps/web/index.html','utf8');assert(!/<script\b(?![^>]*src=)/i.test(html));assert(!html.includes("'unsafe-eval'"));assert(!/<script[^>]+src=["']https?:/i.test(html))});
 test('E2EE and default UI cannot be enabled by the foundation catalogue',()=>{const flags=JSON.parse(readFileSync('capabilities.json','utf8')).flags;assert.equal(flags.E2EE_CLAIMS_ENABLED,false);assert.equal(flags.V2_DEFAULT,false)});

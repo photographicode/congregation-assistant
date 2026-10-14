@@ -1,0 +1,6 @@
+title = "Congregation Assistant secret scan"
+[extend]
+useDefault = true
+[allowlist]
+description = "Public Supabase publishable client key is explicitly non-secret"
+regexes = ['sb_publishable_[A-Za-z0-9_-]+']

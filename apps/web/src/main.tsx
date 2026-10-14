@@ -18,6 +18,7 @@ import {
   Plus,
   ShieldCheck,
   Download,
+  Printer,
 } from "lucide-react";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
@@ -37,6 +38,7 @@ const routes = [
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "messages", label: "Messages", icon: MessageCircle },
   { id: "access", label: "Access & Links", icon: Link2 },
+  { id: "pdf", label: "Print & PDF", icon: Printer },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 export type Context = {
@@ -174,6 +176,7 @@ function App() {
         )) ||
       (r.id === "people" &&
         roles.some((x) => ["field_service", "group_overseer"].includes(x))) ||
+      (r.id === "pdf" && roles.some(x=>["field_service","attendance","oclm","weekend"].includes(x))) ||
       (r.id === "reports" &&
         roles.some((x) =>
           [

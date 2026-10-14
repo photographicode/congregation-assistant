@@ -1,5 +1,7 @@
 # V2 implementation decisions
 
+Current decisions are in the 14 October 2026 section below. Older preview/bridge/GitHub Pages decisions are historical and superseded by the native cutover and private-review workflow.
+
 2026-10-13. Source specification: V2-MASTER-README.md. Work branch: v2/all.
 
 1. Keep the existing application operational while introducing a Vite/React/TypeScript strangler shell at `apps/web`. A build produces `/v2/` and a separately deployable `/site/`; `?ui=legacy` is retained. Do not switch the default before every release gate passes.
@@ -30,3 +32,18 @@
 8. Proposed legacy-auth migration is owner-run and guarded. Down restores empty structures only, never deleted password data or password authorization.
 
 9. Git transport successfully pushed the implementation branch. A separate draft-PR API attempt failed with GraphQL Forbidden; do not equate Git transport access with API readiness. No merge or production switch occurred.
+
+## 14 October 2026 — private repository review and hosting
+
+- Keep photographicode/congregation-assistant private. GitHub Pages is not the review host. An owner-only Sites deployment gives the owner a real browser link: https://congregation-assistant-review.cherryshore32.chatgpt.site/?demo=admin. This is a working review, not a declaration that every cutover acceptance item has passed.
+- Use Cloudflare Workers static assets for custom-domain hosting because current Cloudflare Pages documentation recommends Workers for new projects. Separate app/site Workers, custom domains, headers and deploy workflows are tracked. Production Cloudflare credentials and GoDaddy/Titan access are unavailable; missing secrets explicitly skip deploy without failing CI.
+- Sites package helpers are not installed in this execution environment and are not readable through the skill resource API. For the review only, a stdin-only workflow pushed the exact static source with its short-lived credential and packaged that same commit. Credentials were neither persisted nor printed. Sites confirmed successful owner-private publication. Preserve the Site ID in its hosting manifest; do not recreate it.
+- Supabase project API verified region ap-south-1 (Mumbai). No production data was read and no destructive production migration was applied.
+- Permit CSP `wasm-unsafe-eval` only for the app's HarfBuzz/libsodium WebAssembly. JavaScript unsafe-eval and inline scripts remain prohibited. Website CSP has no WebAssembly allowance. The narrower source test checks the exact unsafe-eval token rather than rejecting its occurrence inside the WebAssembly keyword.
+- Embed Latin PDF fonts for portable rendering; document the resulting differences in PDF-PARITY.md instead of claiming pixel identity. Leave Private mode claims off until full lifecycle and sentinel checks pass.
+
+The additive `v2_extended_person` migration was first verified in isolated PostgreSQL (fields, invalid-date rollback, household-cycle refusal and cross-tenant denial), then applied successfully to the configured Supabase project through the connected API. It preserves existing fields when omitted and retains the atomic email-revision guard. No records were deleted. The database advertises extended_people only when the new contract is present.
+
+Own-session metadata and native records-export RPCs were tested in isolated PostgreSQL, then applied through the connected Supabase API. Session listing returns only the authenticated account's device/timestamps, never tokens. Records export includes native groups, weekend drafts/public snapshots/history, setup and import history; it omits bearer hashes and device sessions. Its archive is for portability and is explicitly distinct from the existing automatic recovery format.
+
+The expanded matrix exposed a doubled-text landscape greeting with a zero-width title column. Large-text landscape now stacks greeting and clock. All 192 targeted landscape cases passed after the fix; the earlier incomplete expanded run is not reported as fully passed. The 84-page website matrix passed accessibility and horizontal-overflow checks. Physical-device, usability and exhaustive tenant/RPC acceptance remain required release work.
