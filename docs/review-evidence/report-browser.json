@@ -1,0 +1,10 @@
+{
+  "bulkSave": true,
+  "csvReview": true,
+  "formulaProtection": true,
+  "nonparticipationTotals": true,
+  "annualLogs": true,
+  "groupRosterScoped": true,
+  "backendRequests": 0,
+  "axeViolations": []
+}

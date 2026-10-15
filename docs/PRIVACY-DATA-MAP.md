@@ -11,6 +11,7 @@ Generated from tracked create-table statements by scripts/build-data-map.mjs. AL
 | ca_private.department_workspaces | cong_id, department, revision, data, updated_at, actor | supabase/department-drafts.sql |
 | ca_private.mail_outbox | id, dedupe, email, subject, body, created_at, available_at, state, attempts, lease, provider_id, sent_at | supabase/onboarding-mail.sql |
 | ca_private.owner_bootstrap | username, password_digest | supabase/owner-bootstrap.sql |
+| ca_private.public_app_config | singleton, values | supabase/migrations/20261014121628_v2_configured_mail_links.sql |
 | ca_private.publisher_preferences | cong_id, publisher_id, revision, reminders, updated_at | supabase/publisher-portal.sql |
 | ca_private.publisher_report_access | cong_id, email, publisher_id, active, created_at | supabase/publisher-family.sql |
 | ca_private.push_outbox | id, subscription_id, dedupe, title, body, attempts, next_attempt, lease, leased_at, delivered_at | supabase/server-push.sql |

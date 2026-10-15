@@ -3,8 +3,8 @@ import publicConfig from "../../../../public-config.json";
 export const config = publicConfig;
 export const demo = new URLSearchParams(location.search).has("demo");
 export const client = createClient(
-  "https://ejosykrxjvwrhxfnputo.supabase.co",
-  "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C",
+  config.SUPABASE_URL,
+  config.SUPABASE_PUBLISHABLE_KEY,
   {
     auth: { flowType: "pkce", persistSession: !demo, autoRefreshToken: !demo, detectSessionInUrl: !demo },
   },

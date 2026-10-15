@@ -24,6 +24,11 @@ jobs:
       - run: npm run check:bundle
       - run: npx playwright install --with-deps chromium
       - run: npm run test:v2:browser
+      - run: node scripts/check-dashboard-browser.cjs
+      - run: node scripts/check-reachability.cjs
+      - run: node scripts/check-report-browser.cjs
+      - run: node scripts/check-owner-browser.cjs
+      - run: node scripts/check-site-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -61,6 +66,7 @@ jobs:
             case "$migration_file" in *.down.sql|*drop_legacy_auth.sql) continue;; esac
             psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -1 -f "$migration_file"
           done
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-mail-links.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-plan.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-records-export.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-own-sessions.sql

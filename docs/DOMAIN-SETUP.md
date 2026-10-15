@@ -11,7 +11,7 @@ Add repository Actions secrets `CLOUDFLARE_API_TOKEN` (least privilege Workers S
 ## DNS at GoDaddy and Cloudflare
 
 1. Export the current GoDaddy zone before changing nameservers.
-2. Import every record to Cloudflare. Run `node scripts/dns-preflight.mjs zone-export.txt work/dns-preflight.json`. JSON `{records:[{name,type,content,priority}]}` and BIND exports are supported. A passing result is required before a nameserver change, plus the manual checks printed in the report.
+2. Import every record to Cloudflare. Copy the actual Titan DKIM selector, then run `TITAN_DKIM_SELECTOR=ACTUAL_SELECTOR node scripts/dns-preflight.mjs zone-export.txt work/dns-preflight.json`. The script refuses readiness without that selector; another provider’s DKIM record is not a substitute. JSON `{records:[{name,type,content,priority}]}` and BIND exports are supported. A passing result is required before a nameserver change, plus the manual checks printed in the report.
 3. Preserve Titan: apex MX `mx1.titan.email` priority **10**, `mx2.titan.email` priority **20**, both DNS-only. Keep exactly one apex SPF TXT including `v=spf1 include:spf.titan.email ~all` (merge any other legitimate sender into this one record).
 4. Copy the actual DKIM selector and record from Titan. Never substitute a placeholder. Create `_dmarc` TXT `v=DMARC1; p=none; rua=mailto:security@congregationassistant.com` after creating that mailbox. Review 2–4 weeks of reports before moving to quarantine/reject.
 5. Change GoDaddy nameservers to the **two actual nameservers assigned to this zone by Cloudflare**. Do not invent nameservers. Workers custom domains attach `congregationassistant.com`, `www.congregationassistant.com` and `app.congregationassistant.com`; Cloudflare provisions certificates. Check incoming/outgoing Titan email again.
@@ -37,3 +37,7 @@ Project: `ejosykrxjvwrhxfnputo`; project URL `https://ejosykrxjvwrhxfnputo.supab
 Run `EXPECTED_COMMIT=<full-sha> node scripts/verify-production.mjs`, then demo browser smoke, OAuth round trip and mail checks. Confirm the visible “Update available” prompt replaces an old service worker only after Reload. Do not set `domainConfigured` or `mailConfigured` true until these real checks pass. HSTS includes subdomains but **does not request preload**; evaluate all subdomains before submitting to a preload list.
 
 `assetlinks.json` is deliberately empty until an actual signed APK package and SHA-256 signing certificate are supplied. Template: `[{"relation":["delegate_permission/common.handle_all_urls"],"target":{"namespace":"android_app","package_name":"ACTUAL_PACKAGE","sha256_cert_fingerprints":["ACTUAL_SHA256"]}}]`.
+
+## Server-generated mail links
+
+The configured-mail-links migration stores the five public URL/email values in a private configuration row and makes welcome/request messages read it. It has been applied after isolated queued-text tests. No message was delivered during these tests. If public-config.json changes, update the matching private configuration through a reviewed migration; SMTP credentials remain outside this table.

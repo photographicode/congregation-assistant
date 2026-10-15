@@ -2,6 +2,14 @@
 
 Independent, unofficial congregation tools for publishers, service reports, attendance, meeting schedules and sharing. Access is controlled by approved accounts and server policies. Private mode is disabled until its complete device, recovery, migration and sentinel tests pass.
 
+## Review and release status
+
+The native candidate is available in the [private owner review](https://congregation-assistant-review.cherryshore32.chatgpt.site/?demo=admin). Use the owning ChatGPT account; the GitHub repository remains private. Publisher and command-centre demos use `?demo=publisher` and `?demo=owner`.
+
+The Revival brief takes precedence: the existing main/V1 release stays default until every native screen passes parity. This branch is a review candidate, not a completed cutover. `v2-screen-flags.json`, [PARITY](docs/PARITY.md) and [CUTOVER-REPORT](docs/CUTOVER-REPORT.md) show remaining work. Production release checks deliberately block incomplete screens. Custom domains and mail are prepared but unlinked; provider credentials and assigned DNS values are still required.
+
+Home now has real scoped repositories, month selection, KPI filters, monthly submissions, direct bulk entry and user-initiated reminders. Calm/Balanced/Lively, Glass themes and account-separated device preferences share the same tools. Native PDF Studio, report CSV/bulk/year logs, emergency contacts and the owner request/directory UI are available for review. Remote appearance synchronization, complete V1 parity, production permissions/performance acceptance and E2EE lifecycle remain unfinished.
+
 ## Run
 
 Requires Node.js 22 or newer.

@@ -1,0 +1,18 @@
+{
+  "cases": 6,
+  "styles": [
+    "calm",
+    "balanced",
+    "lively"
+  ],
+  "widths": [
+    375,
+    1440
+  ],
+  "kpiDrillDown": true,
+  "bulkReachabilityClicks": 1,
+  "devicePersistence": true,
+  "axeViolations": 0,
+  "backendRequests": 0,
+  "browserErrors": 0
+}

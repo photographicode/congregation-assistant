@@ -31,6 +31,10 @@ import {
   whatsappURL,
 } from "./model.mjs";
 import { Greeting } from "../../../../packages/ui/Greeting";
+import {EmergencyContacts} from "./EmergencyContacts";
+import {Dashboard} from "./Dashboard";
+import {ThemeGallery} from "./ThemeGallery";
+import {ExperiencePicker} from "./ExperiencePicker";
 import { Reports } from "./Reports";
 import { Midweek } from "./Midweek";
 import { PublisherHome } from "./PublisherHome";
@@ -156,7 +160,7 @@ export default function Workspace({
 }) {
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
-    [sub, setSub] = useState("midweek"),
+    [sub, setSub] = useState(()=>sessionStorage.getItem("ca-workspace-tool")||"midweek"),
     [editing, setEditing] = useState<Person | null>(null),
     [dirty, setDirty] = useState(false),
     [shared, setShared] = useState(false),
@@ -206,6 +210,7 @@ export default function Workspace({
     admin = c.roles.includes("admin"),
     canPeople = admin || c.roles.includes("field_service"),
     canWeekend = admin || c.roles.includes("weekend");
+  useEffect(()=>{const open=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(['groups','import','midweek','weekend','duties'].includes(value))setSub(value);sessionStorage.removeItem('ca-workspace-tool');};window.addEventListener('ca:open-tool',open);return()=>window.removeEventListener('ca:open-tool',open);},[]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -473,119 +478,8 @@ export default function Workspace({
   let body: React.ReactNode;
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home")
-    body = (
-      <>
-        <Greeting name={c.firstName} timezone={setup.timezone} locale={setup.language} clock={appearance.clock} />
-        <div className="grid">
-          <section className="card hero">
-            <span className="eyebrow">Next task</span>
-            <h2>Get this week ready.</h2>
-            <p>Keep assignments, reports and people in one place.</p>
-            <button className="primary" onClick={() => go("schedule")}>
-              Open schedule <ArrowRight />
-            </button>
-          </section>
-          <section className="card">
-            <h2>Needs attention</h2>
-            <div className="list">
-              {admin && (<button
-                onClick={() => {
-                  setWizard(true);
-                  setDirty(false);
-                }}
-              >
-                Continue setup guide <ArrowRight />
-              </button>)}
-              {canWeekend && (<button
-                onClick={() => {
-                  setSub("weekend");
-                  go("schedule");
-                }}
-              >
-                Review weekend assignments <ArrowRight />
-              </button>)}
-              {c.roles.some(r=>["admin","field_service","attendance","group_overseer"].includes(r)) && <button onClick={() => go("reports")}>Check service reports <ArrowRight /></button>}
-            </div>
-          </section>
-          <section className="card">
-            <h2>This week</h2>
-            <div className="list-row split-date">
-              <span className="date-tile">
-                <CalendarDays />
-              </span>
-              <div>
-                <strong>Midweek meeting</strong>
-                <p>
-                  {setup.midweek} · {setup.midweekTime}
-                </p>
-              </div>
-              <button
-                className="icon-button"
-                aria-label="Open midweek schedule"
-                onClick={() => {
-                  setSub("midweek");
-                  go("schedule");
-                }}
-              >
-                <ArrowRight />
-              </button>
-            </div>
-            <div className="list-row split-date">
-              <span className="date-tile">
-                <BookOpen />
-              </span>
-              <div>
-                <strong>Weekend meeting</strong>
-                <p>
-                  {setup.weekend} · {setup.weekendTime}
-                </p>
-              </div>
-              <button
-                className="icon-button"
-                aria-label="Open weekend schedule"
-                onClick={() => {
-                  setSub("weekend");
-                  go("schedule");
-                }}
-              >
-                <ArrowRight />
-              </button>
-            </div>
-          </section>
-          <section className="card">
-            <h2>Quick actions</h2>
-            <div className="actions">
-              {admin && (
-                <button
-                  onClick={() => {
-                    setEditing({
-                      id: crypto.randomUUID(),
-                      name: "",
-                      group: groups[0]?.name || "",
-                      email: "",
-                      phone: "",
-                      address: "",
-                    });
-                    setDirty(false);
-                  }}
-                >
-                  <Plus /> Add publisher
-                </button>
-              )}
-              {admin && <button onClick={() => go("messages")}><MessageCircle /> Share a reminder</button>}
-              <button
-                onClick={() => {
-                  go("pdf");
-                }}
-              >
-                <FileDown /> Print schedule
-              </button>
-            </div>
-          </section>
-        </div>
-      </>
-    );
+  else if (route === "home") body=<Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/>;
+  else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={()=>{sessionStorage.setItem("ca-pdf-open","emergency");go("pdf");}}/>;
   else if (route === "people")
     body = (
       <>
@@ -1392,7 +1286,7 @@ export default function Workspace({
         <Heading eyebrow="Settings" title="Make it feel right." />
         <div className="stack">
           <section className="card stack">
-            <h2>Appearance</h2>
+            <h2>Appearance</h2><ExperiencePicker/><ThemeGallery/>
             <label>
               Theme
               <select
@@ -1410,7 +1304,7 @@ export default function Workspace({
                   "glass-lagoon",
                   "glass-arctic",
                   "glass-aurora",
-                  "glass-lagoon-dark",
+                  "glass-lagoon-dark","glass-sunset","glass-mint-air","glass-ocean-night","glass-graphite",
                 ].map((t) => (
                   <option key={t}>{t[0].toUpperCase() + t.slice(1)}</option>
                 ))}

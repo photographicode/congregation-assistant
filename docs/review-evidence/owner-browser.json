@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "width": 280,
+      "scale": 1,
+      "violations": [],
+      "overflow": false
+    },
+    {
+      "width": 280,
+      "scale": 2,
+      "violations": [],
+      "overflow": false
+    },
+    {
+      "width": 375,
+      "scale": 1,
+      "violations": [],
+      "overflow": false
+    },
+    {
+      "width": 375,
+      "scale": 2,
+      "violations": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "scale": 1,
+      "violations": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "scale": 2,
+      "violations": [],
+      "overflow": false
+    }
+  ],
+  "failures": []
+}

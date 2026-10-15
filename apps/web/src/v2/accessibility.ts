@@ -1,4 +1,4 @@
-export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string}) {
+export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string;style?:string;motion?:string;colorIntensity?:string;background?:string;density?:string;navigation?:string}) {
  const root=document.documentElement;
  let frame=0;
  const update=()=>{
@@ -6,15 +6,16 @@ export function adapt(preferences: {theme:string;tone:string;size:string;weight:
   const width=window.innerWidth,height=window.visualViewport?.height||window.innerHeight;
   const scale=parseFloat(getComputedStyle(root).fontSize)/16 * ({S:.875,M:1,L:1.25,XL:1.5}[preferences.size]||1);
   const keyboard=Boolean(window.visualViewport && window.innerHeight-height>150 && /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''));
+  root.dataset.hidden=String(document.hidden);root.dataset.lowPower=String((navigator.hardwareConcurrency||4)<=2||Boolean((navigator as Navigator & {connection?:{saveData?:boolean}}).connection?.saveData));root.dataset.experience=preferences.style||'balanced';root.dataset.motion=media('(prefers-reduced-motion: reduce)')?'reduced':preferences.motion||'reduced';root.dataset.colorIntensity=preferences.colorIntensity||'soft';root.dataset.background=preferences.background||'static';root.dataset.navigation=preferences.navigation||'classic';
   root.dataset.caTheme=preferences.theme==='auto'?(media('(prefers-color-scheme: dark)')?'slate':'paper'):preferences.theme;
-  root.dataset.tone=preferences.tone;root.dataset.highContrast=String(preferences.auto&&(media('(prefers-contrast: more)')||media('(forced-colors: active)')));
-  root.dataset.solid=String(preferences.solid||(preferences.auto&&media('(prefers-reduced-transparency: reduce)')));
+  root.dataset.tone=preferences.tone;root.dataset.highContrast=String(media('(prefers-contrast: more)')||media('(forced-colors: active)'));
+  root.dataset.solid=String(preferences.solid||media('(prefers-reduced-transparency: reduce)'));
   root.dataset.coarse=String(media('(pointer: coarse)'));root.dataset.hover=String(media('(hover: hover)'));
   root.dataset.reducedMotion=String(media('(prefers-reduced-motion: reduce)'));root.dataset.textSize=preferences.size;root.dataset.iconWeight=preferences.weight;
   root.dataset.largeText=String(scale>=1.3||['L','XL'].includes(preferences.size));root.dataset.textBucket=scale>=2?'200':scale>=1.3?'130':'100';
   root.dataset.sizeClass=width<360?'xs':width<480?'sm':width<768?'md':width<1024?'lg':'xl';
   root.dataset.short=String(height<500&&!keyboard);root.dataset.orientation=width>height?'landscape':'portrait';root.dataset.standalone=String(media('(display-mode: standalone)'));
-  root.dataset.density=preferences.fit==='auto'||!preferences.fit?(scale>=1.3?'spacious':width<360?'compact':'comfortable'):preferences.fit==='large'?'spacious':preferences.fit;
+  root.dataset.density=preferences.fit==='auto'||!preferences.fit?(scale>=1.3?'spacious':preferences.density|| (width<360?'compact':'comfortable')):preferences.fit==='large'?'spacious':preferences.fit;
   root.dataset.keyboardOpen=String(keyboard);root.style.setProperty('--visible-h',height+'px');root.style.setProperty('--viewport-w',width+'px');
   if(keyboard)document.activeElement?.scrollIntoView({block:'nearest',behavior:'instant'});
   const bar=document.querySelector('.bottom-tabs');root.style.setProperty('--nav-h',bar&&getComputedStyle(bar).display!=='none'?bar.getBoundingClientRect().height+'px':'0px');

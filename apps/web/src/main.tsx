@@ -17,13 +17,15 @@ import {
   BookOpen,
   Plus,
   ShieldCheck,
+  Phone,
+  ClipboardList,
   Download,
   Printer,
 } from "lucide-react";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
 import { rpc,client, demo, capabilities } from "./v2/client";
-import { useAppearance } from "./v2/store";
+import { useAppearance,activateAppearanceProfile } from "./v2/store";
 import {authScope,displayFirstName} from "./v2/auth-scope.mjs";
 import {AdminIdleTimeout} from "./v2/Sessions";
 import {Subscription,planSchema,type WorkspacePlan} from "./v2/Subscription";
@@ -33,11 +35,14 @@ import "./v2/styles.css";
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
 const PublicForm = lazy(() => import("./v2/PublicForm").then(m=>({default:m.PublicForm})));
+const OwnerConsole=lazy(()=>import("./v2/OwnerConsole"));
 const Workspace = lazy(() => import("./v2/Workspace"));
 const routes = [
+  {id:"owner",label:"Command centre",icon:ShieldCheck},
   { id: "home", label: "Home", icon: Home },
   { id: "schedule", label: "Schedule", icon: CalendarDays },
   { id: "people", label: "People", icon: Users },
+  {id:"emergency",label:"Emergency Contacts",icon:Phone},
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "messages", label: "Messages", icon: MessageCircle },
   { id: "access", label: "Access & Links", icon: Link2 },
@@ -60,6 +65,7 @@ function App() {
     [memberships, setMemberships] = useState<any[]>([]),
     [cong, setCong] = useState(demo ? "demo" : ""),
     [caps, setCaps] = useState<any>({}),
+    [owner,setOwner]=useState(demo&&new URLSearchParams(location.search).get("demo")==="owner"),
     [plan,setPlan]=useState<WorkspacePlan|null>(null),[planError,setPlanError]=useState(""),
     [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
     [collapsed, setCollapsed] = useState(false),
@@ -70,9 +76,10 @@ function App() {
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
   const queryClient=useQueryClient();
-  const accountScope=React.useMemo(()=>authScope(queryClient,()=>{setMemberships([]);setCaps({});setPlan(null);}),[queryClient]);
+  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{setLoading(Boolean(account));setMemberships([]);setCaps({});setPlan(null);setCong("");}),[queryClient]);
   const appearance = useAppearance();
   useEffect(() => adapt(appearance), [appearance]);
+  useEffect(()=>{if(!demo&&session?.user?.id&&cong)activateAppearanceProfile(session.user.id,cong,memberships.some(m=>m.cong_id===cong&&m.role==='publisher')&&!memberships.some(m=>m.cong_id===cong&&m.role==='admin'));},[session?.user?.id,cong]);
   React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
   useEffect(() => {
     const handler = () => setOnline(navigator.onLine);
@@ -98,7 +105,7 @@ function App() {
       setMemberships([
         {
           cong_id: "demo",
-          role: new URLSearchParams(location.search).get("demo") === "publisher" ? "publisher" : "admin",
+          role: ({publisher:"publisher",group:"group_overseer",attendance:"attendance",field:"field_service"} as Record<string,string>)[new URLSearchParams(location.search).get("demo")||""]||"admin",
           congregations: { name: "River Park Congregation" },
         },
       ]);
@@ -127,6 +134,7 @@ function App() {
       data.subscription.unsubscribe();
     };
   }, []);
+  useEffect(()=>{let active=true;if(demo){const value=new URLSearchParams(location.search).get('demo')==='owner';setOwner(value);if(value)setRoute('owner');return;}setOwner(false);if(!session)return;rpc('ca_is_superadmin').then(value=>{if(active){setOwner(value===true);if(value===true&&!cong)setRoute('owner');}}).catch(()=>{if(active)setOwner(false);});return()=>{active=false;};},[session?.user?.id]);
   useEffect(() => {
     if (!session || demo) return;
     let active = true;
@@ -167,7 +175,7 @@ function App() {
     admin = roles.includes("admin");
   const allowed = routes.filter(
     (r) =>
-      admin ||
+      (r.id==='owner'?owner:admin) ||
       r.id === "home" ||
       r.id === "settings" ||
       (r.id === "schedule" &&
@@ -198,7 +206,7 @@ function App() {
   const context: Context = {
     cong,
     plan:plan?.congregation===cong?plan:undefined,
-    name:plan?.congregation===cong?plan.name:
+    name:owner&&!cong?"Owner account":plan?.congregation===cong?plan.name:
       memberships.find((m) => m.cong_id === cong)?.congregations?.name ||
       "Congregation",
     roles,
@@ -212,9 +220,9 @@ function App() {
     for (const store of [localStorage, sessionStorage]) {
       for (const key of Object.keys(store))
         if (
-          key.startsWith("ca_") ||
+          (key.startsWith("ca_") ||
           key.startsWith("ca-") ||
-          key.startsWith("oclm_")
+          key.startsWith("oclm_")) && !key.startsWith("ca-v2-appearance:")
         )
           store.removeItem(key);
     }
@@ -269,7 +277,7 @@ function App() {
 
       </main>
     );
-  if (!cong)
+  if (!cong&&!owner)
     return (
       <main className="login card">
         <h1>Approval needed</h1>
@@ -288,6 +296,14 @@ function App() {
     setMore(false);
     setSearch(false);
   };
+  const toolShortcuts=[
+    {id:'groups',label:'Groups',route:'people',sub:'groups',group:'FIELD SERVICE',icon:Users,roles:['admin','field_service']},
+    {id:'attendance',label:'Attendance',route:'reports',sub:'attendance',group:'ATTENDANCE',icon:BarChart3,roles:['admin','attendance']},
+    {id:'midweek',label:'Midweek (OCLM)',route:'schedule',sub:'midweek',group:'SCHEDULES',icon:CalendarDays,roles:['admin','oclm']},
+    {id:'weekend',label:'Weekend',route:'schedule',sub:'weekend',group:'SCHEDULES',icon:CalendarDays,roles:['admin','weekend']},
+    {id:'duties',label:'Duties',route:'schedule',sub:'duties',group:'SCHEDULES',icon:ClipboardList,roles:['admin','oclm','attendant','av','cleaning']},
+  ].filter(tool=>tool.roles.some(role=>roles.includes(role))&&allowed.some(r=>r.id===tool.route));
+  const openTool=(tool:typeof toolShortcuts[number])=>{if(tool.id==='attendance')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'attendance'}));sessionStorage.setItem('ca-workspace-tool',tool.sub);go(tool.route);window.dispatchEvent(new CustomEvent('ca:open-tool',{detail:tool.sub}));};
   return (
     <div className="app">
       <UpdatePrompt /><AdminIdleTimeout enabled={admin} notify={setNotice}/>
@@ -316,6 +332,7 @@ function App() {
               <span className="nav-label">{r.label}</span>
             </button>
           ))}
+          {['FIELD SERVICE','ATTENDANCE','SCHEDULES'].map(group=>toolShortcuts.some(t=>t.group===group)&&<React.Fragment key={group}><span className="nav-group nav-label">{group}</span>{toolShortcuts.filter(t=>t.group===group).map(tool=><button key={tool.id} onClick={()=>openTool(tool)} aria-label={tool.label} title={tool.label}><tool.icon/><span className="nav-label">{tool.label}</span></button>)}</React.Fragment>)}
         </nav>
         <footer className="rail-footer">
           <button
@@ -364,7 +381,7 @@ function App() {
               retain unsaved work.
             </div>
           )}
-          {!demo && Number(caps.schema_version||0)<2&&!plan?.locked && (
+          {!demo && cong && route!=="owner" && Number(caps.schema_version||0)<2&&!plan?.locked && (
             <div className="banner" role="status">
               Update pending. New database tools will appear after the V2
               migration.{" "}
@@ -372,13 +389,13 @@ function App() {
             </div>
           )}
           <Suspense fallback={<p role="status">Loading tools…</p>}>
-            {planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
+            {owner&&(route==="owner"||!cong&&route!=="settings")?<OwnerConsole context={context}/>:owner&&!cong&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={context}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
           </Suspense>
         </main>
       </div>
       <nav className="bottom-tabs" aria-label="Phone navigation">
         {routes
-          .slice(0, 4)
+          .filter(r=>["home","schedule","people","reports"].includes(r.id)).slice(0, 4)
           .filter((r) => allowed.some((a) => a.id === r.id))
           .map((r) => (
             <button
@@ -397,14 +414,15 @@ function App() {
         </button>
       </nav>
       <Dialog open={more} onClose={() => setMore(false)} title="More tools">
-        <div className="stack">
+        <div className="more-grid">
+          {toolShortcuts.map(tool=><button key={tool.id} onClick={()=>openTool(tool)}><tool.icon/>{tool.label}</button>)}
           {allowed
             .filter(
               (r) => !["home", "schedule", "people", "reports"].includes(r.id),
             )
             .map((r) => (
               <button key={r.id} onClick={() => go(r.id)}>
-                {r.label}
+                <r.icon/>{r.label}
               </button>
             ))}
 
@@ -426,11 +444,12 @@ function App() {
           />
         </label>
         <div className="list">
+          {toolShortcuts.filter(t=>t.label.toLowerCase().includes(query.toLowerCase())).map(tool=><button key={tool.id} onClick={()=>openTool(tool)}><tool.icon/>{tool.label}</button>)}
           {allowed
             .filter((r) => r.label.toLowerCase().includes(query.toLowerCase()))
             .map((r) => (
               <button key={r.id} onClick={() => go(r.id)}>
-                {r.label}
+                <r.icon/>{r.label}
               </button>
             ))}
         </div>

@@ -5,5 +5,7 @@
   "domainConfigured": false,
   "mailConfigured": false,
   "SECURITY_EMAIL": "security@congregationassistant.com",
-  "BASE_URL": "/"
+  "BASE_URL": "/",
+  "SUPABASE_URL": "https://ejosykrxjvwrhxfnputo.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C"
 }
