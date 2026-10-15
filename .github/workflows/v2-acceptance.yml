@@ -25,6 +25,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:v2:browser
       - run: node scripts/check-dashboard-browser.cjs
+      - run: |
+          node scripts/serve-cutover.cjs > /tmp/ca-preview.log 2>&1 &
+          curl --silent --fail --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4173/ > /dev/null
+      - run: node scripts/check-experience-browser.cjs
       - run: node scripts/check-reachability.cjs
       - run: node scripts/check-report-browser.cjs
       - run: node scripts/check-owner-browser.cjs
@@ -66,6 +70,7 @@ jobs:
             case "$migration_file" in *.down.sql|*drop_legacy_auth.sql) continue;; esac
             psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -1 -f "$migration_file"
           done
+          psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-experience.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-mail-links.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-plan.sql
           psql -h localhost -U postgres -d ca_v2_acceptance -v ON_ERROR_STOP=1 -f scripts/check-v2-records-export.sql

@@ -33,6 +33,7 @@ import {
 import { Greeting } from "../../../../packages/ui/Greeting";
 import {EmergencyContacts} from "./EmergencyContacts";
 import {Dashboard} from "./Dashboard";
+import {ExperienceProfile} from "./ExperienceProfile";
 import {ThemeGallery} from "./ThemeGallery";
 import {ExperiencePicker} from "./ExperiencePicker";
 import { Reports } from "./Reports";
@@ -1286,7 +1287,7 @@ export default function Workspace({
         <Heading eyebrow="Settings" title="Make it feel right." />
         <div className="stack">
           <section className="card stack">
-            <h2>Appearance</h2><ExperiencePicker/><ThemeGallery/>
+            <h2>Appearance</h2><ExperiencePicker/><ThemeGallery/><ExperienceProfile context={c}/>
             <label>
               Theme
               <select

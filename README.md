@@ -8,7 +8,7 @@ The native candidate is available in the [private owner review](https://congrega
 
 The Revival brief takes precedence: the existing main/V1 release stays default until every native screen passes parity. This branch is a review candidate, not a completed cutover. `v2-screen-flags.json`, [PARITY](docs/PARITY.md) and [CUTOVER-REPORT](docs/CUTOVER-REPORT.md) show remaining work. Production release checks deliberately block incomplete screens. Custom domains and mail are prepared but unlinked; provider credentials and assigned DNS values are still required.
 
-Home now has real scoped repositories, month selection, KPI filters, monthly submissions, direct bulk entry and user-initiated reminders. Calm/Balanced/Lively, Glass themes and account-separated device preferences share the same tools. Native PDF Studio, report CSV/bulk/year logs, emergency contacts and the owner request/directory UI are available for review. Remote appearance synchronization, complete V1 parity, production permissions/performance acceptance and E2EE lifecycle remain unfinished.
+Home now has real scoped repositories, month selection, KPI filters, monthly submissions, direct bulk entry and user-initiated reminders. Calm/Balanced/Lively, Glass themes and account-separated device preferences share the same tools. Native PDF Studio, report CSV/bulk/year logs, emergency contacts and the owner request/directory UI are available for review. Real cross-device appearance acceptance, complete V1 parity, production permissions/performance acceptance and E2EE lifecycle remain unfinished.
 
 ## Run
 

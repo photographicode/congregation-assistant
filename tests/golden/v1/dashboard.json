@@ -1,0 +1,162 @@
+{
+  "tag": "v1-final",
+  "method": "Original renderDashboard executed with synthetic publisher/report snapshots; capture inserted immediately before DOM KPI output.",
+  "fixtures": [
+    {
+      "name": "empty",
+      "people": [],
+      "reports": [],
+      "expected": {
+        "totalRep": 0,
+        "apCount": 0,
+        "apHours": 0,
+        "apStudies": 0,
+        "rpCount": 0,
+        "rpHours": 0,
+        "rpStudies": 0,
+        "pubCount": 0,
+        "pubStudies": 0
+      }
+    },
+    {
+      "name": "zero-and-missing",
+      "people": [
+        {
+          "id": "zero",
+          "name": "Fictional Zero"
+        },
+        {
+          "id": "missing",
+          "name": "Fictional Missing"
+        }
+      ],
+      "reports": [
+        {
+          "pubId": "zero",
+          "hours": 0,
+          "studies": 0,
+          "sharedInMinistry": false,
+          "isAP": true
+        }
+      ],
+      "expected": {
+        "totalRep": 1,
+        "apCount": 0,
+        "apHours": 0,
+        "apStudies": 0,
+        "rpCount": 0,
+        "rpHours": 0,
+        "rpStudies": 0,
+        "pubCount": 0,
+        "pubStudies": 0
+      }
+    },
+    {
+      "name": "pioneer-priority-and-legacy-shared",
+      "people": [
+        {
+          "id": "rp",
+          "name": "Fictional Regular",
+          "isRP": true
+        },
+        {
+          "id": "sp",
+          "name": "Fictional Special",
+          "isSP": true
+        },
+        {
+          "id": "fm",
+          "name": "Fictional Missionary",
+          "isFM": true
+        },
+        {
+          "id": "ap",
+          "name": "Fictional Auxiliary"
+        },
+        {
+          "id": "pub",
+          "name": "Fictional Publisher"
+        }
+      ],
+      "reports": [
+        {
+          "pubId": "rp",
+          "hours": 50,
+          "studies": 2,
+          "sharedInMinistry": true,
+          "isAP": true
+        },
+        {
+          "pubId": "sp",
+          "hours": 70,
+          "studies": 1,
+          "sharedInMinistry": true
+        },
+        {
+          "pubId": "fm",
+          "hours": 10,
+          "studies": 3,
+          "sharedInMinistry": true
+        },
+        {
+          "pubId": "ap",
+          "hours": 15,
+          "studies": 4,
+          "sharedInMinistry": false,
+          "isAP": true
+        },
+        {
+          "pubId": "pub",
+          "hours": 0,
+          "studies": 2,
+          "sharedInMinistry": false
+        }
+      ],
+      "expected": {
+        "totalRep": 5,
+        "apCount": 1,
+        "apHours": 15,
+        "apStudies": 4,
+        "rpCount": 3,
+        "rpHours": 130,
+        "rpStudies": 6,
+        "pubCount": 1,
+        "pubStudies": 2
+      }
+    },
+    {
+      "name": "duplicate-last-record-wins",
+      "people": [
+        {
+          "id": "a",
+          "name": "Fictional Publisher"
+        }
+      ],
+      "reports": [
+        {
+          "pubId": "a",
+          "hours": 10,
+          "studies": 1,
+          "sharedInMinistry": true
+        },
+        {
+          "pubId": "a",
+          "hours": 0,
+          "studies": 0,
+          "sharedInMinistry": false
+        }
+      ],
+      "expected": {
+        "totalRep": 1,
+        "apCount": 0,
+        "apHours": 0,
+        "apStudies": 0,
+        "rpCount": 0,
+        "rpHours": 0,
+        "rpStudies": 0,
+        "pubCount": 0,
+        "pubStudies": 0
+      }
+    }
+  ]
+}

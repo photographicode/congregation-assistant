@@ -27,6 +27,7 @@ let saved = {};
 try {
   saved = JSON.parse(localStorage.getItem("ca-v2-appearance") || "{}");
 } catch {}
+if(new URLSearchParams(location.search).get('demo')==='publisher')saved={...experiencePresets.calm,experienceChosen:false,...saved};
 export const useAppearance = create<
   Appearance & { set: (patch: Partial<Appearance>) => void }
 >((set) => ({
@@ -61,3 +62,5 @@ export function activateAppearanceProfile(account:string,congregation:string,pub
  let profile={};try{profile=JSON.parse(localStorage.getItem(appearanceStorageKey)||'{}');}catch{}
  useAppearance.setState({...initial,...(publisher?experiencePresets.calm:{}),experienceChosen:false,...profile});
 }
+
+export function hasAppearanceProfile(){try{return Boolean(localStorage.getItem(appearanceStorageKey));}catch{return false;}}

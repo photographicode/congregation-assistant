@@ -1,7 +1,7 @@
 {
   "reference": "v1-final",
   "commit": "76978c4fbe56658b8b856cb7218b5c4a212cd1f0",
-  "requestedActionCount": 90,
+  "requestedActionCount": 104,
   "actions": [
     {
       "action": "auth.googleLogin",
@@ -102,6 +102,43 @@
         "staging/app-reminders.js",
         "staging/index.html",
         "staging/public-links.js"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openModal",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-guide.js",
+        "app-install.js",
+        "app-onboarding.js",
+        "app-publisher-home.js",
+        "app-reminders.js",
+        "app-support.js",
+        "index.html",
+        "staging/app-guide.js",
+        "staging/app-install.js",
+        "staging/app-onboarding.js",
+        "staging/app-publisher-home.js",
+        "staging/app-reminders.js",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.closeModal",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-reminders.js",
+        "app-support.js",
+        "app-v2-bridge.js",
+        "index.html",
+        "staging/app-reminders.js",
+        "staging/app-support.js",
+        "staging/index.html"
       ],
       "nativeLocation": null,
       "reachability": null
@@ -336,6 +373,36 @@
     },
     {
       "action": "ui.downloadContacts",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAImports.template",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAImports.preview",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAImports.combined",
       "intentionallyReplaced": false,
       "v1Evidence": [
         "index.html",
@@ -895,7 +962,99 @@
       "reachability": null
     },
     {
+      "action": "CAReminders.open",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-reminders.js",
+        "index.html",
+        "staging/app-reminders.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReminders.save",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReminders.download",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.enable",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.guide",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.test",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
       "action": "CAPush.disable",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.export",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.restore",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.mode",
       "intentionallyReplaced": false,
       "v1Evidence": [
         "index.html",

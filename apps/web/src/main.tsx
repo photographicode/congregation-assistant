@@ -25,6 +25,7 @@ import {
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
 import { rpc,client, demo, capabilities } from "./v2/client";
+import {ExperienceDefaults} from "./v2/ExperienceProfile";
 import { useAppearance,activateAppearanceProfile } from "./v2/store";
 import {authScope,displayFirstName} from "./v2/auth-scope.mjs";
 import {AdminIdleTimeout} from "./v2/Sessions";
@@ -50,6 +51,7 @@ const routes = [
   { id: "settings", label: "Settings", icon: Settings },
 ];
 export type Context = {
+  account?:string;
   cong: string;
   name: string;
   roles: string[];
@@ -204,6 +206,7 @@ function App() {
         )),
   );
   const context: Context = {
+    account:session?.user?.id,
     cong,
     plan:plan?.congregation===cong?plan:undefined,
     name:owner&&!cong?"Owner account":plan?.congregation===cong?plan.name:
@@ -306,7 +309,7 @@ function App() {
   const openTool=(tool:typeof toolShortcuts[number])=>{if(tool.id==='attendance')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'attendance'}));sessionStorage.setItem('ca-workspace-tool',tool.sub);go(tool.route);window.dispatchEvent(new CustomEvent('ca:open-tool',{detail:tool.sub}));};
   return (
     <div className="app">
-      <UpdatePrompt /><AdminIdleTimeout enabled={admin} notify={setNotice}/>
+      <ExperienceDefaults key={(session?.user?.id||"demo")+cong} context={context}/><UpdatePrompt /><AdminIdleTimeout enabled={admin} notify={setNotice}/>
       <aside className={"rail " + (collapsed ? "collapsed" : "")}>
         <div className="brand">
           <span className="brand-mark">
