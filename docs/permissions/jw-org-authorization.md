@@ -1,19 +1,5 @@
-# Written content authorization — owner record
+# Official publication import authorization
 
-Importer disabled: `JW_IMPORT_ENABLED=false`.
+The owner requested retrieving meeting parts from jw.org/wol.jw.org and subsequently requested a CI job fetching official publication files. These instructions authorize implementation and operation on the owner's behalf; they do not establish a license from the publication owner for redistribution.
 
-Complete only from actual written permission:
-- Rights-holder contact / department:
-- Permission date, expiry and reference:
-- Authorizing signatory:
-- Languages/publications and permitted structured fields:
-- Permitted retrieval methods (EPUB/JWPUB/HTML):
-- Redistribution/caching and attribution terms:
-- Rate limits / robots requirements:
-- Whether official form templates are covered:
-- Attached letter location:
-- Revocation / kill-switch contact:
-
-The uploaded README asserts authorization but supplies no letter. This template does not establish it. No importer was enabled or official content retrieved by this task.
-
-Owner follow-up, 2026-10-13: the owner states they hold written authorization for retrieving the jw.org midweek meeting schedule. The letter and permitted languages, fields, retrieval methods, caching/redistribution, expiry and rate terms have been requested. This records the owner statement; it does not invent its scope. The importer remains disabled pending that information.
+Source information is public and attributed to jw.org. Publication text must not be invented. The CI job defaults on under that explicit request; repository variable JW_IMPORT_ENABLED=false stops fetching. Automatic-import marketing remains off until a real fetch/parser review passes. The owner must verify applicable use/redistribution terms. Do not publish full EPUBs, scans or private fixture files. Template for additional written authorization: authorizing party, date, scope, terms and review contact. No third-party authorization letter has been supplied.
