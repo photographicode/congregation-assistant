@@ -31,3 +31,5 @@ Production rollout completed: the reduced `v3_meeting_workflows` migration was a
 The concrete GoDaddy/Pages cutover sequence is in GITHUB-PAGES-DNS.md. The public snapshot repository is the proposed sole custom-domain owner; do not assign the same domain to both Pages repositories. Rebuild project-relative assets and the PWA scope for the domain before adding CNAME.
 
 Resolved: automatic review accepted the reduced v3_meeting_workflows migration after department-function replacements were removed. It is applied, privileges are verified, and the attendant/group/setup controls are enabled. The earlier production-rollout blocker paragraph is historical. No approval is now required for that completed rollout.
+
+Verify the Supabase authentication redirect allowlist and real Google login for both current previews: `https://photographicode.github.io/congregation-assistant/app/` and `https://photographicode.github.io/Congregation-Assistant_Public/app/`. The available connector does not expose authentication-configuration mutations, so this provider-dashboard setting was not changed. Fictional demos and live static/PWA checks do not prove approved-account login.

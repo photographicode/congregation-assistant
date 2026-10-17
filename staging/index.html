@@ -2871,8 +2871,8 @@ body.mws-public-mode #ca-midweek-root{min-height:100vh!important;background:#f4f
         
         const OWNER_BACKEND={supabaseUrl:'https://ejosykrxjvwrhxfnputo.supabase.co',supabaseAnonKey:'sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C'};
         if(sessionStorage.getItem('ca_owner_backend')==='true')window.CA_CONFIG={...window.CA_CONFIG,...OWNER_BACKEND,secureBackend:true};
-        const SUPABASE_URL = window.CA_CONFIG?.supabaseUrl || 'https://fbnongloqxzepqhpnvlm.supabase.co'; 
-        const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZibm9uZ2xvcXh6ZXBxaHBudmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzODA3NjAsImV4cCI6MjEwNDk1Njc2MH0.gU_v_GKK89GlMSRgF-I3MVO0c5vRYGzJX3qCYZz7jOc';
+        const SUPABASE_URL = window.CA_CONFIG?.supabaseUrl || 'https://ejosykrxjvwrhxfnputo.supabase.co';
+        const SUPABASE_ANON_KEY = window.CA_CONFIG?.supabaseAnonKey || "sb_publishable_-WylxZpXTD06syk3LPGpWg_SfSf5K7C";
         
         const isCloudConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('https://');
         const isCloudEnabled = isCloudConfigured && (typeof createClient === 'function' || window.CADemo.requested);

@@ -144,3 +144,19 @@ The original automatic-review rejection is resolved. The reduced migration, pres
 The activation candidate also fixes an orphaned outbox lease after reload: an acquired exclusive Web Lock can reclaim a prior document’s lease immediately; browsers without Web Locks still respect the durable lease timeout. Revision checks remain unchanged, including lost-acknowledgment conflict handling. Added deterministic unit and real-browser coverage for abandoned-lease recovery and retained two-tab single-write tests. Assistant selection also clears incompatible student/assistant pairings when the student changes.
 
 Activation verification: 38 native unit tests plus 68 existing unit tests pass; real IndexedDB/Web Locks tests now include abandoned-lease recovery, two-tab single writes, conflict and reviewed recovery. Two consecutive signed-in offline reload/reconnect runs pass. The expanded 60-view matrix (including Home) passes, with zero demo cloud calls, zero browser errors, zero assistant parsing requests and no prompt-history writes. Existing nine-theme CSS SHA-256 remains unchanged. The activation is being published as the next checkpoint, with the expanded-scope limitations retained.
+
+## Latest activation deployment — verified live
+
+Source app commit: `d05f8c42fd919bc35e3c6852386099f51306fb17` on main. Public snapshot: `fda8955015f45b25f8375cc3df3ef06278db6dc3` on public main.
+
+- Source run: https://github.com/photographicode/congregation-assistant/actions/runs/39042914333 — build, deployment and live browser verification all succeeded.
+- Public run: https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/39042981424 — artifact verification, deployment and live browser verification all succeeded.
+- Website: https://photographicode.github.io/Congregation-Assistant_Public/
+- App demo: https://photographicode.github.io/Congregation-Assistant_Public/app/?demo=admin
+- Source mirror: https://photographicode.github.io/congregation-assistant/app/?demo=admin
+
+Both live checks report the exact source commit above, controlling service workers, matching manifest scopes/start URLs, preservation of unrelated app caches, zero browser errors, zero demo cloud calls and zero assistant parsing/preview/cancel requests. The source CI also passes the 38 native + 68 existing unit tests, production builds, 60 responsive views, real Store/Web Locks tests, native offline reconnect and S-89 contracts. Earlier 17 PDF golden parity/contract and eight Indic-script checks remain passing evidence; the PDF engine/templates were not changed by activation.
+
+The narrowed production migration is applied and activated; no migration approval remains pending. All three department pools retain administrator approval. Full V3 scope is still incomplete as listed in CUTOVER-REPORT.md. Real publication ingestion is unverified after HTTP 400, the original raw-gradient contrast failures remain documented, and real OAuth/WhatsApp/payments/devices require their separate acceptance. Custom-domain CNAME remains withheld under the owner's DNS-confirmation requirement. These result notes are kept on the resume branch to avoid restarting an unchanged deployment.
+
+Final safety pass removed obsolete project fallbacks from the retained root/staging shells; their defaults now use the current publishable configuration. Existing root acceptance checks remain green. The live checker now captures console errors as well as page exceptions. Opening an explicit all-S-21 command also clears any prior publisher-search filter, so a stale search cannot silently narrow the requested export.
