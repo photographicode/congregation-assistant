@@ -1,0 +1,108 @@
+{
+  "passed": 17,
+  "fixtures": [
+    {
+      "fixture": "emergency-1",
+      "pages": 3,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.4928549999999916
+    },
+    {
+      "fixture": "emergency-50",
+      "pages": 6,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.4928549999999916
+    },
+    {
+      "fixture": "emergency-500",
+      "pages": 40,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.4942270000000093
+    },
+    {
+      "fixture": "s21-all-months",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-auxiliary",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-large-family",
+      "pages": 12,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-long-name",
+      "pages": 2,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-long-remarks",
+      "pages": 13,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-ordinary",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-regular",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s21-unbaptised",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0
+    },
+    {
+      "fixture": "s3-full",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01580500000000029
+    },
+    {
+      "fixture": "s3-partial",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01580500000000029
+    },
+    {
+      "fixture": "s3-special",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01580500000000029
+    },
+    {
+      "fixture": "s88-full",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01103899999999669
+    },
+    {
+      "fixture": "s88-partial",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01103899999999669
+    },
+    {
+      "fixture": "s88-special",
+      "pages": 1,
+      "textEqual": true,
+      "maxCoordinateDeltaPt": 0.01103899999999669
+    }
+  ],
+  "note": "Text, page geometry and existing coordinate tolerances; no images rendered. Original template hashes and embedded fonts pass the separate contract."
+}

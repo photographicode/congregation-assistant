@@ -8,6 +8,7 @@
     "closing": 129
   },
   "automatic": true,
+  "existingAssignmentPreserved": true,
   "userFileImport": false,
   "browserErrors": []
 }

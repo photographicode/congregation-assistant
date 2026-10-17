@@ -53,6 +53,20 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Use Actions as the Pages publishing source
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.repos.updateInformationAboutPagesSite({
+                ...context.repo,
+                build_type: 'workflow'
+              });
+              core.info('Pages uses Actions; branch publishing is disabled.');
+            } catch (error) {
+              if (error.status !== 403) throw error;
+              core.warning('This token cannot change the Pages publishing source. Select GitHub Actions in repository Pages settings to avoid competing branch builds.');
+            }
       - uses: actions/deploy-pages@v4
         id: deployment
       - uses: actions/checkout@v4
