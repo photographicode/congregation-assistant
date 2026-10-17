@@ -4,3 +4,5 @@
 @media print{.oclm-sheet{break-inside:avoid;padding:0;border:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}.oclm-sheet~.oclm-sheet{margin-top:1rem}.oclm-sheet .oclm-section th,.oclm-week{print-color-adjust:exact!important}}
 
 .oclm-sheet .oclm-treasures:not(tr){background:var(--oclm-slate);color:#fff}.oclm-sheet .oclm-field:not(tr){background:var(--oclm-gold);color:#1f1600}.oclm-sheet .oclm-living:not(tr){background:var(--oclm-crimson);color:#fff}
+/* The printed schedule keeps its own ink palette inside dark app themes. */
+.oclm-sheet :is(p,small,span){color:inherit}

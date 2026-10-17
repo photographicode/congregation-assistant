@@ -2,98 +2,874 @@
   "results": [
     {
       "screen": "home",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
-      "findings": []
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.dashboard.stack > details.home-rich-details > section.card.stack:nth-of-type(3) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 10258.296875,
+            "width": 254,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "A clear view of what’s in and who may need a reminder."
+        }
+      ]
     },
     {
       "screen": "people",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
       "findings": []
     },
     {
       "screen": "pdf",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
-      "findings": []
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 4072.421875,
+            "width": 254,
+            "height": 268.78125
+          },
+          "detail": "Single-word final line",
+          "text": "These documents contain personal information. Share only with authorized recipients."
+        }
+      ]
     },
     {
       "screen": "schedule",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
-      "findings": []
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div > section.stack > div.page-heading:nth-of-type(1) > div > p",
+          "box": {
+            "x": 16,
+            "y": 1020.390625,
+            "width": 288,
+            "height": 358.3125
+          },
+          "detail": "Single-word final line",
+          "text": "Import the week’s parts, assign people, review the schedule, then publish. Imported titles stay read-only."
+        }
+      ]
     },
     {
       "screen": "weekend",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "duties",
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
       "findings": []
     },
     {
       "screen": "settings",
-      "theme": "paper",
-      "width": 390,
-      "scale": 1,
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
       "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > section.stack.experience-picker:nth-of-type(1) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 822.640625,
+            "width": 254,
+            "height": 255.9375
+          },
+          "detail": "Single-word final line",
+          "text": "The same tools, presented your way. You can change this anytime."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted:nth-of-type(2)",
+          "box": {
+            "x": 33,
+            "y": 7718.015625,
+            "width": 254,
+            "height": 313.578125
+          },
+          "detail": "Single-word final line",
+          "text": "System theme, reduced motion, high contrast and larger text are detected. Manual choices remain available."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(2) > p:nth-of-type(1)",
+          "box": {
+            "x": 33,
+            "y": 8542.75,
+            "width": 254,
+            "height": 307.125
+          },
+          "detail": "Single-word final line",
+          "text": "Approved account, personal portal and optional device notifications."
+        },
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > div.stack > section.card.stack > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 11436.65625,
+            "width": 220,
+            "height": 358.3125
+          },
+          "detail": "Single-word final line",
+          "text": "₹1,499 per year. No automatic charge. Contact support to renew."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(1)",
+          "box": {
+            "x": 50,
+            "y": 12115.34375,
+            "width": 220,
+            "height": 563.0625
+          },
+          "detail": "Single-word final line",
+          "text": "Protect your Google account with Google 2-Step Verification. These are your account’s browser sessions."
+        },
         {
           "kind": "widow",
           "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(2)",
           "box": {
             "x": 50,
-            "y": 4764.703125,
-            "width": 290,
-            "height": 102.375
+            "y": 13103.34375,
+            "width": 220,
+            "height": 511.875
           },
-          "detail": "Single-word final line"
+          "detail": "Single-word final line",
+          "text": "Save your work before leaving the device. Other sessions can remain active briefly until their current sign-in expires."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(2) > p",
+          "box": {
+            "x": 50,
+            "y": 14006.375,
+            "width": 220,
+            "height": 1023.75
+          },
+          "detail": "Single-word final line",
+          "text": "Download JSON and spreadsheet CSV files, including native groups, weekend meetings and setup. The export excludes bearer tokens and device sessions. Use the workspace recovery back"
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(3) > p",
+          "box": {
+            "x": 50,
+            "y": 15663.84375,
+            "width": 220,
+            "height": 665.4375
+          },
+          "detail": "Single-word final line",
+          "text": "This encrypts an exported backup on this device. It does not enable Private mode for records stored on the server. Keep the recovery phrase separately."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 17122.5625,
+            "width": 254,
+            "height": 223.984375
+          },
+          "detail": "Single-word final line",
+          "text": "Exports contain personal information. Store and share them carefully."
         }
       ]
     },
     {
-      "screen": "home",
-      "theme": "paper",
-      "width": 1440,
-      "scale": 1,
+      "screen": "search",
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
       "findings": []
     },
     {
+      "screen": "assistant",
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "add-person",
+      "theme": "mono-light",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "home",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.dashboard.stack > details.home-rich-details > section.card.stack:nth-of-type(3) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 8665.40625,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "A clear view of what’s in and who may need a reminder."
+        }
+      ]
+    },
+    {
       "screen": "people",
-      "theme": "paper",
-      "width": 1440,
-      "scale": 1,
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
       "findings": []
     },
     {
       "screen": "pdf",
-      "theme": "paper",
-      "width": 1440,
-      "scale": 1,
-      "findings": []
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 3303.859375,
+            "width": 324,
+            "height": 223.984375
+          },
+          "detail": "Single-word final line",
+          "text": "These documents contain personal information. Share only with authorized recipients."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card:nth-of-type(2) > p",
+          "box": {
+            "x": 33,
+            "y": 3667.03125,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "Missing reports remain blank and never block a download."
+        }
+      ]
     },
     {
       "screen": "schedule",
-      "theme": "paper",
-      "width": 1440,
-      "scale": 1,
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
       "findings": []
     },
     {
       "screen": "weekend",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "duties",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "settings",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > section.stack.experience-picker:nth-of-type(1) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 701.359375,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "The same tools, presented your way. You can change this anytime."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted:nth-of-type(2)",
+          "box": {
+            "x": 33,
+            "y": 6700.328125,
+            "width": 324,
+            "height": 268.78125
+          },
+          "detail": "Single-word final line",
+          "text": "System theme, reduced motion, high contrast and larger text are detected. Manual choices remain available."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(2) > p:nth-of-type(1)",
+          "box": {
+            "x": 33,
+            "y": 7480.265625,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "Approved account, personal portal and optional device notifications."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(1)",
+          "box": {
+            "x": 50,
+            "y": 10246.625,
+            "width": 290,
+            "height": 358.3125
+          },
+          "detail": "Single-word final line",
+          "text": "Protect your Google account with Google 2-Step Verification. These are your account’s browser sessions."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 11023.5,
+            "width": 290,
+            "height": 409.5
+          },
+          "detail": "Single-word final line",
+          "text": "Save your work before leaving the device. Other sessions can remain active briefly until their current sign-in expires."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(2) > p",
+          "box": {
+            "x": 50,
+            "y": 11772.96875,
+            "width": 290,
+            "height": 767.8125
+          },
+          "detail": "Single-word final line",
+          "text": "Download JSON and spreadsheet CSV files, including native groups, weekend meetings and setup. The export excludes bearer tokens and device sessions. Use the workspace recovery back"
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 14218.90625,
+            "width": 324,
+            "height": 179.1875
+          },
+          "detail": "Single-word final line",
+          "text": "Exports contain personal information. Store and share them carefully."
+        }
+      ]
+    },
+    {
+      "screen": "search",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "assistant",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "add-person",
+      "theme": "mono-light",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "home",
       "theme": "paper",
-      "width": 1440,
-      "scale": 1,
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div > div.dashboard.stack > details.home-rich-details > section.card.stack:nth-of-type(1) > h2",
+          "box": {
+            "x": 33,
+            "y": 7179.421875,
+            "width": 254,
+            "height": 224
+          },
+          "detail": "Single-word final line",
+          "text": "Special full-time servants · monthly totals"
+        },
+        {
+          "kind": "widow",
+          "selector": "div.dashboard.stack > details.home-rich-details > section.card.stack:nth-of-type(3) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 9924.96875,
+            "width": 254,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "A clear view of what’s in and who may need a reminder."
+        }
+      ]
+    },
+    {
+      "screen": "people",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.page-heading:nth-of-type(1) > div > h1",
+          "box": {
+            "x": 16,
+            "y": 309.765625,
+            "width": 288,
+            "height": 130.5625
+          },
+          "detail": "Single-word final line",
+          "text": "A place for everyone."
+        }
+      ]
+    },
+    {
+      "screen": "pdf",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 3984.140625,
+            "width": 254,
+            "height": 223.984375
+          },
+          "detail": "Single-word final line",
+          "text": "These documents contain personal information. Share only with authorized recipients."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card:nth-of-type(2) > p",
+          "box": {
+            "x": 33,
+            "y": 4403.3125,
+            "width": 254,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "Missing reports remain blank and never block a download."
+        }
+      ]
+    },
+    {
+      "screen": "schedule",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div > section.stack > div.page-heading:nth-of-type(1) > div > p",
+          "box": {
+            "x": 16,
+            "y": 1020.390625,
+            "width": 288,
+            "height": 307.125
+          },
+          "detail": "Single-word final line",
+          "text": "Import the week’s parts, assign people, review the schedule, then publish. Imported titles stay read-only."
+        }
+      ]
+    },
+    {
+      "screen": "weekend",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "duties",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
       "findings": []
     },
     {
       "screen": "settings",
       "theme": "paper",
-      "width": 1440,
-      "scale": 1,
+      "width": 320,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > section.stack.experience-picker:nth-of-type(1) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 822.640625,
+            "width": 254,
+            "height": 255.9375
+          },
+          "detail": "Single-word final line",
+          "text": "The same tools, presented your way. You can change this anytime."
+        },
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > section.card.greeting:nth-of-type(2) > div:nth-of-type(1) > h1",
+          "box": {
+            "x": 50,
+            "y": 6538.015625,
+            "width": 220,
+            "height": 215
+          },
+          "detail": "Single-word final line",
+          "text": "Good to have you here, Daniel."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(2) > p:nth-of-type(1)",
+          "box": {
+            "x": 33,
+            "y": 8435.28125,
+            "width": 254,
+            "height": 255.9375
+          },
+          "detail": "Single-word final line",
+          "text": "Approved account, personal portal and optional device notifications."
+        },
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > div.stack > section.card.stack > h2",
+          "box": {
+            "x": 50,
+            "y": 10873.25,
+            "width": 220,
+            "height": 224
+          },
+          "detail": "Single-word final line",
+          "text": "Your congregation plan is active."
+        },
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > div.stack > section.card.stack > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 11231.625,
+            "width": 220,
+            "height": 255.9375
+          },
+          "detail": "Single-word final line",
+          "text": "₹1,499 per year. No automatic charge. Contact support to renew."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(1)",
+          "box": {
+            "x": 50,
+            "y": 11807.9375,
+            "width": 220,
+            "height": 460.6875
+          },
+          "detail": "Single-word final line",
+          "text": "Protect your Google account with Google 2-Step Verification. These are your account’s browser sessions."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 12693.5625,
+            "width": 220,
+            "height": 460.6875
+          },
+          "detail": "Single-word final line",
+          "text": "Save your work before leaving the device. Other sessions can remain active briefly until their current sign-in expires."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(2) > p",
+          "box": {
+            "x": 50,
+            "y": 13601.40625,
+            "width": 220,
+            "height": 921.375
+          },
+          "detail": "Single-word final line",
+          "text": "Download JSON and spreadsheet CSV files, including native groups, weekend meetings and setup. The export excludes bearer tokens and device sessions. Use the workspace recovery back"
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(3) > p",
+          "box": {
+            "x": 50,
+            "y": 15105.3125,
+            "width": 220,
+            "height": 563.0625
+          },
+          "detail": "Single-word final line",
+          "text": "This encrypts an exported backup on this device. It does not enable Private mode for records stored on the server. Keep the recovery phrase separately."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 16410.46875,
+            "width": 254,
+            "height": 179.1875
+          },
+          "detail": "Single-word final line",
+          "text": "Exports contain personal information. Store and share them carefully."
+        }
+      ]
+    },
+    {
+      "screen": "search",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "assistant",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "add-person",
+      "theme": "paper",
+      "width": 320,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "home",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.dashboard.stack > details.home-rich-details > section.card.stack:nth-of-type(3) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 8394.71875,
+            "width": 324,
+            "height": 153.5625
+          },
+          "detail": "Single-word final line",
+          "text": "A clear view of what’s in and who may need a reminder."
+        }
+      ]
+    },
+    {
+      "screen": "people",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "pdf",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted",
+          "box": {
+            "x": 33,
+            "y": 2996.734375,
+            "width": 324,
+            "height": 179.1875
+          },
+          "detail": "Single-word final line",
+          "text": "These documents contain personal information. Share only with authorized recipients."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.grid:nth-of-type(2) > section.card:nth-of-type(2) > p",
+          "box": {
+            "x": 33,
+            "y": 3315.109375,
+            "width": 324,
+            "height": 153.5625
+          },
+          "detail": "Single-word final line",
+          "text": "Missing reports remain blank and never block a download."
+        }
+      ]
+    },
+    {
+      "screen": "schedule",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div > section.stack > div.page-heading:nth-of-type(1) > div > p",
+          "box": {
+            "x": 16,
+            "y": 969.203125,
+            "width": 358,
+            "height": 255.9375
+          },
+          "detail": "Single-word final line",
+          "text": "Import the week’s parts, assign people, review the schedule, then publish. Imported titles stay read-only."
+        }
+      ]
+    },
+    {
+      "screen": "weekend",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "duties",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "settings",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > section.stack.experience-picker:nth-of-type(1) > div:nth-of-type(1) > p",
+          "box": {
+            "x": 33,
+            "y": 771.453125,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "The same tools, presented your way. You can change this anytime."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(1) > p.muted:nth-of-type(2)",
+          "box": {
+            "x": 33,
+            "y": 6655.265625,
+            "width": 324,
+            "height": 223.984375
+          },
+          "detail": "Single-word final line",
+          "text": "System theme, reduced motion, high contrast and larger text are detected. Manual choices remain available."
+        },
+        {
+          "kind": "widow",
+          "selector": "main.main-content > div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(2) > p:nth-of-type(1)",
+          "box": {
+            "x": 33,
+            "y": 7339.21875,
+            "width": 324,
+            "height": 204.75
+          },
+          "detail": "Single-word final line",
+          "text": "Approved account, personal portal and optional device notifications."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(1)",
+          "box": {
+            "x": 50,
+            "y": 10075.21875,
+            "width": 290,
+            "height": 307.125
+          },
+          "detail": "Single-word final line",
+          "text": "Protect your Google account with Google 2-Step Verification. These are your account’s browser sessions."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 10749.71875,
+            "width": 290,
+            "height": 358.3125
+          },
+          "detail": "Single-word final line",
+          "text": "Save your work before leaving the device. Other sessions can remain active briefly until their current sign-in expires."
+        },
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(2) > p",
+          "box": {
+            "x": 50,
+            "y": 11448,
+            "width": 290,
+            "height": 614.25
+          },
+          "detail": "Single-word final line",
+          "text": "Download JSON and spreadsheet CSV files, including native groups, weekend meetings and setup. The export excludes bearer tokens and device sessions. Use the workspace recovery back"
+        }
+      ]
+    },
+    {
+      "screen": "search",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "assistant",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
+      "findings": []
+    },
+    {
+      "screen": "add-person",
+      "theme": "paper",
+      "width": 390,
+      "scale": 2,
       "findings": []
     }
   ],

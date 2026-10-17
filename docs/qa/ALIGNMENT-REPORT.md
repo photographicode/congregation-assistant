@@ -1,14 +1,37 @@
-# Alignment audit
+# Alignment audit — 18 October 2026
 
-Computed DOM geometry; coordinates are CSS pixels. Intentional preview canvases, decorative/hidden elements and scrollable tables are excluded. No screenshots rendered while findings remain. This report does not substitute for missing screen-state coverage.
+Gate: **not passed**. No contact sheets or marketing captures were rendered. The complete required 2,850-view app matrix, additional role/public states, and website matrix remain open. Coordinates and selectors are in the JSON reports; counts include text-widow findings rather than silently exempting them.
+
+## Comparable before/after
+
+Paper, 390/1440 px, 100% text, six screens (12 views). Before uses the saved pre-fix run; after uses seeded RNG and a fixed browser date.
+
+| Screen | Before | After |
+|---|---:|---:|
+| home | 4 | 0 |
+| people | 10 | 0 |
+| pdf | 9 | 0 |
+| schedule | 0 | 1 |
+| weekend | 0 | 0 |
+| settings | 7 | 0 |
+
+Total: 30 → 1. The remaining finding is a single-word final line in Midweek. Evidence: `alignment-before.json`, `alignment-comparison.json`.
+
+## Large-text stress sample
+
+320/390 px, 200% text, Mono Light/Paper, ten screens (40 views): **48 findings**, all text widows; zero detected overflow, clipping, small controls or coverage errors. This sample is not equivalent to the before/after matrix.
 
 | Screen | Findings |
 |---|---:|
-| home | 0 |
-| people | 0 |
-| pdf | 0 |
-| schedule | 0 |
+| home | 5 |
+| people | 1 |
+| pdf | 7 |
+| schedule | 3 |
 | weekend | 0 |
-| settings | 1 |
+| duties | 0 |
+| settings | 32 |
+| search | 0 |
+| assistant | 0 |
+| add-person | 0 |
 
-Views: 12. Coverage errors: 0. Required gate: zero findings and zero coverage errors.
+The audit excludes intentionally clipped previews, hidden/decorative elements and scrollable tables. Desktop Quick Actions uses the command palette equivalent. The script reports failed route coverage separately. A successful sample does not establish complete visual acceptance, safe-area/device acceptance or zero CLS.

@@ -1,0 +1,978 @@
+{
+  "method": "Actual visible, unoccluded rendered text colors and background pixels with text paint suppressed, full-intensity backgrounds, panel-ancestor requirement. Synthetic panel gate separately composites every gradient stop. Text-1 >=7, all other text >=4.5.",
+  "views": [
+    {
+      "theme": "mono-light",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 11.375,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 11.375,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 11.375,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 11.375,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 11.375,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 7.005,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-light",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 12.708,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 12.708,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 12.708,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 12.708,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 12.708,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 8.133,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "mono-dark",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 38,
+      "minimum": 4.986,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 41,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 39,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 6.289,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 4.986,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 4.986,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 6.14,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "paper",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 4.986,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.201,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 8.336,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 8.336,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 7.175,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "lagoon-glass",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 9.854,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 9.854,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 9.854,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 9.854,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 9.854,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 7.074,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neon-night",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 5.487,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 6.902,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 23,
+      "minimum": 9.249,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 5.487,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 5.822,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "sunset-pop",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.487,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 45,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 32,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 20,
+      "minimum": 9.74,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 23,
+      "minimum": 14.159,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 9.74,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 9.568,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "neo-brutal",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 34,
+      "minimum": 8.607,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 8.607,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 38,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 41,
+      "minimum": 8.607,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 39,
+      "minimum": 8.607,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 9.344,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 6.722,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "forest",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "home",
+      "scroll": 0,
+      "pairs": 39,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "home",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "home",
+      "scroll": 1,
+      "pairs": 46,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "people",
+      "scroll": 0,
+      "pairs": 34,
+      "minimum": 6.583,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "people",
+      "scroll": 0.5,
+      "pairs": 36,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "people",
+      "scroll": 1,
+      "pairs": 34,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "pdf",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 8.374,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "pdf",
+      "scroll": 0.5,
+      "pairs": 25,
+      "minimum": 6.583,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "pdf",
+      "scroll": 1,
+      "pairs": 23,
+      "minimum": 6.583,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "schedule",
+      "scroll": 0,
+      "pairs": 21,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "schedule",
+      "scroll": 0.5,
+      "pairs": 29,
+      "minimum": 7.731,
+      "bareCanvasText": 0,
+      "failures": []
+    },
+    {
+      "theme": "aurora",
+      "screen": "schedule",
+      "scroll": 1,
+      "pairs": 67,
+      "minimum": 5.769,
+      "bareCanvasText": 0,
+      "failures": []
+    }
+  ],
+  "failures": []
+}
