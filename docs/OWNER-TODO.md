@@ -24,7 +24,6 @@ Native owner review: add `?demo=owner` to the review URL. Test creation, request
 
 - Confirm S-1 treatment of SFTS with your branch. Separate SFTS informational totals do not change S-1 calculations.
 - Confirm GoDaddy DNS before adding CNAME `congregationassistant.com`. No CNAME is deployed on the strength of domain purchase alone. Pages origin must also be added to Supabase/Google OAuth redirect settings for real login.
-- Place one recent English `mwb` and one `w` EPUB in ignored `tests/fixtures/private/` for parser acceptance, or use CI's private/short-lived source artifacts. Official source import stays disabled until a real fetch and parser review pass.
 
 Production rollout completed: the reduced `v3_meeting_workflows` migration was accepted after removing department-function replacements. It is applied with authenticated-only privileges. Current attendant attendance, scoped group-link lists and setup/calendar saving are enabled. All three departments retain administrator-approved pools. No further migration approval is pending.
 
