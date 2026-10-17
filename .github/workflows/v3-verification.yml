@@ -1,0 +1,31 @@
+name: V3 themes and components
+on:
+  pull_request:
+    paths: ['apps/**', 'packages/**', 'assets/fonts/**', 'tests/v3/**', 'scripts/*v3*', 'scripts/contrast-check.mjs', 'package*.json', 'eslint.config.mjs', '.github/workflows/v3-verification.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:v3:ui
+      - run: npm run test:v3:themes
+      - name: Strict supplied-theme gradient contrast gate
+        run: npm run check:contrast
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v3-theme-evidence
+          path: docs/qa/
+          retention-days: 14

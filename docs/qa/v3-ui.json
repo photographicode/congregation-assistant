@@ -1,0 +1,12 @@
+{
+  "stepper": true,
+  "comboboxKeyboard": true,
+  "undo": true,
+  "dirtyDialog": true,
+  "commandPalette": true,
+  "virtual5000Rows": true,
+  "tabs": true,
+  "qrLocal": true,
+  "axeViolations": [],
+  "browserErrors": []
+}

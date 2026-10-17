@@ -35,3 +35,15 @@ V3-ORDERS.md is authoritative. The supplied CSS is used verbatim as packages/ui/
 
 - WP-00: reused immutable v1-final at 76978c4fbe56658b8b856cb7218b5c4a212cd1f0. Re-executed the real frozen generators for all 17 PDFs and four dashboard fixtures; regenerated 104 expanded requested actions against the reference. npm run check: 83 passed plus TypeScript. Baseline PDFs are reference artifacts, not V3 shipped assets.
 - WP-01: removed the src/v2 tree by relocating native screens to features; extracted shared core repositories and PDF engine to workspace packages. Added strict lint (a11y/hooks/no emoji/no component hex), Vitest, gradient/alpha contrast sampler and kept layout/bundle detectors. Check passed: 3 Vitest + 83 existing unit tests and strict app/package TypeScript. Existing proven ports remain the baseline for the subsequent Store refactor.
+
+### WP-02 — supplied theme integration
+
+Implemented the exact owner-supplied themes.css (SHA-256 in docs/qa/supplied-themes.sha256), nine-card gallery, intensity slider, system paper/forest mapping, compatible tokens, OFL self-hosted fonts, adaptive Dialog, and shared component library. Profile allowlist/intensity validation tested with nine themes and applied without changing authorization/revision checks. Component behavior/axe passes; PDF font substitution passes all 17 existing parity thresholds.
+
+BLOCKED: supplied Lagoon Glass and Aurora raw gradient canvases fail required text contrast (22 combinations across tones); no supplied colors were changed and no threshold was relaxed. Panels pass, and application text is backed by panels. Full raw-gradient contrast release gate remains red in docs/qa/contrast-report.json. Exact CSS preservation takes priority over silently replacing the supplied palette.
+
+Still required for full WP-02 acceptance: complete responsive visual matrix and Indic serif assets. Proceed to independent WP-03 shell work without marking this package complete.
+
+- WP-02 partial verification: lint/typecheck, 4 Vitest checks and 68 updated nine-theme unit checks pass. Shared interactive component acceptance has zero axe findings. Theme screens at 390/1440: selected navigation was corrected to use the supplied link token rather than yellow accent fill in Neo Brutal. The source stylesheet remains byte-identical; no new palette colors were introduced.
+
+- The nine actual Home theme views pass axe at phone width and capture at phone/desktop with no browser errors or demo cloud requests. The separate strict raw-gradient release gate intentionally remains failing. New V3 CI preserves that failure and publishes evidence.

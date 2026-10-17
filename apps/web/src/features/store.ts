@@ -1,7 +1,9 @@
+import {normalizeTheme} from "../../../../packages/core/themes";
 import { create } from "zustand";
 import {experiencePresets,type Experience} from "./experience";
 type Appearance = Experience & {
   theme: string;
+  backgroundIntensity:number;
   tone: string;
   size: string;
   weight: string;
@@ -14,6 +16,7 @@ const initial: Appearance = {
   ...experiencePresets.balanced,
   experienceChosen: false,
   theme: "auto",
+  backgroundIntensity:100,
   tone: "standard",
   size: "M",
   weight: "regular",
@@ -35,13 +38,13 @@ export const useAppearance = create<
   ...saved,
   set: (patch) =>
     set((state) => {
-      const next = { ...state, ...patch };
+      const next = { ...state, ...patch,theme:normalizeTheme(patch.theme||state.theme) };
       try {
         localStorage.setItem(
           appearanceStorageKey,
           JSON.stringify({
             style:next.style,experienceChosen:next.experienceChosen,navigation:next.navigation,density:next.density,motion:next.motion,colorIntensity:next.colorIntensity,charts:next.charts,background:next.background,
-            theme: next.theme,
+            theme: next.theme,backgroundIntensity:next.backgroundIntensity,
             tone: next.tone,
             size: next.size,
             weight: next.weight,

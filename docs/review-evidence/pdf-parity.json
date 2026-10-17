@@ -3,22 +3,22 @@
     {
       "fixture": "emergency-1",
       "pages": 3,
-      "maxCoordinateDeltaPt": 1.152000000000001,
-      "maxChangedPixelFraction": 0.042486749116607776,
+      "maxCoordinateDeltaPt": 0.4928549999999916,
+      "maxChangedPixelFraction": 0.04025618374558304,
       "textEqual": true
     },
     {
       "fixture": "emergency-50",
       "pages": 6,
-      "maxCoordinateDeltaPt": 1.152000000000001,
-      "maxChangedPixelFraction": 0.06481007067137809,
+      "maxCoordinateDeltaPt": 0.4928549999999916,
+      "maxChangedPixelFraction": 0.06057862190812721,
       "textEqual": true
     },
     {
       "fixture": "emergency-500",
       "pages": 40,
-      "maxCoordinateDeltaPt": 1.152000000000001,
-      "maxChangedPixelFraction": 0.06585468197879858,
+      "maxCoordinateDeltaPt": 0.4942270000000093,
+      "maxChangedPixelFraction": 0.06147305653710247,
       "textEqual": true
     },
     {
@@ -80,43 +80,43 @@
     {
       "fixture": "s3-full",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5759999999999934,
-      "maxChangedPixelFraction": 0.012900747508305648,
+      "maxCoordinateDeltaPt": 0.01580500000000029,
+      "maxChangedPixelFraction": 0.01271594684385382,
       "textEqual": true
     },
     {
       "fixture": "s3-partial",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5439999999999969,
-      "maxChangedPixelFraction": 0.006528239202657807,
+      "maxCoordinateDeltaPt": 0.01580500000000029,
+      "maxChangedPixelFraction": 0.006210548172757475,
       "textEqual": true
     },
     {
       "fixture": "s3-special",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5759999999999934,
-      "maxChangedPixelFraction": 0.013860049833887044,
+      "maxCoordinateDeltaPt": 0.01580500000000029,
+      "maxChangedPixelFraction": 0.013729235880398672,
       "textEqual": true
     },
     {
       "fixture": "s88-full",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5760000000000218,
-      "maxChangedPixelFraction": 0.017053886925795052,
+      "maxCoordinateDeltaPt": 0.01103899999999669,
+      "maxChangedPixelFraction": 0.015598498233215548,
       "textEqual": true
     },
     {
       "fixture": "s88-partial",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5760000000000218,
-      "maxChangedPixelFraction": 0.0038074204946996464,
+      "maxCoordinateDeltaPt": 0.01103899999999669,
+      "maxChangedPixelFraction": 0.003511484098939929,
       "textEqual": true
     },
     {
       "fixture": "s88-special",
       "pages": 1,
-      "maxCoordinateDeltaPt": 0.5760000000000218,
-      "maxChangedPixelFraction": 0.015918727915194348,
+      "maxCoordinateDeltaPt": 0.01103899999999669,
+      "maxChangedPixelFraction": 0.014494257950530035,
       "textEqual": true
     }
   ],

@@ -33,6 +33,7 @@ import {Subscription,planSchema,type WorkspacePlan} from "./features/Subscriptio
 import { UpdatePrompt } from "./features/UpdatePrompt";
 import { adapt } from "./features/accessibility";
 import "./features/styles.css";
+import "../../../packages/ui/theme-bridge.css";
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
 const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));

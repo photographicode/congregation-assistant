@@ -1,5 +1,9 @@
 (() => {
   "use strict";
+  const themes=['mono-light','mono-dark','paper','lagoon-glass','neon-night','sunset-pop','neo-brutal','forest','aurora'];
+  let saved;try{saved=localStorage.getItem('ca-v3-site-theme');}catch{}document.documentElement.dataset.theme=themes.includes(saved)?saved:matchMedia('(prefers-color-scheme: dark)').matches?'forest':'paper';
+  document.getElementById('site-theme')?.addEventListener('change',event=>{const theme=event.target.value;if(themes.includes(theme)){document.documentElement.dataset.theme=theme;try{localStorage.setItem('ca-v3-site-theme',theme);}catch{}}});
+  const themeSelect=document.getElementById('site-theme');if(themeSelect)themeSelect.value=document.documentElement.dataset.theme;
   const toggle = document.getElementById("menu-toggle"),
     nav = document.getElementById("site-navigation");
   toggle?.addEventListener("click", () => {

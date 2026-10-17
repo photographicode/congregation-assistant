@@ -34,6 +34,8 @@ import { Greeting } from "../../../../packages/ui/Greeting";
 import {EmergencyContacts} from "./EmergencyContacts";
 import {Dashboard} from "./Dashboard";
 import {ExperienceProfile} from "./ExperienceProfile";
+import {t} from "../../../../packages/core/i18n";
+import {themeIds,normalizeTheme} from "../../../../packages/core/themes";
 import {ThemeGallery} from "./ThemeGallery";
 import {ExperiencePicker} from "./ExperiencePicker";
 import { Reports } from "./Reports";
@@ -1291,26 +1293,13 @@ export default function Workspace({
             <label>
               Theme
               <select
-                value={appearance.theme}
+                value={normalizeTheme(appearance.theme)}
                 onChange={(e) => appearance.set({ theme: e.target.value })}
               >
-                {[
-                  "auto",
-                  "paper",
-                  "daylight",
-                  "lagoon",
-                  "slate",
-                  "midnight",
-                  "dusk",
-                  "glass-lagoon",
-                  "glass-arctic",
-                  "glass-aurora",
-                  "glass-lagoon-dark","glass-sunset","glass-mint-air","glass-ocean-night","glass-graphite",
-                ].map((t) => (
-                  <option key={t}>{t[0].toUpperCase() + t.slice(1)}</option>
-                ))}
+                {["auto",...themeIds].map(id=><option key={id} value={id}>{t(id==='auto'?'theme.auto':`theme.${id as typeof themeIds[number]}`)}</option>)}
               </select>
             </label>
+            <label>{t('appearance.intensity')}<input type="range" min={0} max={100} value={appearance.backgroundIntensity} onChange={e=>appearance.set({backgroundIntensity:Number(e.target.value)})}/><output>{appearance.backgroundIntensity}%</output></label>
             <div className="form-grid">
               <label>
                 Text tone

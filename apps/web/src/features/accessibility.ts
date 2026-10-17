@@ -1,15 +1,16 @@
-export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string;style?:string;motion?:string;colorIntensity?:string;background?:string;density?:string;navigation?:string}) {
+import {resolvedTheme} from "../../../../packages/core/themes";
+export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string;style?:string;motion?:string;colorIntensity?:string;background?:string;density?:string;navigation?:string;backgroundIntensity?:number}) {
  const root=document.documentElement;
  let frame=0;
  const update=()=>{
   const media=(q:string)=>matchMedia(q).matches;
   const width=window.innerWidth,height=window.visualViewport?.height||window.innerHeight;
-  const scale=parseFloat(getComputedStyle(root).fontSize)/16 * ({S:.875,M:1,L:1.25,XL:1.5}[preferences.size]||1);
+  const scale=parseFloat(getComputedStyle(root).fontSize)/16;
   const keyboard=Boolean(window.visualViewport && window.innerHeight-height>150 && /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''));
   root.dataset.hidden=String(document.hidden);root.dataset.lowPower=String((navigator.hardwareConcurrency||4)<=2||Boolean((navigator as Navigator & {connection?:{saveData?:boolean}}).connection?.saveData));root.dataset.experience=preferences.style||'balanced';root.dataset.motion=media('(prefers-reduced-motion: reduce)')?'reduced':preferences.motion||'reduced';root.dataset.colorIntensity=preferences.colorIntensity||'soft';root.dataset.background=preferences.background||'static';root.dataset.navigation=preferences.navigation||'classic';
-  root.dataset.caTheme=preferences.theme==='auto'?(media('(prefers-color-scheme: dark)')?'slate':'paper'):preferences.theme;
+  root.removeAttribute('data-ca-theme');root.dataset.theme=resolvedTheme(preferences.theme,media('(prefers-color-scheme: dark)'));root.style.setProperty('--background-intensity',String(Math.max(0,Math.min(100,preferences.backgroundIntensity??100))/100));
   root.dataset.tone=preferences.tone;root.dataset.highContrast=String(media('(prefers-contrast: more)')||media('(forced-colors: active)'));
-  root.dataset.solid=String(preferences.solid||media('(prefers-reduced-transparency: reduce)'));
+  root.dataset.solid=String(preferences.solid||media('(prefers-reduced-transparency: reduce)')||root.dataset.lowPower==='true');
   root.dataset.coarse=String(media('(pointer: coarse)'));root.dataset.hover=String(media('(hover: hover)'));
   root.dataset.reducedMotion=String(media('(prefers-reduced-motion: reduce)'));root.dataset.textSize=preferences.size;root.dataset.iconWeight=preferences.weight;
   root.dataset.largeText=String(scale>=1.3||['L','XL'].includes(preferences.size));root.dataset.textBucket=scale>=2?'200':scale>=1.3?'130':'100';

@@ -12,7 +12,7 @@ const logger=createLogger(),cssWarnings=[];const originalWarn=logger.warn;logger
 await build({configFile:path.resolve('apps/web/vite.config.ts'),customLogger:logger});
 if(cssWarnings.length)throw Error('Invalid application CSS: '+cssWarnings.join('\n'));
 await mkdir('dist/assets/fonts',{recursive:true});
-for(const file of (await readdir('assets/fonts')).filter(name=>/\.(?:ttf|otf|woff2|txt|zip)$/.test(name)))await cp('assets/fonts/'+file,'dist/assets/fonts/'+file);
+for(const file of (await readdir('assets/fonts')).filter(name=>!/^Nimbus|^NIMBUS/.test(name)).filter(name=>/\.(?:ttf|otf|woff2|txt|zip)$/.test(name)))await cp('assets/fonts/'+file,'dist/assets/fonts/'+file);
 await cp('assets/pdf-templates','dist/assets/pdf-templates',{recursive:true});
 for(const file of ['icon-192.png','icon-512.png'])await cp('assets/'+file,'dist/assets/'+file);
 await cp('apps/site','dist/site',{recursive:true,filter:src=>!(/\.(ts|tsx)$/.test(src)||src.endsWith('README.md'))});
@@ -20,10 +20,12 @@ await cp('public-config.json','dist/public-config.json');await cp('capabilities.
 await cp('public-config.json','dist/site/public-config.json');await cp('capabilities.json','dist/site/capabilities.json');
 await writeFile('dist/site/tokens.css',(await readFile('packages/ui/tokens.css','utf8')).replaceAll('../../assets/','assets/').replaceAll('NotoSans-Regular.woff2','NotoSans-Latin-Regular.woff2').replaceAll('NotoSans-Bold.woff2','NotoSans-Latin-Bold.woff2'));
 await cp('dist/assets/fonts','dist/site/assets/fonts',{recursive:true});
+for(const file of ['themes.css','fonts.css','theme-bridge.css'])await writeFile('dist/site/'+file,(await readFile('packages/ui/'+file,'utf8')).replaceAll('../../assets/','assets/'));
+
 await build({configFile:path.resolve('apps/site/vite.config.ts')});
 await mkdir('dist/.well-known',{recursive:true});await writeFile('dist/.well-known/build-hash.txt',hash+'\n');
 const entryManifest=JSON.parse(await readFile('dist/.vite/manifest.json','utf8'));const shellKeys=new Set();function shellVisit(key){if(shellKeys.has(key))return;shellKeys.add(key);for(const key2 of entryManifest[key]?.imports||[])shellVisit(key2);}for(const [key,item] of Object.entries(entryManifest))if(item.isEntry)shellVisit(key);const staticAssets=[...shellKeys].flatMap(key=>[entryManifest[key].file,...(entryManifest[key].css||[]),...(entryManifest[key].assets||[])]).map(file=>base+file);
-await writeFile('dist/service-worker.js',`const CACHE='ca-v2-${hash.slice(0,16)}';const BASE=${JSON.stringify(base)};const SHELL=[BASE,...${JSON.stringify(staticAssets.filter(f=>!f.includes('crypto')&&!f.includes('fontkit')))}];
+await writeFile('dist/service-worker.js',`const CACHE='ca-v2-${hash.slice(0,16)}';const BASE=${JSON.stringify(base)};const SHELL=[BASE,...${JSON.stringify(staticAssets.filter(f=>!f.includes('crypto')&&!f.includes('fontkit')&&!/NotoSans(?:Devanagari|Bengali|Gurmukhi|Gujarati|Tamil|Telugu|Kannada|Malayalam)/.test(f)))}];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();});
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name!==CACHE)await caches.delete(name);await self.clients.claim();})()));
