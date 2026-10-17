@@ -1,0 +1,41 @@
+name: Fetch official meeting publications
+on:
+  schedule:
+    - cron: '30 5 * * 1'
+  workflow_dispatch:
+  push:
+    branches: [main, v3/resume]
+    paths: ['scripts/meetings/**', '.github/workflows/fetch-meetings.yml']
+permissions:
+  contents: write
+concurrency:
+  group: official-publications
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - uses: actions/cache@v4
+        with:
+          path: work/meeting-fetch
+          key: publication-etags-${{ github.run_id }}
+          restore-keys: publication-etags-
+      - run: node --test scripts/meetings/parse.test.mjs
+      - run: node scripts/meetings/fetch.mjs
+        env:
+          JW_IMPORT_ENABLED: ${{ vars.JW_IMPORT_ENABLED || 'true' }}
+      - name: Commit public normalized metadata only
+        run: |
+          git add data/meetings data/watchtower
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'congregation-assistant-import[bot]'
+          git config user.email 'import-bot@users.noreply.github.com'
+          git commit -m 'Refresh official meeting publication metadata'
+          git push

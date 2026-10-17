@@ -1,0 +1,22 @@
+name: Verify custom-domain production
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Expected deployed commit (full SHA)
+        required: true
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: node scripts/verify-production.mjs
+        env:
+          EXPECTED_COMMIT: ${{ inputs.commit }}

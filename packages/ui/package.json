@@ -1,1 +1,1 @@
-{"name":"@ca/ui","version":"2.0.0","private":true,"type":"module"}
+{"name":"@ca/ui","version":"2.0.0","private":true,"type":"module","dependencies":{"qrcode":"1.5.4"}}

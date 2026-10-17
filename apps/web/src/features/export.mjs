@@ -1,0 +1,2 @@
+export function csvCell(value){const source=value==null?'':typeof value==='object'?JSON.stringify(value):String(value);const safe=/^[\s\u0000-\u001f]*[=+\-@]/.test(source)?"'"+source:source;return '"'+safe.replaceAll('"','""')+'"';}
+export function csvRecords(rows){const keys=[...new Set(rows.flatMap(row=>Object.keys(row)))].sort();return '\ufeff'+[keys.map(csvCell).join(','),...rows.map(row=>keys.map(key=>csvCell(row[key])).join(','))].join('\r\n')+'\r\n';}

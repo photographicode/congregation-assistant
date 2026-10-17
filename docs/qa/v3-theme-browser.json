@@ -1,0 +1,94 @@
+{
+  "results": [
+    {
+      "theme": "mono-light",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "mono-dark",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "paper",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "lagoon-glass",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "neon-night",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "sunset-pop",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "neo-brutal",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "forest",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    },
+    {
+      "theme": "aurora",
+      "widths": [
+        390,
+        1440
+      ],
+      "axe": [],
+      "errors": [],
+      "backendRequests": 0
+    }
+  ]
+}

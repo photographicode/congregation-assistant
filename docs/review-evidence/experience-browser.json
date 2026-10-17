@@ -1,0 +1,8 @@
+{
+  "accountSaveRestore": true,
+  "deviceOverride": true,
+  "adminDefaults": true,
+  "publisherCannotChangeDefaults": true,
+  "backendRequests": 0,
+  "scope": "fictional UI; real permission/concurrency contract separately tested in isolated PostgreSQL"
+}

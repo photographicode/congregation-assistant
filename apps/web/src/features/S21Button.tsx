@@ -1,0 +1,5 @@
+import React from 'react';
+import {FileDown,ChevronDown} from 'lucide-react';
+import type {Context} from '../main';
+import {t} from '../../../../packages/core/i18n';
+export function S21Button({context,person,onOpen}:{context:Context;person:{id:string;name:string;[key:string]:unknown};onOpen:()=>void}){const [year,setYear]=React.useState(new Date().getFullYear()+(new Date().getMonth()>=8?1:0));function open(){sessionStorage.setItem('ca-s21-person',JSON.stringify({id:person.id,year,congregation:context.cong}));sessionStorage.setItem('ca-pdf-open','s21');onOpen();window.dispatchEvent(new CustomEvent('ca:select-s21'));}return <div className="stack"><button aria-label={t('s21.downloadFor')+' '+person.name} onClick={open}><FileDown aria-hidden="true"/>S-21</button><details><summary aria-label={'S-21 options for '+person.name}><ChevronDown aria-hidden="true"/>Options</summary><label>Service year<input type="number" min={1900} max={2200} value={year} onChange={e=>setYear(Number(e.target.value))}/></label><button disabled={!Number.isInteger(year)||year<1900||year>2200} onClick={open}>Preview · Print · Share</button></details></div>;}

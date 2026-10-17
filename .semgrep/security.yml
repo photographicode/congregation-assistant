@@ -1,0 +1,26 @@
+rules:
+  - id: no-dynamic-javascript
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Dynamic JavaScript execution violates the strict CSP and accepts unsafe input.
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: new Function(...)
+    paths:
+      include: [apps/web/src/**, apps/site/**, packages/ui/**]
+  - id: no-user-metadata-authorization
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: User metadata is mutable; use database-verified roles or trusted app metadata.
+    pattern-either:
+      - pattern: $SESSION.user.user_metadata.role
+      - pattern: $USER.user_metadata.roles
+    paths:
+      include: [apps/web/src/**]
+  - id: no-raw-html-in-react
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Keep record fields escaped by React; do not inject record HTML.
+    pattern: <$TAG dangerouslySetInnerHTML={$HTML} ... />
+    paths:
+      include: [apps/web/src/**, packages/ui/**]

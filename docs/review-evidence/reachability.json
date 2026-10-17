@@ -1,0 +1,1145 @@
+{
+  "reference": "v1-final",
+  "commit": "76978c4fbe56658b8b856cb7218b5c4a212cd1f0",
+  "requestedActionCount": 104,
+  "actions": [
+    {
+      "action": "auth.googleLogin",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "auth.activateGoogleRole",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.confirmLogout",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.changeAdminPassword",
+      "intentionallyReplaced": true,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.changeGroupPassword",
+      "intentionallyReplaced": true,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.setGroupPassword",
+      "intentionallyReplaced": true,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.checkPassword",
+      "intentionallyReplaced": true,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openGroupPasswordModal",
+      "intentionallyReplaced": true,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.switchTab",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-demo.js",
+        "app-departments.js",
+        "app-home.js",
+        "app-install.js",
+        "app-reminders.js",
+        "app-v2-bridge.js",
+        "index.html",
+        "public-links.js",
+        "staging/app-demo.js",
+        "staging/app-departments.js",
+        "staging/app-home.js",
+        "staging/app-install.js",
+        "staging/app-reminders.js",
+        "staging/index.html",
+        "staging/public-links.js"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openModal",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-guide.js",
+        "app-install.js",
+        "app-onboarding.js",
+        "app-publisher-home.js",
+        "app-reminders.js",
+        "app-support.js",
+        "index.html",
+        "staging/app-guide.js",
+        "staging/app-install.js",
+        "staging/app-onboarding.js",
+        "staging/app-publisher-home.js",
+        "staging/app-reminders.js",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.closeModal",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-reminders.js",
+        "app-support.js",
+        "app-v2-bridge.js",
+        "index.html",
+        "staging/app-reminders.js",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.closeSysPrompt",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-support.js",
+        "index.html",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.setTheme",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.setAppFont",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReadability.set",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-publisher-home.js",
+        "index.html",
+        "staging/app-publisher-home.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "installCongregationApp",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-install.js",
+        "index.html",
+        "staging/app-install.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAGuide.open",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.startHowToUse",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CADemo.start",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderDashboard",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Home",
+      "reachability": {
+        "status": "passed",
+        "clicks": 0,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.openBulkEntry",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Home → Bulk entry",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.saveBulkEntry",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.toggleBulkRow",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openMissingReportsModal",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Home → Missing reports / Remind",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.sendReminder",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.revokeAP",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.downloadReports",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.copyGroupLink",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.showGroup",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderPublishers",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-transfer.js",
+        "index.html",
+        "staging/app-transfer.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": "People",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.editPublisher",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Home → Add publisher",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.savePublisher",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.deletePublisher",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.downloadContacts",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Emergency Contacts → Download contact CSV",
+      "reachability": {
+        "status": "passed",
+        "clicks": 2,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "CAImports.template",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAImports.preview",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAImports.combined",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.filterAccessPublishers",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAPublisherLogin.load",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderEmergencyContacts",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Emergency Contacts",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.printEmergencyContacts",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Emergency Contacts → Emergency PDF",
+      "reachability": {
+        "status": "passed",
+        "clicks": 2,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "ui.renderAnalytics",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderAttendance",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-support.js",
+        "index.html",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": "Attendance shortcut",
+      "reachability": {
+        "status": "passed",
+        "clicks": 1,
+        "viewport": "1440×1000",
+        "role": "fictional admin"
+      }
+    },
+    {
+      "action": "db.saveAttendance",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.savePublicAttendance",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.toggleAttEdit",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-support.js",
+        "index.html",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.toggleAttInput",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-support.js",
+        "index.html",
+        "staging/app-support.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.saveAttendanceStateLocally",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.copyAttendanceLink",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openAccessManager",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.saveAccountAccess",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.removeRoleAccess",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.copyOverseerLink",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openOCLM",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "setSchedulerWeek",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-reminders.js",
+        "index.html",
+        "staging/app-reminders.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "openAssign",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "setAssignment",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "clearAssignment",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "setAssignmentStatus",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "setPartTitle",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "setPartMinutes",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "saveMeetingDetails",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "toggleAdditionalDuty",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "renameAdditionalDuty",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "addAwayPeriod",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "editPerson",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "deletePerson",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "unpublishWeek",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "loadPublicationHistory",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderPublicOCLMBoard",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "public-links.js",
+        "staging/index.html",
+        "staging/public-links.js"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.editOCLMPart",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.editOCLMAssignment",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openOCLMPartEditor",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.toggleOCLMPart",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.removeOCLMPair",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.deleteOCLMAssignment",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.saveOCLMAssignmentEditor",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.cancelOCLMAssignmentEdit",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.refreshOCLMAssignmentForm",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.submitOCLMFeedback",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAOCLMCloud.recovery",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.renderSuperAdmin",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.createCongregation",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.updateCongregation",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "db.deleteCongregation",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.editCongregation",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.selectAllSuperAdmin",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.toggleSuperAdminSelection",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.sendSuperAdminNotification",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openNotificationComposer",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.openAnnouncements",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReminders.open",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "app-reminders.js",
+        "index.html",
+        "staging/app-reminders.js",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReminders.save",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAReminders.download",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.enable",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.guide",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CANotifications.test",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CAPush.disable",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.export",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.restore",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CARecovery.mode",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "CATransfer.open",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.confirmWipeDatabase",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    },
+    {
+      "action": "ui.cancelWipe",
+      "intentionallyReplaced": false,
+      "v1Evidence": [
+        "index.html",
+        "staging/index.html"
+      ],
+      "nativeLocation": null,
+      "reachability": null
+    }
+  ],
+  "accepted": 9,
+  "remaining": 90,
+  "backendRequests": 0
+}

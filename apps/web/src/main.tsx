@@ -1,6 +1,8 @@
+import {z} from "zod";
+import type {SyncStatus} from "../../../packages/core/store";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider,useQueryClient,useQuery } from "@tanstack/react-query";
 import {
   Home,
   CalendarDays,
@@ -17,47 +19,91 @@ import {
   BookOpen,
   Plus,
   ShieldCheck,
+  Phone,
+  ClipboardList,
   Download,
+  Printer,
 } from "lucide-react";
+import {repositories} from "../../../packages/core/repositories";
+import {AppShell} from "../../../packages/ui/AppShell";
+import {CommandPalette,type Command} from "../../../packages/ui/CommandPalette";
+import {t} from "../../../packages/core/i18n";
+import {sections,allowedTools,sectionForRoute,type SectionId,type Tool} from "../../../packages/core/navigation";
+import {themeIds} from "../../../packages/core/themes";
+import {LocalAssistant} from "./features/LocalAssistant";
+import {SectionHub} from "./features/SectionHub";
+import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { client, demo, capabilities } from "./v2/client";
-import { useAppearance } from "./v2/store";
-import { adapt } from "./v2/accessibility";
-import "./v2/styles.css";
-const Workspace = lazy(() => import("./v2/Workspace"));
+import { config,rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores } from "./features/client";
+import {ExperienceDefaults} from "./features/ExperienceProfile";
+import { useAppearance,activateAppearanceProfile } from "./features/store";
+import {authScope,displayFirstName} from "./features/auth-scope.mjs";
+import {AdminIdleTimeout} from "./features/Sessions";
+import {Subscription,planSchema,type WorkspacePlan} from "./features/Subscription";
+import { UpdatePrompt } from "./features/UpdatePrompt";
+import { adapt } from "./features/accessibility";
+import "./features/styles.css";
+import "../../../packages/ui/theme-bridge.css";
+import "../../../packages/ui/shell.css";
+const oldPrefix=import.meta.env.BASE_URL+"v2/";
+if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
+const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));
+const OwnerConsole=lazy(()=>import("./features/OwnerConsole"));
+const Workspace = lazy(() => import("./features/Workspace"));
 const routes = [
+  {id:"owner",label:"Command centre",icon:ShieldCheck},
   { id: "home", label: "Home", icon: Home },
   { id: "schedule", label: "Schedule", icon: CalendarDays },
   { id: "people", label: "People", icon: Users },
+  {id:"emergency",label:"Emergency Contacts",icon:Phone},
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "messages", label: "Messages", icon: MessageCircle },
   { id: "access", label: "Access & Links", icon: Link2 },
+  { id: "pdf", label: "Print & PDF", icon: Printer },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 export type Context = {
+  account?:string;
+  onCounts?: (counts:Record<string,number>)=>void;
   cong: string;
   name: string;
   roles: string[];
   caps: any;
+  firstName?: string;
+  plan?: WorkspacePlan;
   notify: (s: string) => void;
 };
 function App() {
+  const [updatesOpen,setUpdatesOpen]=useState(false);
   const [session, setSession] = useState<any>(null),
     [loading, setLoading] = useState(!demo),
     [error, setError] = useState(""),
     [memberships, setMemberships] = useState<any[]>([]),
     [cong, setCong] = useState(demo ? "demo" : ""),
     [caps, setCaps] = useState<any>({}),
-    [route, setRoute] = useState("home"),
+    [owner,setOwner]=useState(demo&&new URLSearchParams(location.search).get("demo")==="owner"),
+    [plan,setPlan]=useState<WorkspacePlan|null>(null),[planError,setPlanError]=useState(""),
+    [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
+    [hub,setHub]=useState<SectionId|null>(()=>{const value=new URLSearchParams(location.search).get("section");return sections.some(section=>section.id===value)?value as SectionId:null;}),
+    [quick,setQuick]=useState(false),
+    [assistantOpen,setAssistantOpen]=useState(false),
+    [syncStatus,setSyncStatus]=useState<SyncStatus>({pending:0,conflicts:0,forbidden:0}),
+    [hubCounts,setHubCounts]=useState<Record<string,number>>({}),
     [collapsed, setCollapsed] = useState(false),
     [more, setMore] = useState(false),
     [search, setSearch] = useState(false),
     [query, setQuery] = useState(""),
+    [email, setEmail] = useState(""),
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
+  const queryClient=useQueryClient();
+  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{switchStoreAccount(account);for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setAssistantOpen(false);setSearch(false);setMemberships([]);setHubCounts({});setSyncStatus({pending:0,conflicts:0,forbidden:0});setCaps({});setPlan(null);setCong("");}),[queryClient]);
+  useEffect(()=>setHubCounts({}),[cong]);
   const appearance = useAppearance();
+  useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
   useEffect(() => adapt(appearance), [appearance]);
-  React.useLayoutEffect(()=>{window.scrollTo(0,0);},[route,cong]);
+  useEffect(()=>{if(!demo&&session?.user?.id&&cong)activateAppearanceProfile(session.user.id,cong,memberships.some(m=>m.cong_id===cong&&m.role==='publisher')&&!memberships.some(m=>m.cong_id===cong&&m.role==='admin'));},[session?.user?.id,cong]);
+  React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
   useEffect(() => {
     const handler = () => setOnline(navigator.onLine);
     window.addEventListener("online", handler);
@@ -82,7 +128,7 @@ function App() {
       setMemberships([
         {
           cong_id: "demo",
-          role: "admin",
+          role: ({publisher:"publisher",group:"group_overseer",attendance:"attendance",field:"field_service"} as Record<string,string>)[new URLSearchParams(location.search).get("demo")||""]||"admin",
           congregations: { name: "River Park Congregation" },
         },
       ]);
@@ -98,47 +144,34 @@ function App() {
     let active = true;
     client.auth.getSession().then(({ data, error }) => {
       if (active) {
-        setSession(data.session);
+        accountScope(data.session);setSession(data.session);
         if (error) setError(error.message);
         setLoading(false);
       }
     });
     const { data } = client.auth.onAuthStateChange((_event, value) => {
-      if (active) setSession(value);
+      if (active) {accountScope(value);setSession(value);}
     });
     return () => {
       active = false;
       data.subscription.unsubscribe();
     };
   }, []);
+  useEffect(()=>{let active=true;if(demo){const value=new URLSearchParams(location.search).get('demo')==='owner';setOwner(value);if(value)setRoute('owner');return;}setOwner(false);if(!session)return;storeFor('').read({source:{kind:'rpc',name:'ca_is_superadmin',args:{}},cacheKey:'account-owner',fresh:true},z.boolean()).then(value=>{if(active){setOwner(value===true);if(value===true&&!cong)setRoute('owner');}}).catch(()=>{if(active)setOwner(false);});return()=>{active=false;};},[session?.user?.id]);
   useEffect(() => {
     if (!session || demo) return;
     let active = true;
-    setLoading(true);
-    client
-      .from("congregation_access")
-      .select("cong_id,role,congregations(name)")
-      .eq("email", session.user.email?.toLowerCase())
-      .eq("active", true)
-      .then(({ data, error }) => {
-        if (active) {
-          if (error) setError(error.message);
-          else {
-            setMemberships(data || []);
-            setCong(data?.[0]?.cong_id || "");
-          }
-          setLoading(false);
-        }
-      });
+    if(!memberships.length)setLoading(true);
+    storeFor('').read({source:{kind:'table',name:'congregation_access',columns:'cong_id,role,congregations(name)',filters:[{column:'email',op:'eq',value:session.user.email?.toLowerCase()},{column:'active',op:'eq',value:true}]},cacheKey:'account-membership',fresh:true},z.array(z.object({cong_id:z.string(),role:z.string(),congregations:z.object({name:z.string()}).nullable()}))).then(data=>{if(active){setMemberships(data);setCong(data[0]?.cong_id||'');setLoading(false);}}).catch(error=>{if(active){setError(error.message);setLoading(false);}});
     return () => {
       active = false;
     };
-  // Same-user SIGNED_IN/TOKEN_REFRESHED events also arrive from embedded
-  // legacy tools. Reloading access here would unmount and reopen that iframe.
+  // Avoid reloading membership on token refresh for the same account.
   }, [session?.user?.id, session?.user?.email]);
   useEffect(() => {
     if (cong && !demo) capabilities(cong).then(setCaps);
   }, [cong]);
+  useEffect(()=>{let active=true;setPlan(null);setPlanError('');if(!cong)return;if(demo){const expired=new URLSearchParams(location.search).get('demo')==='expired';setPlan({congregation:cong,name:'River Park Congregation',status:expired?'expired':'active',trialEndsAt:new Date().toISOString(),paymentDate:null,locked:expired,serverTime:new Date().toISOString()});return;}storeFor(cong).read({source:{kind:'rpc',name:'ca_v2_workspace_plan',args:{p_cong_id:cong}},cacheKey:'workspace-plan',fresh:true},planSchema).then(value=>{const parsed=planSchema.parse(value);if(parsed.congregation!==cong)throw Error('Workspace status did not match. Reload before continuing.');if(active)setPlan(parsed);}).catch(e=>{if(active)setPlanError(e.message);});return()=>{active=false;};},[cong,session?.user?.id]);
   useEffect(() => {
     if (notice) {
       const timer = setTimeout(() => setNotice(""), 7000);
@@ -151,9 +184,10 @@ function App() {
     admin = roles.includes("admin");
   const allowed = routes.filter(
     (r) =>
-      admin ||
+      (r.id==='owner'?owner:admin) ||
       r.id === "home" ||
       r.id === "settings" ||
+      (r.id === "access" && roles.some(role=>["field_service","group_overseer","attendance"].includes(role))) ||
       (r.id === "schedule" &&
         roles.some((x) =>
           [
@@ -168,6 +202,7 @@ function App() {
         )) ||
       (r.id === "people" &&
         roles.some((x) => ["field_service", "group_overseer"].includes(x))) ||
+      (r.id === "pdf" && roles.some(x=>["field_service","group_overseer","attendance","oclm","weekend"].includes(x))) ||
       (r.id === "reports" &&
         roles.some((x) =>
           [
@@ -178,27 +213,36 @@ function App() {
           ].includes(x),
         )),
   );
+  const updateCounts=React.useCallback((next:Record<string,number>)=>setHubCounts(previous=>Object.entries(next).every(([key,value])=>previous[key]===value)?previous:{...previous,...next}),[]);
   const context: Context = {
+    onCounts:updateCounts,
+    account:session?.user?.id,
     cong,
-    name:
+    plan:plan?.congregation===cong?plan:undefined,
+    name:owner&&!cong?"Owner account":plan?.congregation===cong?plan.name:
       memberships.find((m) => m.cong_id === cong)?.congregations?.name ||
       "Congregation",
     roles,
+    firstName: demo ? "Daniel" : displayFirstName(session?.user?.user_metadata),
     caps,
     notify: setNotice,
   };
+  const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(storeFor(cong,roles),cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
+  const roleScope=[...roles].sort().join(',');
+  useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch(()=>{});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch(()=>{});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,30000);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
   async function signOut() {
-    const { clearDevice } = await import("./v2/device-keys");
-    await clearDevice();
+    const { clearDevice } = await import("./features/device-keys");
+    try{await clearDevice();}catch{setError(t("store.clearFailed"));}
     for (const store of [localStorage, sessionStorage]) {
       for (const key of Object.keys(store))
         if (
-          key.startsWith("ca_") ||
+          (key.startsWith("ca_") ||
           key.startsWith("ca-") ||
-          key.startsWith("oclm_")
+          key.startsWith("oclm_")) && !key.startsWith("ca-v2-appearance:")
         )
           store.removeItem(key);
     }
+    try{await clearStores();}catch{setError(t("store.clearFailed"));}
     await client.auth.signOut();
     setMemberships([]);
     setCong("");
@@ -239,19 +283,18 @@ function App() {
         >
           Continue with Google <ArrowRight />
         </button>
+        {features.flags.MAGIC_LINK_ENABLED && <form className="stack" onSubmit={async e=>{e.preventDefault();const {error}=await client.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+import.meta.env.BASE_URL}});if(error)setError(error.message);else setError("Check your email for the sign-in link.");}}><label>Email magic link<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><button>Email sign-in link</button></form>}
         <p className="muted">
           Independent and unofficial. Your congregation controls access.
         </p>
         <div className="actions">
           <a href="?demo=admin">Try the admin demo</a>
-          <a href="../?demo=publisher">Publisher demo</a>
+          <a href="?demo=publisher">Publisher demo</a>
         </div>
-        <p>
-          <a href="../?ui=legacy">Open existing app</a>
-        </p>
+
       </main>
     );
-  if (!cong)
+  if (!cong&&!owner)
     return (
       <main className="login card">
         <h1>Approval needed</h1>
@@ -260,169 +303,45 @@ function App() {
           administrator to approve your email.
         </p>
         <button onClick={signOut}>Sign out</button>
-        <a href="../site/">Request a workspace</a>
+        <a href={config.PUBLIC_SITE_URL + "/"}>Request a workspace</a>
       </main>
     );
   const go = (id: string) => {
-    setRoute(id);
+    if(!allowed.some(r=>r.id===id))return;
+    const url=new URL(location.href);url.searchParams.set("screen",id);url.searchParams.delete("section");history.replaceState(null,"",url.pathname+url.search);
+    setRoute(id);setHub(null);
     setMore(false);
     setSearch(false);
   };
-  return (
-    <div className="app">
-      <aside className={"rail " + (collapsed ? "collapsed" : "")}>
-        <div className="brand">
-          <span className="brand-mark">
-            <BookOpen />
-          </span>
-          <span className="brand-name">
-            Congregation
-            <br />
-            Assistant
-          </span>
-        </div>
-        <nav aria-label="Main navigation">
-          {allowed.map((r) => (
-            <button
-              key={r.id}
-              className={route === r.id ? "active" : ""}
-              onClick={() => go(r.id)}
-              title={r.label}
-              aria-label={r.label}
-              aria-current={route === r.id ? "page" : undefined}
-            >
-              <r.icon />
-              <span className="nav-label">{r.label}</span>
-            </button>
-          ))}
-        </nav>
-        <footer className="rail-footer">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-          >
-            <PanelLeftClose />
-            <span>Collapse</span>
-          </button>
-          <a href="../?ui=legacy" className="muted">
-            Existing app
-          </a>
-          {!demo && (
-            <button onClick={signOut}>
-              <LogOut />
-              <span>Sign out</span>
-            </button>
-          )}
-        </footer>
-      </aside>
-      <div className="main">
-        <header className="topbar">
-          <strong>{context.name}</strong>
-          <div className="actions">
-            {demo && <span className="chip">Fictional demo</span>}
-            <button
-              className="icon-button"
-              aria-label="Search tools"
-              title="Search · Ctrl/Cmd+K"
-              onClick={() => setSearch(true)}
-            >
-              <Search />
-            </button>
-            <button
-              className="icon-button"
-              aria-label="Appearance and settings"
-              title="Settings"
-              onClick={() => go("settings")}
-            >
-              <Settings />
-            </button>
-          </div>
-        </header>
-        <main className="main-content" id="main-content">
-          {!online && (
-            <div className="banner" role="status">
-              Offline. Cloud changes cannot be saved. Keep this page open to
-              retain unsaved work.
-            </div>
-          )}
-          {!demo && caps.schema_version !== 2 && (
-            <div className="banner" role="status">
-              Update pending. New database tools will appear after the V2
-              migration.{" "}
-              <a href="../?ui=legacy">Continue with existing tools</a>.
-            </div>
-          )}
-          <Suspense fallback={<p role="status">Loading tools…</p>}>
-            <Workspace key={cong} route={route} go={go} context={context} />
-          </Suspense>
-        </main>
-      </div>
-      <nav className="bottom-tabs" aria-label="Phone navigation">
-        {routes
-          .slice(0, 4)
-          .filter((r) => allowed.some((a) => a.id === r.id))
-          .map((r) => (
-            <button
-              key={r.id}
-              className={route === r.id ? "active" : ""}
-              onClick={() => go(r.id)}
-              aria-current={route === r.id ? "page" : undefined}
-            >
-              <r.icon />
-              <span>{r.label}</span>
-            </button>
-          ))}
-        <button onClick={() => setMore(true)}>
-          <Menu />
-          <span>More</span>
-        </button>
-      </nav>
-      <Dialog open={more} onClose={() => setMore(false)} title="More tools">
-        <div className="stack">
-          {allowed
-            .filter(
-              (r) => !["home", "schedule", "people", "reports"].includes(r.id),
-            )
-            .map((r) => (
-              <button key={r.id} onClick={() => go(r.id)}>
-                {r.label}
-              </button>
-            ))}
-          <a href="../?ui=legacy">Existing app</a>
-          {!demo && <button onClick={signOut}>Sign out</button>}
-        </div>
-      </Dialog>
-      <Dialog
-        open={search}
-        onClose={() => setSearch(false)}
-        title="Find a tool"
-      >
-        <label>
-          Search
-          <input
-            autoFocus
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Schedule, people, reports…"
-          />
-        </label>
-        <div className="list">
-          {allowed
-            .filter((r) => r.label.toLowerCase().includes(query.toLowerCase()))
-            .map((r) => (
-              <button key={r.id} onClick={() => go(r.id)}>
-                {r.label}
-              </button>
-            ))}
-        </div>
-      </Dialog>
-      {notice && (
-        <div className="notice" role="status">
-          {notice}
-        </div>
-      )}
-    </div>
-  );
+  const visibleTools=allowedTools(roles,owner);
+  const availableSections=sections.filter(section=>section.id==='home'||visibleTools.some(tool=>tool.section===section.id&&tool.available)).map(section=>section.id);
+  const activeSection=hub||sectionForRoute(route);
+  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}setHub(section);setSearch(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);};
+  const openNativeTool=(tool:Tool)=>{if(!visibleTools.some(item=>item.id===tool.id)||!tool.available)return;
+    if(tool.route==='reports'&&tool.sub&&!sessionStorage.getItem('ca-report-action'))sessionStorage.setItem('ca-report-action',JSON.stringify({action:tool.sub}));
+    if(tool.route==='pdf'&&tool.sub)sessionStorage.setItem('ca-pdf-open',tool.sub);
+    if(['people','schedule'].includes(tool.route)&&tool.sub)sessionStorage.setItem('ca-workspace-tool',tool.sub);
+    go(tool.route);const url=new URL(location.href);url.searchParams.delete('section');url.searchParams.set('tool',tool.id);history.replaceState(null,'',url.pathname+url.search);window.dispatchEvent(new CustomEvent('ca:open-tool',{detail:tool.sub}));setQuick(false);
+  };
+  const prepareAssistant=async()=>{try{if(!demo){setNotice('Loading authorized records before opening the on-device assistant…');const repo=repositories(storeFor(cong,roles),cong),year=new Date().getFullYear()+(new Date().getMonth()>=8?1:0);const [people,current,previous]=await Promise.all([repo.people.names(),repo.reports.year(year),repo.reports.year(year-1)]);queryClient.setQueryData(['assistant-people',context.account,cong],people);queryClient.setQueryData(['assistant-records',context.account,cong],[...current,...previous]);}setNotice('');setAssistantOpen(true);}catch(error){setNotice((error as Error).message);}};
+  const commands:Command[]=[...visibleTools.filter(tool=>tool.available).map(tool=>({id:tool.id,label:t(tool.label),description:t(tool.description),run:()=>openNativeTool(tool)})),...(searchPeople.data||[]).map(person=>({id:'person-'+person.id,label:person.name,description:t('purpose.publishers'),run:()=>{const native=visibleTools.find(tool=>tool.id===(roles.includes('publisher')&&!admin?'households':'publishers'));if(native){openNativeTool(native);sessionStorage.setItem('ca-person-search',person.name);window.dispatchEvent(new CustomEvent('ca:find-person',{detail:person.name}));}}})),...themeIds.map(theme=>({id:'theme-'+theme,label:t('theme.gallery')+': '+t(`theme.${theme}`),run:()=>appearance.set({theme})}))];
+  const inspector=<section className="stack"><h2>{t('nav.details')}</h2><p>{t('inspector.empty')}</p><button onClick={()=>selectSection(availableSections.includes('people')?'people':'admin')}>{t(availableSections.includes('people')?'nav.people':'nav.admin')}</button></section>;
+  return <>
+    <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
+    <AppShell onUpdates={()=>setUpdatesOpen(true)} name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.some(role=>["admin","field_service","group_overseer"].includes(role))?()=>void prepareAssistant():undefined} signOut={signOut} demo={demo} inspector={inspector}>
+      {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
+      {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<div className="banner" role="status">{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</div>}
+      {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
+      <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
+            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
+      </Suspense></div>
+    </AppShell>
+    <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title="What’s new · 17 October 2026"><div className="stack"><p>S-21 groups and ZIP exports, SFTS totals, fair meeting suggestions, S-89 student and assistant slips, departmental pools and an on-device report assistant.</p><p>This is a V3 checkpoint. Official source import and some production meeting workflows remain under verification.</p><a href={new URL("updates/#release-2026-10-17",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">Read the release notes and how-to links</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
+    <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));}}>{t(action.label)}</button>)}</div></Dialog>
+    <Dialog open={assistantOpen} onClose={()=>setAssistantOpen(false)} title={t('assistant.title')}>{assistantOpen&&<LocalAssistant context={context} onExport={()=>{const tool=visibleTools.find(tool=>tool.id==='s21');if(tool){openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:select-s21'));setAssistantOpen(false);}}}/>}</Dialog>
+    {notice&&<div className="notice" role="status">{notice}</div>}
+  </>;
+
 }
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
@@ -430,7 +349,7 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>Opening protected form…</main>}><PublicForm/></Suspense> : <App />}
     </QueryClientProvider>
   </React.StrictMode>,
 );

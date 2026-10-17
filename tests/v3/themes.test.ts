@@ -1,0 +1,2 @@
+import {test,expect} from 'vitest';import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';import {themeIds} from '../../scripts/contrast-check.mjs';
+test('the nine V3 definitions are the exact owner-supplied stylesheet',()=>{const css=readFileSync('packages/ui/themes.css','utf8');expect(themeIds(css)).toEqual(['mono-light','mono-dark','paper','lagoon-glass','neon-night','sunset-pop','neo-brutal','forest','aurora']);expect(createHash('sha256').update(css).digest('hex')).toBe(readFileSync('docs/qa/supplied-themes.sha256','utf8').trim());});

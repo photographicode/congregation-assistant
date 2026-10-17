@@ -1,5 +1,9 @@
 (() => {
   "use strict";
+  const themes=['mono-light','mono-dark','paper','lagoon-glass','neon-night','sunset-pop','neo-brutal','forest','aurora'];
+  let saved;try{saved=localStorage.getItem('ca-v3-site-theme');}catch{}document.documentElement.dataset.theme=themes.includes(saved)?saved:matchMedia('(prefers-color-scheme: dark)').matches?'forest':'paper';
+  document.getElementById('site-theme')?.addEventListener('change',event=>{const theme=event.target.value;if(themes.includes(theme)){document.documentElement.dataset.theme=theme;try{localStorage.setItem('ca-v3-site-theme',theme);}catch{}}});
+  const themeSelect=document.getElementById('site-theme');if(themeSelect)themeSelect.value=document.documentElement.dataset.theme;
   const toggle = document.getElementById("menu-toggle"),
     nav = document.getElementById("site-navigation");
   toggle?.addEventListener("click", () => {
@@ -12,6 +16,9 @@
       toggle.setAttribute("aria-expanded", "false");
     }),
   );
+  fetch("public-config.json").then(r=>r.json()).then(config=>document.querySelectorAll('[data-support]').forEach(a=>a.href='mailto:'+config.SUPPORT_EMAIL)).catch(()=>{});
+  const language=document.getElementById("language-toggle");
+  language?.addEventListener("click",()=>{const hindi=document.documentElement.lang!=="hi";document.documentElement.lang=hindi?"hi":"en";const title=document.querySelector(".hero h1"),em=document.createElement("em");em.textContent=hindi?"ज़्यादा समय।":"what matters.";title.replaceChildren(document.createTextNode(hindi?"ज़रूरी बातों के लिए":"More time for"),document.createElement("br"),em);document.querySelector('.hero .actions .primary').textContent=hindi?"वर्कस्पेस का अनुरोध करें":"Request a workspace";document.querySelector('.hero .actions a:not(.primary)').textContent=hindi?"डेमो देखें":"Explore the demo";language.textContent=hindi?"English":"हिन्दी";language.setAttribute("aria-label",hindi?"Read the introduction in English":"Read the introduction in Hindi");});
   const form = document.getElementById("request-form");
   if (!form) return;
   let step = 0;
@@ -21,7 +28,7 @@
     submit = document.getElementById("request-submit"),
     status = document.getElementById("request-result");
   let catalogue;
-  fetch("../capabilities.json")
+  fetch("capabilities.json")
     .then((r) => {
       if (!r.ok) throw Error("Catalogue unavailable");
       return r.json();

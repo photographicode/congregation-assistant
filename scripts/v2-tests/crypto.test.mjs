@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {identity,scopeKey,encryptRecord,decryptRecord,sealKey,unsealKey,recoveryBackup,restoreRecovery} from '../../apps/web/src/v2/crypto-core.mjs';
+import {identity,scopeKey,encryptRecord,decryptRecord,sealKey,unsealKey,recoveryBackup,restoreRecovery} from '../../apps/web/src/features/crypto-core.mjs';
 const meta={cong_id:'test',scope:'people_private',kind:'publisher',record_id:'one',epoch:1,revision:2,schema_version:1};
 test('XChaCha authenticated records reject tampering, wrong scope key and metadata changes',async()=>{const key=await scopeKey(),record=await encryptRecord(key,{name:'CA_SENTINEL_NAME_91ac'},meta);assert.deepEqual(await decryptRecord(key,record),{name:'CA_SENTINEL_NAME_91ac'});assert(!JSON.stringify(record).includes('CA_SENTINEL_NAME_91ac'));await assert.rejects(decryptRecord(await scopeKey(),record));for(const field of ['scope','epoch','revision','record_id'])await assert.rejects(decryptRecord(key,{...record,meta:{...meta,[field]:String(meta[field])+'x'}}));await assert.rejects(decryptRecord(key,{...record,ciphertext:record.ciphertext.slice(0,-3)+'AAA'}))});
 test('replayed revision is rejected',async()=>{const key=await scopeKey();await assert.rejects(decryptRecord(key,await encryptRecord(key,{x:1},meta),3),/replay/)});

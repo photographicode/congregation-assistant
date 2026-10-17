@@ -1,0 +1,594 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "route": "",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 280,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 280,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 375,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 375,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 768,
+      "scale": 1,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "about/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "security/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "privacy/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "terms/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "features/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "pricing/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "install/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "help/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "updates/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "contact/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "status/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "data-processing/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "route": "cookies/",
+      "width": 768,
+      "scale": 2,
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "failures": []
+}

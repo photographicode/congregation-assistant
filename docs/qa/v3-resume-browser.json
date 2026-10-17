@@ -1,0 +1,280 @@
+{
+  "assistant": {
+    "parsingPreviewCancelRequests": 0,
+    "historyOffStorageUnchanged": true
+  },
+  "results": [
+    {
+      "width": 320,
+      "scale": 1,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 1,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 1,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 1.3,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 1.3,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 1.3,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 2,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 2,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 320,
+      "scale": 2,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1.3,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1.3,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 1.3,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1.3,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1.3,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 1.3,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 2,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 2,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 768,
+      "scale": 2,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1.3,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1.3,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 1.3,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 2,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 2,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1024,
+      "scale": 2,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1.3,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1.3,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 1.3,
+      "route": "schedule",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 2,
+      "route": "people",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 2,
+      "route": "pdf",
+      "issues": []
+    },
+    {
+      "width": 1440,
+      "scale": 2,
+      "route": "schedule",
+      "issues": []
+    }
+  ],
+  "errors": [],
+  "cloudRequests": 0
+}

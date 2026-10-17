@@ -1,4 +1,5 @@
 import React from "react";
+import {t} from "../core/i18n";
 import * as Primitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 export function Dialog({
@@ -53,21 +54,21 @@ export function Dialog({
             <button
               type="button"
               className="icon-button"
-              aria-label="Close"
-              title="Close"
+              aria-label={t("common.close")}
+              title={t("common.close")}
               onClick={request}
             >
-              <X aria-hidden="true" />
+              <X aria-hidden="true" /><span>{t("common.close")}</span>
             </button>
           </header>
           <div className="dialog-body">
             {confirm ? (
               <section role="alert">
-                <h3>Discard changes?</h3>
-                <p>Your unsaved changes will be lost.</p>
+                <h3>{t("common.discardTitle")}</h3>
+                <p>{t("common.unsaved")}</p>
                 <div className="actions">
                   <button onClick={() => setConfirm(false)}>
-                    Keep editing
+                    {t("common.keepEditing")}
                   </button>
                   <button
                     className="danger"
@@ -76,7 +77,7 @@ export function Dialog({
                       onClose();
                     }}
                   >
-                    Discard changes
+                    {t("common.discard")}
                   </button>
                 </div>
               </section>
