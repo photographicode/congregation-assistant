@@ -24,20 +24,20 @@ import {
 } from "lucide-react";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { rpc,client, demo, capabilities } from "./v2/client";
-import {ExperienceDefaults} from "./v2/ExperienceProfile";
-import { useAppearance,activateAppearanceProfile } from "./v2/store";
-import {authScope,displayFirstName} from "./v2/auth-scope.mjs";
-import {AdminIdleTimeout} from "./v2/Sessions";
-import {Subscription,planSchema,type WorkspacePlan} from "./v2/Subscription";
-import { UpdatePrompt } from "./v2/UpdatePrompt";
-import { adapt } from "./v2/accessibility";
-import "./v2/styles.css";
+import { rpc,client, demo, capabilities } from "./features/client";
+import {ExperienceDefaults} from "./features/ExperienceProfile";
+import { useAppearance,activateAppearanceProfile } from "./features/store";
+import {authScope,displayFirstName} from "./features/auth-scope.mjs";
+import {AdminIdleTimeout} from "./features/Sessions";
+import {Subscription,planSchema,type WorkspacePlan} from "./features/Subscription";
+import { UpdatePrompt } from "./features/UpdatePrompt";
+import { adapt } from "./features/accessibility";
+import "./features/styles.css";
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
-const PublicForm = lazy(() => import("./v2/PublicForm").then(m=>({default:m.PublicForm})));
-const OwnerConsole=lazy(()=>import("./v2/OwnerConsole"));
-const Workspace = lazy(() => import("./v2/Workspace"));
+const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));
+const OwnerConsole=lazy(()=>import("./features/OwnerConsole"));
+const Workspace = lazy(() => import("./features/Workspace"));
 const routes = [
   {id:"owner",label:"Command centre",icon:ShieldCheck},
   { id: "home", label: "Home", icon: Home },
@@ -80,6 +80,7 @@ function App() {
   const queryClient=useQueryClient();
   const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{setLoading(Boolean(account));setMemberships([]);setCaps({});setPlan(null);setCong("");}),[queryClient]);
   const appearance = useAppearance();
+  useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
   useEffect(() => adapt(appearance), [appearance]);
   useEffect(()=>{if(!demo&&session?.user?.id&&cong)activateAppearanceProfile(session.user.id,cong,memberships.some(m=>m.cong_id===cong&&m.role==='publisher')&&!memberships.some(m=>m.cong_id===cong&&m.role==='admin'));},[session?.user?.id,cong]);
   React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
@@ -218,7 +219,7 @@ function App() {
     notify: setNotice,
   };
   async function signOut() {
-    const { clearDevice } = await import("./v2/device-keys");
+    const { clearDevice } = await import("./features/device-keys");
     await clearDevice();
     for (const store of [localStorage, sessionStorage]) {
       for (const key of Object.keys(store))
@@ -440,7 +441,7 @@ function App() {
         <label>
           Search
           <input
-            autoFocus
+            id="tool-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Schedule, people, reports…"

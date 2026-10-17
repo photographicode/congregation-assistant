@@ -1,6 +1,6 @@
 import React from 'react';
 import {client,demo} from './client';
-import {repositories} from '../data/repositories';
+import {repositories} from '../../../../packages/core/repositories';
 import type {Context} from '../main';
 export function Backup({context:c}:{context:Context}) {
  const repo=React.useMemo(()=>repositories(client,c.cong,demo),[c.cong]);

@@ -1,0 +1,2 @@
+import {test,expect} from 'vitest';import {existsSync,readFileSync} from 'node:fs';
+test('V3 owns source packages and retains strict TypeScript',()=>{expect(existsSync('apps/web/src/v2')).toBe(false);for(const name of ['core','pdf','ui'])expect(existsSync(`packages/${name}/package.json`)).toBe(true);expect(JSON.parse(readFileSync('apps/web/tsconfig.json','utf8')).compilerOptions.strict).toBe(true);});

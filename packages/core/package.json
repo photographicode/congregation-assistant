@@ -1,0 +1,10 @@
+{
+  "name": "@ca/core",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "2.57.4",
+    "zod": "4.1.12"
+  }
+}

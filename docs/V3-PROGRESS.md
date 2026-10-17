@@ -3,7 +3,7 @@
 V3-ORDERS.md is authoritative. The supplied CSS is used verbatim as packages/ui/themes.css. Existing frozen tag v1-final is reused; it must never be moved. A checked package requires its complete acceptance scope, not merely a route or a demo.
 
 - [x] **WP-00** Baseline: tag `v1-final`; generate golden PDFs from V1 into `tests/golden/v1/`; generate V1 action inventory (`docs/PARITY.md`); create `docs/V3-PROGRESS.md`.
-- [ ] **WP-01** Tooling: monorepo layout, Vite/TS strict, ESLint (a11y, no-emoji, no-hex-in-components), Vitest, Playwright, `scripts/contrast-check.mjs`, `scripts/layout-detector.ts`, `scripts/check-no-legacy.mjs`.
+- [x] **WP-01** Tooling: monorepo layout, Vite/TS strict, ESLint (a11y, no-emoji, no-hex-in-components), Vitest, Playwright, `scripts/contrast-check.mjs`, `scripts/layout-detector.ts`, `scripts/check-no-legacy.mjs`.
 - [ ] **WP-02** Design system: `themes.css`, tokens, fonts, icons, illustrations, all components (§5), Dialog.
 - [ ] **WP-03** App shell: navigation + hubs + breakpoints (§3), global search/command palette, Experience Styles (§6), theme gallery, adaptive layout runtime (Layout Doctor), i18n scaffold.
 - [ ] **WP-04** `Store` interface + `PlainStore` + typed repositories + Zod schemas + local IndexedDB mirror + sync (Plain) — port V1 data logic.
@@ -34,3 +34,4 @@ V3-ORDERS.md is authoritative. The supplied CSS is used verbatim as packages/ui/
 ## Evidence
 
 - WP-00: reused immutable v1-final at 76978c4fbe56658b8b856cb7218b5c4a212cd1f0. Re-executed the real frozen generators for all 17 PDFs and four dashboard fixtures; regenerated 104 expanded requested actions against the reference. npm run check: 83 passed plus TypeScript. Baseline PDFs are reference artifacts, not V3 shipped assets.
+- WP-01: removed the src/v2 tree by relocating native screens to features; extracted shared core repositories and PDF engine to workspace packages. Added strict lint (a11y/hooks/no emoji/no component hex), Vitest, gradient/alpha contrast sampler and kept layout/bundle detectors. Check passed: 3 Vitest + 83 existing unit tests and strict app/package TypeScript. Existing proven ports remain the baseline for the subsequent Store refactor.

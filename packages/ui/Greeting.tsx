@@ -1,5 +1,5 @@
 import React from 'react';
-import { greetingModel, nextMinuteDelay } from '../../apps/web/src/v2/greeting.mjs';
+import { greetingModel, nextMinuteDelay } from '../../apps/web/src/features/greeting.mjs';
 export function Greeting({name='', timezone, locale='en', clock='locale', subline}: {name?:string; timezone?:string; locale?:string; clock?:string; subline?:string}) {
  const [now,setNow]=React.useState(()=>new Date());
  React.useEffect(()=>{

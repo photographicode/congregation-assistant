@@ -2,7 +2,7 @@ import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {format} from 'date-fns';
 import {client,demo} from './client';
-import {repositories,type ScheduleDraft} from '../data/repositories';
+import {repositories,type ScheduleDraft} from '../../../../packages/core/repositories';
 import type {Context} from '../main';
 const slots=[['Chairman','Chairman'],['OpeningPrayer','Opening prayer'],['TreasuresTalk','Treasures talk'],['SpiritualGems','Spiritual gems'],['BibleReading','Bible reading'],['Conversation','Starting a conversation'],['FollowingUp','Following up'],['Disciples','Making disciples'],['ChristianPart1','Living as Christians'],['BibleStudy','Congregation Bible study'],['BibleStudyReader','Bible study reader'],['ClosingPrayer','Closing prayer']];
 const samplePersonnel=[{id:'daniel',name:'Daniel Thomas',gender:'Male',appointment:'Elder',roles:['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleStudy'],exceptions:{},availability:[]},{id:'samuel',name:'Samuel George',gender:'Male',appointment:'MS',roles:['BibleReading','BibleStudyReader','ChristianParts'],exceptions:{},availability:[]},{id:'maria',name:'Maria Thomas',gender:'Female',appointment:'Sister',roles:['Conversation','FollowingUp','Disciples'],exceptions:{},availability:[]}];

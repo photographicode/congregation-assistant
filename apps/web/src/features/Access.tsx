@@ -2,7 +2,7 @@ import React from 'react';
 import {z} from 'zod';
 import {useQuery} from '@tanstack/react-query';
 import {client,demo,rpc} from './client';
-import {repositories} from '../data/repositories';
+import {repositories} from '../../../../packages/core/repositories';
 import type {Context} from '../main';
 const roleLabels:Record<string,string>={admin:'Main administrator',field_service:'Field service overseer',oclm:'Midweek overseer',weekend:'Weekend overseer',group_overseer:'Group overseer',attendance:'Attendance recorder',attendant:'Attendant',av:'Audio & video',cleaning:'Cleaning overseer'};
 const roles=['admin','field_service','oclm','weekend','group_overseer','attendance','attendant','av','cleaning'];

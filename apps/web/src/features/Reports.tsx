@@ -4,7 +4,7 @@ import {parseDelimited} from './model.mjs';
 import {csvRecords} from './export.mjs';
 import {reportTotals,reportDraft,reportPayload,annualReportMonths,reviewReportImport} from './report-model.mjs';
 import {client,demo} from './client';
-import {repositories,type Report} from '../data/repositories';
+import {repositories,type Report} from '../../../../packages/core/repositories';
 import type {Context} from '../main';
 import {Dialog} from '../../../../packages/ui/Dialog';
 export function reportingPeriod(date:Date){const month=date.getMonth();return {month,year:date.getFullYear()+(month>=8?1:0)};}

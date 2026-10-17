@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {groupKey,normalizeEmail,parseDelimited,parseVCard,mapImport,reviewImport,phoneE164,formatMessage,assignmentConflicts,weekendDefaults,aad} from '../../apps/web/src/v2/model.mjs';
+import {groupKey,normalizeEmail,parseDelimited,parseVCard,mapImport,reviewImport,phoneE164,formatMessage,assignmentConflicts,weekendDefaults,aad} from '../../apps/web/src/features/model.mjs';
 test('group normalization merges case and whitespace without creating groups',()=>{assert.equal(groupKey('  GROUP  A '),'group a');assert.equal(reviewImport([{name:'Maria',group:'unknown',phone:'',email:''}],[{name:'Group A'}])[0].include,false)});
 test('email normalization preserves Gmail dots and plus suffix',()=>{assert.equal(normalizeEmail(' M.Aria+one@Gmail.com '),'m.aria+one@gmail.com')});
 test('CSV quoting, embedded newline, BOM and tabular paste',()=>{assert.deepEqual(parseDelimited('\ufeffName,Address\r\n"Maria, T","a\nb"'),[['Name','Address'],['Maria, T','a\nb']]);assert.deepEqual(parseDelimited('Name\tEmail\nMaria\tm@example.com'),[['Name','Email'],['Maria','m@example.com']]);assert.throws(()=>parseDelimited('"bad'))});

@@ -1,7 +1,7 @@
 name: Native PDF golden and script contracts
 on:
   pull_request:
-    paths: ['apps/web/src/pdf/**', 'apps/web/src/v2/PdfStudio.tsx', 'assets/fonts/**', 'assets/pdf-templates/**', 'tests/**', 'scripts/*pdf*', 'package*.json', '.github/workflows/pdf-contracts.yml']
+    paths: ['packages/pdf/**', 'apps/web/src/features/PdfStudio.tsx', 'assets/fonts/**', 'assets/pdf-templates/**', 'tests/**', 'scripts/*pdf*', 'package*.json', '.github/workflows/pdf-contracts.yml']
   workflow_dispatch:
   schedule:
     - cron: '15 2 * * 0'
