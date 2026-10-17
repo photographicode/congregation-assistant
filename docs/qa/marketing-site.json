@@ -1,0 +1,31 @@
+{
+  "results": [
+    {
+      "width": 320,
+      "root": true,
+      "trust": true,
+      "locales": 6
+    },
+    {
+      "width": 390,
+      "root": true,
+      "trust": true,
+      "locales": 6
+    },
+    {
+      "width": 768,
+      "root": true,
+      "trust": true,
+      "locales": 6
+    },
+    {
+      "width": 1440,
+      "root": true,
+      "trust": true,
+      "locales": 6
+    }
+  ],
+  "noJavaScript": true,
+  "browserErrors": [],
+  "externalRequests": []
+}

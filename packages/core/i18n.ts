@@ -28,7 +28,7 @@ const en={
  'theme.mono-light':'Mono Light','theme.mono-dark':'Mono Dark','theme.paper':'Paper','theme.lagoon-glass':'Lagoon Glass','theme.neon-night':'Neon Night','theme.sunset-pop':'Sunset Pop','theme.neo-brutal':'Neo Brutal','theme.forest':'Forest','theme.aurora':'Aurora',
  'appearance.intensity':'Background intensity','common.close':'Close','common.discard':'Discard changes','common.discardTitle':'Discard changes?','common.unsaved':'Your unsaved changes will be lost.','common.keepEditing':'Keep editing','common.copy':'Copy','common.copied':'Copied','common.undo':'Undo','common.search':'Search','common.next':'Next','common.back':'Back','common.cancel':'Cancel','common.choose':'Choose','common.noResults':'No matching results','common.loading':'Loading','common.more':'Show more','qr.code':'QR code','table.previous':'Previous rows','table.next':'Next rows'
 } as const;
-export type Locale='en'|'hi'|'ml'|'ta';export type MessageKey=keyof typeof en;
+export type Locale='en'|'hi'|'ta'|'ml'|'kn'|'te'|'or'|'as'|'mr'|'gu'|'bn'|'pa'|'ur';export type MessageKey=keyof typeof en;
 // Translation scaffolds deliberately fall back to reviewed English copy.
-export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en,hi:{},ml:{},ta:{}};
+export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en,hi:{},ta:{},ml:{},kn:{},te:{},or:{},as:{},mr:{},gu:{},bn:{},pa:{},ur:{}};
 export function t(key:MessageKey,locale:Locale='en'){return messages[locale][key]||en[key];}

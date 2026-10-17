@@ -10,5 +10,4 @@ for(const root of ['dist','dist-site']){
  await writeFile(root+'/.well-known/assetlinks.json','[]\n');
  await writeFile(root+'/robots.txt',app?'User-agent: *\nDisallow: /\n':`User-agent: *\nAllow: /\nSitemap: ${c.PUBLIC_SITE_URL}/sitemap.xml\n`);
 }
-const routes=['','features/','security/','about/','pricing/','install/','help/','updates/','contact/','privacy/','terms/','status/','data-processing/','cookies/'];
-await writeFile('dist-site/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+routes.map(p=>`<url><loc>${c.PUBLIC_SITE_URL}/${p}</loc></url>`).join('')+'</urlset>');
+// The marketing generator emits all localized routes in its sitemap.
