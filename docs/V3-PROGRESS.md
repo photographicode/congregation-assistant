@@ -242,3 +242,9 @@ Offline/source regression: cached automatic parts could change an earlier manual
 Seventeen regenerated native PDF fixtures pass exact extracted text, page geometry and existing coordinate tolerances against frozen V1 goldens. Original template hashes and embedded fonts pass; no PDF images were rendered for this check (qa/next-pdf-text.json).
 
 Both Pages deployment workflows now attempt to select Actions publishing with their scoped Pages write permission, to remove competing automatic branch builds. A permissions refusal leaves deployment available and reports the repository-setting task explicitly; the actual result is recorded after deployment.
+
+## NEXT deployment — verified live
+
+Source main `f0a0d67d437538bee6d319d70ebbc120031c3ad0` and public main `c2cd184462d5c25b07ddd1119c99fab140a73c32` are published and pass live verification. Source run 39073120817 and public run 39073165965 both succeed, including the exact source SHA, worker/cache isolation and zero-error/no-cloud-demo checks. Source CI also passes the complete suite, 60 regression views, 26 downloads (maximum 1,078 ms), automatic-source assignment preservation, offline recovery and 3,705 rendered contrast pairs. See qa/NEXT-RELEASE.md and qa/NEXT-DEPLOYMENT.json.
+
+Both workflow attempts to select Actions publishing received HTTP 403; deployment proceeded successfully. Owner Pages settings remain required to prevent competing branch builds. No migration approval is pending. DNS/mail and remaining V3/NEXT acceptance remain open. These evidence-only result notes are pushed on v3/resume to preserve the verified production artifact without starting an unchanged deployment.
