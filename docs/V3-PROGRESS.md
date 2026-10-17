@@ -115,3 +115,32 @@ Full-ref history scan after fetching branches/tags: 1,825 source blobs and 263 p
 Source PR #41 merged to main at `674e3f1d055752434e38229e564b285fcba00e36`. Public-repository artifact is built from that commit with its own project-relative URL. Local packaged-site verification passes: root site, `/app/`, actual controlling service worker, matching version/deployment commit, correct manifest scope/start URL, zero browser errors, zero demo cloud calls and zero assistant parsing/preview/cancel requests. Automated post-deploy verification is included in the Pages workflows.
 
 A final two-repository hosting check identified an origin-wide cache deletion in the existing worker. Scoped app-shell/PDF cache names and cleanup to BASE_URL so installing either Pages app cannot delete the other app’s offline assets. Packaged/live verification now seeds an unrelated app cache and requires it to survive worker activation.
+
+## Verified deployment result — 17 October 2026
+
+Both repositories are merged and published:
+
+- Source PR #41: https://github.com/photographicode/congregation-assistant/pull/41
+- Public snapshot PR #18: https://github.com/photographicode/Congregation-Assistant_Public/pull/18
+- App source commit: `b39726aaa0678a239602a9fb3a5fc434ab6ff8b4` on source main.
+- Public snapshot commit: `51a8b7d2bf183f4024aa20d173d247e0d30953fd` on public main.
+- Primary public site: https://photographicode.github.io/Congregation-Assistant_Public/
+- Primary app demo: https://photographicode.github.io/Congregation-Assistant_Public/app/?demo=admin
+- Source mirror site: https://photographicode.github.io/congregation-assistant/
+- Source mirror app demo: https://photographicode.github.io/congregation-assistant/app/?demo=admin
+
+Public deployment and live verification succeeded in run https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/39041017472 . Source deployment and live verification succeeded in run https://github.com/photographicode/congregation-assistant/actions/runs/39040915431 . Both live browser checks report the exact source commit above, a controlling service worker, correct manifest start/scope, zero browser errors, zero demo cloud requests and zero requests during assistant parsing/preview/cancel. The unrelated-app cache sentinel also survived activation.
+
+The source workflow passed lint/TypeScript/unit/legacy checks, build, the 45-view responsive/assistant browser suite and S-89 contracts before uploading. Full V3 acceptance is not claimed: the expanded gaps and the older browser-harness/strict-gradient failures remain in CUTOVER-REPORT.md. Official-source CI returned HTTP 400, so Add parts remains the fallback. Real devices, WhatsApp, payments and approved-account OAuth callbacks remain unverified.
+
+Production SFTS and confirmed-report functions are applied with authenticated-only execution. The proposed meeting-workflow migration remains unapplied following automatic approval review rejection; it was narrowed to preserve the existing department functions. New automatic attendant activation and group-overseer link-list activation are withheld. Existing administrator group-link creation and existing protected attendance links remain available. Production metadata also confirms the SFTS restore default for older backups is present.
+
+No custom-domain CNAME is published. Follow GITHUB-PAGES-DNS.md after owner DNS confirmation. Both projects still show GitHub's automatic branch-publishing runs alongside the new artifact workflows; select GitHub Actions as the Pages publishing source in repository settings before future main updates to avoid competing publishing paths. The available connector can deploy artifacts but exposes no Pages-administration mutation tool. These final result notes are pushed to the resume branch without starting another production deployment.
+
+### Production activation after reduced review
+
+The original automatic-review rejection is resolved. The reduced migration, preserving both existing department functions, was accepted and applied. Metadata verifies all four new helpers are authenticated-only with empty search_path. Re-enabled current attendant attendance, own-group link controls, real meeting settings and atomic setup/calendar saving. Added scoped SFTS status fields to non-admin People reads and SFTS Home totals/table/annual logs. Current labels use actual saved meeting dates when present and explicitly say week-of when only a historical week is known. Older blocked-state paragraphs above are historical; no migration approval remains pending.
+
+The activation candidate also fixes an orphaned outbox lease after reload: an acquired exclusive Web Lock can reclaim a prior document’s lease immediately; browsers without Web Locks still respect the durable lease timeout. Revision checks remain unchanged, including lost-acknowledgment conflict handling. Added deterministic unit and real-browser coverage for abandoned-lease recovery and retained two-tab single-write tests. Assistant selection also clears incompatible student/assistant pairings when the student changes.
+
+Activation verification: 38 native unit tests plus 68 existing unit tests pass; real IndexedDB/Web Locks tests now include abandoned-lease recovery, two-tab single writes, conflict and reviewed recovery. Two consecutive signed-in offline reload/reconnect runs pass. The expanded 60-view matrix (including Home) passes, with zero demo cloud calls, zero browser errors, zero assistant parsing requests and no prompt-history writes. Existing nine-theme CSS SHA-256 remains unchanged. The activation is being published as the next checkpoint, with the expanded-scope limitations retained.

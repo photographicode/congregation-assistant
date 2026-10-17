@@ -1,4 +1,4 @@
-import 'fake-indexeddb/auto';
+import 'fake-indexeddb/auto';import {openDB} from 'idb';
 import {test,expect,vi} from 'vitest';
 import {z} from 'zod';
 import {PlainStore,clearPlainAccount} from '../../packages/core/plain-store';
@@ -83,4 +83,9 @@ test('fresh startup uses a validated cache when the network is unreachable, but 
 test('account cleanup removes earlier role mirrors without deleting another account',async()=>{
  const a=setup(),b=setup();await a.store.read(query,schema);await b.store.read(query,schema);const role=new PlainStore({account:a.account,workspace:'park',authorization:'admin',transport:a.transport,online:()=>true});await role.read(query,schema);a.store.close();role.close();await clearPlainAccount(a.account);
  const offline=new PlainStore({account:a.account,workspace:'park',authorization:'admin',transport:a.transport,online:()=>false});await expect(offline.read(query,schema)).rejects.toMatchObject({kind:'offline'});b.setOnline(false);expect((await b.store.read(query,schema)).revision).toBe(1);await offline.clear();await b.store.clear();
+});
+
+test('exclusive browser ownership recovers an abandoned lease; fallback respects its timeout',async()=>{
+ const a=setup();await a.store.read(query,schema);a.setOnline(false);await a.store.stage(command(),schema);a.store.close();const db=await openDB('ca-v3-plain'),pending=(await db.getAll('outbox')).find(row=>JSON.parse(row.scope)[0]===a.account);await db.put('outbox',{...pending,lease:'closed-document',leaseUntil:Date.now()+60000});a.setOnline(true);const resumed=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport:a.transport,online:()=>true});
+ try{vi.stubGlobal('navigator',{});await resumed.sync();expect(a.counts().writes).toBe(0);expect((await resumed.status()).pending).toBe(1);const request=vi.fn(async(_name:string,callback:()=>Promise<void>)=>callback());vi.stubGlobal('navigator',{locks:{request}});await resumed.sync();expect(request).toHaveBeenCalledOnce();expect(a.counts().writes).toBe(1);expect((await resumed.status()).pending).toBe(0);await resumed.clear();}finally{db.close();vi.unstubAllGlobals();}
 });

@@ -90,11 +90,13 @@ export class PlainStore implements Store {
   if(this.online())this.track(this.sync());return value;
  }
  async status():Promise<SyncStatus>{this.assertActive();const rows=await this.entries();return {pending:rows.filter(row=>row.state==='pending').length,conflicts:rows.filter(row=>row.state==='conflict').length,forbidden:rows.filter(row=>row.state==='forbidden').length,lastError:this.lastError};}
- sync():Promise<void>{this.assertActive();if(this.syncing)return this.syncing;const locks=globalThis.navigator?.locks;this.syncing=(async()=>{if(locks)await locks.request('ca-v3-sync:'+this.scope,()=>this.flush());else await this.flush();})().finally(()=>{this.syncing=undefined;});return this.syncing;}
- private async claim(id:string){const db=await this.database,tx=db.transaction('outbox','readwrite'),row=await tx.store.get(id);this.assertActive();if(!row||row.state!=='pending'||(row.leaseUntil||0)>Date.now()){await tx.done;return undefined;}const leased={...row,lease:crypto.randomUUID(),leaseUntil:Date.now()+60000};await tx.store.put(leased);await tx.done;return leased;}
- private async flush(){
+ sync():Promise<void>{this.assertActive();if(this.syncing)return this.syncing;const locks=globalThis.navigator?.locks;this.syncing=(async()=>{if(locks)await locks.request('ca-v3-sync:'+this.scope,()=>this.flush(true));else await this.flush(false);})().finally(()=>{this.syncing=undefined;});return this.syncing;}
+ // An acquired Web Lock proves an earlier document no longer owns this sync scope.
+ // Reclaim its abandoned lease immediately; retain TTL coordination when Web Locks are absent.
+ private async claim(id:string,exclusive:boolean){const db=await this.database,tx=db.transaction('outbox','readwrite'),row=await tx.store.get(id);this.assertActive();if(!row||row.state!=='pending'||(!exclusive&&(row.leaseUntil||0)>Date.now())){await tx.done;return undefined;}const leased={...row,lease:crypto.randomUUID(),leaseUntil:Date.now()+60000};await tx.store.put(leased);await tx.done;return leased;}
+ private async flush(exclusive:boolean){
   if(!this.online())return;const rows=(await this.entries()).sort((a,b)=>a.sequence-b.sequence);this.assertActive();
-  for(const candidate of rows){if(candidate.state!=='pending'||!this.online())break;const row=await this.claim(candidate.id);if(!row)break;const command=parse(queued,row.command);
+  for(const candidate of rows){if(candidate.state!=='pending'||!this.online())break;const row=await this.claim(candidate.id,exclusive);if(!row)break;const command=parse(queued,row.command);
    try{this.assertActive();const response=parse(savedDraft,await this.options.transport.write({kind:'rpc',name:'save_oclm_workspace',args:{p_cong_id:this.options.workspace,p_expected_revision:command.expectedRevision,p_data:command.draft}}));this.assertActive();
     const db=await this.database,tx=db.transaction(['snapshots','outbox'],'readwrite');
     const current=await tx.objectStore('outbox').get(row.id);this.assertActive();if(!current||current.lease!==row.lease){await tx.done;break;}await tx.objectStore('outbox').delete(row.id);const later=await tx.objectStore('outbox').index('scope').getAll(this.scope),snapshot=await tx.objectStore('snapshots').get(this.id(command.key));this.assertActive();

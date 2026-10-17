@@ -4,6 +4,7 @@
   "webLocks": true,
   "offlineReload": true,
   "parallelSyncOnce": true,
+  "abandonedLeaseRecovered": true,
   "synced": true,
   "conflict": true,
   "reviewed": true,

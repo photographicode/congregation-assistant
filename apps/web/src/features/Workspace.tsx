@@ -194,7 +194,7 @@ export default function Workspace({
     enabled: !demo && canPeople,
     queryFn: async () => {
       if (admin) return await storeFor(c.cong,c.roles).read({source:{kind:"rpc",name:"ca_v2_people",args:{p_cong_id:c.cong}},cacheKey:"workspace-people"},z.array(z.object({id:z.string(),name:z.string(),group:z.string(),email:z.string(),phone:z.string().nullable().transform(value=>value||""),address:z.string().nullable().transform(value=>value||"")}).passthrough()));
-      const rows=await storeFor(c.cong,c.roles).read({source:{kind:'table',name:'publishers',columns:c.roles.includes("field_service")?"id,name,service_group,phone,address,gender,is_elder,is_ms":"id,name,service_group",filters:[{column:'cong_id',op:'eq',value:c.cong},{column:'transferred_at',op:'is',value:null}],order:'name'},cacheKey:'workspace-people'},z.array(z.object({id:z.string(),name:z.string(),service_group:z.string().nullable().optional(),phone:z.string().nullable().optional(),address:z.string().nullable().optional(),gender:z.string().nullable().optional(),is_elder:z.boolean().nullable().optional(),is_ms:z.boolean().nullable().optional()})));
+      const rows=await storeFor(c.cong,c.roles).read({source:{kind:'table',name:'publishers',columns:c.roles.includes("field_service")?"id,name,service_group,phone,address,gender,is_elder,is_ms,is_rp,is_sp,is_fm,is_sfts":"id,name,service_group,is_rp,is_sp,is_fm,is_sfts",filters:[{column:'cong_id',op:'eq',value:c.cong},{column:'transferred_at',op:'is',value:null}],order:'name'},cacheKey:'workspace-people'},z.array(z.object({id:z.string(),name:z.string(),service_group:z.string().nullable().optional(),phone:z.string().nullable().optional(),address:z.string().nullable().optional(),gender:z.string().nullable().optional(),is_elder:z.boolean().nullable().optional(),is_ms:z.boolean().nullable().optional(),is_rp:z.boolean().nullable().optional(),is_sp:z.boolean().nullable().optional(),is_fm:z.boolean().nullable().optional(),is_sfts:z.boolean().nullable().optional()})));
       return rows.map((p) => ({
         id: p.id,
         name: p.name,
@@ -204,7 +204,7 @@ export default function Workspace({
         address: p.address || "",
         gender: p.gender||undefined,
         isElder: p.is_elder,
-        isMS: p.is_ms,
+        isMS: p.is_ms,isRP:Boolean(p.is_rp),isSP:Boolean(p.is_sp),isFM:Boolean(p.is_fm),isSFTS:Boolean(p.is_sfts),
       }));
     },
   });
@@ -356,7 +356,7 @@ export default function Workspace({
     if (!demo) {
       if (!c.caps.setup)
         throw Error("Update pending. Setup progress cannot be saved yet.");
-      await rpc("ca_v2_save_setup", {
+      await rpc("ca_v3_save_setup", {
         p_cong_id: c.cong,
         p_step: next,
         p_data: setup,

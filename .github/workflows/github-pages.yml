@@ -27,6 +27,7 @@ jobs:
       - run: node --test scripts/meetings/parse.test.mjs
       - run: npx playwright install --with-deps chromium
       - run: npm run build && node scripts/check-v3-resume.cjs
+      - run: node scripts/check-v3-store-browser.mjs && node scripts/check-v3-offline-app.cjs
       - run: node scripts/build-pages.mjs
         env:
           CA_PAGES_URL: https://photographicode.github.io/congregation-assistant

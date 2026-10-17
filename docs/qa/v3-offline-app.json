@@ -5,6 +5,6 @@
   "offlineDraftReload": true,
   "reconnectWrites": 1,
   "browserErrors": [],
-  "interceptedRequests": 9,
-  "abortedOfflineAttempts": 21
+  "interceptedRequests": 13,
+  "abortedOfflineAttempts": 23
 }
