@@ -12,7 +12,7 @@ export async function meetingPDF({name,week,date,program,assignments,people,star
  let y=715,previous='',minutes=Number(start.split(':')[0])*60+Number(start.split(':')[1]);
  write('Auxiliary classroom',385,y+15,78,8,true);write('Main hall',475,y+15,88,8,true);
  for(const [index,part]of program.parts.entries()){
-  if(part.section!==previous){previous=part.section;page.drawRectangle({x:28,y:y-9,width:539,height:22,color:palettes[part.section]});page.drawText(({treasures:'TREASURES FROM GOD’S WORD',field:'APPLY YOURSELF TO THE FIELD MINISTRY',living:'LIVING AS CHRISTIANS'})[part.section],{x:35,y:y-2,size:10,font:bold,color:part.section==='field'?rgb(0,0,0):rgb(1,1,1)});y-=34;}
+  if(part.section!==previous){previous=part.section;page.drawRectangle({x:28,y:y-9,width:539,height:22,color:palettes[part.section]});page.drawText(({treasures:'TREASURES FROM GOD’S WORD',field:'APPLY YOURSELF TO THE FIELD MINISTRY',living:'LIVING AS CHRISTIANS'})[part.section],{x:35,y:y-2,size:10,font:bold,color:part.section==='field'?rgb(31/255,22/255,0):rgb(1,1,1)});y-=34;}
   const time=String(Math.floor(minutes/60)%24).padStart(2,'0')+':'+String(minutes%60).padStart(2,'0');minutes+=part.minutes;
   const height=Math.max(write(time,28,y,36,9),write(`${index+1}. ${part.title} (${part.minutes} min.)`,72,y,298,10,true),...['Aux',''].map((hall,i)=>write(person(part.id+hall)+(part.assistant?' / '+person(part.id+hall+'Assistant'):''),385+i*90,y,85,9)))+10;
   y-=height;page.drawLine({start:{x:28,y:y+6},end:{x:567,y:y+6},thickness:.25,color:rgb(.8,.8,.8)});if(y<45)throw Error('This program is too long for the supplied S-140 page. Review its parts before printing.');
