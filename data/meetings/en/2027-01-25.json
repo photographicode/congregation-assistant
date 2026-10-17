@@ -1,0 +1,112 @@
+{
+  "weekStart": "2027-01-25",
+  "weekEnd": "2027-01-31",
+  "dateLabel": "January 25-31 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 30,
+    "middle": 3,
+    "closing": 94
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "We Are Accountable to Jehovah for Our Actions",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 10"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Making Disciples",
+          "minutes": 2,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 5,
+          "title": "Making Disciples",
+          "minutes": 3,
+          "kind": "student",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 6,
+          "title": "Making Disciples",
+          "minutes": 3,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "lmd lesson 11 point 3"
+          ]
+        },
+        {
+          "number": 7,
+          "title": "Making Disciples",
+          "minutes": 4,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "lmd lesson 11 point 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 8,
+          "title": "Rely on Jehovah When Facing Health Challenges",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 9,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027004",
+  "fetched_at": "2026-10-17T20:25:21.336Z",
+  "content_hash": "cf723521f949631bce0a56b7a81f31a9a1857889643767243000837773d1507d"
+}
