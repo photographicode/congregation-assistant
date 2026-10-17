@@ -1,3 +1,4 @@
+import {InstallApp} from './InstallApp';
 import {WeekendTalkHistory} from './WeekendTalkHistory';
 import {HomeGroupLinks} from './HomeGroupLinks';
 import {demoPublishers} from "../../../../packages/core/demo-publishers";
@@ -1427,20 +1428,7 @@ export default function Workspace({
           </section>
           <section className="card stack">
             <h2>Help & install</h2>
-            <button
-              onClick={() => {
-                const event = (window as any).__caInstall;
-                if (event) {
-                  event.prompt();
-                  (window as any).__caInstall = null;
-                } else
-                  c.notify(
-                    "Android Chrome: menu → Install app. iPhone: Share → Add to Home Screen. Desktop Chrome/Edge: use the install icon in the address bar.",
-                  );
-              }}
-            >
-              Install app
-            </button>
+            <InstallApp/>
             <a href={import.meta.env.BASE_URL+"site/android/"}>Android and iOS installation guide</a>
             <a href={`mailto:${config.SUPPORT_EMAIL}`}>Contact support</a>
             <p className="muted">

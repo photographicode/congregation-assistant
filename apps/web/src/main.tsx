@@ -1,3 +1,4 @@
+import './features/install-runtime';
 import {z} from "zod";
 import type {SyncStatus} from "../../../packages/core/store";
 import React, { useEffect, useState, Suspense, lazy } from "react";
