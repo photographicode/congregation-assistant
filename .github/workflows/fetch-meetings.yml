@@ -38,10 +38,12 @@ jobs:
           git config user.name 'congregation-assistant-import[bot]'
           git config user.email 'import-bot@users.noreply.github.com'
           git commit -m 'Refresh official meeting publication metadata'
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: wol-parse-debug
           path: work/meeting-debug
           retention-days: 3
+          if-no-files-found: ignore

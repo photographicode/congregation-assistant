@@ -5,3 +5,5 @@ test('structural parsing preserves variable counts, minutes, songs and settings'
 test('refuses missing minutes rather than inventing them',()=>assert.throws(()=>parseWeek(html().replace('(10 min.)',''),{url:'https://wol.jw.org/',year:2026}),/Missing minutes/));
 test('follows source links, never constructs sequential ids or external URLs',()=>assert.deepEqual(links('<a rel="next" href="/en/wol/d/r1/lp-e/900">Next</a><a href="https://example.com">Other</a>','https://wol.jw.org/').map(a=>a.url),['https://wol.jw.org/en/wol/d/r1/lp-e/900']));
 test('missing Watchtower fields remain null',()=>{const result=watchtower('<article></article>','https://wol.jw.org/',null);assert.equal(result.articleTitle,null);assert.equal(result.studyDates,null);});
+
+test('preserves repeated song numbers and leaves a missing middle song null',()=>{const same=html().replace('Song 34','Song 12').replace('Song 56','Song 12');assert.deepEqual(parseWeek(same,{url:'https://wol.jw.org/',year:2026}).songs,{opening:12,middle:12,closing:12});assert.deepEqual(parseWeek(html().replace('<h3>Song 34</h3>',''),{url:'https://wol.jw.org/',year:2026}).songs,{opening:12,middle:null,closing:56});});
