@@ -162,3 +162,13 @@ The narrowed production migration is applied and activated; no migration approva
 Final safety pass removed obsolete project fallbacks from the retained root/staging shells; their defaults now use the current publishable configuration. Existing root acceptance checks remain green. The live checker now captures console errors as well as page exceptions. Opening an explicit all-S-21 command also clears any prior publisher-search filter, so a stale search cannot silently narrow the requested export.
 
 Trust-route smoke coverage now includes `/security/` with console-error capture. Fixed deep-page configuration asset resolution, emitted an explicit unverified metrics placeholder instead of a missing-file request, and kept CI-only verified timestamps. Updated the hosting-provider map and policy date. The gold PDF section text now uses the same requested dark gold-bar foreground as the schedule view.
+
+## V3 next orders — 18 October 2026
+
+The two owner uploads are byte-identical; `V3-NEXT-ORDERS.md` supersedes conflicting preview/import instructions. Work follows A→J. Prior unfinished packages remain unchecked.
+
+### A — direct PDF downloads
+
+Publisher rows, search S-21 actions, missing-report rows and Download Center now save directly; emergency contacts and existing meeting/slip buttons also save directly. PDF generation runs in a module worker with cancellation; ZIP batches reuse one engine. Download Center remembers merged/ZIP preference. Accuracy notices are non-blocking and link to Reports; no preview iframe/dialog remains. Print/Share remain separate options. iOS falls back to a blob tab only when the anchor download property is unavailable.
+
+Evidence: strict TypeScript, lint, production build pass. `scripts/check-direct-downloads.cjs` observes 14 real download events at 390/1440 px (publisher row, S-21 merged/ZIP, S-3, S-88, emergency and weekend), all under 1,806 ms, no dialog/preview. The existing PDF engine/templates are unchanged. CO Visit Pack remains disabled because its complete generator is not shipped; it is not advertised as a completed download path. Expanded slip/roster and text-parity checks follow in final acceptance.

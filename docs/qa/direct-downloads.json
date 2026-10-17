@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "label": "publisher row",
+      "filename": "S-21_Thomas-Maria_2027.pdf",
+      "elapsed": 1715
+    },
+    {
+      "width": 390,
+      "label": "s21",
+      "filename": "S-21_all_2027.pdf",
+      "elapsed": 1532
+    },
+    {
+      "width": 390,
+      "label": "s3",
+      "filename": "s3_2027.pdf",
+      "elapsed": 670
+    },
+    {
+      "width": 390,
+      "label": "s88",
+      "filename": "s88_2027.pdf",
+      "elapsed": 1542
+    },
+    {
+      "width": 390,
+      "label": "emergency",
+      "filename": "emergency_2027.pdf",
+      "elapsed": 973
+    },
+    {
+      "width": 390,
+      "label": "weekend",
+      "filename": "weekend_2027.pdf",
+      "elapsed": 899
+    },
+    {
+      "width": 390,
+      "label": "s21 zip",
+      "filename": "S-21_all_2027.zip",
+      "elapsed": 1591
+    },
+    {
+      "width": 1440,
+      "label": "publisher row",
+      "filename": "S-21_Thomas-Maria_2027.pdf",
+      "elapsed": 1806
+    },
+    {
+      "width": 1440,
+      "label": "s21",
+      "filename": "S-21_all_2027.pdf",
+      "elapsed": 1345
+    },
+    {
+      "width": 1440,
+      "label": "s3",
+      "filename": "s3_2027.pdf",
+      "elapsed": 1207
+    },
+    {
+      "width": 1440,
+      "label": "s88",
+      "filename": "s88_2027.pdf",
+      "elapsed": 1450
+    },
+    {
+      "width": 1440,
+      "label": "emergency",
+      "filename": "emergency_2027.pdf",
+      "elapsed": 674
+    },
+    {
+      "width": 1440,
+      "label": "weekend",
+      "filename": "weekend_2027.pdf",
+      "elapsed": 637
+    },
+    {
+      "width": 1440,
+      "label": "s21 zip",
+      "filename": "S-21_all_2027.zip",
+      "elapsed": 1180
+    }
+  ]
+}

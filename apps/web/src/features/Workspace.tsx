@@ -454,7 +454,7 @@ export default function Workspace({
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
   else if (route === "home") body=<>{admin&&<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>}<Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
-  else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={()=>{sessionStorage.setItem("ca-pdf-open","emergency");go("pdf");}}/>;
+  else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={()=>{void(async()=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:people},[families(people),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}})();}}/>;
   else if (route === "people")
     body = (
       <>
