@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: [Fetch WOL meeting weeks]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
   pages: write
@@ -14,6 +18,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -27,6 +32,8 @@ jobs:
       - run: node --test scripts/meetings/parse.test.mjs
       - run: npx playwright install --with-deps chromium
       - run: npm run build && node scripts/check-v3-resume.cjs
+      - run: node scripts/check-direct-downloads.cjs && node scripts/check-home-next.cjs && node scripts/check-weekend-next.cjs && node scripts/check-install-next.cjs && node scripts/check-theme-fonts.cjs && node scripts/check-wol-app.cjs && node scripts/check-marketing-site.cjs
+      - run: node scripts/contrast-check.mjs && node scripts/check-rendered-contrast.mjs && node scripts/check-claims.mjs
       - run: node scripts/check-v3-store-browser.mjs && node scripts/check-v3-offline-app.cjs
       - run: node scripts/build-pages.mjs
         env:

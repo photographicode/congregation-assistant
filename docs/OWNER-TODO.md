@@ -32,3 +32,9 @@ The concrete GoDaddy/Pages cutover sequence is in GITHUB-PAGES-DNS.md. The publi
 Resolved: automatic review accepted the reduced v3_meeting_workflows migration after department-function replacements were removed. It is applied, privileges are verified, and the attendant/group/setup controls are enabled. The earlier production-rollout blocker paragraph is historical. No approval is now required for that completed rollout.
 
 Verify the Supabase authentication redirect allowlist and real Google login for both current previews: `https://photographicode.github.io/congregation-assistant/app/` and `https://photographicode.github.io/Congregation-Assistant_Public/app/`. The available connector does not expose authentication-configuration mutations, so this provider-dashboard setting was not changed. Fictional demos and live static/PWA checks do not prove approved-account login.
+
+## NEXT batch: remaining acceptance
+
+There is no workbook-file upload or owner publication-file request. English WOL fetching is automatic in weekly GitHub Actions; additional languages and complete Watchtower mapping remain engineering work. All tested Home/history/link-management migrations are already applied.
+
+Full alignment, website mockups/full translations and broader V3 PARITY are unfinished engineering work, not account-setup tasks. Unverified offers, CO Visit Pack and E2EE claims remain off. Keep the custom-domain CNAME absent until the existing DNS-confirmation requirement in GITHUB-PAGES-DNS.md is satisfied; no DNS or mail records were changed in this batch.

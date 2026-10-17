@@ -1,3 +1,15 @@
+## Current NEXT batch — 18 October 2026
+
+This section supersedes older preview, publication-import and raw-gradient blocker notes below. The app remains a partial V3 release; complete PARITY acceptance is not claimed.
+
+Implemented and targeted-tested: direct worker downloads (26 events, maximum 1,257 ms), native approved-pool duty rosters, filtered emergency PDFs, group links first on Home with scoped rotation/revocation, three opening-seeded role-aware suggestions, weekend talk history/backfill, early install-prompt capture, exact theme font families, licensed script WOFF2, and the static B/W website. English WOL metadata has a successful real four-anchor/59-week CI run. All additive Home/history/link-management migrations are applied; no approval remains pending.
+
+Contrast now passes 351 composited panel cases plus four OCLM cases and 3,703 actual rendered pairs over 108 views, with unchanged thresholds. The supplied theme CSS is unchanged. The comparable geometry sample improves from 30 findings to one; the narrow/200% sample still has 48 text widows. **Full alignment is not passed**, so no contact sheets or mockup capture are produced.
+
+Open NEXT scope: remaining WOL languages and complete Watchtower/exception-week coverage; expanded/localized urgent Home suggestions; complete app/website alignment and all role/dialog states; Indic visual/CLS acceptance; full website translations and optimized mockups/OG/sticky story. CO Visit Pack and unverified offers remain off. Remaining V3 packages, E2EE, full restore/export and real OAuth/WhatsApp/payment/device acceptance remain open.
+
+Evidence: `qa/direct-downloads.json`, `qa/home-next.json`, `qa/weekend-next.json`, `qa/install-next.json`, `qa/theme-fonts.json`, `qa/marketing-site.json`, `qa/MEETING-IMPORT-RUN.md`, `qa/ALIGNMENT-REPORT.md`, `qa/contrast-report.json`, `qa/contrast-rendered.json`. Site gzip payload is 120,353 bytes; site JS is 3,349 bytes. Deployment results follow the implementation in V3-PROGRESS.md.
+
 # V3 resume checkpoint — 17 October 2026
 
 The owner authorized public GitHub deployment to both repositories. This checkpoint publishes the native app and updated site for inspection; it is **not full V3 parity sign-off**. The prior report below is historical. Both repositories are now public; the frozen `v1-final` tag is preserved. The supplied S-140 reference is ignored and no S-89 source image is committed.

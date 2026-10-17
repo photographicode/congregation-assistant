@@ -40,7 +40,7 @@ V3-ORDERS.md is authoritative. The supplied CSS is used verbatim as packages/ui/
 
 Implemented the exact owner-supplied themes.css (SHA-256 in docs/qa/supplied-themes.sha256), nine-card gallery, intensity slider, system paper/forest mapping, compatible tokens, OFL self-hosted fonts, adaptive Dialog, and shared component library. Profile allowlist/intensity validation tested with nine themes and applied without changing authorization/revision checks. Component behavior/axe passes; PDF font substitution passes all 17 existing parity thresholds.
 
-BLOCKED: supplied Lagoon Glass and Aurora raw gradient canvases fail required text contrast (22 combinations across tones); no supplied colors were changed and no threshold was relaxed. Panels pass, and application text is backed by panels. Full raw-gradient contrast release gate remains red in docs/qa/contrast-report.json. Exact CSS preservation takes priority over silently replacing the supplied palette.
+Historical pre-NEXT blocker: 22 raw-gradient text combinations failed. Superseded by NEXT §I: panels/composited stops and actual rendered text pairs now pass without changing thresholds or supplied palette tokens; see the final NEXT checks below. Full WP-02 acceptance is still incomplete.
 
 Still required for full WP-02 acceptance: complete responsive visual matrix and Indic serif assets. Proceed to independent WP-03 shell work without marking this package complete.
 
@@ -214,3 +214,23 @@ G follow-up: the next built artifact confirms exactly the active theme’s two o
 Replaced the advertised interactive demos and nine-theme selector with a B/W light/dark site, Instrument Serif/Inter/JetBrains type, native-name language menu, 13 static language routes, reduced-motion animations and the requested core/legal pages. Initial gzip payload is 120,230 bytes (200 KiB cap); script is 3,244 bytes (30 KB cap). Content and contact email fallback work without JavaScript. Responsive browser checks pass four widths, six script locales, Urdu RTL, no advertised QA-demo URLs, zero external requests and zero browser errors. Claims linter gates automatic source, encryption and offer copy.
 
 The founding/Starter/Founders prices are configured but their public offers stay hidden because entitlements/slots are not verified. English is reviewed; twelve machine-drafted locales translate navigation/hero and deliberately fall back to English for missing sections, with a feedback link. Remaining translations, actual optimized mockups/OG assets, sticky story/typing visuals, Lighthouse and the full website alignment matrix remain open. These omissions are not advertised as completed capabilities.
+
+### Final NEXT implementation checks — 18 October 2026
+
+A: 26 real downloads now pass at 390/1440 px, maximum 1,257 ms, without preview dialogs. Added native department-roster exports, filtered emergency exports, S-89 student/assistant and S-140 coverage. Non-blocking notices count only closed months; Unicode filenames preserve Indic combining marks. Four focused filename/report-accuracy/roster checks pass; the PDF engine and original templates are unchanged. CO Visit Pack remains disabled.
+
+B: positional song parsing preserves repeated numbers and missing fields as null (six synthetic structural tests pass). Public-data loading preserves saved meeting date/time and original weekend song choices. English four-anchor CI is verified; the new importer run and deployment results will be recorded below. Non-English WOL discovery, full historical Watchtower mapping and exceptional-week coverage remain open.
+
+C: Group report links remain immediately below the greeting, including before setup entry. Rotation/revocation is confined to Links Hub and authenticated same-congregation/assigned-group SQL. The additive migration is applied; rollback-only isolation fixtures and signed-in browser rotation/revocation pass. Suggestion actions open the correct tool/month. Expanded urgent sources, complete used-feature weighting and localized suggestion strings remain open.
+
+D/E: focused talk-history/backfill browser checks and install available/delayed/absent/installed branches pass at phone/desktop widths. Together with suggestions/accuracy/roster tests, 15 targeted native tests pass. Same-speaker narrative and month-boundary math have unit coverage; complete device acceptance remains open.
+
+F: shared padding, control sizing, icon alignment and overflow fixes reduce the comparable 12-view sample from 30 findings to one. A separate 40-view narrow/200% sample has 48 text-widow findings, zero other findings and no route errors. **The alignment gate is not passed.** No contact sheets or mockups are rendered. See qa/ALIGNMENT-REPORT.md for comparable counts and scope.
+
+G: all nine themes pass computed fonts/preloads and exactly their active two/three Latin requests. Added OFL-verified WOFF2 versions for eight existing Indic script faces; PDF TTFs remain unchanged. Latin payload remains below 150 KiB. Script screenshots/CLS acceptance remains open behind F.
+
+H: final B/W site payload is 120,353 bytes gzipped; JS is 3,349 bytes. Four widths/six script locales/RTL/no-JS/zero third-party requests pass. Offer/mockup flags remain off. Twelve draft locales still fall back to English beyond navigation/hero; full copy translation and optimized mockups/OG/sticky-story remain open. No public claim says those are finished.
+
+I: the superseding contrast gate passes **351 panel combinations across nine themes plus four OCLM combinations**, and **3,703 actual rendered text/background pairs in 108 views** with zero failures and no visible bare-canvas text in that sample. Thresholds remain text-1 ≥7:1 and other text ≥4.5:1. OCLM ink now stays legible inside dark app themes; greeting text sits on an opaque existing surface token. The prior raw-gradient-text blocker is superseded by the owner's NEXT instruction; WP-02 stays unchecked because full layout/component/script acceptance remains incomplete. The supplied themes.css is unchanged.
+
+J: no complete V3 claim. Existing PARITY/remaining packages still apply. E2EE, full restore/export packs, final publisher/owner parity and physical-device/OAuth/WhatsApp/payment acceptance remain open. No migration approval is pending. DNS/custom-domain activation remains subject to the existing owner DNS-confirmation requirement.
