@@ -1,3 +1,4 @@
+import {z} from "zod";
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format, startOfWeek, addWeeks } from "date-fns";
@@ -163,6 +164,7 @@ export default function Workspace({
 }) {
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
+    [groupsLoaded,setGroupsLoaded] = useState(demo),
     [sub, setSub] = useState(()=>sessionStorage.getItem("ca-workspace-tool")||"midweek"),
     [editing, setEditing] = useState<Person | null>(null),
     [dirty, setDirty] = useState(false),
@@ -211,9 +213,11 @@ export default function Workspace({
     [moreDetails, setMoreDetails] = useState(false);
   const appearance = useAppearance(),
     admin = c.roles.includes("admin"),
-    canPeople = admin || c.roles.includes("field_service"),
+    canPeople = admin || c.roles.includes("field_service") || c.roles.includes("group_overseer"),
     canWeekend = admin || c.roles.includes("weekend");
   useEffect(()=>{const open=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(['groups','import','midweek','weekend','duties'].includes(value))setSub(value);sessionStorage.removeItem('ca-workspace-tool');};window.addEventListener('ca:open-tool',open);return()=>window.removeEventListener('ca:open-tool',open);},[]);
+  useEffect(()=>{const find=(event:Event)=>{setQuery((event as CustomEvent<string>).detail);setSub('publishers');if(route==='people')sessionStorage.removeItem('ca-person-search');};window.addEventListener('ca:find-person',find);return()=>window.removeEventListener('ca:find-person',find);},[route]);
+  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -221,19 +225,20 @@ export default function Workspace({
       if (admin) return await rpc("ca_v2_people", { p_cong_id: c.cong });
       const { data, error } = await client
         .from("publishers")
-        .select("id,name,service_group,phone,address,gender,is_elder,is_ms")
+        .select(c.roles.includes("field_service")?"id,name,service_group,phone,address,gender,is_elder,is_ms":"id,name,service_group")
         .eq("cong_id", c.cong)
         .is("transferred_at", null)
         .order("name");
       if (error) throw Error(error.message);
-      return (data || []).map((p) => ({
+      const rows=z.array(z.object({id:z.string(),name:z.string(),service_group:z.string().nullable().optional(),phone:z.string().nullable().optional(),address:z.string().nullable().optional(),gender:z.string().nullable().optional(),is_elder:z.boolean().nullable().optional(),is_ms:z.boolean().nullable().optional()})).parse(data||[]);
+      return rows.map((p) => ({
         id: p.id,
         name: p.name,
         group: p.service_group || "",
         email: "",
         phone: p.phone || "",
         address: p.address || "",
-        gender: p.gender,
+        gender: p.gender||undefined,
         isElder: p.is_elder,
         isMS: p.is_ms,
       }));
@@ -242,10 +247,11 @@ export default function Workspace({
   useEffect(() => {
     if (peopleQuery.data) setPeople(peopleQuery.data as Person[]);
   }, [peopleQuery.data]);
+  useEffect(()=>{const counts:Record<string,number>={};if(demo||peopleQuery.isSuccess){counts.publishers=people.length;if(admin)counts.emergency=people.length;}if(groupsLoaded)counts.groups=groups.length;c.onCounts?.(counts);},[people,groups,groupsLoaded,peopleQuery.isSuccess,admin,c.onCounts]);
   useEffect(() => {
     if (!demo && c.caps.groups && c.roles.some(role=>["admin","field_service","oclm","weekend","group_overseer"].includes(role)))
       rpc("ca_v2_groups", { p_cong_id: c.cong })
-        .then(setGroups)
+        .then(data=>{setGroups(data);setGroupsLoaded(true);})
         .catch((e) => setError(e.message));
     if (!demo && c.caps.setup && admin)
       rpc("ca_v2_get_setup", { p_cong_id: c.cong })
@@ -276,7 +282,8 @@ export default function Workspace({
   }, [week, c.caps.weekend]);
   useEffect(() => {
     setError("");
-    setQuery("");
+    setQuery(route==="people"?sessionStorage.getItem("ca-person-search")||"":"");
+    if(route==="people")sessionStorage.removeItem("ca-person-search");
   }, [route]);
   const run = async (action: () => Promise<void>) => {
     setBusy(true);

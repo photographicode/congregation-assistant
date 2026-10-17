@@ -1,0 +1,111 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "scale": 1,
+      "section": "People",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "section": "Reports",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "section": "Meetings",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "section": "People",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "section": "Reports",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "section": "Meetings",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 600,
+      "scale": 1,
+      "section": "People",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 600,
+      "scale": 1,
+      "section": "Reports",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 600,
+      "scale": 1,
+      "section": "Meetings",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "section": "People",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "section": "Reports",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "section": "Meetings",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "section": "People",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "section": "Reports",
+      "issues": [],
+      "axe": []
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "section": "Meetings",
+      "issues": [],
+      "axe": []
+    }
+  ],
+  "browserErrors": [],
+  "backendRequests": 0
+}

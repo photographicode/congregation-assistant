@@ -47,3 +47,13 @@ Still required for full WP-02 acceptance: complete responsive visual matrix and 
 - WP-02 partial verification: lint/typecheck, 4 Vitest checks and 68 updated nine-theme unit checks pass. Shared interactive component acceptance has zero axe findings. Theme screens at 390/1440: selected navigation was corrected to use the supplied link token rather than yellow accent fill in Neo Brutal. The source stylesheet remains byte-identical; no new palette colors were introduced.
 
 - The nine actual Home theme views pass axe at phone width and capture at phone/desktop with no browser errors or demo cloud requests. The separate strict raw-gradient release gate intentionally remains failing. New V3 CI preserves that failure and publishes evidence.
+
+### WP-03 — navigation and experience foundation
+
+Implemented seven canonical role-filtered sections and labeled tool hubs, scoped publisher/action/theme search, phone five-slot tabs and quick actions, 72px tablet rail, 264px desktop sidebar, and wide 360px inspector container. Hubs reuse loaded publisher/group counts rather than making additional content queries. Home preview cards render the same shared KPI/greeting presenter as Home; Calm discloses its additional tools. Existing adaptive accessibility runtime observes text/viewport changes and preferences. English-first i18n keys cover the new shell.
+
+Owner navigation is limited to billing/health console and appearance settings; removed the console's tenant-account management UI. This is a UI boundary only: the complete backend operator-access removal and audit remain WP-05/WP-20 work.
+
+Verification: lint/strict TypeScript, 7 Vitest and 68 existing unit checks pass. Targeted shell checks cover 15 hub views across 390px, 200% text, 600px, 1024px and 1440px, with zero layout/axe/browser errors and zero demo cloud requests. Search and quick publisher entry work. App entry gzip remains below 200 KiB; corrected complete website transfer accounting passes at 202,917 bytes (200 KiB cap), using an OFL static Newsreader face on the website.
+
+BLOCKED for complete WP-03 acceptance: functional selected-record master/detail and inspector depend on WP-07; unavailable future feature tiles remain explicitly disabled. Full feature/role/theme matrices remain WP-26. Keep this package unchecked and continue with the independent Store foundation.

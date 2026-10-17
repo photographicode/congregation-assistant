@@ -1,0 +1,4 @@
+import {test,expect} from 'vitest';import {sections,allowedTools,sectionForRoute} from '../../packages/core/navigation';
+test('all seven sections have the same canonical identity',()=>expect(sections.map(section=>section.id)).toEqual(['home','people','reports','meetings','messages','forms','admin']));
+test('publisher and owner navigation cannot expose secretary tools',()=>{const publisher=allowedTools(['publisher']);expect(publisher.some(tool=>tool.id==='access'||tool.id==='emergency')).toBe(false);expect(publisher.some(tool=>tool.id==='households')).toBe(true);expect(allowedTools(['admin'],true).map(tool=>tool.id)).toEqual(['settings','owner']);});
+test('existing native destinations resolve into the V3 sections',()=>{expect(sectionForRoute('schedule')).toBe('meetings');expect(sectionForRoute('pdf')).toBe('forms');expect(sectionForRoute('access')).toBe('admin');});

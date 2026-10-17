@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider,useQueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider,useQueryClient,useQuery } from "@tanstack/react-query";
 import {
   Home,
   CalendarDays,
@@ -22,6 +22,13 @@ import {
   Download,
   Printer,
 } from "lucide-react";
+import {repositories} from "../../../packages/core/repositories";
+import {AppShell} from "../../../packages/ui/AppShell";
+import {CommandPalette,type Command} from "../../../packages/ui/CommandPalette";
+import {t} from "../../../packages/core/i18n";
+import {sections,allowedTools,sectionForRoute,type SectionId,type Tool} from "../../../packages/core/navigation";
+import {themeIds} from "../../../packages/core/themes";
+import {SectionHub} from "./features/SectionHub";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
 import { rpc,client, demo, capabilities } from "./features/client";
@@ -34,6 +41,7 @@ import { UpdatePrompt } from "./features/UpdatePrompt";
 import { adapt } from "./features/accessibility";
 import "./features/styles.css";
 import "../../../packages/ui/theme-bridge.css";
+import "../../../packages/ui/shell.css";
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
 const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));
@@ -53,6 +61,7 @@ const routes = [
 ];
 export type Context = {
   account?:string;
+  onCounts?: (counts:Record<string,number>)=>void;
   cong: string;
   name: string;
   roles: string[];
@@ -71,6 +80,9 @@ function App() {
     [owner,setOwner]=useState(demo&&new URLSearchParams(location.search).get("demo")==="owner"),
     [plan,setPlan]=useState<WorkspacePlan|null>(null),[planError,setPlanError]=useState(""),
     [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
+    [hub,setHub]=useState<SectionId|null>(()=>{const value=new URLSearchParams(location.search).get("section");return sections.some(section=>section.id===value)?value as SectionId:null;}),
+    [quick,setQuick]=useState(false),
+    [hubCounts,setHubCounts]=useState<Record<string,number>>({}),
     [collapsed, setCollapsed] = useState(false),
     [more, setMore] = useState(false),
     [search, setSearch] = useState(false),
@@ -79,7 +91,8 @@ function App() {
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
   const queryClient=useQueryClient();
-  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{setLoading(Boolean(account));setMemberships([]);setCaps({});setPlan(null);setCong("");}),[queryClient]);
+  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setSearch(false);setMemberships([]);setHubCounts({});setCaps({});setPlan(null);setCong("");}),[queryClient]);
+  useEffect(()=>setHubCounts({}),[cong]);
   const appearance = useAppearance();
   useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
   useEffect(() => adapt(appearance), [appearance]);
@@ -207,7 +220,9 @@ function App() {
           ].includes(x),
         )),
   );
+  const updateCounts=React.useCallback((next:Record<string,number>)=>setHubCounts(previous=>Object.entries(next).every(([key,value])=>previous[key]===value)?previous:{...previous,...next}),[]);
   const context: Context = {
+    onCounts:updateCounts,
     account:session?.user?.id,
     cong,
     plan:plan?.congregation===cong?plan:undefined,
@@ -219,6 +234,7 @@ function App() {
     caps,
     notify: setNotice,
   };
+  const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(client,cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
   async function signOut() {
     const { clearDevice } = await import("./features/device-keys");
     await clearDevice();
@@ -296,176 +312,37 @@ function App() {
     );
   const go = (id: string) => {
     if(!allowed.some(r=>r.id===id))return;
-    const url=new URL(location.href);url.searchParams.set("screen",id);history.replaceState(null,"",url.pathname+url.search);
-    setRoute(id);
+    const url=new URL(location.href);url.searchParams.set("screen",id);url.searchParams.delete("section");history.replaceState(null,"",url.pathname+url.search);
+    setRoute(id);setHub(null);
     setMore(false);
     setSearch(false);
   };
-  const toolShortcuts=[
-    {id:'groups',label:'Groups',route:'people',sub:'groups',group:'FIELD SERVICE',icon:Users,roles:['admin','field_service']},
-    {id:'attendance',label:'Attendance',route:'reports',sub:'attendance',group:'ATTENDANCE',icon:BarChart3,roles:['admin','attendance']},
-    {id:'midweek',label:'Midweek (OCLM)',route:'schedule',sub:'midweek',group:'SCHEDULES',icon:CalendarDays,roles:['admin','oclm']},
-    {id:'weekend',label:'Weekend',route:'schedule',sub:'weekend',group:'SCHEDULES',icon:CalendarDays,roles:['admin','weekend']},
-    {id:'duties',label:'Duties',route:'schedule',sub:'duties',group:'SCHEDULES',icon:ClipboardList,roles:['admin','oclm','attendant','av','cleaning']},
-  ].filter(tool=>tool.roles.some(role=>roles.includes(role))&&allowed.some(r=>r.id===tool.route));
-  const openTool=(tool:typeof toolShortcuts[number])=>{if(tool.id==='attendance')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'attendance'}));sessionStorage.setItem('ca-workspace-tool',tool.sub);go(tool.route);window.dispatchEvent(new CustomEvent('ca:open-tool',{detail:tool.sub}));};
-  return (
-    <div className="app">
-      <ExperienceDefaults key={(session?.user?.id||"demo")+cong} context={context}/><UpdatePrompt /><AdminIdleTimeout enabled={admin} notify={setNotice}/>
-      <aside className={"rail " + (collapsed ? "collapsed" : "")}>
-        <div className="brand">
-          <span className="brand-mark">
-            <BookOpen />
-          </span>
-          <span className="brand-name">
-            Congregation
-            <br />
-            Assistant
-          </span>
-        </div>
-        <nav aria-label="Main navigation">
-          {allowed.map((r) => (
-            <button
-              key={r.id}
-              className={route === r.id ? "active" : ""}
-              onClick={() => go(r.id)}
-              title={r.label}
-              aria-label={r.label}
-              aria-current={route === r.id ? "page" : undefined}
-            >
-              <r.icon />
-              <span className="nav-label">{r.label}</span>
-            </button>
-          ))}
-          {['FIELD SERVICE','ATTENDANCE','SCHEDULES'].map(group=>toolShortcuts.some(t=>t.group===group)&&<React.Fragment key={group}><span className="nav-group nav-label">{group}</span>{toolShortcuts.filter(t=>t.group===group).map(tool=><button key={tool.id} onClick={()=>openTool(tool)} aria-label={tool.label} title={tool.label}><tool.icon/><span className="nav-label">{tool.label}</span></button>)}</React.Fragment>)}
-        </nav>
-        <footer className="rail-footer">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-          >
-            <PanelLeftClose />
-            <span>Collapse</span>
-          </button>
+  const visibleTools=allowedTools(roles,owner);
+  const availableSections=sections.filter(section=>section.id==='home'||visibleTools.some(tool=>tool.section===section.id&&tool.available)).map(section=>section.id);
+  const activeSection=hub||sectionForRoute(route);
+  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}setHub(section);setSearch(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);};
+  const openNativeTool=(tool:Tool)=>{if(!visibleTools.some(item=>item.id===tool.id)||!tool.available)return;
+    if(tool.route==='reports'&&tool.sub&&!sessionStorage.getItem('ca-report-action'))sessionStorage.setItem('ca-report-action',JSON.stringify({action:tool.sub}));
+    if(tool.route==='pdf'&&tool.sub)sessionStorage.setItem('ca-pdf-open',tool.sub);
+    if(['people','schedule'].includes(tool.route)&&tool.sub)sessionStorage.setItem('ca-workspace-tool',tool.sub);
+    go(tool.route);const url=new URL(location.href);url.searchParams.delete('section');url.searchParams.set('tool',tool.id);history.replaceState(null,'',url.pathname+url.search);window.dispatchEvent(new CustomEvent('ca:open-tool',{detail:tool.sub}));setQuick(false);
+  };
+  const commands:Command[]=[...visibleTools.filter(tool=>tool.available).map(tool=>({id:tool.id,label:t(tool.label),description:t(tool.description),run:()=>openNativeTool(tool)})),...(searchPeople.data||[]).map(person=>({id:'person-'+person.id,label:person.name,description:t('purpose.publishers'),run:()=>{const native=visibleTools.find(tool=>tool.id===(roles.includes('publisher')&&!admin?'households':'publishers'));if(native){openNativeTool(native);sessionStorage.setItem('ca-person-search',person.name);window.dispatchEvent(new CustomEvent('ca:find-person',{detail:person.name}));}}})),...themeIds.map(theme=>({id:'theme-'+theme,label:t('theme.gallery')+': '+t(`theme.${theme}`),run:()=>appearance.set({theme})}))];
+  const inspector=<section className="stack"><h2>{t('nav.details')}</h2><p>{t('inspector.empty')}</p><button onClick={()=>selectSection(availableSections.includes('people')?'people':'admin')}>{t(availableSections.includes('people')?'nav.people':'nav.admin')}</button></section>;
+  return <>
+    <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
+    <AppShell name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} signOut={signOut} demo={demo} inspector={inspector}>
+      {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
+      {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
+      <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
+            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
+      </Suspense></div>
+    </AppShell>
+    <CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
+    <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));}}>{t(action.label)}</button>)}</div></Dialog>
+    {notice&&<div className="notice" role="status">{notice}</div>}
+  </>;
 
-          {!demo && (
-            <button onClick={signOut}>
-              <LogOut />
-              <span>Sign out</span>
-            </button>
-          )}
-        </footer>
-      </aside>
-      <div className="main">
-        <header className="topbar">
-          <strong>{context.name}</strong>
-          <div className="actions">
-            {demo && <span className="chip">Fictional demo</span>}
-            <button
-              className="icon-button"
-              aria-label="Search tools"
-              title="Search · Ctrl/Cmd+K"
-              onClick={() => setSearch(true)}
-            >
-              <Search />
-            </button>
-            <button
-              className="icon-button"
-              aria-label="Appearance and settings"
-              title="Settings"
-              onClick={() => go("settings")}
-            >
-              <Settings />
-            </button>
-          </div>
-        </header>
-        <main className="main-content" id="main-content">
-          {!online && (
-            <div className="banner" role="status">
-              Offline. Cloud changes cannot be saved. Keep this page open to
-              retain unsaved work.
-            </div>
-          )}
-          {!demo && cong && route!=="owner" && Number(caps.schema_version||0)<2&&!plan?.locked && (
-            <div className="banner" role="status">
-              Update pending. New database tools will appear after the V2
-              migration.{" "}
-              Contact your administrator to apply the database update.
-            </div>
-          )}
-          <Suspense fallback={<p role="status">Loading tools…</p>}>
-            {owner&&(route==="owner"||!cong&&route!=="settings")?<OwnerConsole context={context}/>:owner&&!cong&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={context}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
-          </Suspense>
-        </main>
-      </div>
-      <nav className="bottom-tabs" aria-label="Phone navigation">
-        {routes
-          .filter(r=>["home","schedule","people","reports"].includes(r.id)).slice(0, 4)
-          .filter((r) => allowed.some((a) => a.id === r.id))
-          .map((r) => (
-            <button
-              key={r.id}
-              className={route === r.id ? "active" : ""}
-              onClick={() => go(r.id)}
-              aria-current={route === r.id ? "page" : undefined}
-            >
-              <r.icon />
-              <span>{r.label}</span>
-            </button>
-          ))}
-        <button onClick={() => setMore(true)}>
-          <Menu />
-          <span>More</span>
-        </button>
-      </nav>
-      <Dialog open={more} onClose={() => setMore(false)} title="More tools">
-        <div className="more-grid">
-          {toolShortcuts.map(tool=><button key={tool.id} onClick={()=>openTool(tool)}><tool.icon/>{tool.label}</button>)}
-          {allowed
-            .filter(
-              (r) => !["home", "schedule", "people", "reports"].includes(r.id),
-            )
-            .map((r) => (
-              <button key={r.id} onClick={() => go(r.id)}>
-                <r.icon/>{r.label}
-              </button>
-            ))}
-
-          {!demo && <button onClick={signOut}>Sign out</button>}
-        </div>
-      </Dialog>
-      <Dialog
-        open={search}
-        onClose={() => setSearch(false)}
-        title="Find a tool"
-      >
-        <label>
-          Search
-          <input
-            id="tool-search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Schedule, people, reports…"
-          />
-        </label>
-        <div className="list">
-          {toolShortcuts.filter(t=>t.label.toLowerCase().includes(query.toLowerCase())).map(tool=><button key={tool.id} onClick={()=>openTool(tool)}><tool.icon/>{tool.label}</button>)}
-          {allowed
-            .filter((r) => r.label.toLowerCase().includes(query.toLowerCase()))
-            .map((r) => (
-              <button key={r.id} onClick={() => go(r.id)}>
-                <r.icon/>{r.label}
-              </button>
-            ))}
-        </div>
-      </Dialog>
-      {notice && (
-        <div className="notice" role="status">
-          {notice}
-        </div>
-      )}
-    </div>
-  );
 }
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },

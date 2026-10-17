@@ -20,7 +20,7 @@ await cp('public-config.json','dist/public-config.json');await cp('capabilities.
 await cp('public-config.json','dist/site/public-config.json');await cp('capabilities.json','dist/site/capabilities.json');
 await writeFile('dist/site/tokens.css',(await readFile('packages/ui/tokens.css','utf8')).replaceAll('../../assets/','assets/').replaceAll('NotoSans-Regular.woff2','NotoSans-Latin-Regular.woff2').replaceAll('NotoSans-Bold.woff2','NotoSans-Latin-Bold.woff2'));
 await cp('dist/assets/fonts','dist/site/assets/fonts',{recursive:true});
-for(const file of ['themes.css','fonts.css','theme-bridge.css'])await writeFile('dist/site/'+file,(await readFile('packages/ui/'+file,'utf8')).replaceAll('../../assets/','assets/'));
+for(const file of ['themes.css','fonts.css','theme-bridge.css'])await writeFile('dist/site/'+file,(await readFile('packages/ui/'+file,'utf8')).replaceAll('../../assets/','assets/').replaceAll('NotoSans-Regular.woff2','NotoSans-Latin-Regular.woff2').replaceAll('NotoSans-Bold.woff2','NotoSans-Latin-Bold.woff2').replaceAll('newsreader-latin-variable.woff2','newsreader-latin-600.woff2').replaceAll('font-weight:200 800','font-weight:600')); 
 
 await build({configFile:path.resolve('apps/site/vite.config.ts')});
 await mkdir('dist/.well-known',{recursive:true});await writeFile('dist/.well-known/build-hash.txt',hash+'\n');
@@ -44,7 +44,7 @@ if(total>250*1024)throw Error('Initial application JS exceeds 250 KiB gzip: '+to
 await writeFile('dist/build-report.json',JSON.stringify({hash,jsGzipBytes:total,limit:250*1024},null,2));
 await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-site',{recursive:true});await writeFile('dist-site/robots.txt','User-agent: *\nAllow: /\nSitemap: https://congregationassistant.com/sitemap.xml\n');
 await writeFile('dist-site/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://congregationassistant.com/</loc></url><url><loc>https://congregationassistant.com/how-to-use.html</loc></url><url><loc>https://congregationassistant.com/android/</loc></url></urlset>');
-let siteBytes=0;for(const file of ['index.html','site.css','site.js','tour.js','tour.css','tokens.css','capabilities.json','public-config.json','assets/fonts/NotoSans-Latin-Regular.woff2','assets/fonts/NotoSans-Latin-Bold.woff2'])siteBytes+=gzipSync(await readFile('dist-site/'+file)).length;
+let siteBytes=0;for(const file of ['index.html','site.css','site.js','tour.js','tour.css','tokens.css','themes.css','fonts.css','theme-bridge.css','assets/fonts/inter-latin-variable.woff2','assets/fonts/newsreader-latin-600.woff2','capabilities.json','public-config.json','assets/fonts/NotoSans-Latin-Regular.woff2','assets/fonts/NotoSans-Latin-Bold.woff2'])siteBytes+=gzipSync(await readFile('dist-site/'+file)).length;
 if(siteBytes>200*1024)throw Error('Initial website payload exceeds 200 KiB gzip: '+siteBytes);
 await writeFile('dist-site/build-report.json',JSON.stringify({hash,initialGzipBytes:siteBytes,limit:200*1024},null,2));
 console.log('Initial website gzip payload',siteBytes,'bytes');
