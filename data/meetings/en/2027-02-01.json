@@ -1,0 +1,106 @@
+{
+  "weekStart": "2027-02-01",
+  "weekEnd": "2027-02-07",
+  "dateLabel": "February 1-7 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 11,
+    "middle": 76,
+    "closing": 128
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "“I Acted for the Sake of My Name”",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 11"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "What Would You Say?",
+          "minutes": 5,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 2,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 9 point 5"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Talk",
+          "minutes": 5,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "th study 18"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "How to Maintain Our Zeal for the Ministry",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 24"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027005",
+  "fetched_at": "2026-10-17T20:25:22.433Z",
+  "content_hash": "61f0efbda7a12cb1665b5a6e3535e6c6c6d4f79f499dab3c957fc77c9f88924c"
+}

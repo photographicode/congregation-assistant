@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-07-27",
+  "weekEnd": "2026-08-02",
+  "dateLabel": "July 27–August 2 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 73,
+    "middle": 57,
+    "closing": 31
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "He Was a Bold Preacher",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 2"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 2 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 9 point 3"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Explaining Your Beliefs",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "Demonstration",
+          "refs": [
+            "th study 13"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Be Adaptable​—Show Personal Interest",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": [
+            "lmd lesson 1 point 3"
+          ]
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026244",
+  "fetched_at": "2026-10-17T20:25:10.338Z",
+  "content_hash": "84cbc35a7669331cf07f72fbcc8844bd6f181448352b11bc40b0f683c5125eb7"
+}

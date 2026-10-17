@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-09-28",
+  "weekEnd": "2026-10-04",
+  "dateLabel": "September 28–October 4 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 102,
+    "middle": 90,
+    "closing": 56
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "Continue Supporting One Another",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 12"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 9 point 3"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 9 point 5"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "What Would You Say?",
+          "minutes": 6,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": [
+            "lmd lesson 1 point 4"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "“Who Touched Me?”",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 10"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026255",
+  "fetched_at": "2026-10-17T20:23:49.329Z",
+  "content_hash": "444207ae147f8b65f0eff1e43d5a2ae92037763adfb7cd6bee9277006a703e5b"
+}

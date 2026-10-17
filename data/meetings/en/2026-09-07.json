@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-09-07",
+  "weekEnd": "2026-09-13",
+  "dateLabel": "September 7-13 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 1,
+    "middle": 128,
+    "closing": 143
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "Reflecting on Jehovah’s Qualities Builds Faith",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 2"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 4 point 3"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Starting a Conversation",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 4 point 4"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Following Up",
+          "minutes": 5,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 8 point 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Make Your Blows Count During the Campaign",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 7"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026252",
+  "fetched_at": "2026-10-17T20:23:46.030Z",
+  "content_hash": "cd674c484a2b1e679c11fa6506ea0ccf6e15eb7f4f4e61fe9874e874f2a48f3d"
+}

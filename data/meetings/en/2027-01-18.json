@@ -1,0 +1,106 @@
+{
+  "weekStart": "2027-01-18",
+  "weekEnd": "2027-01-24",
+  "dateLabel": "January 18-24 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 130,
+    "middle": 58,
+    "closing": 159
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "“I Will . . . No Longer Feel Offended”",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 5"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 2 point 5"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 8 point 4"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Explaining Your Beliefs",
+          "minutes": 5,
+          "kind": "talk",
+          "setting": null,
+          "refs": [
+            "th study 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Don’t Forget to Go Back",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027003",
+  "fetched_at": "2026-10-17T20:25:20.236Z",
+  "content_hash": "0699880499d569fc8bc47901da39cc8c49e9a6d4dd7ef48a2102babba076f222"
+}

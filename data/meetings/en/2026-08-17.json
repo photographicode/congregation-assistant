@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-08-17",
+  "weekEnd": "2026-08-23",
+  "dateLabel": "August 17-23 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 77,
+    "middle": 16,
+    "closing": 71
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "Do Not Be Fooled by False Prophets",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 5"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "PUBLIC WITNESSING",
+          "refs": [
+            "lmd lesson 1 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 9 point 3"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Making Disciples",
+          "minutes": 5,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "lmd lesson 11 point 4"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Local Needs",
+          "minutes": 15,
+          "kind": "local_needs",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 4"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026247",
+  "fetched_at": "2026-10-17T20:25:13.632Z",
+  "content_hash": "f2e6711270c74aa4876af6a88199e0b8542e074b93ce6442f566b9f430aeed84"
+}

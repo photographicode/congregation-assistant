@@ -1,0 +1,106 @@
+{
+  "weekStart": "2026-06-22",
+  "weekEnd": "2026-06-28",
+  "dateLabel": "June 22-28 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 5,
+    "middle": 48,
+    "closing": 58
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "What Will You Boast About?",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 12"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 3 point 5"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Starting a Conversation",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 3 point 4"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 7 point 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Avoid Deception, and Follow the Kingdom (Jer 10:23)",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026168",
+  "fetched_at": "2026-10-17T20:25:03.730Z",
+  "content_hash": "6a2476d632177c5548144c9cd2e4959720ccef5a89ae3de3192661d53f53575e"
+}

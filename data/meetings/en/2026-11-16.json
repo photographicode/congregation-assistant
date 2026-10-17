@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-11-16",
+  "weekEnd": "2026-11-22",
+  "dateLabel": "November 16-22 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 28,
+    "middle": 90,
+    "closing": 75
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "An Understandable Response to a Terrible Loss",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 10"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 2 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "PUBLIC WITNESSING",
+          "refs": [
+            "lmd lesson 9 point 4"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "What Would You Say?",
+          "minutes": 5,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": [
+            "lmd lesson 1 point 4"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Do Not Forget Our Inactive Brothers and Sisters",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 17"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026403",
+  "fetched_at": "2026-10-17T20:23:54.831Z",
+  "content_hash": "2de12723ecc88c73c9f2295a08132d4232739eb8ee5590a19fcf8d0f16148033"
+}

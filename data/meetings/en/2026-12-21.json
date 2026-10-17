@@ -1,0 +1,106 @@
+{
+  "weekStart": "2026-12-21",
+  "weekEnd": "2026-12-27",
+  "dateLabel": "December 21-27 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 128,
+    "middle": 139,
+    "closing": 154
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "Jehovah’s Day Will Come on Time",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 2"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 1 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Following Up",
+          "minutes": 4,
+          "kind": "talk",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 9 point 3"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Making Disciples",
+          "minutes": 5,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "lmd lesson 12 point 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Imagine the Outcome",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026408",
+  "fetched_at": "2026-10-17T20:24:00.338Z",
+  "content_hash": "3a5e69da30bf56830e7aeed4de68cd5f1bece7d13cab5c938b39bcc4132a5f7f"
+}

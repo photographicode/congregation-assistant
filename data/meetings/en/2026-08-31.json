@@ -1,0 +1,108 @@
+{
+  "weekStart": "2026-08-31",
+  "weekEnd": "2026-09-06",
+  "dateLabel": "August 31–September 6 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 27,
+    "middle": 67,
+    "closing": 132
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "“I Will Make . . . a New Covenant”",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 12"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 4 point 3"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Starting a Conversation",
+          "minutes": 4,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 3 point 3"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Explaining Your Beliefs",
+          "minutes": 5,
+          "kind": "talk",
+          "setting": null,
+          "refs": [
+            "th study 14"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Be Adaptable​—Use JW.ORG",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": [
+            "wcg chap. 6"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026249",
+  "fetched_at": "2026-10-17T20:25:15.836Z",
+  "content_hash": "a4d064ab3dcd3d185a98f2a94b756346c9ce36d1b8cc2300e1ab7133c08acb2a"
+}

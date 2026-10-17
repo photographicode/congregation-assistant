@@ -1,0 +1,106 @@
+{
+  "weekStart": "2026-04-27",
+  "weekEnd": "2026-05-03",
+  "dateLabel": "April 27–May 3 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 12,
+    "middle": 58,
+    "closing": 28
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "We Are Happy to Have Jehovah as Our God",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 5"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 3,
+          "kind": "student",
+          "setting": "INFORMAL WITNESSING",
+          "refs": [
+            "lmd lesson 2 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Explaining Your Beliefs",
+          "minutes": 5,
+          "kind": "talk",
+          "setting": null,
+          "refs": [
+            "th study 16"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Making Disciples",
+          "minutes": 4,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "lmd lesson 11 point 3"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 7,
+          "title": "Never Stop Talking About Jehovah",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 8,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026089",
+  "fetched_at": "2026-10-17T20:24:53.830Z",
+  "content_hash": "455aca6416c80cadfe565e10bda368a77da9c494aeb0c2deb758977bea551bcf"
+}

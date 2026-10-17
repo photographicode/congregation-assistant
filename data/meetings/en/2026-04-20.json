@@ -1,0 +1,116 @@
+{
+  "weekStart": "2026-04-20",
+  "weekEnd": "2026-04-26",
+  "dateLabel": "April 20-26 — Watchtower ONLINE LIBRARY",
+  "bibleReading": null,
+  "songs": {
+    "opening": 86,
+    "middle": 97,
+    "closing": 70
+  },
+  "sections": [
+    {
+      "key": "treasures",
+      "title": "TREASURES FROM GOD’S WORD",
+      "parts": [
+        {
+          "number": 1,
+          "title": "How Much Are You Willing to Pay?",
+          "minutes": 10,
+          "kind": "talk",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 2,
+          "title": "Spiritual Gems",
+          "minutes": 10,
+          "kind": "spiritual_gems",
+          "setting": null,
+          "refs": []
+        },
+        {
+          "number": 3,
+          "title": "Bible Reading",
+          "minutes": 4,
+          "kind": "bible_reading",
+          "setting": null,
+          "refs": [
+            "th study 11"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field",
+      "title": "APPLY YOURSELF TO THE FIELD MINISTRY",
+      "parts": [
+        {
+          "number": 4,
+          "title": "Starting a Conversation",
+          "minutes": 2,
+          "kind": "student",
+          "setting": "HOUSE TO HOUSE",
+          "refs": [
+            "lmd lesson 1 point 4"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "Starting a Conversation",
+          "minutes": 2,
+          "kind": "student",
+          "setting": "PUBLIC WITNESSING",
+          "refs": [
+            "lmd lesson 2 point 3"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Following Up",
+          "minutes": 2,
+          "kind": "student",
+          "setting": "PUBLIC WITNESSING",
+          "refs": [
+            "lmd lesson 9 point 3"
+          ]
+        },
+        {
+          "number": 7,
+          "title": "Talk",
+          "minutes": 5,
+          "kind": "student",
+          "setting": null,
+          "refs": [
+            "th study 14"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "living",
+      "title": "LIVING AS CHRISTIANS",
+      "parts": [
+        {
+          "number": 8,
+          "title": "Overcoming Obstacles to Personal Study",
+          "minutes": 15,
+          "kind": "discussion",
+          "setting": "Discussion",
+          "refs": []
+        },
+        {
+          "number": 9,
+          "title": "Congregation Bible Study",
+          "minutes": 30,
+          "kind": "bible_study",
+          "setting": null,
+          "refs": []
+        }
+      ]
+    }
+  ],
+  "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026088",
+  "fetched_at": "2026-10-17T20:24:52.728Z",
+  "content_hash": "320fc3d90ee544d8ab1b98ed154fbd6f93c1c2dc4a3a0d1af71d009d14502a2a"
+}

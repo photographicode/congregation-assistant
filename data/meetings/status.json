@@ -1,1 +1,15 @@
-{"enabled":false,"weeks":0,"reason":"No verified CI publication fetch yet; use Add parts."}
+{
+  "verified": true,
+  "enabled": true,
+  "lastSuccess": "2026-10-17T20:25:25.736Z",
+  "weeks": 59,
+  "anchors": [
+    "202026257",
+    "202026258",
+    "202026259",
+    "202026409"
+  ],
+  "languages": [
+    "en"
+  ]
+}
