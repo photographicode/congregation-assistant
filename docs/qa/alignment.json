@@ -1,0 +1,101 @@
+{
+  "results": [
+    {
+      "screen": "home",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "people",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "pdf",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "schedule",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "weekend",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "settings",
+      "theme": "paper",
+      "width": 390,
+      "scale": 1,
+      "findings": [
+        {
+          "kind": "widow",
+          "selector": "div > div.stack:nth-of-type(2) > section.card.stack:nth-of-type(4) > section.card.stack:nth-of-type(1) > p:nth-of-type(2)",
+          "box": {
+            "x": 50,
+            "y": 4764.703125,
+            "width": 290,
+            "height": 102.375
+          },
+          "detail": "Single-word final line"
+        }
+      ]
+    },
+    {
+      "screen": "home",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "people",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "pdf",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "schedule",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "weekend",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    },
+    {
+      "screen": "settings",
+      "theme": "paper",
+      "width": 1440,
+      "scale": 1,
+      "findings": []
+    }
+  ],
+  "coverageErrors": []
+}

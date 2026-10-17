@@ -194,3 +194,7 @@ Evidence: four deterministic unit tests cover never/recent/old/same-speaker/year
 ### E — browser-first installation
 
 The entry module now captures beforeinstallprompt before Settings loads. Install uses a captured event immediately, waits at most five seconds for a delayed event, then shows platform-specific inline-SVG instructions. iOS skips the wait. appinstalled/standalone hide the button and show the installed message. No window application singleton is used. Four fake-timer/controller unit tests pass; actual Chromium phone/desktop checks cover captured, delayed, absent events and the installed state.
+
+### F — alignment audit, first systematic pass
+
+Added geometry auditing with selector/coordinate reports for near-miss edges, row heights/radii, icon centers, alignment, spacing-grid deviations, overflow/clipping, control size and single-word final lines. First 12-view affected-screen sample (390/1440, Paper, 100%) fell from 30 findings to 1 after shared spacing/control/fieldset/text-wrap fixes. Full matrix and state coverage remain required; no contact sheets are rendered and no zero-finding claim is made. New Row/Field/Section primitives share these rules. The old website is 367 bytes above its initial payload cap after shared CSS growth; H must restore the cap before release.
