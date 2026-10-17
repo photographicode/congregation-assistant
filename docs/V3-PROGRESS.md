@@ -176,3 +176,9 @@ Evidence: strict TypeScript, lint, production build pass. `scripts/check-direct-
 ### B — WOL pipeline replacement (real CI pending)
 
 Removed the publication-file reader and user upload controls. Added bounded, throttled WOL HTML discovery using owner anchors, source navigation, issue/year indexes and Meetings; ETag/Last-Modified cache, retry/backoff, kill switch and failure artifacts. Five synthetic structural/date/parser tests pass offline, with no copied source pages. App reads ISO-date JSON automatically, retains source attribution/songs, and limits manual entry to administrators. The four real anchor pages and Watchtower mapping must be verified before claiming automatic source import; other languages remain unverified.
+
+### C — Home group links and launch suggestions
+
+Group links appear directly after the greeting, with scoped server counts, Copy/QR/Share/Open/Create and Copy all for WhatsApp; reused at setup completion. New submission timestamps are captured on writes; existing records show no timestamp rather than an invented date. The new read RPC enforces account, congregation and exact-group access and returns no report contents. Local SQL fixtures verify group/department boundaries, the real link token and aggregate submission counts/timestamps.
+
+Suggestions choose three eligible cards using weighted randomness, retain the last five opening histories locally, allow urgent reminders to recur, and support Dismiss/Snooze. Only existing tools are suggested; unavailable CO packs are excluded. Unit tests inject the RNG. Synthetic signed-in browser checks pass own-group card, QR, fresh launch suggestions and dismiss. Strict TypeScript/lint/build pass. Expanded urgent sources (next-week gaps, Accuracy Guard and plan events), feature-use weighting and translated suggestions remain open; this is a tested Home increment, not full C acceptance.

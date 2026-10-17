@@ -1,0 +1,8 @@
+{
+  "syntheticAuthAndBackendOnly": true,
+  "ownGroupOnly": true,
+  "qr": true,
+  "freshLaunchSuggestions": true,
+  "dismiss": true,
+  "browserErrors": []
+}

@@ -1,3 +1,4 @@
+import {HomeGroupLinks} from './HomeGroupLinks';
 import {demoPublishers} from "../../../../packages/core/demo-publishers";
 import {Departments} from "./Departments";
 import {S21Button} from "./S21Button";
@@ -1815,7 +1816,7 @@ export default function Workspace({
           </>
         ) : (
           <>
-            <h3>Your setup guide is complete.</h3>
+            <h3>Your setup guide is complete.</h3><HomeGroupLinks context={c} period={new Date(new Date().getFullYear(),new Date().getMonth()-1,15).toLocaleDateString('en-CA').slice(0,7)}/>
             <p>
               Review Home and publish both schedules when you’re ready. You can
               reopen this guide in Settings.
