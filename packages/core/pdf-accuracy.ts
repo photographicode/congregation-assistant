@@ -1,0 +1,3 @@
+export function dueReportMonths(serviceYear:number,now=new Date()){const boundary=new Date(now.getFullYear(),now.getMonth(),1);return [8,9,10,11,0,1,2,3,4,5,6,7].filter(month=>new Date(serviceYear-(month>=8?1:0),month,1)<boundary);}
+export function missingReportMonths(person:string,serviceYear:number,reports:{pubId?:unknown;serviceYear?:unknown;month:number}[],now=new Date()){const submitted=new Set(reports.filter(r=>r.pubId===person&&r.serviceYear===serviceYear).map(r=>r.month));return dueReportMonths(serviceYear,now).filter(month=>!submitted.has(month)).length;}
+export function publisherFileName(name:string){const words=name.normalize('NFC').trim().split(/\s+/);return [...words.slice(-1),...words.slice(0,-1)].join('-').replace(/[^\p{L}\p{M}\p{N}\u200c\u200d-]/gu,'');}

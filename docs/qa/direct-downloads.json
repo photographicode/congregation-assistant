@@ -4,85 +4,157 @@
       "width": 390,
       "label": "publisher row",
       "filename": "S-21_Thomas-Maria_2027.pdf",
-      "elapsed": 1715
+      "elapsed": 959
     },
     {
       "width": 390,
       "label": "s21",
       "filename": "S-21_all_2027.pdf",
-      "elapsed": 1532
+      "elapsed": 721
     },
     {
       "width": 390,
       "label": "s3",
       "filename": "s3_2027.pdf",
-      "elapsed": 670
+      "elapsed": 368
     },
     {
       "width": 390,
       "label": "s88",
       "filename": "s88_2027.pdf",
-      "elapsed": 1542
+      "elapsed": 682
     },
     {
       "width": 390,
       "label": "emergency",
       "filename": "emergency_2027.pdf",
-      "elapsed": 973
+      "elapsed": 588
     },
     {
       "width": 390,
       "label": "weekend",
       "filename": "weekend_2027.pdf",
-      "elapsed": 899
+      "elapsed": 542
+    },
+    {
+      "width": 390,
+      "label": "duties",
+      "filename": "duties_2027.pdf",
+      "elapsed": 301
     },
     {
       "width": 390,
       "label": "s21 zip",
       "filename": "S-21_all_2027.zip",
-      "elapsed": 1591
+      "elapsed": 1100
+    },
+    {
+      "width": 390,
+      "label": "S-89 student",
+      "filename": "S-89_Maria Thomas_2026-10-14.pdf",
+      "elapsed": 431
+    },
+    {
+      "width": 390,
+      "label": "S-89 both",
+      "filename": "S-89_Maria Thomas_2026-10-14-two-copies.pdf",
+      "elapsed": 433
+    },
+    {
+      "width": 390,
+      "label": "S-140",
+      "filename": "S-140_2026-W42.pdf",
+      "elapsed": 341
+    },
+    {
+      "width": 390,
+      "label": "emergency search",
+      "filename": "Emergency-contacts.pdf",
+      "elapsed": 421
+    },
+    {
+      "width": 390,
+      "label": "command search S-21",
+      "filename": "S-21_Thomas-Maria_2027.pdf",
+      "elapsed": 390
     },
     {
       "width": 1440,
       "label": "publisher row",
       "filename": "S-21_Thomas-Maria_2027.pdf",
-      "elapsed": 1806
+      "elapsed": 1257
     },
     {
       "width": 1440,
       "label": "s21",
       "filename": "S-21_all_2027.pdf",
-      "elapsed": 1345
+      "elapsed": 774
     },
     {
       "width": 1440,
       "label": "s3",
       "filename": "s3_2027.pdf",
-      "elapsed": 1207
+      "elapsed": 653
     },
     {
       "width": 1440,
       "label": "s88",
       "filename": "s88_2027.pdf",
-      "elapsed": 1450
+      "elapsed": 673
     },
     {
       "width": 1440,
       "label": "emergency",
       "filename": "emergency_2027.pdf",
-      "elapsed": 674
+      "elapsed": 642
     },
     {
       "width": 1440,
       "label": "weekend",
       "filename": "weekend_2027.pdf",
-      "elapsed": 637
+      "elapsed": 626
+    },
+    {
+      "width": 1440,
+      "label": "duties",
+      "filename": "duties_2027.pdf",
+      "elapsed": 336
     },
     {
       "width": 1440,
       "label": "s21 zip",
       "filename": "S-21_all_2027.zip",
-      "elapsed": 1180
+      "elapsed": 760
+    },
+    {
+      "width": 1440,
+      "label": "S-89 student",
+      "filename": "S-89_Maria Thomas_2026-10-14.pdf",
+      "elapsed": 462
+    },
+    {
+      "width": 1440,
+      "label": "S-89 both",
+      "filename": "S-89_Maria Thomas_2026-10-14-two-copies.pdf",
+      "elapsed": 462
+    },
+    {
+      "width": 1440,
+      "label": "S-140",
+      "filename": "S-140_2026-W42.pdf",
+      "elapsed": 371
+    },
+    {
+      "width": 1440,
+      "label": "emergency search",
+      "filename": "Emergency-contacts.pdf",
+      "elapsed": 501
+    },
+    {
+      "width": 1440,
+      "label": "command search S-21",
+      "filename": "S-21_Thomas-Maria_2027.pdf",
+      "elapsed": 463
     }
   ]
 }

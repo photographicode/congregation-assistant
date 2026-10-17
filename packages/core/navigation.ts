@@ -24,6 +24,7 @@ export const tools:Tool[]=[
  {id:'attendance-pdf',section:'forms',label:'tool.attendancePDF',description:'purpose.attendancePDF',route:'pdf',sub:'s88',roles:['admin','attendance'],available:true},
  {id:'emergency-pdf',section:'forms',label:'tool.emergencyPDF',description:'purpose.emergencyPDF',route:'pdf',sub:'emergency',roles:['admin','field_service'],available:true},
  {id:'schedule-pdf',section:'forms',label:'tool.schedulePDF',description:'purpose.schedulePDF',route:'pdf',sub:'midweek',roles:['admin','oclm','weekend'],available:true},
+ {id:'duty-pdf',section:'forms',label:'tool.duties',description:'purpose.duties',route:'pdf',sub:'duties',roles:['admin','av','attendant','cleaning'],available:true},
  {id:'co-pack',section:'forms',label:'tool.coPack',description:'purpose.coPack',route:'pdf',roles:['admin','field_service'],available:false},
  {id:'access',section:'admin',label:'tool.access',description:'purpose.access',route:'access',roles:['admin'],available:true},
  {id:'links',section:'admin',label:'tool.links',description:'purpose.links',route:'access',roles:['admin','field_service','group_overseer','attendance'],available:true},
