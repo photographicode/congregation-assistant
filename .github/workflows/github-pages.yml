@@ -47,3 +47,14 @@ jobs:
           enablement: true
       - uses: actions/deploy-pages@v4
         id: deployment
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Verify published site app worker and on-device demo
+        run: node scripts/check-pages-deploy.cjs
+        env:
+          CA_LIVE_URL: https://photographicode.github.io/congregation-assistant/
+          CA_EXPECTED_COMMIT: ${{ github.sha }}
