@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "lastGiven": true,
+      "never": true,
+      "backfill": true,
+      "stableHeadsUpHeight": 128
+    },
+    {
+      "width": 1440,
+      "lastGiven": true,
+      "never": true,
+      "backfill": true,
+      "stableHeadsUpHeight": 128
+    }
+  ]
+}

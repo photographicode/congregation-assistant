@@ -1,3 +1,4 @@
+import {WeekendTalkHistory} from './WeekendTalkHistory';
 import {HomeGroupLinks} from './HomeGroupLinks';
 import {demoPublishers} from "../../../../packages/core/demo-publishers";
 import {Departments} from "./Departments";
@@ -936,6 +937,7 @@ export default function Workspace({
                       onChange={(e) => changeWeekend("outline", e.target.value)}
                     />
                   </label>
+                  <WeekendTalkHistory context={c} number={weekend.outline} speaker={weekend.speaker} date={new Date(new Date(week+'T12:00:00Z').getTime()+((['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].indexOf(setup.weekend)+6)%7)*86400000).toISOString().slice(0,10)} revision={weekendRevision} onChoose={(number,title)=>{setWeekend({...weekend,outline:number,talkTitle:title});setWeekendDirty(true);}}/>
                   <label>
                     Watchtower article title
                     <input readOnly value={weekend.articleTitle} />

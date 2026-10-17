@@ -15,6 +15,15 @@ do $$declare days text[]=array['Sunday','Monday','Tuesday','Wednesday','Thursday
  begin perform public.ca_v3_submit_attendance('request-test',(ctx->>'date')::date-1,456);raise exception 'Stale attendance date accepted';exception when raise_exception then if sqlerrm='Stale attendance date accepted' then raise;end if;end;
 
 end $$;
+do $$declare result jsonb;program jsonb=jsonb_build_object('exception','normal','openingSong',1,'closingSong',2,'outline','12','talkTitle','Synthetic talk','speaker','Synthetic visitor');begin
+ perform public.ca_v3_backfill_talks('request-test','[{"date":"2025-03-14","talk_no":"99"}]');perform public.ca_v3_backfill_talks('request-test','[{"date":"2025-03-14","talk_no":"99"}]');
+ if jsonb_array_length(public.ca_v3_talk_history('request-test'))<>1 then raise exception 'Backfill not idempotent';end if;
+ result=public.ca_v2_publish_weekend('request-test','2026-10-12',program,0);
+ if not exists(select 1 from ca_private.talk_history where cong_id='request-test' and source='published' and talk_no='12' and title='Synthetic talk') then raise exception 'Published talk not recorded';end if;
+ perform public.ca_v2_publish_weekend('request-test','2026-10-12',program||'{"outline":"25"}',(result->>'revision')::bigint);
+ if exists(select 1 from ca_private.talk_history where cong_id='request-test' and source='published' and talk_no='12') then raise exception 'Old published outline retained';end if;
+ begin perform public.ca_v3_talk_history('request-other');raise exception 'Other tenant talk history exposed';exception when insufficient_privilege then null;end;
+end $$;
 do $$declare data jsonb;duty text;rev bigint;expected jsonb;begin
  data=public.save_department_duty('request-test','av',0,null,'Sound desk',1,true);rev=(data->>'revision')::bigint;duty=data->'duties'->0->>'id';
  begin perform public.save_department_assignments('request-test','av',rev,'2026-W40',jsonb_build_object(duty||'_1','request-person'));raise exception 'Unapproved AV assignment accepted';exception when insufficient_privilege then null;end;
@@ -45,6 +54,7 @@ end $$;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000924","email":"request-av@example.invalid","role":"authenticated","app_metadata":{"provider":"google"}}',true);
 do $$begin
  begin perform public.decide_department_person('request-test','av','request-person',true);raise exception 'AV self-approved';exception when insufficient_privilege then null;end;
+ begin perform public.ca_v3_talk_history('request-test');raise exception 'AV read talk history';exception when insufficient_privilege then null;end;
  begin perform public.ca_v3_home_group_links('request-test',2027,9);raise exception 'AV read group links';exception when insufficient_privilege then null;end;
  begin perform public.ca_v3_submit_attendance('request-test',current_date,123);raise exception 'AV entered attendance';exception when insufficient_privilege then null;end;
 end $$;
