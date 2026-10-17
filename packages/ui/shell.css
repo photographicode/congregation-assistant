@@ -12,3 +12,6 @@
 @media(max-width:599px){.v3-shell .main-content{padding-inline:16px}.v3-shell .topbar{padding-inline:16px}}
 @media(min-width:1366px){.v3-shell .main-content{padding-inline:32px}}
 .v3-shell .bottom-tabs{gap:4px}.v3-shell .bottom-tabs button{gap:4px}.v3-tool-grid{gap:16px}.v3-tool-tile{gap:8px 12px}.v3-shell .v3-sidebar nav{gap:8px}.v3-shell .v3-sidebar nav button{gap:12px}
+/* The avatar fills its button's content box, including at 200% text. */
+.v3-shell .topbar .icon-button:has(.ui-avatar){padding:0}
+.v3-shell .topbar .ui-avatar{width:100%;height:100%;min-width:0;min-height:0}
