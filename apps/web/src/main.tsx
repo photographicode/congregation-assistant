@@ -30,6 +30,7 @@ import {CommandPalette,type Command} from "../../../packages/ui/CommandPalette";
 import {t} from "../../../packages/core/i18n";
 import {sections,allowedTools,sectionForRoute,type SectionId,type Tool} from "../../../packages/core/navigation";
 import {themeIds} from "../../../packages/core/themes";
+import {LocalAssistant} from "./features/LocalAssistant";
 import {SectionHub} from "./features/SectionHub";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
@@ -84,6 +85,7 @@ function App() {
     [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
     [hub,setHub]=useState<SectionId|null>(()=>{const value=new URLSearchParams(location.search).get("section");return sections.some(section=>section.id===value)?value as SectionId:null;}),
     [quick,setQuick]=useState(false),
+    [assistantOpen,setAssistantOpen]=useState(false),
     [syncStatus,setSyncStatus]=useState<SyncStatus>({pending:0,conflicts:0,forbidden:0}),
     [hubCounts,setHubCounts]=useState<Record<string,number>>({}),
     [collapsed, setCollapsed] = useState(false),
@@ -94,7 +96,7 @@ function App() {
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
   const queryClient=useQueryClient();
-  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{switchStoreAccount(account);for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setSearch(false);setMemberships([]);setHubCounts({});setSyncStatus({pending:0,conflicts:0,forbidden:0});setCaps({});setPlan(null);setCong("");}),[queryClient]);
+  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{switchStoreAccount(account);for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setAssistantOpen(false);setSearch(false);setMemberships([]);setHubCounts({});setSyncStatus({pending:0,conflicts:0,forbidden:0});setCaps({});setPlan(null);setCong("");}),[queryClient]);
   useEffect(()=>setHubCounts({}),[cong]);
   const appearance = useAppearance();
   useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
@@ -184,6 +186,7 @@ function App() {
       (r.id==='owner'?owner:admin) ||
       r.id === "home" ||
       r.id === "settings" ||
+      (r.id === "access" && roles.some(role=>["field_service","group_overseer","attendance"].includes(role))) ||
       (r.id === "schedule" &&
         roles.some((x) =>
           [
@@ -198,7 +201,7 @@ function App() {
         )) ||
       (r.id === "people" &&
         roles.some((x) => ["field_service", "group_overseer"].includes(x))) ||
-      (r.id === "pdf" && roles.some(x=>["field_service","attendance","oclm","weekend"].includes(x))) ||
+      (r.id === "pdf" && roles.some(x=>["field_service","group_overseer","attendance","oclm","weekend"].includes(x))) ||
       (r.id === "reports" &&
         roles.some((x) =>
           [
@@ -323,7 +326,7 @@ function App() {
   const inspector=<section className="stack"><h2>{t('nav.details')}</h2><p>{t('inspector.empty')}</p><button onClick={()=>selectSection(availableSections.includes('people')?'people':'admin')}>{t(availableSections.includes('people')?'nav.people':'nav.admin')}</button></section>;
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
-    <AppShell name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} signOut={signOut} demo={demo} inspector={inspector}>
+    <AppShell name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.some(role=>["admin","field_service","group_overseer"].includes(role))?()=>setAssistantOpen(true):undefined} signOut={signOut} demo={demo} inspector={inspector}>
       {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<div className="banner" role="status">{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</div>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
@@ -333,6 +336,7 @@ function App() {
     </AppShell>
     <CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
     <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));}}>{t(action.label)}</button>)}</div></Dialog>
+    <Dialog open={assistantOpen} onClose={()=>setAssistantOpen(false)} title={t('assistant.title')}>{assistantOpen&&<LocalAssistant context={context} onExport={()=>{const tool=visibleTools.find(tool=>tool.id==='s21');if(tool){openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:select-s21'));setAssistantOpen(false);}}}/>}</Dialog>
     {notice&&<div className="notice" role="status">{notice}</div>}
   </>;
 

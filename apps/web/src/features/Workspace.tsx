@@ -1,3 +1,8 @@
+import {demoPublishers} from "../../../../packages/core/demo-publishers";
+import {Departments} from "./Departments";
+import {S21Button} from "./S21Button";
+import {publisherRecord} from "../../../../packages/pdf/snapshot";
+import {isSFTS} from "../../../../packages/core/publisher-selection";
 import {z} from "zod";
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -60,44 +65,9 @@ type Person = {
   isElder?: boolean;
   isMS?: boolean;
   expected_login?: string[];
-  dob?: string; baptized?: string; hope?: string; familyHeadId?: string; emergencyName?: string; emergencyRelationship?: string; emergencyPhone?: string; spiritualStatus?: string; isRP?: boolean; isSP?: boolean; isFM?: boolean;
+  dob?: string; baptized?: string; hope?: string; familyHeadId?: string; emergencyName?: string; emergencyRelationship?: string; emergencyPhone?: string; spiritualStatus?: string; isSFTS?: boolean; isRP?: boolean; isSP?: boolean; isFM?: boolean;
 };
-const samplePeople: Person[] = [
-  {
-    id: "maria",
-    name: "Maria Thomas",
-    group: "Group 1",
-    email: "maria@example.com",
-    phone: "+919876543210",
-    address: "",
-  },
-  {
-    id: "daniel",
-    name: "Daniel Thomas",
-    group: "Group 1",
-    email: "maria@example.com",
-    phone: "",
-    address: "",
-    isElder: true,
-  },
-  {
-    id: "samuel",
-    name: "Samuel George",
-    group: "Group 2",
-    email: "samuel@example.com",
-    phone: "+919876543211",
-    address: "",
-    isMS: true,
-  },
-  {
-    id: "anna",
-    name: "Anna Joseph",
-    group: "Group 2",
-    email: "",
-    phone: "",
-    address: "",
-  },
-];
+const samplePeople: Person[] = demoPublishers;
 const initialGroups = [
   { id: "g1", name: "Group 1" },
   { id: "g2", name: "Group 2" },
@@ -170,6 +140,7 @@ export default function Workspace({
     [dirty, setDirty] = useState(false),
     [shared, setShared] = useState(false),
     [query, setQuery] = useState(""),
+    [sftsOnly,setSftsOnly] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [wizard, setWizard] = useState(false),
@@ -238,7 +209,7 @@ export default function Workspace({
     },
   });
   useEffect(() => {
-    if (peopleQuery.data) setPeople(peopleQuery.data as Person[]);
+    if (peopleQuery.data) setPeople((peopleQuery.data as Person[]).map(p=>({...p,isSFTS:Boolean((p as any).is_sfts||p.isSFTS)})));
   }, [peopleQuery.data]);
   useEffect(()=>{const counts:Record<string,number>={};if(demo||peopleQuery.isSuccess){counts.publishers=people.length;if(admin)counts.emergency=people.length;}if(groupsLoaded)counts.groups=groups.length;c.onCounts?.(counts);},[people,groups,groupsLoaded,peopleQuery.isSuccess,admin,c.onCounts]);
   useEffect(() => {
@@ -252,7 +223,8 @@ export default function Workspace({
           if (data) {
             setSetup((s: any) => ({ ...s, ...data.data }));
             setWizardStep(data.step || 0);
-          }
+            if((data.step||0)<10)setWizard(true);
+          }else setWizard(true);
         })
         .catch((e) => setError(e.message));
   }, [c.cong, c.caps.groups, c.caps.setup]);
@@ -336,7 +308,7 @@ export default function Workspace({
         throw Error(
           "Database update required for atomic publisher and email saves.",
         );
-      await rpc("ca_v2_save_person", {
+      await rpc("ca_v3_save_person", {
         p_cong_id: c.cong,
         p_person: person,
         p_shared: shared,
@@ -384,7 +356,7 @@ export default function Workspace({
     if (!demo) {
       if (!c.caps.setup)
         throw Error("Update pending. Setup progress cannot be saved yet.");
-      await rpc("ca_v2_save_setup", {
+      await rpc("ca_v3_save_setup", {
         p_cong_id: c.cong,
         p_step: next,
         p_data: setup,
@@ -481,7 +453,7 @@ export default function Workspace({
   let body: React.ReactNode;
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home") body=<Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/>;
+  else if (route === "home") body=<>{admin&&<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>}<Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
   else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={()=>{sessionStorage.setItem("ca-pdf-open","emergency");go("pdf");}}/>;
   else if (route === "people")
     body = (
@@ -747,6 +719,7 @@ export default function Workspace({
           </div>
         ) : (
           <>
+            {people.some(isSFTS)&&<label className="check"><input type="checkbox" checked={sftsOnly} onChange={e=>setSftsOnly(e.target.checked)}/>{t("sfts.only")}</label>}
             <label className="search">
               Search people
               <input
@@ -764,6 +737,7 @@ export default function Workspace({
             ) : people.length ? (
               <section className="card list">
                 {people
+                  .filter(p=>!sftsOnly||isSFTS(p))
                   .filter((p) =>
                     (p.name + " " + p.group)
                       .toLowerCase()
@@ -784,6 +758,7 @@ export default function Workspace({
                             </span>
                           )}
                       </div>
+                      <S21Button context={c} person={{...p}}/>
                       <button disabled={!admin} onClick={() => edit(p)}>
                         Edit<span className="sr-only"> {p.name}</span>
                       </button>
@@ -1126,7 +1101,7 @@ export default function Workspace({
             </div>
           </div>
         ) : (
-          <Midweek context={c} duties={sub === "duties"} />
+          sub === "duties" ? <Departments context={c}/> : <Midweek context={c}/>
         )}
       </>
     );
@@ -1644,7 +1619,7 @@ export default function Workspace({
               <div className="form-grid">{([['dob','Date of birth'],['baptized','Date of baptism'],['emergencyName','Emergency contact name'],['emergencyRelationship','Relationship'],['emergencyPhone','Emergency phone'],['spiritualStatus','Publisher status']] as const).map(([key,label])=><label key={key}>{label}<input type={key==='dob'||key==='baptized'?'date':key==='emergencyPhone'?'tel':'text'} value={editing[key]||''} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.value}:p);setDirty(true);}}/></label>)}</div>
               <label>Household head<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">This person is the household head</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
               <label>Hope<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">Not recorded</option><option>Other Sheep</option><option>Anointed</option></select></label>
-              {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary']] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}
+              {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary'],['isSFTS',t('sfts.name')]] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}<p>{t('sfts.derived')}</p>
             </div>:<p>Ask your administrator to apply the extended publisher database update, then reopen this record.</p>}</details>
             {error && (
               <p role="alert" className="error">
