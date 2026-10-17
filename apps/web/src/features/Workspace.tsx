@@ -1,3 +1,4 @@
+import {watchtowerWeek} from './publication-data';
 import {InstallApp} from './InstallApp';
 import {WeekendTalkHistory} from './WeekendTalkHistory';
 import {HomeGroupLinks} from './HomeGroupLinks';
@@ -248,6 +249,7 @@ export default function Workspace({
         .catch((e) => setError(e.message));
     }
   }, [week, c.caps.weekend]);
+  useEffect(()=>{if(!canWeekend)return;let active=true;void watchtowerWeek(week).then(source=>{if(active&&source)setWeekend((value:any)=>({...value,articleTitle:source.articleTitle||'',studyRange:source.studyDates?.start+' – '+source.studyDates?.end,sourceUrl:source.source_url,openingSong:source.songs[0]??value.openingSong,closingSong:source.songs.at(-1)??value.closingSong}));});return()=>{active=false;};},[week,weekendRevision,canWeekend]);
   useEffect(() => {
     setError("");
     setQuery(route==="people"?sessionStorage.getItem("ca-person-search")||"":"");
@@ -941,7 +943,7 @@ export default function Workspace({
                   <WeekendTalkHistory context={c} number={weekend.outline} speaker={weekend.speaker} date={new Date(new Date(week+'T12:00:00Z').getTime()+((['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].indexOf(setup.weekend)+6)%7)*86400000).toISOString().slice(0,10)} revision={weekendRevision} onChoose={(number,title)=>{setWeekend({...weekend,outline:number,talkTitle:title});setWeekendDirty(true);}}/>
                   <label>
                     Watchtower article title
-                    <input readOnly value={weekend.articleTitle} />
+                    <input readOnly value={weekend.articleTitle} />{weekend.sourceUrl&&<a href={weekend.sourceUrl} target="_blank" rel="noreferrer">Source: wol.jw.org</a>}
                     <small>
                       Imported titles are read-only. Official data import is not
                       enabled.
