@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-02-02",
   "weekEnd": "2026-02-08",
-  "dateLabel": "February 2-8 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "FEBRUARY 2-8",
+  "bibleReading": "ISAIAH 30-32",
   "songs": {
     "opening": 8,
     "middle": 157,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026005",
-  "fetched_at": "2026-10-17T20:24:15.888Z",
+  "fetched_at": "2026-10-17T20:28:21.582Z",
   "content_hash": "d9753f0bf80525de6c585cfc82c3da3a4fafde7f9a7d6c15e461367e11aa2fe9"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-02-16",
   "weekEnd": "2026-02-22",
-  "dateLabel": "February 16-22 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "FEBRUARY 16-22",
+  "bibleReading": "ISAIAH 36-37",
   "songs": {
     "opening": 150,
     "middle": 118,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026007",
-  "fetched_at": "2026-10-17T20:24:18.089Z",
+  "fetched_at": "2026-10-17T20:28:23.716Z",
   "content_hash": "b0c91a710f022eef4b25911f263d874f2bde38d12fa9101870855d5834c8875e"
 }

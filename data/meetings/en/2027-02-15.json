@@ -1,8 +1,8 @@
 {
   "weekStart": "2027-02-15",
   "weekEnd": "2027-02-21",
-  "dateLabel": "February 15-21 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "FEBRUARY 15-21",
+  "bibleReading": "EZEKIEL 23-24",
   "songs": {
     "opening": 49,
     "middle": 73,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027007",
-  "fetched_at": "2026-10-17T20:25:24.631Z",
+  "fetched_at": "2026-10-17T20:29:06.619Z",
   "content_hash": "3a575d36bcd9bb12a2674a090c0d74df7b737937638b0de5d1c281b53725f92d"
 }

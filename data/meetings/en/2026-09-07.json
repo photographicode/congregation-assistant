@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-09-07",
   "weekEnd": "2026-09-13",
-  "dateLabel": "September 7-13 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "SEPTEMBER 7-13",
+  "bibleReading": "JEREMIAH 32-33",
   "songs": {
     "opening": 1,
     "middle": 128,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026252",
-  "fetched_at": "2026-10-17T20:23:46.030Z",
+  "fetched_at": "2026-10-17T20:27:56.209Z",
   "content_hash": "cd674c484a2b1e679c11fa6506ea0ccf6e15eb7f4f4e61fe9874e874f2a48f3d"
 }

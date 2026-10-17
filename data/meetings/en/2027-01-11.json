@@ -1,8 +1,8 @@
 {
   "weekStart": "2027-01-11",
   "weekEnd": "2027-01-17",
-  "dateLabel": "January 11-17 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JANUARY 11-17",
+  "bibleReading": "EZEKIEL 13-14",
   "songs": {
     "opening": 39,
     "middle": 56,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027002",
-  "fetched_at": "2026-10-17T20:25:19.137Z",
+  "fetched_at": "2026-10-17T20:29:01.121Z",
   "content_hash": "da43f39524bec3a8b1176bd32d6dc77b1af65bf4610efdd00a79e6cbb72d1e1b"
 }

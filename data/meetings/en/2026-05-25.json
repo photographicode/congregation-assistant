@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-05-25",
   "weekEnd": "2026-05-31",
-  "dateLabel": "May 25-31 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "MAY 25-31",
+  "bibleReading": "ISAIAH 65-66",
   "songs": {
     "opening": 24,
     "middle": 80,
@@ -111,6 +111,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026164",
-  "fetched_at": "2026-10-17T20:24:59.599Z",
+  "fetched_at": "2026-10-17T20:28:41.420Z",
   "content_hash": "84181a6788f8662144fe704281fae0fb5e166dc97795013f3f263d2f76b6211e"
 }

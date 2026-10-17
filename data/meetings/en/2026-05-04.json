@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-05-04",
   "weekEnd": "2026-05-10",
-  "dateLabel": "May 4-10 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "MAY 4-10",
+  "bibleReading": "ISAIAH 58-59",
   "songs": {
     "opening": 21,
     "middle": 100,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026161",
-  "fetched_at": "2026-10-17T20:24:56.029Z",
+  "fetched_at": "2026-10-17T20:28:38.079Z",
   "content_hash": "fb5170c4c9351dddd3cacf031c539703dbe207cfab2d83f56416aa7b9458b896"
 }

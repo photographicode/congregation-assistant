@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "dateLabel": "September 28–October 4 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "SEPTEMBER 28–OCTOBER 4",
+  "bibleReading": "JEREMIAH 38-39",
   "songs": {
     "opening": 102,
     "middle": 90,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026255",
-  "fetched_at": "2026-10-17T20:23:49.329Z",
+  "fetched_at": "2026-10-17T20:27:59.508Z",
   "content_hash": "444207ae147f8b65f0eff1e43d5a2ae92037763adfb7cd6bee9277006a703e5b"
 }

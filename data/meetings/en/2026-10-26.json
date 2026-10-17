@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-10-26",
   "weekEnd": "2026-11-01",
-  "dateLabel": "October 26–November 1 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "OCTOBER 26–NOVEMBER 1",
+  "bibleReading": "JEREMIAH 47-48",
   "songs": {
     "opening": 125,
     "middle": 158,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026259",
-  "fetched_at": "2026-10-17T20:23:22.687Z",
+  "fetched_at": "2026-10-17T20:27:36.467Z",
   "content_hash": "e78e89f4ad13b0aa6ce3cae1281e27d846daf369f3cc9df464a53621d827cc71"
 }

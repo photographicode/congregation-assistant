@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-11-09",
   "weekEnd": "2026-11-15",
-  "dateLabel": "November 9-15 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "NOVEMBER 9-15",
+  "bibleReading": "JEREMIAH 51-52",
   "songs": {
     "opening": 98,
     "middle": 10,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026402",
-  "fetched_at": "2026-10-17T20:23:53.730Z",
+  "fetched_at": "2026-10-17T20:28:03.887Z",
   "content_hash": "aef1538d9b9468c15aa24362729e7d0a8aa2656c05b5fd6597ff1560f73fca7a"
 }

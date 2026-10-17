@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-08-31",
   "weekEnd": "2026-09-06",
-  "dateLabel": "August 31–September 6 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "AUGUST 31–SEPTEMBER 6",
+  "bibleReading": "JEREMIAH 31",
   "songs": {
     "opening": 27,
     "middle": 67,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026249",
-  "fetched_at": "2026-10-17T20:25:15.836Z",
+  "fetched_at": "2026-10-17T20:28:57.879Z",
   "content_hash": "a4d064ab3dcd3d185a98f2a94b756346c9ce36d1b8cc2300e1ab7133c08acb2a"
 }

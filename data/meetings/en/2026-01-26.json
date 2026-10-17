@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-01-26",
   "weekEnd": "2026-02-01",
-  "dateLabel": "January 26–February 1 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JANUARY 26–FEBRUARY 1",
+  "bibleReading": "ISAIAH 28-29",
   "songs": {
     "opening": 28,
     "middle": 89,
@@ -119,6 +119,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026004",
-  "fetched_at": "2026-10-17T20:24:14.791Z",
+  "fetched_at": "2026-10-17T20:28:20.478Z",
   "content_hash": "59d42b682292ef9a8e133b8018414107ef82a8598f58b6983c366ce2d9133b58"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-09-21",
   "weekEnd": "2026-09-27",
-  "dateLabel": "September 21-27 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "SEPTEMBER 21-27",
+  "bibleReading": "JEREMIAH 36-37",
   "songs": {
     "opening": 74,
     "middle": 142,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026254",
-  "fetched_at": "2026-10-17T20:23:48.234Z",
+  "fetched_at": "2026-10-17T20:27:58.468Z",
   "content_hash": "5fba00865b25927c30a62f79feabde81abbfd67fbb60c6f7d69f9bbfa4787586"
 }

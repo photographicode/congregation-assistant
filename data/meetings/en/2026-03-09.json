@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-03-09",
   "weekEnd": "2026-03-15",
-  "dateLabel": "March 9-15 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "MARCH 9-15",
+  "bibleReading": "ISAIAH 43-44",
   "songs": {
     "opening": 63,
     "middle": 69,
@@ -111,6 +111,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026082",
-  "fetched_at": "2026-10-17T20:24:46.617Z",
+  "fetched_at": "2026-10-17T20:28:28.178Z",
   "content_hash": "0c6573db27e0f1d5bd529fe1e1e5b3e1a8d64e7fe80b7b77a3ec75a5835df0de"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-07-20",
   "weekEnd": "2026-07-26",
-  "dateLabel": "July 20-26 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JULY 20-26",
+  "bibleReading": "JEREMIAH 18-19",
   "songs": {
     "opening": 44,
     "middle": 38,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026243",
-  "fetched_at": "2026-10-17T20:25:09.231Z",
+  "fetched_at": "2026-10-17T20:28:51.316Z",
   "content_hash": "f5ff741dd5b0438a4174bf688f1dcd8af6e74e85df80037a72655617e1d973ad"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-06-22",
   "weekEnd": "2026-06-28",
-  "dateLabel": "June 22-28 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JUNE 22-28",
+  "bibleReading": "JEREMIAH 9-10",
   "songs": {
     "opening": 5,
     "middle": 48,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026168",
-  "fetched_at": "2026-10-17T20:25:03.730Z",
+  "fetched_at": "2026-10-17T20:28:45.778Z",
   "content_hash": "6a2476d632177c5548144c9cd2e4959720ccef5a89ae3de3192661d53f53575e"
 }

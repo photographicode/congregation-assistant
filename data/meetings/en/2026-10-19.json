@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-10-19",
   "weekEnd": "2026-10-25",
-  "dateLabel": "October 19-25 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "OCTOBER 19-25",
+  "bibleReading": "JEREMIAH 45-46",
   "songs": {
     "opening": 21,
     "middle": 117,
@@ -113,6 +113,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026258",
-  "fetched_at": "2026-10-17T20:23:21.591Z",
+  "fetched_at": "2026-10-17T20:27:35.290Z",
   "content_hash": "55f63a9a8634657259b6ec8a7ee2cf55823020a98e1e5fd0d3c1f99d79eb10c3"
 }

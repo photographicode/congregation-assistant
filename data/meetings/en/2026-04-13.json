@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-04-13",
   "weekEnd": "2026-04-19",
-  "dateLabel": "April 13-19 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "APRIL 13-19",
+  "bibleReading": "ISAIAH 52-53",
   "songs": {
     "opening": 18,
     "middle": 20,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026087",
-  "fetched_at": "2026-10-17T20:24:52.383Z",
+  "fetched_at": "2026-10-17T20:28:33.682Z",
   "content_hash": "2a5412fc60eda899b3eec2e1fddd6b9c709cbf029746e5a1bd68e9322a99a1a5"
 }

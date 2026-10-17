@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-07-27",
   "weekEnd": "2026-08-02",
-  "dateLabel": "July 27–August 2 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JULY 27–AUGUST 2",
+  "bibleReading": "JEREMIAH 20-21",
   "songs": {
     "opening": 73,
     "middle": 57,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026244",
-  "fetched_at": "2026-10-17T20:25:10.338Z",
+  "fetched_at": "2026-10-17T20:28:52.298Z",
   "content_hash": "84cbc35a7669331cf07f72fbcc8844bd6f181448352b11bc40b0f683c5125eb7"
 }

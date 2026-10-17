@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-12-14",
   "weekEnd": "2026-12-20",
-  "dateLabel": "December 14-20 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "DECEMBER 14-20",
+  "bibleReading": "EZEKIEL 5-6",
   "songs": {
     "opening": 49,
     "middle": 153,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026407",
-  "fetched_at": "2026-10-17T20:23:59.233Z",
+  "fetched_at": "2026-10-17T20:28:09.410Z",
   "content_hash": "ddf2422a72f724909248463b507d98f59871fd69c24b8b75d3afe61e93cab264"
 }

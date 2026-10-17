@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-02-23",
   "weekEnd": "2026-03-01",
-  "dateLabel": "February 23–March 1 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "FEBRUARY 23–MARCH 1",
+  "bibleReading": "ISAIAH 38-40",
   "songs": {
     "opening": 4,
     "middle": 160,
@@ -111,6 +111,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026008",
-  "fetched_at": "2026-10-17T20:24:19.184Z",
+  "fetched_at": "2026-10-17T20:28:24.882Z",
   "content_hash": "31e7df400368fe27d3c4052118966a9e9ea0d401e8cd4eb6b4074c2103070f91"
 }

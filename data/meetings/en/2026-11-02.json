@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-11-02",
   "weekEnd": "2026-11-08",
-  "dateLabel": "November 2-8 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "NOVEMBER 2-8",
+  "bibleReading": "JEREMIAH 49-50",
   "songs": {
     "opening": 1,
     "middle": 44,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026401",
-  "fetched_at": "2026-10-17T20:23:52.629Z",
+  "fetched_at": "2026-10-17T20:28:02.790Z",
   "content_hash": "02fa755c7bd04429531a555ae3646f6fbcd57134e9802e9e812b069811e23bf9"
 }

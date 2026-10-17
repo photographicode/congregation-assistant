@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-06-29",
   "weekEnd": "2026-07-05",
-  "dateLabel": "June 29–July 5 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JUNE 29–JULY 5",
+  "bibleReading": "JEREMIAH 11-12",
   "songs": {
     "opening": 106,
     "middle": 109,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026169",
-  "fetched_at": "2026-10-17T20:25:04.832Z",
+  "fetched_at": "2026-10-17T20:28:46.879Z",
   "content_hash": "2c67b5f6e81f8d6f47c2dea57f636fd31a27e2a79d359064d3d5d6b3cf4eb2ed"
 }

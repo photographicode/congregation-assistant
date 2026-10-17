@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-10-05",
   "weekEnd": "2026-10-11",
-  "dateLabel": "October 5-11 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "OCTOBER 5-11",
+  "bibleReading": "JEREMIAH 40-41",
   "songs": {
     "opening": 33,
     "middle": 17,
@@ -113,6 +113,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026256",
-  "fetched_at": "2026-10-17T20:23:50.431Z",
+  "fetched_at": "2026-10-17T20:28:00.586Z",
   "content_hash": "6aaa88e7abef799de31236fcfc51e0ff17a9342bcc8a48865cfbf7d948cae492"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-11-30",
   "weekEnd": "2026-12-06",
-  "dateLabel": "November 30–December 6 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "NOVEMBER 30–DECEMBER 6",
+  "bibleReading": "EZEKIEL 1-2",
   "songs": {
     "opening": 65,
     "middle": 63,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026405",
-  "fetched_at": "2026-10-17T20:23:57.027Z",
+  "fetched_at": "2026-10-17T20:28:07.187Z",
   "content_hash": "9eb005cb77cb0f11eb4f952130d16b2db3b9f1e85b4e48f7125d490ea2d967ca"
 }

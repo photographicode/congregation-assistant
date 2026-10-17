@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-09-14",
   "weekEnd": "2026-09-20",
-  "dateLabel": "September 14-20 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "SEPTEMBER 14-20",
+  "bibleReading": "JEREMIAH 34-35",
   "songs": {
     "opening": 161,
     "middle": 121,
@@ -121,6 +121,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026253",
-  "fetched_at": "2026-10-17T20:23:47.133Z",
+  "fetched_at": "2026-10-17T20:27:57.412Z",
   "content_hash": "2797d18641c7bb9a93346681e1eb9606f4126f6b08815e197ff876f8bef37f26"
 }

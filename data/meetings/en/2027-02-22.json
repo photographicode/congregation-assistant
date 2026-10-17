@@ -1,8 +1,8 @@
 {
   "weekStart": "2027-02-22",
   "weekEnd": "2027-02-28",
-  "dateLabel": "February 22-28 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "FEBRUARY 22-28",
+  "bibleReading": "EZEKIEL 25-26",
   "songs": {
     "opening": 107,
     "middle": 64,
@@ -117,6 +117,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202027008",
-  "fetched_at": "2026-10-17T20:25:25.732Z",
+  "fetched_at": "2026-10-17T20:29:07.719Z",
   "content_hash": "099c9bbe65453164ff1b43ed2b89887f007ada864b381c9da10e7626c4cd66bf"
 }

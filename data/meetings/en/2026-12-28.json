@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-12-28",
   "weekEnd": "2027-01-03",
-  "dateLabel": "December 28, 2026–January 3, 2027 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "DECEMBER 28, 2026–JANUARY 3, 2027",
+  "bibleReading": "EZEKIEL 9-10",
   "songs": {
     "opening": 119,
     "middle": 60,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026409",
-  "fetched_at": "2026-10-17T20:23:23.788Z",
+  "fetched_at": "2026-10-17T20:27:37.487Z",
   "content_hash": "342b0d31c186edb483881c0561ecfffb39a0eb0c1871f38c11c606b59518fd10"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-08-03",
   "weekEnd": "2026-08-09",
-  "dateLabel": "August 3-9 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "AUGUST 3-9",
+  "bibleReading": "JEREMIAH 22-23",
   "songs": {
     "opening": 40,
     "middle": 103,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026245",
-  "fetched_at": "2026-10-17T20:25:11.432Z",
+  "fetched_at": "2026-10-17T20:28:53.479Z",
   "content_hash": "6d457117a3dc6cd0249679cd8d4169e1e43ea431d8e69334f266f9fb0965bcca"
 }

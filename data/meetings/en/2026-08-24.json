@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-08-24",
   "weekEnd": "2026-08-30",
-  "dateLabel": "August 24-30 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "AUGUST 24-30",
+  "bibleReading": "JEREMIAH 29-30",
   "songs": {
     "opening": 12,
     "middle": 3,
@@ -111,6 +111,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026248",
-  "fetched_at": "2026-10-17T20:25:14.728Z",
+  "fetched_at": "2026-10-17T20:28:56.717Z",
   "content_hash": "09d51be4e5a5d39530a0a7fb72b04c54f1ba70f9f842c7c0701cc7f38d3829d2"
 }

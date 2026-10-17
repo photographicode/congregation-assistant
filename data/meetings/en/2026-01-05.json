@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-01-05",
   "weekEnd": "2026-01-11",
-  "dateLabel": "January 5-11 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JANUARY 5-11",
+  "bibleReading": "ISAIAH 17-20",
   "songs": {
     "opening": 153,
     "middle": 148,
@@ -109,6 +109,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026001",
-  "fetched_at": "2026-10-17T20:24:11.497Z",
+  "fetched_at": "2026-10-17T20:28:17.175Z",
   "content_hash": "bc1af3ce741fabc4c3182c81fd8ae53c4b549fc433751b75685fbdc9ef440489"
 }

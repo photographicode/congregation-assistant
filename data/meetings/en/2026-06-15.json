@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-06-15",
   "weekEnd": "2026-06-21",
-  "dateLabel": "June 15-21 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JUNE 15-21",
+  "bibleReading": "JEREMIAH 7-8",
   "songs": {
     "opening": 152,
     "middle": 91,
@@ -109,6 +109,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026167",
-  "fetched_at": "2026-10-17T20:25:02.628Z",
+  "fetched_at": "2026-10-17T20:28:44.682Z",
   "content_hash": "0d528eb20d9d64a2fcdd835183d3707a45fdf3b8e99bb9dab65104e279b40018"
 }

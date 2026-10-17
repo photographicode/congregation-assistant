@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-03-02",
   "weekEnd": "2026-03-08",
-  "dateLabel": "March 2-8 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "MARCH 2-8",
+  "bibleReading": "ISAIAH 41-42",
   "songs": {
     "opening": 8,
     "middle": 19,
@@ -109,6 +109,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026081",
-  "fetched_at": "2026-10-17T20:24:45.095Z",
+  "fetched_at": "2026-10-17T20:28:27.079Z",
   "content_hash": "ed1ac098f561bfa0b6686d6f3221d253d0926a2043ddbadf8ec8260618773e15"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-07-06",
   "weekEnd": "2026-07-12",
-  "dateLabel": "July 6-12 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "JULY 6-12",
+  "bibleReading": "JEREMIAH 13-15",
   "songs": {
     "opening": 123,
     "middle": 49,
@@ -101,6 +101,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026241",
-  "fetched_at": "2026-10-17T20:25:07.029Z",
+  "fetched_at": "2026-10-17T20:28:49.081Z",
   "content_hash": "770dd8982361bacc41843e8ceb8b5d5a0ca5e068a53db06ea28148c939faca01"
 }

@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-08-10",
   "weekEnd": "2026-08-16",
-  "dateLabel": "August 10-16 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "AUGUST 10-16",
+  "bibleReading": "JEREMIAH 24-25",
   "songs": {
     "opening": 124,
     "middle": 65,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026246",
-  "fetched_at": "2026-10-17T20:25:12.531Z",
+  "fetched_at": "2026-10-17T20:28:54.583Z",
   "content_hash": "732b5f8a211a5e7edd0dd1ce2bde748e1267c312ff90bb092109f0300e75b91f"
 }

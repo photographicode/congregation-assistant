@@ -1,8 +1,8 @@
 {
   "weekStart": "2026-11-23",
   "weekEnd": "2026-11-29",
-  "dateLabel": "November 23-29 — Watchtower ONLINE LIBRARY",
-  "bibleReading": null,
+  "dateLabel": "NOVEMBER 23-29",
+  "bibleReading": "LAMENTATIONS 3-5",
   "songs": {
     "opening": 158,
     "middle": 109,
@@ -103,6 +103,6 @@
     }
   ],
   "source_url": "https://wol.jw.org/en/wol/d/r1/lp-e/202026404",
-  "fetched_at": "2026-10-17T20:23:55.931Z",
+  "fetched_at": "2026-10-17T20:28:06.089Z",
   "content_hash": "c41f011a9f79b7d012543ee2c17e04b8f7b81745dae51dbff90932bcd307c426"
 }
