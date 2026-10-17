@@ -1,0 +1,51 @@
+name: Deploy V3 site and app to GitHub Pages
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check && npm test
+      - run: node --test scripts/meetings/parse.test.mjs
+      - run: node scripts/build-pages.mjs
+        env:
+          CA_PAGES_URL: https://photographicode.github.io/congregation-assistant
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build && node scripts/check-v3-resume.cjs
+      - run: node scripts/build-pages.mjs
+        env:
+          CA_PAGES_URL: https://photographicode.github.io/congregation-assistant
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: work/pages
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/deploy-pages@v4
+        id: deployment

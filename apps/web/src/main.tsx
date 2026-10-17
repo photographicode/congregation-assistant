@@ -34,7 +34,7 @@ import {LocalAssistant} from "./features/LocalAssistant";
 import {SectionHub} from "./features/SectionHub";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores } from "./features/client";
+import { config,rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores } from "./features/client";
 import {ExperienceDefaults} from "./features/ExperienceProfile";
 import { useAppearance,activateAppearanceProfile } from "./features/store";
 import {authScope,displayFirstName} from "./features/auth-scope.mjs";
@@ -74,6 +74,7 @@ export type Context = {
   notify: (s: string) => void;
 };
 function App() {
+  const [updatesOpen,setUpdatesOpen]=useState(false);
   const [session, setSession] = useState<any>(null),
     [loading, setLoading] = useState(!demo),
     [error, setError] = useState(""),
@@ -327,7 +328,7 @@ function App() {
   const inspector=<section className="stack"><h2>{t('nav.details')}</h2><p>{t('inspector.empty')}</p><button onClick={()=>selectSection(availableSections.includes('people')?'people':'admin')}>{t(availableSections.includes('people')?'nav.people':'nav.admin')}</button></section>;
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
-    <AppShell name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.some(role=>["admin","field_service","group_overseer"].includes(role))?()=>void prepareAssistant():undefined} signOut={signOut} demo={demo} inspector={inspector}>
+    <AppShell onUpdates={()=>setUpdatesOpen(true)} name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.some(role=>["admin","field_service","group_overseer"].includes(role))?()=>void prepareAssistant():undefined} signOut={signOut} demo={demo} inspector={inspector}>
       {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<div className="banner" role="status">{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</div>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
@@ -335,7 +336,7 @@ function App() {
             {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
       </Suspense></div>
     </AppShell>
-    <CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
+    <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title="What’s new · 17 October 2026"><div className="stack"><p>S-21 groups and ZIP exports, SFTS totals, fair meeting suggestions, S-89 student and assistant slips, departmental pools and an on-device report assistant.</p><p>This is a V3 checkpoint. Official source import and some production meeting workflows remain under verification.</p><a href={new URL("updates/#release-2026-10-17",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">Read the release notes and how-to links</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
     <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));}}>{t(action.label)}</button>)}</div></Dialog>
     <Dialog open={assistantOpen} onClose={()=>setAssistantOpen(false)} title={t('assistant.title')}>{assistantOpen&&<LocalAssistant context={context} onExport={()=>{const tool=visibleTools.find(tool=>tool.id==='s21');if(tool){openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:select-s21'));setAssistantOpen(false);}}}/>}</Dialog>
     {notice&&<div className="notice" role="status">{notice}</div>}

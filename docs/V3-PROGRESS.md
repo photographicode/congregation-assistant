@@ -91,3 +91,15 @@ S-21 now supports live per-filter counts, union/de-duplication, 1–12-month mis
 ### Official-source CI import
 
 Added bounded, throttled official-publication discovery, ETag caching, a repository-variable kill switch, independently written EPUB parsing and public normalized metadata outputs. Only discovered official links are followed; source URLs are not fabricated. Weekly/manual/source-change CI runs the job. English is the only currently supported parser language; other languages fail explicitly until fixtures are verified. One week-range test passes; the two real EPUB acceptance tests skip clearly because private fixtures are absent. The static status is false, so app/site must keep Add parts fallback until real CI metadata exists. No automatic-import success is claimed at this checkpoint.
+
+Production database: `v3_publisher_sfts` and `v3_local_command_report` were applied and metadata-verified: authenticated execution only, anon denied, empty search_path. Automatic approval review rejected the combined `v3_meeting_workflows` migration for its production shared-function blast radius. No workaround was attempted; local tests are green, production rollout is blocked. Existing setup save is preserved. New attendance context and group-list RPCs must not be represented as enabled in production.
+
+First official-publication CI run (39039306671) reached the source but returned HTTP 400. No week metadata was committed; Add parts fallback remains visible. This is an observed CI failure, not just the local sandbox limitation.
+
+### Website and Pages artifact
+
+Added twelve honest feature cards, lazy interactive fictional S-21/assistant/OCLM/slip demos, a dated Updates entry, in-app What's new sheet and trust-page processing/permission explanations. The sample assistant uses the same deterministic parser. Existing moving-grid hero, theme gallery and reduced-motion tour are retained. Website CSS is minified to keep the existing 200 KiB initial-transfer cap; no theme colors or thresholds changed.
+
+Pages packaging builds configured project-relative paths, root website plus `/app/`, PWA scope/start URL, a root app SPA fallback and source-commit metadata. No CNAME is emitted. Cloudflare workflows remain available separately. New source-import status is false and the app offers reviewed local imports.
+
+Verification so far: `npm run check`, `npm test`, build and no-legacy bundle checks pass. All 17 existing PDF golden parity/contract fixtures and eight Indic-script checks pass. New S-89 fixtures cover two copies, three classroom settings, long names and Indic names. Browser checks are being completed before merge; expanded resume requirements remain listed separately rather than marked complete.

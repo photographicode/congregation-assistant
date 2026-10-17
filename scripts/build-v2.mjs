@@ -16,7 +16,7 @@ for(const file of (await readdir('assets/fonts')).filter(name=>!/^Nimbus|^NIMBUS
 await cp('assets/pdf-templates','dist/assets/pdf-templates',{recursive:true});
 for(const file of ['icon-192.png','icon-512.png'])await cp('assets/'+file,'dist/assets/'+file);
 await cp('apps/site','dist/site',{recursive:true,filter:src=>!(/\.(ts|tsx)$/.test(src)||src.endsWith('README.md'))});
-await cp('public-config.json','dist/public-config.json');await cp('capabilities.json','dist/capabilities.json');
+await cp('data','dist/data',{recursive:true});await cp('public-config.json','dist/public-config.json');await cp('capabilities.json','dist/capabilities.json');
 await cp('public-config.json','dist/site/public-config.json');await cp('capabilities.json','dist/site/capabilities.json');
 await writeFile('dist/site/tokens.css',(await readFile('packages/ui/tokens.css','utf8')).replaceAll('../../assets/','assets/').replaceAll('NotoSans-Regular.woff2','NotoSans-Latin-Regular.woff2').replaceAll('NotoSans-Bold.woff2','NotoSans-Latin-Bold.woff2'));
 await cp('dist/assets/fonts','dist/site/assets/fonts',{recursive:true});
@@ -24,7 +24,7 @@ for(const file of ['themes.css','fonts.css','theme-bridge.css'])await writeFile(
 
 await build({configFile:path.resolve('apps/site/vite.config.ts')});
 await mkdir('dist/.well-known',{recursive:true});await writeFile('dist/.well-known/build-hash.txt',hash+'\n');
-const entryManifest=JSON.parse(await readFile('dist/.vite/manifest.json','utf8'));const shellKeys=new Set();function shellVisit(key){if(shellKeys.has(key))return;shellKeys.add(key);for(const key2 of entryManifest[key]?.imports||[])shellVisit(key2);}for(const [key,item] of Object.entries(entryManifest))if(item.isEntry||/^src\/features\/(?:Workspace|OwnerConsole|PublicForm)\.tsx$/.test(key))shellVisit(key);const staticAssets=[...shellKeys].flatMap(key=>[entryManifest[key].file,...(entryManifest[key].css||[]),...(entryManifest[key].assets||[])]).map(file=>base+file);
+const entryManifest=JSON.parse(await readFile('dist/.vite/manifest.json','utf8'));const shellKeys=new Set();function shellVisit(key){if(shellKeys.has(key))return;shellKeys.add(key);for(const key2 of entryManifest[key]?.imports||[])shellVisit(key2);}for(const [key,item] of Object.entries(entryManifest))if(item.isEntry||['Workspace','OwnerConsole','PublicForm'].includes(item.name))shellVisit(key);const staticAssets=[...shellKeys].flatMap(key=>[entryManifest[key].file,...(entryManifest[key].css||[]),...(entryManifest[key].assets||[])]).map(file=>base+file);
 await writeFile('dist/service-worker.js',`const CACHE='ca-v2-${hash.slice(0,16)}';const BASE=${JSON.stringify(base)};const SHELL=[BASE,...${JSON.stringify(staticAssets.filter(f=>!f.includes('crypto')&&!f.includes('fontkit')&&!/NotoSans(?:Devanagari|Bengali|Gurmukhi|Gujarati|Tamil|Telugu|Kannada|Malayalam)/.test(f)))}];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL))));
 self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();});
@@ -44,6 +44,7 @@ if(total>250*1024)throw Error('Initial application JS exceeds 250 KiB gzip: '+to
 await writeFile('dist/build-report.json',JSON.stringify({hash,jsGzipBytes:total,limit:250*1024},null,2));
 await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-site',{recursive:true});await writeFile('dist-site/robots.txt','User-agent: *\nAllow: /\nSitemap: https://congregationassistant.com/sitemap.xml\n');
 await writeFile('dist-site/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://congregationassistant.com/</loc></url><url><loc>https://congregationassistant.com/how-to-use.html</loc></url><url><loc>https://congregationassistant.com/android/</loc></url></urlset>');
+const {transform}=await import('esbuild');for(const file of ['site.css','tour.css']){const css=await transform(await readFile('dist-site/'+file,'utf8'),{loader:'css',minify:true});await writeFile('dist-site/'+file,css.code);await writeFile('dist/site/'+file,css.code);}
 let siteBytes=0;for(const file of ['index.html','site.css','site.js','tour.js','tour.css','tokens.css','themes.css','fonts.css','theme-bridge.css','assets/fonts/inter-latin-variable.woff2','assets/fonts/newsreader-latin-600.woff2','capabilities.json','public-config.json','assets/fonts/NotoSans-Latin-Regular.woff2','assets/fonts/NotoSans-Latin-Bold.woff2'])siteBytes+=gzipSync(await readFile('dist-site/'+file)).length;
 if(siteBytes>200*1024)throw Error('Initial website payload exceeds 200 KiB gzip: '+siteBytes);
 await writeFile('dist-site/build-report.json',JSON.stringify({hash,initialGzipBytes:siteBytes,limit:200*1024},null,2));

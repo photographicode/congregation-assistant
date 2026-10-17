@@ -356,7 +356,7 @@ export default function Workspace({
     if (!demo) {
       if (!c.caps.setup)
         throw Error("Update pending. Setup progress cannot be saved yet.");
-      await rpc("ca_v3_save_setup", {
+      await rpc("ca_v2_save_setup", {
         p_cong_id: c.cong,
         p_step: next,
         p_data: setup,
