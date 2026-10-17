@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "2.57.4",
+    "idb": "8.0.4",
     "zod": "4.1.12"
   }
 }

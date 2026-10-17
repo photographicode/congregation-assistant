@@ -1,3 +1,5 @@
+import {z} from "zod";
+import type {SyncStatus} from "../../../packages/core/store";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider,useQueryClient,useQuery } from "@tanstack/react-query";
@@ -31,7 +33,7 @@ import {themeIds} from "../../../packages/core/themes";
 import {SectionHub} from "./features/SectionHub";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { rpc,client, demo, capabilities } from "./features/client";
+import { rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores } from "./features/client";
 import {ExperienceDefaults} from "./features/ExperienceProfile";
 import { useAppearance,activateAppearanceProfile } from "./features/store";
 import {authScope,displayFirstName} from "./features/auth-scope.mjs";
@@ -82,6 +84,7 @@ function App() {
     [route, setRoute] = useState(new URLSearchParams(location.search).get("screen") || "home"),
     [hub,setHub]=useState<SectionId|null>(()=>{const value=new URLSearchParams(location.search).get("section");return sections.some(section=>section.id===value)?value as SectionId:null;}),
     [quick,setQuick]=useState(false),
+    [syncStatus,setSyncStatus]=useState<SyncStatus>({pending:0,conflicts:0,forbidden:0}),
     [hubCounts,setHubCounts]=useState<Record<string,number>>({}),
     [collapsed, setCollapsed] = useState(false),
     [more, setMore] = useState(false),
@@ -91,7 +94,7 @@ function App() {
     [notice, setNotice] = useState(""),
     [online, setOnline] = useState(navigator.onLine);
   const queryClient=useQueryClient();
-  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setSearch(false);setMemberships([]);setHubCounts({});setCaps({});setPlan(null);setCong("");}),[queryClient]);
+  const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{switchStoreAccount(account);for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setSearch(false);setMemberships([]);setHubCounts({});setSyncStatus({pending:0,conflicts:0,forbidden:0});setCaps({});setPlan(null);setCong("");}),[queryClient]);
   useEffect(()=>setHubCounts({}),[cong]);
   const appearance = useAppearance();
   useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
@@ -151,26 +154,12 @@ function App() {
       data.subscription.unsubscribe();
     };
   }, []);
-  useEffect(()=>{let active=true;if(demo){const value=new URLSearchParams(location.search).get('demo')==='owner';setOwner(value);if(value)setRoute('owner');return;}setOwner(false);if(!session)return;rpc('ca_is_superadmin').then(value=>{if(active){setOwner(value===true);if(value===true&&!cong)setRoute('owner');}}).catch(()=>{if(active)setOwner(false);});return()=>{active=false;};},[session?.user?.id]);
+  useEffect(()=>{let active=true;if(demo){const value=new URLSearchParams(location.search).get('demo')==='owner';setOwner(value);if(value)setRoute('owner');return;}setOwner(false);if(!session)return;storeFor('').read({source:{kind:'rpc',name:'ca_is_superadmin',args:{}},cacheKey:'account-owner',fresh:true},z.boolean()).then(value=>{if(active){setOwner(value===true);if(value===true&&!cong)setRoute('owner');}}).catch(()=>{if(active)setOwner(false);});return()=>{active=false;};},[session?.user?.id]);
   useEffect(() => {
     if (!session || demo) return;
     let active = true;
-    setLoading(true);
-    client
-      .from("congregation_access")
-      .select("cong_id,role,congregations(name)")
-      .eq("email", session.user.email?.toLowerCase())
-      .eq("active", true)
-      .then(({ data, error }) => {
-        if (active) {
-          if (error) setError(error.message);
-          else {
-            setMemberships(data || []);
-            setCong(data?.[0]?.cong_id || "");
-          }
-          setLoading(false);
-        }
-      });
+    if(!memberships.length)setLoading(true);
+    storeFor('').read({source:{kind:'table',name:'congregation_access',columns:'cong_id,role,congregations(name)',filters:[{column:'email',op:'eq',value:session.user.email?.toLowerCase()},{column:'active',op:'eq',value:true}]},cacheKey:'account-membership',fresh:true},z.array(z.object({cong_id:z.string(),role:z.string(),congregations:z.object({name:z.string()}).nullable()}))).then(data=>{if(active){setMemberships(data);setCong(data[0]?.cong_id||'');setLoading(false);}}).catch(error=>{if(active){setError(error.message);setLoading(false);}});
     return () => {
       active = false;
     };
@@ -179,7 +168,7 @@ function App() {
   useEffect(() => {
     if (cong && !demo) capabilities(cong).then(setCaps);
   }, [cong]);
-  useEffect(()=>{let active=true;setPlan(null);setPlanError('');if(!cong)return;if(demo){const expired=new URLSearchParams(location.search).get('demo')==='expired';setPlan({congregation:cong,name:'River Park Congregation',status:expired?'expired':'active',trialEndsAt:new Date().toISOString(),paymentDate:null,locked:expired,serverTime:new Date().toISOString()});return;}rpc('ca_v2_workspace_plan',{p_cong_id:cong}).then(value=>{const parsed=planSchema.parse(value);if(parsed.congregation!==cong)throw Error('Workspace status did not match. Reload before continuing.');if(active)setPlan(parsed);}).catch(e=>{if(active)setPlanError(e.message);});return()=>{active=false;};},[cong,session?.user?.id]);
+  useEffect(()=>{let active=true;setPlan(null);setPlanError('');if(!cong)return;if(demo){const expired=new URLSearchParams(location.search).get('demo')==='expired';setPlan({congregation:cong,name:'River Park Congregation',status:expired?'expired':'active',trialEndsAt:new Date().toISOString(),paymentDate:null,locked:expired,serverTime:new Date().toISOString()});return;}storeFor(cong).read({source:{kind:'rpc',name:'ca_v2_workspace_plan',args:{p_cong_id:cong}},cacheKey:'workspace-plan',fresh:true},planSchema).then(value=>{const parsed=planSchema.parse(value);if(parsed.congregation!==cong)throw Error('Workspace status did not match. Reload before continuing.');if(active)setPlan(parsed);}).catch(e=>{if(active)setPlanError(e.message);});return()=>{active=false;};},[cong,session?.user?.id]);
   useEffect(() => {
     if (notice) {
       const timer = setTimeout(() => setNotice(""), 7000);
@@ -234,10 +223,12 @@ function App() {
     caps,
     notify: setNotice,
   };
-  const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(client,cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
+  const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(storeFor(cong,roles),cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
+  const roleScope=[...roles].sort().join(',');
+  useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch(()=>{});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch(()=>{});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,30000);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
   async function signOut() {
     const { clearDevice } = await import("./features/device-keys");
-    await clearDevice();
+    try{await clearDevice();}catch{setError(t("store.clearFailed"));}
     for (const store of [localStorage, sessionStorage]) {
       for (const key of Object.keys(store))
         if (
@@ -247,6 +238,7 @@ function App() {
         )
           store.removeItem(key);
     }
+    try{await clearStores();}catch{setError(t("store.clearFailed"));}
     await client.auth.signOut();
     setMemberships([]);
     setCong("");
@@ -333,6 +325,7 @@ function App() {
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
     <AppShell name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} signOut={signOut} demo={demo} inspector={inspector}>
       {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
+      {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<div className="banner" role="status">{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</div>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
       <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
             {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}

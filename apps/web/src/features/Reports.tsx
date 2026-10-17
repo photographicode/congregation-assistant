@@ -3,14 +3,14 @@ import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {parseDelimited} from './model.mjs';
 import {csvRecords} from './export.mjs';
 import {reportTotals,reportDraft,reportPayload,annualReportMonths,reviewReportImport} from './report-model.mjs';
-import {client,demo} from './client';
+import {storeFor,demo} from './client';
 import {repositories,type Report} from '../../../../packages/core/repositories';
 import type {Context} from '../main';
 import {Dialog} from '../../../../packages/ui/Dialog';
 export function reportingPeriod(date:Date){const month=date.getMonth();return {month,year:date.getFullYear()+(month>=8?1:0)};}
 const sample=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];
 export function Reports({context:c}:{context:Context}) {
- const repo=React.useMemo(()=>repositories(client,c.cong,demo),[c.cong]);const cache=useQueryClient();
+ const repo=React.useMemo(()=>repositories(storeFor(c.cong,c.roles),c.cong,demo),[c.cong]);const cache=useQueryClient();
  const personal=c.roles.includes('publisher')&&!c.roles.includes('admin');const canWrite=c.roles.some(r=>['admin','field_service','group_overseer'].includes(r));const canService=c.roles.some(r=>['admin','field_service','group_overseer','publisher'].includes(r));const canAttendance=c.roles.some(r=>['admin','attendance'].includes(r));
  const groupWriter=c.roles.includes('group_overseer')&&!c.roles.some(r=>['admin','field_service'].includes(r));
  const [bulk,setBulk]=React.useState(false),[bulkRows,setBulkRows]=React.useState<any[]>([]),[bulkFilter,setBulkFilter]=React.useState(''),[bulkLimit,setBulkLimit]=React.useState(25),[annualOpen,setAnnualOpen]=React.useState(false);

@@ -1,0 +1,10 @@
+{
+  "syntheticAuthAndBackendOnly": true,
+  "realIndexedDB": true,
+  "offlineRouteReload": true,
+  "offlineDraftReload": true,
+  "reconnectWrites": 1,
+  "browserErrors": [],
+  "interceptedRequests": 9,
+  "abortedOfflineAttempts": 21
+}

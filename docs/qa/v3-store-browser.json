@@ -1,0 +1,11 @@
+{
+  "syntheticDataOnly": true,
+  "realIndexedDB": true,
+  "webLocks": true,
+  "offlineReload": true,
+  "parallelSyncOnce": true,
+  "synced": true,
+  "conflict": true,
+  "reviewed": true,
+  "browserErrors": []
+}

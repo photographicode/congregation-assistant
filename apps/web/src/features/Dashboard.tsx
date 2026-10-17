@@ -2,7 +2,7 @@ import React from 'react';import {HomeKpis} from '../../../../packages/ui/HomePr
 import {useQuery} from '@tanstack/react-query';
 import {Users,BarChart3,FileDown,Plus,MessageCircle,CalendarDays,ArrowUpRight,CheckCircle2,RefreshCw} from 'lucide-react';
 import {repositories} from '../../../../packages/core/repositories';
-import {demo,client} from './client';
+import {demo,storeFor} from './client';
 import {useAppearance} from './store';
 import {Scene} from './Scene';
 import {ExperiencePicker} from './ExperiencePicker';
@@ -13,7 +13,7 @@ type DashboardPerson={id:string;name:string;service_group?:string|null;is_rp?:bo
 const fictionalPeople:DashboardPerson[]=[{id:'daniel',name:'Daniel Thomas',service_group:'North',is_rp:true},{id:'maria',name:'Maria Thomas',service_group:'North'},{id:'samuel',name:'Samuel George',service_group:'South'},{id:'anna',name:'Anna Joseph',service_group:'South'}];
 const fictionalReports=[{pub_id:'daniel',hours:50,studies:3,is_ap:false,shared_in_ministry:true},{pub_id:'maria',hours:15,studies:1,is_ap:true,shared_in_ministry:true},{pub_id:'samuel',hours:0,studies:0,is_ap:false,shared_in_ministry:false}];
 export function Dashboard({context:c,go,setup,addPublisher}:{context:Context;go:(s:string)=>void;setup:any;addPublisher:()=>void}){
- const a=useAppearance(),repo=React.useMemo(()=>repositories(client,c.cong,demo),[c.cong]);const canReports=c.roles.some(r=>['admin','field_service','group_overseer'].includes(r)),admin=c.roles.includes('admin'),canPDF=c.roles.some(r=>['admin','field_service','attendance','oclm','weekend'].includes(r)),canSchedule=c.roles.some(r=>['admin','oclm','weekend','attendance','attendant','av','cleaning','publisher'].includes(r));
+ const a=useAppearance(),repo=React.useMemo(()=>repositories(storeFor(c.cong,c.roles),c.cong,demo),[c.cong]);const canReports=c.roles.some(r=>['admin','field_service','group_overseer'].includes(r)),admin=c.roles.includes('admin'),canPDF=c.roles.some(r=>['admin','field_service','attendance','oclm','weekend'].includes(r)),canSchedule=c.roles.some(r=>['admin','oclm','weekend','attendance','attendant','av','cleaning','publisher'].includes(r));
  const [period,setPeriod]=React.useState(()=>previousReportingPeriod(new Date(),setup.timezone)),[filter,setFilter]=React.useState('all'),[search,setSearch]=React.useState('');
  const [y,m]=period.split('-').map(Number),month=m-1,year=y+(month>=8?1:0);
  const people=useQuery({queryKey:['dashboard-people',c.cong],queryFn:()=>repo.people.list(),enabled:!demo&&canReports});const reports=useQuery({queryKey:['reports',c.cong,year,month],queryFn:()=>repo.reports.list(year,month),enabled:!demo&&canReports});

@@ -21,6 +21,9 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:v3:ui
       - run: npm run test:v3:themes
+      - run: npm run test:v3:shell
+      - run: npm run test:v3:store
+      - run: npm run test:v3:offline
       - name: Strict supplied-theme gradient contrast gate
         run: npm run check:contrast
       - uses: actions/upload-artifact@v4

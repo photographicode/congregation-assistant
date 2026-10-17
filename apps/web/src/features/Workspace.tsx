@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import { Context } from "../main";
-import { client, demo, rpc, config } from "./client";
+import { storeFor, demo, rpc, config } from "./client";
 import { useAppearance } from "./store";
 import {
   weekendDefaults,
@@ -222,15 +222,8 @@ export default function Workspace({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
     queryFn: async () => {
-      if (admin) return await rpc("ca_v2_people", { p_cong_id: c.cong });
-      const { data, error } = await client
-        .from("publishers")
-        .select(c.roles.includes("field_service")?"id,name,service_group,phone,address,gender,is_elder,is_ms":"id,name,service_group")
-        .eq("cong_id", c.cong)
-        .is("transferred_at", null)
-        .order("name");
-      if (error) throw Error(error.message);
-      const rows=z.array(z.object({id:z.string(),name:z.string(),service_group:z.string().nullable().optional(),phone:z.string().nullable().optional(),address:z.string().nullable().optional(),gender:z.string().nullable().optional(),is_elder:z.boolean().nullable().optional(),is_ms:z.boolean().nullable().optional()})).parse(data||[]);
+      if (admin) return await storeFor(c.cong,c.roles).read({source:{kind:"rpc",name:"ca_v2_people",args:{p_cong_id:c.cong}},cacheKey:"workspace-people"},z.array(z.object({id:z.string(),name:z.string(),group:z.string(),email:z.string(),phone:z.string().nullable().transform(value=>value||""),address:z.string().nullable().transform(value=>value||"")}).passthrough()));
+      const rows=await storeFor(c.cong,c.roles).read({source:{kind:'table',name:'publishers',columns:c.roles.includes("field_service")?"id,name,service_group,phone,address,gender,is_elder,is_ms":"id,name,service_group",filters:[{column:'cong_id',op:'eq',value:c.cong},{column:'transferred_at',op:'is',value:null}],order:'name'},cacheKey:'workspace-people'},z.array(z.object({id:z.string(),name:z.string(),service_group:z.string().nullable().optional(),phone:z.string().nullable().optional(),address:z.string().nullable().optional(),gender:z.string().nullable().optional(),is_elder:z.boolean().nullable().optional(),is_ms:z.boolean().nullable().optional()})));
       return rows.map((p) => ({
         id: p.id,
         name: p.name,
@@ -250,7 +243,7 @@ export default function Workspace({
   useEffect(()=>{const counts:Record<string,number>={};if(demo||peopleQuery.isSuccess){counts.publishers=people.length;if(admin)counts.emergency=people.length;}if(groupsLoaded)counts.groups=groups.length;c.onCounts?.(counts);},[people,groups,groupsLoaded,peopleQuery.isSuccess,admin,c.onCounts]);
   useEffect(() => {
     if (!demo && c.caps.groups && c.roles.some(role=>["admin","field_service","oclm","weekend","group_overseer"].includes(role)))
-      rpc("ca_v2_groups", { p_cong_id: c.cong })
+      storeFor(c.cong,c.roles).read({source:{kind:"rpc",name:"ca_v2_groups",args:{p_cong_id:c.cong}},cacheKey:"groups"},z.array(z.object({id:z.string(),name:z.string()}).passthrough()))
         .then(data=>{setGroups(data);setGroupsLoaded(true);})
         .catch((e) => setError(e.message));
     if (!demo && c.caps.setup && admin)
