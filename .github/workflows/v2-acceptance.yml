@@ -33,7 +33,7 @@ jobs:
       - run: node scripts/check-report-browser.cjs
       - run: node scripts/check-owner-browser.cjs
       - run: node scripts/check-site-browser.cjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: v2-build-and-verification
