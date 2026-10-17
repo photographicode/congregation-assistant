@@ -26,7 +26,7 @@ jobs:
         env:
           BASE_URL: ${{ vars.APP_BASE_URL || '/congregation-assistant/' }}
       - run: npm run check:bundle
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
   deploy:
