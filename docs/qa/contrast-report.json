@@ -8672,5 +8672,27 @@
         ]
       }
     }
+  ],
+  "oclm": [
+    {
+      "token": "crimson",
+      "ratio": 10.979824052792726,
+      "passed": true
+    },
+    {
+      "token": "slate",
+      "ratio": 6.940368794183166,
+      "passed": true
+    },
+    {
+      "token": "gold",
+      "ratio": 5.769437107211597,
+      "passed": true
+    },
+    {
+      "token": "gold-text",
+      "ratio": 6.514851135020433,
+      "passed": true
+    }
   ]
 }

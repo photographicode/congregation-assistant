@@ -103,3 +103,11 @@ Added twelve honest feature cards, lazy interactive fictional S-21/assistant/OCL
 Pages packaging builds configured project-relative paths, root website plus `/app/`, PWA scope/start URL, a root app SPA fallback and source-commit metadata. No CNAME is emitted. Cloudflare workflows remain available separately. New source-import status is false and the app offers reviewed local imports.
 
 Verification so far: `npm run check`, `npm test`, build and no-legacy bundle checks pass. All 17 existing PDF golden parity/contract fixtures and eight Indic-script checks pass. New S-89 fixtures cover two copies, three classroom settings, long names and Indic names. Browser checks are being completed before merge; expanded resume requirements remain listed separately rather than marked complete.
+
+The latest resume pool rule supersedes the earlier Cleaning exemption: all three departments now show request/admin-approval UI and restrict assignment choices to approved people, matching the existing production backend. The unapplied migration was narrowed to remove the two department-function replacements entirely; it remains unapplied after automatic review rejection.
+
+### Resume acceptance checkpoint
+
+`npm run check` passes (37 native unit tests and 68 existing unit tests); `npm test`, production build and bundle safety pass. The new browser evidence `docs/qa/v3-resume-browser.json` has 45 views with zero layout failures, zero browser errors and zero demo cloud calls. Parsing/preview/cancel made zero requests and wrote no prompt history. Offline reload/reconnect passes. Fixed shell chrome observation when lazy navigation appears and capped the brand icon in the 72px rail at 200% text; no detector threshold was relaxed. Local SQL tests pass with approval required for Cleaning as well as AV/Attendant. Production metadata confirms the separate department draft functions retain approval checks for all departments.
+
+Full-ref history scan after fetching branches/tags: 1,825 source blobs and 263 public-repo blobs, no recognized credentials. The old cutover browser harness fails its obsolete greeting selector; full parity remains unchecked. See CUTOVER-REPORT.md for expanded resume gaps. This release is explicitly a public V3 checkpoint, not a declaration that all work packages are complete.

@@ -25,14 +25,12 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check && npm test
       - run: node --test scripts/meetings/parse.test.mjs
-      - run: node scripts/build-pages.mjs
-        env:
-          CA_PAGES_URL: https://photographicode.github.io/congregation-assistant
       - run: npx playwright install --with-deps chromium
       - run: npm run build && node scripts/check-v3-resume.cjs
       - run: node scripts/build-pages.mjs
         env:
           CA_PAGES_URL: https://photographicode.github.io/congregation-assistant
+      - run: node scripts/check-s89-contract.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: work/pages

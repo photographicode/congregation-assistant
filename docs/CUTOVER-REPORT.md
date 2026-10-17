@@ -1,3 +1,21 @@
+# V3 resume checkpoint — 17 October 2026
+
+The owner authorized public GitHub deployment to both repositories. This checkpoint publishes the native app and updated site for inspection; it is **not full V3 parity sign-off**. The prior report below is historical. Both repositories are now public; the frozen `v1-final` tag is preserved. The supplied S-140 reference is ignored and no S-89 source image is committed.
+
+Verified locally: lint/strict TypeScript and unit suites; existing legacy checks; production builds and bundle safety; 17 existing golden PDF parity/contract fixtures; eight Indic scripts; S-89 long/Indic names and three settings/two copies; 45 requested-screen layout views at 320/390/768/1024/1440 × 100/130/200%; zero assistant parsing/preview/cancel requests, no prompt-history writes; real Chromium offline deep-link/draft reload with exactly one reconnect write. Local SQL fixtures verify role/tenant boundaries, SFTS restore, report stale-preview protection and approved pools for all departments. The old cutover browser harness still assumes the prior navigation/greeting structure and fails its initial selector; the new V3 matrix is separate evidence, not a claim that this old harness passed.
+
+Production: SFTS and confirmed-report additive endpoints applied; privileges checked (anon denied, authenticated allowed, empty search_path). Automatic approval review rejected the proposed combined meeting-workflow migration for production shared-function risk. It remains unapplied. Its department replacements were subsequently removed to preserve the latest all-departments approval requirement. Existing setup save remains usable; new automatic attendance/group-list activation remains pending. No destructive migration or history rewrite was performed.
+
+Official-source import: GitHub CI run 39039306671 returned HTTP 400. No real week has been published; app/site retain Add parts fallback and reviewed local-file import. The real mwb/w fixture tests skip explicitly until private EPUB fixtures are supplied. Real official-publication parser fidelity therefore remains unverified. The nine supplied themes are unchanged; strict raw-gradient contrast still reports 22 Lagoon/Aurora combinations. All four OCLM contrast combinations pass.
+
+Expanded resume work still open: SFTS type/free-label and full Home/table detail; editable per-part rules and all three classroom/counselor workflows; range/shuffle assignment; complete S-140 reference layout including songs and two-week imposition; S-89 bulk queue/status/acknowledgment/reminders and hosted one-time links; duty monthly limits and group cleaning rota; attendance meeting windows/date fallback/audit/offline writes; group QR/rotate/revoke and real Turnstile acceptance; all additional assistant intents, ambiguity/Undo beyond report/export; Starter/Complete entitlement rollout and verified alternative comparison. These are not advertised as shipped functionality.
+
+Physical-device, real WhatsApp, real Razorpay, OAuth callback acceptance and custom-domain DNS are unverified. GitHub Pages cannot set the Cloudflare HTTP headers. CNAME is withheld until DNS confirmation. Deployment run results and live URLs are recorded in V3-PROGRESS.md.
+
+---
+
+## Historical checkpoint report
+
 # Native V2 revival report — 15 October 2026
 
 **Release blocked.** Existing main/V1 remains deployable and is not replaced by this branch. The frozen reference is `v1-final` at `76978c4fbe56658b8b856cb7218b5c4a212cd1f0`. No V1 source is deleted before native parity proof. The owner-only Sites candidate is separate from the public release; the repository remains private.

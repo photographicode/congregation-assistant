@@ -303,7 +303,7 @@ function App() {
           administrator to approve your email.
         </p>
         <button onClick={signOut}>Sign out</button>
-        <a href={import.meta.env.BASE_URL + "site/"}>Request a workspace</a>
+        <a href={config.PUBLIC_SITE_URL + "/"}>Request a workspace</a>
       </main>
     );
   const go = (id: string) => {

@@ -9,3 +9,5 @@ Removed `archive/legacy-app-config.js`, the stale project configuration. Frozen 
 Scan results are appended after the complete scan finishes. A format scan is not an assurance that all possible secrets have been detected.
 
 Completed scan: 1,540 unique historical blobs in `congregation-assistant`, and 230 in the fully fetched `Congregation-Assistant_Public` history; working trees also scanned. No recognized credential formats or privileged JWTs found. No rotation finding to report. Historical generic markers are reviewed as documentation/SQL, not treated as secret values. Scan output contains file identifiers only and is kept in ignored work files.
+
+Final pre-publication refresh fetched all branch refs and tags in both repositories: 1,825 source history blobs and 263 public-repository history blobs scanned, plus working files; no recognized credential findings. Production department metadata confirms the existing all-departments approval boundary is preserved. The rejected meeting migration is not applied.
