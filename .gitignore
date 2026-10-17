@@ -7,3 +7,9 @@ supabase/.temp/
 .openai/
 
 dist-site/
+.env*
+!.env.example
+*.pem
+*.key
+docs/private-reference/
+tests/fixtures/private/

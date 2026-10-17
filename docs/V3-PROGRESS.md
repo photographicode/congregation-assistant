@@ -71,3 +71,9 @@ Evidence: tests/v3/plain-store.test.ts (including cold offline read, role/accoun
 Full WP-04 remains unchecked: the remaining V1 mutation contracts have not yet been ported to revision-protected offline commands, and several RPC-backed features remain network-only. They fail explicitly and preserve the current form entries; they are not advertised as offline writes. Do not treat this adapter foundation as full V1 data-logic parity. Full authenticated/multi-device authorization acceptance remains part of WP-05/WP-26.
 
 - WP-04 checkpoint verification: npm run check passes lint/strict TypeScript, 23 Vitest tests and 68 existing unit checks; npm test and build/bundle checks pass. Real-browser Store, signed-in synthetic offline flow, 15 shell views and all nine theme views pass. Supplied CSS SHA-256 remains unchanged. This is a review checkpoint, not a V3 parity sign-off.
+
+## V3 resume — 17 October 2026
+
+Working on `v3/resume` under the owner's explicit authorization to merge and publish both GitHub repositories. The supplied reference document is excluded from Git. Initial checkpoint: `npm run check` passes lint, TypeScript, 32 Vitest and 68 legacy unit tests. New S-21/SFTS, meeting/slip PDF, department, attendance, local-command and group-link work is implemented but remains subject to the acceptance gaps below; this is not full V3 parity sign-off.
+
+Resume safety and release work is in progress. Do not claim automatic official-publication import until a real CI fetch succeeds. Domain CNAME remains withheld until DNS confirmation. Existing nine-theme raw-gradient contrast failures remain explicit.
