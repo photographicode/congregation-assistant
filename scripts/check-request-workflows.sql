@@ -8,6 +8,7 @@ insert into public.publishers(id,cong_id,name,service_group) values('request-per
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000921","email":"request-admin@example.invalid","role":"authenticated","app_metadata":{"provider":"google"}}',true);
 do $$declare days text[]=array['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];dow integer=extract(dow from now() at time zone 'UTC');ctx jsonb;result jsonb;duty text;rev bigint;begin
  perform public.ca_v3_save_setup('request-test',2,jsonb_build_object('privacy','standard','delivery','digital','timezone','UTC','midweek',days[dow+1],'weekend',days[(dow+3)%7+1],'midweekTime','19:00','weekendTime','10:00'));
+ perform public.create_public_link('request-test','report','Group 2',null);result=public.create_public_link('request-test','report','Group 1',null);ctx=public.ca_v3_manage_group_link('request-test',(result->>'token')::uuid,'rotate');if (ctx->>'token')::uuid=(result->>'token')::uuid or (select active from public.ca_public_links where token=(result->>'token')::uuid) then raise exception 'Old group link remained active';end if;perform public.ca_v3_manage_group_link('request-test',(ctx->>'token')::uuid,'revoke');
  result=public.create_public_link('request-test','report','Group 1',null);if public.ca_v3_home_group_links('request-test',2027,9)->0->>'token' is distinct from result->>'token' then raise exception 'Group link missing';end if;
  ctx=public.ca_v3_meeting_context('request-test');if ctx->>'kind'<>'midweek' or ctx->>'date'<>(now() at time zone 'UTC')::date::text then raise exception 'Wrong automatic meeting';end if;
  perform public.ca_v3_submit_attendance('request-test',(ctx->>'date')::date,123);
@@ -45,6 +46,8 @@ do $$begin begin perform public.ca_v3_save_assistant_report('request-test','requ
  if (public.ca_v3_home_group_links('request-test',2027,9)->0->>'submitted')::integer<>1 or public.ca_v3_home_group_links('request-test',2027,9)->0->>'lastSubmission' is null then raise exception 'Group count or submission time missing';end if;raise exception 'Attendant wrote service report';exception when insufficient_privilege then null;end;end $$;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000000923","email":"request-group@example.invalid","role":"authenticated","app_metadata":{"provider":"google"}}',true);
 do $$begin
+ perform public.ca_v3_manage_group_link('request-test',(public.ca_v3_home_group_links('request-test',2027,9)->0->>'token')::uuid,'rotate');
+ begin perform public.ca_v3_manage_group_link('request-test',(select token from public.ca_public_links where cong_id='request-test' and service_group='Group 2' and active limit 1),'revoke');raise exception 'Other group revoked';exception when insufficient_privilege then null;end;
  if jsonb_array_length(public.ca_v3_home_group_links('request-test',2027,9))<>1 then raise exception 'Home exposed other groups';end if;
  if jsonb_array_length(public.ca_v3_report_groups('request-test'))<>1 then raise exception 'Other group exposed';end if;
  begin perform public.ca_v3_save_assistant_report('request-test','request-person2',2027,9,3,2,null);raise exception 'Group overseer wrote another group';exception when insufficient_privilege then null;end;

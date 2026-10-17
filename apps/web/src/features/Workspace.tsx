@@ -249,7 +249,7 @@ export default function Workspace({
         .catch((e) => setError(e.message));
     }
   }, [week, c.caps.weekend]);
-  useEffect(()=>{if(!canWeekend)return;let active=true;void watchtowerWeek(week).then(source=>{if(active&&source)setWeekend((value:any)=>({...value,articleTitle:source.articleTitle||'',studyRange:source.studyDates?.start+' – '+source.studyDates?.end,sourceUrl:source.source_url,openingSong:source.songs[0]??value.openingSong,closingSong:source.songs.at(-1)??value.closingSong}));});return()=>{active=false;};},[week,weekendRevision,canWeekend]);
+  useEffect(()=>{if(!canWeekend)return;let active=true;void watchtowerWeek(week).then(source=>{if(active&&source)setWeekend((value:any)=>({...value,articleTitle:source.articleTitle||'',studyRange:source.studyDates?.start+' – '+source.studyDates?.end,sourceUrl:source.source_url,watchtowerSongs:source.songs?.join(' · ')||''}));});return()=>{active=false;};},[week,weekendRevision,canWeekend]);
   useEffect(() => {
     setError("");
     setQuery(route==="people"?sessionStorage.getItem("ca-person-search")||"":"");
@@ -458,8 +458,8 @@ export default function Workspace({
   let body: React.ReactNode;
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home") body=<>{admin&&<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>}<Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
-  else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={()=>{void(async()=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:people},[families(people),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}})();}}/>;
+  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
+  else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={async records=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:records},[families(records),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}}}/>;
   else if (route === "people")
     body = (
       <>
@@ -943,7 +943,7 @@ export default function Workspace({
                   <WeekendTalkHistory context={c} number={weekend.outline} speaker={weekend.speaker} date={new Date(new Date(week+'T12:00:00Z').getTime()+((['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].indexOf(setup.weekend)+6)%7)*86400000).toISOString().slice(0,10)} revision={weekendRevision} onChoose={(number,title)=>{setWeekend({...weekend,outline:number,talkTitle:title});setWeekendDirty(true);}}/>
                   <label>
                     Watchtower article title
-                    <input readOnly value={weekend.articleTitle} />{weekend.sourceUrl&&<a href={weekend.sourceUrl} target="_blank" rel="noreferrer">Source: wol.jw.org</a>}
+                    <input readOnly value={weekend.articleTitle} />{weekend.watchtowerSongs&&<small>Watchtower songs: {weekend.watchtowerSongs}</small>}{weekend.sourceUrl&&<a href={weekend.sourceUrl} target="_blank" rel="noreferrer">Source: wol.jw.org</a>}
                     <small>
                       Imported titles are read-only. Official data import is not
                       enabled.

@@ -4,5 +4,7 @@
   "qr": true,
   "freshLaunchSuggestions": true,
   "dismiss": true,
+  "rotateAndRevoke": true,
+  "linkManagementWrites": 2,
   "browserErrors": []
 }
