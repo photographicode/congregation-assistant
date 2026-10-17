@@ -1,6 +1,6 @@
 # Congregation Assistant
 
-The owner's V2 cutover instructions take precedence over the earlier preview plan. Native app source lives in apps/web/src/v2, repositories in apps/web/src/data, shared UI in packages/ui, and website in apps/site. Build only these trees; never copy legacy root scripts into deployment output.
+The owner's docs/V3-ORDERS.md supersedes V2 briefs. Follow its package order, supplied themes.css, acceptance gates and per-package check/commit/push protocol. Do not move the immutable v1-final tag. V3 source replaces apps/web/src/v2; PlainStore precedes gated VaultStore. Keep the nine supplied CSS themes authoritative. Native app source lives in apps/web/src/v2, repositories in apps/web/src/data, shared UI in packages/ui, and website in apps/site. Build only these trees; never copy legacy root scripts into deployment output.
 
 Complete and verify native parity before deleting remaining legacy implementation. docs/PARITY.md must report real gaps; do not mark a capability complete because a demo, placeholder, link, or unverified backend call exists. Release is blocked until npm run check:release and all browser/database acceptance gates pass. Work on v2/cutover; ship one PR only when its gates pass.
 

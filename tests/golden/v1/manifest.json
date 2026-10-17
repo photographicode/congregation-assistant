@@ -1,11 +1,16 @@
 {
   "tag": "v1-final",
   "date": "2026-10-14T06:00:00.000Z",
+  "templates": {
+    "s21.pdf": "9e68cd8c15c65b9e8799ca150f748a403bd2d7ab8ea9db49847ed738cec8c608",
+    "s3.pdf": "346bf1c9e3a861a7b996f6f8a682dbd38a4988644797117324840f38ff38aee4",
+    "s88.pdf": "126375db9627c8cbb8bd82d7557d369feb9331e0e2659e53bdbb95d1c83fd2e6"
+  },
   "fixtures": [
     {
       "name": "s21-ordinary",
       "kind": "s21",
-      "bytes": 41996
+      "bytes": 41997
     },
     {
       "name": "s21-long-name",
@@ -15,27 +20,27 @@
     {
       "name": "s21-long-remarks",
       "kind": "s21",
-      "bytes": 55752
+      "bytes": 55756
     },
     {
       "name": "s21-all-months",
       "kind": "s21",
-      "bytes": 41996
+      "bytes": 41997
     },
     {
       "name": "s21-auxiliary",
       "kind": "s21",
-      "bytes": 42071
+      "bytes": 42072
     },
     {
       "name": "s21-regular",
       "kind": "s21",
-      "bytes": 42009
+      "bytes": 42010
     },
     {
       "name": "s21-unbaptised",
       "kind": "s21",
-      "bytes": 42301
+      "bytes": 42302
     },
     {
       "name": "s21-large-family",
@@ -75,23 +80,17 @@
     {
       "name": "emergency-1",
       "kind": "emergency",
-      "bytes": 5060
+      "bytes": 5061
     },
     {
       "name": "emergency-50",
       "kind": "emergency",
-      "bytes": 16736
+      "bytes": 16735
     },
     {
       "name": "emergency-500",
       "kind": "emergency",
       "bytes": 127961
     }
-  ],
-  "tagCommit": "76978c4fbe56658b8b856cb7218b5c4a212cd1f0",
-  "templates": {
-    "s21.pdf": "9e68cd8c15c65b9e8799ca150f748a403bd2d7ab8ea9db49847ed738cec8c608",
-    "s3.pdf": "346bf1c9e3a861a7b996f6f8a682dbd38a4988644797117324840f38ff38aee4",
-    "s88.pdf": "126375db9627c8cbb8bd82d7557d369feb9331e0e2659e53bdbb95d1c83fd2e6"
-  }
+  ]
 }

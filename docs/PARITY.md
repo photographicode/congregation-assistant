@@ -1,3 +1,7 @@
+# V3 parity baseline
+
+V3-ORDERS.md supersedes the V2 briefs. Frozen tag, regenerated PDF fixtures and action evidence are reused as the specification. The existing native implementation below is the baseline to port into the V3 Store architecture, not a completed V3 release. See V3-PROGRESS.md for package acceptance.
+
 V1 reference tag: `v1-final`, commit `76978c4fbe56658b8b856cb7218b5c4a212cd1f0`. The reference generators were captured before deletion.
 
 # Native V2 parity
