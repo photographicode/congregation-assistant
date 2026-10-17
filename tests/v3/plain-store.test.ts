@@ -38,9 +38,9 @@ test('server conflict keeps local recovery and never overwrites the other device
  expect(await a.store.status()).toMatchObject({pending:0,conflicts:1});expect((await a.store.read(query,schema)).draft.title).toBe('Local');await a.store.settled();await a.store.sync();expect(a.counts().writes).toBe(1);await a.store.clear();
 });
 test('clearing an account while a pull is in flight cannot resurrect its records',async()=>{
- let finish!:(value:unknown)=>void;
- const a=setup();const transport:Transport={read:()=>new Promise(resolve=>{finish=resolve;}),write:a.transport.write};
- const store=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport,online:()=>true});const pending=store.read(query,schema);const rejection=expect(pending).rejects.toMatchObject({kind:'closed'});await new Promise(resolve=>setTimeout(resolve,0));const cleared=store.clear();finish({revision:1,draft:{title:'Must not return'},publication:null});await cleared;await rejection;
+ let finish!:(value:unknown)=>void;let started!:()=>void;const ready=new Promise<void>(resolve=>{started=resolve;});
+ const a=setup();const transport:Transport={read:()=>new Promise(resolve=>{finish=resolve;started();}),write:a.transport.write};
+ const store=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport,online:()=>true});const pending=store.read(query,schema);const rejection=expect(pending).rejects.toMatchObject({kind:'closed'});await ready;const cleared=store.clear();finish({revision:1,draft:{title:'Must not return'},publication:null});await cleared;await rejection;
  const offline=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport,online:()=>false});await expect(offline.read(query,schema)).rejects.toMatchObject({kind:'offline'});await offline.clear();
 });
 test('invalid server data is rejected and cannot poison the local mirror',async()=>{
@@ -72,7 +72,7 @@ test('public transient operations do not need or open IndexedDB',async()=>{
 });
 test('a cached read cannot use another workspace projection',async()=>{const a=setup();await expect(a.store.read({...query,source:{kind:'rpc',name:'get_oclm_workspace',args:{p_cong_id:'other'}}},schema)).rejects.toMatchObject({kind:'forbidden'});await a.store.clear();});
 test('a pull begun before a local write cannot overwrite that write',async()=>{
- const a=setup();await a.store.read(query,schema);let finish!:(value:unknown)=>void;const store=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport:{...a.transport,read:()=>new Promise(resolve=>{finish=resolve;})},online:()=>true});
+ const a=setup();await a.store.read(query,schema);let finish!:(value:unknown)=>void;let started!:()=>void;const ready=new Promise<void>(resolve=>{started=resolve;});const store=new PlainStore({account:a.account,workspace:'park',authorization:'oclm',transport:{...a.transport,read:()=>new Promise(resolve=>{finish=resolve;started();})},online:()=>true});
  await store.read(query,schema);a.setOnline(false);await a.store.stage(command(),schema);finish({revision:1,draft:{title:'Stale pull'},publication:null});await store.settled();store.close();expect((await a.store.read(query,schema)).draft.title).toBe('Local');await a.store.clear();
 });
 test('fresh startup uses a validated cache when the network is unreachable, but never on access denial',async()=>{

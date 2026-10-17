@@ -81,3 +81,9 @@ Resume safety and release work is in progress. Do not claim automatic official-p
 ### Requested feature checkpoint
 
 Implemented all eight S-21 group selectors and publisher-row downloads; conditional SFTS profile/filter/report totals; reviewed workbook imports; oldest/never-used meeting suggestions and fill-empty assignment; scoped S-140 palette and independently drawn S-89 PDFs for both names; departmental request/admin-approval workflows; current-meeting attendance; scoped group reporting links; first-run setup entry; browser-only report command parser with confirmation. Additive database migrations pass local tenant/role/backup/CAS fixtures. These are checkpoints, not assertions that every expanded resume requirement is complete. In particular multi-group ZIP, all classrooms, slip delivery tracking, meeting-window/offline attendance, CI source ingestion and all assistant intents still require work.
+
+### Resume filters and assignment review
+
+S-21 now supports live per-filter counts, union/de-duplication, 1–12-month missing-report and explicit-no-activity choices, merged/ZIP output, preview before download and visible row entry with year/print/share options. Fairness ties use overall assignment age, then count in the preceding 12 months, then name. Fill-empty proposals require Accept and support Undo. S-89 uses native file sharing where supported and an explicit manual-attachment fallback. Attendance refetch preserves an in-progress count and resets it safely when the server meeting changes.
+
+`npm run check` passes. Fixed a pre-existing timing-dependent Store test by waiting for the actual transport start instead of a zero-millisecond timer; assertions remain unchanged. The on-device panel now preloads authorized records before opening, so parsing, preview and cancel perform no backend reads; confirmation alone writes the structured report with a stale-preview guard.

@@ -758,7 +758,7 @@ export default function Workspace({
                             </span>
                           )}
                       </div>
-                      <S21Button context={c} person={{...p}}/>
+                      <S21Button context={c} person={{...p}} onOpen={()=>go("pdf")}/>
                       <button disabled={!admin} onClick={() => edit(p)}>
                         Edit<span className="sr-only"> {p.name}</span>
                       </button>

@@ -19,3 +19,9 @@ Cloudflare deploy currently skips because CLOUDFLARE_API_TOKEN and CLOUDFLARE_AC
 The current native records archive contains V2 groups/weekend/setup in addition to the established server export. It is deliberately not presented as the existing automatic restore format; full V2 recovery-format parity is still on the release checklist. Account sessions can be listed, global sign-out is provided, and admin idle timeout is a per-device option. Supabase may keep already-issued sign-in access alive briefly after refresh-token revocation; the UI explains this limit.
 
 Native owner review: add `?demo=owner` to the review URL. Test creation, request approval and assigned-group account access with fictional data. Real Google owner login still requires the configured redirect/origin dashboard settings; the review’s ChatGPT access and the app’s Google access are distinct.
+
+## Resume deployment
+
+- Confirm S-1 treatment of SFTS with your branch. Separate SFTS informational totals do not change S-1 calculations.
+- Confirm GoDaddy DNS before adding CNAME `congregationassistant.com`. No CNAME is deployed on the strength of domain purchase alone. Pages origin must also be added to Supabase/Google OAuth redirect settings for real login.
+- Place one recent English `mwb` and one `w` EPUB in ignored `tests/fixtures/private/` for parser acceptance, or use CI's private/short-lived source artifacts. Official source import stays disabled until a real fetch and parser review pass.
