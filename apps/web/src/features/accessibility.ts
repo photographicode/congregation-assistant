@@ -1,3 +1,4 @@
+import {preloadThemeFonts} from './theme-fonts';
 import {resolvedTheme} from "../../../../packages/core/themes";
 export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string;style?:string;motion?:string;colorIntensity?:string;background?:string;density?:string;navigation?:string;backgroundIntensity?:number}) {
  const root=document.documentElement;
@@ -8,7 +9,7 @@ export function adapt(preferences: {theme:string;tone:string;size:string;weight:
   const scale=parseFloat(getComputedStyle(root).fontSize)/16;
   const keyboard=Boolean(window.visualViewport && window.innerHeight-height>150 && /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''));
   root.dataset.hidden=String(document.hidden);root.dataset.lowPower=String((navigator.hardwareConcurrency||4)<=2||Boolean((navigator as Navigator & {connection?:{saveData?:boolean}}).connection?.saveData));root.dataset.experience=preferences.style||'balanced';root.dataset.motion=media('(prefers-reduced-motion: reduce)')?'reduced':preferences.motion||'reduced';root.dataset.colorIntensity=preferences.colorIntensity||'soft';root.dataset.background=preferences.background||'static';root.dataset.navigation=preferences.navigation||'classic';
-  root.removeAttribute('data-ca-theme');root.dataset.theme=resolvedTheme(preferences.theme,media('(prefers-color-scheme: dark)'));root.style.setProperty('--background-intensity',String(Math.max(0,Math.min(100,preferences.backgroundIntensity??100))/100));
+  root.removeAttribute('data-ca-theme');root.dataset.theme=resolvedTheme(preferences.theme,media('(prefers-color-scheme: dark)'));preloadThemeFonts(root.dataset.theme);root.style.setProperty('--background-intensity',String(Math.max(0,Math.min(100,preferences.backgroundIntensity??100))/100));
   root.dataset.tone=preferences.tone;root.dataset.highContrast=String(media('(prefers-contrast: more)')||media('(forced-colors: active)'));
   root.dataset.solid=String(preferences.solid||media('(prefers-reduced-transparency: reduce)')||root.dataset.lowPower==='true');
   root.dataset.coarse=String(media('(pointer: coarse)'));root.dataset.hover=String(media('(hover: hover)'));

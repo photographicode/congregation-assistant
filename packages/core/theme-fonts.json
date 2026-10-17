@@ -1,0 +1,42 @@
+{
+  "mono-light": [
+    "Instrument Serif",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "mono-dark": [
+    "Instrument Serif",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "paper": [
+    "Newsreader",
+    "Source Sans 3"
+  ],
+  "lagoon-glass": [
+    "Outfit",
+    "Inter"
+  ],
+  "neon-night": [
+    "Space Grotesk",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "sunset-pop": [
+    "Bricolage Grotesque",
+    "DM Sans"
+  ],
+  "neo-brutal": [
+    "Archivo Black",
+    "Inter",
+    "Space Mono"
+  ],
+  "forest": [
+    "Fraunces",
+    "Source Sans 3"
+  ],
+  "aurora": [
+    "Sora",
+    "Inter"
+  ]
+}

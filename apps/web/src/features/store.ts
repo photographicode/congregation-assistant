@@ -1,4 +1,4 @@
-import {normalizeTheme} from "../../../../packages/core/themes";
+import {normalizeTheme,resolvedTheme} from "../../../../packages/core/themes";
 import { create } from "zustand";
 import {experiencePresets,type Experience} from "./experience";
 type Appearance = Experience & {
@@ -67,3 +67,6 @@ export function activateAppearanceProfile(account:string,congregation:string,pub
 }
 
 export function hasAppearanceProfile(){try{return Boolean(localStorage.getItem(appearanceStorageKey));}catch{return false;}}
+
+// Apply the stored theme before the first application text is painted.
+document.documentElement.dataset.theme=resolvedTheme(useAppearance.getState().theme,matchMedia('(prefers-color-scheme: dark)').matches);

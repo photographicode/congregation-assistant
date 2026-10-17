@@ -102,7 +102,7 @@ function App() {
   useEffect(()=>setHubCounts({}),[cong]);
   const appearance = useAppearance();
   useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
-  useEffect(() => adapt(appearance), [appearance]);
+  React.useLayoutEffect(() => adapt(appearance), [appearance]);
   useEffect(()=>{if(!demo&&session?.user?.id&&cong)activateAppearanceProfile(session.user.id,cong,memberships.some(m=>m.cong_id===cong&&m.role==='publisher')&&!memberships.some(m=>m.cong_id===cong&&m.role==='admin'));},[session?.user?.id,cong]);
   React.useLayoutEffect(()=>{document.querySelector(".main-content")?.scrollTo(0,0);},[route,cong]);
   useEffect(() => {
