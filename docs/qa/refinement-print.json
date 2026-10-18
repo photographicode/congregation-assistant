@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "auxiliary": false,
+      "onlySchedulePrinted": true,
+      "columnRatios": [
+        0.11999782986111111,
+        0.5799913194444445,
+        0.30001085069444444
+      ]
+    },
+    {
+      "auxiliary": true,
+      "onlySchedulePrinted": true,
+      "columnRatios": [
+        0.11999782986111111,
+        0.47999131944444445,
+        0.2,
+        0.20001085069444444
+      ]
+    }
+  ]
+}

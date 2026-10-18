@@ -1,0 +1,988 @@
+{
+  "stage": "Before final heading, receipt/metric and navigation repairs; not release acceptance",
+  "build": {
+    "hash": "653f1d8af2e6a062599def33c6995459905aab546536bc38b939b2388386a813",
+    "jsGzipBytes": 154126,
+    "limit": 256000
+  },
+  "views": 12474,
+  "findings": 57,
+  "coverageErrors": 0,
+  "byText": {
+    "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours": 14,
+    "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours": 14,
+    "A place for all.": 3,
+    "Thank you. Your field service report has been securely recorded.": 26
+  },
+  "findingsDetail": [
+    {
+      "screen": "AP-confirm",
+      "theme": "mono-light",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1143.765625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "mono-dark",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1143.765625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "lagoon-glass",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1258.046875,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "neon-night",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1438.046875,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "sunset-pop",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1438.234375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "neo-brutal",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 35,
+        "y": 1330.703125,
+        "width": 250,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "AP-confirm",
+      "theme": "aurora",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 1263.046875,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "mono-light",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 554.859375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "mono-dark",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 554.859375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "lagoon-glass",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 956.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "neon-night",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 769.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "sunset-pop",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 856.328125,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "neo-brutal",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 35,
+        "y": 734.796875,
+        "width": 250,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-pending",
+      "theme": "aurora",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 745.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "people",
+      "theme": "neo-brutal",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > div.page-heading:nth-of-type(1) > div > h1",
+      "box": {
+        "x": 256,
+        "y": 266.96875,
+        "width": 212.890625,
+        "height": 261.125
+      },
+      "detail": "Single-word final line",
+      "text": "A place for all."
+    },
+    {
+      "screen": "groups",
+      "theme": "neo-brutal",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > div.page-heading:nth-of-type(1) > div > h1",
+      "box": {
+        "x": 256,
+        "y": 266.96875,
+        "width": 212.890625,
+        "height": 261.125
+      },
+      "detail": "Single-word final line",
+      "text": "A place for all."
+    },
+    {
+      "screen": "import",
+      "theme": "neo-brutal",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > div.page-heading:nth-of-type(1) > div > h1",
+      "box": {
+        "x": 256,
+        "y": 266.96875,
+        "width": 212.890625,
+        "height": 261.125
+      },
+      "detail": "Single-word final line",
+      "text": "A place for all."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-light",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1401.234375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-light",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1449.125,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-light",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1463.796875,
+        "width": 244,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-light",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1794.421875,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-dark",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1401.234375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-dark",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1449.125,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-dark",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1463.796875,
+        "width": 244,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "mono-dark",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1794.421875,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "paper",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1333.640625,
+        "width": 204,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "paper",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1912.515625,
+        "width": 244,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "lagoon-glass",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1457.953125,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "lagoon-glass",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1448.40625,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "lagoon-glass",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1575.078125,
+        "width": 244,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "lagoon-glass",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1962.421875,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neon-night",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1456.953125,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neon-night",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1449.40625,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neon-night",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1575.078125,
+        "width": 244,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neon-night",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1962.703125,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "sunset-pop",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1455.765625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "sunset-pop",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1449.59375,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "sunset-pop",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1573.078125,
+        "width": 244,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "sunset-pop",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1911.515625,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neo-brutal",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 35,
+        "y": -1870.296875,
+        "width": 250,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neo-brutal",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 60,
+        "y": 1278.4375,
+        "width": 200,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neo-brutal",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 60,
+        "y": 1527.265625,
+        "width": 240,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neo-brutal",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 60,
+        "y": 1419.703125,
+        "width": 270,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "neo-brutal",
+      "width": 667,
+      "height": 375,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 308,
+        "y": 5868.328125,
+        "width": 283,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "forest",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1333.640625,
+        "width": 204,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "forest",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1912.515625,
+        "width": 244,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "aurora",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": -1456.953125,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 0 studies \u00b7 0.25 hours"
+    },
+    {
+      "screen": "report-saved",
+      "theme": "aurora",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1561.40625,
+        "width": 204,
+        "height": 358.3125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "aurora",
+      "width": 360,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1575.078125,
+        "width": 244,
+        "height": 307.125
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "report-saved",
+      "theme": "aurora",
+      "width": 390,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "main.main-content > div > section.card.stack:nth-of-type(4) > section.report-receipt.stack > p",
+      "box": {
+        "x": 58,
+        "y": 1962.703125,
+        "width": 274,
+        "height": 255.9375
+      },
+      "detail": "Single-word final line",
+      "text": "Thank you. Your field service report has been securely recorded."
+    },
+    {
+      "screen": "ap-error",
+      "theme": "mono-light",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 563.859375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "mono-dark",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 563.859375,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "lagoon-glass",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 751.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "neon-night",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 778.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "sunset-pop",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 864.328125,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "neo-brutal",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 35,
+        "y": 739.796875,
+        "width": 250,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    },
+    {
+      "screen": "ap-error",
+      "theme": "aurora",
+      "width": 320,
+      "height": 1100,
+      "scale": 2,
+      "kind": "widow",
+      "selector": "section.card:nth-of-type(1) > div.list > div.list-row > div > p:nth-of-type(1)",
+      "box": {
+        "x": 33,
+        "y": 754.140625,
+        "width": 254,
+        "height": 204.75
+      },
+      "detail": "Single-word final line",
+      "text": "Shared in ministry \u00b7 2 studies \u00b7 30.25 hours"
+    }
+  ]
+}

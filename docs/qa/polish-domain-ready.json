@@ -1,0 +1,23 @@
+{
+  "pagesConfigTests": 4,
+  "fallbackArtifact": {
+    "manifestId": "/congregation-assistant/app/",
+    "startUrl": "/congregation-assistant/app/",
+    "scope": "/congregation-assistant/app/",
+    "cname": null
+  },
+  "localCustomArtifact": {
+    "manifestId": "/",
+    "startUrl": "/",
+    "scope": "/",
+    "cname": "congregationassistant.com",
+    "app": "https://app.congregationassistant.com",
+    "deployed": false
+  },
+  "configRestored": true,
+  "cloudflareNoSecrets": {
+    "exitCode": 0,
+    "enabled": false
+  },
+  "productionSettingsChanged": false
+}

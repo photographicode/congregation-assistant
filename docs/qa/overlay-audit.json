@@ -1,0 +1,20 @@
+{
+  "toast": {
+    "dismissAt5000": true,
+    "hoverPauses": true,
+    "focusPauses": true,
+    "close": true,
+    "maxMounted": 1
+  },
+  "banners": {
+    "dismissTouch": true,
+    "persistDismissal": true,
+    "newStateReappears": true
+  },
+  "sheet": {
+    "swipe": true,
+    "dirtyGuard": true,
+    "routeCleanup": true
+  },
+  "browserErrors": []
+}

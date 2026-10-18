@@ -40,3 +40,7 @@ There is no workbook-file upload or owner publication-file request. English WOL 
 Full alignment, website mockups/full translations and broader V3 PARITY are unfinished engineering work, not account-setup tasks. Unverified offers, CO Visit Pack and E2EE claims remain off. Keep the custom-domain CNAME absent until the existing DNS-confirmation requirement in GITHUB-PAGES-DNS.md is satisfied; no DNS or mail records were changed in this batch.
 
 NEXT deployment account result: source/public artifact deployments and live checks succeeded. Both scoped deployment tokens received HTTP 403 when changing Pages build_type. In **both repositories**, select **Settings → Pages → Build and deployment → Source → GitHub Actions**; current branch publishing can compete with artifact deployments on future commits. This is an account-permission limit, not a pending migration or automatic-approval rejection. See qa/NEXT-RELEASE.md for exact commits and successful run links.
+
+## Current polish phase
+
+No migration approval is being requested. No new production migration will run without the ordered snapshot and additive/down review. The working branch is not a released version; POLISH-REPORT.md lists remaining implementation and acceptance work. OWNER-MANUAL.md records the existing fallback URLs and eventual DNS/provider handover. Payment checkout and live founder data are not configured or advertised as active. Keep the existing hosts unchanged until the full release gates pass.

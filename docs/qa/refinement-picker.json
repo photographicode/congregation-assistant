@@ -1,0 +1,22 @@
+{
+  "keyboardEnter": true,
+  "clickReopen": true,
+  "tabDismissal": true,
+  "touchSelection": true,
+  "visualViewportZoom": 1.5,
+  "textScale": 2,
+  "longIndicOptionDomStress": true,
+  "state": {
+    "x": 51,
+    "y": 233.015625,
+    "right": 295,
+    "bottom": 309.65625,
+    "viewport": {
+      "x": 43,
+      "y": 51,
+      "width": 260,
+      "height": 266.66668701171875
+    },
+    "overflow": false
+  }
+}

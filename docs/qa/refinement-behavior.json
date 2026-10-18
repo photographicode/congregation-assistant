@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "publisherDialogCycles": 10,
+      "oneGender": true,
+      "genderPersistenceAndUnrelatedFields": true,
+      "existingHouseholdRetained": true,
+      "realToastClose": true,
+      "newHouseholdRequiresConfirmation": true,
+      "inlineReports": true,
+      "quarterHours": true,
+      "reportCorrection": true,
+      "apReportValuesPreserved": true,
+      "repeatedAssignments": true,
+      "assistantReset": true,
+      "auxiliaryVisibility": true,
+      "pickerEscape": true,
+      "dirtyPublisherAndNavigationGuard": true
+    },
+    {
+      "width": 1440,
+      "publisherDialogCycles": 10,
+      "oneGender": true,
+      "genderPersistenceAndUnrelatedFields": true,
+      "existingHouseholdRetained": true,
+      "realToastClose": true,
+      "newHouseholdRequiresConfirmation": true,
+      "inlineReports": true,
+      "quarterHours": true,
+      "reportCorrection": true,
+      "apReportValuesPreserved": true,
+      "repeatedAssignments": true,
+      "assistantReset": true,
+      "auxiliaryVisibility": true,
+      "pickerEscape": true,
+      "dirtyPublisherAndNavigationGuard": true
+    }
+  ],
+  "publicForm": {
+    "failureRetainsInput": true,
+    "duplicateSubmitBlocked": true,
+    "quarterHours": true,
+    "privateFieldsReset": true,
+    "groupFiltering": true,
+    "readOnlyMonth": true,
+    "pioneerAPInference": true,
+    "done": true,
+    "lateReceiptStaysWithOriginalLink": true,
+    "inputsFrozenDuringSubmission": true,
+    "lateWeekendExchangeCannotReplaceSession": true
+  }
+}
