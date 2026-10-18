@@ -1,0 +1,169 @@
+{
+  "run": 39165554116,
+  "url": "https://github.com/photographicode/congregation-assistant/actions/runs/39165554116",
+  "sourceCommit": "fa661db3cb3d7da7098e9c316db36db0633c641f",
+  "hardGate": "CA_REFINEMENT_HARD_ONLY=true; every shard exited successfully. Only per-command summary JSON and job conclusions were read.",
+  "jobs": [
+    {
+      "id": 117787695865,
+      "name": "refinement (1, css)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 3402,
+          "findings": 3,
+          "coverageErrors": 0
+        },
+        {
+          "views": 1134,
+          "findings": 6,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787695871,
+      "name": "refinement (3, css)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 3024,
+          "findings": 0,
+          "coverageErrors": 0
+        },
+        {
+          "views": 756,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787695913,
+      "name": "refinement (4, browser-default)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 4032,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 1008,
+          "findings": 6,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787695941,
+      "name": "refinement (1, browser-default)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 4536,
+          "findings": 3,
+          "coverageErrors": 0
+        },
+        {
+          "views": 1512,
+          "findings": 6,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787695972,
+      "name": "refinement (2, css)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 3024,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 756,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787696012,
+      "name": "refinement (4, css)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 3024,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 756,
+          "findings": 6,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787696033,
+      "name": "refinement (2, browser-default)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 4032,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 1008,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117787696151,
+      "name": "refinement (3, browser-default)",
+      "conclusion": "success",
+      "hard": 0,
+      "summaries": [
+        {
+          "views": 4032,
+          "findings": 0,
+          "coverageErrors": 0
+        },
+        {
+          "views": 1008,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    }
+  ],
+  "views": 37044,
+  "softFindings": 36,
+  "unchangedUiHash": "4e35a13cb2a021fda96ed5fdd0af76c4f4dca49bf4bba9c84649c86601a4ed26",
+  "reportsBaseHash": "a67bd29a1ea592e314c99d2cf81df15c4f73444b07a05e599921eac9559caa35",
+  "cssBaseHash": "0543213d53a77a8d0fa94d4d96bce5ba163d17246c38b3d5b955123c882c8738",
+  "delta": {
+    "files": [
+      "apps/web/src/features/Reports.tsx",
+      "packages/ui/theme-bridge.css"
+    ],
+    "changes": [
+      "Scroll/focus the inline report form on open",
+      "Use measured header scroll clearance",
+      "Clear an earlier Save notice when opening AP confirmation"
+    ],
+    "currentWorkflow": "Eight report states plus publisher/group entry, all themes/widths/default font sizes; other UI must match the complete baseline fingerprint"
+  }
+}
