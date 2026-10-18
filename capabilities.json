@@ -66,7 +66,7 @@
     {
       "id": "digital",
       "name": "Full digital",
-      "description": "Approved account, personal portal and optional device notifications."
+      "description": "Approved sign-in, personal portal and optional device alerts."
     },
     {
       "id": "link",

@@ -186,13 +186,15 @@ export default function Workspace({
     [layout, setLayout] = useState("week"),
     [printScale, setPrintScale] = useState("100"),
     [moreDetails, setMoreDetails] = useState(false);
+  const wizardSnapshot=React.useRef<any>(null);
+  useEffect(()=>{if(wizard){wizardSnapshot.current=structuredClone(setup);setError('');}},[wizard]);
   const appearance = useAppearance(),
     admin = c.roles.includes("admin"),
     canPeople = admin || c.roles.includes("field_service") || c.roles.includes("group_overseer"),
     canWeekend = admin || c.roles.includes("weekend");
   useEffect(()=>{const open=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(['groups','import','midweek','weekend','duties'].includes(value))setSub(value);sessionStorage.removeItem('ca-workspace-tool');};window.addEventListener('ca:open-tool',open);return()=>window.removeEventListener('ca:open-tool',open);},[]);
   useEffect(()=>{const find=(event:Event)=>{setQuery((event as CustomEvent<string>).detail);setSub('publishers');if(route==='people')sessionStorage.removeItem('ca-person-search');};window.addEventListener('ca:find-person',find);return()=>window.removeEventListener('ca:find-person',find);},[route]);
-  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
+  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',gender:'Male',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError("");setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -273,6 +275,7 @@ export default function Workspace({
   async function edit(person: Person) {
     setEditing({ ...person });
     setDirty(false);
+    setError("");
     setShared(false);
     if (!demo && admin)
       await run(async () => {
@@ -294,6 +297,7 @@ export default function Workspace({
           normalizeEmail(p.email) === normalizeEmail(editing.email),
       )
     : [];
+  const existingShared=Boolean(editing?.email&&household.length&&people.some(person=>person.id===editing.id&&normalizeEmail(person.email)===normalizeEmail(editing.email)));
   async function savePerson() {
     if (!editing) return;
     const person = {
@@ -305,7 +309,7 @@ export default function Workspace({
     if (!person.name) throw Error("Name is required.");
     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email))
       throw Error("Use a valid email.");
-    if (household.length && !shared)
+    if (household.length && !shared && !existingShared)
       throw Error("Confirm household reporting or use a different email.");
     if (person.phone) person.phone = phoneE164(person.phone, setup.country);
     if (!demo) {
@@ -316,7 +320,7 @@ export default function Workspace({
       await rpc("ca_v3_save_person", {
         p_cong_id: c.cong,
         p_person: person,
-        p_shared: shared,
+        p_shared: shared||existingShared,
       });
     }
     setPeople((current) => {
@@ -368,6 +372,7 @@ export default function Workspace({
       });
     }
     setWizardStep(next);
+    wizardSnapshot.current=structuredClone(setup);
     setDirty(false);
   }
   function review(text = importText, vcf = false) {
@@ -458,12 +463,12 @@ export default function Workspace({
   let body: React.ReactNode;
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
+  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",gender:"Male",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setError("");setShared(false);}}/></>;
   else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={async records=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:records},[families(records),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}}}/>;
   else if (route === "people")
     body = (
       <>
-        <Heading eyebrow="People" title="A place for everyone.">
+        <Heading eyebrow="People" title={t('refine.peopleTitle')}>
           {admin && (
             <button
               className="primary"
@@ -471,12 +476,14 @@ export default function Workspace({
                 setEditing({
                   id: crypto.randomUUID(),
                   name: "",
+                  gender: "Male",
                   group: groups[0]?.name || "",
                   email: "",
                   phone: "",
                   address: "",
                 });
                 setDirty(false);
+                setError("");
                 setShared(false);
               }}
             >
@@ -566,8 +573,7 @@ export default function Workspace({
             <section className="card stack">
               <h2>Import Center</h2>
               <p>
-                Paste a spreadsheet or upload CSV or phone contacts. Review
-                every row before saving.
+                {t('refine.importHelp')}
               </p>
               <label>
                 Spreadsheet rows
@@ -783,7 +789,7 @@ export default function Workspace({
   else if (route === "schedule")
     body = (
       <>
-        <Heading eyebrow="Schedule" title="Make the week clear." />
+        <Heading eyebrow="Schedule" title="Weekly schedule" />
         <div className="segmented" role="group" aria-label="Schedule sections">
           {["midweek", "weekend", "duties", "print"].map((s) => (
             <button
@@ -1183,8 +1189,7 @@ export default function Workspace({
               Prepare send queue
             </button>
             <p className="muted">
-              Sharing opens WhatsApp. You review and send each message yourself.
-              Automatic replies require the optional Business service.
+              {t('refine.sharingHelp')}
             </p>
           </section>
           <section className="card stack">
@@ -1263,11 +1268,11 @@ export default function Workspace({
       </>
     );
   else if (route === "access")
-    body = <><Heading eyebrow="Access & Links" title="The right access. One place."/><Access context={c}/></>;
+    body = <><Heading eyebrow="Access & Links" title="Access"/><Access context={c}/></>;
   else
     body = (
       <>
-        <Heading eyebrow="Settings" title="Make it feel right." />
+        <Heading eyebrow="Settings" title="Your settings" />
         <div className="stack">
           <section className="card stack">
             <h2>Appearance</h2><ExperiencePicker/><ThemeGallery/><ExperienceProfile context={c}/>
@@ -1338,8 +1343,7 @@ export default function Workspace({
               Automatically adapt contrast, transparency and layout
             </label>
             <p className="muted">
-              System theme, reduced motion, high contrast and larger text are
-              detected. Manual choices remain available.
+              {t('refine.systemHelp')}
             </p>
           </section>
           <section className="card stack">
@@ -1383,8 +1387,7 @@ export default function Workspace({
               Save delivery preferences
             </button>
             <p className="muted">
-              These setup preferences do not change existing account access.
-              Manage active accounts in Access &amp; Links.
+              {t('refine.setupAccess')}
             </p>
           </section>
           <section className="card">
@@ -1489,7 +1492,6 @@ export default function Workspace({
             }}
           >
             <h3>Basics</h3>
-            <label>Gender<select value={editing.gender||"Male"} onChange={e=>{setEditing(p=>p?{...p,gender:e.target.value}:p);setDirty(true);}}><option>Male</option><option>Female</option></select></label>
             <div className="form-grid">
               <label>
                 Full name
@@ -1523,12 +1525,15 @@ export default function Workspace({
             <label>
               Gender
               <select
-                value={editing.gender || "Male"}
+                aria-label="Gender"
+                required
+                value={editing.gender || ""}
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, gender: e.target.value } : p));
                   setDirty(true);
                 }}
               >
+                <option value="">Choose gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
@@ -1552,7 +1557,7 @@ export default function Workspace({
             <small id="v2-publisher-email-hint">
               Optional. A shared email grants household report submission only.
             </small>
-            {household.length > 0 && !shared && (
+            {household.length > 0 && !shared && !existingShared && (
               <section className="banner">
                 <p>
                   This email is already used by{" "}
@@ -1574,7 +1579,7 @@ export default function Workspace({
                 </div>
               </section>
             )}
-            {shared && (
+            {(shared||existingShared) && (
               <p role="status">
                 Household reporting confirmed. Contacts and private details stay
                 separate.
@@ -1640,7 +1645,7 @@ export default function Workspace({
       </Dialog>
       <Dialog
         open={wizard}
-        onClose={() => setWizard(false)}
+        onClose={() => {if(dirty&&wizardSnapshot.current)setSetup(wizardSnapshot.current);setDirty(false);setError('');setWizard(false);}}
         title={`Setup guide · ${wizardStep + 1} of 11`}
         dirty={dirty}
       >

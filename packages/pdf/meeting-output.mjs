@@ -8,13 +8,13 @@ export async function meetingPDF({name,week,date,program,assignments,people,star
  const pdf=await PDFDocument.create(),tools=createPdfTools({library,fontkit,loadFont,fontProvider:unicodeFontProvider({library,fontkit,loadFont})}),{font,bold}=await tools.fonts(pdf,[name,program.reading,...program.parts.map(p=>p.title),...people.map(p=>p.name)]),page=pdf.addPage([595.28,841.89]);
  const write=(text,x,y,width,size=10,isBold=false)=>{const face=isBold?bold:font;const lines=tools.wrap(text,face,width,size);for(let i=0;i<lines.length;i++)page.drawText(lines[i],{x,y:y-i*(size+2),font:face,size,color:rgb(0,0,0)});return lines.length*(size+2);};
  write(name,28,806,300,17,true);write('Midweek Meeting Schedule',340,806,225,12,true);page.drawRectangle({x:28,y:769,width:539,height:24,color:palettes.treasures});page.drawText(`${date||week} | ${program.reading}`,{x:35,y:777,size:11,font:bold,color:rgb(1,1,1)});
- const assigned=assignments[week]||{},person=slot=>people.find(p=>p.id===assigned[slot]?.personId)?.name||'—';write('Chairman: '+person('Chairman'),28,750,260);write('Auxiliary Classroom Counselor: '+person('AuxiliaryCounselor'),305,750,260);
+ const auxiliary=program.auxiliary===true;const assigned=assignments[week]||{},person=slot=>people.find(p=>p.id===assigned[slot]?.personId)?.name||'—';write('Chairman: '+person('Chairman'),28,750,260);if(auxiliary)write('Auxiliary Classroom Counselor: '+person('AuxiliaryCounselor'),305,750,260);
  let y=715,previous='',minutes=Number(start.split(':')[0])*60+Number(start.split(':')[1]);
- write('Auxiliary classroom',385,y+15,78,8,true);write('Main hall',475,y+15,88,8,true);
+ if(auxiliary)write('Auxiliary classroom',385,y+15,78,8,true);write('Main hall',auxiliary?475:430,y+15,auxiliary?88:130,8,true);
  for(const [index,part]of program.parts.entries()){
   if(part.section!==previous){previous=part.section;page.drawRectangle({x:28,y:y-9,width:539,height:22,color:palettes[part.section]});page.drawText(({treasures:'TREASURES FROM GOD’S WORD',field:'APPLY YOURSELF TO THE FIELD MINISTRY',living:'LIVING AS CHRISTIANS'})[part.section],{x:35,y:y-2,size:10,font:bold,color:part.section==='field'?rgb(31/255,22/255,0):rgb(1,1,1)});y-=34;}
   const time=String(Math.floor(minutes/60)%24).padStart(2,'0')+':'+String(minutes%60).padStart(2,'0');minutes+=part.minutes;
-  const height=Math.max(write(time,28,y,36,9),write(`${index+1}. ${part.title} (${part.minutes} min.)`,72,y,298,10,true),...['Aux',''].map((hall,i)=>write(person(part.id+hall)+(part.assistant?' / '+person(part.id+hall+'Assistant'):''),385+i*90,y,85,9)))+10;
+  const height=Math.max(write(time,28,y,36,9),write(`${index+1}. ${part.title} (${part.minutes} min.)`,72,y,auxiliary?298:340,10,true),...(auxiliary?['Aux','']:['']).map((hall,i)=>write(person(part.id+hall)+(part.assistant?' / '+person(part.id+hall+'Assistant'):''),auxiliary?385+i*90:430,y,auxiliary?85:130,9)))+10;
   y-=height;page.drawLine({start:{x:28,y:y+6},end:{x:567,y:y+6},thickness:.25,color:rgb(.8,.8,.8)});if(y<45)throw Error('This program is too long for the supplied S-140 page. Review its parts before printing.');
  }
  page.drawText('S-140',{x:28,y:25,size:8,font,color:palettes.treasures});return pdf.save();

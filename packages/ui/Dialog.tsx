@@ -39,7 +39,8 @@ export function Dialog({
           aria-describedby={undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
-            opener.current?.focus();
+            if(opener.current?.isConnected)opener.current.focus({preventScroll:true});
+            else {const main=document.querySelector<HTMLElement>('main');if(main){const previous=main.getAttribute('tabindex');main.setAttribute('tabindex','-1');main.focus({preventScroll:true});if(previous===null)main.removeAttribute('tabindex');}}
           }}
           onEscapeKeyDown={(e) => {
             e.preventDefault();
