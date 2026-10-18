@@ -14,6 +14,12 @@ The previous real nine-font audit measured 8,370 main views with 176 findings, p
 
 ## Still wrong / release blockers
 
-Section 1 restorations/legacy cleanup; POLISH-specific segmented gender, full V1 report/offline/duplicate flow, AP Undo/audit, app-wide pickers, 1/2/3 classrooms, cross-module load cautions, global overlay rules, enlarged font/viewport matrix, route-module split, translations/privacy markup, new billing/pricing contracts, website baseline lock, complete domain readiness, final CI and live verification. Existing production billing must not be advertised as the new plans before entitlements are implemented.
+Section 1 restorations/legacy cleanup; full V1 report/offline/duplicate flow, AP Undo/audit, app-wide pickers, 1/2/3 classrooms, cross-module load cautions, global overlay rules, enlarged font/viewport matrix, route-module split, translations/privacy markup, new billing/pricing contracts, website baseline lock, complete domain readiness, final CI and live verification. Existing production billing must not be advertised as the new plans before entitlements are implemented.
 
 No new production migration will run without a pre-migration snapshot and additive/down review, as required by the latest orders. No production records were reset. The earlier refinement function migration predates these new orders and did not alter real report rows.
+
+## F1 — publisher gender
+
+One Gender group directly below Full name now offers Brother/Sister with canonical Male/Female values. New publishers have no default; required selection says “Choose Brother or Sister”. Saving also validates the value. Existing records retain their stored gender and unrelated details, including approved household email sharing.
+
+Evidence: three duplicate-form lint-rule unit tests pass; repository form lint passes; TypeScript/build pass; `check-refinement.cjs` passes at 390/1440 with ten dialog cycles per width, no preselection, gender persistence, unchanged address/email, and new shared-email confirmation. The shared lint rule rejects duplicate state bindings in every form. The first browser run had an incorrect expected accessible name (“Gender *”); correcting the test to exclude its aria-hidden decoration resolves it without changing the product label.

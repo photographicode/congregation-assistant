@@ -194,7 +194,7 @@ export default function Workspace({
     canWeekend = admin || c.roles.includes("weekend");
   useEffect(()=>{const open=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(['groups','import','midweek','weekend','duties'].includes(value))setSub(value);sessionStorage.removeItem('ca-workspace-tool');};window.addEventListener('ca:open-tool',open);return()=>window.removeEventListener('ca:open-tool',open);},[]);
   useEffect(()=>{const find=(event:Event)=>{setQuery((event as CustomEvent<string>).detail);setSub('publishers');if(route==='people')sessionStorage.removeItem('ca-person-search');};window.addEventListener('ca:find-person',find);return()=>window.removeEventListener('ca:find-person',find);},[route]);
-  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',gender:'Male',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError("");setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
+  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',gender:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError("");setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -307,6 +307,7 @@ export default function Workspace({
       name: editing.name.trim(),
     };
     if (!person.name) throw Error("Name is required.");
+    if (!["Male","Female"].includes(person.gender||"")) throw Error(t("polish.chooseGender"));
     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email))
       throw Error("Use a valid email.");
     if (household.length && !shared && !existingShared)
@@ -463,7 +464,7 @@ export default function Workspace({
   let body: React.ReactNode;
   if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",gender:"Male",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setError("");setShared(false);}}/></>;
+  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",gender:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setError("");setShared(false);}}/></>;
   else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={async records=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:records},[families(records),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}}}/>;
   else if (route === "people")
     body = (
@@ -476,7 +477,7 @@ export default function Workspace({
                 setEditing({
                   id: crypto.randomUUID(),
                   name: "",
-                  gender: "Male",
+                  gender: "",
                   group: groups[0]?.name || "",
                   email: "",
                   phone: "",
@@ -1504,6 +1505,13 @@ export default function Workspace({
                   }}
                 />
               </label>
+              <fieldset className="publisher-gender" aria-describedby="publisher-gender-help">
+                <legend>{t('polish.gender')} <span aria-hidden="true">*</span></legend>
+                <div className="gender-segments">
+                  {(['Male','Female'] as const).map(value=><label key={value} className={editing.gender===value?'selected':''}><input required type="radio" name="publisher-gender" value={value} checked={editing.gender===value} onInvalid={e=>e.currentTarget.setCustomValidity(t('polish.chooseGender'))} onChange={e=>{e.currentTarget.form?.querySelectorAll<HTMLInputElement>('[name=publisher-gender]').forEach(input=>input.setCustomValidity(''));setEditing(p=>p?{...p,gender:value}:p);setDirty(true);}}/>{t(value==='Male'?'polish.brother':'polish.sister')}</label>)}
+                </div>
+                <small id="publisher-gender-help">{t('polish.chooseGender')}</small>
+              </fieldset>
               <label>
                 Service group
                 <select
@@ -1522,22 +1530,6 @@ export default function Workspace({
                 </select>
               </label>
             </div>
-            <label>
-              Gender
-              <select
-                aria-label="Gender"
-                required
-                value={editing.gender || ""}
-                onChange={(e) => {
-                  setEditing((p) => (p ? { ...p, gender: e.target.value } : p));
-                  setDirty(true);
-                }}
-              >
-                <option value="">Choose gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </label>
             <h3>Sign-in & contact</h3>
             <label htmlFor="v2-publisher-email">
               Email (for sign-in)
