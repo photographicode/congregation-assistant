@@ -62,3 +62,7 @@ Thirteen ordered additive migrations are in `supabase/ALL-V2.sql`, tested twice 
 Cloudflare/GoDaddy/Titan credentials and actual assigned DNS/DKIM values are unavailable. No nameservers, MX/SPF/DKIM/DMARC or OAuth configuration were changed. No transactional test email was sent. Deployment scripts report a successful skip when Cloudflare secrets are missing; that is not a deployment. Repository source is pushed on `v2/cutover`; no cutover PR is opened/merged while repository release gates fail.
 
 Four dashboard-counter fixtures were captured by executing the original frozen V1 renderDashboard with synthetic snapshots; native counters match all four, including pioneer precedence, zero/missing reports and inferred legacy participation.
+
+## Verified NEXT deployment result
+
+Both main artifacts are published: source `f0a0d67d437538bee6d319d70ebbc120031c3ad0`, public snapshot `c2cd184462d5c25b07ddd1119c99fab140a73c32`. Source run 39073120817 and public run 39073165965 pass build/deployment/live browser verification. See qa/NEXT-RELEASE.md for shipped scope, evidence and explicit remaining work. Pages setting changes returned HTTP 403; owner account settings remain open while artifact deployment works. Full V3, complete alignment, all translations/mockups and custom-domain activation are not claimed. Evidence-only notes remain on v3/resume to avoid redeploying unchanged code.

@@ -3,8 +3,11 @@
   "realIndexedDB": true,
   "offlineRouteReload": true,
   "offlineDraftReload": true,
+  "repeatedAssignmentsReload": true,
+  "auxiliaryDraftRetainedWhileHidden": true,
+  "conflictDialogLifecycle": true,
   "reconnectWrites": 1,
   "browserErrors": [],
-  "interceptedRequests": 13,
-  "abortedOfflineAttempts": 23
+  "interceptedRequests": 18,
+  "abortedOfflineAttempts": 22
 }

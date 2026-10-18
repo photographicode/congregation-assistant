@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "width": 667,
+      "height": 375,
+      "textScale": 2,
+      "tabsPreference": true,
+      "oneNavigation": true,
+      "headerMore": true,
+      "dialogClose": true,
+      "focusRestored": true
+    },
+    {
+      "width": 844,
+      "height": 375,
+      "textScale": 2,
+      "tabsPreference": true,
+      "oneNavigation": true,
+      "headerMore": true,
+      "dialogClose": true,
+      "focusRestored": true
+    }
+  ]
+}

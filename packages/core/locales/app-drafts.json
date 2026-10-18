@@ -1,0 +1,158 @@
+{
+  "hi": {
+    "nativeName": "हिन्दी",
+    "reviewed": false,
+    "messages": {
+      "common.close": "बंद करें",
+      "polish.done": "हो गया",
+      "refine.reportTitle": "फ़ील्ड सेवा रिपोर्ट",
+      "refine.submit": "रिपोर्ट जमा करें",
+      "polish.brother": "भाई",
+      "polish.sister": "बहन",
+      "language.label": "भाषा"
+    }
+  },
+  "ta": {
+    "nativeName": "தமிழ்",
+    "reviewed": false,
+    "messages": {
+      "common.close": "மூடு",
+      "polish.done": "முடிந்தது",
+      "refine.reportTitle": "வெளி ஊழிய அறிக்கை",
+      "refine.submit": "அறிக்கையைச் சமர்ப்பி",
+      "polish.brother": "சகோதரர்",
+      "polish.sister": "சகோதரி",
+      "language.label": "மொழி"
+    }
+  },
+  "ml": {
+    "nativeName": "മലയാളം",
+    "reviewed": false,
+    "messages": {
+      "common.close": "അടയ്ക്കുക",
+      "polish.done": "പൂർത്തിയായി",
+      "refine.reportTitle": "വയൽസേവന റിപ്പോർട്ട്",
+      "refine.submit": "റിപ്പോർട്ട് സമർപ്പിക്കുക",
+      "polish.brother": "സഹോദരൻ",
+      "polish.sister": "സഹോദരി",
+      "language.label": "ഭാഷ"
+    }
+  },
+  "kn": {
+    "nativeName": "ಕನ್ನಡ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ಮುಚ್ಚಿ",
+      "polish.done": "ಮುಗಿಯಿತು",
+      "refine.reportTitle": "ಕ್ಷೇತ್ರ ಸೇವಾ ವರದಿ",
+      "refine.submit": "ವರದಿ ಸಲ್ಲಿಸಿ",
+      "polish.brother": "ಸಹೋದರ",
+      "polish.sister": "ಸಹೋದರಿ",
+      "language.label": "ಭಾಷೆ"
+    }
+  },
+  "te": {
+    "nativeName": "తెలుగు",
+    "reviewed": false,
+    "messages": {
+      "common.close": "మూసివేయి",
+      "polish.done": "పూర్తయింది",
+      "refine.reportTitle": "క్షేత్ర పరిచర్య నివేదిక",
+      "refine.submit": "నివేదిక సమర్పించండి",
+      "polish.brother": "సహోదరుడు",
+      "polish.sister": "సహోదరి",
+      "language.label": "భాష"
+    }
+  },
+  "or": {
+    "nativeName": "ଓଡ଼ିଆ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ବନ୍ଦ କରନ୍ତୁ",
+      "polish.done": "ସମାପ୍ତ",
+      "refine.reportTitle": "କ୍ଷେତ୍ର ସେବା ରିପୋର୍ଟ",
+      "refine.submit": "ରିପୋର୍ଟ ଦାଖଲ କରନ୍ତୁ",
+      "polish.brother": "ଭାଇ",
+      "polish.sister": "ଭଉଣୀ",
+      "language.label": "ଭାଷା"
+    }
+  },
+  "as": {
+    "nativeName": "অসমীয়া",
+    "reviewed": false,
+    "messages": {
+      "common.close": "বন্ধ কৰক",
+      "polish.done": "সম্পূৰ্ণ",
+      "refine.reportTitle": "ক্ষেত্ৰ সেৱাৰ ৰিপৰ্ট",
+      "refine.submit": "ৰিপৰ্ট দাখিল কৰক",
+      "polish.brother": "ভাই",
+      "polish.sister": "ভনী",
+      "language.label": "ভাষা"
+    }
+  },
+  "mr": {
+    "nativeName": "मराठी",
+    "reviewed": false,
+    "messages": {
+      "common.close": "बंद करा",
+      "polish.done": "पूर्ण झाले",
+      "refine.reportTitle": "क्षेत्रसेवा अहवाल",
+      "refine.submit": "अहवाल सादर करा",
+      "polish.brother": "बंधू",
+      "polish.sister": "भगिनी",
+      "language.label": "भाषा"
+    }
+  },
+  "gu": {
+    "nativeName": "ગુજરાતી",
+    "reviewed": false,
+    "messages": {
+      "common.close": "બંધ કરો",
+      "polish.done": "પૂર્ણ થયું",
+      "refine.reportTitle": "ક્ષેત્રસેવા અહેવાલ",
+      "refine.submit": "અહેવાલ મોકલો",
+      "polish.brother": "ભાઈ",
+      "polish.sister": "બહેન",
+      "language.label": "ભાષા"
+    }
+  },
+  "bn": {
+    "nativeName": "বাংলা",
+    "reviewed": false,
+    "messages": {
+      "common.close": "বন্ধ করুন",
+      "polish.done": "সম্পন্ন",
+      "refine.reportTitle": "ক্ষেত্র পরিচর্যার রিপোর্ট",
+      "refine.submit": "রিপোর্ট জমা দিন",
+      "polish.brother": "ভাই",
+      "polish.sister": "বোন",
+      "language.label": "ভাষা"
+    }
+  },
+  "pa": {
+    "nativeName": "ਪੰਜਾਬੀ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ਬੰਦ ਕਰੋ",
+      "polish.done": "ਪੂਰਾ ਹੋਇਆ",
+      "refine.reportTitle": "ਖੇਤਰ ਸੇਵਾ ਰਿਪੋਰਟ",
+      "refine.submit": "ਰਿਪੋਰਟ ਜਮ੍ਹਾਂ ਕਰੋ",
+      "polish.brother": "ਭਰਾ",
+      "polish.sister": "ਭੈਣ",
+      "language.label": "ਭਾਸ਼ਾ"
+    }
+  },
+  "ur": {
+    "nativeName": "اردو",
+    "reviewed": false,
+    "messages": {
+      "common.close": "بند کریں",
+      "polish.done": "مکمل",
+      "refine.reportTitle": "میدانی خدمت کی رپورٹ",
+      "refine.submit": "رپورٹ جمع کریں",
+      "polish.brother": "بھائی",
+      "polish.sister": "بہن",
+      "language.label": "زبان"
+    }
+  }
+}

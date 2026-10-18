@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {Linter} from 'eslint';import parser from '@typescript-eslint/parser';import rule from '../no-duplicate-form-fields.mjs';
+const lint=source=>new Linter().verify(source,[{files:['**/*.tsx'],languageOptions:{parser,parserOptions:{ecmaFeatures:{jsx:true}}},plugins:{forms:{rules:{duplicates:rule}}},rules:{'forms/duplicates':'error'}}],{filename:'form.tsx'});
+test('rejects duplicate publisher gender controls in the same form',()=>assert.equal(lint('const x=<form><select value={person.gender}/><select value={person.gender}/></form>').length,1));
+test('checks every form and distinguishes independent forms',()=>assert.equal(lint('const x=<><form><input value={name}/></form><form><input value={name}/></form></>').length,0));
+test('allows the two alternatives of one canonical radio group',()=>assert.equal(lint('const x=<form><input type="radio" value="Male" checked={gender==="Male"}/><input type="radio" value="Female" checked={gender==="Female"}/></form>').length,0));
+test('catches the original duplicate even with empty-value fallbacks and bracket notation',()=>assert.equal(lint('const x=<form><select value={person.gender||""}/><select value={person["gender"]??""}/></form>').length,1));
+test('does not confuse independent dynamically mapped fields',()=>assert.equal(lint('const x=<form>{first.map(key=><input value={person[key]}/>)}{second.map(key=><input value={person[key]}/>)}</form>').length,0));

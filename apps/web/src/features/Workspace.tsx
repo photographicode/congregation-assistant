@@ -1,3 +1,5 @@
+import type {Person} from './publisher-record';
+import {getUILocale,setUILocale,subscribeUILocale,localeMetadata,type Locale} from '../../../../packages/core/i18n';
 import {watchtowerWeek} from './publication-data';
 import {InstallApp} from './InstallApp';
 import {WeekendTalkHistory} from './WeekendTalkHistory';
@@ -57,20 +59,8 @@ import {Subscription} from "./Subscription";
 import { RecordsExport } from "./RecordsExport";
 import { Sessions } from "./Sessions";
 import catalogue from "../../../../capabilities.json";
+const PublisherEditor=lazy(()=>import('./PublisherEditor'));
 const PdfStudio=lazy(()=>import("./PdfStudio"));
-type Person = {
-  id: string;
-  name: string;
-  group: string;
-  email: string;
-  phone: string;
-  address: string;
-  gender?: string;
-  isElder?: boolean;
-  isMS?: boolean;
-  expected_login?: string[];
-  dob?: string; baptized?: string; hope?: string; familyHeadId?: string; emergencyName?: string; emergencyRelationship?: string; emergencyPhone?: string; spiritualStatus?: string; isSFTS?: boolean; isRP?: boolean; isSP?: boolean; isFM?: boolean;
-};
 const samplePeople: Person[] = demoPublishers;
 const initialGroups = [
   { id: "g1", name: "Group 1" },
@@ -109,7 +99,7 @@ function Empty({ title, detail }: { title: string; detail: string }) {
 function Pending({ name }: { name: string }) {
   return (
     <Empty
-      title="Update pending"
+      title={t("ui.update.pending.8e0a4b18")}
       detail={`${name} will be available when its database migration is applied. Ask your administrator to apply the database update.`}
     />
   );
@@ -127,6 +117,7 @@ function download(value: unknown, name: string, type = "application/json") {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+const appBaseURL=import.meta.env.BASE_URL;
 export default function Workspace({
   route,
   go,
@@ -136,6 +127,7 @@ export default function Workspace({
   go: (s: string) => void;
   context: Context;
 }) {
+  React.useSyncExternalStore(subscribeUILocale,getUILocale,getUILocale);
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
     [groupsLoaded,setGroupsLoaded] = useState(demo),
@@ -186,13 +178,15 @@ export default function Workspace({
     [layout, setLayout] = useState("week"),
     [printScale, setPrintScale] = useState("100"),
     [moreDetails, setMoreDetails] = useState(false);
+  const wizardSnapshot=React.useRef<any>(null);
+  useEffect(()=>{if(wizard){wizardSnapshot.current=structuredClone(setup);setError('');}},[wizard]);
   const appearance = useAppearance(),
     admin = c.roles.includes("admin"),
     canPeople = admin || c.roles.includes("field_service") || c.roles.includes("group_overseer"),
     canWeekend = admin || c.roles.includes("weekend");
   useEffect(()=>{const open=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(['groups','import','midweek','weekend','duties'].includes(value))setSub(value);sessionStorage.removeItem('ca-workspace-tool');};window.addEventListener('ca:open-tool',open);return()=>window.removeEventListener('ca:open-tool',open);},[]);
   useEffect(()=>{const find=(event:Event)=>{setQuery((event as CustomEvent<string>).detail);setSub('publishers');if(route==='people')sessionStorage.removeItem('ca-person-search');};window.addEventListener('ca:find-person',find);return()=>window.removeEventListener('ca:find-person',find);},[route]);
-  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
+  useEffect(()=>{const add=()=>{if(!admin)return;setEditing({id:crypto.randomUUID(),name:'',gender:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError("");setShared(false);sessionStorage.removeItem('ca-quick-action');};const quick=(event:Event)=>{if((event as CustomEvent).detail==='add-publisher')add();};if(sessionStorage.getItem('ca-quick-action')==='add-publisher')add();window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[admin,groups]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -273,6 +267,7 @@ export default function Workspace({
   async function edit(person: Person) {
     setEditing({ ...person });
     setDirty(false);
+    setError("");
     setShared(false);
     if (!demo && admin)
       await run(async () => {
@@ -294,6 +289,7 @@ export default function Workspace({
           normalizeEmail(p.email) === normalizeEmail(editing.email),
       )
     : [];
+  const existingShared=Boolean(editing?.email&&household.length&&people.some(person=>person.id===editing.id&&normalizeEmail(person.email)===normalizeEmail(editing.email)));
   async function savePerson() {
     if (!editing) return;
     const person = {
@@ -303,9 +299,10 @@ export default function Workspace({
       name: editing.name.trim(),
     };
     if (!person.name) throw Error("Name is required.");
+    if (!["Male","Female"].includes(person.gender||"")) throw Error(t("polish.chooseGender"));
     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email))
       throw Error("Use a valid email.");
-    if (household.length && !shared)
+    if (household.length && !shared && !existingShared)
       throw Error("Confirm household reporting or use a different email.");
     if (person.phone) person.phone = phoneE164(person.phone, setup.country);
     if (!demo) {
@@ -316,7 +313,7 @@ export default function Workspace({
       await rpc("ca_v3_save_person", {
         p_cong_id: c.cong,
         p_person: person,
-        p_shared: shared,
+        p_shared: shared||existingShared,
       });
     }
     setPeople((current) => {
@@ -344,11 +341,11 @@ export default function Workspace({
       if (publish)
         if (result.token)
           setPublished(
-            location.origin + import.meta.env.BASE_URL + "?form=weekend#token=" + encodeURIComponent(result.token),
+            location.origin + appBaseURL + "?form=weekend#token=" + encodeURIComponent(result.token),
           );
     } else {
       setWeekendRevision((r) => r + 1);
-      if (publish) setPublished("Demo preview only — no live link is created.");
+      if (publish) setPublished("Fictional schedule — no public link is created.");
     }
     setWeekendDirty(false);
     c.notify(publish ? "Weekend schedule published." : "Weekend draft saved.");
@@ -368,6 +365,7 @@ export default function Workspace({
       });
     }
     setWizardStep(next);
+    wizardSnapshot.current=structuredClone(setup);
     setDirty(false);
   }
   function review(text = importText, vcf = false) {
@@ -415,7 +413,7 @@ export default function Workspace({
     return (
       <section className="card">
         <div className="eyebrow">
-          Weekend meeting ·{" "}
+          {t("ui.weekend.meeting.816fb271")}{" "}
           {format(new Date(week + "T12:00:00"), "d MMMM yyyy")}
         </div>
         <h2>{c.name}</h2>
@@ -449,21 +447,20 @@ export default function Workspace({
         </div>
         {print && (
           <p className="muted">
-            Independent and unofficial · Congregation Assistant
-          </p>
+            {t("ui.independent.and.unofficial.congregation.as.e97cfe9d")}</p>
         )}
       </section>
     );
   }
   let body: React.ReactNode;
-  if (route === "pdf") body=<Suspense fallback={<p role="status">Opening PDF Studio…</p>}><PdfStudio context={c}/></Suspense>;
+  if (route === "pdf") body=<Suspense fallback={<p role="status">{t("ui.opening.pdf.studio.f161ce91")}</p>}><PdfStudio context={c}/></Suspense>;
   else if (route === "home" && c.roles.includes("publisher") && !admin) body = <PublisherHome context={c} go={go}/>;
-  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setShared(false);}}/></>;
+  else if (route === "home") body=<><Dashboard context={c} go={go} setup={setup} setupEntry={admin&&wizardStep<10?<section className="card stack"><h2>{t("setup.begin")}</h2><p>{t("setup.summary")}</p><button onClick={()=>setWizard(true)}>{t("setup.open")}</button></section>:null} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:"",gender:"",group:groups[0]?.name||"",email:"",phone:"",address:""});setDirty(false);setError("");setShared(false);}}/></>;
   else if (route === "emergency" && admin) body=<EmergencyContacts people={people} loading={!demo&&peopleQuery.isPending} error={peopleQuery.error?.message} openPDF={async records=>{try{const {runPDF}=await import("./pdf-worker-client"),{families}=await import("../../../../packages/pdf/snapshot"),{offerPDF}=await import("./pdf-download");offerPDF(await runPDF("emergency",{id:c.cong,publishers:records},[families(records),c.name]),"Emergency-contacts.pdf");c.notify("Emergency contacts downloaded");}catch(error){c.notify((error as Error).message);}}}/>;
   else if (route === "people")
     body = (
       <>
-        <Heading eyebrow="People" title="A place for everyone.">
+        <Heading eyebrow={t("ui.people.7db20897")} title={t('refine.peopleTitle')}>
           {admin && (
             <button
               className="primary"
@@ -471,20 +468,21 @@ export default function Workspace({
                 setEditing({
                   id: crypto.randomUUID(),
                   name: "",
+                  gender: "",
                   group: groups[0]?.name || "",
                   email: "",
                   phone: "",
                   address: "",
                 });
                 setDirty(false);
+                setError("");
                 setShared(false);
               }}
             >
-              <Plus /> Add publisher
-            </button>
+              <Plus /> {t("ui.add.publisher.b13cc36b")}</button>
           )}
         </Heading>
-        <div className="segmented" role="group" aria-label="People sections">
+        <div className="segmented" role="group" aria-label={t("ui.people.sections.78224e3a")}>
           {["publishers", "groups", "import"].map((s) => (
             <button
               key={s}
@@ -505,11 +503,9 @@ export default function Workspace({
         {sub === "groups" ? (
           c.caps.groups ? (
             <section className="card stack">
-              <h2>Service groups</h2>
+              <h2>{t("ui.service.groups.c222d1cb")}</h2>
               <p>
-                Only the main administrator can create or rename groups.
-                Publisher forms use this list.
-              </p>
+                {t("ui.only.the.main.administrator.can.create.or..daa818bf")}</p>
               {groups.map((g) => (
                 <div className="list-row" key={g.id}>
                   <strong>{g.name}</strong>
@@ -519,8 +515,7 @@ export default function Workspace({
                         (p) => groupKey(p.group) === groupKey(g.name),
                       ).length
                     }{" "}
-                    people
-                  </span>
+                    {t("ui.people.c9022680")}</span>
                 </div>
               ))}
               {admin && (
@@ -548,13 +543,12 @@ export default function Workspace({
                   }}
                 >
                   <label>
-                    Group name
-                    <input
+                    {t("ui.group.name.762ebb70")}<input
                       value={groupName}
                       onChange={(e) => setGroupName(e.target.value)}
                     />
                   </label>
-                  <button disabled={busy}>Add group</button>
+                  <button disabled={busy}>{t("ui.add.group.94901258")}</button>
                 </form>
               )}
             </section>
@@ -564,14 +558,12 @@ export default function Workspace({
         ) : sub === "import" ? (
           <div className="stack">
             <section className="card stack">
-              <h2>Import Center</h2>
+              <h2>{t("ui.import.center.14e3620e")}</h2>
               <p>
-                Paste a spreadsheet or upload CSV or phone contacts. Review
-                every row before saving.
+                {t('refine.importHelp')}
               </p>
               <label>
-                Spreadsheet rows
-                <textarea
+                {t("ui.spreadsheet.rows.aebc7f3f")}<textarea
                   value={importText}
                   onChange={(e) => setImportText(e.target.value)}
                   placeholder={
@@ -584,11 +576,9 @@ export default function Workspace({
                   className="primary"
                   onClick={() => run(async () => review())}
                 >
-                  Review rows
-                </button>
+                  {t("ui.review.rows.d14ebd74")}</button>
                 <label>
-                  Upload CSV or vCard
-                  <input
+                  {t("ui.upload.csv.or.vcard.ae888952")}<input
                     type="file"
                     accept=".csv,.vcf,.tsv"
                     onChange={(e) => {
@@ -611,20 +601,17 @@ export default function Workspace({
                     )
                   }
                 >
-                  Sample template
-                </button>
+                  {t("ui.sample.template.8138c817")}</button>
               </div>
               <details>
-                <summary>Other formats</summary>
+                <summary>{t("ui.other.formats.924552d3")}</summary>
                 <p>
-                  XLSX and on-device paper scanning are pending. Export a
-                  spreadsheet as CSV to use this importer.
-                </p>
+                  {t("ui.xlsx.and.on.device.paper.scanning.are.pend.e6a946ba")}</p>
               </details>
             </section>
             {importRows.length > 0 && (
               <section className="card">
-                <h2>Review {importRows.length} rows</h2>
+                <h2>{t("ui.review.70786ccf")}{importRows.length} {t("ui.rows.bc51e9e6")}</h2>
                 <div className="list">
                   {importRows.map((r, i) => (
                     <div className="card stack" key={i}>
@@ -642,7 +629,7 @@ export default function Workspace({
                             )
                           }
                         />
-                        Include row {i + 1}
+                        {t("ui.include.row.9f7b74be")}{i + 1}
                       </label>
                       <div className="form-grid">
                         {["name", "email", "phone"].map((key) => (
@@ -663,8 +650,7 @@ export default function Workspace({
                           </label>
                         ))}
                         <label>
-                          Group
-                          <select
+                          {t("ui.group.34ca0e76")}<select
                             value={r.group}
                             onChange={(e) =>
                               setImportRows((rows) =>
@@ -674,7 +660,7 @@ export default function Workspace({
                               )
                             }
                           >
-                            <option value="">No group</option>
+                            <option value="">{t("ui.no.group.2463cfb8")}</option>
                             {groups.map((g) => (
                               <option key={g.id}>{g.name}</option>
                             ))}
@@ -702,23 +688,21 @@ export default function Workspace({
                       )
                     }
                   >
-                    Recheck rows
-                  </button>
+                    {t("ui.recheck.rows.014c5ab9")}</button>
                   <button
                     className="primary"
                     disabled={busy}
                     onClick={() => run(saveImport)}
                   >
-                    Import {importRows.filter((r) => r.include).length} selected
-                  </button>
+                    {t("ui.import.06fe0ef7")}{importRows.filter((r) => r.include).length} {t("ui.selected.d7cbbb68")}</button>
                 </div>
               </section>
             )}
             {importUndo && (
               <div className="banner">
-                Import complete.{" "}
-                <button onClick={() => run(undoImport)}>Undo import</button>
-                <p>Server undo is available for 7 days.</p>
+                {t("ui.import.complete.80e3a57d")}{" "}
+                <button onClick={() => run(undoImport)}>{t("ui.undo.import.4c2180d2")}</button>
+                <p>{t("ui.server.undo.is.available.for.7.days.2cea3070")}</p>
               </div>
             )}
           </div>
@@ -726,15 +710,14 @@ export default function Workspace({
           <>
             {people.some(isSFTS)&&<label className="check"><input type="checkbox" checked={sftsOnly} onChange={e=>setSftsOnly(e.target.checked)}/>{t("sfts.only")}</label>}
             <label className="search">
-              Search people
-              <input
+              {t("ui.search.people.8a7e7f1b")}<input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Name or group"
+                placeholder={t("ui.name.or.group.f90615d5")}
               />
             </label>
             {peopleQuery.isLoading ? (
-              <p role="status">Loading people…</p>
+              <p role="status">{t("ui.loading.people.af6fe51d")}</p>
             ) : peopleQuery.error ? (
               <p role="alert" className="error">
                 {peopleQuery.error.message}
@@ -757,23 +740,22 @@ export default function Workspace({
                           people.filter((x) => x.email === p.email).length >
                             1 && (
                             <span className="chip">
-                              Household (
-                              {people.filter((x) => x.email === p.email).length}
+                              {t("ui.household.2e7393c1")}{people.filter((x) => x.email === p.email).length}
                               )
                             </span>
                           )}
                       </div>
                       <S21Button context={c} person={{...p}} onOpen={()=>go("pdf")}/>
                       <button disabled={!admin} onClick={() => edit(p)}>
-                        Edit<span className="sr-only"> {p.name}</span>
+                        {t("ui.edit.464c4ffd")}<span className="sr-only"> {p.name}</span>
                       </button>
                     </div>
                   ))}
               </section>
             ) : (
               <Empty
-                title="No people yet"
-                detail="Add a publisher or review a spreadsheet in the Import Center."
+                title={t("ui.no.people.yet.4ea16875")}
+                detail={t("ui.add.a.publisher.or.review.a.spreadsheet.in.fca23269")}
               />
             )}
           </>
@@ -783,8 +765,8 @@ export default function Workspace({
   else if (route === "schedule")
     body = (
       <>
-        <Heading eyebrow="Schedule" title="Make the week clear." />
-        <div className="segmented" role="group" aria-label="Schedule sections">
+        <Heading eyebrow={t("ui.schedule.f4830a1d")} title={t("ui.weekly.schedule.6cbc7c26")} />
+        <div className="segmented" role="group" aria-label={t("ui.schedule.sections.335ae9a4")}>
           {["midweek", "weekend", "duties", "print"].map((s) => (
             <button
               key={s}
@@ -811,11 +793,9 @@ export default function Workspace({
                     );
                   }}
                 >
-                  Previous week
-                </button>
+                  {t("ui.previous.week.c0f8bbcd")}</button>
                 <label>
-                  Week starting
-                  <input
+                  {t("ui.week.starting.553ad9ea")}<input
                     type="date"
                     value={week}
                     onChange={(e) => {
@@ -833,8 +813,7 @@ export default function Workspace({
                     setWeek(weekKey(addWeeks(new Date(week + "T12:00:00"), 1)));
                   }}
                 >
-                  Next week
-                </button>
+                  {t("ui.next.week.21fbde19")}</button>
               </div>
               <section className="card stack">
                 <div className="actions">
@@ -845,12 +824,11 @@ export default function Workspace({
                         ? "Saved draft"
                         : "New week"}
                   </span>
-                  <span className="chip">Revision {weekendRevision}</span>
+                  <span className="chip">{t("ui.revision.e330d85f")}{weekendRevision}</span>
                 </div>
                 <div className="form-grid">
                   <label>
-                    Week exception
-                    <select
+                    {t("ui.week.exception.0d2efba7")}<select
                       value={weekend.exception}
                       onChange={(e) =>
                         changeWeekend("exception", e.target.value)
@@ -872,8 +850,7 @@ export default function Workspace({
                     </select>
                   </label>
                   <label>
-                    Meeting time
-                    <input
+                    {t("ui.meeting.time.3c900468")}<input
                       type="time"
                       value={weekend.meetingTime}
                       onChange={(e) =>
@@ -899,7 +876,7 @@ export default function Workspace({
                           list="weekend-people"
                           value={weekend[role]}
                           onChange={(e) => changeWeekend(role, e.target.value)}
-                          placeholder="Choose a person or enter a visitor"
+                          placeholder={t("ui.choose.a.person.or.enter.a.visitor.da12194d")}
                         />
                       </label>
                     ),
@@ -916,8 +893,7 @@ export default function Workspace({
                     ))}
                   </datalist>
                   <label>
-                    Speaker’s home congregation
-                    <input
+                    {t("ui.speaker.s.home.congregation.d5ebe952")}<input
                       value={weekend.speakerCongregation}
                       onChange={(e) =>
                         changeWeekend("speakerCongregation", e.target.value)
@@ -925,8 +901,7 @@ export default function Workspace({
                     />
                   </label>
                   <label className="full">
-                    Public talk title
-                    <input
+                    {t("ui.public.talk.title.dd5bd0fa")}<input
                       value={weekend.talkTitle}
                       onChange={(e) =>
                         changeWeekend("talkTitle", e.target.value)
@@ -934,20 +909,16 @@ export default function Workspace({
                     />
                   </label>
                   <label>
-                    Outline number
-                    <input
+                    {t("ui.outline.number.a90b7368")}<input
                       value={weekend.outline}
                       onChange={(e) => changeWeekend("outline", e.target.value)}
                     />
                   </label>
                   <WeekendTalkHistory context={c} number={weekend.outline} speaker={weekend.speaker} date={new Date(new Date(week+'T12:00:00Z').getTime()+((['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].indexOf(setup.weekend)+6)%7)*86400000).toISOString().slice(0,10)} revision={weekendRevision} onChoose={(number,title)=>{setWeekend({...weekend,outline:number,talkTitle:title});setWeekendDirty(true);}}/>
                   <label>
-                    Watchtower article title
-                    <input readOnly value={weekend.articleTitle} />{weekend.watchtowerSongs&&<small>Watchtower songs: {weekend.watchtowerSongs}</small>}{weekend.sourceUrl&&<a href={weekend.sourceUrl} target="_blank" rel="noreferrer">Source: wol.jw.org</a>}
+                    {t("ui.watchtower.article.title.20e73d79")}<input readOnly value={weekend.articleTitle} />{weekend.watchtowerSongs&&<small>{t("ui.watchtower.songs.5fefef2d")}{weekend.watchtowerSongs}</small>}{weekend.sourceUrl&&<a href={weekend.sourceUrl} target="_blank" rel="noreferrer">{t("ui.source.wol.jw.org.f4aa1fbe")}</a>}
                     <small>
-                      Imported titles are read-only. Official data import is not
-                      enabled.
-                    </small>
+                      {t("ui.imported.titles.are.read.only.official.dat.f0decb19")}</small>
                   </label>
                   {["openingSong", "closingSong"].map((key) => (
                     <label key={key}>
@@ -964,21 +935,19 @@ export default function Workspace({
                     </label>
                   ))}
                   <label className="full">
-                    Notes
-                    <textarea
+                    {t("ui.notes.8a7525b1")}<textarea
                       value={weekend.notes}
                       onChange={(e) => changeWeekend("notes", e.target.value)}
                     />
                   </label>
                 </div>
                 <details>
-                  <summary>Additional weekend duties</summary>
+                  <summary>{t("ui.additional.weekend.duties.c535cc9b")}</summary>
                   <div className="stack">
                     {weekend.duties.map((d: any, i: number) => (
                       <div className="form-grid" key={i}>
                         <label>
-                          Duty
-                          <input
+                          {t("ui.duty.6ace9a3d")}<input
                             value={d.name}
                             onChange={(e) =>
                               changeWeekend(
@@ -991,8 +960,7 @@ export default function Workspace({
                           />
                         </label>
                         <label>
-                          People (up to four)
-                          <input
+                          {t("ui.people.up.to.four.265a8ab9")}<input
                             value={d.people}
                             onChange={(e) =>
                               changeWeekend(
@@ -1016,8 +984,7 @@ export default function Workspace({
                         ])
                       }
                     >
-                      Add duty
-                    </button>
+                      {t("ui.add.duty.07f57514")}</button>
                   </div>
                 </details>
                 {assignmentConflicts(weekend).map((text: string) => (
@@ -1030,16 +997,14 @@ export default function Workspace({
                     disabled={busy}
                     onClick={() => run(() => saveWeekend())}
                   >
-                    Save draft
-                  </button>
+                    {t("ui.save.draft.3de10010")}</button>
                   <button
                     className="primary"
                     disabled={busy}
                     onClick={() => run(() => saveWeekend(true))}
                   >
-                    Publish weekend
-                  </button>
-                  <button onClick={() => setSub("print")}>Print preview</button>
+                    {t("ui.publish.weekend.d4ebad9d")}</button>
+                  <button onClick={() => setSub("print")}>{t("ui.review.print.layout.fd5f3d15")}</button>
                 </div>
                 {published && (
                   <p role="status">
@@ -1049,8 +1014,7 @@ export default function Workspace({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Open published schedule
-                      </a>
+                        {t("ui.open.published.schedule.049603f4")}</a>
                     ) : (
                       published
                     )}
@@ -1065,21 +1029,19 @@ export default function Workspace({
         ) : sub === "print" ? (
           <div className="stack">
             <section className="card no-print">
-              <h2>Print Center</h2>
+              <h2>{t("ui.print.center.f6575001")}</h2>
               <div className="form-grid">
                 <label>
-                  Layout
-                  <select
+                  {t("ui.layout.a5119091")}<select
                     value={layout}
                     onChange={(e) => setLayout(e.target.value)}
                   >
-                    <option value="week">Weekend one-week</option>
-                    <option value="large">Weekend large print</option>
+                    <option value="week">{t("ui.weekend.one.week.49362c20")}</option>
+                    <option value="large">{t("ui.weekend.large.print.d8307148")}</option>
                   </select>
                 </label>
                 <label>
-                  Font scale
-                  <select
+                  {t("ui.font.scale.8112fa23")}<select
                     value={printScale}
                     onChange={(e) => setPrintScale(e.target.value)}
                   >
@@ -1092,13 +1054,10 @@ export default function Workspace({
                 </label>
               </div>
               <p>
-                Use your browser’s Print or Save as PDF. The preview below uses
-                your selected size.
-              </p>
+                {t("ui.use.your.browser.s.print.or.save.as.pdf.th.ab1f0da1")}</p>
               <div className="actions">
                 <button className="primary" onClick={() => window.print()}>
-                  Print / Save PDF
-                </button>
+                  {t("ui.print.save.pdf.bf785022")}</button>
 
               </div>
             </section>
@@ -1120,13 +1079,12 @@ export default function Workspace({
   else if (route === "messages")
     body = (
       <>
-        <Heading eyebrow="Messages" title="A thoughtful reminder." />
+        <Heading eyebrow={t("ui.messages.04d7b483")} title={t("ui.a.thoughtful.reminder.b74a0931")} />
         <div className="grid">
           <section className="card stack">
-            <h2>WhatsApp Smart Share</h2>
+            <h2>{t("ui.whatsapp.smart.share.cc65823b")}</h2>
             <label>
-              Template
-              <select onChange={(e) => setTemplate(e.target.value)}>
+              {t("ui.template.0575f29d")}<select onChange={(e) => setTemplate(e.target.value)}>
                 {[
                   "Hello {name}, your assignment is {part} on {date}. Schedule: {link}",
                   "Hello {name}, please submit your monthly report. {link}",
@@ -1147,8 +1105,7 @@ export default function Workspace({
               </select>
             </label>
             <label>
-              Message
-              <textarea
+              {t("ui.message.2f77668a")}<textarea
                 value={template}
                 onChange={(e) => setTemplate(e.target.value)}
               />
@@ -1180,22 +1137,20 @@ export default function Workspace({
                 setQueueIndex(0);
               }}
             >
-              Prepare send queue
-            </button>
+              {t("ui.prepare.send.queue.098c5943")}</button>
             <p className="muted">
-              Sharing opens WhatsApp. You review and send each message yourself.
-              Automatic replies require the optional Business service.
+              {t('refine.sharingHelp')}
             </p>
           </section>
           <section className="card stack">
-            <h2>Message preview</h2>
+            <h2>{t("ui.review.message.042e6954")}</h2>
             <div className="bubble">
               {formatMessage(template, messageValues)}
             </div>
             {queue.length > 0 && queueIndex < queue.length ? (
               <>
                 <h3>
-                  Recipient {queueIndex + 1} of {queue.length}:{" "}
+                  {t("ui.recipient.2fd56e88")}{queueIndex + 1} {t("ui.of.4acb731c")}{queue.length}:{" "}
                   {queue[queueIndex].name}
                 </h3>
                 <div className="bubble">
@@ -1206,8 +1161,7 @@ export default function Workspace({
                 </div>
                 {new Date().getHours() >= 21 || new Date().getHours() < 7 ? (
                   <div className="banner">
-                    Quiet hours: 21:00–07:00. Consider sending later.
-                  </div>
+                    {t("ui.quiet.hours.21.00.07.00.consider.sending.l.3ef25126")}</div>
                 ) : null}
                 <div className="actions">
                   <a
@@ -1221,22 +1175,18 @@ export default function Workspace({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Open WhatsApp
-                  </a>
+                    {t("ui.open.whatsapp.5ac4b2d1")}</a>
                   <button onClick={() => setQueueIndex((i) => i + 1)}>
-                    Mark sent
-                  </button>
+                    {t("ui.mark.sent.48b728ec")}</button>
                   <button onClick={() => setQueueIndex((i) => i + 1)}>
-                    Skip
-                  </button>
+                    {t("ui.skip.28d03596")}</button>
                 </div>
               </>
             ) : queue.length > 0 ? (
-              <p role="status">Queue completed.</p>
+              <p role="status">{t("ui.queue.completed.40699b27")}</p>
             ) : (
               <p>
-                Choose recipients with a saved phone number to prepare a queue.
-              </p>
+                {t("ui.choose.recipients.with.a.saved.phone.numbe.a24b47b6")}</p>
             )}
             <button
               onClick={() =>
@@ -1248,32 +1198,27 @@ export default function Workspace({
                 })
               }
             >
-              Copy message
-            </button>
+              {t("ui.copy.message.457efe53")}</button>
             <details>
-              <summary>WhatsApp Business + AI intake</summary>
+              <summary>{t("ui.whatsapp.business.ai.intake.daaf00f7")}</summary>
               <p>
-                Not set up yet. Meta account, verified phone, consent, approved
-                utility templates and server secrets are required. Private mode
-                will disable AI intake.
-              </p>
+                {t("ui.not.set.up.yet.meta.account.verified.phone.c2df3100")}</p>
             </details>
           </section>
         </div>
       </>
     );
   else if (route === "access")
-    body = <><Heading eyebrow="Access & Links" title="The right access. One place."/><Access context={c}/></>;
+    body = <><Heading eyebrow={t("ui.access.links.9b1382c6")} title={t("ui.access.ec5ba0ab")}/><Access context={c}/></>;
   else
     body = (
       <>
-        <Heading eyebrow="Settings" title="Make it feel right." />
+        <Heading eyebrow={t("ui.settings.74a883a0")} title={t("ui.your.settings.7760b023")} />
         <div className="stack">
           <section className="card stack">
-            <h2>Appearance</h2><ExperiencePicker/><ThemeGallery/><ExperienceProfile context={c}/>
+            <h2>{t("ui.appearance.3907fa7f")}</h2><ExperiencePicker/><ThemeGallery/><ExperienceProfile context={c}/>
             <label>
-              Theme
-              <select
+              {t("ui.theme.efb52e71")}<select
                 value={normalizeTheme(appearance.theme)}
                 onChange={(e) => appearance.set({ theme: e.target.value })}
               >
@@ -1283,8 +1228,7 @@ export default function Workspace({
             <label>{t('appearance.intensity')}<input type="range" min={0} max={100} value={appearance.backgroundIntensity} onChange={e=>appearance.set({backgroundIntensity:Number(e.target.value)})}/><output>{appearance.backgroundIntensity}%</output></label>
             <div className="form-grid">
               <label>
-                Text tone
-                <select
+                {t("ui.text.tone.267853f6")}<select
                   value={appearance.tone}
                   onChange={(e) => appearance.set({ tone: e.target.value })}
                 >
@@ -1294,8 +1238,7 @@ export default function Workspace({
                 </select>
               </label>
               <label>
-                Text size
-                <select
+                {t("ui.text.size.d68761cc")}<select
                   value={appearance.size}
                   onChange={(e) => appearance.set({ size: e.target.value })}
                 >
@@ -1305,8 +1248,7 @@ export default function Workspace({
                 </select>
               </label>
               <label>
-                Icon weight
-                <select
+                {t("ui.icon.weight.fef9b03c")}<select
                   value={appearance.weight}
                   onChange={(e) => appearance.set({ weight: e.target.value })}
                 >
@@ -1321,33 +1263,32 @@ export default function Workspace({
                   checked={appearance.solid}
                   onChange={(e) => appearance.set({ solid: e.target.checked })}
                 />
-                Reduce glass
-              </label>
+                {t("ui.reduce.glass.aaacd6db")}</label>
             </div>
-            <label>Fit to my screen<select value={appearance.fit} onChange={e=>appearance.set({fit:e.target.value as typeof appearance.fit})}>{["auto","compact","comfortable","large"].map(f=><option key={f} value={f}>{f[0].toUpperCase()+f.slice(1)}</option>)}</select></label>
+            <label>{t("ui.fit.to.my.screen.189a4a53")}<select value={appearance.fit} onChange={e=>appearance.set({fit:e.target.value as typeof appearance.fit})}>{["auto","compact","comfortable","large"].map(f=><option key={f} value={f}>{f[0].toUpperCase()+f.slice(1)}</option>)}</select></label>
             <p className="chip">{appearance.fit === "auto" ? "Automatically adjusted for screen size and text" : "Your chosen screen fit"}</p>
-            <label>Time format<select value={appearance.clock} onChange={e=>appearance.set({clock:e.target.value as typeof appearance.clock})}><option value="locale">Follow language</option><option value="12">12 hour</option><option value="24">24 hour</option></select></label>
+            <label>{t('language.label')}<select value={getUILocale()} onChange={e=>setUILocale(e.target.value as Locale)}>{Object.entries(localeMetadata).map(([code,meta])=><option key={code} value={code}>{meta.nativeName}</option>)}</select></label>
+            {getUILocale()!=='en'&&<p>{t('language.draft')}</p>}
+            <p>{t('language.browserNote')}</p>
+            <label>{t("ui.time.format.80d7dcf2")}<select value={appearance.clock} onChange={e=>appearance.set({clock:e.target.value as typeof appearance.clock})}><option value="locale">{t("ui.follow.language.9cc37a4f")}</option><option value="12">{t("ui.12.hour.9ce198d5")}</option><option value="24">{t("ui.24.hour.84f0698f")}</option></select></label>
             <Greeting name={c.firstName} timezone={setup.timezone} locale={setup.language} clock={appearance.clock}/>
-            <h3>Adapted to your device</h3>
+            <h3>{t("ui.adapted.to.your.device.20e6c7f6")}</h3>
             <label className="check">
               <input
                 type="checkbox"
                 checked={appearance.auto}
                 onChange={(e) => appearance.set({ auto: e.target.checked })}
               />
-              Automatically adapt contrast, transparency and layout
-            </label>
+              {t("ui.automatically.adapt.contrast.transparency..0052122f")}</label>
             <p className="muted">
-              System theme, reduced motion, high contrast and larger text are
-              detected. Manual choices remain available.
+              {t('refine.systemHelp')}
             </p>
           </section>
           <section className="card stack">
-            <h2>Congregation & delivery</h2>
-            <button onClick={() => setWizard(true)}>Open setup guide</button>
+            <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
+            <button onClick={() => setWizard(true)}>{t("ui.open.setup.guide.8d9f188c")}</button>
             <label>
-              Delivery mode
-              <select
+              {t("ui.delivery.mode.c9585346")}<select
                 value={setup.delivery}
                 onChange={(e) =>
                   setSetup((s: any) => ({ ...s, delivery: e.target.value }))
@@ -1374,72 +1315,50 @@ export default function Workspace({
                   setSetup((s: any) => ({ ...s, portal: e.target.checked }))
                 }
               />
-              Prefer publisher portal
-            </label>
+              {t("ui.prefer.publisher.portal.942fcc6d")}</label>
             <button
               disabled={busy}
               onClick={() => run(() => saveSetup(wizardStep))}
             >
-              Save delivery preferences
-            </button>
+              {t("ui.save.delivery.preferences.599553af")}</button>
             <p className="muted">
-              These setup preferences do not change existing account access.
-              Manage active accounts in Access &amp; Links.
+              {t('refine.setupAccess')}
             </p>
           </section>
           <section className="card">
-            <h2>Privacy & protection</h2>
+            <h2>{t("ui.privacy.protection.28602257")}</h2>
             <p>
-              Current mode: <strong>Standard</strong>. HTTPS and server access
-              controls protect records. The service operator can technically
-              access server-stored data. Server-managed field encryption is
-              pending.
-            </p>
+              {t("ui.current.mode.bd4d698e")}<strong>{t("ui.standard.ef669154")}</strong>{t("ui.https.and.server.access.controls.protect.r.cc2fb558")}</p>
             <details>
-              <summary>Private mode — verification pending</summary>
+              <summary>{t("ui.private.mode.verification.pending.be6e3463")}</summary>
               <p>
-                Private mode is not available for real records yet. The
-                encryption implementation must pass migration, recovery,
-                revocation and no-plaintext checks before it can be enabled.
-              </p>
+                {t("ui.private.mode.is.not.available.for.real.rec.ea869e6e")}</p>
               <p>
-                Private mode will encrypt sensitive data on your device. Losing
-                every key and recovery phrase makes the data permanently
-                unrecoverable.
-              </p>
+                {t("ui.private.mode.will.encrypt.sensitive.data.o.6bd6c9d1")}</p>
               <p>
-                Metadata, login emails, compromised devices, screenshots,
-                printed exports and trust in delivered application code are
-                outside E2EE.
-              </p>
+                {t("ui.metadata.login.emails.compromised.devices..f0ad270c")}</p>
             </details>
           </section>
           <section className="card stack">
-            <h2>Data</h2>
+            <h2>{t("ui.data.cec3a9b8")}</h2>
             <button
               disabled={!canPeople}
               onClick={() => download(people, "publishers-export.json")}
             >
-              Export loaded publisher records
-            </button>
+              {t("ui.export.loaded.publisher.records.6105bd56")}</button>
             {admin && <>{c.plan&&<Subscription context={c} plan={c.plan} standalone={false}/>}<Sessions context={c}/><RecordsExport context={c}/><Backup context={c} /></>}
             <p className="muted">
-              Exports contain personal information. Store and share them
-              carefully.
-            </p>
+              {t("ui.exports.contain.personal.information.store.a3c3fe4c")}</p>
           </section>
           <section className="card stack">
-            <h2>Help & install</h2>
+            <h2>{t("ui.help.install.74927d4c")}</h2>
             <InstallApp/>
-            <a href={import.meta.env.BASE_URL+"site/android/"}>Android and iOS installation guide</a>
-            <a href={`mailto:${config.SUPPORT_EMAIL}`}>Contact support</a>
+            <a href={appBaseURL+"site/android/"}>{t("ui.android.and.ios.installation.guide.1f9fce34")}</a>
+            <a href={`mailto:${config.SUPPORT_EMAIL}`}>{t("ui.contact.support.814f4ed2")}</a>
             <p className="muted">
-              Build: {import.meta.env.VITE_BUILD_HASH || "development"} ·
-              Independent and unofficial.
-            </p>
-            <a href={import.meta.env.BASE_URL+".well-known/build-hash.txt"}>
-              Verify published build hash
-            </a>
+              {t("ui.build.ceca98bc")}{import.meta.env.VITE_BUILD_HASH || "development"} {t("ui.independent.and.unofficial.9fd7d37d")}</p>
+            <a href={appBaseURL+".well-known/build-hash.txt"}>
+              {t("ui.verify.published.build.hash.d6fcd9ae")}</a>
 
           </section>
         </div>
@@ -1463,188 +1382,18 @@ export default function Workspace({
       {error && (
         <div className="banner" role="alert">
           <p>{error}</p>
-          <button onClick={() => setError("")}>Dismiss</button>
+          <button onClick={() => setError("")}>{t("ui.dismiss.48845bff")}</button>
         </div>
       )}
       {body}
-      <Dialog
-        open={!!editing}
-        title={
-          people.some((p) => p.id === editing?.id)
-            ? "Edit publisher"
-            : "Add publisher"
-        }
-        dirty={dirty}
-        onClose={() => {
-          setEditing(null);
-          setDirty(false);
-        }}
-      >
-        {editing && (
-          <form
-            className="stack"
-            onSubmit={(e) => {
-              e.preventDefault();
-              run(savePerson);
-            }}
-          >
-            <h3>Basics</h3>
-            <label>Gender<select value={editing.gender||"Male"} onChange={e=>{setEditing(p=>p?{...p,gender:e.target.value}:p);setDirty(true);}}><option>Male</option><option>Female</option></select></label>
-            <div className="form-grid">
-              <label>
-                Full name
-                <input
-                  required
-                  value={editing.name}
-                  onChange={(e) => {
-                    setEditing((p) => (p ? { ...p, name: e.target.value } : p));
-                    setDirty(true);
-                  }}
-                />
-              </label>
-              <label>
-                Service group
-                <select
-                  value={editing.group}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, group: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                >
-                  <option value="">No group</option>
-                  {groups.map((g) => (
-                    <option key={g.id}>{g.name}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            <label>
-              Gender
-              <select
-                value={editing.gender || "Male"}
-                onChange={(e) => {
-                  setEditing((p) => (p ? { ...p, gender: e.target.value } : p));
-                  setDirty(true);
-                }}
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </label>
-            <h3>Sign-in & contact</h3>
-            <label htmlFor="v2-publisher-email">
-              Email (for sign-in)
-              <input
-                id="v2-publisher-email"
-                aria-describedby="v2-publisher-email-hint"
-                type="email"
-                value={editing.email}
-                disabled={busy || (!admin && !demo)}
-                onChange={(e) => {
-                  setEditing((p) => (p ? { ...p, email: e.target.value } : p));
-                  setDirty(true);
-                  setShared(false);
-                }}
-              />
-            </label>
-            <small id="v2-publisher-email-hint">
-              Optional. A shared email grants household report submission only.
-            </small>
-            {household.length > 0 && !shared && (
-              <section className="banner">
-                <p>
-                  This email is already used by{" "}
-                  {household.map((p) => p.name).join(", ")}. Treat as a
-                  household so one sign-in can report for everyone?
-                </p>
-                <div className="actions">
-                  <button type="button" onClick={() => setShared(true)}>
-                    Yes, share reports
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setEditing((p) => (p ? { ...p, email: "" } : p))
-                    }
-                  >
-                    No, use a different email
-                  </button>
-                </div>
-              </section>
-            )}
-            {shared && (
-              <p role="status">
-                Household reporting confirmed. Contacts and private details stay
-                separate.
-              </p>
-            )}
-            <div className="form-grid">
-              <label>
-                Phone
-                <input
-                  type="tel"
-                  value={editing.phone}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, phone: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                />
-              </label>
-              <label>
-                Address
-                <input
-                  value={editing.address}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, address: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                />
-              </label>
-            </div>
-            <details><summary>Household, emergency contact & publisher record</summary>
-            {demo||c.caps.extended_people?<div className="stack">
-              <div className="form-grid">{([['dob','Date of birth'],['baptized','Date of baptism'],['emergencyName','Emergency contact name'],['emergencyRelationship','Relationship'],['emergencyPhone','Emergency phone'],['spiritualStatus','Publisher status']] as const).map(([key,label])=><label key={key}>{label}<input type={key==='dob'||key==='baptized'?'date':key==='emergencyPhone'?'tel':'text'} value={editing[key]||''} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.value}:p);setDirty(true);}}/></label>)}</div>
-              <label>Household head<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">This person is the household head</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-              <label>Hope<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">Not recorded</option><option>Other Sheep</option><option>Anointed</option></select></label>
-              {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary'],['isSFTS',t('sfts.name')]] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}<p>{t('sfts.derived')}</p>
-            </div>:<p>Ask your administrator to apply the extended publisher database update, then reopen this record.</p>}</details>
-            {error && (
-              <p role="alert" className="error">
-                {error}
-              </p>
-            )}
-            <div className="actions">
-              <button type="submit" className="primary" disabled={busy}>
-                Save publisher & email
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (!dirty || confirm("Discard changes?")) {
-                    setEditing(null);
-                    setDirty(false);
-                  }
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
-      </Dialog>
+      {editing&&<Suspense fallback={<p role="status">{t("common.loading")}</p>}><PublisherEditor extendedPeople={Boolean(c.caps.extended_people)} people={people} editing={editing} setEditing={setEditing} dirty={dirty} setDirty={setDirty} admin={admin} busy={busy} demo={demo} groups={groups} shared={shared} setShared={setShared} household={household} existingShared={existingShared} error={error} run={run} savePerson={savePerson}/></Suspense>}
       <Dialog
         open={wizard}
-        onClose={() => setWizard(false)}
+        onClose={() => {if(dirty&&wizardSnapshot.current)setSetup(wizardSnapshot.current);setDirty(false);setError('');setWizard(false);}}
         title={`Setup guide · ${wizardStep + 1} of 11`}
         dirty={dirty}
       >
-        <div className="progress" role="progressbar" aria-label="Setup progress" aria-valuemin={1} aria-valuemax={11} aria-valuenow={wizardStep + 1}>
+        <div className="progress" role="progressbar" aria-label={t("ui.setup.progress.e9b4495a")} aria-valuemin={1} aria-valuemax={11} aria-valuenow={wizardStep + 1}>
           {steps.map((s, i) => (
             <span key={s} className={i <= wizardStep ? "done" : ""} />
           ))}
@@ -1653,10 +1402,8 @@ export default function Workspace({
         {wizardStep === 0 ? (
           <>
             <p>
-              Set up people, meeting times, roles and a shareable schedule. You
-              can skip a step and return later.
-            </p>
-            <p>About 10 minutes once your account is approved.</p>
+              {t("ui.set.up.people.meeting.times.roles.and.a.sh.4b32ebc4")}</p>
+            <p>{t("ui.about.10.minutes.once.your.account.is.appr.124bcb0a")}</p>
           </>
         ) : wizardStep === 1 ? (
           <div className="form-grid">
@@ -1697,16 +1444,12 @@ export default function Workspace({
           </div>
         ) : wizardStep === 2 ? (
           <>
-            <h3>Standard</h3>
+            <h3>{t("ui.standard.ef669154")}</h3>
             <p>
-              Server access controls. The operator can technically access stored
-              records.
-            </p>
-            <h3>Private — verification pending</h3>
+              {t("ui.server.access.controls.the.operator.can.te.71fd2594")}</p>
+            <h3>{t("ui.private.verification.pending.a2a3b1bc")}</h3>
             <p>
-              Device encryption and recovery are not released yet. Standard mode
-              remains active. Never upload data expecting E2EE at this stage.
-            </p>
+              {t("ui.device.encryption.and.recovery.are.not.rel.05e8326a")}</p>
           </>
         ) : wizardStep === 3 ? (
           <div className="stack">
@@ -1727,9 +1470,7 @@ export default function Workspace({
         ) : wizardStep === 4 ? (
           <>
             <p>
-              Use the Groups screen to create the dropdown list before adding
-              people.
-            </p>
+              {t("ui.use.the.groups.screen.to.create.the.dropdo.eafb23cb")}</p>
             <button
               onClick={() => {
                 setWizard(false);
@@ -1737,14 +1478,12 @@ export default function Workspace({
                 go("people");
               }}
             >
-              Manage groups
-            </button>
+              {t("ui.manage.groups.faabea83")}</button>
           </>
         ) : wizardStep === 5 ? (
           <>
             <p>
-              Paste a spreadsheet, upload contacts or add people one at a time.
-            </p>
+              {t("ui.paste.a.spreadsheet.upload.contacts.or.add.8cd87970")}</p>
             <button
               onClick={() => {
                 setWizard(false);
@@ -1752,27 +1491,23 @@ export default function Workspace({
                 go("people");
               }}
             >
-              Open Import Center
-            </button>
+              {t("ui.open.import.center.4c1a5823")}</button>
           </>
         ) : wizardStep === 6 ? (
           <>
             <p>
-              Invite main administrators and overseers using approved accounts.
-              Use approved accounts rather than shared passwords.
-            </p>
+              {t("ui.invite.main.administrators.and.overseers.u.cc371329")}</p>
             <button
               onClick={() => {
                 setWizard(false);
                 go("access");
               }}
             >
-              Open Access & Links
-            </button>
+              {t("ui.open.access.links.4072dc35")}</button>
           </>
         ) : wizardStep === 7 ? (
           <>
-            <p>Prepare your first midweek and weekend schedule.</p>
+            <p>{t("ui.prepare.your.first.midweek.and.weekend.sch.3e4cb7c3")}</p>
             <button
               onClick={() => {
                 setWizard(false);
@@ -1780,39 +1515,31 @@ export default function Workspace({
                 go("schedule");
               }}
             >
-              Open weekend schedule
-            </button>
+              {t("ui.open.weekend.schedule.5c9fdf1b")}</button>
           </>
         ) : wizardStep === 8 ? (
           <>
             <p>
-              Publish from Schedule, then copy your stable live link. Only
-              published assignment details belong in a shared link.
-            </p>
+              {t("ui.publish.from.schedule.then.copy.your.stabl.39f031a9")}</p>
             <button
               onClick={() => {
                 setWizard(false);
                 go("access");
               }}
             >
-              Open Links Hub
-            </button>
+              {t("ui.open.links.hub.4a2ac880")}</button>
           </>
         ) : wizardStep === 9 ? (
           <>
             <p>
-              Android: browser menu → Install app. iPhone: Share → Add to Home
-              Screen. Desktop: use the browser’s install button.
-            </p>
-            <a href={import.meta.env.BASE_URL+"site/android/"}>View installation guide</a>
+              {t("ui.android.browser.menu.install.app.iphone.sh.75cd85ad")}</p>
+            <a href={appBaseURL+"site/android/"}>{t("ui.view.installation.guide.27ce43e2")}</a>
           </>
         ) : (
           <>
-            <h3>Your setup guide is complete.</h3><HomeGroupLinks context={c} period={new Date(new Date().getFullYear(),new Date().getMonth()-1,15).toLocaleDateString('en-CA').slice(0,7)}/>
+            <h3>{t("ui.your.setup.guide.is.complete.129b697f")}</h3><HomeGroupLinks context={c} period={new Date(new Date().getFullYear(),new Date().getMonth()-1,15).toLocaleDateString('en-CA').slice(0,7)}/>
             <p>
-              Review Home and publish both schedules when you’re ready. You can
-              reopen this guide in Settings.
-            </p>
+              {t("ui.review.home.and.publish.both.schedules.whe.6f7594bb")}</p>
           </>
         )}
         <div className="actions" style={{ marginTop: "1.5rem" }}>
@@ -1820,8 +1547,7 @@ export default function Workspace({
             disabled={wizardStep === 0 || busy}
             onClick={() => run(() => saveSetup(wizardStep - 1))}
           >
-            Back
-          </button>
+            {t("ui.back.76900f1b")}</button>
           {wizardStep < 10 ? (
             <>
               <button
@@ -1829,19 +1555,16 @@ export default function Workspace({
                 disabled={busy}
                 onClick={() => run(() => saveSetup(wizardStep + 1))}
               >
-                Save & continue
-              </button>
+                {t("ui.save.continue.b75e6d06")}</button>
               <button
                 disabled={busy}
                 onClick={() => run(() => saveSetup(wizardStep + 1))}
               >
-                Skip for now
-              </button>
+                {t("ui.skip.for.now.b58eb52c")}</button>
             </>
           ) : (
             <button className="primary" onClick={() => setWizard(false)}>
-              Done
-            </button>
+              {t("ui.done.11a6767d")}</button>
           )}
         </div>
         {error && (

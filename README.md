@@ -1,14 +1,16 @@
+R1 refinement shipping follows [V3-R1-SHIP-ORDERS](docs/V3-R1-SHIP-ORDERS.md). Current evidence and open R2 items are in [POLISH-REPORT](docs/POLISH-REPORT.md). Domain activation and pricing/billing remain separate from R1.
+
+> **Polish work is not yet a release.** The active orders are [V3 POLISH](docs/V3-POLISH-ORDERS.md); tested changes and remaining release blockers are recorded in [POLISH-REPORT](docs/POLISH-REPORT.md). Production remains at the verified NEXT deployment until every required gate passes. The public website design is locked.
+
 # Congregation Assistant
 
 Independent, unofficial congregation tools for publishers, service reports, attendance, meeting schedules and sharing. Access is controlled by approved accounts and server policies. Private mode is disabled until its complete device, recovery, migration and sentinel tests pass.
 
 ## Review and release status
 
-The native candidate is available in the [private owner review](https://congregation-assistant-review.cherryshore32.chatgpt.site/?demo=admin). Use the owning ChatGPT account; the GitHub repository remains private. Publisher and command-centre demos use `?demo=publisher` and `?demo=owner`.
+Both current GitHub Pages sites serve the public website at the root and the sole native app at `/app/`. The source branch still retains frozen legacy reference files pending complete restoration; they are not copied into the Actions product artifact. [PARITY](docs/PARITY.md) distinguishes tested capabilities from missing acceptance.
 
-The Revival brief takes precedence: the existing main/V1 release stays default until every native screen passes parity. This branch is a review candidate, not a completed cutover. `v2-screen-flags.json`, [PARITY](docs/PARITY.md) and [CUTOVER-REPORT](docs/CUTOVER-REPORT.md) show remaining work. Production release checks deliberately block incomplete screens. Custom domains and mail are prepared but unlinked; provider credentials and assigned DNS values are still required.
-
-Home now has real scoped repositories, month selection, KPI filters, monthly submissions, direct bulk entry and user-initiated reminders. Calm/Balanced/Lively, Glass themes and account-separated device preferences share the same tools. Native PDF Studio, report CSV/bulk/year logs, emergency contacts and the owner request/directory UI are available for review. Real cross-device appearance acceptance, complete V1 parity, production permissions/performance acceptance and E2EE lifecycle remain unfinished.
+The active refinement branch is `v3/resume`. Its new polish changes are not yet on either public host. Existing production remains the verified NEXT release; DNS and provider dashboard settings have not been changed. [POLISH-REPORT](docs/POLISH-REPORT.md) records completed repairs, evidence and release blockers. [OWNER-MANUAL](docs/OWNER-MANUAL.md) records the hosting handover.
 
 ## Run
 

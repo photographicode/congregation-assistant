@@ -31,20 +31,57 @@ jobs:
       - run: npm run check && npm test
       - run: node --test scripts/meetings/parse.test.mjs
       - run: npx playwright install --with-deps chromium
-      - run: npm run build && node scripts/check-v3-resume.cjs
+      - run: npm run build && npm run check:bundle && node scripts/check-v3-resume.cjs
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: node scripts/check-refinement.cjs && node scripts/check-ap-refinement.cjs && node scripts/overlay-audit.ts && node scripts/check-short-navigation.cjs && node scripts/check-refinement-pdf.mjs && node scripts/check-oclm-print.cjs
       - run: node scripts/check-direct-downloads.cjs && node scripts/check-home-next.cjs && node scripts/check-weekend-next.cjs && node scripts/check-install-next.cjs && node scripts/check-theme-fonts.cjs && node scripts/check-wol-app.cjs && node scripts/check-marketing-site.cjs
       - run: node scripts/contrast-check.mjs && node scripts/check-rendered-contrast.mjs && node scripts/check-claims.mjs
       - run: node scripts/check-v3-store-browser.mjs && node scripts/check-v3-offline-app.cjs
       - run: node scripts/build-pages.mjs
         env:
-          CA_PAGES_URL: https://photographicode.github.io/congregation-assistant
+          CA_PAGES_URL: ${{ vars.CUSTOM_DOMAIN_READY == 'true' && (vars.SITE_URL || 'https://congregationassistant.com') || 'https://photographicode.github.io/congregation-assistant' }}
+          CUSTOM_DOMAIN_READY: ${{ vars.CUSTOM_DOMAIN_READY || 'false' }}
+          SITE_URL: ${{ vars.SITE_URL || '' }}
+          APP_URL: ${{ vars.APP_URL || '' }}
       - run: node scripts/check-s89-contract.mjs
+      - name: Require R1 refinement evidence before publishing
+        run: npm run check:r1
       - uses: actions/upload-pages-artifact@v3
         with:
           path: work/pages
+  refinement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/check-r1-full-matrix.mjs
+      - run: node scripts/check-r1-report-delta.mjs
+  pdf:
+    uses: ./.github/workflows/pdf-contracts.yml
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: acceptance-only
+          POSTGRES_DB: ca_acceptance
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
+        env:
+          PGPASSWORD: acceptance-only
   deploy:
     if: github.event_name != 'pull_request'
-    needs: build
+    needs: [build, refinement, database, pdf]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

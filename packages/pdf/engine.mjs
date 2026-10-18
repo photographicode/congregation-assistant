@@ -9,7 +9,7 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
         const s21 = async (publishers, sy, reportRecords = snapshot.reports) => {
             const { PDFDocument, StandardFonts, rgb } = tools.requireLibrary();
             const reportIndex=new Map();for(const r of reportRecords){const key=r.pubId+'|'+r.serviceYear+'|'+r.month;if(!reportIndex.has(key))reportIndex.set(key,r);}
-            const sourceBytes = await loadTemplate('s21.pdf');
+            const sourceBytes = await loadTemplate('s21-noto.pdf');
             const srcDoc = await PDFDocument.load(sourceBytes);
             const srcPage = srcDoc.getPage(0);
             const srcW = srcPage.getWidth();
@@ -29,8 +29,7 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
                 const fitted = tools.fit(text,fontObj,maxWidth,size,7);
                 const low = Math.min(bottom,top), high = Math.max(bottom,top);
                 const y = tools.baseline(fontObj,fitted.size,low,high,fitted.text);
-                const inkBounds=/^[+−-]?\d+(?:[.,]\d+)*(?:[–-]\d+)?$/.test(fitted.text)?fontObj.caInkBounds?.(fitted.text,fitted.size):null;
-                page.drawText(fitted.text, { x: inkBounds?cx-(inkBounds.minX+inkBounds.maxX)/2:cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
+                page.drawText(fitted.text, { x:cx-fitted.width/2, y, size:fitted.size, font:fontObj, color:dark });
             };
             const drawLeft = (page, text, x, topBaseline, size=9, fontObj=font, maxWidth=480) => {
                 if (text === '' || text === null || text === undefined) return;
@@ -139,7 +138,7 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
 
         const s3 = async (sy, month, congName) => {
             const { PDFDocument, StandardFonts, rgb } = tools.requireLibrary();
-            const bytes=await loadTemplate('s3.pdf');
+            const bytes=await loadTemplate('s3-noto.pdf');
             const pdf=await PDFDocument.load(bytes);
             const page=pdf.getPage(0);
             const h=page.getHeight();
@@ -214,7 +213,7 @@ const s88 = async (syRight) => {
                 };
 
                     const { PDFDocument, StandardFonts, rgb } = tools.requireLibrary();
-                    const bytes=await loadTemplate('s88.pdf');
+                    const bytes=await loadTemplate('s88-noto.pdf');
                     const pdfDoc = await PDFDocument.load(bytes);
                     const page = pdfDoc.getPage(0);
                     const pageHeight = page.getHeight();

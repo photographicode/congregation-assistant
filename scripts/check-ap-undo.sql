@@ -1,0 +1,58 @@
+\set ON_ERROR_STOP on
+begin;
+insert into auth.users(id,email,email_confirmed_at) values('00000000-0000-4000-8000-000000000981','admin-a@example.com',now());
+insert into public.publishers(id,cong_id,name) values('ap-undo-test','a','Synthetic undo');
+insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap) values('ap-undo-report','a','ap-undo-test',2027,9,true,2,30.25,'Synthetic retained remark',true);
+set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000981","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';
+create temporary table ap_undo_checks(before_row jsonb,action_id uuid);
+insert into ap_undo_checks(before_row) select to_jsonb(r) from public.reports r where id='ap-undo-report';
+grant all on ap_undo_checks to authenticated;
+set role authenticated;
+do $$declare expected jsonb; result jsonb; event_id uuid; before_row jsonb;begin
+ select c.before_row into before_row from ap_undo_checks c;
+ select jsonb_object_agg(key,value) into expected from jsonb_each(before_row) where key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap']);
+ result=public.ca_revoke_ap('a',expected);event_id=(result->>'actionId')::uuid;
+ if result->'report'->>'is_ap'<>'false' or ((result->'report')-'is_ap') is distinct from (before_row-'is_ap') then raise exception 'Revoke changed report';end if;
+ if (result->>'expiresAt')::timestamptz-(result->>'serverTime')::timestamptz>interval '10 seconds' then raise exception 'Undo window too long';end if;
+ result=public.ca_undo_ap('a',event_id);
+ if result is distinct from before_row then raise exception 'Undo failed to restore exactly';end if;
+ begin perform public.ca_undo_ap('a',event_id);raise exception 'Repeated Undo accepted';exception when serialization_failure then null;end;
+ begin perform public.ca_revoke_ap('b',expected);raise exception 'Cross congregation accepted';exception when insufficient_privilege then null;end;
+ result=public.ca_revoke_ap('a',expected);update ap_undo_checks set action_id=(result->>'actionId')::uuid;
+ begin perform public.ca_revoke_ap('a',expected);raise exception 'Stale revoke accepted';exception when serialization_failure then null;end;
+ begin perform count(*) from ca_ap_private.actions;raise exception 'Direct audit read allowed';exception when insufficient_privilege then null;end;
+end $$;
+reset role;
+do $$begin if (select count(*) from ca_ap_private.actions where report_id='ap-undo-report')<>3 then raise exception 'Audit events missing';end if;end $$;
+update ca_ap_private.actions set expires_at=clock_timestamp()-interval '1 second' where id=(select action_id from ap_undo_checks);
+set role authenticated;
+do $$begin begin perform public.ca_undo_ap('a',(select action_id from ap_undo_checks));raise exception 'Expired Undo accepted';exception when serialization_failure then null;end;end $$;
+reset role;
+update ca_ap_private.actions set expires_at=clock_timestamp()+interval '10 seconds' where id=(select action_id from ap_undo_checks);
+update public.reports set comments='Intervening synthetic correction' where id='ap-undo-report';
+set role authenticated;
+do $$begin begin perform public.ca_undo_ap('a',(select action_id from ap_undo_checks));raise exception 'Undo overwrote an intervening edit';exception when serialization_failure then null;end;end $$;
+reset role;
+set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000981","email":"not-approved@example.invalid","app_metadata":{"provider":"google"}}';
+set role authenticated;
+do $$begin begin perform public.ca_revoke_ap('a','{}');raise exception 'Unapproved actor accepted';exception when insufficient_privilege then null;end;end $$;
+reset role;
+insert into auth.users(id,email,email_confirmed_at) values('00000000-0000-4000-8000-000000000982','ap-service@example.invalid',now());
+insert into public.congregation_access(cong_id,email,role) values('a','ap-service@example.invalid','field_service');
+set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000982","email":"ap-service@example.invalid","app_metadata":{"provider":"google"}}';
+set role authenticated;
+do $$begin begin perform public.ca_undo_ap('a',(select action_id from ap_undo_checks));raise exception 'Another actor could Undo';exception when insufficient_privilege then null;end;end $$;
+reset role;
+update public.reports set is_ap=true where id='ap-undo-report';
+set role authenticated;
+do $$declare expected jsonb; result jsonb;begin
+ select jsonb_object_agg(key,value) into expected from public.reports r cross join lateral jsonb_each(to_jsonb(r)) where r.id='ap-undo-report' and key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap']);
+ result=public.ca_revoke_ap('a',expected);
+ perform public.ca_undo_ap('a',(result->>'actionId')::uuid);
+end $$;
+reset role;
+set role anon;
+do $$begin begin perform public.ca_revoke_ap('a','{}');raise exception 'Anonymous AP access allowed';exception when insufficient_privilege then null;end;end $$;
+reset role;
+rollback;
+\echo PASS AP revoke/Undo preserves full row, audit appends, repeat/stale/expiry/cross-congregation/anonymous/direct-table access rejected

@@ -339,4 +339,482 @@ $ca_body$;
  end if;
  insert into ca_migrations.applied(name) values('20261015034000_v2_experience_profiles.sql') on conflict do nothing;
 end $ca_ordered$;
+
+-- 20261017084449_v3_theme_preferences.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_theme_preferences';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017084449_v3_theme_preferences.sql') then
+ execute $ca_body$-- Presentation-only expansion; preserve every existing identity/role/revision check.
+do $migration$
+declare original text;updated text;begin
+ original=pg_get_functiondef('public.ca_v2_save_experience(text,jsonb,bigint)'::regprocedure);
+ if position('''mono-light''' in original)>0 and position('Choose a whole-number background intensity' in original)>0 then return;end if;
+ updated=replace(original,'''clock'']','''clock'',''backgroundIntensity'']');
+ updated=replace(updated,'''glass-graphite'')','''glass-graphite'',''mono-light'',''mono-dark'',''lagoon-glass'',''neon-night'',''sunset-pop'',''neo-brutal'',''forest'',''aurora'')');
+ updated=replace(updated,' perform ca_private.v2_experience_access(p_cong_id);',E' perform ca_private.v2_experience_access(p_cong_id);\n if p_preferences ? ''backgroundIntensity'' then\n  if jsonb_typeof(p_preferences->''backgroundIntensity'') is distinct from ''number'' then raise exception ''Choose a background intensity from 0 to 100'';end if;\n  if (p_preferences->>''backgroundIntensity'')::numeric not between 0 and 100 or (p_preferences->>''backgroundIntensity'')::numeric<>trunc((p_preferences->>''backgroundIntensity'')::numeric) then raise exception ''Choose a whole-number background intensity from 0 to 100'';end if;\n end if;');
+ if updated=original or position('''mono-light''' in updated)=0 or position('''backgroundIntensity''' in updated)=0 then raise exception 'Experience contract differs from expected baseline; no change applied';end if;
+ execute updated;
+end $migration$;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017084449_v3_theme_preferences.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017094422_v3_publisher_sfts.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_publisher_sfts';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017094422_v3_publisher_sfts.sql') then
+ execute $ca_body$-- Explicit SFTS classification supplements existing special pioneer / missionary flags.
+alter table public.publishers add column if not exists is_sfts boolean not null default false;
+create or replace function public.ca_v3_save_person(p_cong_id text,p_person jsonb,p_shared boolean default false) returns jsonb language plpgsql security definer set search_path='' as $$
+declare result jsonb;begin
+ perform ca_private.v2_require(p_cong_id,array['admin']);
+ if p_person ? 'isSFTS' and jsonb_typeof(p_person->'isSFTS') is distinct from 'boolean' then raise exception 'SFTS must be true or false' using errcode='22023';end if;
+ result=public.ca_v2_save_person(p_cong_id,p_person-'isSFTS',p_shared);
+ if p_person ? 'isSFTS' then update public.publishers set is_sfts=(p_person->>'isSFTS')::boolean where cong_id=p_cong_id and id=result->>'id';end if;
+ return result;
+end $$;
+revoke all on function public.ca_v3_save_person(text,jsonb,boolean) from public,anon;
+grant execute on function public.ca_v3_save_person(text,jsonb,boolean) to authenticated;
+-- Keep full workspace restore round trips lossless for the added publisher field.
+do $$declare f record;definition text;begin
+ for f in select p.oid from pg_catalog.pg_proc p join pg_catalog.pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname='restore_congregation_workspace' loop
+  definition=pg_get_functiondef(f.oid);
+  if position('is_sfts=excluded.is_sfts' in definition)=0 and position('is_fm=excluded.is_fm' in definition)>0 then execute replace(definition,'is_fm=excluded.is_fm','is_fm=excluded.is_fm,is_sfts=excluded.is_sfts');end if;
+ end loop;
+end $$;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017094422_v3_publisher_sfts.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017095359_v3_meeting_workflows.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_meeting_workflows';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017095359_v3_meeting_workflows.sql') then
+ execute $ca_body$-- Preserve reviewed display date and timing without changing part identities or permissions.
+create or replace function ca_private.safe_oclm_program(p_program jsonb) returns jsonb language plpgsql immutable set search_path='' as $$declare p jsonb;parts jsonb='[]';ids text[]='{}';begin
+if jsonb_typeof(p_program) is distinct from 'object' or jsonb_typeof(p_program->'parts') is distinct from 'array' or jsonb_array_length(p_program->'parts')>36 then raise exception 'Invalid reviewed meeting program';end if;
+for p in select value from jsonb_array_elements(p_program->'parts') loop
+if coalesce(p->>'id','') !~ '^[A-Za-z][A-Za-z0-9_]{0,63}$' or p->>'id'=any(ids) or coalesce(p->>'type','')<>all(array['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleReading','Conversation','FollowingUp','Disciples','Beliefs','Assistant','ChristianParts','BibleStudy','BibleStudyReader']) or coalesce(p->>'section','')<>all(array['treasures','field','living']) or coalesce(p->>'minutes','') !~ '^[0-9]{1,2}$' or (p->>'minutes')::integer>60 then raise exception 'Check each part ID, type, section and duration';end if;
+ids=array_append(ids,p->>'id');parts=parts||jsonb_build_array(jsonb_build_object('id',p->>'id','type',p->>'type','section',p->>'section','title',left(coalesce(p->>'title',''),300),'minutes',(p->>'minutes')::integer,'assistant',coalesce((p->>'assistant')::boolean,false)));
+end loop;if p_program ? 'meetingDate' then perform (p_program->>'meetingDate')::date;end if;if p_program ? 'startTime' and p_program->>'startTime' !~ '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$' then raise exception 'Invalid first-part time';end if;return jsonb_build_object('parts',parts,'reviewed',coalesce((p_program->>'reviewed')::boolean,false),'reading',left(coalesce(p_program->>'reading',''),150),'sourceMonth',left(coalesce(p_program->>'sourceMonth',''),7))||jsonb_strip_nulls(jsonb_build_object('meetingDate',p_program->>'meetingDate','startTime',p_program->>'startTime'));end $$;
+
+revoke all on function ca_private.safe_oclm_program(jsonb) from public,anon,authenticated;
+create or replace function public.ca_v3_meeting_context(p_cong_id text) returns jsonb language plpgsql stable security definer set search_path='' as $$begin
+ if auth.uid() is null or not public.ca_has_role(p_cong_id,array['attendance','attendant','oclm']) then raise exception 'Meeting access required' using errcode='42501';end if;
+ return ca_private.current_meeting(p_cong_id)||jsonb_build_object('settings',(select (to_jsonb(s)-'cong_id')||jsonb_build_object('midweek_time',(select data->>'midweekTime' from ca_private.v2_setup where cong_id=p_cong_id),'weekend_time',(select data->>'weekendTime' from ca_private.v2_setup where cong_id=p_cong_id)) from public.ca_meeting_settings s where cong_id=p_cong_id));end $$;
+create or replace function public.ca_v3_submit_attendance(p_cong_id text,p_date date,p_count integer) returns boolean language plpgsql security definer set search_path='' as $$
+declare ctx jsonb;y integer;m integer;w integer;column_name text;begin
+ if auth.uid() is null or not public.ca_has_role(p_cong_id,array['attendance','attendant']) then raise exception 'Attendance access required' using errcode='42501';end if;
+ ctx=ca_private.current_meeting(p_cong_id);
+ if coalesce((ctx->>'canSubmit')::boolean,false) is not true or coalesce(ctx->>'kind','') not in('midweek','weekend') or p_date is distinct from (ctx->>'date')::date then raise exception 'Reload the current meeting before submitting';end if;
+ if p_count is null or p_count<0 or p_count>99999 then raise exception 'Enter a whole attendance count';end if;
+ y=(ctx->>'serviceYear')::integer;m=(ctx->>'month')::integer;w=(ctx->>'week')::integer;
+ column_name='w'||w||case when ctx->>'kind'='midweek' then '_mid' else '_end' end;
+ insert into public.meeting_attendance(id,cong_id,service_year,month) values(p_cong_id||'_'||y||'_'||m,p_cong_id,y,m) on conflict(cong_id,service_year,month) do nothing;
+ execute format('update public.meeting_attendance set %I=$1 where cong_id=$2 and service_year=$3 and month=$4',column_name) using p_count::text,p_cong_id,y,m;
+ return true;end $$;
+create or replace function public.ca_v3_report_groups(p_cong_id text) returns jsonb language plpgsql stable security definer set search_path='' as $$begin
+ if auth.uid() is null or not public.ca_has_role(p_cong_id,array['field_service','group_overseer']) then raise exception 'Report group access required' using errcode='42501';end if;
+ return(select coalesce(jsonb_agg(jsonb_build_object('id',g.id,'name',g.name) order by g.name),'[]') from public.service_groups g where g.cong_id=p_cong_id and g.archived_at is null and (public.ca_has_role(p_cong_id,array['field_service']) or public.ca_can_read_group(p_cong_id,g.name)));end $$;
+revoke all on function public.ca_v3_meeting_context(text),public.ca_v3_submit_attendance(text,date,integer),public.ca_v3_report_groups(text) from public,anon;
+grant execute on function public.ca_v3_meeting_context(text),public.ca_v3_submit_attendance(text,date,integer),public.ca_v3_report_groups(text) to authenticated;
+-- Department functions are deliberately unchanged: the resume orders require approved pools for all three departments.
+-- Atomically keep the setup guide and attendance calendar on the same meeting days.
+create or replace function public.ca_v3_save_setup(p_cong_id text,p_step integer,p_data jsonb) returns boolean language plpgsql security definer set search_path='' as $$
+declare mid integer;weekend integer;days text[]=array['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];begin
+ perform ca_private.v2_require(p_cong_id,array['admin']);
+ if p_step>=2 then
+  mid=array_position(days,lower(trim(p_data->>'midweek')))-1;weekend=array_position(days,lower(trim(p_data->>'weekend')))-1;
+  if mid is null or weekend is null or mid=weekend or not exists(select 1 from pg_timezone_names where name=p_data->>'timezone') then raise exception 'Choose valid distinct meeting days and timezone';end if;
+  if coalesce(p_data->>'midweekTime','') !~ '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$' or coalesce(p_data->>'weekendTime','') !~ '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$' then raise exception 'Use a valid meeting time';end if;
+  perform public.save_meeting_calendar(p_cong_id,p_data->>'timezone',mid,weekend,null,null);
+ end if;
+ return public.ca_v2_save_setup(p_cong_id,p_step,p_data);
+end $$;
+revoke all on function public.ca_v3_save_setup(text,integer,jsonb) from public,anon;
+grant execute on function public.ca_v3_save_setup(text,integer,jsonb) to authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017095359_v3_meeting_workflows.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017100004_v3_local_command_report.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_local_command_report';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017100004_v3_local_command_report.sql') then
+ execute $ca_body$-- Receives only reviewed structured values, never the local command text.
+create or replace function public.ca_v3_save_assistant_report(p_cong_id text,p_publisher_id text,p_year integer,p_month integer,p_hours numeric,p_studies integer,p_expected jsonb) returns jsonb language plpgsql security definer set search_path='' as $$
+declare old public.reports;saved public.reports;current_record jsonb;pub public.publishers;begin
+ if auth.uid() is null then raise exception 'Sign in required' using errcode='42501';end if;
+ select * into pub from public.publishers where cong_id=p_cong_id and id=p_publisher_id and transferred_at is null;
+ if pub.id is null or not(public.ca_has_role(p_cong_id,array['field_service']) or public.ca_can_read_group(p_cong_id,pub.service_group)) then raise exception 'Publisher outside your report scope' using errcode='42501';end if;
+ if p_year is null or p_year not between 1900 and 2200 or p_month is null or p_month not between 0 and 11 or p_hours is null or p_hours<0 or p_hours>744 or p_studies is null or p_studies<0 or p_studies>1000 then raise exception 'Check reporting month, hours and studies';end if;
+ select * into old from public.reports where cong_id=p_cong_id and pub_id=p_publisher_id and service_year=p_year and month=p_month for update;
+ if old.id is not null then current_record=jsonb_build_object('shared',coalesce(old.shared_in_ministry,false),'hours',coalesce(old.hours,0),'studies',coalesce(old.studies,0),'comments',coalesce(old.comments,''),'auxiliary',coalesce(old.is_ap,false));end if;
+ if p_expected is distinct from current_record then raise exception 'This report changed after your preview. Reload it and review again.' using errcode='40001';end if;
+ if old.id is null then
+  insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,hours,studies,comments,is_ap) values(gen_random_uuid()::text,p_cong_id,p_publisher_id,p_year,p_month,true,p_hours,p_studies,'',false) on conflict(pub_id,service_year,month) do nothing returning * into saved;
+  if saved.id is null then raise exception 'A report was added after your preview. Reload and review.' using errcode='40001';end if;
+ else
+  update public.reports set shared_in_ministry=true,hours=p_hours,studies=p_studies,comments=case when old.comments='Not Participated' then '' else old.comments end where id=old.id and cong_id=p_cong_id returning * into saved;
+ end if;
+ return to_jsonb(saved);
+end $$;
+revoke all on function public.ca_v3_save_assistant_report(text,text,integer,integer,numeric,integer,jsonb) from public,anon;
+grant execute on function public.ca_v3_save_assistant_report(text,text,integer,integer,numeric,integer,jsonb) to authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017100004_v3_local_command_report.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017202301_home_group_links.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'home_group_links';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017202301_home_group_links.sql') then
+ execute $ca_body$-- Home links expose only a caller's authorized group links and reporting counts.
+alter table public.reports add column if not exists submitted_at timestamptz;
+create or replace function ca_private.stamp_report_submission() returns trigger language plpgsql set search_path='' as $$begin new.submitted_at=clock_timestamp();return new;end $$;
+revoke all on function ca_private.stamp_report_submission() from public,anon,authenticated;
+create trigger ca_stamp_report_submission before insert or update on public.reports for each row execute function ca_private.stamp_report_submission();
+create function public.ca_v3_home_group_links(p_cong_id text,p_year integer,p_month integer) returns jsonb language plpgsql stable security definer set search_path='' as $$begin
+ if auth.uid() is null or not public.ca_has_role(p_cong_id,array['field_service','group_overseer']) then raise exception 'Report access required' using errcode='42501';end if;
+ if p_year not between 1900 and 2200 or p_month not between 0 and 11 then raise exception 'Invalid reporting period';end if;
+ return(select coalesce(jsonb_agg(jsonb_build_object('id',g.id,'name',g.name,'token',l.token,'total',coalesce(s.total,0),'submitted',coalesce(s.submitted,0),'lastSubmission',s.latest) order by g.name),'[]') from public.service_groups g
+ left join lateral(select token from public.ca_public_links where cong_id=g.cong_id and kind='report' and service_group=g.name and pub_id is null and active and expires_at>now() order by created_at desc limit 1) l on true
+ left join lateral(select count(p.id) as total,count(r.id) as submitted,max(r.submitted_at) as latest from public.publishers p left join public.reports r on r.cong_id=p.cong_id and r.pub_id=p.id and r.service_year=p_year and r.month=p_month where p.cong_id=g.cong_id and p.service_group=g.name and p.transferred_at is null) s on true
+ where g.cong_id=p_cong_id and g.archived_at is null and(public.ca_has_role(p_cong_id,array['field_service']) or public.ca_can_read_group(p_cong_id,g.name)));
+end $$;
+revoke all on function public.ca_v3_home_group_links(text,integer,integer) from public,anon,authenticated;
+grant execute on function public.ca_v3_home_group_links(text,integer,integer) to authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017202301_home_group_links.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017202537_weekend_talk_history.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'weekend_talk_history';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017202537_weekend_talk_history.sql') then
+ execute $ca_body$create table ca_private.talk_history(
+ id uuid primary key default gen_random_uuid(),cong_id text not null references public.congregations(id) on delete cascade,
+ date date not null,talk_no text not null check(talk_no ~ '^[0-9]{1,4}$'),title text not null default '',speaker text not null default '',speaker_congregation text not null default '',source text not null check(source in('published','manual')),source_week date,
+ unique(cong_id,source_week)
+);
+alter table ca_private.talk_history enable row level security;
+revoke all on ca_private.talk_history from public,anon,authenticated;
+create unique index ca_talk_history_manual_unique on ca_private.talk_history(cong_id,date,talk_no,speaker) where source='manual';
+create index ca_talk_history_lookup on ca_private.talk_history(cong_id,talk_no,date desc);
+create function ca_private.record_published_talk() returns trigger language plpgsql security definer set search_path='' as $$declare d date;begin
+ if coalesce(new.snapshot->>'outline','') !~ '^[0-9]{1,4}$' or coalesce(new.snapshot->>'exception','normal') in('assembly','convention','memorial','no_meeting','rescheduled') then delete from ca_private.talk_history where cong_id=new.cong_id and source_week=new.week;return new;end if;
+ d=new.week+((coalesce((select weekend_day from public.ca_meeting_settings where cong_id=new.cong_id),0)+6)%7);
+ insert into ca_private.talk_history(cong_id,date,talk_no,title,speaker,speaker_congregation,source,source_week) values(new.cong_id,d,new.snapshot->>'outline',left(coalesce(new.snapshot->>'talkTitle',''),300),left(coalesce(new.snapshot->>'speaker',''),200),left(coalesce(new.snapshot->>'speakerCongregation',''),200),'published',new.week)
+ on conflict(cong_id,source_week) do update set date=excluded.date,talk_no=excluded.talk_no,title=excluded.title,speaker=excluded.speaker,speaker_congregation=excluded.speaker_congregation;
+ return new;end $$;
+revoke all on function ca_private.record_published_talk() from public,anon,authenticated;
+create trigger ca_published_talk_history after insert or update of snapshot on ca_private.weekend_publications for each row execute function ca_private.record_published_talk();
+create function public.ca_v3_talk_history(p_cong_id text) returns jsonb language plpgsql stable security definer set search_path='' as $$begin
+ perform ca_private.v2_require(p_cong_id,array['weekend']);return(select coalesce(jsonb_agg(jsonb_build_object('date',date,'talk_no',talk_no,'title',title,'speaker',speaker,'speaker_congregation',speaker_congregation,'source',source) order by date desc),'[]') from ca_private.talk_history where cong_id=p_cong_id);end $$;
+create function public.ca_v3_backfill_talks(p_cong_id text,p_rows jsonb) returns integer language plpgsql security definer set search_path='' as $$declare r jsonb;n integer=0;begin
+ perform ca_private.v2_require(p_cong_id,array['weekend']);if jsonb_typeof(p_rows) is distinct from 'array' or jsonb_array_length(p_rows)>500 then raise exception 'Import up to 500 date-number rows';end if;
+ for r in select value from jsonb_array_elements(p_rows) loop
+ if coalesce(r->>'date','') !~ '^\d{4}-\d{2}-\d{2}$' or coalesce(r->>'talk_no','') !~ '^[0-9]{1,4}$' then raise exception 'Invalid date or talk number';end if;
+ insert into ca_private.talk_history(cong_id,date,talk_no,source) values(p_cong_id,(r->>'date')::date,r->>'talk_no','manual') on conflict(cong_id,date,talk_no,speaker) where source='manual' do nothing;n=n+1;
+ end loop;return n;end $$;
+revoke all on function public.ca_v3_talk_history(text),public.ca_v3_backfill_talks(text,jsonb) from public,anon,authenticated;
+grant execute on function public.ca_v3_talk_history(text),public.ca_v3_backfill_talks(text,jsonb) to authenticated;
+-- Seed only already-published public schedule snapshots; no drafts or notes.
+insert into ca_private.talk_history(cong_id,date,talk_no,title,speaker,speaker_congregation,source,source_week)
+ select p.cong_id,p.week+((coalesce(s.weekend_day,0)+6)%7),p.snapshot->>'outline',left(coalesce(p.snapshot->>'talkTitle',''),300),left(coalesce(p.snapshot->>'speaker',''),200),left(coalesce(p.snapshot->>'speakerCongregation',''),200),'published',p.week
+ from ca_private.weekend_publications p left join public.ca_meeting_settings s on s.cong_id=p.cong_id
+ where coalesce(p.snapshot->>'outline','') ~ '^[0-9]{1,4}$' and coalesce(p.snapshot->>'exception','normal') not in('assembly','convention','memorial','no_meeting','rescheduled') on conflict do nothing;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017202537_weekend_talk_history.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261017210703_manage_group_report_links.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'manage_group_report_links';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261017210703_manage_group_report_links.sql') then
+ execute $ca_body$-- Only manage active whole-group report links within the caller's existing scope.
+create function public.ca_v3_manage_group_link(p_cong_id text,p_token uuid,p_action text) returns jsonb language plpgsql security definer set search_path='' as $$
+declare link public.ca_public_links;next_token uuid;begin
+ if auth.uid() is null or p_action is null or p_action not in('rotate','revoke') then raise exception 'Link management access required' using errcode='42501';end if;
+ select * into link from public.ca_public_links where cong_id=p_cong_id and token=p_token and kind='report' and service_group is not null and pub_id is null for update;
+ if link.token is null or not (public.ca_has_role(p_cong_id,array['field_service']) or public.ca_can_read_group(p_cong_id,link.service_group)) then raise exception 'Link management access required' using errcode='42501';end if;
+ if not link.active then raise exception 'This link was already withdrawn. Refresh the list.';end if;
+ update public.ca_public_links set active=false where token=link.token and cong_id=p_cong_id;
+ if p_action='rotate' then insert into public.ca_public_links(cong_id,kind,service_group,pub_id) values(p_cong_id,'report',link.service_group,null) returning token into next_token;end if;
+ return jsonb_build_object('token',next_token,'action',p_action);
+end $$;
+revoke all on function public.ca_v3_manage_group_link(text,uuid,text) from public,anon,authenticated;
+grant execute on function public.ca_v3_manage_group_link(text,uuid,text) to authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261017210703_manage_group_report_links.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261018081257_v3_refinement_reports_and_auxiliary.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_refinement_reports_and_auxiliary';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261018081257_v3_refinement_reports_and_auxiliary.sql') then
+ execute $ca_body$-- Refinement only: preserve AP report contents, compare reviewed rows atomically,
+-- persist the existing auxiliary setting and omit disabled auxiliary names publicly.
+CREATE OR REPLACE FUNCTION public.save_group_reports(p_cong_id text, p_year integer, p_month integer, p_reports jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO ''
+AS $function$
+declare r jsonb;p public.publishers;s boolean;st integer;h numeric;rows jsonb='[]';saved public.reports;
+begin if not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['group_overseer']) then raise exception 'Approved group account required' using errcode='42501';end if;
+if p_year is null or p_year not between 1900 and 2200 or p_month is null or p_month not between 0 and 11 or jsonb_typeof(p_reports) is distinct from 'array' or jsonb_array_length(p_reports)>250 then raise exception 'Invalid reporting period or batch';end if;
+if (select count(*) from jsonb_array_elements(p_reports))<>(select count(distinct x->>'pub_id') from jsonb_array_elements(p_reports) x) then raise exception 'Duplicate or missing publisher';end if;
+for r in select value from jsonb_array_elements(p_reports) loop
+ select * into p from public.publishers where id=r->>'pub_id' and cong_id=p_cong_id;
+ if p.id is null or not public.ca_can_read_group(p_cong_id,p.service_group) then raise exception 'Publisher is outside your assigned group' using errcode='42501';end if;
+ if coalesce((r->>'clear_auxiliary')::boolean,false) then
+ select * into saved from public.reports where cong_id=p_cong_id and pub_id=p.id and service_year=p_year and month=p_month for update;
+ if not found or (select jsonb_object_agg(key,value) from jsonb_each(to_jsonb(saved)) where key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap'])) is distinct from r->'expected_report' then raise exception 'This report changed. Reload before revoking AP.' using errcode='40001';end if;
+ update public.reports set is_ap=false where id=saved.id returning * into saved;
+ rows=rows||jsonb_build_array(to_jsonb(saved));continue;end if;
+ s=coalesce((r->>'shared_in_ministry')::boolean,false);st=coalesce((r->>'studies')::integer,0);h=coalesce((r->>'hours')::numeric,0);
+ if st not between 0 and 1000 or h not between 0 and 744 or length(coalesce(r->>'comments',''))>4000 then raise exception 'Invalid report values';end if;
+ insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap) values(gen_random_uuid()::text,p_cong_id,p.id,p_year,p_month,s,case when s then st else 0 end,case when s then h else 0 end,coalesce(r->>'comments',''),s and coalesce((r->>'is_ap')::boolean,false)) on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap returning * into saved;
+ rows=rows||jsonb_build_array(to_jsonb(saved));end loop;return rows;end $function$
+;
+
+CREATE OR REPLACE FUNCTION ca_private.noticeboard_snapshot(p_cong_id text, p_snapshot jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ STABLE SECURITY DEFINER
+ SET search_path TO ''
+AS $function$
+declare result jsonb=p_snapshot;assignments jsonb='{}';layouts jsonb=coalesce(p_snapshot->'weekDetails','{}');people jsonb=coalesce(p_snapshot->'people','[]');target_week text;data jsonb;duties jsonb;pub record;current_week text;begin
+select to_char(now() at time zone coalesce((select timezone from public.ca_meeting_settings where cong_id=p_cong_id),'Asia/Kolkata'),'IYYY-"W"IW') into current_week;
+layouts='{}'::jsonb;
+for target_week in select key from jsonb_each(coalesce(p_snapshot->'assignments','{}')) union select dp.week from ca_private.department_publications dp where dp.cong_id=p_cong_id loop
+if target_week<current_week then continue;end if;
+ select coalesce(jsonb_object_agg(a.key,a.value),'{}') into data from jsonb_each(coalesce(p_snapshot->'assignments'->target_week,'{}')) a where not exists(select 1 from ca_private.department_duties r where r.cong_id=p_cong_id and r.id=regexp_replace(a.key,'_[1-4]$',''));
+ select coalesce(jsonb_agg(d),'[]') into duties from jsonb_array_elements(coalesce(p_snapshot->'weekDetails'->target_week->'additionalDuties',p_snapshot->'additionalDuties','[]')) d where not exists(select 1 from ca_private.department_duties r where r.cong_id=p_cong_id and r.id=d->>'id');
+ for pub in select department,snapshot from ca_private.department_publications where cong_id=p_cong_id and department in('attendant','av','cleaning') and department_publications.week=target_week loop
+ data=data||(select coalesce(jsonb_object_agg(a.key,jsonb_build_object('personId',a.value->>'personId','status',coalesce(a.value->>'status','scheduled'))),'{}') from jsonb_each(coalesce(pub.snapshot->'assignments','{}')) a join ca_private.department_duties r on r.cong_id=p_cong_id and r.department=pub.department and r.id=regexp_replace(a.key,'_[1-4]$',''));
+ duties=duties||(select coalesce(jsonb_agg(jsonb_build_object('id',d->>'id','name',d->>'name','section',d->>'section','slots',d->'slots','enabled',d->'enabled')),'[]') from jsonb_array_elements(coalesce(pub.snapshot->'duties','[]')) d join ca_private.department_duties r on r.cong_id=p_cong_id and r.department=pub.department and r.id=d->>'id');
+ people=people||(select coalesce(jsonb_agg(jsonb_build_object('id',p->>'id','name',p->>'name')),'[]') from jsonb_array_elements(coalesce(pub.snapshot->'people','[]')) p);end loop;
+ -- Departments not published for this target_week still show their duty names, without exposing drafts.
+ duties=duties||(select coalesce(jsonb_agg(d),'[]') from ca_private.department_workspaces w cross join lateral jsonb_array_elements(w.data->'duties') d join ca_private.department_duties r on r.cong_id=w.cong_id and r.id=d->>'id' and r.department=w.department where w.cong_id=p_cong_id and coalesce((d->>'enabled')::boolean,true) and not exists(select 1 from ca_private.department_publications dp where dp.cong_id=p_cong_id and dp.department=r.department and dp.week=target_week));
+ if target_week>=to_char(current_date,'IYYY-"W"IW') then select coalesce(jsonb_object_agg(a.key,case when exists(select 1 from public.ca_oclm_workspaces w cross join lateral jsonb_array_elements(w.data->'personnel') person join public.publishers p on p.cong_id=w.cong_id and p.id=coalesce(person->>'publisherId',person->>'id') where w.cong_id=p_cong_id and p.transferred_at is not null and person->>'id'=a.value->>'personId') or exists(select 1 from public.publishers p where p.cong_id=p_cong_id and p.id=a.value->>'personId' and p.transferred_at is not null) then a.value||jsonb_build_object('personId',null) else a.value end),'{}') into data from jsonb_each(data) a;end if;
+ -- A department without a configured duty still has a clear public placeholder.
+for pub in select * from(values('av','Audio Video Department','Duty_fffffffffffffffffffffffffffffff1'),('attendant','Attendant (Attendance Department)','Duty_fffffffffffffffffffffffffffffff2'),('cleaning','Cleaning','Duty_fffffffffffffffffffffffffffffff3')) as departments(department,title,id) loop
+if not exists(select 1 from jsonb_array_elements(duties) d where d->>'section'=pub.title) then duties=duties||jsonb_build_array(jsonb_build_object('id',pub.id,'name',pub.title,'section',pub.title,'slots',1,'enabled',true));end if;end loop;
+if coalesce((p_snapshot->'weekDetails'->target_week->'program'->>'auxiliary')::boolean,false)=false then
+select coalesce(jsonb_object_agg(key,value),'{}') into data from jsonb_each(data) where key<>'AuxiliaryCounselor' and key !~ '(Aux|AuxAssistant|AssistantAux)$';end if;
+assignments=assignments||jsonb_build_object(target_week,data);layouts=layouts||jsonb_build_object(target_week,coalesce(p_snapshot->'weekDetails'->target_week,'{}')||jsonb_build_object('additionalDuties',duties,'oclmPublished',coalesce(p_snapshot->'assignments','{}') ? target_week));end loop;
+ select coalesce(jsonb_agg(person),'[]') into people from(select distinct on (p->>'id') p person from jsonb_array_elements(people) p where exists(select 1 from jsonb_each(assignments) w cross join lateral jsonb_each(w.value) a where (a.value->>'personId'=p->>'id' or a.value->>'assistantId'=p->>'id')) order by p->>'id') x;
+ return coalesce(result,'{}')||jsonb_build_object('assignments',assignments,'people',people,'weekDetails',layouts,'publishedWeeks',(select coalesce(jsonb_agg(key order by key),'[]') from jsonb_object_keys(assignments) key),'defaultWeek',(select min(key) from jsonb_object_keys(assignments) key),'currentWeek',current_week);
+end $function$
+;
+
+CREATE OR REPLACE FUNCTION public.save_congregation_reports(p_cong_id text, p_reports jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SET search_path TO ''
+AS $function$
+declare r jsonb; saved public.reports; rows jsonb='[]';
+begin
+ if auth.uid() is null or not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['admin','field_service']) then raise exception 'Approved administrator or field service account required' using errcode='42501';end if;
+ if jsonb_typeof(p_reports) is distinct from 'array' or jsonb_array_length(p_reports) not between 1 and 5000 then raise exception 'Choose between 1 and 5000 report rows';end if;
+ if (select count(*) from jsonb_array_elements(p_reports))<>(select count(distinct (x->>'pub_id',x->>'service_year',x->>'month')) from jsonb_array_elements(p_reports) x) then raise exception 'The same publisher and month appear twice';end if;
+ for r in select value from jsonb_array_elements(p_reports) loop
+  if r->>'cong_id' is distinct from p_cong_id or not exists(select 1 from public.publishers p where p.cong_id=p_cong_id and p.id=r->>'pub_id') then raise exception 'Publisher is outside this congregation' using errcode='42501';end if;
+  if r->>'service_year' is null or (r->>'service_year')::integer not between 1900 and 2200 or r->>'month' is null or (r->>'month')::integer not between 0 and 11 or coalesce((r->>'studies')::integer,0) not between 0 and 1000 or coalesce((r->>'hours')::numeric,0) not between 0 and 744 or length(coalesce(r->>'comments',''))>4000 then raise exception 'Check the reporting month, studies, hours and remarks';end if;
+  if coalesce((r->>'clear_auxiliary')::boolean,false) then
+   select * into saved from public.reports where cong_id=p_cong_id and pub_id=r->>'pub_id' and service_year=(r->>'service_year')::integer and month=(r->>'month')::integer for update;
+   if not found or (select jsonb_object_agg(key,value) from jsonb_each(to_jsonb(saved)) where key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap'])) is distinct from r->'expected_report' then raise exception 'This report changed. Reload before revoking AP.' using errcode='40001';end if;
+   update public.reports set is_ap=false where id=saved.id returning * into saved;
+   rows=rows||jsonb_build_array(to_jsonb(saved));continue;
+  end if;
+  insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap)
+  values(pg_catalog.gen_random_uuid()::text,p_cong_id,r->>'pub_id',(r->>'service_year')::integer,(r->>'month')::integer,coalesce((r->>'shared_in_ministry')::boolean,false),coalesce((r->>'studies')::integer,0),coalesce((r->>'hours')::numeric,0),coalesce(r->>'comments',''),coalesce((r->>'is_ap')::boolean,false))
+  on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap
+  returning * into saved;
+  rows=rows||jsonb_build_array(to_jsonb(saved));
+ end loop;return rows;
+end $function$
+;
+
+CREATE OR REPLACE FUNCTION ca_private.safe_oclm_program(p_program jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ IMMUTABLE
+ SET search_path TO ''
+AS $function$declare p jsonb;parts jsonb='[]';ids text[]='{}';begin
+if jsonb_typeof(p_program) is distinct from 'object' or jsonb_typeof(p_program->'parts') is distinct from 'array' or jsonb_array_length(p_program->'parts')>36 then raise exception 'Invalid reviewed meeting program';end if;
+for p in select value from jsonb_array_elements(p_program->'parts') loop
+if coalesce(p->>'id','') !~ '^[A-Za-z][A-Za-z0-9_]{0,63}$' or p->>'id'=any(ids) or coalesce(p->>'type','')<>all(array['Chairman','Prayer','TreasuresTalk','SpiritualGems','BibleReading','Conversation','FollowingUp','Disciples','Beliefs','Assistant','ChristianParts','BibleStudy','BibleStudyReader']) or coalesce(p->>'section','')<>all(array['treasures','field','living']) or coalesce(p->>'minutes','') !~ '^[0-9]{1,2}$' or (p->>'minutes')::integer>60 then raise exception 'Check each part ID, type, section and duration';end if;
+ids=array_append(ids,p->>'id');parts=parts||jsonb_build_array(jsonb_build_object('id',p->>'id','type',p->>'type','section',p->>'section','title',left(coalesce(p->>'title',''),300),'minutes',(p->>'minutes')::integer,'assistant',coalesce((p->>'assistant')::boolean,false)));
+end loop;if p_program ? 'meetingDate' then perform (p_program->>'meetingDate')::date;end if;if p_program ? 'startTime' and p_program->>'startTime' !~ '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$' then raise exception 'Invalid first-part time';end if;if p_program ? 'auxiliary' and jsonb_typeof(p_program->'auxiliary')<>'boolean' then raise exception 'Invalid auxiliary classroom setting';end if;return jsonb_build_object('auxiliary',coalesce((p_program->>'auxiliary')::boolean,false),'parts',parts,'reviewed',coalesce((p_program->>'reviewed')::boolean,false),'reading',left(coalesce(p_program->>'reading',''),150),'sourceMonth',left(coalesce(p_program->>'sourceMonth',''),7))||jsonb_strip_nulls(jsonb_build_object('meetingDate',p_program->>'meetingDate','startTime',p_program->>'startTime'));end $function$
+;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261018081257_v3_refinement_reports_and_auxiliary.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261018152930_v3_polish_ap_review.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_polish_ap_review';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261018152930_v3_polish_ap_review.sql') then
+ execute $ca_body$-- Administrative AP changes must not rewrite the publisher's submission time.
+-- No report rows are rewritten by this migration.
+create or replace function ca_private.stamp_report_submission()
+returns trigger language plpgsql set search_path='' as $$
+begin
+ if TG_OP = 'INSERT' then
+  new.submitted_at = clock_timestamp();
+ elsif row(new.shared_in_ministry,new.studies,new.hours,new.comments)
+       is distinct from row(old.shared_in_ministry,old.studies,old.hours,old.comments) then
+  new.submitted_at = clock_timestamp();
+ else
+  new.submitted_at = old.submitted_at;
+ end if;
+ return new;
+end $$;
+revoke all on function ca_private.stamp_report_submission() from public,anon,authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261018152930_v3_polish_ap_review.sql') on conflict do nothing;
+end $ca_ordered$;
+
+-- 20261018153524_v3_polish_ap_undo.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'v3_polish_ap_undo';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261018153524_v3_polish_ap_undo.sql') then
+ execute $ca_body$-- AP actions are append-only and inaccessible through direct client table access.
+create schema if not exists ca_ap_private;
+revoke all on schema ca_ap_private from public,anon;
+grant usage on schema ca_ap_private to authenticated;
+create table if not exists ca_ap_private.actions (
+ id uuid primary key default gen_random_uuid(),
+ cong_id text not null references public.congregations(id) on delete cascade,
+ report_id text references public.reports(id) on delete set null,
+ actor uuid references auth.users(id) on delete set null,
+ action text not null check(action in ('revoke','undo')),
+ occurred_at timestamptz not null default clock_timestamp(),
+ expires_at timestamptz,
+ report_version text,
+ undo_of uuid unique references ca_ap_private.actions(id),
+ service_year integer not null, month integer not null
+);
+alter table ca_ap_private.actions enable row level security;
+revoke all on ca_ap_private.actions from public,anon,authenticated;
+create index if not exists ap_actions_cong_period on ca_ap_private.actions(cong_id,service_year,month,occurred_at desc);
+create index if not exists ap_actions_report on ca_ap_private.actions(report_id);
+create index if not exists ap_actions_actor on ca_ap_private.actions(actor);
+create or replace function ca_ap_private.revoke_ap(p_cong_id text,p_expected jsonb)
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare r public.reports; expected jsonb; version text; event ca_ap_private.actions;
+begin
+ if auth.uid() is null or not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['admin','field_service']) then raise exception 'Approved administrator or field service account required' using errcode='42501';end if;
+ select * into r from public.reports where id=p_expected->>'id' and cong_id=p_cong_id for update;
+ if not found then raise exception 'Report changed. Reload before revoking AP.' using errcode='40001';end if;
+ select jsonb_object_agg(key,value) into expected from jsonb_each(to_jsonb(r)) where key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap']);
+ if expected is distinct from p_expected or r.is_ap is distinct from true then raise exception 'Report changed. Reload before revoking AP.' using errcode='40001';end if;
+ update public.reports set is_ap=false where id=r.id returning * into r;
+ select xmin::text||':'||md5(to_jsonb(current_report)::text) into version from public.reports current_report where id=r.id;
+ insert into ca_ap_private.actions(cong_id,report_id,actor,action,expires_at,report_version,service_year,month)
+ values(p_cong_id,r.id,auth.uid(),'revoke',clock_timestamp()+interval '10 seconds',version,r.service_year,r.month) returning * into event;
+ return jsonb_build_object('report',to_jsonb(r),'actionId',event.id,'expiresAt',event.expires_at,'serverTime',clock_timestamp());
+end $$;
+create or replace function ca_ap_private.undo_ap(p_cong_id text,p_action_id uuid)
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare event ca_ap_private.actions; r public.reports; version text;
+begin
+ if auth.uid() is null or not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['admin','field_service']) then raise exception 'Approved administrator or field service account required' using errcode='42501';end if;
+ select * into event from ca_ap_private.actions where id=p_action_id and cong_id=p_cong_id and action='revoke' and actor=auth.uid() for update;
+ if not found then raise exception 'This AP action is unavailable' using errcode='42501';end if;
+ select * into r from public.reports where id=event.report_id and cong_id=p_cong_id for update;
+ if not found then raise exception 'Report changed. Reload before editing AP status.' using errcode='40001';end if;
+ select xmin::text||':'||md5(to_jsonb(current_report)::text) into version from public.reports current_report where id=r.id;
+ if r.is_ap is distinct from false or version is distinct from event.report_version or exists(select 1 from ca_ap_private.actions where undo_of=event.id) then raise exception 'Report changed. Reload before editing AP status.' using errcode='40001';end if;
+ if clock_timestamp()>event.expires_at then raise exception 'Undo expired. Review the report before changing AP status.' using errcode='40001';end if;
+ if not public.ca_has_role(p_cong_id,array['admin','field_service']) then raise exception 'AP review access required' using errcode='42501';end if;
+ update public.reports set is_ap=true where id=r.id returning * into r;
+ insert into ca_ap_private.actions(cong_id,report_id,actor,action,undo_of,service_year,month) values(p_cong_id,r.id,auth.uid(),'undo',event.id,r.service_year,r.month);
+ return to_jsonb(r);
+end $$;
+revoke all on function ca_ap_private.revoke_ap(text,jsonb),ca_ap_private.undo_ap(text,uuid) from public,anon,authenticated;
+grant execute on function ca_ap_private.revoke_ap(text,jsonb),ca_ap_private.undo_ap(text,uuid) to authenticated;
+create or replace function public.ca_revoke_ap(p_cong_id text,p_expected jsonb) returns jsonb language sql security invoker set search_path='' as $$select ca_ap_private.revoke_ap(p_cong_id,p_expected)$$;
+create or replace function public.ca_undo_ap(p_cong_id text,p_action_id uuid) returns jsonb language sql security invoker set search_path='' as $$select ca_ap_private.undo_ap(p_cong_id,p_action_id)$$;
+revoke all on function public.ca_revoke_ap(text,jsonb),public.ca_undo_ap(text,uuid) from public,anon,authenticated;
+grant execute on function public.ca_revoke_ap(text,jsonb),public.ca_undo_ap(text,uuid) to authenticated;
+
+-- Canonical AP revocation preserves report contents and rejects stale reviewed rows.
+CREATE OR REPLACE FUNCTION public.save_congregation_reports(p_cong_id text, p_reports jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SET search_path TO ''
+AS $function$
+declare r jsonb; saved public.reports; rows jsonb='[]';
+begin
+ if auth.uid() is null or not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['admin','field_service']) then raise exception 'Approved administrator or field service account required' using errcode='42501';end if;
+ if jsonb_typeof(p_reports) is distinct from 'array' or jsonb_array_length(p_reports) not between 1 and 5000 then raise exception 'Choose between 1 and 5000 report rows';end if;
+ if (select count(*) from jsonb_array_elements(p_reports))<>(select count(distinct (x->>'pub_id',x->>'service_year',x->>'month')) from jsonb_array_elements(p_reports) x) then raise exception 'The same publisher and month appear twice';end if;
+ for r in select value from jsonb_array_elements(p_reports) loop
+  if r->>'cong_id' is distinct from p_cong_id or not exists(select 1 from public.publishers p where p.cong_id=p_cong_id and p.id=r->>'pub_id') then raise exception 'Publisher is outside this congregation' using errcode='42501';end if;
+  if r->>'service_year' is null or (r->>'service_year')::integer not between 1900 and 2200 or r->>'month' is null or (r->>'month')::integer not between 0 and 11 or coalesce((r->>'studies')::integer,0) not between 0 and 1000 or coalesce((r->>'hours')::numeric,0) not between 0 and 744 or length(coalesce(r->>'comments',''))>4000 then raise exception 'Check the reporting month, studies, hours and remarks';end if;
+  if coalesce((r->>'clear_auxiliary')::boolean,false) then
+   saved=jsonb_populate_record(null::public.reports,ca_ap_private.revoke_ap(p_cong_id,r->'expected_report')->'report');
+   rows=rows||jsonb_build_array(to_jsonb(saved));continue;
+  end if;
+  insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap)
+  values(pg_catalog.gen_random_uuid()::text,p_cong_id,r->>'pub_id',(r->>'service_year')::integer,(r->>'month')::integer,coalesce((r->>'shared_in_ministry')::boolean,false),coalesce((r->>'studies')::integer,0),coalesce((r->>'hours')::numeric,0),coalesce(r->>'comments',''),coalesce((r->>'is_ap')::boolean,false))
+  on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap
+  returning * into saved;
+  rows=rows||jsonb_build_array(to_jsonb(saved));
+ end loop;return rows;
+end $function$
+;
+revoke all on function public.save_congregation_reports(text,jsonb) from public,anon,authenticated;
+grant execute on function public.save_congregation_reports(text,jsonb) to authenticated;
+
+-- Limited roster API avoids granting OCLM access to private publisher/contact records.
+CREATE OR REPLACE FUNCTION public.save_group_reports(p_cong_id text, p_year integer, p_month integer, p_reports jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO ''
+AS $function$
+declare r jsonb;p public.publishers;s boolean;st integer;h numeric;rows jsonb='[]';saved public.reports;
+begin if not public.ca_google_identity() or not public.ca_has_role(p_cong_id,array['group_overseer']) then raise exception 'Approved group account required' using errcode='42501';end if;
+if p_year is null or p_year not between 1900 and 2200 or p_month is null or p_month not between 0 and 11 or jsonb_typeof(p_reports) is distinct from 'array' or jsonb_array_length(p_reports)>250 then raise exception 'Invalid reporting period or batch';end if;
+if (select count(*) from jsonb_array_elements(p_reports))<>(select count(distinct x->>'pub_id') from jsonb_array_elements(p_reports) x) then raise exception 'Duplicate or missing publisher';end if;
+for r in select value from jsonb_array_elements(p_reports) loop
+ select * into p from public.publishers where id=r->>'pub_id' and cong_id=p_cong_id;
+ if p.id is null or not public.ca_can_read_group(p_cong_id,p.service_group) then raise exception 'Publisher is outside your assigned group' using errcode='42501';end if;
+ if coalesce((r->>'clear_auxiliary')::boolean,false) then
+ raise exception 'AP review requires an administrator or field service account' using errcode='42501';end if;
+ s=coalesce((r->>'shared_in_ministry')::boolean,false);st=coalesce((r->>'studies')::integer,0);h=coalesce((r->>'hours')::numeric,0);
+ if st not between 0 and 1000 or h not between 0 and 744 or length(coalesce(r->>'comments',''))>4000 then raise exception 'Invalid report values';end if;
+ insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap) values(gen_random_uuid()::text,p_cong_id,p.id,p_year,p_month,s,case when s then st else 0 end,case when s then h else 0 end,coalesce(r->>'comments',''),s and coalesce((r->>'is_ap')::boolean,false)) on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap returning * into saved;
+ rows=rows||jsonb_build_array(to_jsonb(saved));end loop;return rows;end $function$
+;
+revoke all on function public.save_group_reports(text,integer,integer,jsonb) from public,anon,authenticated;
+grant execute on function public.save_group_reports(text,integer,integer,jsonb) to authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261018153524_v3_polish_ap_undo.sql') on conflict do nothing;
+end $ca_ordered$;
 commit;

@@ -1,0 +1,116 @@
+{
+  "stage": "Targeted after-repair sample; not whole-app release acceptance",
+  "build": {
+    "hash": "e1abdbe76d287104fe2281f665021131c91f0c70beed3daefa92840e86fe5da0",
+    "jsGzipBytes": 165817,
+    "limit": 256000
+  },
+  "screens": [
+    "people",
+    "import",
+    "ap-error",
+    "groups",
+    "report-saved",
+    "ap-pending"
+  ],
+  "matrix": {
+    "widths": [
+      320,
+      360,
+      390,
+      430,
+      600,
+      768,
+      820,
+      1024,
+      1280,
+      1366,
+      1440,
+      1920
+    ],
+    "viewports": [
+      {
+        "width": 320,
+        "height": 1100
+      },
+      {
+        "width": 360,
+        "height": 1100
+      },
+      {
+        "width": 390,
+        "height": 1100
+      },
+      {
+        "width": 430,
+        "height": 1100
+      },
+      {
+        "width": 600,
+        "height": 1100
+      },
+      {
+        "width": 768,
+        "height": 1100
+      },
+      {
+        "width": 820,
+        "height": 1100
+      },
+      {
+        "width": 1024,
+        "height": 1100
+      },
+      {
+        "width": 1280,
+        "height": 1100
+      },
+      {
+        "width": 1366,
+        "height": 1100
+      },
+      {
+        "width": 1440,
+        "height": 1100
+      },
+      {
+        "width": 1920,
+        "height": 1100
+      },
+      {
+        "width": 844,
+        "height": 390
+      },
+      {
+        "width": 667,
+        "height": 375
+      }
+    ],
+    "scales": [
+      1,
+      1.3,
+      2
+    ],
+    "fontMode": "css",
+    "themes": [
+      "mono-light",
+      "mono-dark",
+      "paper",
+      "lagoon-glass",
+      "neon-night",
+      "sunset-pop",
+      "neo-brutal",
+      "forest",
+      "aurora"
+    ],
+    "screens": [
+      "people",
+      "import",
+      "ap-error"
+    ]
+  },
+  "views": 2268,
+  "findings": 0,
+  "coverageErrors": 0,
+  "navigationDetector": "Separate 60-view shell regression; original target sample predates the added navigation-overlap finding"
+}

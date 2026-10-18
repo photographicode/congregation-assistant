@@ -1,0 +1,68 @@
+{
+  "sourceCommit": "f0a0d67d437538bee6d319d70ebbc120031c3ad0",
+  "publicSnapshotCommit": "c2cd184462d5c25b07ddd1119c99fab140a73c32",
+  "sourceRun": "https://github.com/photographicode/congregation-assistant/actions/runs/39073120817",
+  "publicRun": "https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/39073165965",
+  "wolRun": "https://github.com/photographicode/congregation-assistant/actions/runs/39072159141",
+  "live": [
+    {
+      "site": "https://photographicode.github.io/congregation-assistant/",
+      "app": "https://photographicode.github.io/congregation-assistant/app/",
+      "sourceCommit": "f0a0d67d437538bee6d319d70ebbc120031c3ad0",
+      "serviceWorkerControlled": true,
+      "assistantRequests": 0,
+      "browserErrors": [],
+      "demoCloudRequests": 0
+    },
+    {
+      "site": "https://photographicode.github.io/Congregation-Assistant_Public/",
+      "app": "https://photographicode.github.io/Congregation-Assistant_Public/app/",
+      "sourceCommit": "f0a0d67d437538bee6d319d70ebbc120031c3ad0",
+      "serviceWorkerControlled": true,
+      "assistantRequests": 0,
+      "browserErrors": [],
+      "demoCloudRequests": 0
+    }
+  ],
+  "verification": {
+    "sourceBuildAndDeploy": "success",
+    "publicVerifyAndDeploy": "success",
+    "syntheticParserTests": 6,
+    "directDownloads": 26,
+    "ciMaximumDownloadMilliseconds": 1078,
+    "goldenPDFTextAndGeometryFixtures": 17,
+    "responsiveRegressionViews": 60,
+    "responsiveRegressionFailures": 0,
+    "compositedPanelCases": 351,
+    "oclmContrastCases": 4,
+    "renderedTextViews": 108,
+    "renderedTextPairs": 3705,
+    "renderedContrastFailures": 0,
+    "realIndexedDBOfflineReloadAndSingleReconnectWrite": true,
+    "storeRecoveryConflictAndTwoTabChecks": true,
+    "websiteLighthouseMobile": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "CLS": 0
+    }
+  },
+  "pagesPublishingMode": {
+    "source": "forbidden (403): owner must select Actions in Pages settings",
+    "public": "forbidden (403): owner must select Actions in Pages settings"
+  },
+  "customDomain": "CNAME withheld under existing owner DNS-confirmation requirement; no DNS/mail changes",
+  "themeCSSSHA256": "1331dd890ae4ed8adc32a62c4783d32bec2a9b8f442d3cd929991068d038ec07",
+  "fullV3Accepted": false,
+  "remaining": [
+    "Complete app/website alignment matrix and role/dialog states: sample still has text widows",
+    "WOL languages beyond English, complete Watchtower/history and exception-week coverage",
+    "Expanded/localized urgent suggestions and complete feature-use weighting",
+    "Indic rendering/CLS acceptance across all app states",
+    "Complete website translations, optimized mockups/OG assets, sticky story/typing visual and capture pipeline",
+    "CO Visit Pack, E2EE, complete restore/export packs and remaining V3 PARITY packages",
+    "Real OAuth, WhatsApp, payments and physical-device acceptance",
+    "Owner Pages publishing-mode setting and custom-domain DNS/mail setup"
+  ]
+}

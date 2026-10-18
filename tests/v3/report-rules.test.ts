@@ -1,0 +1,7 @@
+import {describe,it,expect} from 'vitest';import {v1PublicReport,previousReportingMonth} from '../../packages/core/report-rules';
+describe('F2 frozen V1 s4 participation and pioneer rules',()=>{
+ it.each([{person:{},hours:3,ap:true},{person:{is_rp:true},hours:3,ap:false},{person:{is_sp:true},hours:3,ap:false},{person:{is_fm:true},hours:3,ap:false},{person:{},hours:0,ap:false},{person:{},hours:.25,ap:true}])('restores pioneer fields and inference: %j',({person,hours,ap})=>expect(v1PublicReport(person,{shared:true,hours,studies:2,comments:'Keep'})).toEqual({shared_in_ministry:true,hours,studies:2,comments:'Keep',is_ap:ap}));
+ it('zeros inactive values and uses the V1 participation remark',()=>expect(v1PublicReport({},{shared:false,hours:3,studies:2,comments:'Old'})).toEqual({shared_in_ministry:false,hours:0,studies:0,comments:'Not Participated',is_ap:false}));
+ it.each([{hours:.3,studies:0},{hours:-1,studies:0},{hours:745,studies:0},{hours:1,studies:1.2}])('rejects invalid values: %j',values=>expect(()=>v1PublicReport({},{shared:true,comments:'',...values})).toThrow());
+ it('uses congregation timezone at a month boundary',()=>{const now=new Date('2026-09-30T20:00:00Z');expect(previousReportingMonth('Asia/Kolkata',now)).toBe('2026-09');expect(previousReportingMonth('UTC',now)).toBe('2026-08');expect(previousReportingMonth('UTC',new Date('2026-01-01T00:00Z'))).toBe('2025-12');});
+});

@@ -72,7 +72,7 @@ const server = http.createServer((req, res) => {
       await nav("Schedule");
       try {
         await page
-          .getByRole("heading", { name: "Make the week clear.", exact: true })
+          .getByRole("heading", { name: "Weekly schedule", exact: true })
           .waitFor({ timeout: 5000 });
         await page
           .getByRole("button", { name: "Weekend", exact: true })

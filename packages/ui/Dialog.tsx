@@ -20,6 +20,9 @@ export function Dialog({
   if (open && !wasOpen.current)
     opener.current = document.activeElement as HTMLElement;
   wasOpen.current = open;
+  const closeRef=React.useRef(onClose);closeRef.current=onClose;
+  React.useEffect(()=>{if(!open)return;const close=()=>closeRef.current();window.addEventListener("ca:after-navigate",close);return()=>window.removeEventListener("ca:after-navigate",close);},[open]);
+  const swipe=React.useRef<{x:number;y:number}|null>(null);
   const [confirm, setConfirm] = React.useState(false);
   const request = () => (dirty ? setConfirm(true) : onClose());
   React.useEffect(() => {
@@ -36,10 +39,12 @@ export function Dialog({
         <Primitive.Overlay className="dialog-overlay" />
         <Primitive.Content
           className="dialog"
+          translate="no"
           aria-describedby={undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
-            opener.current?.focus();
+            if(opener.current?.isConnected)opener.current.focus({preventScroll:true});
+            else {const main=document.querySelector<HTMLElement>('main');if(main){const previous=main.getAttribute('tabindex');main.setAttribute('tabindex','-1');main.focus({preventScroll:true});if(previous===null)main.removeAttribute('tabindex');}}
           }}
           onEscapeKeyDown={(e) => {
             e.preventDefault();
@@ -49,7 +54,7 @@ export function Dialog({
             if (dirty) e.preventDefault();
           }}
         >
-          <header>
+          <header onPointerDown={event=>{if(event.pointerType==='touch'&&matchMedia('(max-width:599px)').matches&&!((event.target as HTMLElement).closest('button')))swipe.current={x:event.clientX,y:event.clientY};}} onPointerCancel={()=>{swipe.current=null;}} onPointerUp={event=>{const start=swipe.current;swipe.current=null;if(start&&event.clientY-start.y>80&&Math.abs(event.clientX-start.x)<50)request();}}>
             <Primitive.Title>{title}</Primitive.Title>
             <button
               type="button"
@@ -90,3 +95,5 @@ export function Dialog({
     </Primitive.Root>
   );
 }
+
+export function DialogCancel({children,...props}:React.ButtonHTMLAttributes<HTMLButtonElement>){return <Primitive.Close asChild><button type="button" {...props}>{children}</button></Primitive.Close>;}

@@ -1,0 +1,300 @@
+{
+  "fixtures": 49,
+  "hard": 0,
+  "results": [
+    {
+      "fixture": "work/pdf-v2/emergency-1.pdf",
+      "pages": 2,
+      "runs": 48,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/emergency-50.pdf",
+      "pages": 5,
+      "runs": 438,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/emergency-500.pdf",
+      "pages": 39,
+      "runs": 4109,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-all-months.pdf",
+      "pages": 1,
+      "runs": 69,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-auxiliary.pdf",
+      "pages": 1,
+      "runs": 69,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-large-family.pdf",
+      "pages": 12,
+      "runs": 828,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-long-name.pdf",
+      "pages": 2,
+      "runs": 81,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-long-remarks.pdf",
+      "pages": 13,
+      "runs": 334,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-ordinary.pdf",
+      "pages": 1,
+      "runs": 69,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-regular.pdf",
+      "pages": 1,
+      "runs": 69,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s21-unbaptised.pdf",
+      "pages": 1,
+      "runs": 69,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s3-full.pdf",
+      "pages": 1,
+      "runs": 32,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s3-partial.pdf",
+      "pages": 1,
+      "runs": 20,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s3-special.pdf",
+      "pages": 1,
+      "runs": 32,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s88-full.pdf",
+      "pages": 1,
+      "runs": 241,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s88-partial.pdf",
+      "pages": 1,
+      "runs": 113,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-v2/s88-special.pdf",
+      "pages": 1,
+      "runs": 241,
+      "hard": 0
+    },
+    {
+      "fixture": "work/s89-fixtures/aux1.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/s89-fixtures/aux2.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/s89-fixtures/main.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/refinement-pdf/aux-false.pdf",
+      "pages": 1,
+      "runs": 10,
+      "hard": 0
+    },
+    {
+      "fixture": "work/refinement-pdf/aux-true.pdf",
+      "pages": 1,
+      "runs": 13,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/co-visit-pack.pdf",
+      "pages": 1,
+      "runs": 21,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/duty-roster.pdf",
+      "pages": 1,
+      "runs": 21,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/emergency-seven.pdf",
+      "pages": 1,
+      "runs": 71,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s140-1.pdf",
+      "pages": 1,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s140-2.pdf",
+      "pages": 1,
+      "runs": 75,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s140-3.pdf",
+      "pages": 1,
+      "runs": 105,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s21-script-0.pdf",
+      "pages": 2,
+      "runs": 81,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s21-script-1.pdf",
+      "pages": 2,
+      "runs": 83,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s21-script-2.pdf",
+      "pages": 2,
+      "runs": 83,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s21-script-3.pdf",
+      "pages": 2,
+      "runs": 83,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s21-script-4.pdf",
+      "pages": 2,
+      "runs": 83,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-1-Beliefs.pdf",
+      "pages": 2,
+      "runs": 40,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-1-BibleReading.pdf",
+      "pages": 2,
+      "runs": 40,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-1-Conversation.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-1-Disciples.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-1-FollowingUp.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-2-Beliefs.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-2-BibleReading.pdf",
+      "pages": 2,
+      "runs": 42,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-2-Conversation.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-2-Disciples.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-2-FollowingUp.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-3-Beliefs.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-3-BibleReading.pdf",
+      "pages": 2,
+      "runs": 44,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-3-Conversation.pdf",
+      "pages": 2,
+      "runs": 46,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-3-Disciples.pdf",
+      "pages": 2,
+      "runs": 46,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/s89-3-FollowingUp.pdf",
+      "pages": 2,
+      "runs": 46,
+      "hard": 0
+    },
+    {
+      "fixture": "work/pdf-r1-stress/schedule-large.pdf",
+      "pages": 1,
+      "runs": 21,
+      "hard": 0
+    }
+  ]
+}

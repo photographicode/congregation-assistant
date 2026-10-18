@@ -1,0 +1,114 @@
+{
+  "results": [
+    {
+      "name": "publisher",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "search",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "quick",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "assistant",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "updates",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "more",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "setup",
+      "wizardSteps": 11,
+      "dirtySetupRestored": true,
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "bulk",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "report-discard",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "auto-assign",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "owner-editor",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    },
+    {
+      "name": "owner-request",
+      "shortScreen": true,
+      "textScale": 2,
+      "close": true,
+      "escape": true,
+      "outside": true,
+      "focusRestored": true
+    }
+  ]
+}

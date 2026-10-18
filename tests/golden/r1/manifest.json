@@ -1,0 +1,23 @@
+{
+  "authority": "docs/V3-R1-SHIP-ORDERS.md \u00a72: Noto font and measured-cell refinement",
+  "originalReferences": "tests/golden/v1/manifest.json remains immutable",
+  "fixtures": {
+    "s21-auxiliary.pdf": "a474e2f8692f13c36264c042fe80a00b4bbef6d32c6daa693a917b988a39a85f",
+    "s21-large-family.pdf": "033eb9bba92f93e268a424978a2272b6d385ca13be571c422b53acc81f64d6a2",
+    "emergency-500.pdf": "fd47122d01a81dfaac7e68900c34d09683ab0d4920694036fd99b1656114e2f4",
+    "s3-full.pdf": "af7a1d287e82c9085d6bd6ed3a78ff0a97e2f3c4071440c0583ccb11c7676f72",
+    "emergency-1.pdf": "5b58895f1b362015a82c6b5c57badb1c733e1f3a2bb10e5ebcdd53a6904a9186",
+    "s88-full.pdf": "b60dce25d541ffcfb671c9a405b8ab8fa1b9c8dba72bd97e93bbaa53c3f46e73",
+    "s88-special.pdf": "c90bbdfe7c0876d5daf9a94b1278bf3bd0d359a7db501a0a2382687b1204133a",
+    "s21-all-months.pdf": "2960fc8688eeb2d3713eed91f19163ce96ba1d1a8bf3fb08263e91875a687551",
+    "emergency-50.pdf": "33e88077b1fbfc83f61fcf45af5897c8c16fa607e6619660e6bc2dbf01a20637",
+    "s3-partial.pdf": "68d384478fe54d38b3a019c31679c4aa436931f489ca0db8873adbeb0ea0cb44",
+    "s21-regular.pdf": "41822662a97cd52a739416fcd74c5a90815f8105a840c26950876773ed22a992",
+    "s88-partial.pdf": "0c62b85c2115dbd9d4984c481aabd35ec5568c2166ccff74e4b88f46af1223f6",
+    "s21-long-remarks.pdf": "a371b902a466244643cf31665699e675b36bcbf386ff1e88c24a9d7419217ecd",
+    "s21-unbaptised.pdf": "dadf4199078f97e1c83ccd81ccc0f9f52a6934695fb776cccc59b2cfb5054ccb",
+    "s21-ordinary.pdf": "27c455a8ffd79f3a0bf159d5d58adf42b39400f0687cb878531a2b8786f2f491",
+    "s21-long-name.pdf": "118bdb773ede8419588983576eb620ebaeb72c493f7af6df07220cd1ee66435c",
+    "s3-special.pdf": "257053965a7ca78be936171a8437a7691a81085a0d7a8f59c6d48b0ec707deb1"
+  }
+}

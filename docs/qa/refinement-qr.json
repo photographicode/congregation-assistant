@@ -1,0 +1,8 @@
+{
+  "syntheticBackendOnly": true,
+  "close": true,
+  "escape": true,
+  "outside": true,
+  "reopenHasFreshImage": true,
+  "focusReturned": true
+}

@@ -3,6 +3,7 @@ import {resolvedTheme} from "../../../../packages/core/themes";
 export function adapt(preferences: {theme:string;tone:string;size:string;weight:string;solid:boolean;auto:boolean;fit?:string;style?:string;motion?:string;colorIntensity?:string;background?:string;density?:string;navigation?:string;backgroundIntensity?:number}) {
  const root=document.documentElement;
  let frame=0;
+ const measureChrome=()=>{for(const [selector,property] of [['.bottom-tabs','--nav-h'],['.topbar','--header-h']]){const element=document.querySelector(selector),value=element&&getComputedStyle(element).display!=='none'?element.getBoundingClientRect().height+'px':'0px';if(root.style.getPropertyValue(property)!==value)root.style.setProperty(property,value);}};
  const update=()=>{
   const media=(q:string)=>matchMedia(q).matches;
   const width=window.innerWidth,height=window.visualViewport?.height||window.innerHeight;
@@ -20,8 +21,7 @@ export function adapt(preferences: {theme:string;tone:string;size:string;weight:
   root.dataset.density=preferences.fit==='auto'||!preferences.fit?(scale>=1.3?'spacious':preferences.density|| (width<360?'compact':'comfortable')):preferences.fit==='large'?'spacious':preferences.fit;
   root.dataset.keyboardOpen=String(keyboard);root.style.setProperty('--visible-h',height+'px');root.style.setProperty('--viewport-w',width+'px');
   if(keyboard)document.activeElement?.scrollIntoView({block:'nearest',behavior:'instant'});
-  const bar=document.querySelector('.bottom-tabs');root.style.setProperty('--nav-h',bar&&getComputedStyle(bar).display!=='none'?bar.getBoundingClientRect().height+'px':'0px');
-  const header=document.querySelector('.topbar');root.style.setProperty('--header-h',header?.getBoundingClientRect().height+'px');
+  measureChrome();
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content',getComputedStyle(root).getPropertyValue('--bg').trim());
   if(import.meta.env.DEV&&new URLSearchParams(location.search).get('layout')==='debug') {
    let overlay=document.getElementById('layout-debug');if(!overlay){overlay=document.createElement('output');overlay.id='layout-debug';overlay.className='layout-debug';document.body.append(overlay);}
@@ -34,6 +34,6 @@ export function adapt(preferences: {theme:string;tone:string;size:string;weight:
  for(const event of ['resize','orientationchange','pageshow','focus'])window.addEventListener(event,schedule);
  document.addEventListener('visibilitychange',schedule);document.addEventListener('focusin',schedule);document.addEventListener('focusout',schedule);window.visualViewport?.addEventListener('resize',schedule);
  const fontProbe=document.createElement('span');fontProbe.setAttribute('aria-hidden','true');fontProbe.style.cssText='position:fixed;inset:0 auto auto 0;width:1rem;height:1rem;visibility:hidden;pointer-events:none';document.body.append(fontProbe);
- const observer=new ResizeObserver(schedule);observer.observe(root);observer.observe(fontProbe);let bar:Element|null=null,header:Element|null=null;const watchChrome=()=>{const nextBar=document.querySelector('.bottom-tabs'),nextHeader=document.querySelector('.topbar');if(nextBar!==bar){if(bar)observer.unobserve(bar);bar=nextBar;if(bar)observer.observe(bar);}if(nextHeader!==header){if(header)observer.unobserve(header);header=nextHeader;if(header)observer.observe(header);}};const mutation=new MutationObserver(records=>{if(records.some(record=>[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element))){watchChrome();schedule();}});mutation.observe(document.getElementById('root')||document.body,{childList:true,subtree:true});watchChrome();update();schedule();
+ const observer=new ResizeObserver(()=>{measureChrome();schedule();});observer.observe(root);observer.observe(fontProbe);let bar:Element|null=null,header:Element|null=null;const watchChrome=()=>{const nextBar=document.querySelector('.bottom-tabs'),nextHeader=document.querySelector('.topbar');if(nextBar!==bar){if(bar)observer.unobserve(bar);bar=nextBar;if(bar)observer.observe(bar);}if(nextHeader!==header){if(header)observer.unobserve(header);header=nextHeader;if(header)observer.observe(header);}};const mutation=new MutationObserver(records=>{if(records.some(record=>[...record.addedNodes,...record.removedNodes].some(node=>node instanceof Element))){watchChrome();schedule();}});mutation.observe(document.getElementById('root')||document.body,{childList:true,subtree:true});watchChrome();update();schedule();
  return()=>{cancelAnimationFrame(frame);observer.disconnect();mutation.disconnect();fontProbe.remove();queries.forEach(q=>q.removeEventListener('change',schedule));for(const event of ['resize','orientationchange','pageshow','focus'])window.removeEventListener(event,schedule);document.removeEventListener('visibilitychange',schedule);document.removeEventListener('focusin',schedule);document.removeEventListener('focusout',schedule);window.visualViewport?.removeEventListener('resize',schedule);document.getElementById('layout-debug')?.remove();};
 }

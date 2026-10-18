@@ -1,0 +1,13 @@
+{
+  "syntheticBackendOnly": true,
+  "staleWriteShowsError": true,
+  "noFalseSuccess": true,
+  "reloadRecovery": true,
+  "pendingReviewDismissible": true,
+  "pendingFailureStillVisible": true,
+  "independentOfRosterFilter": true,
+  "reportContentsPreserved": true,
+  "undoRestoresAP": true,
+  "undoExpires": true,
+  "writes": 4
+}

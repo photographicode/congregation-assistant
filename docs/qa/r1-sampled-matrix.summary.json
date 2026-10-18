@@ -1,0 +1,35 @@
+{
+  "views": 294,
+  "hard": 0,
+  "findings": 0,
+  "counts": {},
+  "coverageErrors": [],
+  "matrix": {
+    "themes": [
+      "mono-light",
+      "lagoon-glass",
+      "neon-night"
+    ],
+    "screens": [
+      "reports",
+      "AP-confirm",
+      "schedule",
+      "assignment-picker",
+      "public-entry",
+      "public-error",
+      "ap-pending"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "scales": [
+      1,
+      2
+    ],
+    "fontMode": "css"
+  }
+}

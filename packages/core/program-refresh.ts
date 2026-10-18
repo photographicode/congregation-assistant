@@ -21,5 +21,5 @@ export function refreshProgram(previous:Program|null,incoming:Program):Program {
   if(!matches[index]){let suffix=0;while(reserved.has(id))id='Source'+part.id+(++suffix);reserved.add(id);}
   return {...part,id};
  });
- return {...incoming,meetingDate:previous.meetingDate,startTime:previous.startTime,parts};
+ return {...incoming,auxiliary:previous.auxiliary,meetingDate:previous.meetingDate,startTime:previous.startTime,parts};
 }

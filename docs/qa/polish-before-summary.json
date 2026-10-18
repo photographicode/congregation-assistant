@@ -1,0 +1,216 @@
+[
+  {
+    "report": "refinement-matrix-3.json",
+    "build": {
+      "hash": "b9bdada5dd996230bf0c2a5ed7222a14b0f5080f57bba1f3082e4bfb2f9c2cb3",
+      "jsGzipBytes": 150382,
+      "limit": 256000
+    },
+    "matrix": {
+      "widths": [
+        320,
+        360,
+        390,
+        430,
+        600,
+        768,
+        1024,
+        1366,
+        1440,
+        1920
+      ],
+      "scales": [
+        1,
+        1.3,
+        2
+      ],
+      "themes": [
+        "mono-light",
+        "mono-dark",
+        "paper",
+        "lagoon-glass",
+        "neon-night",
+        "sunset-pop",
+        "neo-brutal",
+        "forest",
+        "aurora"
+      ],
+      "screens": [
+        "groups",
+        "report-entry",
+        "weekend",
+        "access",
+        "search",
+        "add-person",
+        "report-discard",
+        "more",
+        "publisher-discard",
+        "group-qr"
+      ]
+    },
+    "views": 2700,
+    "findings": 5,
+    "coverageErrors": 0,
+    "stage": "before final repairs; not release acceptance"
+  },
+  {
+    "report": "refinement-matrix-2.json",
+    "build": {
+      "hash": "b9bdada5dd996230bf0c2a5ed7222a14b0f5080f57bba1f3082e4bfb2f9c2cb3",
+      "jsGzipBytes": 150382,
+      "limit": 256000
+    },
+    "matrix": {
+      "widths": [
+        320,
+        360,
+        390,
+        430,
+        600,
+        768,
+        1024,
+        1366,
+        1440,
+        1920
+      ],
+      "scales": [
+        1,
+        1.3,
+        2
+      ],
+      "themes": [
+        "mono-light",
+        "mono-dark",
+        "paper",
+        "lagoon-glass",
+        "neon-night",
+        "sunset-pop",
+        "neo-brutal",
+        "forest",
+        "aurora"
+      ],
+      "screens": [
+        "people",
+        "reports",
+        "schedule",
+        "messages",
+        "emergency",
+        "assistant",
+        "bulk",
+        "updates",
+        "publisher-edit",
+        "AP-confirm"
+      ]
+    },
+    "views": 2700,
+    "findings": 102,
+    "coverageErrors": 0,
+    "stage": "before final repairs; not release acceptance"
+  },
+  {
+    "report": "refinement-matrix-1.json",
+    "build": {
+      "hash": "b9bdada5dd996230bf0c2a5ed7222a14b0f5080f57bba1f3082e4bfb2f9c2cb3",
+      "jsGzipBytes": 150382,
+      "limit": 256000
+    },
+    "matrix": {
+      "widths": [
+        320,
+        360,
+        390,
+        430,
+        600,
+        768,
+        1024,
+        1366,
+        1440,
+        1920
+      ],
+      "scales": [
+        1,
+        1.3,
+        2
+      ],
+      "themes": [
+        "mono-light",
+        "mono-dark",
+        "paper",
+        "lagoon-glass",
+        "neon-night",
+        "sunset-pop",
+        "neo-brutal",
+        "forest",
+        "aurora"
+      ],
+      "screens": [
+        "home",
+        "import",
+        "pdf",
+        "duties",
+        "settings",
+        "quick",
+        "setup",
+        "auto-assign",
+        "assignment-picker",
+        "report-saved",
+        "shared-review"
+      ]
+    },
+    "views": 2970,
+    "findings": 69,
+    "coverageErrors": 0,
+    "stage": "before final repairs; not release acceptance"
+  },
+  {
+    "report": "refinement-role-matrix.json",
+    "build": {
+      "hash": "b9bdada5dd996230bf0c2a5ed7222a14b0f5080f57bba1f3082e4bfb2f9c2cb3",
+      "jsGzipBytes": 150382,
+      "limit": 256000
+    },
+    "matrix": {
+      "widths": [
+        320,
+        360,
+        390,
+        430,
+        600,
+        768,
+        1024,
+        1366,
+        1440,
+        1920
+      ],
+      "scales": [
+        1,
+        1.3,
+        2
+      ],
+      "themes": [
+        "mono-light",
+        "mono-dark",
+        "paper",
+        "lagoon-glass",
+        "neon-night",
+        "sunset-pop",
+        "neo-brutal",
+        "forest",
+        "aurora"
+      ],
+      "screens": [
+        "publisher-entry",
+        "group-entry",
+        "public-entry",
+        "public-error",
+        "public-pending",
+        "owner-editor",
+        "owner-request"
+      ]
+    },
+    "views": 1890,
+    "findings": 0,
+    "coverageErrors": 0,
+    "stage": "before final repairs; not release acceptance"
+  }
+]

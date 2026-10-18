@@ -35,3 +35,10 @@ Total: 30 → 1. The remaining finding is a single-word final line in Midweek. E
 | add-person | 0 |
 
 The audit excludes intentionally clipped previews, hidden/decorative elements and scrollable tables. Desktop Quick Actions uses the command palette equivalent. The script reports failed route coverage separately. A successful sample does not establish complete visual acceptance, safe-area/device acceptance or zero CLS.
+
+
+## POLISH font-preference sample
+
+Five themes, four states (publisher editor, report entry, public report, Settings), twelve widths plus two short-landscape viewports, browser font preferences 16/20/24/32 px: 1,120 views, zero coverage errors, four Settings text-widow findings. All report/editor states in this sample have zero findings. After the Settings note repair, the same 280 Settings views have zero findings/errors. No detector was relaxed; root font sizes and actual theme body fonts are asserted. The sample does not replace the full required application/site/overlay matrix. Whole-phase alignment remains unaccepted.
+
+R1 final local sample: 294 views, zero findings/coverage errors; see r1-sampled-matrix.summary.json. This meets the later sampled HARD gate, independently of the once-only full Actions matrix. No additional full local matrix was run.
