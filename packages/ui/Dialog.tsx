@@ -39,6 +39,7 @@ export function Dialog({
         <Primitive.Overlay className="dialog-overlay" />
         <Primitive.Content
           className="dialog"
+          translate="no"
           aria-describedby={undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();

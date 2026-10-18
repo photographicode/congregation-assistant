@@ -1,6 +1,7 @@
 import generated from './locales/en.generated.json';
 import drafts from './locales/app-drafts.json';
 const en={
+ 'attendance.formTitle':'Meeting attendance',
  'report.shared':'Shared in ministry',
  'report.didNotShare':'Did not share',
  'units.hours':'hours',

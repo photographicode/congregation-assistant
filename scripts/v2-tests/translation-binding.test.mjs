@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {Linter} from 'eslint';import parser from '@typescript-eslint/parser';import rule from '../no-shadowed-translation.mjs';
+const lint=source=>new Linter().verify(source,[{files:['**/*.tsx'],languageOptions:{parser,parserOptions:{ecmaFeatures:{jsx:true}}},plugins:{copy:{rules:{binding:rule}}},rules:{'copy/binding':'error'}}],{filename:'form.tsx'});
+test('catches an any-typed row shadowing the imported translator',()=>assert.equal(lint('import {t} from "./i18n"; const x=rows.map((t:any)=><button>{t("ui.manage")}</button>);').length,1));
+test('allows data rows and the imported translator in the same callback',()=>assert.equal(lint('import {t} from "./i18n"; const x=rows.map(row=><button>{row.name}{t("ui.manage")}</button>);').length,0));
