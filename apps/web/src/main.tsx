@@ -250,8 +250,7 @@ function App() {
   if (loading)
     return (
       <main className="login" role="status">
-        Opening your workspace…
-      </main>
+        {t("ui.opening.your.workspace.bed9096c")}</main>
     );
   if (!demo && !session)
     return (
@@ -260,11 +259,10 @@ function App() {
           <span className="brand-mark">
             <BookOpen />
           </span>
-          Congregation Assistant
-        </div>
-        <span className="eyebrow">Welcome back</span>
-        <h1>A calmer way to keep things together.</h1>
-        <p>Sign in with the account your congregation approved.</p>
+          {t("ui.congregation.assistant.e97de372")}</div>
+        <span className="eyebrow">{t("ui.welcome.back.66212495")}</span>
+        <h1>{t("ui.a.calmer.way.to.keep.things.together.8c1b27b2")}</h1>
+        <p>{t("ui.sign.in.with.the.account.your.congregation.bde9d5b7")}</p>
         {error && (
           <p role="alert" className="error">
             {error}
@@ -280,15 +278,14 @@ function App() {
             if (error) setError(error.message);
           }}
         >
-          Continue with Google <ArrowRight />
+          {t("ui.continue.with.google.639eaf03")}<ArrowRight />
         </button>
-        {features.flags.MAGIC_LINK_ENABLED && <form className="stack" onSubmit={async e=>{e.preventDefault();const {error}=await client.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+import.meta.env.BASE_URL}});if(error)setError(error.message);else setError("Check your email for the sign-in link.");}}><label>Email magic link<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><button>Email sign-in link</button></form>}
+        {features.flags.MAGIC_LINK_ENABLED && <form className="stack" onSubmit={async e=>{e.preventDefault();const {error}=await client.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+import.meta.env.BASE_URL}});if(error)setError(error.message);else setError("Check your email for the sign-in link.");}}><label>{t("ui.email.magic.link.5775d88e")}<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><button>{t("ui.email.sign.in.link.7e5c2658")}</button></form>}
         <p className="muted">
-          Independent and unofficial. Your congregation controls access.
-        </p>
+          {t("ui.independent.and.unofficial.your.congregati.066e38e2")}</p>
         <div className="actions">
-          <a href="?demo=admin">Try the admin demo</a>
-          <a href="?demo=publisher">Publisher demo</a>
+          <a href="?demo=admin">{t("ui.try.the.admin.demo.f0555a09")}</a>
+          <a href="?demo=publisher">{t("ui.publisher.demo.dd489e1c")}</a>
         </div>
 
       </main>
@@ -296,13 +293,11 @@ function App() {
   if (!cong&&!owner)
     return (
       <main className="login card">
-        <h1>Approval needed</h1>
+        <h1>{t("ui.approval.needed.9928dd82")}</h1>
         <p>
-          This account has no active congregation access. Ask your main
-          administrator to approve your email.
-        </p>
-        <button onClick={signOut}>Sign out</button>
-        <a href={config.PUBLIC_SITE_URL + "/"}>Request a workspace</a>
+          {t("ui.this.account.has.no.active.congregation.ac.96c928fe")}</p>
+        <button onClick={signOut}>{t("ui.sign.out.48f0d3d3")}</button>
+        <a href={config.PUBLIC_SITE_URL + "/"}>{t("ui.request.a.workspace.2d70699d")}</a>
       </main>
     );
   const guardNavigation=(action:()=>void)=>{const event=new CustomEvent('ca:before-navigate',{cancelable:true,detail:action});window.dispatchEvent(event);if(!event.defaultPrevented)action();};
@@ -334,13 +329,13 @@ function App() {
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
       <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
-            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
+            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>{t("ui.workspace.status.could.not.load.b6ea4a7c")}</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>{t("ui.retry.942087cc")}</button></section>:plan?.congregation!==cong?<p role="status">{t("ui.checking.your.workspace.90719547")}</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
       </Suspense></div>
     </AppShell>
-    <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title="What’s new"><div className="stack"><p><strong>18 October 2026</strong></p><p>{t('refine.updatesForms0')}</p><p>{t('refine.updatesForms1')}</p><p>{t('refine.updatesForms2')}</p><p>{t('refine.updatesLinks0')}</p><p>{t('refine.updatesLinks1')}</p><a href={new URL("updates/#release-2026-10-18",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">Read the release notes and how-to links</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
+    <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title={t("ui.what.s.new.37e6112e")}><div className="stack"><p><strong>{t("ui.18.october.2026.d6476b3d")}</strong></p><p>{t('refine.updatesForms0')}</p><p>{t('refine.updatesForms1')}</p><p>{t('refine.updatesForms2')}</p><p>{t('refine.updatesLinks0')}</p><p>{t('refine.updatesLinks1')}</p><a href={new URL("updates/#release-2026-10-18",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">{t("ui.read.the.release.notes.and.how.to.links.40747550")}</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
     <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;openNativeTool(tool,()=>{if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));});}}>{t(action.label)}</button>)}</div></Dialog>
     <Dialog open={assistantOpen} onClose={()=>setAssistantOpen(false)} title={t('assistant.title')}>{assistantOpen&&<LocalAssistant context={context} onExport={()=>{const tool=visibleTools.find(tool=>tool.id==='s21');if(tool){openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:select-s21'));setAssistantOpen(false);}}}/>}</Dialog>
-    {notice&&<Toast message={notice} onClose={()=>setNotice("")}>{notice.includes('Review in Reports')&&<button onClick={()=>go('reports')}>Review</button>}</Toast>}
+    {notice&&<Toast message={notice} onClose={()=>setNotice("")}>{notice.includes('Review in Reports')&&<button onClick={()=>go('reports')}>{t("ui.review.aff0766a")}</button>}</Toast>}
   </>;
 
 }
@@ -350,7 +345,7 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>Opening protected form…</main>}><PublicForm/></Suspense> : <App />}
+      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>{t("ui.opening.protected.form.e4af4758")}</main>}><PublicForm/></Suspense> : <App />}
     </QueryClientProvider>
   </React.StrictMode>,
 );

@@ -1,3 +1,4 @@
+import generated from './locales/en.generated.json';
 import drafts from './locales/app-drafts.json';
 const en={
  'language.label':'Language',
@@ -142,13 +143,15 @@ const en={
  'theme.mono-light':'Mono Light','theme.mono-dark':'Mono Dark','theme.paper':'Paper','theme.lagoon-glass':'Lagoon Glass','theme.neon-night':'Neon Night','theme.sunset-pop':'Sunset Pop','theme.neo-brutal':'Neo Brutal','theme.forest':'Forest','theme.aurora':'Aurora',
  'appearance.intensity':'Background intensity','common.close':'Close','common.discard':'Discard changes','common.discardTitle':'Discard changes?','common.unsaved':'Your unsaved changes will be lost.','common.keepEditing':'Keep editing','common.copy':'Copy','common.copied':'Copied','common.undo':'Undo','common.search':'Search','common.next':'Next','common.back':'Back','common.cancel':'Cancel','common.choose':'Choose','common.noResults':'No matching results','common.loading':'Loading','common.more':'Show more','qr.code':'QR code','table.previous':'Previous rows','table.next':'Next rows'
 } as const;
-export type Locale='en'|'hi'|'ta'|'ml'|'kn'|'te'|'or'|'as'|'mr'|'gu'|'bn'|'pa'|'ur';export type MessageKey=keyof typeof en;
+const english={...generated,...en} as const;
+export type Locale='en'|'hi'|'ta'|'ml'|'kn'|'te'|'or'|'as'|'mr'|'gu'|'bn'|'pa'|'ur';export type MessageKey=keyof typeof english;
 // Machine drafts are explicitly unreviewed; missing entries use reviewed English.
 export const localeMetadata={en:{nativeName:'English',reviewed:true},...Object.fromEntries(Object.entries(drafts).map(([code,value])=>[code,{nativeName:value.nativeName,reviewed:value.reviewed}]))};
-export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en,...Object.fromEntries(Object.entries(drafts).map(([code,value])=>[code,value.messages]))} as Record<Locale,Partial<Record<MessageKey,string>>>;
+export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en:english,...Object.fromEntries(Object.entries(drafts).map(([code,value])=>[code,value.messages]))} as Record<Locale,Partial<Record<MessageKey,string>>>;
 const listeners=new Set<()=>void>();
 let currentLocale:Locale='en';try{const saved=typeof localStorage!=='undefined'?localStorage.getItem('ca-interface-language'):null;if(saved&&saved in messages)currentLocale=saved as Locale;}catch{/* English remains available without device storage. */}
+if(typeof document!=='undefined'){document.documentElement.lang=currentLocale;document.documentElement.dir=currentLocale==='ur'?'rtl':'ltr';}
 export const getUILocale=()=>currentLocale;
 export function subscribeUILocale(listener:()=>void){listeners.add(listener);return()=>{listeners.delete(listener);};}
 export function setUILocale(value:Locale){if(!(value in messages))return;currentLocale=value;try{localStorage.setItem('ca-interface-language',value);}catch{/* Apply for this visit. */}if(typeof document!=='undefined'){document.documentElement.lang=value;document.documentElement.dir=value==='ur'?'rtl':'ltr';}for(const listener of listeners)listener();}
-export function t(key:MessageKey,locale:Locale=currentLocale){return messages[locale]?.[key]||en[key];}
+export function t(key:MessageKey,locale:Locale=currentLocale){return messages[locale]?.[key]||english[key];}

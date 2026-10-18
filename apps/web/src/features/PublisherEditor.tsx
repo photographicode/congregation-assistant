@@ -25,11 +25,10 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
               run(savePerson);
             }}
           >
-            <h3>Basics</h3>
+            <h3>{t("ui.basics.8fdd2ee8")}</h3>
             <div className="form-grid">
               <label>
-                Full name
-                <input
+                {t("ui.full.name.f13a64ba")}<input
                   required
                   value={editing.name}
                   onChange={(e) => {
@@ -46,8 +45,7 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
                 <small id="publisher-gender-help">{t('polish.chooseGender')}</small>
               </fieldset>
               <label>
-                Service group
-                <select
+                {t("ui.service.group.2c63b4a8")}<select
                   value={editing.group}
                   onChange={(e) => {
                     setEditing((p) =>
@@ -56,17 +54,16 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
                     setDirty(true);
                   }}
                 >
-                  <option value="">No group</option>
+                  <option value="">{t("ui.no.group.2463cfb8")}</option>
                   {groups.map((g) => (
                     <option key={g.id}>{g.name}</option>
                   ))}
                 </select>
               </label>
             </div>
-            <h3>Sign-in & contact</h3>
+            <h3>{t("ui.sign.in.contact.e4bd9038")}</h3>
             <label htmlFor="v2-publisher-email">
-              Email (for sign-in)
-              <input
+              {t("ui.email.for.sign.in.35de559f")}<input
                 id="v2-publisher-email"
                 aria-describedby="v2-publisher-email-hint"
                 type="email"
@@ -80,40 +77,32 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
               />
             </label>
             <small id="v2-publisher-email-hint">
-              Optional. A shared email grants household report submission only.
-            </small>
+              {t("ui.optional.a.shared.email.grants.household.r.04a91a95")}</small>
             {household.length > 0 && !shared && !existingShared && (
               <section className="banner">
                 <p>
-                  This email is already used by{" "}
-                  {household.map((p) => p.name).join(", ")}. Treat as a
-                  household so one sign-in can report for everyone?
-                </p>
+                  {t("ui.this.email.is.already.used.by.85ee921a")}{" "}
+                  {household.map((p) => p.name).join(", ")}{t("ui.treat.as.a.household.so.one.sign.in.can.re.c707f656")}</p>
                 <div className="actions">
                   <button type="button" onClick={() => setShared(true)}>
-                    Yes, share reports
-                  </button>
+                    {t("ui.yes.share.reports.8a4792a9")}</button>
                   <button
                     type="button"
                     onClick={() =>
                       setEditing((p) => (p ? { ...p, email: "" } : p))
                     }
                   >
-                    No, use a different email
-                  </button>
+                    {t("ui.no.use.a.different.email.3efc239d")}</button>
                 </div>
               </section>
             )}
             {(shared||existingShared) && (
               <p role="status">
-                Household reporting confirmed. Contacts and private details stay
-                separate.
-              </p>
+                {t("ui.household.reporting.confirmed.contacts.and.4d70ba0a")}</p>
             )}
             <div className="form-grid">
               <label>
-                Phone
-                <input
+                {t("ui.phone.63dceb88")}<input
                   type="tel"
                   value={editing.phone}
                   onChange={(e) => {
@@ -125,8 +114,7 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
                 />
               </label>
               <label>
-                Address
-                <input
+                {t("ui.address.56ef8f20")}<input
                   value={editing.address}
                   onChange={(e) => {
                     setEditing((p) =>
@@ -137,13 +125,13 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
                 />
               </label>
             </div>
-            <details><summary>Household, emergency contact & publisher record</summary>
+            <details><summary>{t("ui.household.emergency.contact.publisher.reco.7544f6dc")}</summary>
             {demo||extendedPeople?<div className="stack">
               <div className="form-grid">{([['dob','Date of birth'],['baptized','Date of baptism'],['emergencyName','Emergency contact name'],['emergencyRelationship','Relationship'],['emergencyPhone','Emergency phone'],['spiritualStatus','Publisher status']] as const).map(([key,label])=><label key={key}>{label}<input type={key==='dob'||key==='baptized'?'date':key==='emergencyPhone'?'tel':'text'} value={editing[key]||''} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.value}:p);setDirty(true);}}/></label>)}</div>
-              <label>Household head<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">This person is the household head</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-              <label>Hope<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">Not recorded</option><option>Other Sheep</option><option>Anointed</option></select></label>
+              <label>{t("ui.household.head.d5d0c49d")}<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">{t("ui.this.person.is.the.household.head.79acde35")}</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
+              <label>{t("ui.hope.8c765f98")}<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">{t("ui.not.recorded.b37c7879")}</option><option>{t("ui.other.sheep.48f614b7")}</option><option>{t("ui.anointed.8edcfa4d")}</option></select></label>
               {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary'],['isSFTS',t('sfts.name')]] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}<p>{t('sfts.derived')}</p>
-            </div>:<p>Ask your administrator to apply the extended publisher database update, then reopen this record.</p>}</details>
+            </div>:<p>{t("ui.ask.your.administrator.to.apply.the.extend.8666bf0c")}</p>}</details>
             {error && (
               <p role="alert" className="error">
                 {error}
@@ -151,9 +139,8 @@ export default function PublisherEditor({extendedPeople,people,editing,setEditin
             )}
             <div className="actions">
               <button type="submit" className="primary" disabled={busy}>
-                Save publisher & email
-              </button>
-              <DialogCancel>Cancel</DialogCancel>
+                {t("ui.save.publisher.email.bc9559db")}</button>
+              <DialogCancel>{t("ui.cancel.19766ed6")}</DialogCancel>
             </div>
           </form>
         )}
