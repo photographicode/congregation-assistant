@@ -1,1 +1,3 @@
 semgrep==1.143.0
+# MCP in Semgrep 1.143 requires this internal Pydantic compatibility API.
+pydantic==2.13.4

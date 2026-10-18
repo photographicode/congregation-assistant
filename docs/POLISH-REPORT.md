@@ -122,3 +122,7 @@ R1 is not yet deployed at this checkpoint. Production database changes remain pe
 6. Billing and payment/invoice flows.
 
 Further R2 refinement includes app-wide picker expansion/virtualization, persisted third-classroom UI, broader same-day duty/weekend workload cautions and remaining form/route-splitting work.
+
+### First Actions feedback
+
+The first release run exposed two test-infrastructure issues before sign-off: the adoption fixture's fixed 2026-W42 had expired in the congregation timezone, and Semgrep's MCP dependency crashed on Pydantic 2.14.1. The fixture now chooses the current congregation week; the unchanged adoption assertions pass in an isolated cloned database. Pydantic is pinned to compatible 2.13.4; the actual Semgrep scan passes 71 tracked targets with zero findings. Neither correction changes product authorization or bypasses a check. The required failed gates will be rerun with these fixes.
