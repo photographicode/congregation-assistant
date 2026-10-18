@@ -1,0 +1,503 @@
+{
+  "fixture": "emergency-1.pdf",
+  "source": "work/pdf-v2",
+  "pages": [
+    {
+      "page": 1,
+      "width": 841.89,
+      "height": 595.28,
+      "orientation": "landscape",
+      "runs": [
+        {
+          "text": "Emergency contacts",
+          "page": 1,
+          "x": 28,
+          "y": 558.28,
+          "w": 181.51200000000006,
+          "h": 18,
+          "font": "g_d0_f1",
+          "size": 18
+        },
+        {
+          "text": "Fictional Congregation",
+          "page": 1,
+          "x": 28,
+          "y": 541.28,
+          "w": 95.78699999999999,
+          "h": 9,
+          "font": "g_d0_f2",
+          "size": 9
+        },
+        {
+          "text": "Generated 2026-10-14",
+          "page": 1,
+          "x": 683.89,
+          "y": 541.28,
+          "w": 83.74400000000003,
+          "h": 8,
+          "font": "g_d0_f2",
+          "size": 8
+        },
+        {
+          "text": "Publisher",
+          "page": 1,
+          "x": 35,
+          "y": 513.28,
+          "w": 40.179500000000004,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Phone",
+          "page": 1,
+          "x": 157,
+          "y": 513.28,
+          "w": 26.792,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Address",
+          "page": 1,
+          "x": 235,
+          "y": 513.28,
+          "w": 33.95749999999998,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Emergency contact",
+          "page": 1,
+          "x": 385,
+          "y": 513.28,
+          "w": 81.48950000000002,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Relationship",
+          "page": 1,
+          "x": 505,
+          "y": 513.28,
+          "w": 53.269499999999994,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Emergency",
+          "page": 1,
+          "x": 595,
+          "y": 513.28,
+          "w": 47.18349999999998,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "phone",
+          "page": 1,
+          "x": 595,
+          "y": 503.28,
+          "w": 26.834500000000048,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Status",
+          "page": 1,
+          "x": 673,
+          "y": 513.28,
+          "w": 27.004500000000007,
+          "h": 8.5,
+          "font": "g_d0_f1",
+          "size": 8.5
+        },
+        {
+          "text": "Family 0 family",
+          "page": 1,
+          "x": 35,
+          "y": 480.28,
+          "w": 68.022,
+          "h": 9,
+          "font": "g_d0_f1",
+          "size": 9
+        },
+        {
+          "text": "Sample Member 0-0",
+          "page": 1,
+          "x": 35,
+          "y": 459.28,
+          "w": 80.46099999999997,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "+910000000000",
+          "page": 1,
+          "x": 157,
+          "y": 459.28,
+          "w": 63.20600000000002,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "A preserved long address A",
+          "page": 1,
+          "x": 235,
+          "y": 459.28,
+          "w": 109.43749999999994,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "preserved long address A",
+          "page": 1,
+          "x": 235,
+          "y": 448.28,
+          "w": 101.79599999999994,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "preserved long address A",
+          "page": 1,
+          "x": 235,
+          "y": 437.28,
+          "w": 101.79599999999994,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "preserved long address A",
+          "page": 1,
+          "x": 235,
+          "y": 426.28,
+          "w": 101.79599999999994,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "Full details on following pages",
+          "page": 1,
+          "x": 235,
+          "y": 415.28,
+          "w": 120.64049999999997,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "Sample Contact",
+          "page": 1,
+          "x": 385,
+          "y": 459.28,
+          "w": 62.56,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "Family member",
+          "page": 1,
+          "x": 505,
+          "y": 459.28,
+          "w": 62.279499999999985,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "+910000000001",
+          "page": 1,
+          "x": 595,
+          "y": 459.28,
+          "w": 63.20600000000002,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "Baptised",
+          "page": 1,
+          "x": 673,
+          "y": 459.28,
+          "w": 34.87549999999999,
+          "h": 8.5,
+          "font": "g_d0_f2",
+          "size": 8.5
+        },
+        {
+          "text": "Page 1 of 2",
+          "page": 1,
+          "x": 28,
+          "y": 20,
+          "w": 41.744,
+          "h": 8,
+          "font": "g_d0_f2",
+          "size": 8
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "width": 595.28,
+      "height": 841.89,
+      "orientation": "portrait",
+      "runs": [
+        {
+          "text": "Emergency contacts · full details",
+          "page": 2,
+          "x": 36,
+          "y": 794,
+          "w": 226.40800000000002,
+          "h": 14,
+          "font": "g_d0_f1",
+          "size": 14
+        },
+        {
+          "text": "Sample Member 0-0",
+          "page": 2,
+          "x": 36,
+          "y": 768,
+          "w": 94.65999999999997,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "Address: A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 742,
+          "w": 490.29999999999995,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 728,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 714,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 700,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 686,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 672,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 658,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 644,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 630,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 616,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 602,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 588,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 574,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 560,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 546,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 532,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 518,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 504,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 490,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address A preserved long address A preserved long address A preserved long address A preserved long",
+          "page": 2,
+          "x": 36,
+          "y": 476,
+          "w": 486.8399999999999,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "address",
+          "page": 2,
+          "x": 36,
+          "y": 462,
+          "w": 37.260000000000005,
+          "h": 10,
+          "font": "g_d0_f2",
+          "size": 10
+        },
+        {
+          "text": "Page 2 of 2",
+          "page": 2,
+          "x": 28,
+          "y": 20,
+          "w": 41.744,
+          "h": 8,
+          "font": "g_d0_f2",
+          "size": 8
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

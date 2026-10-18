@@ -1,0 +1,463 @@
+{
+  "fixture": "s89-2-Disciples.pdf",
+  "source": "work/pdf-r1-stress",
+  "pages": [
+    {
+      "page": 1,
+      "width": 548.25,
+      "height": 730.5,
+      "orientation": "portrait",
+      "runs": [
+        {
+          "text": "OUR CHRISTIAN LIFE AND MINISTRY",
+          "page": 1,
+          "x": 27,
+          "y": 685.5,
+          "w": 458.4644999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "MEETING ASSIGNMENT",
+          "page": 1,
+          "x": 112.5,
+          "y": 653.25,
+          "w": 291.7455,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "Name:",
+          "page": 1,
+          "x": 24,
+          "y": 606,
+          "w": 83.5125,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "मामारिरियामा",
+          "page": 1,
+          "x": 114.5,
+          "y": 617.235,
+          "w": 47.28000000000003,
+          "h": 20,
+          "font": "g_d41_f2",
+          "size": 20
+        },
+        {
+          "text": "थॉथॉमास",
+          "page": 1,
+          "x": 166.98000000000002,
+          "y": 617.235,
+          "w": 43.5,
+          "h": 20,
+          "font": "g_d41_f2",
+          "size": 20
+        },
+        {
+          "text": "Assistant:",
+          "page": 1,
+          "x": 24,
+          "y": 552.75,
+          "w": 124.94999999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "ଓଡ଼ିଡ଼ିଆ",
+          "page": 1,
+          "x": 161,
+          "y": 563.985,
+          "w": 46.56,
+          "h": 20,
+          "font": "g_d41_f4",
+          "size": 20
+        },
+        {
+          "text": " ପ୍ରପ୍ରକାକାଶକା",
+          "page": 1,
+          "x": 212.76,
+          "y": 563.985,
+          "w": 63.74000000000001,
+          "h": 20,
+          "font": "g_d41_f4",
+          "size": 20
+        },
+        {
+          "text": "Date:",
+          "page": 1,
+          "x": 24,
+          "y": 498.75,
+          "w": 67.67699999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "2026-10-21",
+          "page": 1,
+          "x": 102.5,
+          "y": 509.985,
+          "w": 104.40000000000003,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Part no.:",
+          "page": 1,
+          "x": 24,
+          "y": 445.5,
+          "w": 107.763,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "4 · Disciples",
+          "page": 1,
+          "x": 148.25,
+          "y": 456.735,
+          "w": 109.61999999999995,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "To be given in:",
+          "page": 1,
+          "x": 24,
+          "y": 363.75,
+          "w": 181.91699999999997,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "Main hall",
+          "page": 1,
+          "x": 96,
+          "y": 323.25,
+          "w": 109.62450000000001,
+          "h": 25.5,
+          "font": "g_d41_f3",
+          "size": 25.5
+        },
+        {
+          "text": "Auxiliary classroom 1",
+          "page": 1,
+          "x": 96,
+          "y": 291,
+          "w": 253.2405,
+          "h": 25.5,
+          "font": "g_d41_f3",
+          "size": 25.5
+        },
+        {
+          "text": "Note to student:",
+          "page": 1,
+          "x": 24,
+          "y": 181.5,
+          "w": 172.578,
+          "h": 21,
+          "font": "g_d41_f1",
+          "size": 21
+        },
+        {
+          "text": "The source material and study point for your",
+          "page": 1,
+          "x": 24,
+          "y": 154.5,
+          "w": 419.0000000000001,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "assignment can be found in the Life and Ministry",
+          "page": 1,
+          "x": 24,
+          "y": 131.25,
+          "w": 458.26000000000005,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Meeting Workbook. Please review the instructions",
+          "page": 1,
+          "x": 24,
+          "y": 108,
+          "w": 468.62000000000023,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "for the part as outlined in Instructions for Our",
+          "page": 1,
+          "x": 24,
+          "y": 84.75,
+          "w": 431.0200000000001,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Christian Life and Ministry Meeting (S-38).",
+          "page": 1,
+          "x": 24,
+          "y": 61.5,
+          "w": 391.11999999999995,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "S-89-E 11/23",
+          "page": 1,
+          "x": 24,
+          "y": 40.5,
+          "w": 104.63399999999996,
+          "h": 18,
+          "font": "g_d41_f3",
+          "size": 18
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "width": 548.25,
+      "height": 730.5,
+      "orientation": "portrait",
+      "runs": [
+        {
+          "text": "OUR CHRISTIAN LIFE AND MINISTRY",
+          "page": 2,
+          "x": 27,
+          "y": 685.5,
+          "w": 458.4644999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "MEETING ASSIGNMENT",
+          "page": 2,
+          "x": 112.5,
+          "y": 653.25,
+          "w": 291.7455,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "Name:",
+          "page": 2,
+          "x": 24,
+          "y": 606,
+          "w": 83.5125,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "मामारिरियामा",
+          "page": 2,
+          "x": 114.5,
+          "y": 617.235,
+          "w": 47.28000000000003,
+          "h": 20,
+          "font": "g_d41_f2",
+          "size": 20
+        },
+        {
+          "text": "थॉथॉमास",
+          "page": 2,
+          "x": 166.98000000000002,
+          "y": 617.235,
+          "w": 43.5,
+          "h": 20,
+          "font": "g_d41_f2",
+          "size": 20
+        },
+        {
+          "text": "Assistant:",
+          "page": 2,
+          "x": 24,
+          "y": 552.75,
+          "w": 124.94999999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "ଓଡ଼ିଡ଼ିଆ",
+          "page": 2,
+          "x": 161,
+          "y": 563.985,
+          "w": 46.56,
+          "h": 20,
+          "font": "g_d41_f4",
+          "size": 20
+        },
+        {
+          "text": " ପ୍ରପ୍ରକାକାଶକା",
+          "page": 2,
+          "x": 212.76,
+          "y": 563.985,
+          "w": 63.74000000000001,
+          "h": 20,
+          "font": "g_d41_f4",
+          "size": 20
+        },
+        {
+          "text": "Date:",
+          "page": 2,
+          "x": 24,
+          "y": 498.75,
+          "w": 67.67699999999999,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "2026-10-21",
+          "page": 2,
+          "x": 102.5,
+          "y": 509.985,
+          "w": 104.40000000000003,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Part no.:",
+          "page": 2,
+          "x": 24,
+          "y": 445.5,
+          "w": 107.763,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "4 · Disciples",
+          "page": 2,
+          "x": 148.25,
+          "y": 456.735,
+          "w": 109.61999999999995,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "To be given in:",
+          "page": 2,
+          "x": 24,
+          "y": 363.75,
+          "w": 181.91699999999997,
+          "h": 25.5,
+          "font": "g_d41_f1",
+          "size": 25.5
+        },
+        {
+          "text": "Main hall",
+          "page": 2,
+          "x": 96,
+          "y": 323.25,
+          "w": 109.62450000000001,
+          "h": 25.5,
+          "font": "g_d41_f3",
+          "size": 25.5
+        },
+        {
+          "text": "Auxiliary classroom 1",
+          "page": 2,
+          "x": 96,
+          "y": 291,
+          "w": 253.2405,
+          "h": 25.5,
+          "font": "g_d41_f3",
+          "size": 25.5
+        },
+        {
+          "text": "Note to student:",
+          "page": 2,
+          "x": 24,
+          "y": 181.5,
+          "w": 172.578,
+          "h": 21,
+          "font": "g_d41_f1",
+          "size": 21
+        },
+        {
+          "text": "The source material and study point for your",
+          "page": 2,
+          "x": 24,
+          "y": 154.5,
+          "w": 419.0000000000001,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "assignment can be found in the Life and Ministry",
+          "page": 2,
+          "x": 24,
+          "y": 131.25,
+          "w": 458.26000000000005,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Meeting Workbook. Please review the instructions",
+          "page": 2,
+          "x": 24,
+          "y": 108,
+          "w": 468.62000000000023,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "for the part as outlined in Instructions for Our",
+          "page": 2,
+          "x": 24,
+          "y": 84.75,
+          "w": 431.0200000000001,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "Christian Life and Ministry Meeting (S-38).",
+          "page": 2,
+          "x": 24,
+          "y": 61.5,
+          "w": 391.11999999999995,
+          "h": 20,
+          "font": "g_d41_f3",
+          "size": 20
+        },
+        {
+          "text": "S-89-E 11/23",
+          "page": 2,
+          "x": 24,
+          "y": 40.5,
+          "w": 104.63399999999996,
+          "h": 18,
+          "font": "g_d41_f3",
+          "size": 18
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

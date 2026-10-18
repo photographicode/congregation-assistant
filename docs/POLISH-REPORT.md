@@ -99,3 +99,26 @@ AP Review now uses the requested title/subtitle and Publisher/Hours/Studies/Admi
 Picker Home/End now passes alongside type-ahead, empty-result keyboard handling, touch, 200% text, short-screen and pinch-zoom checks. App-wide picker expansion remains R2 unless required for R1 OCLM counselors.
 
 AP role-switch UI smoke remains open: two attempted harnesses did not reach the Reports heading for a group-only session. They are not counted as passed. The server contracts independently prove admin/service access and reject group-only, unapproved, anonymous and cross-congregation revocation. The working AP browser spec still covers revoke, Undo, expiry, pending dismissal and errors.
+
+## R1 PDF and release evidence
+
+All generated text now uses bundled static Noto Sans Regular/Bold or matching Indic Noto Sans, including Odia, embedded as subsets. The Arimo/Helvetica surrogate-width path is removed. Mixed-script runs measure and draw using the same shaped font; digits/punctuation use Latin Noto. Missing HarfBuzz glyphs abort the export. Supplied original templates and their recorded hashes are unchanged; derived -noto templates preserve vector artwork and retype reference-position text with Noto. Decorative dotted lines/checkboxes are vectors.
+
+packages/pdf/layout.ts supplies measured cells with real font metrics, common baselines, padding, shrink/wrap/ellipsis and bounds checks. Existing output calls route through it. S-21 numeric baselines no longer vary by numeral shape, and official centered numeric columns are retained. Emergency rows no longer split: very long fields continue in full-details pages. This intentionally changes the emergency pagination from the old golden while retaining all source fields. S-89 can hide unused classroom choices; the app supplies its saved main/auxiliary setting. PDF fixtures also exercise three-classroom output.
+
+49 PDF fixtures pass the numeric checks: all fonts embedded/subset Noto Sans, missing-glyph guards, page boundaries, shaped-run overlap, sampled S-21 column centres and paired-row baselines. Source-data retention checks preserve long names, remarks and addresses. Seventeen reviewed Noto golden fixtures pass text, page geometry/count and 150-dpi image diff <=0.2%. These replace the old pixel assumptions that depended on other fonts; the original-reference hash gate remains. The first contact sheet exposed oversized emergency rows, which are corrected. Tests do not establish a mathematical proof of every possible string/cell combination.
+
+The final local R1 app sample passes 294 views with zero findings and zero coverage errors (r1-sampled-matrix.summary.json): changed report/schedule/picker/AP states, the ordered five widths plus short landscape, 100/200% text, three themes. Full Actions matrix remains separate. TypeScript/lint pass; report regression includes tab-local offline draft, no false receipt, no automatic reconnect send, explicit manual retry and duplicate-click protection. No translation extraction was added after the freeze.
+
+R1 is not yet deployed at this checkpoint. Production database changes remain pending an encrypted snapshot and release gates. Real phones, printers, WhatsApp delivery and Razorpay are not verified.
+
+## R2, in order
+
+1. Front-door/legacy cleanup and remaining V1 restoration/parity.
+2. Pricing config/page activation.
+3. Public website visual-lock baselines/test.
+4. Owner-controlled domain switch.
+5. Translation coverage/review.
+6. Billing and payment/invoice flows.
+
+Further R2 refinement includes app-wide picker expansion/virtualization, persisted third-classroom UI, broader same-day duty/weekend workload cautions and remaining form/route-splitting work.

@@ -1,0 +1,127 @@
+{
+  "fixtures": [
+    {
+      "fixture": "emergency-1.pdf",
+      "pages": 2,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "emergency-50.pdf",
+      "pages": 5,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "emergency-500.pdf",
+      "pages": 39,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-all-months.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-auxiliary.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-large-family.pdf",
+      "pages": 12,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-long-name.pdf",
+      "pages": 2,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-long-remarks.pdf",
+      "pages": 13,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-ordinary.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-regular.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s21-unbaptised.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s3-full.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s3-partial.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s3-special.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s88-full.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s88-partial.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    },
+    {
+      "fixture": "s88-special.pdf",
+      "pages": 1,
+      "maxChangedPixelFraction": 0,
+      "textEqual": true,
+      "pageGeometryEqual": true
+    }
+  ],
+  "passed": 17,
+  "dpi": 150,
+  "pixelTolerance": 0.002,
+  "baseline": "tests/golden/r1; original V1 artwork hashes still checked separately"
+}

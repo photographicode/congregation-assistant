@@ -1,18 +1,19 @@
+import {subsetName} from './layout.ts';
 import * as shapingFontkit from 'fontkit';
 import * as hb from 'harfbuzzjs';
 /** Font fallback and positioned glyph runs. All text remains selectable PDF text. */
-const scripts=[['Devanagari',/\p{Script=Devanagari}/u],['Malayalam',/\p{Script=Malayalam}/u],['Tamil',/\p{Script=Tamil}/u],['Telugu',/\p{Script=Telugu}/u],['Kannada',/\p{Script=Kannada}/u],['Gujarati',/\p{Script=Gujarati}/u],['Bengali',/\p{Script=Bengali}/u],['Gurmukhi',/\p{Script=Gurmukhi}/u]];
+const scripts=[['Devanagari',/\p{Script=Devanagari}/u],['Malayalam',/\p{Script=Malayalam}/u],['Tamil',/\p{Script=Tamil}/u],['Telugu',/\p{Script=Telugu}/u],['Kannada',/\p{Script=Kannada}/u],['Gujarati',/\p{Script=Gujarati}/u],['Bengali',/\p{Script=Bengali}/u],['Gurmukhi',/\p{Script=Gurmukhi}/u],['Oriya',/\p{Script=Oriya}/u]];
 export function unicodeFontProvider({library,fontkit,loadFont}) {
  const bytes=new Map();
  return async (pdf,values)=>{
   const all=values.join(' '),families=scripts.filter(([,pattern])=>pattern.test(all)).map(([family])=>family);if(!families.length)return null;
-  pdf.registerFontkit(shapingFontkit);
-  async function build(weight){const fonts=[];for(const family of ['',...families]){const name=`NotoSans${family}-${weight}.ttf`;if(!bytes.has(name))bytes.set(name,new Uint8Array(await loadFont(name)));const raw=bytes.get(name),parsed=shapingFontkit.create(raw),font=await pdf.embedFont(raw,{subset:false});font.caCharacters=new Set(font.getCharacterSet());const embedded=font.embedder.font;
+  pdf.registerFontkit(fontkit);
+  async function build(weight){const fonts=[];for(const family of ['',...families]){const name=`NotoSans${family}-${weight}.ttf`;if(!bytes.has(name))bytes.set(name,new Uint8Array(await loadFont(name)));const raw=bytes.get(name),parsed=shapingFontkit.create(raw),font=await pdf.embedFont(raw,{subset:true,customName:subsetName(pdf,'NotoSans'+family+'-'+weight)});font.caCharacters=new Set(font.getCharacterSet());font.caFamily=family;const embedded=font.embedder.font;
     const blob=new hb.Blob(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)),face=new hb.Face(blob),hbFont=new hb.Font(face);
-    embedded.layout=value=>{const buffer=new hb.Buffer();let index=0;for(const char of value){buffer.add(char.codePointAt(0),index);index+=char.length;}buffer.guessSegmentProperties();hb.shape(hbFont,buffer);const infos=buffer.getGlyphInfos(),positions=buffer.getGlyphPositions();return {glyphs:infos.map(info=>embedded.getGlyph(info.codepoint)),positions};};
+    embedded.layout=value=>{const buffer=new hb.Buffer();let index=0;for(const char of value){buffer.add(char.codePointAt(0),index);index+=char.length;}buffer.guessSegmentProperties();hb.shape(hbFont,buffer);const infos=buffer.getGlyphInfos(),positions=buffer.getGlyphPositions();if(infos.some(info=>info.codepoint===0))throw Error('Missing PDF glyph in '+value);return {glyphs:infos.map(info=>{const glyph=embedded.getGlyph(info.codepoint);if(!glyph.codePoints?.length){const end=Math.min(...infos.map(other=>other.cluster).filter(cluster=>cluster>info.cluster),value.length);glyph.codePoints=[...value.slice(info.cluster,end)].map(char=>char.codePointAt(0));}return glyph;}),positions};};
     font.caParsed=embedded;fonts.push(font);}
    const main=fonts[0];
-   main.caRuns=(text)=>{const result=[];let current=null;for(const char of String(text)){const cp=char.codePointAt(0);const font=current?.font.caCharacters.has(cp)?current.font:fonts.find(f=>f.caCharacters.has(cp));if(!font)throw Error('A font glyph is missing for '+char+'. Download the full PDF font pack and retry.');if(current?.font===font)current.text+=char;else{current={font,text:char};result.push(current);}}return result;};
+   main.caRuns=(text)=>{const result=[];let current=null;for(const char of String(text)){const cp=char.codePointAt(0);const family=scripts.find(([,pattern])=>pattern.test(char))?.[0];const inherited=/[\p{Mark}\u200c\u200d]/u.test(char);const font=family?fonts.find(f=>f.caFamily===family):inherited&&current?current.font:fonts[0];if(!font||!font.caCharacters.has(cp))throw Error('A font glyph is missing for '+char+'. Download the full PDF font pack and retry.');if(current?.font===font)current.text+=char;else{current={font,text:char};result.push(current);}}return result;};
    main.caValidate=text=>{for(const run of main.caRuns(text))run.font.encodeText(run.text);};
    main.widthOfTextAtSize=(text,size)=>main.caRuns(text).reduce((sum,run)=>{const layout=run.font.caParsed.layout(run.text);return sum+layout.positions.reduce((n,p)=>n+p.xAdvance,0)*size/run.font.caParsed.unitsPerEm;},0);
    return main;

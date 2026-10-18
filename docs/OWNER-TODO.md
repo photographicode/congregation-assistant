@@ -44,3 +44,5 @@ NEXT deployment account result: source/public artifact deployments and live chec
 ## Current polish phase
 
 No migration approval is being requested. No new production migration will run without the ordered snapshot and additive/down review. The working branch is not a released version; POLISH-REPORT.md lists remaining implementation and acceptance work. OWNER-MANUAL.md records the existing fallback URLs and eventual DNS/provider handover. Payment checkout and live founder data are not configured or advertised as active. Keep the existing hosts unchanged until the full release gates pass.
+
+R1 shipping scope: docs/V3-R1-SHIP-ORDERS.md is current. Local PDF geometry (49 fixtures), reviewed Noto goldens (17), 294-view layout sample and safe manual offline retry pass; full Actions, production AP migration snapshot and live deployment checks are still pending at this checkpoint. R2 order is recorded in POLISH-REPORT. No DNS or billing activation is claimed.

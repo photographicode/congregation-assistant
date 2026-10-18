@@ -1,6 +1,5 @@
 name: Application acceptance
 on:
-  pull_request:
   workflow_dispatch:
   schedule:
     - cron: '30 21 * * *'

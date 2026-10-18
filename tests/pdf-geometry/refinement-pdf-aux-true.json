@@ -1,0 +1,145 @@
+{
+  "fixture": "aux-true.pdf",
+  "source": "work/refinement-pdf",
+  "pages": [
+    {
+      "page": 1,
+      "width": 595.28,
+      "height": 841.89,
+      "orientation": "portrait",
+      "runs": [
+        {
+          "text": "Synthetic Congregation",
+          "page": 1,
+          "x": 28,
+          "y": 806,
+          "w": 200.85500000000002,
+          "h": 17,
+          "font": "g_d21_f1",
+          "size": 17
+        },
+        {
+          "text": "Midweek Meeting Schedule",
+          "page": 1,
+          "x": 340,
+          "y": 806,
+          "w": 164.54400000000004,
+          "h": 12,
+          "font": "g_d21_f1",
+          "size": 12
+        },
+        {
+          "text": "2026-W42 | Synthetic reading",
+          "page": 1,
+          "x": 35,
+          "y": 776.9267500000001,
+          "w": 157.39075,
+          "h": 10.75,
+          "font": "g_d21_f1",
+          "size": 10.75
+        },
+        {
+          "text": "Chairman: —",
+          "page": 1,
+          "x": 28,
+          "y": 750,
+          "w": 61.23999999999998,
+          "h": 10,
+          "font": "g_d21_f2",
+          "size": 10
+        },
+        {
+          "text": "Auxiliary Classroom Counselor: Counselor Publisher",
+          "page": 1,
+          "x": 305,
+          "y": 750,
+          "w": 243.31000000000017,
+          "h": 10,
+          "font": "g_d21_f2",
+          "size": 10
+        },
+        {
+          "text": "Auxiliary classroom",
+          "page": 1,
+          "x": 385,
+          "y": 730,
+          "w": 73.63499999999999,
+          "h": 7.5,
+          "font": "g_d21_f1",
+          "size": 7.5
+        },
+        {
+          "text": "Main hall",
+          "page": 1,
+          "x": 475,
+          "y": 730,
+          "w": 34.80000000000001,
+          "h": 7.5,
+          "font": "g_d21_f1",
+          "size": 7.5
+        },
+        {
+          "text": "TREASURES FROM GOD’S WORD",
+          "page": 1,
+          "x": 35,
+          "y": 713,
+          "w": 154.85999999999999,
+          "h": 10,
+          "font": "g_d21_f1",
+          "size": 10
+        },
+        {
+          "text": "19:00",
+          "page": 1,
+          "x": 28,
+          "y": 681,
+          "w": 23.004000000000005,
+          "h": 9,
+          "font": "g_d21_f2",
+          "size": 9
+        },
+        {
+          "text": "1. Bible reading (4 min.)",
+          "page": 1,
+          "x": 72,
+          "y": 681,
+          "w": 117.58999999999997,
+          "h": 10,
+          "font": "g_d21_f1",
+          "size": 10
+        },
+        {
+          "text": "Auxiliary Publisher",
+          "page": 1,
+          "x": 385,
+          "y": 681,
+          "w": 78.58799999999997,
+          "h": 9,
+          "font": "g_d21_f2",
+          "size": 9
+        },
+        {
+          "text": "Main Publisher",
+          "page": 1,
+          "x": 475,
+          "y": 681,
+          "w": 63.28800000000001,
+          "h": 9,
+          "font": "g_d21_f2",
+          "size": 9
+        },
+        {
+          "text": "S-140",
+          "page": 1,
+          "x": 28,
+          "y": 25,
+          "w": 20.695999999999998,
+          "h": 8,
+          "font": "g_d21_f2",
+          "size": 8
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

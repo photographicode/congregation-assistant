@@ -39,6 +39,8 @@
   ],
   "publicForm": {
     "failureRetainsInput": true,
+    "offlineDraftAndManualRetry": true,
+    "noAutoSendOnReconnect": true,
     "duplicateSubmitBlocked": true,
     "quarterHours": true,
     "privateFieldsReset": true,

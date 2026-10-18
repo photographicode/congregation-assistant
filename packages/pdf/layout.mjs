@@ -1,3 +1,4 @@
+import {installCellWriter,fontMetrics,subsetName} from './layout.ts';
 export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>new Date()}) {
 
     function text(value, font) {
@@ -35,14 +36,13 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
     }
     const fontBytes=new Map();
     async function fonts(pdf,values,{precise=false}={}){
-        if(fontProvider){const supported=await fontProvider(pdf,values);if(supported)return supported;}
-        const {StandardFonts}=requireLibrary(),all=values.join(' '),latin=await pdf.embedFont(StandardFonts.Helvetica);
-        if(!precise)try{text(all,latin);pdf.registerFontkit(fontkit);const standard=await pdf.embedFont(await loadFont('Arimo-Regular.ttf'),{subset:true}),bold=await pdf.embedFont(await loadFont('Arimo-Bold.ttf'),{subset:true});standard.widthOfTextAtSize=(value,size)=>latin.widthOfTextAtSize(value,size);const originalBold=await pdf.embedFont(StandardFonts.HelveticaBold);bold.widthOfTextAtSize=(value,size)=>originalBold.widthOfTextAtSize(value,size);return {font:standard,bold};}catch{}
+        if(fontProvider){const supported=await fontProvider(pdf,values);if(supported){installCellWriter(pdf);return supported;}}
+        const all=values.join(' ');
         if(!fontkit)throw Error('The bundled Unicode font support could not load. Reload before exporting.');pdf.registerFontkit(fontkit);const family='NotoSans';
-        async function embed(weight){const path='assets/fonts/'+family+'-'+weight+'.ttf';if(!fontBytes.has(path)){fontBytes.set(path,new Uint8Array(await loadFont(path.split('/').pop())));}const font=await pdf.embedFont(fontBytes.get(path),{subset:true});font.caCharacters=new Set(font.getCharacterSet());const parsed=fontkit.create(fontBytes.get(path));font.caInkBounds=(value,size)=>{const run=parsed.layout(value);let pen=0;const bounds=run.glyphs.map(g=>{const b={minX:pen+g.bbox.minX,maxX:pen+g.bbox.maxX,minY:g.bbox.minY,maxY:g.bbox.maxY};pen+=g.advanceWidth;return b;});const unit=size/parsed.unitsPerEm;return {minX:Math.min(...bounds.map(b=>b.minX))*unit,maxX:Math.max(...bounds.map(b=>b.maxX))*unit,minY:Math.min(...bounds.map(b=>b.minY))*unit,maxY:Math.max(...bounds.map(b=>b.maxY))*unit};};text(all,font);return font;}
-        return {font:await embed('Regular'),bold:await embed('Bold')};
+        async function embed(weight){const path='assets/fonts/'+family+'-'+weight+'.ttf';if(!fontBytes.has(path)){fontBytes.set(path,new Uint8Array(await loadFont(path.split('/').pop())));}const font=await pdf.embedFont(fontBytes.get(path),{subset:true,customName:subsetName(pdf,family+'-'+weight)});font.caCharacters=new Set(font.getCharacterSet());const parsed=fontkit.create(fontBytes.get(path));font.caInkBounds=(value,size)=>{const run=parsed.layout(value);let pen=0;const bounds=run.glyphs.map(g=>{const b={minX:pen+g.bbox.minX,maxX:pen+g.bbox.maxX,minY:g.bbox.minY,maxY:g.bbox.maxY};pen+=g.advanceWidth;return b;});const unit=size/parsed.unitsPerEm;return {minX:Math.min(...bounds.map(b=>b.minX))*unit,maxX:Math.max(...bounds.map(b=>b.maxX))*unit,minY:Math.min(...bounds.map(b=>b.minY))*unit,maxY:Math.max(...bounds.map(b=>b.maxY))*unit};};text(all,font);return font;}
+        const result={font:await embed('Regular'),bold:await embed('Bold')};installCellWriter(pdf);return result;
     }
-    function baseline(font,size,bottom,top,value){const ascent=font.heightAtSize(size,{descender:false}),descent=ascent-font.heightAtSize(size,{descender:true});if(value!==undefined&&/^[+−-]?\d+(?:[.,]\d+)*(?:[–-]\d+)?$/.test(String(value))){const bounds=font.caInkBounds?.(String(value),size);return (bottom+top)/2-(bounds?(bounds.minY+bounds.maxY)/2:ascent/2);}return (bottom+top)/2-(ascent+descent)/2;}
+    function baseline(font,size,bottom,top){return (bottom+top)/2-fontMetrics(font,size).capHeight/2;}
     function field(page,value,rect,font,{size=9,minSize=7,align='center',color}={}){const inset=rect.padding??2,item=fit(value,font,rect.width-2*inset,size,minSize),x=align==='left'?rect.x+inset:align==='right'?rect.x+rect.width-inset-item.width:rect.x+(rect.width-item.width)/2,y=baseline(font,item.size,rect.y+inset,rect.y+rect.height-inset);page.drawText(item.text,{x,y,font,size:item.size,color:color||requireLibrary().rgb(0,0,0)});return {...item,x,y};}
     function checkbox(page,rect,state){if(state===false||state===null||state===undefined)return;if(state!==true)throw Error('Check the checkbox value before exporting.');const size=Math.min(rect.width,rect.height);if(size<4)throw Error('Checkbox is too small.');tick(page,rect.x+rect.width/2,rect.y+rect.height/2,Math.min(1,size/10));}
     async function emergency(families, congregation) {
@@ -53,7 +53,7 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
         const ink = rgb(0,0,0), rule = rgb(.65,.65,.65), pale = rgb(.96,.96,.96);
         const headings = ['Publisher','Phone','Address','Emergency contact','Relationship','Emergency phone','Status'];
         const size = 8.5, leading = 11, bottom = 38;
-        let page, y, currentFamily = '';
+        let page, y, currentFamily = '';const fullDetails=[];
         const draw = (value,x,baseline,maxWidth,fontObj = font,fontSize = size) => {
             const item = fit(value,fontObj,maxWidth,fontSize,7);
             page.drawText(item.text,{x,y:baseline,font:fontObj,size:item.size,color:ink});
@@ -85,22 +85,13 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
             for (const person of family.members) {
                 const values = [person.name,person.phone,person.address,person.emergencyName,person.emergencyRelationship,person.emergencyPhone,person.spiritualStatus || (person.baptized ? 'Baptised' : 'Unbaptised')];
                 const cells = values.map((value,i) => wrap(value || '—',font,widths[i]-14,size));
-                let offset = 0; const totalLines = Math.max(...cells.map(lines=>lines.length));
-                while (offset < totalLines) {
-                    if (y - 28 < bottom) newPage(true);
-                    const availableLines = Math.max(1,Math.floor((y-bottom-14)/leading));
-                    const count = Math.min(availableLines,totalLines-offset), height = Math.max(28,count*leading+14);
-                    let x = margin;
-                    cells.forEach((lines,i) => {
-                        page.drawRectangle({x,y:y-height,width:widths[i],height,borderColor:rule,borderWidth:.5});
-                        const visible=i===0 && offset>0?[fit(person.name+' (continued)',font,widths[i]-14,size,7).text]:lines.slice(offset,offset+count);
-                        visible.forEach((line,n)=>page.drawText(line,{x:x+7,y:y-14-n*leading,size,font,color:ink}));
-                        x += widths[i];
-                    });
-                    y -= height; offset += count;
-                }
+                const totalLines=Math.max(...cells.map(lines=>lines.length)),count=Math.min(5,totalLines),height=Math.max(28,count*leading+14);
+                if(y-height<bottom)newPage(true);
+                let x=margin;
+                cells.forEach((lines,i)=>{page.drawRectangle({x,y:y-height,width:widths[i],height,borderColor:rule,borderWidth:.5});const visible=lines.slice(0,count);if(lines.length>count){visible[count-1]=fit('Full details on following pages',font,widths[i]-14,size,7).text;fullDetails.push({name:person.name,label:headings[i],text:String(values[i]||'')});}visible.forEach((line,n)=>page.drawText(line,{x:x+7,y:y-14-n*leading,size,font,color:ink}));x+=widths[i];});y-=height;
             }
         }
+        if(fullDetails.length)appendNotes(pdf,font,bold,fullDetails,'Emergency contacts · full details');
         const pages = pdf.getPages();
         pages.forEach((p,i)=>p.drawText(`Page ${i+1} of ${pages.length}`,{x:margin,y:20,size:8,font,color:ink}));
         return pdf.save();

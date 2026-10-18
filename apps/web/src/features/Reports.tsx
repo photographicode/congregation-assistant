@@ -1,3 +1,4 @@
+import {keepReportDraft,loadReportDraft,clearReportDraft,offlineReportMessage,offlineUnstoredMessage} from '../../../../packages/core/report-draft';
 import {Toast} from '../../../../packages/ui/Notices';
 import {ServiceReportFields,ReportReceipt} from '../../../../packages/ui/ServiceReportFields';
 import {S21Button} from './S21Button';
@@ -30,6 +31,8 @@ export function Reports({context:c}:{context:Context}) {
  const [period,setPeriod]=React.useState(launch?.period||`${initial.getFullYear()}-${String(initial.getMonth()+1).padStart(2,'0')}`),[tab,setTab]=React.useState(canAttendance&&(launch?.action==='attendance'||!canService)?'attendance':'service'),[editing,setEditing]=React.useState(false),[busy,setBusy]=React.useState(false),[error,setError]=React.useState(''),[person,setPerson]=React.useState(''),[form,setForm]=React.useState({shared:true,studies:0,hours:0,comments:'',auxiliary:false}),[counts,setCounts]=React.useState<Record<string,string>>({});
  React.useEffect(()=>{if(!editing||!reportDirty)return;const leave=(event:Event)=>{event.preventDefault();pendingNavigation.current=(event as CustomEvent<()=>void>).detail;setCloseReport(true);};const unload=(event:BeforeUnloadEvent)=>{event.preventDefault();event.returnValue='';};window.addEventListener('ca:before-navigate',leave);window.addEventListener('beforeunload',unload);return()=>{window.removeEventListener('ca:before-navigate',leave);window.removeEventListener('beforeunload',unload);};},[editing,reportDirty]);
  const [y,m]=period.split('-').map(Number);const month=m-1,year=y+(month>=8?1:0);
+ const reportScope='private:'+c.account+':'+c.cong+':'+person+':'+year+':'+month;
+ React.useEffect(()=>{if(!editing||!person||reportDirty)return;let active=true;void loadReportDraft(reportScope).then(draft=>{if(active&&draft){setForm(draft);setReportDirty(true);}});return()=>{active=false;};},[editing,person,period]);
  const people=useQuery({queryKey:['report-people',c.cong,personal],queryFn:()=>personal?repo.reports.family():repo.people.list(),enabled:!demo&&canService});
  const rows=useQuery({queryKey:['reports',c.cong,year,month],queryFn:()=>repo.reports.list(year,month),enabled:!demo&&!personal&&canService&&tab==='service'});
  const own=useQuery({queryKey:['own-report',c.cong,person],queryFn:()=>repo.reports.own(person),enabled:!demo&&personal&&!!person});
@@ -43,11 +46,12 @@ export function Reports({context:c}:{context:Context}) {
  React.useEffect(()=>{if(launch?.action==='entry'&&(demo||people.isSuccess)){setPerson(persons[0]?.id||'');setReceipt(null);setReportDirty(false);setError('');setEditing(true);}const quick=(event:Event)=>{if((event as CustomEvent).detail==='entry'&&(canWrite||personal)){setForm(valuesFor(persons[0]?.id||''));setPerson(persons[0]?.id||'');setReceipt(null);setReportDirty(false);setError('');setEditing(true);}};window.addEventListener('ca:quick-action',quick);return()=>window.removeEventListener('ca:quick-action',quick);},[people.isSuccess,canWrite,personal]);
  async function save(){if(saving.current)return;saving.current=true;setBusy(true);setError('');try{
   if(!person)throw Error('Choose a publisher.');
+  if(!demo&&!navigator.onLine){const kept=await keepReportDraft(reportScope,form);throw Error(kept?offlineReportMessage:offlineUnstoredMessage);}
   const row=reportPayload({pub_id:person,shared_in_ministry:form.shared,studies:form.studies,hours:form.hours,comments:form.comments,is_ap:form.auxiliary},c.cong,year,month,crypto.randomUUID());
   if(demo)setLocal(old=>[...old.filter(r=>!(r.pub_id===person&&r.service_year===year&&r.month===month)),row]);
   else if(personal){if(!own.data)throw Error('Wait for the current reporting period to load.');await repo.reports.submit({p_publisher_id:person,p_shared:form.shared,p_studies:form.studies,p_hours:form.hours,p_comments:form.comments,p_expected:{period:own.data.report.period,record:own.data.report.record}});}
   else if(groupWriter)await repo.reports.groupSave(year,month,[row]);else await repo.reports.save([row]);
-  await cache.invalidateQueries({queryKey:personal?['own-report']:['reports']});await cache.invalidateQueries({queryKey:['annual-reports']});setReceipt('confirmed');setReportDirty(false);c.notify('Report saved.');
+  await cache.invalidateQueries({queryKey:personal?['own-report']:['reports']});await cache.invalidateQueries({queryKey:['annual-reports']});await clearReportDraft(reportScope);setReceipt('confirmed');setReportDirty(false);c.notify('Report saved.');
  }catch(e){setError((e as Error).message);}finally{saving.current=false;setBusy(false);}}
  async function invalidateReports(){await Promise.all(['reports','annual-reports','home-group-links','pdf-data'].map(key=>cache.invalidateQueries({queryKey:[key]})));}
  async function revokeAP(){if(!revokeTarget||revoking.current||!apManager)return;revoking.current=true;setBusy(true);setAPError('');try{const row=revokeTarget,started=Date.now();let id='demo',remaining=10000;if(demo)setLocal(old=>old.map(r=>r.id===row.id?{...r,is_ap:false}:r));else {const result=await repo.reports.revokeAP(row);id=result.actionId;remaining=Math.max(0,Math.min(10000,Date.parse(result.expiresAt)-Date.parse(result.serverTime)));}setAPUndo({id,row,deadline:started+remaining});setRevokeTarget(null);await invalidateReports();}catch(e){setAPError((e as Error).message);}finally{revoking.current=false;setBusy(false);}}

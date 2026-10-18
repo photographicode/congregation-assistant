@@ -1,0 +1,225 @@
+{
+  "fixture": "schedule-large.pdf",
+  "source": "work/pdf-r1-stress",
+  "pages": [
+    {
+      "page": 1,
+      "width": 595.28,
+      "height": 841.89,
+      "orientation": "portrait",
+      "runs": [
+        {
+          "text": "schedule-large",
+          "page": 1,
+          "x": 36,
+          "y": 794.89,
+          "w": 124.84800000000001,
+          "h": 17,
+          "font": "g_d48_f1",
+          "size": 17
+        },
+        {
+          "text": "Alexandra Catherine Montgomery Thomas Samuel X",
+          "page": 1,
+          "x": 36,
+          "y": 764.89,
+          "w": 417.632,
+          "h": 16,
+          "font": "g_d48_f1",
+          "size": 16
+        },
+        {
+          "text": "Synthetic assignment · 21 October 2026",
+          "page": 1,
+          "x": 36,
+          "y": 734.89,
+          "w": 298.016,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Quarter hours: 0.25 / 0.5 / 0.75",
+          "page": 1,
+          "x": 36,
+          "y": 710.89,
+          "w": 230.336,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "മരിരിയ",
+          "page": 1,
+          "x": 36,
+          "y": 671.89,
+          "w": 48.816,
+          "h": 16,
+          "font": "g_d48_f3",
+          "size": 16
+        },
+        {
+          "text": "തോതോതോമസ്സ്",
+          "page": 1,
+          "x": 88.976,
+          "y": 671.89,
+          "w": 50.831999999999994,
+          "h": 16,
+          "font": "g_d48_f3",
+          "size": 16
+        },
+        {
+          "text": "Synthetic assignment · 21 October 2026",
+          "page": 1,
+          "x": 36,
+          "y": 641.89,
+          "w": 298.016,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Quarter hours: 0.25 / 0.5 / 0.75",
+          "page": 1,
+          "x": 36,
+          "y": 617.89,
+          "w": 230.336,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "மரிரியாயா",
+          "page": 1,
+          "x": 36,
+          "y": 578.89,
+          "w": 58.672,
+          "h": 16,
+          "font": "g_d48_f4",
+          "size": 16
+        },
+        {
+          "text": "தாயாமஸ்",
+          "page": 1,
+          "x": 98.832,
+          "y": 578.89,
+          "w": 40.656000000000006,
+          "h": 16,
+          "font": "g_d48_f4",
+          "size": 16
+        },
+        {
+          "text": "Synthetic assignment · 21 October 2026",
+          "page": 1,
+          "x": 36,
+          "y": 548.89,
+          "w": 298.016,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Quarter hours: 0.25 / 0.5 / 0.75",
+          "page": 1,
+          "x": 36,
+          "y": 524.89,
+          "w": 230.336,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "मामारिरियामा",
+          "page": 1,
+          "x": 36,
+          "y": 485.89,
+          "w": 41.616,
+          "h": 16,
+          "font": "g_d48_f5",
+          "size": 16
+        },
+        {
+          "text": "थॉथॉमास",
+          "page": 1,
+          "x": 81.776,
+          "y": 485.89,
+          "w": 38.432000000000016,
+          "h": 16,
+          "font": "g_d48_f5",
+          "size": 16
+        },
+        {
+          "text": "Synthetic assignment · 21 October 2026",
+          "page": 1,
+          "x": 36,
+          "y": 455.89,
+          "w": 298.016,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Quarter hours: 0.25 / 0.5 / 0.75",
+          "page": 1,
+          "x": 36,
+          "y": 431.89,
+          "w": 230.336,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "ଓଡ଼ିଡ଼ିଆ",
+          "page": 1,
+          "x": 36,
+          "y": 392.89,
+          "w": 40.688,
+          "h": 16,
+          "font": "g_d48_f6",
+          "size": 16
+        },
+        {
+          "text": " ପ୍ରପ୍ରକାକାଶକା",
+          "page": 1,
+          "x": 80.848,
+          "y": 392.89,
+          "w": 54.239999999999995,
+          "h": 16,
+          "font": "g_d48_f6",
+          "size": 16
+        },
+        {
+          "text": "Synthetic assignment · 21 October 2026",
+          "page": 1,
+          "x": 36,
+          "y": 362.89,
+          "w": 298.016,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Quarter hours: 0.25 / 0.5 / 0.75",
+          "page": 1,
+          "x": 36,
+          "y": 338.89,
+          "w": 230.336,
+          "h": 16,
+          "font": "g_d48_f2",
+          "size": 16
+        },
+        {
+          "text": "Private · Page 1 of 1",
+          "page": 1,
+          "x": 36,
+          "y": 25,
+          "w": 74.208,
+          "h": 8,
+          "font": "g_d48_f2",
+          "size": 8
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

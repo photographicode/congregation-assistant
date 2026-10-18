@@ -1,7 +1,6 @@
 name: Native PDF golden and script contracts
 on:
-  pull_request:
-    paths: ['packages/pdf/**', 'apps/web/src/features/PdfStudio.tsx', 'assets/fonts/**', 'assets/pdf-templates/**', 'tests/**', 'scripts/*pdf*', 'package*.json', '.github/workflows/pdf-contracts.yml']
+  workflow_call:
   workflow_dispatch:
   schedule:
     - cron: '15 2 * * 0'
@@ -18,22 +17,28 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --ignore-scripts
-      - run: sudo apt-get update && sudo apt-get install -y poppler-utils python3-pil python3-numpy
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils python3-pil python3-numpy python3-fitz
       - run: node scripts/generate-v2-pdf-fixtures.mjs
-      - run: python3 scripts/check-pdf-parity.py
+      - run: node scripts/check-r1-pdf-semantic.mjs
+      - run: python3 scripts/check-r1-pdf-parity.py
+      - run: node scripts/generate-r1-pdf-fixtures.mjs
+      - run: node scripts/check-s89-contract.mjs
+      - run: node scripts/check-refinement-pdf.mjs
+      - run: node scripts/pdf-geometry.ts work/pdf-v2 work/s89-fixtures work/refinement-pdf work/pdf-r1-stress
       - run: node scripts/check-pdf-contract.mjs
       - run: node scripts/check-unicode-native-pdf.mjs
       - run: node scripts/check-schedule-pdf.mjs
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: node scripts/check-pdf-browser.cjs
-      - run: node scripts/build-trust-metrics.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: native-pdf-evidence
           path: |
             docs/review-evidence/pdf-*.json
+            docs/qa/r1-pdf*.json
+            tests/pdf-geometry/
             work/pdf-v2/
             work/pdf-unicode/
           retention-days: 14
