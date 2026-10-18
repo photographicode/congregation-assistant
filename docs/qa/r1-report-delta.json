@@ -1,0 +1,163 @@
+{
+  "run": 39166751071,
+  "url": "https://github.com/photographicode/congregation-assistant/actions/runs/39166751071",
+  "sourceCommit": "3013329e37213d06c7bd06e1ea75f2d14eee1ac9",
+  "views": 8820,
+  "hard": 0,
+  "softFindings": 12,
+  "jobs": [
+    {
+      "id": 117791176624,
+      "name": "refinement (3, css)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 756,
+          "hard": 0,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 0,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176667,
+      "name": "refinement (2, browser-default)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 1008,
+          "hard": 0,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 504,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176671,
+      "name": "refinement (2, css)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 756,
+          "hard": 0,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 378,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176683,
+      "name": "refinement (4, browser-default)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 1008,
+          "hard": 0,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 0,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176711,
+      "name": "refinement (1, css)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 756,
+          "hard": 0,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 378,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176720,
+      "name": "refinement (1, browser-default)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 1008,
+          "hard": 0,
+          "findings": 2,
+          "coverageErrors": 0
+        },
+        {
+          "views": 504,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791176735,
+      "name": "refinement (4, css)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 756,
+          "hard": 0,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 0,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    },
+    {
+      "id": 117791177519,
+      "name": "refinement (3, browser-default)",
+      "conclusion": "success",
+      "summaries": [
+        {
+          "views": 1008,
+          "hard": 0,
+          "findings": 1,
+          "coverageErrors": 0
+        },
+        {
+          "views": 0,
+          "hard": 0,
+          "findings": 0,
+          "coverageErrors": 0
+        }
+      ]
+    }
+  ],
+  "uiHash": "fe1cc5ee0e4ba5b543dee191156e03221d287c1973fb21989f1789975dab28a1"
+}

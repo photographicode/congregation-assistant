@@ -28,7 +28,7 @@ set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000973","email":"r
 set role authenticated;
 do $$begin begin perform public.save_congregation_reports('a','[{"cong_id":"a","pub_id":"refinement-a","service_year":2027,"month":9,"clear_auxiliary":true}]');raise exception 'Scheduler revoked AP';exception when insufficient_privilege then null;end;end $$;
 reset role;
-do $$declare p jsonb;board jsonb;w text=to_char(current_date,'IYYY-"W"IW');begin
+do $$declare p jsonb;board jsonb;w text=to_char(now() at time zone coalesce((select timezone from public.ca_meeting_settings where cong_id='a'),'Asia/Kolkata'),'IYYY-"W"IW');begin
 p=ca_private.safe_oclm_program('{"parts":[{"id":"Reading","type":"BibleReading","section":"treasures","title":"Synthetic reading","minutes":4,"assistant":false}],"reading":"Synthetic","sourceMonth":"2026-10","auxiliary":true,"meetingDate":"2026-10-21","startTime":"19:00"}');
 if p->>'auxiliary'<>'true' then raise exception 'Auxiliary flag not retained';end if;
 board=ca_private.noticeboard_snapshot('a',jsonb_build_object('assignments',jsonb_build_object(w,'{"Reading":{"personId":"main"},"ReadingAux":{"personId":"aux"},"AuxiliaryCounselor":{"personId":"counselor"}}'::jsonb),'weekDetails',jsonb_build_object(w,jsonb_build_object('program',p||'{"auxiliary":false}'::jsonb)),'people','[{"id":"main","name":"Main"},{"id":"aux","name":"Aux"},{"id":"counselor","name":"Counselor"}]'::jsonb));

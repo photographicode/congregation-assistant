@@ -1,6 +1,5 @@
 name: Native V2 layout matrix
 on:
-  pull_request:
   workflow_dispatch:
   schedule:
     - cron: '20 20 * * 0'
