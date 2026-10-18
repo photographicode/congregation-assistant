@@ -4,7 +4,7 @@ Authority: V3-POLISH-ORDERS.md. Refinement work is on `v3/resume`; production re
 
 ## Section 1 — front door: partial
 
-Verified generated website root → sole native app at `/app/`, configurable build BASE_URL, manifest id/start_url/scope, worker cache/scope, configured public/share links. Replaced stale parity claims with explicit capability acceptance and retained historical evidence. Missing restorations block legacy deletion. Repository Pages source setting remains an owner task after HTTP 403.
+Verified generated website root → sole native app at `/app/`, configurable build BASE_URL, manifest id/start_url/scope, worker cache/scope, configured public/share links. Replaced stale parity claims with explicit capability acceptance and retained historical evidence. The standalone-build proof initially failed because its scratch checkout omitted hosting/data/build helper inputs. The harness now includes all native inputs and passes without any V1 root code. Missing restorations block legacy deletion. Repository Pages source setting remains an owner task after HTTP 403.
 
 ## Existing refinement evidence
 
