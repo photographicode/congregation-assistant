@@ -4,12 +4,12 @@ import type {Program} from '../../packages/core/meeting';
 const reading:Program['parts'][number]={id:'Reading',title:'Earlier reading',type:'BibleReading',section:'treasures',minutes:4,assistant:false};
 const program=(parts:Program['parts']):Program=>({reading:'Reading',sourceMonth:'2026-10',reviewed:true,parts});
 test('source refresh preserves saved assignment IDs and chosen meeting date/time',()=>{
- const old={...program([reading]),meetingDate:'2026-10-15',startTime:'18:30'};
+ const old={...program([reading]),meetingDate:'2026-10-15',startTime:'18:30',auxiliary:false};
  const source={...program([{...reading,id:'Part3',title:'Published reading'}]),sourceUrl:'https://wol.jw.org/en/wol/d/r1/lp-e/202026257'};
  const assignments={Reading:{personId:'reader'},ReadingAux:{personId:'other'},ReadingAuxAssistant:{personId:'assistant'}};
  const next=refreshProgram(old,source);
  expect(next.parts[0]).toEqual({...source.parts[0],id:'Reading'});
- expect(next.meetingDate).toBe(old.meetingDate);expect(next.startTime).toBe(old.startTime);
+ expect(next.auxiliary).toBe(false);expect(next.meetingDate).toBe(old.meetingDate);expect(next.startTime).toBe(old.startTime);
  expect(assignments[next.parts[0].id]).toEqual({personId:'reader'});
  expect(old.parts[0].title).toBe('Earlier reading');
 });
