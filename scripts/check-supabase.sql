@@ -158,3 +158,7 @@ reset role;rollback;
 \i scripts/check-administrator-reminders.sql
 
 \i scripts/check-report-retention.sql
+
+-- Current additive contracts overlay the historical baseline before refinement checks.
+\i supabase/ALL-V2.sql
+\i scripts/check-refinement.sql

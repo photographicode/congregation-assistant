@@ -36,5 +36,12 @@ if board->'assignments'->w ? 'ReadingAux' or board->'assignments'->w ? 'Auxiliar
 board=ca_private.noticeboard_snapshot('a',jsonb_build_object('assignments',jsonb_build_object(w,'{"Reading":{"personId":"main"},"ReadingAux":{"personId":"aux"}}'::jsonb),'weekDetails',jsonb_build_object(w,jsonb_build_object('program',p)),'people','[{"id":"main","name":"Main"},{"id":"aux","name":"Aux"}]'::jsonb));
 if not (board->'assignments'->w ? 'ReadingAux') then raise exception 'Enabled auxiliary assignment missing';end if;
 end $$;
+-- Publisher edits retain unrelated fields and the canonical gender.
+set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000971","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';
+set role authenticated;
+select public.ca_v3_save_person('a','{"id":"refine-gender","name":"Synthetic Publisher","group":"","email":"","gender":"Female","phone":"+919876543210","address":"Synthetic address","expected_login":[]}',false);
+select public.ca_v3_save_person('a','{"id":"refine-gender","name":"Synthetic Publisher","group":"","email":"","gender":"Male","phone":"+919876543210","address":"Synthetic address","expected_login":[]}',false);
+reset role;
+do $$begin if not exists(select 1 from public.publishers where id='refine-gender' and gender='Male' and phone='+919876543210' and address='Synthetic address') then raise exception 'Gender or unrelated field persistence failed';end if;end $$;
 rollback;
 \echo PASS refinement AP data preservation/CAS/role/group isolation and auxiliary metadata/public filtering
