@@ -162,3 +162,4 @@ reset role;rollback;
 -- Current additive contracts overlay the historical baseline before refinement checks.
 \i supabase/ALL-V2.sql
 \i scripts/check-refinement.sql
+\i scripts/check-ap-submission-time.sql
