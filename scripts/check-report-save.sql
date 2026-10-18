@@ -1,5 +1,6 @@
 \set ON_ERROR_STOP on
 begin;
+insert into auth.users(id,email,email_confirmed_at) values('a1111111-1111-4111-8111-111111111111','admin-a@example.com',now());
 update public.congregations set status='active' where id in('a','b');
 set request.jwt.claims='{"sub":"a1111111-1111-4111-8111-111111111111","email":"admin-a@example.com","app_metadata":{"provider":"google"}}';
 -- Simulate a report first submitted by a publisher: a UUID, not a browser-generated ID.

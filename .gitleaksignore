@@ -1,0 +1,19 @@
+# Exact historical fingerprints only; future findings remain blocking.
+# Reviewed non-secret documentation/UI text or retired browser-only password constant; see docs/security-historical-findings.md.
+898632593e9c313de786fb049a034dd3cb4d9612:packages/core/locales/en.generated.json:generic-api-key:173
+# Reviewed non-secret documentation/UI text or retired browser-only password constant; see docs/security-historical-findings.md.
+ac703172394b1e5ae77ef74831281f4f6cc9cbe8:docs/domain-and-email.md:generic-api-key:20
+# Public Supabase anon JWT (payload role=anon, issuer=supabase); not a privileged key.
+56c729bf3af0f77685bf5f6ebc3d499899da2c4d:index.html:jwt:2785
+# Public Supabase anon JWT (payload role=anon, issuer=supabase); not a privileged key.
+e7b438480a0296b68a8c99cbf0d2107b3acd29c7:staging/index.html:jwt:2785
+# Public Supabase anon JWT (payload role=anon, issuer=supabase); not a privileged key.
+0ad372cab37eb994faca945a2101bfd13501838f:staging/index.html:jwt:2785
+# Reviewed non-secret documentation/UI text or retired browser-only password constant; see docs/security-historical-findings.md.
+99324ea23795f8744f5f0de291231b47f14bf169:index_CA_Midweek_Integrated.html:generic-api-key:2812
+# Public Supabase anon JWT (payload role=anon, issuer=supabase); not a privileged key.
+99324ea23795f8744f5f0de291231b47f14bf169:index_CA_Midweek_Integrated.html:jwt:2807
+# Public Supabase anon JWT (payload role=anon, issuer=supabase); not a privileged key.
+82598e136fff4788bfc9b3f8dd41e5870768b815:secretary-assistant-oclm-v2.html:jwt:1838
+# Reviewed non-secret documentation/UI text or retired browser-only password constant; see docs/security-historical-findings.md.
+82598e136fff4788bfc9b3f8dd41e5870768b815:secretary-assistant-oclm-v2.html:generic-api-key:1843

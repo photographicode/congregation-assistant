@@ -130,7 +130,7 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
         }else{next();for(const section of sections){if(y<100)next();line(section.heading,true);y-=6;for(const value of section.lines)line(value);y-=15;}}
         pdf.getPages().forEach((p,i)=>p.drawText('Private · Page '+(i+1)+' of '+pdf.getPageCount(),{x:margin,y:25,size:8,font,color:ink}));
         if(!booklet)return pdf.save();
-        while(pdf.getPageCount()%4)pdf.addPage([W,H]).drawText(' ',{x:1,y:1,font,size:1});const output=await PDFDocument.create(),embedded=await output.embedPdf(await pdf.save(),Array.from({length:pdf.getPageCount()},(_,i)=>i)),n=embedded.length;
+        while(pdf.getPageCount()%4)pdf.addPage([W,H]).drawRectangle({x:0,y:0,width:W,height:H,color:rgb(1,1,1)});const output=await PDFDocument.create(),embedded=await output.embedPdf(await pdf.save(),Array.from({length:pdf.getPageCount()},(_,i)=>i)),n=embedded.length;
         for(let sheet=0;sheet<n/4;sheet++)for(const pair of [[n-1-2*sheet,2*sheet],[2*sheet+1,n-2-2*sheet]]){const spread=output.addPage([W*2,H]);spread.drawPage(embedded[pair[0]],{x:0,y:0,width:W,height:H});spread.drawPage(embedded[pair[1]],{x:W,y:0,width:W,height:H});}
         return output.save();
     }
