@@ -256,3 +256,7 @@ The latest V3-POLISH-ORDERS.md supersedes conflicting earlier instructions. F1's
 The expanded browser-font sample measured 1,120 views with four Settings widows; its 280-view Settings rerun is clean after repair. This does not complete whole-app/site geometry or visual acceptance. No contact sheets were rendered. The supplied theme hash is unchanged. Production data was not reset, and no new production migration was applied under these orders. See POLISH-REPORT.md for exact tests and outstanding scope; previous full V3 parity checkboxes remain unaccepted.
 
 R1 shipping scope: docs/V3-R1-SHIP-ORDERS.md is current. Local PDF geometry (49 fixtures), reviewed Noto goldens (17), 294-view layout sample and safe manual offline retry pass; full Actions, production AP migration snapshot and live deployment checks are still pending at this checkpoint. R2 order is recorded in POLISH-REPORT. No DNS or billing activation is claimed.
+
+## R1 shipped
+
+Source 17128b8 / public 22fd986 deployed; both actual URLs pass browser/worker/version and assistant-zero-network checks. R1 gates pass, including 37,044 full-matrix views and 8,820 report-delta views with zero HARD findings, 49 PDF fixtures and 17 Noto goldens. AP timestamp/audit/Undo migrations are applied without rewriting report rows. Function-only backup scope and the blocked full-row export are explicit in POLISH-REPORT. R2 and owner Pages-setting work remain; this does not mark full V1 parity or billing complete.

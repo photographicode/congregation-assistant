@@ -1,3 +1,28 @@
+# R1 release — deployed and verified
+
+Both repositories are merged and published. Source release: [17128b8](https://github.com/photographicode/congregation-assistant/commit/17128b8b89d449644c3c448a06e825efc72f245e), [PR #52](https://github.com/photographicode/congregation-assistant/pull/52), [successful deployment/live check](https://github.com/photographicode/congregation-assistant/actions/runs/39168522590). Public release: [22fd986](https://github.com/photographicode/Congregation-Assistant_Public/commit/22fd9867eff98f4419a404be068e667e73e281d2), [PR #19](https://github.com/photographicode/Congregation-Assistant_Public/pull/19), [successful deployment/live check](https://github.com/photographicode/Congregation-Assistant_Public/actions/runs/39168535386). The public runtime is built from source 3013329; later source commits change release tests, evidence and migration scope without changing that runtime.
+
+- [Public website](https://photographicode.github.io/Congregation-Assistant_Public/) · [app](https://photographicode.github.io/Congregation-Assistant_Public/app/) · [fictional review demo](https://photographicode.github.io/Congregation-Assistant_Public/app/?demo=admin).
+- [Source website](https://photographicode.github.io/congregation-assistant/) · [app](https://photographicode.github.io/congregation-assistant/app/).
+
+Live Chromium checks on both real URLs confirm expected version metadata, correct manifest/service-worker scope, a controlling worker, zero browser errors, zero assistant requests during review and zero demo backend requests. These ran in GitHub Actions: this managed workspace does not allow github.io egress. Evidence is [qa/r1-live.json](qa/r1-live.json).
+
+Release checks: full matrix 37,044 views plus report delta 8,820 views, zero HARD findings/coverage errors; 36 and 12 soft findings respectively remain. The local 294-view sample has zero findings. Forty-nine PDF fixtures pass geometry/font checks; 17 reviewed Noto goldens pass selectable text, page count/geometry and 150-dpi pixel comparisons <=0.2%; 3,433 source-data retention assertions pass. These are sampled bounds/alignment checks, not a proof for every possible input. Original form-reference hashes, the immutable v1-final tag and supplied themes.css hash remain unchanged. PDF/UI contact sheets were reviewed within the image limit.
+
+The two AP migrations are applied. Affected function definitions were snapshotted, encrypted and round-trip verified; freshness was checked before applying. No existing report/publisher rows were rewritten. Production metadata confirms audit RLS, no direct authenticated table read/write, no anonymous AP execution, and invoker public wrappers. Automatic approval review rejected the full production-row export because authorization for the sensitive payload/destination was not established; no full row-data snapshot was taken. The narrow function-only snapshot and committed rollback paths cover these additive, row-preserving changes.
+
+**Owner publishing action remains:** select **GitHub Actions** under [source repository Settings → Pages](https://github.com/photographicode/congregation-assistant/settings/pages). The workflow token's settings update returned 403 and an older branch-based Pages workflow is still present. The verified native artifact has been published; this setting prevents future source-branch builds from replacing it. Public mirror branch contents already contain the same native site/app. No DNS, CNAME, OAuth dashboard or billing activation was performed.
+
+Supabase advisors still report the existing public-function/password-policy warnings (13 anonymous definer functions, 95 authenticated definer functions, password-protection warning); these were not newly granted by R1. The audit table adds an expected [RLS-without-policy information notice](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy): it is private and deliberately has no direct client access. Three new FK-supporting audit indexes have expected [unused-index notices](https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index) before use. Existing [function-grant warnings](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable) and [password-policy warning](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) remain documented rather than presented as a clean whole-project audit.
+
+Not verified: real phones, physical printers, WhatsApp delivery, Razorpay, a real-user Google sign-in/report submission, or Letter-specific printer profiles. The prefixed isolated PDF test-server parent-data route remains open; the native-root PDF browser test and both packaged/live-site checks passed. No production record was used as a test fixture.
+
+R2 order: **front-door cleanup → pricing config/page → website visual lock → domain switch → translation coverage → billing**. Additional known refinements remain in the historical notes below, including app-wide picker expansion, the third-classroom settings UI, wider same-day duty/weekend cautions and the soft layout findings.
+
+---
+
+## Implementation and verification history
+
 # Polish report
 
 Authority: V3-POLISH-ORDERS.md. Refinement work is on `v3/resume`; production remains at the verified NEXT deployment. No polish merge/deployment has occurred.

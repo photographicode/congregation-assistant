@@ -1,3 +1,16 @@
+# Current owner handover
+
+R1 is live: https://photographicode.github.io/Congregation-Assistant_Public/app/ (use ?demo=admin to review fictional examples). Source/public commits and actual live checks are in POLISH-REPORT.md.
+
+1. In source repository Settings → Pages, set Source to GitHub Actions. The workflow token cannot change it (403); a competing branch publisher remains. The currently verified native artifact is deployed.
+2. Keep CUSTOM_DOMAIN_READY unset/false until the owner completes the documented DNS/OAuth/CORS steps. No CNAME or DNS switch was made.
+3. Before a future data-changing migration, arrange an approved full-data backup. Automatic review rejected the full-row export in this run; R1 used a verified encrypted snapshot of affected function definitions and additive/down scripts, with no report-row rewrite.
+4. Follow the R2 order: front-door cleanup, pricing config/page, website visual lock, domain switch, translation coverage, billing.
+
+Real phone/printer checks, WhatsApp delivery, real-user Google login/report submission and Razorpay remain unverified. No EPUB or fixture upload is requested.
+
+---
+
 # Owner setup and release tasks
 
 The implementation report and PARITY contain product work that still blocks release. Account setup alone will not satisfy those gates.

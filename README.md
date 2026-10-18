@@ -1,3 +1,5 @@
+R1 is deployed and live-verified in both repositories. [Open the public app](https://photographicode.github.io/Congregation-Assistant_Public/app/) or [review the fictional demo](https://photographicode.github.io/Congregation-Assistant_Public/app/?demo=admin). [Release evidence, deployed commits, owner Pages-setting action and R2 scope](docs/POLISH-REPORT.md).
+
 R1 refinement shipping follows [V3-R1-SHIP-ORDERS](docs/V3-R1-SHIP-ORDERS.md). Current evidence and open R2 items are in [POLISH-REPORT](docs/POLISH-REPORT.md). Domain activation and pricing/billing remain separate from R1.
 
 > **Polish work is not yet a release.** The active orders are [V3 POLISH](docs/V3-POLISH-ORDERS.md); tested changes and remaining release blockers are recorded in [POLISH-REPORT](docs/POLISH-REPORT.md). Production remains at the verified NEXT deployment until every required gate passes. The public website design is locked.

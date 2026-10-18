@@ -1,0 +1,83 @@
+{
+  "status": "R1 deployed and live-verified",
+  "source": {
+    "repository": "photographicode/congregation-assistant",
+    "pr": 52,
+    "deployedCommit": "17128b8b89d449644c3c448a06e825efc72f245e",
+    "run": 39168522590,
+    "proof": {
+      "site": "https://photographicode.github.io/congregation-assistant/",
+      "app": "https://photographicode.github.io/congregation-assistant/app/",
+      "sourceCommit": "17128b8b89d449644c3c448a06e825efc72f245e",
+      "serviceWorkerControlled": true,
+      "assistantRequests": 0,
+      "browserErrors": [],
+      "demoCloudRequests": 0
+    }
+  },
+  "public": {
+    "repository": "photographicode/Congregation-Assistant_Public",
+    "pr": 19,
+    "deployedCommit": "22fd9867eff98f4419a404be068e667e73e281d2",
+    "runtimeSource": "3013329e37213d06c7bd06e1ea75f2d14eee1ac9",
+    "run": 39168535386,
+    "proof": {
+      "site": "https://photographicode.github.io/Congregation-Assistant_Public/",
+      "app": "https://photographicode.github.io/Congregation-Assistant_Public/app/",
+      "sourceCommit": "3013329e37213d06c7bd06e1ea75f2d14eee1ac9",
+      "serviceWorkerControlled": true,
+      "assistantRequests": 0,
+      "browserErrors": [],
+      "demoCloudRequests": 0
+    }
+  },
+  "validation": {
+    "fullMatrix": {
+      "views": 37044,
+      "hard": 0,
+      "soft": 36
+    },
+    "reportDelta": {
+      "views": 8820,
+      "hard": 0,
+      "soft": 12
+    },
+    "localSample": {
+      "views": 294,
+      "findings": 0
+    },
+    "pdfFixtures": 49,
+    "notoGoldens": 17,
+    "goldenDpi": 150,
+    "goldenPixelTolerance": 0.002,
+    "dataRetentionAssertions": 3433
+  },
+  "production": {
+    "migrations": [
+      "v3_polish_ap_review",
+      "v3_polish_ap_undo"
+    ],
+    "existingReportRowsRewritten": false,
+    "fullRowExport": "Rejected by automatic approval review; no row data exported.",
+    "snapshot": "Three affected function definitions only; encrypted, round-trip verified and checked fresh before apply.",
+    "auditRLS": true,
+    "directClientAuditRead": false,
+    "directClientAuditWrite": false,
+    "anonymousAPExecute": false,
+    "publicWrappersInvoker": true
+  },
+  "limits": [
+    "Real phones, printers, WhatsApp delivery and Razorpay not verified.",
+    "Standalone prefixed-app PDF harness parent-data mounting remains open; native-root CI and packaged/live site checks passed.",
+    "Source Pages publishing setting update returned GitHub API 403; owner must select GitHub Actions to prevent competing branch builds.",
+    "Full-row backup was not authorized by automatic review; no data-changing migration was performed."
+  ],
+  "r2": [
+    "Front-door cleanup",
+    "Pricing config/page",
+    "Website visual-lock test",
+    "Domain switch",
+    "Translation coverage",
+    "Billing"
+  ]
+}
