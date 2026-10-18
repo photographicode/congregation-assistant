@@ -1,0 +1,24 @@
+{
+  "currency": "INR",
+  "gstInclusive": true,
+  "paidStartDate": "2027-05-01",
+  "foundingFree": true,
+  "reverseTrialDays": 30,
+  "trialNoticeDays": [7, 3, 1],
+  "defaultBilling": "annual",
+  "annualCaption": "Save two months",
+  "hardshipDiscountPercent": 50,
+  "hardshipByRequest": true,
+  "founders": {"capacity": 100, "discountPercent": 30, "priceLockYears": 3, "requiresConfirmedPayment": true},
+  "tiers": [
+    {"id": "small", "label": "Small", "minimumPublishers": 0, "maximumPublishers": 50, "annualINR": 1999, "monthlyINR": 199, "threeYearINR": 3998, "annualUSD": 29, "founderAnnualINR": 1399},
+    {"id": "standard", "label": "Standard", "minimumPublishers": 51, "maximumPublishers": 120, "annualINR": 2999, "monthlyINR": 299, "threeYearINR": 5998, "annualUSD": 49, "founderAnnualINR": 2099},
+    {"id": "large", "label": "Large", "minimumPublishers": 121, "maximumPublishers": null, "annualINR": 4499, "monthlyINR": 449, "threeYearINR": 8998, "annualUSD": 79, "founderAnnualINR": 3149}
+  ],
+  "lite": {"price": 0, "forever": true, "features": ["people", "groups", "households", "manual-report-entry", "single-s21", "attendance-entry", "s88-s3-view", "manual-midweek-weekend", "automatic-parts", "emergency-list", "csv-import-export", "security", "export-all", "delete-all"]},
+  "complete": {"features": ["batch-zip-pdf", "co-visit-pack", "s21-download-filters", "chase-queue", "scheduled-reminders", "group-report-links", "household-reporting", "auto-assign-week-range", "s89-bulk-send", "approved-duty-pools-rotation", "field-service-meetings", "paper-scan-import", "more-than-two-admins", "priority-support"]},
+  "expiryActions": ["Keep Lite", "Subscribe", "Export & delete"],
+  "invoiceFields": ["legalName", "address", "optionalGSTIN"],
+  "provider": "Razorpay",
+  "activation": "pending-server-entitlements-and-payment-verification"
+}
