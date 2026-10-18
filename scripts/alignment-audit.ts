@@ -17,6 +17,7 @@ export function inspectAlignment(){
  }
  const fields=[...scope.querySelectorAll<HTMLInputElement>('.report-activity input')].filter(visible);if(fields.length===2){const a=fields[0].getBoundingClientRect(),b=fields[1].getBoundingClientRect();if(Math.abs(a.left-b.left)>1&&(Math.abs(a.top-b.top)>1||Math.abs(a.height-b.height)>1))report('field-alignment',fields[1],'Same-row report inputs differ in top edge or height');}
  if(dialog){const b=dialog.getBoundingClientRect();if(b.top< -1||b.bottom>innerHeight+1)report('dialog-viewport',dialog,'Dialog exceeds visible viewport');}
+ if(!dialog){const nav=document.querySelector('.bottom-tabs');if(nav&&visible(nav)){const n=nav.getBoundingClientRect(),height=window.visualViewport?.height||innerHeight;for(const el of document.querySelectorAll<HTMLElement>('button,input:not([type=hidden]),select,textarea,a[href]')){if(!visible(el)||nav.contains(el))continue;const b=el.getBoundingClientRect();let top=Math.max(0,b.top),bottom=Math.min(height,b.bottom);for(let parent=el.parentElement;parent;parent=parent.parentElement){if(['auto','scroll','hidden'].includes(getComputedStyle(parent).overflowY)){const p=parent.getBoundingClientRect();top=Math.max(top,p.top);bottom=Math.min(bottom,p.bottom);}}if(top<=b.top&&bottom>=b.bottom&&b.bottom>n.top+1&&b.top<n.bottom-1&&b.right>n.left&&b.left<n.right)report('navigation-overlap',el,'Interactive target lies under navigation');}}}
  return findings;
 }
 async function runAudit(){

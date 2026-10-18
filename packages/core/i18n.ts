@@ -1,6 +1,10 @@
 import generated from './locales/en.generated.json';
 import drafts from './locales/app-drafts.json';
 const en={
+ 'report.shared':'Shared in ministry',
+ 'report.didNotShare':'Did not share',
+ 'units.hours':'hours',
+ 'units.studies':'studies',
  'language.label':'Language',
  'language.browserNote':"Your browser’s built-in translate may send page text to Google; names and numbers in this app are protected from\u00a0it.",
  'language.draft':'Draft translation; remaining text is shown in English.',
@@ -86,7 +90,7 @@ const en={
  'refine.pendingTitle':'Saved on this device',
  'refine.receipt':'Report Submitted',
  'refine.pendingBody':'Your report is waiting to sync. Server receipt is not yet confirmed.',
- 'refine.receiptBody':'Thank you. Your field service report has been securely recorded.',
+ 'refine.receiptBody':'Thank you. Your field service report has been securely recorded. All set.',
  'refine.another':'Submit Another Report',
  'refine.timing':'Timing conflict: both halls use this person for the same part. ',
  'refine.also':'Also assigned: ',
