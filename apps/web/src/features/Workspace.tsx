@@ -1,3 +1,5 @@
+import type {Person} from './publisher-record';
+import {getUILocale,setUILocale,subscribeUILocale,localeMetadata,type Locale} from '../../../../packages/core/i18n';
 import {watchtowerWeek} from './publication-data';
 import {InstallApp} from './InstallApp';
 import {WeekendTalkHistory} from './WeekendTalkHistory';
@@ -57,20 +59,8 @@ import {Subscription} from "./Subscription";
 import { RecordsExport } from "./RecordsExport";
 import { Sessions } from "./Sessions";
 import catalogue from "../../../../capabilities.json";
+const PublisherEditor=lazy(()=>import('./PublisherEditor'));
 const PdfStudio=lazy(()=>import("./PdfStudio"));
-type Person = {
-  id: string;
-  name: string;
-  group: string;
-  email: string;
-  phone: string;
-  address: string;
-  gender?: string;
-  isElder?: boolean;
-  isMS?: boolean;
-  expected_login?: string[];
-  dob?: string; baptized?: string; hope?: string; familyHeadId?: string; emergencyName?: string; emergencyRelationship?: string; emergencyPhone?: string; spiritualStatus?: string; isSFTS?: boolean; isRP?: boolean; isSP?: boolean; isFM?: boolean;
-};
 const samplePeople: Person[] = demoPublishers;
 const initialGroups = [
   { id: "g1", name: "Group 1" },
@@ -127,6 +117,7 @@ function download(value: unknown, name: string, type = "application/json") {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+const appBaseURL=import.meta.env.BASE_URL;
 export default function Workspace({
   route,
   go,
@@ -136,6 +127,7 @@ export default function Workspace({
   go: (s: string) => void;
   context: Context;
 }) {
+  React.useSyncExternalStore(subscribeUILocale,getUILocale,getUILocale);
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
     [groupsLoaded,setGroupsLoaded] = useState(demo),
@@ -349,11 +341,11 @@ export default function Workspace({
       if (publish)
         if (result.token)
           setPublished(
-            location.origin + import.meta.env.BASE_URL + "?form=weekend#token=" + encodeURIComponent(result.token),
+            location.origin + appBaseURL + "?form=weekend#token=" + encodeURIComponent(result.token),
           );
     } else {
       setWeekendRevision((r) => r + 1);
-      if (publish) setPublished("Demo preview only — no live link is created.");
+      if (publish) setPublished("Fictional schedule — no public link is created.");
     }
     setWeekendDirty(false);
     c.notify(publish ? "Weekend schedule published." : "Weekend draft saved.");
@@ -1046,7 +1038,7 @@ export default function Workspace({
                   >
                     Publish weekend
                   </button>
-                  <button onClick={() => setSub("print")}>Print preview</button>
+                  <button onClick={() => setSub("print")}>Review print layout</button>
                 </div>
                 {published && (
                   <p role="status">
@@ -1099,7 +1091,7 @@ export default function Workspace({
                 </label>
               </div>
               <p>
-                Use your browser’s Print or Save as PDF. The preview below uses
+                Use your browser’s Print or Save as PDF. The schedule below uses
                 your selected size.
               </p>
               <div className="actions">
@@ -1194,7 +1186,7 @@ export default function Workspace({
             </p>
           </section>
           <section className="card stack">
-            <h2>Message preview</h2>
+            <h2>Review message</h2>
             <div className="bubble">
               {formatMessage(template, messageValues)}
             </div>
@@ -1332,6 +1324,9 @@ export default function Workspace({
             </div>
             <label>Fit to my screen<select value={appearance.fit} onChange={e=>appearance.set({fit:e.target.value as typeof appearance.fit})}>{["auto","compact","comfortable","large"].map(f=><option key={f} value={f}>{f[0].toUpperCase()+f.slice(1)}</option>)}</select></label>
             <p className="chip">{appearance.fit === "auto" ? "Automatically adjusted for screen size and text" : "Your chosen screen fit"}</p>
+            <label>{t('language.label')}<select value={getUILocale()} onChange={e=>setUILocale(e.target.value as Locale)}>{Object.entries(localeMetadata).map(([code,meta])=><option key={code} value={code}>{meta.nativeName}</option>)}</select></label>
+            {getUILocale()!=='en'&&<p>{t('language.draft')}</p>}
+            <p>{t('language.browserNote')}</p>
             <label>Time format<select value={appearance.clock} onChange={e=>appearance.set({clock:e.target.value as typeof appearance.clock})}><option value="locale">Follow language</option><option value="12">12 hour</option><option value="24">24 hour</option></select></label>
             <Greeting name={c.firstName} timezone={setup.timezone} locale={setup.language} clock={appearance.clock}/>
             <h3>Adapted to your device</h3>
@@ -1435,13 +1430,13 @@ export default function Workspace({
           <section className="card stack">
             <h2>Help & install</h2>
             <InstallApp/>
-            <a href={import.meta.env.BASE_URL+"site/android/"}>Android and iOS installation guide</a>
+            <a href={appBaseURL+"site/android/"}>Android and iOS installation guide</a>
             <a href={`mailto:${config.SUPPORT_EMAIL}`}>Contact support</a>
             <p className="muted">
               Build: {import.meta.env.VITE_BUILD_HASH || "development"} ·
               Independent and unofficial.
             </p>
-            <a href={import.meta.env.BASE_URL+".well-known/build-hash.txt"}>
+            <a href={appBaseURL+".well-known/build-hash.txt"}>
               Verify published build hash
             </a>
 
@@ -1471,170 +1466,7 @@ export default function Workspace({
         </div>
       )}
       {body}
-      <Dialog
-        open={!!editing}
-        title={
-          people.some((p) => p.id === editing?.id)
-            ? "Edit publisher"
-            : "Add publisher"
-        }
-        dirty={dirty}
-        onClose={() => {
-          setEditing(null);
-          setDirty(false);
-        }}
-      >
-        {editing && (
-          <form
-            className="stack"
-            onSubmit={(e) => {
-              e.preventDefault();
-              run(savePerson);
-            }}
-          >
-            <h3>Basics</h3>
-            <div className="form-grid">
-              <label>
-                Full name
-                <input
-                  required
-                  value={editing.name}
-                  onChange={(e) => {
-                    setEditing((p) => (p ? { ...p, name: e.target.value } : p));
-                    setDirty(true);
-                  }}
-                />
-              </label>
-              <fieldset className="publisher-gender" aria-describedby="publisher-gender-help">
-                <legend>{t('polish.gender')} <span aria-hidden="true">*</span></legend>
-                <div className="gender-segments">
-                  {(['Male','Female'] as const).map(value=><label key={value} className={editing.gender===value?'selected':''}><input required type="radio" name="publisher-gender" value={value} checked={editing.gender===value} onInvalid={e=>e.currentTarget.setCustomValidity(t('polish.chooseGender'))} onChange={e=>{e.currentTarget.form?.querySelectorAll<HTMLInputElement>('[name=publisher-gender]').forEach(input=>input.setCustomValidity(''));setEditing(p=>p?{...p,gender:value}:p);setDirty(true);}}/>{t(value==='Male'?'polish.brother':'polish.sister')}</label>)}
-                </div>
-                <small id="publisher-gender-help">{t('polish.chooseGender')}</small>
-              </fieldset>
-              <label>
-                Service group
-                <select
-                  value={editing.group}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, group: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                >
-                  <option value="">No group</option>
-                  {groups.map((g) => (
-                    <option key={g.id}>{g.name}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            <h3>Sign-in & contact</h3>
-            <label htmlFor="v2-publisher-email">
-              Email (for sign-in)
-              <input
-                id="v2-publisher-email"
-                aria-describedby="v2-publisher-email-hint"
-                type="email"
-                value={editing.email}
-                disabled={busy || (!admin && !demo)}
-                onChange={(e) => {
-                  setEditing((p) => (p ? { ...p, email: e.target.value } : p));
-                  setDirty(true);
-                  setShared(false);
-                }}
-              />
-            </label>
-            <small id="v2-publisher-email-hint">
-              Optional. A shared email grants household report submission only.
-            </small>
-            {household.length > 0 && !shared && !existingShared && (
-              <section className="banner">
-                <p>
-                  This email is already used by{" "}
-                  {household.map((p) => p.name).join(", ")}. Treat as a
-                  household so one sign-in can report for everyone?
-                </p>
-                <div className="actions">
-                  <button type="button" onClick={() => setShared(true)}>
-                    Yes, share reports
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setEditing((p) => (p ? { ...p, email: "" } : p))
-                    }
-                  >
-                    No, use a different email
-                  </button>
-                </div>
-              </section>
-            )}
-            {(shared||existingShared) && (
-              <p role="status">
-                Household reporting confirmed. Contacts and private details stay
-                separate.
-              </p>
-            )}
-            <div className="form-grid">
-              <label>
-                Phone
-                <input
-                  type="tel"
-                  value={editing.phone}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, phone: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                />
-              </label>
-              <label>
-                Address
-                <input
-                  value={editing.address}
-                  onChange={(e) => {
-                    setEditing((p) =>
-                      p ? { ...p, address: e.target.value } : p,
-                    );
-                    setDirty(true);
-                  }}
-                />
-              </label>
-            </div>
-            <details><summary>Household, emergency contact & publisher record</summary>
-            {demo||c.caps.extended_people?<div className="stack">
-              <div className="form-grid">{([['dob','Date of birth'],['baptized','Date of baptism'],['emergencyName','Emergency contact name'],['emergencyRelationship','Relationship'],['emergencyPhone','Emergency phone'],['spiritualStatus','Publisher status']] as const).map(([key,label])=><label key={key}>{label}<input type={key==='dob'||key==='baptized'?'date':key==='emergencyPhone'?'tel':'text'} value={editing[key]||''} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.value}:p);setDirty(true);}}/></label>)}</div>
-              <label>Household head<select value={editing.familyHeadId||''} onChange={e=>{setEditing(p=>p?{...p,familyHeadId:e.target.value}:p);setDirty(true);}}><option value="">This person is the household head</option>{people.filter(p=>p.id!==editing.id&&!p.familyHeadId).map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
-              <label>Hope<select value={editing.hope||''} onChange={e=>{setEditing(p=>p?{...p,hope:e.target.value}:p);setDirty(true);}}><option value="">Not recorded</option><option>Other Sheep</option><option>Anointed</option></select></label>
-              {([['isElder','Elder'],['isMS','Ministerial servant'],['isRP','Regular pioneer'],['isSP','Special pioneer'],['isFM','Field missionary'],['isSFTS',t('sfts.name')]] as const).map(([key,label])=><label className="check" key={key}><input type="checkbox" checked={Boolean(editing[key])} onChange={e=>{setEditing(p=>p?{...p,[key]:e.target.checked}:p);setDirty(true);}}/>{label}</label>)}<p>{t('sfts.derived')}</p>
-            </div>:<p>Ask your administrator to apply the extended publisher database update, then reopen this record.</p>}</details>
-            {error && (
-              <p role="alert" className="error">
-                {error}
-              </p>
-            )}
-            <div className="actions">
-              <button type="submit" className="primary" disabled={busy}>
-                Save publisher & email
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (!dirty || confirm("Discard changes?")) {
-                    setEditing(null);
-                    setDirty(false);
-                  }
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
-      </Dialog>
+      {editing&&<Suspense fallback={<p role="status">{t("common.loading")}</p>}><PublisherEditor extendedPeople={Boolean(c.caps.extended_people)} people={people} editing={editing} setEditing={setEditing} dirty={dirty} setDirty={setDirty} admin={admin} busy={busy} demo={demo} groups={groups} shared={shared} setShared={setShared} household={household} existingShared={existingShared} error={error} run={run} savePerson={savePerson}/></Suspense>}
       <Dialog
         open={wizard}
         onClose={() => {if(dirty&&wizardSnapshot.current)setSetup(wizardSnapshot.current);setDirty(false);setError('');setWizard(false);}}
@@ -1801,7 +1633,7 @@ export default function Workspace({
               Android: browser menu → Install app. iPhone: Share → Add to Home
               Screen. Desktop: use the browser’s install button.
             </p>
-            <a href={import.meta.env.BASE_URL+"site/android/"}>View installation guide</a>
+            <a href={appBaseURL+"site/android/"}>View installation guide</a>
           </>
         ) : (
           <>

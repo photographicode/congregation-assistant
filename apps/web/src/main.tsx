@@ -1,3 +1,5 @@
+import {getUILocale,subscribeUILocale} from '../../../packages/core/i18n';
+import {Toast,DismissibleBanner} from '../../../packages/ui/Notices';
 import './features/install-runtime';
 import {z} from "zod";
 import type {SyncStatus} from "../../../packages/core/store";
@@ -75,6 +77,7 @@ export type Context = {
   notify: (s: string) => void;
 };
 function App() {
+  React.useSyncExternalStore(subscribeUILocale,getUILocale,getUILocale);
   const [updatesOpen,setUpdatesOpen]=useState(false);
   const [session, setSession] = useState<any>(null),
     [loading, setLoading] = useState(!demo),
@@ -173,12 +176,6 @@ function App() {
     if (cong && !demo) capabilities(cong).then(setCaps);
   }, [cong]);
   useEffect(()=>{let active=true;setPlan(null);setPlanError('');if(!cong)return;if(demo){const expired=new URLSearchParams(location.search).get('demo')==='expired';setPlan({congregation:cong,name:'River Park Congregation',status:expired?'expired':'active',trialEndsAt:new Date().toISOString(),paymentDate:null,locked:expired,serverTime:new Date().toISOString()});return;}storeFor(cong).read({source:{kind:'rpc',name:'ca_v2_workspace_plan',args:{p_cong_id:cong}},cacheKey:'workspace-plan',fresh:true},planSchema).then(value=>{const parsed=planSchema.parse(value);if(parsed.congregation!==cong)throw Error('Workspace status did not match. Reload before continuing.');if(active)setPlan(parsed);}).catch(e=>{if(active)setPlanError(e.message);});return()=>{active=false;};},[cong,session?.user?.id]);
-  useEffect(() => {
-    if (notice) {
-      const timer = setTimeout(() => setNotice(""), 7000);
-      return () => clearTimeout(timer);
-    }
-  }, [notice]);
   const roles = memberships
       .filter((m) => m.cong_id === cong)
       .map((m) => m.role),
@@ -232,6 +229,7 @@ function App() {
   const roleScope=[...roles].sort().join(',');
   useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch(()=>{});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch(()=>{});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,30000);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
   async function signOut() {
+    setQuick(false);setSearch(false);setAssistantOpen(false);setUpdatesOpen(false);setNotice("");window.dispatchEvent(new Event("ca:after-navigate"));
     const { clearDevice } = await import("./features/device-keys");
     try{await clearDevice();}catch{setError(t("store.clearFailed"));}
     for (const store of [localStorage, sessionStorage]) {
@@ -310,15 +308,16 @@ function App() {
   const guardNavigation=(action:()=>void)=>{const event=new CustomEvent('ca:before-navigate',{cancelable:true,detail:action});window.dispatchEvent(event);if(!event.defaultPrevented)action();};
   const navigate = (id: string) => {
     const url=new URL(location.href);url.searchParams.set("screen",id);url.searchParams.delete("section");history.replaceState(null,"",url.pathname+url.search);
+    window.dispatchEvent(new Event("ca:after-navigate"));
     setRoute(id);setHub(null);
     setMore(false);
-    setSearch(false);
+    setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);
   };
   const go=(id:string)=>{if(allowed.some(r=>r.id===id))guardNavigation(()=>navigate(id));};
   const visibleTools=allowedTools(roles,owner);
   const availableSections=sections.filter(section=>section.id==='home'||visibleTools.some(tool=>tool.section===section.id&&tool.available)).map(section=>section.id);
   const activeSection=hub||sectionForRoute(route);
-  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}guardNavigation(()=>{setHub(section);setSearch(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);});};
+  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}guardNavigation(()=>{window.dispatchEvent(new Event("ca:after-navigate"));setHub(section);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);});};
   const openNativeTool=(tool:Tool,afterNavigate?:()=>void)=>{if(!visibleTools.some(item=>item.id===tool.id)||!tool.available||!allowed.some(route=>route.id===tool.route))return;setQuick(false);setSearch(false);guardNavigation(()=>{
     if(tool.route==='reports'&&tool.sub&&!sessionStorage.getItem('ca-report-action'))sessionStorage.setItem('ca-report-action',JSON.stringify({action:tool.sub}));
     if(tool.route==='pdf'&&tool.sub)sessionStorage.setItem('ca-pdf-open',tool.sub);
@@ -331,8 +330,8 @@ function App() {
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
     <AppShell onUpdates={()=>setUpdatesOpen(true)} name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.some(role=>["admin","field_service","group_overseer"].includes(role))?()=>void prepareAssistant():undefined} signOut={()=>guardNavigation(()=>void signOut())} demo={demo} inspector={inspector}>
-      {!online&&<div className="banner" role="status">{t('shell.offline')}</div>}
-      {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<div className="banner" role="status">{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</div>}
+      {!online&&<DismissibleBanner key="offline" stateKey="offline">{t('shell.offline')}</DismissibleBanner>}
+      {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
       <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
             {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>Workspace status could not load.</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>Retry</button></section>:plan?.congregation!==cong?<p role="status">Checking your workspace…</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
@@ -341,7 +340,7 @@ function App() {
     <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title="What’s new"><div className="stack"><p><strong>18 October 2026</strong></p><p>{t('refine.updatesForms0')}</p><p>{t('refine.updatesForms1')}</p><p>{t('refine.updatesForms2')}</p><p>{t('refine.updatesLinks0')}</p><p>{t('refine.updatesLinks1')}</p><a href={new URL("updates/#release-2026-10-18",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">Read the release notes and how-to links</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
     <Dialog open={quick} onClose={()=>setQuick(false)} title={t('nav.quickActions')}><div className="more-grid">{([{id:'publishers',label:'quick.addPublisher',action:'add-publisher',allowed:admin},{id:'month',label:'quick.enterReport',action:'entry',allowed:true},{id:'s21',label:'quick.downloadS21',action:'s21',allowed:true},{id:'whatsapp',label:'quick.shareReminder',action:'message',allowed:true}] as const).filter(action=>action.allowed&&visibleTools.some(tool=>tool.id===action.id&&tool.available)).map(action=><button key={action.id} onClick={()=>{const tool=visibleTools.find(tool=>tool.id===action.id)!;openNativeTool(tool,()=>{if(action.action==='entry')sessionStorage.setItem('ca-report-action',JSON.stringify({action:'entry'}));if(action.action==='add-publisher')sessionStorage.setItem('ca-quick-action','add-publisher');window.dispatchEvent(new CustomEvent('ca:quick-action',{detail:action.action}));});}}>{t(action.label)}</button>)}</div></Dialog>
     <Dialog open={assistantOpen} onClose={()=>setAssistantOpen(false)} title={t('assistant.title')}>{assistantOpen&&<LocalAssistant context={context} onExport={()=>{const tool=visibleTools.find(tool=>tool.id==='s21');if(tool){openNativeTool(tool);window.dispatchEvent(new CustomEvent('ca:select-s21'));setAssistantOpen(false);}}}/>}</Dialog>
-    {notice&&<div className="notice" role="status">{notice}{notice.includes('Review in Reports')&&<button onClick={()=>go('reports')}>Review</button>}</div>}
+    {notice&&<Toast message={notice} onClose={()=>setNotice("")}>{notice.includes('Review in Reports')&&<button onClick={()=>go('reports')}>Review</button>}</Toast>}
   </>;
 
 }

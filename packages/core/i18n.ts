@@ -1,4 +1,13 @@
+import drafts from './locales/app-drafts.json';
 const en={
+ 'language.label':'Language',
+ 'language.browserNote':"Your browser’s built-in translate may send page text to Google; names and numbers in this app are protected from\u00a0it.",
+ 'language.draft':'Draft translation; remaining text is shown in English.',
+ 'polish.serviceGroup':'Service Group',
+ 'polish.chooseGroup':'Choose your service group',
+ 'polish.done':'Done',
+ 'polish.dismissNotice':'Dismiss notification',
+ 'polish.dismissBanner':'Dismiss banner',
  'polish.gender':'Gender',
  'polish.brother':'Brother',
  'polish.sister':'Sister',
@@ -15,7 +24,7 @@ const en={
  "refine.assistantPrivacy2":"Commands are cleared when you close this form.",
  "refine.assistantPrivacy1":"Your commands stay on this device.",
  "refine.assistantPrivacy0":"Runs on your device.",
- 'refine.apPending':'AP revocation is in progress. Closing this review does not cancel it.',
+ 'refine.apPending':'AP revocation is being saved. Closing this review does not cancel it.',
  'refine.suggest0':'Never assigned this part comes first.',
  'refine.suggest1':'Then the oldest use of this part.',
  'refine.suggest2':'Already assigned people appear last.',
@@ -65,7 +74,7 @@ const en={
  "refine.pdfPrivacy":"Private records. Share only with authorized people.",
  "refine.peopleTitle":"A place for all.",
  'refine.participation':'Shared in the ministry',
- 'refine.participationHelp':'Did you share in any form of the ministry during this month?',
+ 'refine.participationHelp':'Turn this on if you shared in any form of the ministry during the month.',
  'refine.studies':'Bible studies',
  'refine.hours':'Hours',
  'refine.studiesHelp':'Number of different studies conducted.',
@@ -76,7 +85,7 @@ const en={
  'refine.pendingTitle':'Saved on this device',
  'refine.receipt':'Report Submitted',
  'refine.pendingBody':'Your report is waiting to sync. Server receipt is not yet confirmed.',
- 'refine.receiptBody':'Your report is recorded. Thank you.',
+ 'refine.receiptBody':'Thank you. Your field service report has been securely recorded.',
  'refine.another':'Submit Another Report',
  'refine.timing':'Timing conflict: both halls use this person for the same part. ',
  'refine.also':'Also assigned: ',
@@ -94,13 +103,13 @@ const en={
  'refine.cancelReport':'Cancel report',
  'refine.choosePublisher':'Choose publisher',
  'refine.monthlyActivity':'Monthly activity',
- 'refine.reportIntro':'Submit your monthly activity below.',
- 'refine.publicIntro':'Submit your monthly report.',
+ 'refine.reportIntro':'Securely submit your monthly activity below.',
+ 'refine.publicIntro':'Securely submit your monthly activity below.',
  'refine.linkedIntro':'Submit reports for linked people.',
  'refine.leaveForm':'Leave form',
  'refine.discardReport':'Discard report changes?',
  'refine.discardReportBody':'Your unsaved report will be discarded.',
- 'refine.busyLeave':'Submission is already in progress. Leaving this form does not cancel it.',
+ 'refine.busyLeave':'Submission has already started. Leaving this form does not cancel it.',
  'refine.ownerCreate':'Creates a workspace and queues email.',
  'refine.ownerPermission':'Check permission before approval.',
 
@@ -109,7 +118,7 @@ const en={
 
  'setup.begin':'Setup guide','setup.summary':'Set meeting times, add people and approve overseers. Then import meeting parts and assign each one.','setup.open':'Open setup guide',
 
- 'links.title':'Protected links','links.explanation':'Group links show one group only. Anyone with a link can use its form. Share links in private.','links.group':'Report group','links.report':'Create group report link','links.attendance':'Create automatic attendance form link','links.protected':'Protected form link','links.open':'Preview protected form','links.demo':'The fictional demo never creates real public links.','duties.not_requested':'Not requested',
+ 'links.title':'Protected links','links.explanation':'Group links show one group only. Anyone with a link can use its form. Share links in private.','links.group':'Report group','links.report':'Create group report link','links.attendance':'Create automatic attendance form link','links.protected':'Protected form link','links.open':'Open protected form','links.demo':'The fictional demo never creates real public links.','duties.not_requested':'Not requested',
 
  'attendance.today':'Attendance for today’s meeting','attendance.automatic':'The meeting date and type come from congregation settings, calendar exceptions, and server time in the congregation’s timezone.','attendance.midweek':'Midweek','attendance.weekend':'Weekend','attendance.noMeeting':'No midweek or weekend meeting is scheduled for today.','attendance.configure':'Ask the main administrator to configure meeting days and timezone in Setup.','attendance.invalid':'Enter a whole count from 0 to 99999.','attendance.count':'Attendance count','attendance.save':'Save today’s attendance','attendance.saved':'Meeting attendance saved.','attendance.meetingChanged':'The meeting date changed. Reload the form before entering the count.',
  'duties.noAccess':'This account has no department assignment access.','duties.av':'Audio Video','duties.attendant':'Attendant','duties.cleaning':'Cleaning','duties.reviewAuto':'Assignments proposed from eligible people. Review the duty list before saving.','duties.subDuty':'Sub-duty name','duties.places':'People needed','duties.add':'Add sub-duty','duties.pool':'Publisher pool and approval requests','duties.poolExplanation':'Select up to 100 publishers to request. AV and Attendant assignments use only people approved by the main administrator.','duties.request':'Request administrator approval','duties.requested':'Approval requests sent.','duties.approved':'Approved','duties.pending':'Waiting for administrator','duties.rejected':'Not approved','duties.approve':'Approve','duties.reject':'Decline / remove approval','duties.emptyPool':'No approved people. Request approval below.','duties.save':'Save duty assignments','duties.saved':'Duty assignments saved.','duties.publish':'Publish department week','duties.published':'Department week published to the live schedule.','duties.demoPublished':'Fictional department week published in this demo.',
@@ -122,7 +131,7 @@ const en={
  'store.clearFailed':'Some saved device records could not be removed. Clear this site’s browser storage before sharing the device.',
  'store.invalid':'The response did not match the data contract. Your local work is kept.','store.signIn':'Sign in before opening local records.','store.closed':'This account has changed. Open the workspace again.','store.noOfflineCopy':'There is no saved copy on this device. Connect once to load it.','store.onlineRequired':'This action needs a connection. Your entries are kept.','store.resolveBeforePublish':'Sync or review the saved draft before publishing.','store.loadBeforeEdit':'Load the shared draft once before saving offline.','store.reviewRevision':'The shared draft changed. Your local draft is kept for review.','store.accessChanged':'Your access changed. The local draft is kept; ask your administrator to review access.','store.retryLater':'Saved on this device. Sync will retry when a connection is available.','store.pending':'Saved on this device. Waiting to sync.','store.conflict':'A shared draft needs review. Open Midweek to download your local copy before loading the shared draft.','store.saved':'Your saved local drafts are synced.','store.localCopy':'Download local draft','store.loadShared':'Load shared draft','store.reviewTitle':'Review shared draft','store.reviewBody':'This device’s queued edits will be replaced.','store.confirmShared':'Remove queued changes and load shared draft',
  'quick.addPublisher':'Add publisher','quick.enterReport':'Enter report','quick.downloadS21':'Download S-21','quick.shareReminder':'Share reminder',
- 'home.publishers':'Publishers','home.studies':'Bible studies','home.regular':'Regular pioneers','home.auxiliary':'Auxiliary pioneers','home.hours':'hours','home.submitted':'Submitted','home.pending':'pending','home.unavailable':'Unavailable','home.nextTask':'Next task','home.previewTask':'Review the month and get this week ready.','experience.preview':'Live preview · fictional data','home.allTools':'All reports and tools',
+ 'home.publishers':'Publishers','home.studies':'Bible studies','home.regular':'Regular pioneers','home.auxiliary':'Auxiliary pioneers','home.hours':'hours','home.submitted':'Submitted','home.pending':'pending','home.unavailable':'Unavailable','home.nextTask':'Next task','home.previewTask':'Review the month and get this week ready.','experience.preview':'Fictional sample','home.allTools':'All reports and tools',
  'search.loadingPeople':'Finding people…','search.failedPeople':'People could not load. Your actions are still available.','search.retry':'Try again',
  'shell.offline':'Offline. Loaded records and saved Midweek drafts are available on this device. Other changes need a connection.',
 'brand.name':'Congregation Assistant','nav.home':'Home','nav.people':'People','nav.reports':'Reports','nav.meetings':'Meetings','nav.messages':'Messages','nav.forms':'Forms & Print','nav.admin':'Admin','nav.main':'Main navigation','nav.phone':'Phone navigation','nav.more':'More','nav.moreTools':'All sections','nav.search':'Search people and actions','nav.account':'Account and appearance','nav.details':'Details','nav.expand':'Expand navigation','nav.collapse':'Collapse navigation','nav.signOut':'Sign out','nav.demo':'Fictional demo','nav.quickActions':'Quick actions','hub.choose':'Choose what you want to do.','hub.openingSoon':'Opening soon','inspector.empty':'Choose a person or meeting to keep its details beside your work.','tool.publishers':'Publishers','tool.groups':'Groups','tool.households':'Households','tool.emergency':'Emergency contacts','tool.import':'Import people','tool.month':'This month','tool.pioneers':'Pioneers & history','tool.summary':'S-1 summary','tool.midweek':'Midweek','tool.weekend':'Weekend','tool.attendance':'Attendance','tool.duties':'Duties','tool.fieldService':'Field service meetings','tool.speakers':'Visiting speakers','tool.whatsapp':'WhatsApp Smart Share','tool.reminders':'My reminders','tool.announcements':'Announcements','tool.s21':'S-21 publisher records','tool.attendancePDF':'S-88 / S-3 attendance','tool.emergencyPDF':'Emergency list','tool.schedulePDF':'Schedules & rosters','tool.coPack':'CO Visit Pack','tool.access':'Access & roles','tool.links':'Links','tool.backup':'Vault & backup','tool.settings':'Appearance & settings','tool.plan':'Plan & billing','tool.owner':'Command centre','purpose.publishers':'Find and update publisher records.','purpose.groups':'Manage the congregation’s service groups.','purpose.households':'Review and submit linked household reports.','purpose.emergency':'Find essential family contact information.','purpose.import':'Review spreadsheet, CSV and contact data.','purpose.month':'Collect, chase and review monthly reports.','purpose.pioneers':'Review service-year totals and pioneer logs.','purpose.summary':'Review the congregation’s monthly totals.','purpose.midweek':'Prepare, assign and publish the week.','purpose.weekend':'Plan the talk, songs and Watchtower study.','purpose.attendance':'Record both weekly meeting counts.','purpose.duties':'Prepare additional duties and assignments.','purpose.fieldService':'Plan times, places and conductors.','purpose.speakers':'Keep visiting speaker details together.','purpose.whatsapp':'Prepare personal messages and a send queue.','purpose.reminders':'Keep upcoming tasks close at hand.','purpose.announcements':'Read and share congregation notices.','purpose.s21':'Download publisher records for a service year.','purpose.attendancePDF':'Prepare original attendance record forms.','purpose.emergencyPDF':'Print the authorized emergency contact list.','purpose.schedulePDF':'Print a meeting schedule or duty roster.','purpose.coPack':'Prepare the complete visit documents.','purpose.access':'Approve accounts and assign roles.','purpose.links':'Create and manage protected report links.','purpose.backup':'Export, back up and protect your records.','purpose.settings':'Choose your theme, style and preferences.','purpose.plan':'Review your plan and payment details.','purpose.owner':'Review workspace requests and billing metadata.',
@@ -134,6 +143,12 @@ const en={
  'appearance.intensity':'Background intensity','common.close':'Close','common.discard':'Discard changes','common.discardTitle':'Discard changes?','common.unsaved':'Your unsaved changes will be lost.','common.keepEditing':'Keep editing','common.copy':'Copy','common.copied':'Copied','common.undo':'Undo','common.search':'Search','common.next':'Next','common.back':'Back','common.cancel':'Cancel','common.choose':'Choose','common.noResults':'No matching results','common.loading':'Loading','common.more':'Show more','qr.code':'QR code','table.previous':'Previous rows','table.next':'Next rows'
 } as const;
 export type Locale='en'|'hi'|'ta'|'ml'|'kn'|'te'|'or'|'as'|'mr'|'gu'|'bn'|'pa'|'ur';export type MessageKey=keyof typeof en;
-// Translation scaffolds deliberately fall back to reviewed English copy.
-export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en,hi:{},ta:{},ml:{},kn:{},te:{},or:{},as:{},mr:{},gu:{},bn:{},pa:{},ur:{}};
-export function t(key:MessageKey,locale:Locale='en'){return messages[locale][key]||en[key];}
+// Machine drafts are explicitly unreviewed; missing entries use reviewed English.
+export const localeMetadata={en:{nativeName:'English',reviewed:true},...Object.fromEntries(Object.entries(drafts).map(([code,value])=>[code,{nativeName:value.nativeName,reviewed:value.reviewed}]))};
+export const messages:Record<Locale,Partial<Record<MessageKey,string>>>={en,...Object.fromEntries(Object.entries(drafts).map(([code,value])=>[code,value.messages]))} as Record<Locale,Partial<Record<MessageKey,string>>>;
+const listeners=new Set<()=>void>();
+let currentLocale:Locale='en';try{const saved=typeof localStorage!=='undefined'?localStorage.getItem('ca-interface-language'):null;if(saved&&saved in messages)currentLocale=saved as Locale;}catch{/* English remains available without device storage. */}
+export const getUILocale=()=>currentLocale;
+export function subscribeUILocale(listener:()=>void){listeners.add(listener);return()=>{listeners.delete(listener);};}
+export function setUILocale(value:Locale){if(!(value in messages))return;currentLocale=value;try{localStorage.setItem('ca-interface-language',value);}catch{/* Apply for this visit. */}if(typeof document!=='undefined'){document.documentElement.lang=value;document.documentElement.dir=value==='ur'?'rtl':'ltr';}for(const listener of listeners)listener();}
+export function t(key:MessageKey,locale:Locale=currentLocale){return messages[locale]?.[key]||en[key];}

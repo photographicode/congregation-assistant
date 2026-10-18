@@ -1,7 +1,7 @@
 import {cp,mkdir,rm,symlink,readFile,writeFile} from 'node:fs/promises';import {spawnSync} from 'node:child_process';import path from 'node:path';
 const root=process.cwd(),scratch=path.join(root,'work/standalone-proof');await rm(scratch,{recursive:true,force:true});await mkdir(scratch,{recursive:true});
 for(const dir of ['apps','packages','assets','hosting','data'])await cp(path.join(root,dir),path.join(scratch,dir),{recursive:true});
-for(const file of ['package.json','package-lock.json','public-config.json','capabilities.json'])await cp(path.join(root,file),path.join(scratch,file));
+for(const file of ['package.json','package-lock.json','pricing.json','public-config.json','capabilities.json'])await cp(path.join(root,file),path.join(scratch,file));
 await mkdir(path.join(scratch,'scripts'),{recursive:true});for(const file of ['build-v2.mjs','build-marketing-site.mjs','build-trust-pages.mjs','build-hosting.mjs'])await cp('scripts/'+file,path.join(scratch,'scripts',file));await symlink(path.join(root,'node_modules'),path.join(scratch,'node_modules'),'dir');
 const result=spawnSync(process.execPath,['scripts/build-v2.mjs'],{cwd:scratch,env:{...process.env,BASE_URL:'/'},encoding:'utf8'});
 await writeFile('work/standalone-build.log',result.stdout+result.stderr);if(result.status){console.error(result.stdout+result.stderr);process.exit(result.status||1);}
