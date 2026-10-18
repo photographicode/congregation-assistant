@@ -1,4 +1,6 @@
 {
+  "homeEnd": true,
+  "emptyResultNavigation": true,
   "keyboardEnter": true,
   "clickReopen": true,
   "tabDismissal": true,

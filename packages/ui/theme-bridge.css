@@ -75,3 +75,6 @@ label,.check{gap:8px}.greeting-clock{gap:8px}.greeting p{margin:16px 0 0}.segmen
 .v3-shell .short-nav-menu{display:none}@media(min-width:600px) and (max-height:500px){:root[data-short=true] .v3-shell .bottom-tabs{display:none!important}:root[data-short=true] .v3-shell .v3-main{padding-left:0}:root[data-short=true][data-navigation=tabs] .v3-shell .short-nav-menu{display:inline-flex}}
 
 fieldset.report-fields{border:0;padding:0;margin:0;min-inline-size:0;gap:24px}
+
+.ap-review-head,.ap-review-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr);gap:16px;align-items:center}.ap-review-row{padding:16px 0;border-bottom:1px solid var(--border-strong)}.ap-review-row>div{min-width:0;overflow-wrap:anywhere}.ap-review-number{font-variant-numeric:tabular-nums}.ap-review-mobile-label{display:none}
+@media(max-width:599px){.ap-review-head{display:none}.ap-review-row{grid-template-columns:minmax(0,1fr);gap:12px}.ap-review-mobile-label{display:inline-block;margin-inline-end:8px}.ap-review-row>div:last-child{display:flex;flex-wrap:wrap;align-items:center;gap:8px}}

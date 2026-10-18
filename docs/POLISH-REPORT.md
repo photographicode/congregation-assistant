@@ -89,3 +89,13 @@ Report requests now carry a link scope: late submission or weekend-session respo
 ### AP timestamp preservation — local only
 
 The current report trigger changed submitted_at on AP-only updates. The additive migration 20261018152930_v3_polish_ap_review replaces that behavior: inserts and changed activity fields receive a new timestamp; AP-only changes and unchanged saves retain the original. Five synthetic trigger checks pass, including preservation of every field except is_ap on revoke. The encrypted local pre-migration pg_dump archive was decrypted and its restore catalog verified (618 entries). A rollback script restores the prior function without rewriting report rows. No production migration or record mutation occurred. Ten-second Undo, durable AP audit and the final admin/service-only review contract remain unfinished.
+
+## R1 authority and AP completion checkpoint
+
+The later V3-R1-SHIP-ORDERS.md splits shipping into R1/R2 and freezes further translation extraction. Parity/billing/domain work is no longer an R1 blocker; PDF acceptance remains required.
+
+AP Review now uses the requested title/subtitle and Publisher/Hours/Studies/Admin action grid, with phone cards. Revoke and Undo use dedicated authorized RPCs. Audit events are private, append-only to clients, and Undo has a ten-second server deadline, same-actor restriction and intervening-write check. Original report fields including submitted_at are preserved. Admin and field-service review is enforced; group-only manual revoke is rejected. The rollback retains audit history. Local revoke/Undo/audit/expiry/stale/repeated/other-actor/anonymous/cross-congregation checks pass, as does the existing report/auxiliary SQL contract. Browser stale-error/recovery/pending-dismiss/Undo/expiry checks pass; role browser checks are being completed. TypeScript/lint pass. The previously started focused AP sweep completed 360 views with zero findings/coverage errors before the new ≤300-view limit was applied. No production AP migration has been applied.
+
+Picker Home/End now passes alongside type-ahead, empty-result keyboard handling, touch, 200% text, short-screen and pinch-zoom checks. App-wide picker expansion remains R2 unless required for R1 OCLM counselors.
+
+AP role-switch UI smoke remains open: two attempted harnesses did not reach the Reports heading for a group-only session. They are not counted as passed. The server contracts independently prove admin/service access and reject group-only, unapproved, anonymous and cross-congregation revocation. The working AP browser spec still covers revoke, Undo, expiry, pending dismissal and errors.

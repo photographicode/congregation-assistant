@@ -163,3 +163,4 @@ reset role;rollback;
 \i supabase/ALL-V2.sql
 \i scripts/check-refinement.sql
 \i scripts/check-ap-submission-time.sql
+\i scripts/check-ap-undo.sql

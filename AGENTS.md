@@ -1,3 +1,7 @@
+# Current release authority
+
+docs/V3-R1-SHIP-ORDERS.md supersedes earlier polish gates: ship R1 after its PDF, security, functional and HARD geometry gates; defer parity, pricing, visual lock, translations and domain activation to R2. Freeze i18n. At most one sampled audit of 300 views per batch, one spec at a time, no build/test races. No production reset; snapshot before migrations.
+
 # Congregation Assistant
 
 Latest authority: docs/V3-POLISH-ORDERS.md supersedes earlier briefs where they conflict. This is refinement/restoration only. Never reset production data; export a pre-migration snapshot and provide additive/down paths before any new production migration. Public website design is locked by site/DESIGN-LOCK.md. Run affected checks per item, commit/push focused work, and run the full suite once at the end in Actions. Merge and deploy both repositories only after all POLISH §8 gates pass. docs/POLISH-REPORT.md must retain honest incomplete items. Do not move v1-final, change the supplied themes.css, or claim a reduced test sample proves whole-product parity.

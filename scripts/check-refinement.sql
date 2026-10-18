@@ -19,8 +19,8 @@ update public.reports set is_ap=true where id='refinement-report-a';
 set request.jwt.claims='{"sub":"00000000-0000-4000-8000-000000000972","email":"refinement-group@example.invalid","app_metadata":{"provider":"google"}}';
 set role authenticated;
 do $$declare r jsonb;payload jsonb;begin
-r=pg_temp.reviewed_report('refinement-report-a');payload=r||jsonb_build_object('clear_auxiliary',true,'expected_report',r);perform public.save_group_reports('a',2027,9,jsonb_build_array(payload));
-if (select hours<>30.25 or comments<>'Retain every comment' or is_ap from public.reports where id='refinement-report-a') then raise exception 'Group AP revoke lost values';end if;
+r=pg_temp.reviewed_report('refinement-report-a');payload=r||jsonb_build_object('clear_auxiliary',true,'expected_report',r);
+begin perform public.save_group_reports('a',2027,9,jsonb_build_array(payload));raise exception 'Group-only AP review allowed';exception when insufficient_privilege then null;end;
 payload=payload||jsonb_build_object('pub_id','refinement-b');begin perform public.save_group_reports('a',2027,9,jsonb_build_array(payload));raise exception 'Another group accepted';exception when insufficient_privilege then null;end;
 end $$;
 reset role;

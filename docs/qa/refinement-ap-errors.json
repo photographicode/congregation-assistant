@@ -7,5 +7,7 @@
   "pendingFailureStillVisible": true,
   "independentOfRosterFilter": true,
   "reportContentsPreserved": true,
-  "writes": 3
+  "undoRestoresAP": true,
+  "undoExpires": true,
+  "writes": 4
 }

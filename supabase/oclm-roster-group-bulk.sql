@@ -14,10 +14,7 @@ for r in select value from jsonb_array_elements(p_reports) loop
  select * into p from public.publishers where id=r->>'pub_id' and cong_id=p_cong_id;
  if p.id is null or not public.ca_can_read_group(p_cong_id,p.service_group) then raise exception 'Publisher is outside your assigned group' using errcode='42501';end if;
  if coalesce((r->>'clear_auxiliary')::boolean,false) then
- select * into saved from public.reports where cong_id=p_cong_id and pub_id=p.id and service_year=p_year and month=p_month for update;
- if not found or (select jsonb_object_agg(key,value) from jsonb_each(to_jsonb(saved)) where key=any(array['id','pub_id','cong_id','service_year','month','shared_in_ministry','studies','hours','comments','is_ap'])) is distinct from r->'expected_report' then raise exception 'This report changed. Reload before revoking AP.' using errcode='40001';end if;
- update public.reports set is_ap=false where id=saved.id returning * into saved;
- rows=rows||jsonb_build_array(to_jsonb(saved));continue;end if;
+ raise exception 'AP review requires an administrator or field service account' using errcode='42501';end if;
  s=coalesce((r->>'shared_in_ministry')::boolean,false);st=coalesce((r->>'studies')::integer,0);h=coalesce((r->>'hours')::numeric,0);
  if st not between 0 and 1000 or h not between 0 and 744 or length(coalesce(r->>'comments',''))>4000 then raise exception 'Invalid report values';end if;
  insert into public.reports(id,cong_id,pub_id,service_year,month,shared_in_ministry,studies,hours,comments,is_ap) values(gen_random_uuid()::text,p_cong_id,p.id,p_year,p_month,s,case when s then st else 0 end,case when s then h else 0 end,coalesce(r->>'comments',''),s and coalesce((r->>'is_ap')::boolean,false)) on conflict(pub_id,service_year,month) do update set shared_in_ministry=excluded.shared_in_ministry,studies=excluded.studies,hours=excluded.hours,comments=excluded.comments,is_ap=excluded.is_ap returning * into saved;
