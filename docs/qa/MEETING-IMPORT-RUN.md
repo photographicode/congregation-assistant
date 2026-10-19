@@ -1,6 +1,6 @@
 # WOL integration run
 
-Run: https://github.com/photographicode/congregation-assistant/actions/runs/39072159141
+Run: https://github.com/photographicode/congregation-assistant/actions/runs/39241817092
 
 English anchor verification: PASS (4/4). Weeks: 59. Source strategies: owner anchors, page navigation, breadcrumb issue index, Meetings and yearly index.
 
