@@ -14,6 +14,7 @@ import { publisherS21 } from "./pdf-download";
 import { useDemoReports } from "./demo-reports";
 import type { Context } from "../main";
 import { PersonPicker } from "../../../../packages/ui/components";
+import { commandRegistry } from "../../../../packages/core/command-registry";
 export function LocalAssistant({
   context: c,
   onExport,
@@ -237,24 +238,27 @@ export function LocalAssistant({
       {compact && <p>{t("assistant.localSummary")}</p>}
       {compact && (
         <div className="actions assistant-suggestions">
-          {[
-            "S-21 for Maria Thomas",
-            "record midweek attendance 85",
-            "add a service report for Maria Thomas, September, 3 hours, 2 studies",
-          ].map((suggestion) => (
-            <button
-              type="button"
-              className="subtle"
-              key={suggestion}
-              onClick={() => {
-                setInput(suggestion);
-                setPlan(null);
-                setError("");
-              }}
-            >
-              {suggestion}
-            </button>
-          ))}
+          {commandRegistry
+            .filter((command) =>
+              ["pdf.s21", "attendance.save", "report.save"].includes(
+                command.name,
+              ),
+            )
+            .flatMap((command) => command.examples.slice(0, 1))
+            .map((suggestion) => (
+              <button
+                type="button"
+                className="subtle"
+                key={suggestion}
+                onClick={() => {
+                  setInput(suggestion);
+                  setPlan(null);
+                  setError("");
+                }}
+              >
+                {suggestion}
+              </button>
+            ))}
         </div>
       )}
       <label>

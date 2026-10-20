@@ -28,7 +28,10 @@ Status: in progress.
 - Done: shared Select/Combobox foundation supports keyboard navigation, type-ahead search, focus return, mobile bottom-sheet presentation, two-line options and right-aligned metadata.
 - Done: assignment recency now reports This week, Last week, N weeks ago or Never, preserves the exact date in secondary text and sorts longest gaps first.
 - Partial: app-wide native select and disclosure replacement is being migrated screen by screen.
-- Not done yet: expanded dashboard sections, complete command registry, CBS reader model, final screenshots, and deployment for this owner pass.
+- Done: typed assistant capability registry covers publisher/report/attendance/meeting/AP/PDF/link operations and drives Home suggestions; current executable handlers remain report save/update, attendance, S-21 and export.
+- Done: Congregation Bible Study has an additive reader flag, independent qualified reader assignment, auto-assignment, schedule rendering and PDF output. No database migration was required because reviewed programs are versioned JSON.
+- Partial: publisher editing, meeting assignment, AP revoke and link creation are registered but their natural-language handlers are not yet wired.
+- Not done yet: final screenshots and deployment for this owner pass.
 
 ---
 
