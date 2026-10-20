@@ -183,7 +183,7 @@ PDF evidence: 14 V1 geometry fixtures pass with 0 failures; 49 S-21/S-88/S-3/S-8
 
 The Main Admin Home assistant now supports exact-name commands such as “S-21 for Maria Thomas” with immediate local PDF download and “record midweek attendance 85” with current-meeting/date review before saving. Ambiguous publisher names require a choice. Parsing/review sends no command text, changes no browser storage and makes no request; non-admin roles have no assistant entry point.
 
-Local bug-bash status: Sev1 0, Sev2 0. The complete Actions matrix, three-browser smoke, database contracts and history security scanners remain required before merge/deployment. External limitations remain real phones, physical printers, WhatsApp attachment delivery, Razorpay and real-user Google sign-in.
+Local bug-bash status: Sev1 0, Sev2 0. The final 180-view sample covers five widths, 100/200% text, Mono Light/Lagoon/Aurora and six touched screens with 0 findings and 0 coverage errors. The complete Actions matrix, three-browser smoke, database contracts and history security scanners remain required before merge/deployment. External limitations remain real phones, physical printers, WhatsApp attachment delivery, Razorpay and real-user Google sign-in.
 
 ---
 

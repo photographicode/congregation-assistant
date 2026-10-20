@@ -13,6 +13,7 @@ Status for the V3 final refinement candidate. Production records were not used.
 | Browsers | Chromium local critical flows; Chromium, Firefox and WebKit smoke | Chromium green locally; three-engine smoke runs in Actions |
 | PDFs | V1 geometry, 49 geometry fixtures, 17 reviewed goldens, 3,433 retention assertions, 200 property runs | Green, 0 HARD findings |
 | Hygiene | browser errors, failed demo cloud requests, orphaned overlays, legacy paths, workflow count | Green in targeted local checks |
+| Sampled layout | 180 views: 320/390/768/1024/1440 px × 100/200% text × Mono Light/Lagoon/Aurora × six touched screens | 0 findings, 0 coverage errors |
 
 Sev1 open: **0**. Sev2 open: **0**.
 

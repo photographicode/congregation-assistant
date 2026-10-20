@@ -1,0 +1,34 @@
+{
+  "views": 180,
+  "hard": 0,
+  "findings": 0,
+  "counts": {},
+  "coverageErrors": [],
+  "matrix": {
+    "themes": [
+      "mono-light",
+      "lagoon-glass",
+      "aurora"
+    ],
+    "screens": [
+      "home",
+      "people",
+      "reports",
+      "schedule",
+      "settings",
+      "assistant"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "scales": [
+      1,
+      2
+    ],
+    "fontMode": "css"
+  }
+}
