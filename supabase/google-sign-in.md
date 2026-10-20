@@ -28,7 +28,7 @@ Open the software and choose **Continue with Google**, then select `congregation
    Add these exact Redirect URLs:
 
    - `https://photographicode.github.io/congregation-assistant/staging/`
-   - `https://photographicode.github.io/congregation-assistant/staging/index.html`
+   - `https://photographicode.github.io/congregation-assistant/app/`
 
 9. Use [the secure pilot software](https://photographicode.github.io/congregation-assistant/staging/) for Google role-account testing. The main software URL still connects existing legacy congregations to their existing backend; enabling Google on the secure project does not migrate their records. Move ordinary Google users to the main URL only after the backend/data migration is reviewed and its exact URLs are added to URL Configuration.
 10. After the pilot, use Audience → Publish app/Production when ready for general approved users. Follow any Google verification requirements shown in your console. In Testing, every participating email must remain on Google's test-user list.

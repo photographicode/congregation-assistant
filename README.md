@@ -1,55 +1,39 @@
-R1 is deployed and live-verified in both repositories. [Open the public app](https://photographicode.github.io/Congregation-Assistant_Public/app/) or [review the fictional demo](https://photographicode.github.io/Congregation-Assistant_Public/app/?demo=admin). [Release evidence, deployed commits, owner Pages-setting action and R2 scope](docs/POLISH-REPORT.md).
-
-R1 refinement shipping follows [V3-R1-SHIP-ORDERS](docs/V3-R1-SHIP-ORDERS.md). Current evidence and open R2 items are in [POLISH-REPORT](docs/POLISH-REPORT.md). Domain activation and pricing/billing remain separate from R1.
-
-> **Polish work is not yet a release.** The active orders are [V3 POLISH](docs/V3-POLISH-ORDERS.md); tested changes and remaining release blockers are recorded in [POLISH-REPORT](docs/POLISH-REPORT.md). Production remains at the verified NEXT deployment until every required gate passes. The public website design is locked.
-
 # Congregation Assistant
 
-Independent, unofficial congregation tools for publishers, service reports, attendance, meeting schedules and sharing. Access is controlled by approved accounts and server policies. Private mode is disabled until its complete device, recovery, migration and sentinel tests pass.
+Independent, unofficial congregation tools for publisher records, field-service reports, attendance, meeting schedules, assignments, duties and private report links.
 
-## Review and release status
+The canonical website is [photographicode.github.io/congregation-assistant](https://photographicode.github.io/congregation-assistant/) and the app is at [/app/](https://photographicode.github.io/congregation-assistant/app/). The fictional admin demo is available at [/app/?demo=admin](https://photographicode.github.io/congregation-assistant/app/?demo=admin). `Congregation-Assistant_Public` is retained only as a path-preserving redirect for old links.
 
-Both current GitHub Pages sites serve the public website at the root and the sole native app at `/app/`. The source branch still retains frozen legacy reference files pending complete restoration; they are not copied into the Actions product artifact. [PARITY](docs/PARITY.md) distinguishes tested capabilities from missing acceptance.
+## Run and verify
 
-The active refinement branch is `v3/resume`. Its new polish changes are not yet on either public host. Existing production remains the verified NEXT release; DNS and provider dashboard settings have not been changed. [POLISH-REPORT](docs/POLISH-REPORT.md) records completed repairs, evidence and release blockers. [OWNER-MANUAL](docs/OWNER-MANUAL.md) records the hosting handover.
-
-## Run
-
-Requires Node.js 22 or newer.
+Node.js 22 or newer is required.
 
 ```sh
-npm i
+npm ci
 npm run dev
-npm test
 npm run check
+npm test
 npm run build
-npm run test:browser
+npm run check:bundle
+npm run test:pdf
 ```
 
-`dist/` is the Vite app at the deployment root. `dist-site/` is the separate public website. `npm run preview` serves the compiled app and its website under `/site/` for local review. Fictional demonstrations use `?demo=admin` and `?demo=publisher`; they must never call the backend.
+Focused browser, PDF, layout, interaction, accessibility, database and security checks run in the five workflows under `.github/workflows/`. Pull requests run bounded samples; the complete layout matrix runs on schedule or by manual dispatch.
 
 ## Architecture
 
-- `apps/web/src/main.tsx`: authenticated shell and role-filtered navigation.
-- `apps/web/src/v2/`: native screens, public forms, appearance and cryptography.
-- `apps/web/src/data/`: workspace-scoped, validated repository factories. Query state uses TanStack Query. Supabase policies and RPCs enforce authorization independently of navigation.
-- `packages/ui/`: shared tokens, accessible dialogs and greeting component.
-- `apps/site/`: public website with a fictional, interactive product tour.
-- `supabase/`: database contracts, migrations and owner-run rollout scripts.
+- `apps/web/src/` contains the authenticated native app and public report forms.
+- `apps/site/` contains the public website.
+- `packages/core/` contains validated domain rules and repository contracts.
+- `packages/ui/` contains shared themes, dialogs, pickers and interaction states.
+- `packages/pdf/` contains the Noto-based measured PDF engine.
+- `supabase/` contains additive migrations, RLS/RPC contracts and rollback files.
+- `data/` contains normalized public meeting metadata.
 
-Legacy source remains temporarily because the complete native parity gate is not met. It is excluded from both generated deployment outputs. See [parity](docs/PARITY.md) and the [cutover report](docs/CUTOVER-REPORT.md). This branch is not a completed production release.
+`npm run build` creates `dist/` for the app and `dist-site/` for the website. `scripts/build-pages.mjs` packages the website at `/` and the app at `/app/`, using `BASE_URL`, `SITE_URL`, `APP_URL` and `CUSTOM_DOMAIN_READY` without embedding secret credentials.
 
-## Configuration and deployment
+## Security and privacy
 
-`public-config.json` contains non-secret `SUPPORT_EMAIL`, `PUBLIC_SITE_URL` and `APP_URL`, plus verified domain/mail readiness flags. The support address is intended configuration; its mailbox is not provisioned by this repository. `BASE_URL=/` builds for a custom-domain root; `BASE_URL=/congregation-assistant/` builds for project GitHub Pages. `VITE_BUILD_HASH` is generated automatically.
+The browser receives only the publishable Supabase key. Authorization is enforced by server roles, RLS and scoped RPCs. Demo mode does not contact Supabase. The on-device assistant never sends command text for parsing or training; it loads only records the signed-in role may access, previews writes before saving, and is restricted to Main Admin. OAuth secrets, service-role keys, DNS credentials and deployment tokens belong in provider settings.
 
-The browser uses a publishable Supabase key, never a service-role key. The existing project configuration is in `apps/web/src/v2/client.ts`. OAuth secrets, DNS credentials and hosting tokens belong in provider settings or a secret manager. SQL is not applied by a front-end build. See [database rollout](docs/DB-ROLLOUT.md), [domain setup](docs/domain-and-email.md), and [owner tasks](docs/OWNER-TODO.md).
-
-The deployment workflow builds and uploads compiled artifacts. It deliberately requires the full cutover release gate before publication. Do not bypass that gate to remove missing product capabilities.
-
-## Security and verification
-
-Approved Google accounts, email links and scoped public tokens replace shared password UI. SuperAdmin authorization must remain approved Google only. Public tokens enter through URL fragments and are removed from the address bar; the scoped weekend session is separate from its bearer. CSP disallows external scripts and frames. Protected data is not cached by the service worker.
-
-`npm run check` runs V2 unit/contrast/source checks and TypeScript. `npm run check:bundle` checks generated app/site output for legacy markers. `npm run check:release` additionally checks retained legacy source and incomplete parity. Browser checks cover narrow screens, doubled text, dialogs, report submission, demo isolation, redirect behavior and old cache migration. `CA_LAYOUT_FULL=1 npm run test:browser` enables the larger layout matrix. Backend contract tests and real account acceptance must pass before production release.
+The immutable `v1-final` tag and `tests/golden/v1/` retain the retired V1 reference. Legacy root apps and duplicate deployment trees have been removed from the active branch. Current evidence and known external limitations are recorded in [docs/POLISH-REPORT.md](docs/POLISH-REPORT.md) and [docs/qa/BUG-BASH-REPORT.md](docs/qa/BUG-BASH-REPORT.md).

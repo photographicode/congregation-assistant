@@ -1,0 +1,42 @@
+name: CI
+'on':
+  push:
+    branches:
+    - v3/resume
+  pull_request: {}
+  workflow_call: {}
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: npm run check && node scripts/check-public-safety.cjs && node scripts/check-no-legacy.mjs
+    - run: node --test scripts/meetings/parse.test.mjs
+    - run: npm run build && npm run check:bundle
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: acceptance-only
+          POSTGRES_DB: ca_acceptance
+        ports:
+        - 5432:5432
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+    - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
+      env:
+        PGPASSWORD: acceptance-only

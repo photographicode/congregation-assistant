@@ -1,50 +1,132 @@
-name: Optional Cloudflare Pages deployment
-on:
+name: Canonical Pages deployment
+'on':
+  push:
+    branches:
+    - main
   workflow_dispatch:
+    inputs:
+      verify_custom_domain:
+        type: boolean
+        default: false
+        description: Verify the configured custom domain
 permissions:
   contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: canonical-pages
+  cancel-in-progress: false
 jobs:
-  deploy:
-    if: github.ref == 'refs/heads/main'
+  ci:
+    uses: ./.github/workflows/ci.yml
+  e2e:
+    uses: ./.github/workflows/e2e.yml
+  pdf:
+    uses: ./.github/workflows/pdf.yml
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: node scripts/check-final-release.mjs
+    - run: node scripts/build-pages.mjs
+      env:
+        CA_PAGES_URL: ${{ vars.CUSTOM_DOMAIN_READY == 'true' && (vars.SITE_URL || 'https://congregationassistant.com') || 'https://photographicode.github.io/congregation-assistant'
+          }}
+        CUSTOM_DOMAIN_READY: ${{ vars.CUSTOM_DOMAIN_READY || 'false' }}
+        SITE_URL: ${{ vars.SITE_URL || '' }}
+        APP_URL: ${{ vars.APP_URL || '' }}
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: work/pages
+    needs:
+    - ci
+    - e2e
+    - pdf
+  pages:
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET != 'cloudflare'
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - uses: actions/configure-pages@v5
+      with:
+        enablement: true
+    - name: Use Actions as the Pages publishing source
+      uses: actions/github-script@v7
+      with:
+        script: "try {\n  await github.rest.repos.updateInformationAboutPagesSite({\n    ...context.repo,\n    build_type: 'workflow'\n  });\n  core.info('Pages\
+          \ uses Actions; branch publishing is disabled.');\n} catch (error) {\n  if (error.status !== 403) throw error;\n  core.warning('This token cannot\
+          \ change the Pages publishing source. Select GitHub Actions in repository Pages settings to avoid competing branch builds.');\n}\n"
+    - uses: actions/deploy-pages@v4
+      id: deployment
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - run: npm ci --ignore-scripts
+    - run: npx playwright install --with-deps chromium
+    - name: Verify published site app worker and on-device demo
+      run: node scripts/check-pages-deploy.cjs
+      env:
+        CA_LIVE_URL: https://photographicode.github.io/congregation-assistant/
+        CA_EXPECTED_COMMIT: ${{ github.sha }}
+  verify-custom-domain-verify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: node scripts/verify-production.mjs
+      env:
+        EXPECTED_COMMIT: ${{ inputs.commit }}
+    if: github.event_name == 'workflow_dispatch' && inputs.verify_custom_domain
+  cloudflare:
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET == 'cloudflare'
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Check optional Cloudflare configuration
-        id: configuration
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CA_PAGES_PROJECT" ]; then
-            echo 'enabled=false' >> "$GITHUB_OUTPUT"
-            echo 'Cloudflare Pages is not configured; current hosting stays active.'
-          else
-            echo 'enabled=true' >> "$GITHUB_OUTPUT"
-          fi
-      - if: steps.configuration.outputs.enabled == 'true'
-        uses: actions/checkout@v4
-      - if: steps.configuration.outputs.enabled == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - if: steps.configuration.outputs.enabled == 'true'
-        run: npm ci --ignore-scripts
-      - if: steps.configuration.outputs.enabled == 'true'
-        run: npm run check:release && npm run check && npm test && npm run build
-      - name: Deploy only when configured
-        if: steps.configuration.outputs.enabled == 'true'
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CA_SITE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_SITE_PROJECT_NAME }}
-          CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CA_PAGES_PROJECT" ]; then
-            echo 'Cloudflare Pages not set up; existing hosting remains in use.'
-            exit 0
-          fi
-          npx --yes wrangler@4.45.0 pages deploy dist --project-name "$CA_PAGES_PROJECT"
-          if [ -n "$CA_SITE_PAGES_PROJECT" ]; then
-            npx --yes wrangler@4.45.0 pages deploy dist-site --project-name "$CA_SITE_PAGES_PROJECT"
-          fi
+    - name: Check optional Cloudflare configuration
+      id: configuration
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+      run: "if [ -z \"$CLOUDFLARE_API_TOKEN\" ] || [ -z \"$CLOUDFLARE_ACCOUNT_ID\" ] || [ -z \"$CA_PAGES_PROJECT\" ]; then\n  echo 'enabled=false' >> \"\
+        $GITHUB_OUTPUT\"\n  echo 'Cloudflare Pages is not configured; current hosting stays active.'\nelse\n  echo 'enabled=true' >> \"$GITHUB_OUTPUT\"\n\
+        fi\n"
+    - if: steps.configuration.outputs.enabled == 'true'
+      uses: actions/checkout@v4
+    - if: steps.configuration.outputs.enabled == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - if: steps.configuration.outputs.enabled == 'true'
+      run: npm ci --ignore-scripts
+    - if: steps.configuration.outputs.enabled == 'true'
+      run: npm run check:release && npm run check && npm test && npm run build
+    - name: Deploy only when configured
+      if: steps.configuration.outputs.enabled == 'true'
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        CA_SITE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_SITE_PROJECT_NAME }}
+        CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+      run: "if [ -z \"$CLOUDFLARE_API_TOKEN\" ] || [ -z \"$CLOUDFLARE_ACCOUNT_ID\" ] || [ -z \"$CA_PAGES_PROJECT\" ]; then\n  echo 'Cloudflare Pages not\
+        \ set up; existing hosting remains in use.'\n  exit 0\nfi\nnpx --yes wrangler@4.45.0 pages deploy dist --project-name \"$CA_PAGES_PROJECT\"\nif\
+        \ [ -n \"$CA_SITE_PAGES_PROJECT\" ]; then\n  npx --yes wrangler@4.45.0 pages deploy dist-site --project-name \"$CA_SITE_PAGES_PROJECT\"\nfi\n"
+    needs:
+    - ci
+    - e2e
+    - pdf

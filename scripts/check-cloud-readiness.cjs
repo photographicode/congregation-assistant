@@ -33,7 +33,7 @@ async function check(target) {
   catch{return {url,status:null,mentionsApplicationURL:null,error:'Connection unavailable'};}
  }
  const [originalLanding,previewLanding]=await Promise.all([
-  landing('https://photographicode.github.io/Congregation-Assistant_Public/'),
+  landing('https://photographicode.github.io/congregation-assistant/'),
   landing(applicationURL+'public-site-preview/')
  ]);
  const ownerURL=next.supabaseUrl+'/functions/v1/owner-password-session';

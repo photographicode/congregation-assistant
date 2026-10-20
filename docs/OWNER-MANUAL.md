@@ -1,10 +1,10 @@
 # Hosting and domain handover
 
-The working public website remains https://photographicode.github.io/Congregation-Assistant_Public/ and its native app remains https://photographicode.github.io/Congregation-Assistant_Public/app/. The source repository also serves the same website/app structure at https://photographicode.github.io/congregation-assistant/.
+The working public website remains https://photographicode.github.io/congregation-assistant/ and its native app remains https://photographicode.github.io/congregation-assistant/app/. The source repository also serves the same website/app structure at https://photographicode.github.io/congregation-assistant/.
 
 Keep both current hosts working until DNS, HTTPS and real approved-account login have been verified. Domain purchase alone does not activate DNS or authorize a premature CNAME cutover. The latest polish orders assign DNS changes to the owner.
 
-Intended settings: SITE_URL=https://congregationassistant.com; APP_URL=https://app.congregationassistant.com; SUPPORT_EMAIL=support@congregationassistant.com. public-config.json includes SITE_URL and the compatible PUBLIC_SITE_URL alias. BASE_URL is the build-time absolute directory path: `/` for an app subdomain, `/Congregation-Assistant_Public/app/` for the public Pages fallback. scripts/build-pages.mjs supplies the fallback configuration and scoped manifest/worker paths automatically.
+Intended settings: SITE_URL=https://congregationassistant.com; APP_URL=https://app.congregationassistant.com; SUPPORT_EMAIL=support@congregationassistant.com. public-config.json includes SITE_URL and the compatible PUBLIC_SITE_URL alias. BASE_URL is the build-time absolute directory path: `/` for an app subdomain and `/congregation-assistant/app/` for the canonical GitHub Pages fallback. scripts/build-pages.mjs supplies the fallback configuration and scoped manifest/worker paths automatically.
 
 Before cutover, configure Supabase redirect URLs and Google OAuth origins for both current fallback paths and the intended app domain, following DOMAIN-SETUP.md. Verify a real approved Google account; demo isolation does not prove provider login.
 

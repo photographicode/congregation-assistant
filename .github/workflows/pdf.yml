@@ -1,0 +1,50 @@
+name: Native PDF golden and script contracts
+permissions:
+  contents: read
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: sudo apt-get update && sudo apt-get install -y poppler-utils python3-pil python3-numpy python3-fitz
+    - run: node scripts/generate-v2-pdf-fixtures.mjs
+    - run: node scripts/check-r1-pdf-semantic.mjs
+    - run: node scripts/pdf-vs-v1.mjs
+    - run: npx vitest run tests/v3/pdf-property.test.ts
+    - run: python3 scripts/check-r1-pdf-parity.py
+    - run: node scripts/generate-r1-pdf-fixtures.mjs
+    - run: node scripts/check-s89-contract.mjs
+    - run: node scripts/check-refinement-pdf.mjs
+    - run: node scripts/pdf-geometry.ts work/pdf-v2 work/s89-fixtures work/refinement-pdf work/pdf-r1-stress
+    - run: node scripts/check-pdf-contract.mjs
+    - run: node scripts/check-unicode-native-pdf.mjs
+    - run: node scripts/check-schedule-pdf.mjs
+    - run: npm run build
+    - run: npx playwright install --with-deps chromium
+    - run: node scripts/check-pdf-browser.cjs
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: native-pdf-evidence
+        path: 'docs/review-evidence/pdf-*.json
+
+          docs/qa/r1-pdf*.json
+
+          tests/pdf-geometry/
+
+          work/pdf-v2/
+
+          work/pdf-unicode/
+
+          '
+        retention-days: 14
+'on':
+  pull_request: {}
+  workflow_call: {}
+  workflow_dispatch: {}

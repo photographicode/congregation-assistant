@@ -8,9 +8,9 @@ revoke all on function ca_private.app_link(text) from public,anon,authenticated;
 do $$declare definition text;item record;begin
  for item in select p.oid from pg_proc p join pg_namespace n on n.oid=p.pronamespace where(n.nspname='public' and p.proname in('request_congregation_trial','review_workspace_application')) or(n.nspname='ca_private' and p.proname='approve_requested_workspace') loop
   definition=pg_get_functiondef(item.oid);
-  definition=replace(definition,'https://photographicode.github.io/congregation-assistant/staging/index.html','''||ca_private.app_link(''APP_URL'')||''');
+  definition=replace(definition,'https://photographicode.github.io/congregation-assistant/app/','''||ca_private.app_link(''APP_URL'')||''');
   definition=replace(definition,'https://photographicode.github.io/congregation-assistant/','''||ca_private.app_link(''APP_URL'')||''');
-  definition=replace(definition,'https://photographicode.github.io/Congregation-Assistant_Public/how-to-use.html','''||ca_private.app_link(''PUBLIC_SITE_URL'')||''/help/');
+  definition=replace(definition,'https://photographicode.github.io/congregation-assistant/how-to-use.html','''||ca_private.app_link(''PUBLIC_SITE_URL'')||''/help/');
   definition=replace(definition,'congregationassistant0@gmail.com','''||ca_private.app_link(''SUPPORT_EMAIL'')||''');
   definition=replace(definition,'assign department overseers in Settings','assign overseers in Access & Links');
   definition=replace(definition,'Your congregation Gmail administrator','Your congregation administrator');

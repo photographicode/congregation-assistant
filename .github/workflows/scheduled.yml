@@ -1,0 +1,93 @@
+name: Publications and security
+'on':
+  schedule:
+  - cron: 30 5 * * 1
+  - cron: 35 2 * * 0
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+    - apps/**
+    - packages/**
+    - supabase/**
+    - scripts/**
+    - .semgrep/**
+    - .gitleaks*
+    - package*.json
+    - .github/**
+permissions:
+  contents: read
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: pip
+        cache-dependency-path: .github/security-requirements.txt
+    - run: pip install -r .github/security-requirements.txt
+    - run: mkdir -p work/security && semgrep scan --config .semgrep/security.yml --error --json --output work/security/semgrep.json apps/web/src apps/site
+        packages/ui
+    - name: Gitleaks OSS (no paid private-repository action)
+      run: 'curl --fail --location --retry 2 https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz -o work/security/gitleaks.tar.gz
+
+        tar -xzf work/security/gitleaks.tar.gz -C work/security gitleaks
+
+        work/security/gitleaks git --config .gitleaks.toml --redact --report-format json --report-path work/security/gitleaks.json .
+
+        '
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: oss-security-evidence
+        path: work/security/*.json
+        retention-days: 14
+  publications:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - uses: actions/cache@v4
+      with:
+        path: work/meeting-fetch
+        key: publication-etags-${{ github.run_id }}
+        restore-keys: publication-etags-
+    - run: node --test scripts/meetings/parse.test.mjs
+    - run: node scripts/meetings/fetch.mjs
+      env:
+        JW_IMPORT_ENABLED: ${{ vars.JW_IMPORT_ENABLED || 'true' }}
+    - name: Commit public normalized metadata only
+      run: 'git add data/meetings data/watchtower docs/qa/MEETING-IMPORT-RUN.md
+
+        if git diff --cached --quiet; then exit 0; fi
+
+        git config user.name ''congregation-assistant-import[bot]''
+
+        git config user.email ''import-bot@users.noreply.github.com''
+
+        git commit -m ''Refresh official meeting publication metadata''
+
+        git pull --rebase origin "${GITHUB_REF_NAME}"
+
+        git push
+
+        '
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: wol-parse-debug
+        path: work/meeting-debug
+        retention-days: 3
+        if-no-files-found: ignore
+    if: github.event_name != 'pull_request' && (github.event_name == 'workflow_dispatch' || github.event.schedule == '30 5 * * 1')
+    permissions:
+      contents: write
