@@ -115,8 +115,10 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
     }
     function tick(page,cx,cy,scale=1) {
         const {rgb}=requireLibrary();
-        // Filled, curved black check; vector geometry avoids missing Unicode glyphs.
-        page.drawSvgPath('M -3.95 -0.55 C -4.3 -0.25 -4.35 0.2 -3.95 0.65 L -1.35 3.5 C -0.95 3.95 -0.4 3.9 -0.05 3.4 L 4.25 -3.1 C 4.5 -3.55 4.15 -3.85 3.8 -3.5 L -0.9 1.55 L -3.35 -0.55 C -3.55 -0.75 -3.8 -0.7 -3.95 -0.55 Z',{x:cx,y:cy,scale,color:rgb(0,0,0)});
+        // Symmetric bounds around the measured checkbox centre; two vector strokes.
+        const points=[{x:cx-3.5*scale,y:cy},{x:cx-1*scale,y:cy-3*scale},{x:cx+3.5*scale,y:cy+3*scale}];
+        page.drawLine({start:points[0],end:points[1],thickness:1.1*scale,color:rgb(0,0,0)});
+        page.drawLine({start:points[1],end:points[2],thickness:1.1*scale,color:rgb(0,0,0)});
     }
     async function makeDocument(title,sections,{largePrint=false,layout='list'}={}) {
         const {PDFDocument,rgb}=requireLibrary(),pdf=await PDFDocument.create(),{font,bold}=await fonts(pdf,[title,...sections.flatMap(s=>[s.heading,...s.lines])]),ink=rgb(0,0,0),bodySize=largePrint?16:10,leading=largePrint?24:15;

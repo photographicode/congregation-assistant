@@ -1,7 +1,7 @@
 html{font-size:calc(100% * var(--text-scale))}#root{font-size:1rem}
 body{font-family:var(--font-body);background-color:var(--bg);background-image:none;isolation:isolate}body:before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:var(--bg-image);background-size:var(--bg-size,auto);opacity:var(--background-intensity)}
 h1,h2,h3,.greeting-clock time{font-family:var(--font-display);font-weight:600}
-.card,.dialog{background:var(--surface);border:var(--border-w) solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-card);backdrop-filter:blur(var(--glass-blur))}
+.card{background:var(--surface);border:var(--border-w) solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-card);backdrop-filter:blur(var(--glass-blur))}
 button,input,select,textarea,.button{border-width:var(--border-w);border-radius:var(--radius-s)}button{transition:transform var(--dur) var(--ease),background-color var(--dur) var(--ease)}button.primary{background:var(--accent);color:var(--text-on-accent)}
 :focus-visible{outline:var(--focus-ring);outline-offset:3px}
 .theme-preview{display:block;background-color:var(--bg);background-image:var(--bg-image);padding:1rem;border-radius:var(--radius-m)}.theme-preview-surface{display:grid;gap:.5rem;padding:1rem;background:var(--surface);color:var(--text-1);border:var(--border-w) solid var(--border);border-radius:var(--radius-s);font-family:var(--font-body)}.theme-preview-surface>strong{font-family:var(--font-display);font-size:1.7rem}.theme-preview-accent{padding:.25rem .5rem;background:var(--accent);color:var(--text-on-accent);border-radius:var(--radius-s)}

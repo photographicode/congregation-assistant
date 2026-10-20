@@ -7,7 +7,10 @@ export const cellGeometry=(page:object)=>records.get(page)||[];
 export function fontMetrics(font:Face,size:number){const ascent=font.heightAtSize(size,{descender:false}),height=font.heightAtSize(size,{descender:true});const parsed=font.embedder?.font;return {ascent,descent:ascent-height,capHeight:parsed?.capHeight&&parsed?.unitsPerEm?parsed.capHeight/parsed.unitsPerEm*size:ascent};}
 export function drawTextInCell(page:object,value:unknown,cell:Cell,font:Face,draw:Draw,options:Record<string,unknown>={}){
  const text=String(value??'').replace(/[\r\n\t]+/g,' ').replace(/\s+/g,' ').trim();if(!text)return {lines:[],size:cell.fontSize||9,truncated:false};font.caValidate?.(text);
- const padding=Math.max(2,cell.padding??2),width=Math.max(0,cell.w-padding*2),height=Math.max(0,cell.h-padding*2),minimum=Math.max(7,cell.minSize??7);let size=Math.max(minimum,cell.fontSize??9);
+ // Official template labels include reviewed 6.5–7 pt text. Runtime-entered
+ // values still pass a 7 pt minimum; template reconstruction may preserve the
+ // smaller source size explicitly.
+ const padding=Math.max(2,cell.padding??2),width=Math.max(0,cell.w-padding*2),height=Math.max(0,cell.h-padding*2),minimum=Math.max(6,cell.minSize??7);let size=Math.max(minimum,cell.fontSize??9);
  const indic=/[\u0900-\u0dff]/u.test(text),leadingFactor=indic?1.5:1.25;
  while(size>minimum&&(font.widthOfTextAtSize(text,size)>width||font.heightAtSize(size)>height))size=Math.max(minimum,size-.25);
  const metrics=fontMetrics(font,size),leading=size*leadingFactor,maxLines=Math.max(1,Math.min(cell.maxLines??1,Math.floor(Math.max(0,height-metrics.ascent+metrics.descent)/leading)+1));const lines:string[]=[];let line='';

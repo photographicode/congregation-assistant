@@ -1,6 +1,6 @@
 # Current owner handover
 
-R1 is live: https://photographicode.github.io/Congregation-Assistant_Public/app/ (use ?demo=admin to review fictional examples). Source/public commits and actual live checks are in POLISH-REPORT.md.
+R1 is live: https://photographicode.github.io/congregation-assistant/app/ (use ?demo=admin to review fictional examples). Source/public commits and actual live checks are in POLISH-REPORT.md.
 
 1. In source repository Settings → Pages, set Source to GitHub Actions. The workflow token cannot change it (403); a competing branch publisher remains. The currently verified native artifact is deployed.
 2. Keep CUSTOM_DOMAIN_READY unset/false until the owner completes the documented DNS/OAuth/CORS steps. No CNAME or DNS switch was made.
@@ -44,7 +44,7 @@ The concrete GoDaddy/Pages cutover sequence is in GITHUB-PAGES-DNS.md. The publi
 
 Resolved: automatic review accepted the reduced v3_meeting_workflows migration after department-function replacements were removed. It is applied, privileges are verified, and the attendant/group/setup controls are enabled. The earlier production-rollout blocker paragraph is historical. No approval is now required for that completed rollout.
 
-Verify the Supabase authentication redirect allowlist and real Google login for both current previews: `https://photographicode.github.io/congregation-assistant/app/` and `https://photographicode.github.io/Congregation-Assistant_Public/app/`. The available connector does not expose authentication-configuration mutations, so this provider-dashboard setting was not changed. Fictional demos and live static/PWA checks do not prove approved-account login.
+Verify the Supabase authentication redirect allowlist and real Google login for both current previews: `https://photographicode.github.io/congregation-assistant/app/` and `https://photographicode.github.io/congregation-assistant/app/`. The available connector does not expose authentication-configuration mutations, so this provider-dashboard setting was not changed. Fictional demos and live static/PWA checks do not prove approved-account login.
 
 ## NEXT batch: remaining acceptance
 

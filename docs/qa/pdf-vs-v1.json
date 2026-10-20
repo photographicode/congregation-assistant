@@ -1,0 +1,99 @@
+{
+  "tolerances": {
+    "horizontalAnchor": 1,
+    "baseline": 0.75,
+    "dynamicFontSize": 0.2
+  },
+  "intentional": [
+    "Noto's nominal transform size differs from the official template fonts; static copy is checked by measured position.",
+    "Left-aligned entered values preserve their V1 left edge when Noto run width differs.",
+    "V1 checkbox and dotted-line ornaments are vector artwork and excluded from text-run width comparisons.",
+    "The fixed attendance codes CA, RC and Memorial may shrink to fit their unchanged official cells."
+  ],
+  "results": [
+    {
+      "fixture": "s21-all-months.pdf",
+      "referenceRuns": 69,
+      "matched": 69,
+      "failures": []
+    },
+    {
+      "fixture": "s21-auxiliary.pdf",
+      "referenceRuns": 69,
+      "matched": 69,
+      "failures": []
+    },
+    {
+      "fixture": "s21-large-family.pdf",
+      "referenceRuns": 828,
+      "matched": 828,
+      "failures": []
+    },
+    {
+      "fixture": "s21-long-name.pdf",
+      "referenceRuns": 81,
+      "matched": 81,
+      "failures": []
+    },
+    {
+      "fixture": "s21-long-remarks.pdf",
+      "referenceRuns": 334,
+      "matched": 334,
+      "failures": []
+    },
+    {
+      "fixture": "s21-ordinary.pdf",
+      "referenceRuns": 69,
+      "matched": 69,
+      "failures": []
+    },
+    {
+      "fixture": "s21-regular.pdf",
+      "referenceRuns": 69,
+      "matched": 69,
+      "failures": []
+    },
+    {
+      "fixture": "s21-unbaptised.pdf",
+      "referenceRuns": 69,
+      "matched": 69,
+      "failures": []
+    },
+    {
+      "fixture": "s3-full.pdf",
+      "referenceRuns": 32,
+      "matched": 32,
+      "failures": []
+    },
+    {
+      "fixture": "s3-partial.pdf",
+      "referenceRuns": 20,
+      "matched": 20,
+      "failures": []
+    },
+    {
+      "fixture": "s3-special.pdf",
+      "referenceRuns": 32,
+      "matched": 32,
+      "failures": []
+    },
+    {
+      "fixture": "s88-full.pdf",
+      "referenceRuns": 241,
+      "matched": 241,
+      "failures": []
+    },
+    {
+      "fixture": "s88-partial.pdf",
+      "referenceRuns": 113,
+      "matched": 113,
+      "failures": []
+    },
+    {
+      "fixture": "s88-special.pdf",
+      "referenceRuns": 241,
+      "matched": 241,
+      "failures": []
+    }
+  ]
+}
