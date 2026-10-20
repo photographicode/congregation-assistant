@@ -1,20 +1,23 @@
 import React from "react";
 import {t} from "../core/i18n";
 import * as Primitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import { X, Info, CheckCircle2, AlertTriangle, CircleAlert } from "lucide-react";
 export function Dialog({
   open,
   onClose,
   title,
   children,
   dirty = false,
+  tone = "info",
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
   dirty?: boolean;
+  tone?: "info"|"success"|"warning"|"danger";
 }) {
+  const ToneIcon={info:Info,success:CheckCircle2,warning:AlertTriangle,danger:CircleAlert}[tone];
   const opener = React.useRef<HTMLElement | null>(null);
   const wasOpen = React.useRef(false);
   if (open && !wasOpen.current)
@@ -39,6 +42,7 @@ export function Dialog({
         <Primitive.Overlay className="dialog-overlay" />
         <Primitive.Content
           className="dialog"
+          data-tone={confirm?"warning":tone}
           translate="no"
           aria-describedby={undefined}
           onCloseAutoFocus={(event) => {
@@ -55,6 +59,7 @@ export function Dialog({
           }}
         >
           <header onPointerDown={event=>{if(event.pointerType==='touch'&&matchMedia('(max-width:599px)').matches&&!((event.target as HTMLElement).closest('button')))swipe.current={x:event.clientX,y:event.clientY};}} onPointerCancel={()=>{swipe.current=null;}} onPointerUp={event=>{const start=swipe.current;swipe.current=null;if(start&&event.clientY-start.y>80&&Math.abs(event.clientX-start.x)<50)request();}}>
+            <ToneIcon className="dialog-tone-icon" aria-hidden="true"/>
             <Primitive.Title>{title}</Primitive.Title>
             <button
               type="button"

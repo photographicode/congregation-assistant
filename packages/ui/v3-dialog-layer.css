@@ -1,0 +1,28 @@
+/* v3-dialog-layer.css — a separate, opaque "overlay layer" so dialogs, sheets, popovers and toasts never blend into the page.
+   Drop in AFTER theme-bridge.css. Contrast verified (text-1/2/3 on every dialog background >= 5.7:1; header >= 5.7:1;
+   text-on-accent >= 4.99:1; danger text >= 5.5:1). Re-run scripts/contrast-check.mjs after edits.
+   IMPORTANT: remove `.dialog` from the shared `.card,.dialog{...}` rule in theme-bridge.css so dialogs stop looking like cards. */
+
+[data-theme="mono-light"]  {--dialog-bg:#FFFFFF;--dialog-head:#F2F2F2;--dialog-border:#0A0A0A;--dialog-bw:2px;--scrim:rgba(0,0,0,.55);--scrim-blur:0px;--shadow-dialog:0 24px 60px rgba(0,0,0,.35);--input-bg:#FFFFFF;--input-border:#0A0A0A;--tone-info:#0A0A0A;--tone-ok:#0A0A0A;--tone-warn:#0A0A0A;--tone-danger:#0A0A0A}
+[data-theme="mono-dark"]   {--dialog-bg:#141414;--dialog-head:#1E1E1E;--dialog-border:#FFFFFF;--dialog-bw:1px;--scrim:rgba(0,0,0,.72);--scrim-blur:0px;--shadow-dialog:0 24px 60px rgba(0,0,0,.7);--input-bg:#0A0A0A;--input-border:#8A8A8A;--tone-info:#FFFFFF;--tone-ok:#FFFFFF;--tone-warn:#FFFFFF;--tone-danger:#FFFFFF}
+[data-theme="paper"]       {--dialog-bg:#FFFFFF;--dialog-head:#F7F3EA;--dialog-border:#CBBF9F;--dialog-bw:1px;--scrim:rgba(40,30,10,.45);--scrim-blur:2px;--shadow-dialog:0 24px 60px rgba(60,40,10,.28);--input-bg:#FFFDF8;--input-border:#BFB28F;--tone-info:#B4532A;--tone-ok:#2E6B3F;--tone-warn:#8A5A00;--tone-danger:#A12B2B}
+[data-theme="lagoon-glass"]{--dialog-bg:#0E4552;--dialog-head:#0B3A46;--dialog-border:rgba(255,255,255,.38);--dialog-bw:1px;--scrim:rgba(2,18,24,.62);--scrim-blur:8px;--shadow-dialog:0 28px 70px rgba(0,0,0,.5),0 0 0 1px rgba(94,234,212,.12) inset;--input-bg:rgba(255,255,255,.09);--input-border:rgba(255,255,255,.35);--tone-info:#5EEAD4;--tone-ok:#6EE7A8;--tone-warn:#FCD34D;--tone-danger:#FCA5A5}
+[data-theme="neon-night"]  {--dialog-bg:#181B33;--dialog-head:#20244A;--dialog-border:rgba(0,229,255,.55);--dialog-bw:1px;--scrim:rgba(3,4,12,.72);--scrim-blur:6px;--shadow-dialog:0 0 0 1px rgba(0,229,255,.25),0 24px 70px rgba(0,229,255,.18);--input-bg:#0F1124;--input-border:#3A4080;--tone-info:#00E5FF;--tone-ok:#3DFFA2;--tone-warn:#FFC94D;--tone-danger:#FF7A93}
+[data-theme="sunset-pop"]  {--dialog-bg:#FFF7F2;--dialog-head:#FFE9E0;--dialog-border:#FFFFFF;--dialog-bw:2px;--scrim:rgba(60,20,60,.42);--scrim-blur:6px;--shadow-dialog:0 28px 70px rgba(201,31,90,.28);--input-bg:#FFFFFF;--input-border:#E7C9D6;--tone-info:#C91F5A;--tone-ok:#1F7A4D;--tone-warn:#8A5200;--tone-danger:#B3261E}
+[data-theme="neo-brutal"]  {--dialog-bg:#FFFFFF;--dialog-head:#FFE8A3;--dialog-border:#111111;--dialog-bw:3px;--scrim:rgba(17,17,17,.55);--scrim-blur:0px;--shadow-dialog:8px 8px 0 #111111;--input-bg:#FFFFFF;--input-border:#111111;--tone-info:#FFD400;--tone-ok:#0B6B33;--tone-warn:#8A5200;--tone-danger:#C21807}
+[data-theme="forest"]      {--dialog-bg:#1B3628;--dialog-head:#14291F;--dialog-border:#3A6A50;--dialog-bw:1px;--scrim:rgba(2,10,6,.62);--scrim-blur:4px;--shadow-dialog:0 24px 60px rgba(0,0,0,.55);--input-bg:#12241A;--input-border:#3A6A50;--tone-info:#7BE0A0;--tone-ok:#7BE0A0;--tone-warn:#E6C86E;--tone-danger:#FF9B9B}
+[data-theme="aurora"]      {--dialog-bg:#231856;--dialog-head:#1A1245;--dialog-border:rgba(167,139,250,.55);--dialog-bw:1px;--scrim:rgba(8,4,24,.68);--scrim-blur:8px;--shadow-dialog:0 28px 70px rgba(124,58,237,.38),0 0 0 1px rgba(255,255,255,.06) inset;--input-bg:rgba(255,255,255,.08);--input-border:rgba(167,139,250,.5);--tone-info:#A78BFA;--tone-ok:#6EE7B7;--tone-warn:#FCD34D;--tone-danger:#FDA4AF}
+
+/* Overlay layer: opaque, separated, never glass */
+.dialog-overlay{background:var(--scrim);-webkit-backdrop-filter:blur(var(--scrim-blur));backdrop-filter:blur(var(--scrim-blur))}
+.dialog{background:var(--dialog-bg);color:var(--text-1);border:var(--dialog-bw) solid var(--dialog-border);border-radius:var(--radius-l);box-shadow:var(--shadow-dialog);-webkit-backdrop-filter:none;backdrop-filter:none;overflow:hidden}
+.dialog>header{background:var(--dialog-head);border-bottom:var(--dialog-bw) solid var(--dialog-border);border-top:4px solid var(--tone,var(--tone-info))}
+.dialog>footer,.dialog .dialog-actions{background:var(--dialog-head);border-top:var(--dialog-bw) solid var(--dialog-border);position:sticky;bottom:0}
+.dialog[data-tone="danger"]{--tone:var(--tone-danger)} .dialog[data-tone="success"]{--tone:var(--tone-ok)}
+.dialog[data-tone="warning"]{--tone:var(--tone-warn)}  .dialog[data-tone="info"]{--tone:var(--tone-info)}
+/* Popovers (assignment picker, selects, menus) and toasts use the same opaque layer, one step lighter shadow */
+.assignment-options,.popover,.menu,.toast{background:var(--dialog-bg);color:var(--text-1);border:var(--dialog-bw) solid var(--dialog-border);border-radius:var(--radius-m);box-shadow:var(--shadow-dialog);-webkit-backdrop-filter:none;backdrop-filter:none}
+.toast{border-inline-start:6px solid var(--tone,var(--tone-info))}
+/* Form controls must read as inputs, not as more glass */
+input:not([type=checkbox]):not([type=radio]),textarea,select{background:var(--input-bg);border:1px solid var(--input-border)}
+@media (prefers-reduced-transparency:reduce){.dialog-overlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
