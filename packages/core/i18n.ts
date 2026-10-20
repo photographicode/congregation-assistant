@@ -1,6 +1,20 @@
 import generated from './locales/en.generated.json';
 import drafts from './locales/app-drafts.json';
 const en={
+ "assistant.adminLabel":"Admin assistant",
+ "assistant.adminTitle":"Assistant · Admin",
+ "assistant.adminExamples":"Try “S-21 for Maria Thomas” or “record midweek attendance 85”.",
+ "assistant.loadingContext":"Loading your authorized records…",
+ "assistant.contextError":"Assistant context could not load.",
+ "assistant.localSummary":"On-device commands. Downloads open directly; changes need your review.",
+ "assistant.choosePublisher":"Choose a publisher",
+ "assistant.ambiguous":"More than one publisher matches. Select the right person.",
+ "assistant.downloadPerson":"Download S-21 ·",
+ "assistant.attendanceReview":"Review attendance",
+ "assistant.attendanceCount":"Attendance:",
+ "assistant.noCurrentMeeting":"No matching current meeting. Open Attendance to review the calendar.",
+ "assistant.attendanceSave":"Save attendance",
+
  'attendance.formTitle':'Meeting attendance',
  'report.shared':'Shared in ministry',
  'report.didNotShare':'Did not share',

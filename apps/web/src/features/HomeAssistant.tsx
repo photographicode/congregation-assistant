@@ -1,3 +1,4 @@
+import {t} from '../../../../packages/core/i18n';
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {repositories} from '../../../../packages/core/repositories';
@@ -17,5 +18,5 @@ export function HomeAssistant({context:c,go}:{context:Context;go:(route:string)=
   cache.setQueryData(['assistant-meeting',c.account,c.cong],meeting);return true;
  }});
  if(!c.roles.includes('admin'))return null;
- return <section className="card stack" aria-label="Admin assistant"><h2>Assistant · Admin</h2><p>Try “S-21 for Maria Thomas” or “record midweek attendance 85”.</p>{ready.isPending?<p role="status">Loading your authorized records…</p>:ready.error?<p role="alert">Assistant context could not load. <button onClick={()=>void ready.refetch()}>Retry</button></p>:<LocalAssistant compact context={c} onExport={()=>{sessionStorage.setItem('ca-pdf-open','s21');go('pdf');}}/>}</section>;
+ return <section className="card stack" aria-label={t('assistant.adminLabel')}><h2>{t('assistant.adminTitle')}</h2><p>{t('assistant.adminExamples')}</p>{ready.isPending?<p role="status">{t('assistant.loadingContext')}</p>:ready.error?<p role="alert">{t('assistant.contextError')} <button onClick={()=>void ready.refetch()}>{t('search.retry')}</button></p>:<LocalAssistant compact context={c} onExport={()=>{sessionStorage.setItem('ca-pdf-open','s21');go('pdf');}}/>}</section>;
 }
