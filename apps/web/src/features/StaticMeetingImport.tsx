@@ -86,6 +86,7 @@ export function StaticMeetingImport({
             title: part.title,
             minutes: part.minutes,
             assistant: part.kind === "student",
+            reader: type === "BibleStudy",
           };
         }),
       );

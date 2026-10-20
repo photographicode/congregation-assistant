@@ -1,6 +1,7 @@
 import generated from './locales/en.generated.json';
 import drafts from './locales/app-drafts.json';
 const en={
+ "oclm.reader":"Reader",
  "assistant.adminLabel":"Admin assistant",
  "assistant.adminTitle":"Assistant · Admin",
  "assistant.adminExamples":"Try “S-21 for Maria Thomas” or “record midweek attendance 85”.",

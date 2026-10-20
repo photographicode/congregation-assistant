@@ -120,6 +120,7 @@ const demoProgram = (): Program => ({
       section: "living",
       minutes: 30,
       assistant: false,
+      reader: true,
     },
   ],
 });
@@ -874,6 +875,12 @@ export function Midweek({
                           "Assistant",
                           t("oclm.assistant"),
                           student,
+                        )}
+                      {part.reader &&
+                        selectPerson(
+                          key + "Reader",
+                          "BibleStudyReader",
+                          t("oclm.reader"),
                         )}
                     </div>
                     {[
