@@ -1,0 +1,3 @@
+import {test,expect} from 'vitest';import {readFile,readdir} from 'node:fs/promises';
+test('native entry keeps the strict script and object policy',async()=>{const html=await readFile('apps/web/index.html','utf8'),scriptPolicy=html.match(/script-src[^;]+/)?.[0]||'';expect(html).toMatch(/object-src 'none'/);expect(scriptPolicy).toMatch(/script-src 'self'/);expect(scriptPolicy).not.toMatch(/https:/);});
+test('the release has exactly five workflows and no legacy publisher',async()=>{const names=(await readdir('.github/workflows')).sort();expect(names).toEqual(['ci.yml','deploy.yml','e2e.yml','pdf.yml','scheduled.yml']);for(const name of names)expect(await readFile('.github/workflows/'+name,'utf8')).not.toMatch(/Congregation-Assistant_Public/);});

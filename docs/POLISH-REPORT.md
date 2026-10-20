@@ -173,3 +173,17 @@ The final report-only matrix on 3013329 completed all eight shards: 8,820 additi
 Two older auxiliary workflows used ambiguous selectors after native feature restoration: the V2 cutover harness matched all three illustrative greeting headings plus the live heading, and the V3 shell harness matched both publisher search and the S-21 shortcut. The shell spec now explicitly chooses the publisher result. The legacy cutover/V2 parity workflow remains manual/scheduled for R2 rather than duplicating the current 37,044-view R1 matrix and current native smoke suite on each PR. Its old selector is not counted as repaired or passed.
 
 The production AP migration is narrowed to the affected report RPCs, timestamp function and new private audit APIs/table. An unrelated roster helper declaration/grant was removed from the migration/rollback, leaving that live roster API unchanged. The function-only snapshot therefore covers every pre-existing function being replaced.
+# V3 final refinement candidate — 20 October 2026
+
+The canonical repository is now `photographicode/congregation-assistant`; its generated website lives at `/` and its app at `/app/`. The branch removes the retired root V1 app, duplicate `v2/`, staging, preview, archive and experiment trees while preserving the immutable `v1-final` tag and `tests/golden/v1/`. CI is consolidated from 17 workflows to five. The old public repository is converted to a redirect only after the canonical deployment passes its live check.
+
+The supplied dialog layer is imported byte-for-byte after the bridge. Computed checks across all nine themes confirm opaque dialog backgrounds, scrim alpha >= .40, visible borders/shadows/tone strips and text contrast >= 4.5:1. Aurora and Lagoon use fixed pseudo-layer artwork, solid tinted card/list surfaces and at most the top bar, bottom bar and hero as blur layers. The 10-view interaction audit covers all visible controls on Home, People, Reports, Midweek and Settings at 390/1024 px: 0 HARD and 0 soft findings.
+
+PDF evidence: 14 V1 geometry fixtures pass with 0 failures; 49 S-21/S-88/S-3/S-89/S-140/Emergency and schedule fixtures pass with 0 HARD findings; 17 reviewed Noto goldens pass text/page/pixel parity; 3,433 source-data assertions and 200 randomized cell-layout runs pass. S-21 check marks are two-stroke vector paths centered from the box rectangle. One six-form contact sheet was reviewed.
+
+The Main Admin Home assistant now supports exact-name commands such as “S-21 for Maria Thomas” with immediate local PDF download and “record midweek attendance 85” with current-meeting/date review before saving. Ambiguous publisher names require a choice. Parsing/review sends no command text, changes no browser storage and makes no request; non-admin roles have no assistant entry point.
+
+Local bug-bash status: Sev1 0, Sev2 0. The complete Actions matrix, three-browser smoke, database contracts and history security scanners remain required before merge/deployment. External limitations remain real phones, physical printers, WhatsApp attachment delivery, Razorpay and real-user Google sign-in.
+
+---
+
