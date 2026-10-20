@@ -1,3 +1,38 @@
-import {publisherFileName} from '../../../../packages/core/pdf-accuracy';
-import {pdfAssets} from './pdf-assets';
-self.onmessage=async(event:MessageEvent)=>{try{const {method,snapshot,args}=event.data;const {createPdfEngine}=await import('../../../../packages/pdf/engine.mjs');const engine=createPdfEngine({snapshot,signal:undefined,loadTemplate:(name:string)=>pdfAssets('pdf-templates/'+name),loadFont:(name:string)=>pdfAssets('fonts/'+name),onProgress:(done:number,total:number)=>self.postMessage({progress:Math.round(done/total*100)})});let bytes;if(method==='s21Zip'){const {zipSync}=await import('fflate');const files:Record<string,Uint8Array>={};for(const [index,person] of args[0].entries()){let name='S-21_'+publisherFileName(person.name)+'_'+args[1];if(files[name+'.pdf'])name+='_'+(index+1);files[name+'.pdf']=await engine.s21([person],args[1]);}bytes=zipSync(files,{level:0});}else if(method==='meetingPDF'||method==='assignmentPDF'){const output=await import('../../../../packages/pdf/meeting-output.mjs');bytes=await output[method as 'meetingPDF']({...args[0],loadFont:(name:string)=>pdfAssets('fonts/'+name)});}else bytes=await (engine as any)[method](...args);self.postMessage({bytes});}catch(error){self.postMessage({error:(error as Error).message});}};
+import { publisherFileName } from "../../../../packages/core/pdf-accuracy";
+import { pdfAssets } from "./pdf-assets";
+self.onmessage = async (event: MessageEvent) => {
+  try {
+    const { method, snapshot, args } = event.data;
+    const { createPdfEngine } =
+      await import("../../../../packages/pdf/engine.mjs");
+    const engine = createPdfEngine({
+      snapshot,
+      signal: undefined,
+      loadTemplate: (name: string) => pdfAssets("pdf-templates/" + name),
+      loadFont: (name: string) => pdfAssets("fonts/" + name),
+      onProgress: (done: number, total: number) =>
+        self.postMessage({ progress: Math.round((done / total) * 100) }),
+    });
+    let bytes;
+    if (method === "s21Zip") {
+      const { zipSync } = await import("fflate");
+      const files: Record<string, Uint8Array> = {};
+      for (const [index, person] of args[0].entries()) {
+        let name = "S-21_" + publisherFileName(person.name) + "_" + args[1];
+        if (files[name + ".pdf"]) name += "_" + (index + 1);
+        files[name + ".pdf"] = await engine.s21([person], args[1]);
+      }
+      bytes = zipSync(files, { level: 0 });
+    } else if (method === "meetingPDF" || method === "assignmentPDF") {
+      const output =
+        await import("../../../../packages/pdf/meeting-output.mjs");
+      bytes = await output[method as "meetingPDF"]({
+        ...args[0],
+        loadFont: (name: string) => pdfAssets("fonts/" + name),
+      });
+    } else bytes = await (engine as any)[method](...args);
+    self.postMessage({ bytes });
+  } catch (error) {
+    self.postMessage({ error: (error as Error).message });
+  }
+};

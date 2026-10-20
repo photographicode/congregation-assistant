@@ -1,3 +1,7 @@
+import {
+  Disclosure,
+  DisclosureLabel,
+} from "../../../../packages/ui/components";
 import { AssignmentPicker } from "../../../../packages/ui/AssignmentPicker";
 import {
   assignmentRecency,
@@ -621,8 +625,8 @@ export function Midweek({
           }
         />
       )}
-      <details className="card">
-        <summary>{t("oclm.roster")}</summary>
+      <Disclosure className="card">
+        <DisclosureLabel>{t("oclm.roster")}</DisclosureLabel>
         <p>{t("oclm.qualifications")}</p>
         {!demo &&
           roster.data
@@ -663,8 +667,8 @@ export function Midweek({
               </div>
             ))}
         {draft.personnel.map((person) => (
-          <details key={person.id}>
-            <summary>{person.name}</summary>
+          <Disclosure key={person.id}>
+            <DisclosureLabel>{person.name}</DisclosureLabel>
             <div className="form-grid">
               {[
                 "Chairman",
@@ -722,9 +726,9 @@ export function Midweek({
                 </label>
               ))}
             </div>
-          </details>
+          </Disclosure>
         ))}
-      </details>
+      </Disclosure>
       <div className="card form-grid">
         <label>
           {t("oclm.date")}

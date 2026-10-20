@@ -1,4 +1,81 @@
-import {t} from '../../../../packages/core/i18n';
-import React from 'react';import {z} from 'zod';import {config} from './client';import {RecordsExport} from './RecordsExport';import type {Context} from '../main';
-export const planSchema=z.object({congregation:z.string(),name:z.string(),status:z.enum(['trial','active','expired']),trialEndsAt:z.string(),paymentDate:z.string().nullable(),locked:z.boolean(),serverTime:z.string()});export type WorkspacePlan=z.infer<typeof planSchema>;
-export function Subscription({context:c,plan,standalone=true}:{context:Context;plan:WorkspacePlan;standalone?:boolean}){const Title=standalone?'h1':'h2';return <div className="stack"><section className="card stack"><div className="eyebrow">{t("ui.subscription.4999c6c6")}</div><Title>{plan.status==='trial'?'Your trial is active.':plan.locked?'Your workspace is paused.':t('refine.planActive')}</Title><p>{plan.name}</p>{plan.status==='trial'&&<p>{t("ui.trial.ends.d86fe633")}{new Date(plan.trialEndsAt).toLocaleString()}.</p>}{plan.paymentDate&&<p>{t("ui.last.payment.recorded.f125cad1")}{plan.paymentDate}.</p>}{plan.locked?<p>{c.roles.includes('admin')?'Contact support to renew. Your records remain available for export.':'Ask your main administrator to renew the congregation plan.'}</p>:<><p>{t('refine.fee0')}</p><p>{t('refine.fee1')}</p><p>{t('refine.fee2')}</p></>}<a className="button primary" href={'mailto:'+config.SUPPORT_EMAIL+'?subject='+encodeURIComponent('Congregation renewal: '+c.name)}>{t("ui.contact.support.814f4ed2")}</a></section>{plan.locked&&c.roles.includes('admin')&&<RecordsExport context={c}/>}</div>;}
+import { t } from "../../../../packages/core/i18n";
+import React from "react";
+import { z } from "zod";
+import { config } from "./client";
+import { RecordsExport } from "./RecordsExport";
+import type { Context } from "../main";
+export const planSchema = z.object({
+  congregation: z.string(),
+  name: z.string(),
+  status: z.enum(["trial", "active", "expired"]),
+  trialEndsAt: z.string(),
+  paymentDate: z.string().nullable(),
+  locked: z.boolean(),
+  serverTime: z.string(),
+});
+export type WorkspacePlan = z.infer<typeof planSchema>;
+export function Subscription({
+  context: c,
+  plan,
+  standalone = true,
+}: {
+  context: Context;
+  plan: WorkspacePlan;
+  standalone?: boolean;
+}) {
+  const Title = standalone ? "h1" : "h2";
+  return (
+    <div className="stack">
+      <section className="card stack">
+        <div className="eyebrow">{t("ui.subscription.4999c6c6")}</div>
+        <Title>
+          {plan.status === "trial"
+            ? "Your trial is active."
+            : plan.locked
+              ? "Your workspace is paused."
+              : t("refine.planActive")}
+        </Title>
+        <p>{plan.name}</p>
+        {plan.status === "trial" && (
+          <p>
+            {t("ui.trial.ends.d86fe633")}
+            {new Date(plan.trialEndsAt).toLocaleString()}.
+          </p>
+        )}
+        {plan.paymentDate && (
+          <p>
+            {t("ui.last.payment.recorded.f125cad1")}
+            {plan.paymentDate}.
+          </p>
+        )}
+        {plan.locked ? (
+          <p>
+            {c.roles.includes("admin")
+              ? "Contact support to renew. Your records remain available for export."
+              : "Ask your main administrator to renew the congregation plan."}
+          </p>
+        ) : (
+          <>
+            <p>{t("refine.fee0")}</p>
+            <p>{t("refine.fee1")}</p>
+            <p>{t("refine.fee2")}</p>
+          </>
+        )}
+        <a
+          className="button primary"
+          href={
+            "mailto:" +
+            config.SUPPORT_EMAIL +
+            "?subject=" +
+            encodeURIComponent("Congregation renewal: " + c.name)
+          }
+        >
+          {t("ui.contact.support.814f4ed2")}
+        </a>
+      </section>
+      {plan.locked && c.roles.includes("admin") && (
+        <RecordsExport context={c} />
+      )}
+    </div>
+  );
+}

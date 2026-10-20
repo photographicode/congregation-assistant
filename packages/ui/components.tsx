@@ -230,6 +230,92 @@ export function Switch({
 export function Select(props: React.ComponentProps<typeof Combobox>) {
   return <Combobox {...props} />;
 }
+/** Compatibility adapter while screens move from option children to the typed API. */
+export function LegacySelect({
+  children,
+  value,
+  onChange,
+  disabled,
+  required,
+  "aria-label": ariaLabel,
+  ...props
+}: Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> & {
+  onChange?: (event: { target: { value: string } }) => void;
+}) {
+  const options: Option[] = [];
+  function collect(nodes: React.ReactNode) {
+    React.Children.forEach(nodes, (node) => {
+      if (!React.isValidElement(node)) return;
+      if (node.type === React.Fragment) {
+        collect((node.props as { children?: React.ReactNode }).children);
+        return;
+      }
+      if (node.type === "option") {
+        const option = node.props as {
+          value?: string | number;
+          children?: React.ReactNode;
+          disabled?: boolean;
+        };
+        options.push({
+          value: String(option.value ?? ""),
+          label: React.Children.toArray(option.children).join(""),
+          disabled: option.disabled,
+        });
+        return;
+      }
+      collect((node.props as { children?: React.ReactNode }).children);
+    });
+  }
+  collect(children);
+  return (
+    <Combobox
+      label={ariaLabel || String(props.name || "Choose")}
+      value={String(value ?? "")}
+      options={options}
+      disabled={disabled}
+      clearLabel={
+        required
+          ? undefined
+          : options.find((option) => option.value === "")?.label
+      }
+      onChange={(next) => onChange?.({ target: { value: next } })}
+    />
+  );
+}
+export function DisclosureLabel({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
+export function Disclosure({
+  children,
+  className = "",
+  open: initial = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  open?: boolean;
+}) {
+  const [open, setOpen] = React.useState(initial),
+    items = React.Children.toArray(children),
+    labelNode = items.find(
+      (node) => React.isValidElement(node) && node.type === DisclosureLabel,
+    ) as React.ReactElement<{ children: React.ReactNode }> | undefined,
+    content = items.filter((node) => node !== labelNode),
+    label = labelNode?.props.children || t("common.more");
+  return (
+    <div className={className}>
+      <Button type="button" className="secondary" onClick={() => setOpen(true)}>
+        {label}
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title={typeof label === "string" ? label : t("common.more")}
+      >
+        <div className="stack">{content}</div>
+      </Dialog>
+    </div>
+  );
+}
 export function Combobox({
   label,
   value,
