@@ -168,7 +168,7 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
             // The official template already prints the labels and dotted lines.
             // Inset both entered values 4pt from their corresponding dotted lines and
             // keep entered text 2.5pt higher, clear of the printed dotted baseline.
-            left(congName,87.0,98.0,8.5,124); left(monthName,243.0,98.0,8.5,65);
+            left(congName,87.0,98.0,8.5,124); left(monthName,243.0,98.0,8.4,65);
             const xs=[69.61,106.46,143.30,180.15,217.10];
             const rowTops=[127.57,127.57,127.57,127.57,127.57];
             const rowBottoms=[166.91,166.91,166.91,166.91,166.91];
