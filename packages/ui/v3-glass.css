@@ -1,0 +1,11 @@
+/* The artwork lives on the fixed pseudo-layer, never a fixed body background. */
+body{background-attachment:scroll}
+:root:is([data-theme=aurora],[data-theme=lagoon-glass]){--surface:var(--surface-solid)}
+:root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.card,.main-content,.list-row,.rail){backdrop-filter:none;background:var(--surface-solid)}
+:root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.topbar,.bottom-tabs,.dashboard-hero){backdrop-filter:blur(12px)}
+:root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(input,textarea,select){border-color:var(--text-3)}
+:root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.segmented,.chip,.list-row){background:var(--surface-2);border:1px solid var(--border)}
+:focus-visible{outline:2px solid var(--link);outline-offset:2px;box-shadow:0 0 0 4px var(--surface-solid)}
+@media(max-width:599px),(prefers-reduced-transparency:reduce){
+ :root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.topbar,.bottom-tabs,.dashboard-hero){backdrop-filter:none;background:var(--surface-solid)}
+}
