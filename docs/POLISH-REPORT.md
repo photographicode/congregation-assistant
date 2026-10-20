@@ -32,6 +32,7 @@ Status: in progress.
 - Done: Congregation Bible Study has an additive reader flag, independent qualified reader assignment, auto-assignment, schedule rendering and PDF output. No database migration was required because reviewed programs are versioned JSON.
 - Partial: publisher editing, meeting assignment, AP revoke and link creation are registered but their natural-language handlers are not yet wired.
 - Not done yet: final screenshots and deployment for this owner pass.
+- Open gate: the legacy cutover browser harness still expects the old report-save label/route sequence after the section-hub and restored report-form changes. Product build, TypeScript, lint, 101 unit/source tests, bundle isolation, and all 17 PDF goldens pass. Per the two-attempt rule, this harness is recorded open and the owner-redesign branch is not merged or deployed.
 
 ---
 

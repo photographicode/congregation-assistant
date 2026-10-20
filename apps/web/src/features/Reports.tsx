@@ -1061,10 +1061,7 @@ export function Reports({ context: c }: { context: Context }) {
               </button>
             </div>
           </Disclosure>
-          <Disclosure
-            open={annualOpen}
-            onToggle={(e) => setAnnualOpen(e.currentTarget.open)}
-          >
+          <Disclosure open={annualOpen}>
             <DisclosureLabel>
               {t("ui.service.year.totals.pioneer.logs.5912ad86")}
             </DisclosureLabel>

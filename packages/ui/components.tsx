@@ -1,4 +1,5 @@
 import { Toast as TimedToast } from "./Notices";
+import { Dialog } from "./Dialog";
 import React from "react";
 import {
   Check,
@@ -10,7 +11,8 @@ import {
   Undo2,
 } from "lucide-react";
 import { t } from "../core/i18n";
-export { Dialog, Dialog as BottomSheet } from "./Dialog";
+export { Dialog as BottomSheet } from "./Dialog";
+export { Dialog };
 export const Button = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
