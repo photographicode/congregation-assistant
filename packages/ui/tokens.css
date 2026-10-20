@@ -1,5 +1,7 @@
 @import './themes.css';
+@import './noir-pop.css';
 @import './fonts.css';
+@import './design-system.css';
 /* Compatibility names for ported screens; every color comes from the supplied V3 theme. */
 :root{--bg-elev:var(--surface-solid);--surface-glass:var(--surface);--surface-pressed:var(--surface-2);--border-strong:var(--text-3);--text-disabled:var(--text-3);--accent-hover:var(--accent);--accent-soft:color-mix(in srgb,var(--accent) 12%,var(--surface-solid));--ok-soft:color-mix(in srgb,var(--ok) 10%,var(--surface-solid));--warn-soft:color-mix(in srgb,var(--warn) 10%,var(--surface-solid));--danger-soft:color-mix(in srgb,var(--danger) 10%,var(--surface-solid));--info:var(--link);--info-soft:var(--accent-soft);--shadow-raise:var(--shadow-card);--shadow-inset:none;--blur:var(--glass-blur);--radius-xl:var(--radius-l);--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.5rem;--space-6:2rem;--space-7:3rem;--space-8:4rem;--tap-min:2.75rem;--leading:1.6;--overlay:color-mix(in srgb,var(--text-1) 45%,transparent);--z-base:0;--z-sticky:10;--z-nav:20;--z-overlay:30;--z-dialog:40;--z-toast:50;--z-critical:60;--background-intensity:1;--gradient:var(--bg-image);--dur-fast:var(--dur);--dur-base:var(--dur);--dur-slow:calc(var(--dur)*2);--ease-spring:var(--ease)}
 :root[data-tone=sharp],:root[data-high-contrast=true]{--text-2:var(--text-1);--text-3:var(--text-1)}

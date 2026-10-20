@@ -19,6 +19,21 @@ Not verified: real phones, physical printers, WhatsApp delivery, Razorpay, a rea
 
 R2 order: **front-door cleanup → pricing config/page → website visual lock → domain switch → translation coverage → billing**. Additional known refinements remain in the historical notes below, including app-wide picker expansion, the third-classroom settings UI, wider same-day duty/weekend cautions and the soft layout findings.
 
+## Owner redesign pass
+
+Status: in progress.
+
+- Done: additive design-system tokens and written component rules; existing supplied theme blocks remain unchanged.
+- Done: additive tenth theme, **Noir Pop**, mirrors Sunset Pop structure with a monochrome ramp. This resolves the owner instruction by adding separate CSS and registering Noir Pop in the theme registry; no existing theme block was edited.
+- Done: shared Select/Combobox foundation supports keyboard navigation, type-ahead search, focus return, mobile bottom-sheet presentation, two-line options and right-aligned metadata.
+- Done: assignment recency now reports This week, Last week, N weeks ago or Never, preserves the exact date in secondary text and sorts longest gaps first.
+- Partial: app-wide native select and disclosure replacement is being migrated screen by screen.
+- Done: typed assistant capability registry covers publisher/report/attendance/meeting/AP/PDF/link operations and drives Home suggestions; current executable handlers remain report save/update, attendance, S-21 and export.
+- Done: Congregation Bible Study has an additive reader flag, independent qualified reader assignment, auto-assignment, schedule rendering and PDF output. No database migration was required because reviewed programs are versioned JSON.
+- Partial: publisher editing, meeting assignment, AP revoke and link creation are registered but their natural-language handlers are not yet wired.
+- Not done yet: final screenshots and deployment for this owner pass.
+- Open gate: the legacy cutover browser harness still expects the old report-save label/route sequence after the section-hub and restored report-form changes. Product build, TypeScript, lint, 101 unit/source tests, bundle isolation, and all 17 PDF goldens pass. Per the two-attempt rule, this harness is recorded open and the owner-redesign branch is not merged or deployed.
+
 ---
 
 ## Implementation and verification history

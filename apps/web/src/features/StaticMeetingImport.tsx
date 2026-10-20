@@ -1,5 +1,126 @@
-import {t} from "../../../../packages/core/i18n";
-import React from 'react';import {z} from 'zod';import {programSchema,monday,type Program} from '../../../../packages/core/meeting';
-import {publicationJSON} from './publication-data';
-const sourceSchema=z.object({source_url:z.url().refine(url=>new URL(url).hostname==='wol.jw.org'),weekStart:z.string(),bibleReading:z.string().nullable(),songs:z.object({opening:z.number().nullable(),middle:z.number().nullable(),closing:z.number().nullable()}),sections:z.array(z.object({key:z.enum(['treasures','field','living']),parts:z.array(z.object({number:z.number(),title:z.string(),minutes:z.number(),kind:z.string()}))}))});
-export function StaticMeetingImport({week,onImport}:{week:string;onImport:(program:Program)=>void}){const [url,setURL]=React.useState(''),[songs,setSongs]=React.useState('');const callback=React.useRef(onImport);callback.current=onImport;React.useEffect(()=>{let active=true;setURL('');setSongs('');const root=new URL('../data/meetings/',location.origin+import.meta.env.BASE_URL);void(async()=>{const status=await publicationJSON(new URL('status.json',root));if(!status?.verified)return;const value=await publicationJSON(new URL('en/'+monday(week)+'.json',root));if(!value)return;const source=sourceSchema.parse(value);if(source.weekStart!==monday(week))throw Error('Source week does not match selection');const parts=source.sections.flatMap(section=>section.parts.map(part=>{const type:Program['parts'][number]['type']=part.kind==='spiritual_gems'?'SpiritualGems':part.kind==='bible_reading'?'BibleReading':part.kind==='bible_study'?'BibleStudy':section.key==='treasures'?'TreasuresTalk':section.key==='living'?'ChristianParts':/starting a conversation/i.test(part.title)?'Conversation':/following up/i.test(part.title)?'FollowingUp':/making disciples/i.test(part.title)?'Disciples':'Beliefs';return {id:'Part'+part.number,type,section:section.key,title:part.title,minutes:part.minutes,assistant:part.kind==='student'};}));const parsed=programSchema.parse({reading:source.bibleReading||'',sourceMonth:source.weekStart.slice(0,7),reviewed:true,parts,sourceUrl:source.source_url,songs:source.songs});if(active){callback.current(parsed);setURL(source.source_url);setSongs(Object.entries(source.songs).filter(([,n])=>n!==null).map(([key,n])=>key+': '+n).join(' · '));}})().catch(()=>{});return()=>{active=false;};},[week]);return url?<p><a href={url} target="_blank" rel="noreferrer">{t("ui.source.wol.jw.org.f4aa1fbe")}</a>{songs&&' · Songs — '+songs}</p>:<p>{t("ui.parts.for.this.week.will.appear.automatica.5b08488c")}</p>;}
+import { t } from "../../../../packages/core/i18n";
+import React from "react";
+import { z } from "zod";
+import {
+  programSchema,
+  monday,
+  type Program,
+} from "../../../../packages/core/meeting";
+import { publicationJSON } from "./publication-data";
+const sourceSchema = z.object({
+  source_url: z.url().refine((url) => new URL(url).hostname === "wol.jw.org"),
+  weekStart: z.string(),
+  bibleReading: z.string().nullable(),
+  songs: z.object({
+    opening: z.number().nullable(),
+    middle: z.number().nullable(),
+    closing: z.number().nullable(),
+  }),
+  sections: z.array(
+    z.object({
+      key: z.enum(["treasures", "field", "living"]),
+      parts: z.array(
+        z.object({
+          number: z.number(),
+          title: z.string(),
+          minutes: z.number(),
+          kind: z.string(),
+        }),
+      ),
+    }),
+  ),
+});
+export function StaticMeetingImport({
+  week,
+  onImport,
+}: {
+  week: string;
+  onImport: (program: Program) => void;
+}) {
+  const [url, setURL] = React.useState(""),
+    [songs, setSongs] = React.useState("");
+  const callback = React.useRef(onImport);
+  callback.current = onImport;
+  React.useEffect(() => {
+    let active = true;
+    setURL("");
+    setSongs("");
+    const root = new URL(
+      "../data/meetings/",
+      location.origin + import.meta.env.BASE_URL,
+    );
+    void (async () => {
+      const status = await publicationJSON(new URL("status.json", root));
+      if (!status?.verified) return;
+      const value = await publicationJSON(
+        new URL("en/" + monday(week) + ".json", root),
+      );
+      if (!value) return;
+      const source = sourceSchema.parse(value);
+      if (source.weekStart !== monday(week))
+        throw Error("Source week does not match selection");
+      const parts = source.sections.flatMap((section) =>
+        section.parts.map((part) => {
+          const type: Program["parts"][number]["type"] =
+            part.kind === "spiritual_gems"
+              ? "SpiritualGems"
+              : part.kind === "bible_reading"
+                ? "BibleReading"
+                : part.kind === "bible_study"
+                  ? "BibleStudy"
+                  : section.key === "treasures"
+                    ? "TreasuresTalk"
+                    : section.key === "living"
+                      ? "ChristianParts"
+                      : /starting a conversation/i.test(part.title)
+                        ? "Conversation"
+                        : /following up/i.test(part.title)
+                          ? "FollowingUp"
+                          : /making disciples/i.test(part.title)
+                            ? "Disciples"
+                            : "Beliefs";
+          return {
+            id: "Part" + part.number,
+            type,
+            section: section.key,
+            title: part.title,
+            minutes: part.minutes,
+            assistant: part.kind === "student",
+            reader: type === "BibleStudy",
+          };
+        }),
+      );
+      const parsed = programSchema.parse({
+        reading: source.bibleReading || "",
+        sourceMonth: source.weekStart.slice(0, 7),
+        reviewed: true,
+        parts,
+        sourceUrl: source.source_url,
+        songs: source.songs,
+      });
+      if (active) {
+        callback.current(parsed);
+        setURL(source.source_url);
+        setSongs(
+          Object.entries(source.songs)
+            .filter(([, n]) => n !== null)
+            .map(([key, n]) => key + ": " + n)
+            .join(" · "),
+        );
+      }
+    })().catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [week]);
+  return url ? (
+    <p>
+      <a href={url} target="_blank" rel="noreferrer">
+        {t("ui.source.wol.jw.org.f4aa1fbe")}
+      </a>
+      {songs && " · Songs — " + songs}
+    </p>
+  ) : (
+    <p>{t("ui.parts.for.this.week.will.appear.automatica.5b08488c")}</p>
+  );
+}

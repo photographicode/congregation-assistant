@@ -1,5 +1,143 @@
-export function reportTotals(rows){return rows.reduce((value,row)=>({submitted:value.submitted+1,shared:value.shared+(row.shared_in_ministry?1:0),studies:value.studies+Number(row.studies||0),hours:value.hours+Number(row.hours||0),auxiliary:value.auxiliary+(row.is_ap?1:0)}),{submitted:0,shared:0,studies:0,hours:0,auxiliary:0});}
-export function reportDraft(person,row={}){return {pub_id:person.id,name:person.name,include:false,shared_in_ministry:row.shared_in_ministry??true,studies:Number(row.studies||0),hours:Number(row.hours||0),comments:row.comments||'',is_ap:row.is_ap??false};}
-export function reportPayload(draft,cong,year,month,id){return {id:id||draft.id,cong_id:cong,pub_id:draft.pub_id,service_year:year,month,shared_in_ministry:Boolean(draft.shared_in_ministry),studies:draft.shared_in_ministry?Number(draft.studies):0,hours:draft.shared_in_ministry?Number(draft.hours):0,comments:draft.shared_in_ministry?draft.comments:'Not Participated',is_ap:Boolean(draft.shared_in_ministry&&draft.is_ap)};}
-export function annualReportMonths(rows){const order=[8,9,10,11,0,1,2,3,4,5,6,7];return order.map(month=>({month,...reportTotals(rows.filter(row=>row.month===month))}));}
-export function reviewReportImport(table,people,period,year,month){if(table.length<2)return [];const key=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,''),headers=table[0].map(key),find=(row,names)=>{const index=headers.findIndex(h=>names.includes(h));return index<0?'':String(row[index]??'').trim();};const bool=(value,required=false)=>{if(/^(yes|true|1)$/i.test(value))return true;if(/^(no|false|0)$/i.test(value)||(!required&&!value))return false;throw Error('Use Yes or No for participation and auxiliary status.');};return table.slice(1).filter(row=>row.some(v=>String(v).trim())).map((row,index)=>{const errors=[],id=find(row,['pubid','publisherid','id']),name=find(row,['name','publishername','publisher']);let person=id?people.find(p=>p.id===id):null;if(!id&&name){const matches=people.filter(p=>p.name.trim().toLowerCase()===name.toLowerCase());if(matches.length===1)person=matches[0];else if(matches.length>1)errors.push('This name matches more than one publisher. Use its publisher ID.');}if(id&&name&&person&&person.name.trim().toLowerCase()!==name.toLowerCase())errors.push('Publisher ID and name do not match. Correct the CSV identity.');if(!person)errors.push('Choose a publisher in your accessible roster.');const value=reportDraft(person||{id:'invalid-'+index,name:name||id||'Row '+(index+2)});value.row=index+2;try{value.shared_in_ministry=bool(find(row,['sharedinministry','shared','participated']),true);value.is_ap=bool(find(row,['isap','auxiliarypioneer','auxiliary']));value.studies=Number(find(row,['studies','biblestudies'])||0);value.hours=Number(find(row,['hours'])||0);value.comments=find(row,['comments','remarks']);if(!Number.isInteger(value.studies)||value.studies<0||value.studies>1000||!Number.isFinite(value.hours)||value.hours<0||value.hours>744||value.comments.length>4000)errors.push('Check studies, hours and comment length.');}catch(e){errors.push(e.message);}const calendar=find(row,['reportingmonth','period']),sy=find(row,['serviceyear']),mo=find(row,['month']);if(calendar&&calendar!==period||sy&&Number(sy)!==year||mo&&Number(mo)!==month)errors.push('This row belongs to a different reporting month.');value.errors=errors;value.include=errors.length===0;return value;}).map((row,index,rows)=>rows.some((other,i)=>i!==index&&other.pub_id===row.pub_id)?{...row,include:false,errors:[...row.errors,'Publisher appears twice in this import.']}:row);}
+export function reportTotals(rows) {
+  return rows.reduce(
+    (value, row) => ({
+      submitted: value.submitted + 1,
+      shared: value.shared + (row.shared_in_ministry ? 1 : 0),
+      studies: value.studies + Number(row.studies || 0),
+      hours: value.hours + Number(row.hours || 0),
+      auxiliary: value.auxiliary + (row.is_ap ? 1 : 0),
+    }),
+    { submitted: 0, shared: 0, studies: 0, hours: 0, auxiliary: 0 },
+  );
+}
+export function reportDraft(person, row = {}) {
+  return {
+    pub_id: person.id,
+    name: person.name,
+    include: false,
+    shared_in_ministry: row.shared_in_ministry ?? true,
+    studies: Number(row.studies || 0),
+    hours: Number(row.hours || 0),
+    comments: row.comments || "",
+    is_ap: row.is_ap ?? false,
+  };
+}
+export function reportPayload(draft, cong, year, month, id) {
+  return {
+    id: id || draft.id,
+    cong_id: cong,
+    pub_id: draft.pub_id,
+    service_year: year,
+    month,
+    shared_in_ministry: Boolean(draft.shared_in_ministry),
+    studies: draft.shared_in_ministry ? Number(draft.studies) : 0,
+    hours: draft.shared_in_ministry ? Number(draft.hours) : 0,
+    comments: draft.shared_in_ministry ? draft.comments : "Not Participated",
+    is_ap: Boolean(draft.shared_in_ministry && draft.is_ap),
+  };
+}
+export function annualReportMonths(rows) {
+  const order = [8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7];
+  return order.map((month) => ({
+    month,
+    ...reportTotals(rows.filter((row) => row.month === month)),
+  }));
+}
+export function reviewReportImport(table, people, period, year, month) {
+  if (table.length < 2) return [];
+  const key = (value) =>
+      String(value || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, ""),
+    headers = table[0].map(key),
+    find = (row, names) => {
+      const index = headers.findIndex((h) => names.includes(h));
+      return index < 0 ? "" : String(row[index] ?? "").trim();
+    };
+  const bool = (value, required = false) => {
+    if (/^(yes|true|1)$/i.test(value)) return true;
+    if (/^(no|false|0)$/i.test(value) || (!required && !value)) return false;
+    throw Error("Use Yes or No for participation and auxiliary status.");
+  };
+  return table
+    .slice(1)
+    .filter((row) => row.some((v) => String(v).trim()))
+    .map((row, index) => {
+      const errors = [],
+        id = find(row, ["pubid", "publisherid", "id"]),
+        name = find(row, ["name", "publishername", "publisher"]);
+      let person = id ? people.find((p) => p.id === id) : null;
+      if (!id && name) {
+        const matches = people.filter(
+          (p) => p.name.trim().toLowerCase() === name.toLowerCase(),
+        );
+        if (matches.length === 1) person = matches[0];
+        else if (matches.length > 1)
+          errors.push(
+            "This name matches more than one publisher. Use its publisher ID.",
+          );
+      }
+      if (
+        id &&
+        name &&
+        person &&
+        person.name.trim().toLowerCase() !== name.toLowerCase()
+      )
+        errors.push(
+          "Publisher ID and name do not match. Correct the CSV identity.",
+        );
+      if (!person) errors.push("Choose a publisher in your accessible roster.");
+      const value = reportDraft(
+        person || {
+          id: "invalid-" + index,
+          name: name || id || "Row " + (index + 2),
+        },
+      );
+      value.row = index + 2;
+      try {
+        value.shared_in_ministry = bool(
+          find(row, ["sharedinministry", "shared", "participated"]),
+          true,
+        );
+        value.is_ap = bool(
+          find(row, ["isap", "auxiliarypioneer", "auxiliary"]),
+        );
+        value.studies = Number(find(row, ["studies", "biblestudies"]) || 0);
+        value.hours = Number(find(row, ["hours"]) || 0);
+        value.comments = find(row, ["comments", "remarks"]);
+        if (
+          !Number.isInteger(value.studies) ||
+          value.studies < 0 ||
+          value.studies > 1000 ||
+          !Number.isFinite(value.hours) ||
+          value.hours < 0 ||
+          value.hours > 744 ||
+          value.comments.length > 4000
+        )
+          errors.push("Check studies, hours and comment length.");
+      } catch (e) {
+        errors.push(e.message);
+      }
+      const calendar = find(row, ["reportingmonth", "period"]),
+        sy = find(row, ["serviceyear"]),
+        mo = find(row, ["month"]);
+      if (
+        (calendar && calendar !== period) ||
+        (sy && Number(sy) !== year) ||
+        (mo && Number(mo) !== month)
+      )
+        errors.push("This row belongs to a different reporting month.");
+      value.errors = errors;
+      value.include = errors.length === 0;
+      return value;
+    })
+    .map((row, index, rows) =>
+      rows.some((other, i) => i !== index && other.pub_id === row.pub_id)
+        ? {
+            ...row,
+            include: false,
+            errors: [...row.errors, "Publisher appears twice in this import."],
+          }
+        : row,
+    );
+}

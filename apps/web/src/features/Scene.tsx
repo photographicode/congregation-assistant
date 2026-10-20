@@ -1,1 +1,1 @@
-export {Scene} from '../../../../packages/ui/Scene';
+export { Scene } from "../../../../packages/ui/Scene";

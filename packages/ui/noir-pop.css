@@ -1,0 +1,11 @@
+/* Additive tenth theme. Existing supplied theme blocks remain unchanged. */
+[data-theme="noir-pop"]{
+ color-scheme:light;--theme-family:pop;--bg:#f2f2f0;--bg-image:radial-gradient(circle at 12% 9%,#fff 0 5%,transparent 5.2%),linear-gradient(135deg,#f7f7f5 0 48%,#e4e4e1 48% 52%,#f7f7f5 52%);
+ --surface:#fff;--surface-solid:#fff;--surface-2:#ededeb;--text-1:#111;--text-2:#363636;--text-3:#626262;
+ --accent:#111;--accent-contrast:#fff;--link:#111;--ok:#245b36;--warn:#704b00;--danger:#9b1c1c;
+ --border:#111;--ring:#111;--shadow-card:6px 6px 0 #111;--glass-blur:0px;--radius-s:8px;--radius-m:14px;--radius-l:22px;
+ --dur:160ms;--ease:cubic-bezier(.2,.8,.2,1);
+}
+[data-theme="noir-pop"] .card,[data-theme="noir-pop"] .list-row{border:2px solid #111;box-shadow:var(--shadow-card)}
+[data-theme="noir-pop"] button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #111}
+[data-theme="noir-pop"]{--dialog-bg:#fff;--dialog-head:#eeeeec;--dialog-border:#111;--dialog-bw:2px;--scrim:rgba(0,0,0,.52);--scrim-blur:4px;--shadow-dialog:8px 8px 0 #111;--input-bg:#fff;--input-border:#555;--tone-info:#222;--tone-ok:#245b36;--tone-warn:#704b00;--tone-danger:#9b1c1c}
