@@ -1,3 +1,7 @@
+# Current authority: V3 FINAL ORDERS
+
+Follow docs/V3-FINAL-ORDERS.md over earlier release instructions. Canonical repository is congregation-assistant; convert the public repository to a path-preserving redirect only after canonical live verification. Push each completed numbered item to v3/resume; merge/deploy only after current gates pass. The user additionally authorizes an admin-only Home assistant for individual S-21 downloads and attendance entry. Retained R1 results are historical, not proof for changed UI.
+
 # Current release authority
 
 docs/V3-R1-SHIP-ORDERS.md supersedes earlier polish gates: ship R1 after its PDF, security, functional and HARD geometry gates; defer parity, pricing, visual lock, translations and domain activation to R2. Freeze i18n. At most one sampled audit of 300 views per batch, one spec at a time, no build/test races. No production reset; snapshot before migrations.
