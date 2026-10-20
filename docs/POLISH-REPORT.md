@@ -19,6 +19,17 @@ Not verified: real phones, physical printers, WhatsApp delivery, Razorpay, a rea
 
 R2 order: **front-door cleanup → pricing config/page → website visual lock → domain switch → translation coverage → billing**. Additional known refinements remain in the historical notes below, including app-wide picker expansion, the third-classroom settings UI, wider same-day duty/weekend cautions and the soft layout findings.
 
+## Owner redesign pass
+
+Status: in progress.
+
+- Done: additive design-system tokens and written component rules; existing supplied theme blocks remain unchanged.
+- Done: additive tenth theme, **Noir Pop**, mirrors Sunset Pop structure with a monochrome ramp. This resolves the owner instruction by adding separate CSS and registering Noir Pop in the theme registry; no existing theme block was edited.
+- Done: shared Select/Combobox foundation supports keyboard navigation, type-ahead search, focus return, mobile bottom-sheet presentation, two-line options and right-aligned metadata.
+- Done: assignment recency now reports This week, Last week, N weeks ago or Never, preserves the exact date in secondary text and sorts longest gaps first.
+- Partial: app-wide native select and disclosure replacement is being migrated screen by screen.
+- Not done yet: expanded dashboard sections, complete command registry, CBS reader model, final screenshots, and deployment for this owner pass.
+
 ---
 
 ## Implementation and verification history

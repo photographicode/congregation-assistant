@@ -8,7 +8,8 @@
     "sunset-pop",
     "neo-brutal",
     "forest",
-    "aurora"
+    "aurora",
+    "noir-pop"
   ],
   "method": "Chromium composites text-bearing panels over all sampled gradient stops (1296 pixels per surface). Raw canvases carry no text; actual rendered text/control checks are recorded separately. Thresholds remain text-1 7:1 and other text 4.5:1.",
   "results": [
@@ -6327,6 +6328,708 @@
           167,
           139,
           250
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-2",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-2",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-2",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "surface-2",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-2",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-2",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-2",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "surface-2",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-2",
+      "text": "text-1",
+      "ratio": 21,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-2",
+      "text": "text-2",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-2",
+      "text": "text-3",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "surface-2",
+      "text": "link",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "soft",
+      "surface": "accent",
+      "text": "text-on-accent",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "standard",
+      "surface": "accent",
+      "text": "text-on-accent",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "theme": "noir-pop",
+      "tone": "sharp",
+      "surface": "accent",
+      "text": "text-on-accent",
+      "ratio": 21,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          255,
+          255,
+          255
         ]
       }
     }
