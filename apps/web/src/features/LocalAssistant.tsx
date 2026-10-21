@@ -1,3 +1,8 @@
+import {prepareAssignment} from '../../../../packages/core/assignment-action';
+import {programSchema} from '../../../../packages/core/meeting';
+import type {ScheduleDraft} from '../../../../packages/core/repositories';
+import {createReportLink,manageGroupLink} from './link-action';
+import {savePublisherAction} from './publisher-action';
 import React from "react";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -6,10 +11,10 @@ import {
   localCommand,
   type LocalPlan,
 } from "../../../../packages/core/local-command";
-import { reportSchema } from "../../../../packages/core/repositories";
+import { repositories, reportSchema } from "../../../../packages/core/repositories";
 import { t } from "../../../../packages/core/i18n";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
-import { rpc, demo } from "./client";
+import { rpc, demo,storeFor } from "./client";
 import { publisherS21 } from "./pdf-download";
 import { useDemoReports } from "./demo-reports";
 import type { Context } from "../main";
@@ -76,6 +81,8 @@ export function LocalAssistant({
     isPending: false,
     error: null as Error | null,
   };
+  const [apUndo,setAPUndo]=React.useState<{id:string;until:number;record:z.infer<typeof reportSchema>}|null>(null);
+  const [publisherUndo,setPublisherUndo]=React.useState<{id:string;field:string;previous:unknown;value:unknown;until:number}|null>(null);
   const lock = React.useRef(false);
   const [meeting, setMeeting] = React.useState<
     | {
@@ -114,6 +121,42 @@ export function LocalAssistant({
   };
   async function confirm() {
     if (!c.roles.includes("admin") || lock.current || !plan) return;
+    if(plan.kind==='assignment'){
+      const saved=cache.getQueryData<{revision:number;draft:ScheduleDraft}>(['assistant-schedule',c.account,c.cong]);
+      const parsed=programSchema.safeParse(saved?.draft?.programs?.[plan.week]);if(!saved?.draft||!parsed.success){setError('Load a meeting program for this week in Schedule first.');return;}
+      const matches=parsed.data.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());if(matches.length!==1){setError('Use the exact title of one part in this week’s program.');return;}
+      lock.current=true;setBusy(true);try{const next=prepareAssignment(saved.draft,plan.week,matches[0],publisher);if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).schedules.save(saved.revision,next.draft);await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify(demo?'Fictional assignment reviewed.':'Assignment saved in the unpublished draft. Review Schedule before publishing.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+    }
+    if(plan.kind==='group-link'){
+      lock.current=true;setBusy(true);try{
+        const groups=demo?[{name:'Group 1'},{name:'Group 2'}]:await rpc('ca_v3_report_groups',{p_cong_id:c.cong});
+        const group=(groups as {name:string}[]).find(row=>row.name.toLowerCase()===plan.group.toLowerCase());if(!group)throw Error('Use the full name of an accessible group.');
+        if(plan.action==='create')await createReportLink(c.cong,'report',group.name);
+        else if(!demo){const date=new Date();const list=await rpc('ca_v3_home_group_links',{p_cong_id:c.cong,p_year:date.getFullYear()+(date.getMonth()>=8?1:0),p_month:date.getMonth()});const row=(list as {name:string;token:string|null}[]).find(item=>item.name===group.name);if(!row?.token)throw Error('No active link exists for this group.');await manageGroupLink(c.cong,row.token,plan.action);}
+        await cache.invalidateQueries({queryKey:['home-group-links']});setPlan(null);setInput('');c.notify(demo?'Fictional link action reviewed; no public link was created.':'Group link updated. The current link is shown on Home.');
+      }catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+    }
+    if(plan.kind==='ap-revoke'){
+      const [calendarYear,calendarMonth]=plan.period.split('-').map(Number);const serviceYear=calendarYear+(calendarMonth>=9?1:0);
+      const record=rows.find(row=>row.pub_id===publisher&&row.service_year===serviceYear&&row.month===calendarMonth-1);
+      if(!record?.is_ap){setError('No auxiliary-pioneer report exists for this publisher and month.');return;}
+      lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),10000);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+    }
+    if (plan.kind === "publisher-edit") {
+      if(!publisher||lock.current)return;
+      const source=people.data.find(person=>person.id===publisher);
+      if(!source){setError("Reload the publisher records before saving.");return;}
+      lock.current=true;setBusy(true);
+      try{let sourceRecord=source as Record<string,unknown>;
+        if(!demo){const fresh=(await rpc('ca_v2_people',{p_cong_id:c.cong}) as Record<string,unknown>[]).find(row=>row.id===publisher);if(!fresh)throw Error('Publisher no longer available.');const oldField=({service_group:'group',is_elder:'isElder',is_ms:'isMS',is_rp:'isRP',is_sp:'isSP',is_fm:'isFM',is_sfts:'isSFTS'} as Record<string,string>)[plan.field]||plan.field;if(fresh[oldField]!==sourceRecord[oldField])throw Error('This field changed on another device. Review it again before saving.');sourceRecord=fresh;}
+        const keys:Record<string,string>={service_group:'group',is_elder:'isElder',is_ms:'isMS',is_rp:'isRP',is_sp:'isSP',is_fm:'isFM',is_sfts:'isSFTS'};
+        const field=keys[plan.field]||plan.field;
+        const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisher});
+        const person={...sourceRecord,[field]:plan.value,expected_login:expected};
+        const shared=Boolean(sourceRecord.email&&people.data.some(row=>row.id!==publisher&&(row as Record<string,unknown>).email===sourceRecord.email));
+        await savePublisherAction(c.cong,person,shared,c.roles);setPublisherUndo({id:publisher,field,previous:sourceRecord[field],value:plan.value,until:Date.now()+10000});setTimeout(()=>setPublisherUndo(null),10000);cache.setQueryData(["assistant-people",c.account,c.cong],people.data.map(row=>row.id===publisher?person:row));await cache.invalidateQueries({queryKey:["dashboard-people"]});setPlan(null);setInput("");c.notify(demo?"Publisher edit applied to this fictional preview.":"Publisher saved.");}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}
+      return;
+    }
     if (plan.kind === "s21-person") {
       await download(publisher);
       return;
@@ -342,7 +385,7 @@ export function LocalAssistant({
               );
             setPlan(next);
             setPublisher(
-              (next.kind === "report" || next.kind === "s21-person") &&
+              (next.kind === "report" || next.kind === "s21-person" || next.kind === "publisher-edit" || next.kind === "ap-revoke" || next.kind === "assignment") &&
                 next.people.length === 1
                 ? next.people[0].id
                 : "",
@@ -365,6 +408,8 @@ export function LocalAssistant({
         </div>
       )}
       {compact && <p className="assistant-device-privacy">{"Runs on this device. What you type isn’t sent anywhere."}</p>}
+      {apUndo&&<p role="status">{"AP revoked for this month. "}<button disabled={busy} onClick={async()=>{if(!apUndo||Date.now()>apUndo.until||lock.current)return;lock.current=true;setBusy(true);try{if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).reports.undoAP(apUndo.id);else updateDemo(current=>current.map(row=>row.id===apUndo.record.id?apUndo.record:row));await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setAPUndo(null);c.notify('AP status restored.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}}>{"Undo"}</button></p>}
+      {publisherUndo&&<p role="status">{"Publisher saved. "}<button disabled={busy} onClick={async()=>{if(!publisherUndo||Date.now()>publisherUndo.until||lock.current)return;lock.current=true;setBusy(true);try{const currentPeople=demo?people.data:await rpc('ca_v2_people',{p_cong_id:c.cong});const person=(currentPeople as Record<string,unknown>[]).find(row=>row.id===publisherUndo.id);if(!person||person[publisherUndo.field]!==publisherUndo.value)throw Error('This record changed. Review it in People before undoing.');const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisherUndo.id});await savePublisherAction(c.cong,{...person,[publisherUndo.field]:publisherUndo.previous,expected_login:expected},Boolean(person.email&&(currentPeople as Record<string,unknown>[]).some(row=>row.id!==person.id&&row.email===person.email)),c.roles);setPublisherUndo(null);c.notify('Publisher change undone.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}}>{"Undo"}</button></p>}
       {(error || people.error || current.error) && (
         <p role="alert">
           {error || people.error?.message || current.error?.message}
@@ -375,6 +420,10 @@ export function LocalAssistant({
           )}
         </p>
       )}
+      {plan?.kind==='assignment'&&<section className="card stack"><h3>{t('assistant.preview')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.week}: {plan.part}</p><p role="status">{"Review qualifications and any existing same-meeting assignment in Schedule. This saves an unpublished draft."}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
+      {plan?.kind==='group-link' &&<section className="card stack"><h3>{t('assistant.preview')}</h3><p>{plan.action}: {plan.group}</p><button disabled={busy} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
+      {plan?.kind==='ap-revoke' &&<section className="card stack"><h3>{t('refine.confirmAPQuestion')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.period}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t('refine.confirmAPQuestion')}</button></section>}
+      {plan?.kind === "publisher-edit" && <section className="card stack"><h3>{t("assistant.preview")}</h3><PersonPicker label={t("s21.person")} value={publisher} onChange={setPublisher} people={plan.people}/><p translate="no">{plan.field}: {String(plan.value)}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t("assistant.update")}</button></section>}
       {plan?.kind === "s21-person" && plan.people.length > 1 && (
         <section className="card stack">
           <h3>{t("assistant.choosePublisher")}</h3>
