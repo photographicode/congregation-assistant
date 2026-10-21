@@ -1210,17 +1210,25 @@ input[type="checkbox"] {
 .dashboard-hero {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  background: var(--surface-glass);
+  text-align: center;
+  padding: clamp(1.25rem, 5vw, 3rem) 0 0;
 }
-.dashboard-hero:before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--gradient);
-  opacity: 0.7;
-}
+.dashboard {max-width:760px;margin-inline:auto;padding-inline:clamp(1rem,4vw,1.25rem)}
+.dashboard-hero h1 {font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;letter-spacing:-.035em}
+.dashboard-hero h1 strong,.dashboard-hero .greeting-name {background:linear-gradient(110deg,var(--accent),var(--link));background-clip:text;color:transparent}
+:root[data-theme="mono-light"] .dashboard-hero h1 strong,:root[data-theme="mono-dark"] .dashboard-hero h1 strong,:root[data-theme="eclipse"] .dashboard-hero h1 strong,:root[data-theme="eclipse-night"] .dashboard-hero h1 strong {background:linear-gradient(110deg,var(--text-1),var(--text-3));background-clip:text;color:transparent}
+.dashboard-context {justify-content:center;margin-top:1rem}
+.home-assistant {position:relative}
+.assistant-prompt {display:grid;grid-template-columns:44px minmax(0,1fr) 48px;gap:.5rem;align-items:center;min-height:64px;padding:.45rem;border:1px solid var(--input-border,var(--border));border-radius:999px;background:var(--input-bg,var(--surface-solid));box-shadow:var(--shadow-card)}
+.assistant-prompt:focus-within {outline:var(--focus-ring);outline-offset:2px}
+.assistant-command-label textarea {width:100%;min-height:44px;max-height:9rem;resize:none;border:0;background:transparent;padding:.7rem .35rem;font:inherit;outline:0}
+.assistant-plus,.assistant-send {width:44px;height:44px;min-width:44px;border-radius:50%;padding:0;display:grid;place-items:center;touch-action:manipulation}
+.assistant-send {background:var(--accent);color:var(--text-on-accent)}
+.assistant-plus svg,.assistant-send svg {width:1.2rem;height:1.2rem}
+.assistant-device-privacy {margin:.55rem 1rem 0;color:var(--text-3);font-size:.78rem;text-align:center}
+.assistant-quick-actions {display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:.75rem;background:var(--dialog-bg);border:var(--dialog-bw,1px) solid var(--dialog-border);border-radius:var(--radius-m);box-shadow:var(--shadow-dialog)}
+.assistant-quick-actions button,.assistant-suggestions button {min-height:44px;border-radius:999px;background:var(--surface-2);color:var(--text-1);touch-action:manipulation}
+@media(max-width:599px){.dashboard{padding-inline:1rem}.assistant-suggestions{display:grid;grid-template-columns:1fr}.assistant-suggestions button{text-align:left}.dashboard-context label{width:100%}}
 .dashboard-kpis .kpi {
   position: relative;
   display: flex;

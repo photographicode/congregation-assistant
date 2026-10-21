@@ -15,6 +15,7 @@ import { useDemoReports } from "./demo-reports";
 import type { Context } from "../main";
 import { PersonPicker } from "../../../../packages/ui/components";
 import { commandRegistry } from "../../../../packages/core/command-registry";
+import { Plus, Send } from "lucide-react";
 export function LocalAssistant({
   context: c,
   onExport,
@@ -32,6 +33,38 @@ export function LocalAssistant({
     cache = useQueryClient(),
     demoRows = useDemoReports((s) => s.rows),
     updateDemo = useDemoReports((s) => s.update);
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const sendRef = React.useRef<HTMLButtonElement>(null);
+  const [quickOpen, setQuickOpen] = React.useState(false);
+  const [lastCommand, setLastCommand] = React.useState("");
+  const placeholder = React.useMemo(
+    () =>
+      [
+        "S-21 for Maria Thomas",
+        "add attendance 45",
+        "set Daniel’s baptism to 4 May 2019",
+      ][Math.floor(Math.random() * 3)],
+    [],
+  );
+  React.useEffect(() => {
+    const keys = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const editing = target?.matches("input, textarea, [contenteditable=true]");
+      if (event.key === "/" && !editing) {
+        event.preventDefault();
+        inputRef.current?.focus();
+      } else if (event.key === "Escape" && document.activeElement === inputRef.current) {
+        setInput("");
+        setPlan(null);
+        setError("");
+      } else if (event.key === "ArrowUp" && document.activeElement === inputRef.current && !input) {
+        event.preventDefault();
+        setInput(lastCommand);
+      }
+    };
+    window.addEventListener("keydown", keys);
+    return () => window.removeEventListener("keydown", keys);
+  }, [input, lastCommand]);
   const people = {
     data: demo
       ? demoPublishers
@@ -235,7 +268,6 @@ export function LocalAssistant({
           </section>
         </>
       )}
-      {compact && <p>{t("assistant.localSummary")}</p>}
       {compact && (
         <div className="actions assistant-suggestions">
           {commandRegistry
@@ -261,11 +293,19 @@ export function LocalAssistant({
             ))}
         </div>
       )}
-      <label>
-        {t("assistant.command")}
+      <div className={compact ? "assistant-prompt" : "stack"}>
+        {compact && (
+          <button className="assistant-plus" type="button" aria-label="Quick actions" aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
+            <Plus aria-hidden="true" />
+          </button>
+        )}
+        <label className="assistant-command-label">
+        <span className="sr-only">{t("assistant.command")}</span>
         <textarea
+          ref={inputRef}
           disabled={busy}
           aria-label={t("assistant.command")}
+          placeholder={compact ? placeholder : undefined}
           maxLength={500}
           value={input}
           onChange={(e) => {
@@ -273,12 +313,27 @@ export function LocalAssistant({
             setPlan(null);
             setError("");
           }}
+          onKeyDown={(event) => {
+            if (compact && event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              sendRef.current?.click();
+            }
+          }}
         />
       </label>
       <button
-        disabled={people.isPending || !!people.error || busy || !input.trim()}
+        ref={sendRef}
+        className={compact ? "assistant-send" : undefined}
+        aria-label={compact ? "Send command" : undefined}
+        disabled={people.isPending || !!people.error || busy}
         onClick={() => {
           setError("");
+          if (!input.trim()) {
+            setError("Type a command first.");
+            inputRef.current?.focus();
+            return;
+          }
+          setLastCommand(input);
           try {
             const next = localCommand(input, people.data || []);
             if (next.kind === "attendance")
@@ -299,8 +354,17 @@ export function LocalAssistant({
           }
         }}
       >
-        {t("assistant.review")}
+        {compact ? <Send aria-hidden="true" /> : t("assistant.review")}
       </button>
+      </div>
+      {compact && quickOpen && (
+        <div className="assistant-quick-actions" role="group" aria-label="Quick actions">
+          {["Add publisher", "Enter report", "Download S-21", "Record attendance", "Assign a part"].map((action) => (
+            <button type="button" key={action} onClick={() => { setInput(action); setQuickOpen(false); inputRef.current?.focus(); }}>{action}</button>
+          ))}
+        </div>
+      )}
+      {compact && <p className="assistant-device-privacy">Runs on this device. What you type isn’t sent anywhere.</p>}
       {(error || people.error || current.error) && (
         <p role="alert">
           {error || people.error?.message || current.error?.message}

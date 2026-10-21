@@ -166,18 +166,14 @@ export function Dashboard({
           <ExperiencePicker />
         </div>
       )}
-      <section className="card dashboard-hero">
-        <span className="eyebrow">
-          {demo ? "Fictional congregation" : "Your congregation"} · {a.style}{" "}
-          {t("ui.experience.53e5e7c5")}
-        </span>
+      <section className="dashboard-hero">
         <Greeting
           name={c.firstName}
           timezone={setup.timezone}
           locale={setup.language}
           clock={a.clock}
         />
-        <div className="actions">
+        <div className="actions dashboard-context">
           <label>
             {t("ui.reporting.month.04bf8d83")}
             <input
