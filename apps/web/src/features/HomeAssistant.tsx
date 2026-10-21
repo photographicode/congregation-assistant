@@ -32,12 +32,14 @@ export function HomeAssistant({
       }
       const repo = repositories(storeFor(c.cong, c.roles), c.cong),
         year = new Date().getFullYear() + (new Date().getMonth() >= 8 ? 1 : 0);
-      const [people, current, previous, meeting] = await Promise.all([
-        repo.people.names(),
+      const [people, current, previous, meeting, schedule] = await Promise.all([
+        rpc("ca_v2_people", {p_cong_id:c.cong}),
         repo.reports.year(year),
         repo.reports.year(year - 1),
         rpc("ca_v3_meeting_context", { p_cong_id: c.cong }),
+        repo.schedules.get(),
       ]);
+      cache.setQueryData(["assistant-schedule", c.account, c.cong], schedule);
       cache.setQueryData(["assistant-people", c.account, c.cong], people);
       cache.setQueryData(
         ["assistant-records", c.account, c.cong],

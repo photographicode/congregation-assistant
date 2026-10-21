@@ -1,3 +1,9 @@
+# Current canonical deployment tasks — 21 October 2026
+
+- Source repository → Settings → Pages → Source: **GitHub Actions**. The scoped workflow can deploy but cannot disable the competing branch publisher (403).
+- Follow OWNER-MANUAL.md and GITHUB-PAGES-DNS.md for GoDaddy DNS, mail-preserving domain activation, optional Cloudflare credentials, and Razorpay dashboard/webhook setup.
+- Canonical hosting is congregation-assistant at the project URL; the old public repository is redirect-only. Older handover proposals below are historical.
+
 # Current owner handover
 
 R1 is live: https://photographicode.github.io/congregation-assistant/app/ (use ?demo=admin to review fictional examples). Source/public commits and actual live checks are in POLISH-REPORT.md.

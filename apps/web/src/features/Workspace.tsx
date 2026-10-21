@@ -1,3 +1,4 @@
+import {savePublisherAction} from './publisher-action';
 import {
   Disclosure,
   DisclosureLabel,
@@ -506,11 +507,7 @@ export default function Workspace({
         throw Error(
           "Database update required for atomic publisher and email saves.",
         );
-      await rpc("ca_v3_save_person", {
-        p_cong_id: c.cong,
-        p_person: person,
-        p_shared: shared || existingShared,
-      });
+      await savePublisherAction(c.cong,person,shared || existingShared,c.roles);
     }
     setPeople((current) => {
       const index = current.findIndex((x) => x.id === person.id);

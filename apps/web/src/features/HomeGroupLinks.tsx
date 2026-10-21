@@ -1,3 +1,4 @@
+import {manageGroupLink} from './link-action';
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -179,11 +180,7 @@ export function HomeGroupLinks({
                       disabled={!!busy}
                       onClick={() => {
                         setBusy(group.id);
-                        void rpc("ca_v3_manage_group_link", {
-                          p_cong_id: c.cong,
-                          p_token: group.token,
-                          p_action: action,
-                        })
+                        void manageGroupLink(c.cong,group.token!,action)
                           .then(() => query.refetch())
                           .then(() =>
                             c.notify(

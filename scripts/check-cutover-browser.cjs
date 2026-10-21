@@ -202,7 +202,7 @@ const server = http.createServer((req, res) => {
                 .click();
               await page.getByLabel("Bible studies", { exact: true }).fill("2");
               await page
-                .getByRole("button", { name: /(?:Save|Submit) report/ })
+                .getByRole("button", { name: "Submit Report", exact: true })
                 .click();
               await page.getByText("Report saved.", { exact: true }).waitFor();
             }
@@ -267,10 +267,7 @@ const server = http.createServer((req, res) => {
     await publisher
       .getByRole("heading", { name: "My service report", exact: true })
       .waitFor();
-    await publisher
-      .locator(".bottom-tabs")
-      .getByRole("button", { name: "Reports", exact: true })
-      .click();
+    await publisher.goto(base + "/?demo=publisher&screen=reports");
     await publisher.getByText("Household reports", { exact: true }).waitFor();
     await publisher.close();
     const expiredContext = await browser.newContext({

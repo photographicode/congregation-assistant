@@ -1,3 +1,4 @@
+import {createReportLink} from './link-action';
 import { LegacySelect } from "../../../../packages/ui/components";
 import { HomeGroupLinks } from "./HomeGroupLinks";
 import React from "react";
@@ -46,12 +47,7 @@ export function ReportLinks({ context: c }: { context: Context }) {
         return;
       }
       const result = z.object({ token: z.string() }).parse(
-        await rpc("create_public_link", {
-          p_cong_id: c.cong,
-          p_kind: kind,
-          p_group: kind === "report" ? group || null : null,
-          p_pub_id: null,
-        }),
+        await createReportLink(c.cong,kind,group||null),
       );
       setLink(
         location.origin +

@@ -74,7 +74,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 384.1771240234375,
+            "y": 778.6190795898438,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Male",
@@ -92,7 +99,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 485.5761413574219,
+            "y": 778.6190795898438,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Female",
@@ -119,7 +133,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 384.17828369140625,
+            "y": 764.0955810546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Other sheep",
@@ -137,7 +158,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 485.5773010253906,
+            "y": 764.0955810546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Anointed",
@@ -155,7 +183,14 @@
           "width": 10.219499588012695,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 17.034820556640625,
+            "y": 749.6604614257812,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Elder",
@@ -173,7 +208,14 @@
           "width": 10.219497680664062,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 80.58307647705078,
+            "y": 749.6604614257812,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Ministerial servant",
@@ -191,7 +233,14 @@
           "width": 10.219497680664062,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 216.0459442138672,
+            "y": 749.6604614257812,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Regular pioneer",
@@ -209,7 +258,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 336.269287109375,
+            "y": 749.6604614257812,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Special pioneer",
@@ -227,7 +283,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 454.799560546875,
+            "y": 749.6604614257812,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "Field missionary",
@@ -470,7 +533,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 670.805908203125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -479,7 +549,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 653.07470703125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -488,7 +565,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 635.343505859375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -497,7 +581,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 617.6123046875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -506,7 +597,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 599.881103515625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -515,7 +613,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 582.14990234375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -524,7 +629,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 564.418701171875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -533,7 +645,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 546.6875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -542,7 +661,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 528.956298828125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -551,7 +677,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 511.22509765625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -560,7 +693,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 493.493896484375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -569,7 +709,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 475.7626953125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -578,7 +725,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 670.8073120117188,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -587,7 +741,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 653.0761108398438,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -596,7 +757,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 635.3449096679688,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -605,7 +773,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 617.6137084960938,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -614,7 +789,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 599.8825073242188,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -623,7 +805,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 582.1513061523438,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -632,7 +821,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 564.4201049804688,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -641,7 +837,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 546.6889038085938,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -650,7 +853,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 528.9577026367188,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -659,7 +869,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 511.22650146484375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -668,7 +885,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 493.49530029296875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -677,7 +901,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 475.76409912109375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "CONGREGATION’S PUBLISHER RECORD",
@@ -713,7 +944,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 384.1771240234375,
+            "y": 357.6729736328125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Male",
@@ -731,7 +969,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 485.5761413574219,
+            "y": 357.6729736328125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Female",
@@ -758,7 +1003,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 384.17828369140625,
+            "y": 343.1495056152344,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Other sheep",
@@ -776,7 +1028,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 485.5773010253906,
+            "y": 343.1495056152344,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Anointed",
@@ -794,7 +1053,14 @@
           "width": 10.219499588012695,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 17.034820556640625,
+            "y": 328.71435546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Elder",
@@ -812,7 +1078,14 @@
           "width": 10.219497680664062,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 80.58307647705078,
+            "y": 328.71435546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Ministerial servant",
@@ -830,7 +1103,14 @@
           "width": 10.219497680664062,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 216.0459442138672,
+            "y": 328.71435546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Regular pioneer",
@@ -848,7 +1128,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 336.269287109375,
+            "y": 328.71435546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": " Special pioneer",
@@ -866,7 +1153,14 @@
           "width": 10.219512939453125,
           "size": 10.739677429199219,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 454.799560546875,
+            "y": 328.71435546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "Field missionary",
@@ -1109,7 +1403,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 249.85980224609375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1118,7 +1419,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 232.12860107421875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1127,7 +1435,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 214.3973388671875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1136,7 +1451,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 196.6661376953125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1145,7 +1467,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 178.9349365234375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1154,7 +1483,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 161.2037353515625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1163,7 +1499,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 143.4725341796875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1172,7 +1515,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 125.74127197265625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1181,7 +1531,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 108.01007080078125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1190,7 +1547,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 90.27886962890625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1199,7 +1563,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 72.547607421875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1208,7 +1579,14 @@
           "width": 12.729507446289062,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 130.2834014892578,
+            "y": 54.81640625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1217,7 +1595,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 249.86102294921875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1226,7 +1611,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 232.12982177734375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1235,7 +1627,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 214.39862060546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1244,7 +1643,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 196.6673583984375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1253,7 +1659,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 178.9361572265625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1262,7 +1675,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 161.2049560546875,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1271,7 +1691,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 143.4737548828125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1280,7 +1707,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 125.7425537109375,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1289,7 +1723,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 108.01129150390625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1298,7 +1739,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 90.28009033203125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1307,7 +1755,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 72.54888916015625,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         },
         {
           "text": "\u0002",
@@ -1316,7 +1771,14 @@
           "width": 12.729522705078125,
           "size": 13.377431869506836,
           "bold": false,
-          "ornament": true
+          "ornament": true,
+          "square": {
+            "x": 271.52294921875,
+            "y": 54.81768798828125,
+            "w": 8,
+            "h": 8,
+            "source": "derived-template-vector-rectangle"
+          }
         }
       ]
     }
