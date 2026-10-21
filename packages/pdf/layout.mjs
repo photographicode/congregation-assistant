@@ -50,7 +50,7 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
         const {pushGraphicsState,popGraphicsState,rectangle,clip,endPath,moveTo,lineTo,stroke,setLineWidth,setLineCap,setLineJoin,setStrokingRgbColor}=library;
         const {x,y,width:w,height:h}=rect;
         if(Math.min(w,h)<4)throw Error('Checkbox is too small.');
-        page.pushOperators(pushGraphicsState(),rectangle(x,y,w,h),clip(),endPath(),setStrokingRgbColor(0,0,0),setLineWidth(.9),setLineCap(1),setLineJoin(1),moveTo(x+.20*w,y+.48*h),lineTo(x+.42*w,y+.74*h),lineTo(x+.82*w,y+.18*h),stroke(),popGraphicsState());
+        page.pushOperators(pushGraphicsState(),rectangle(x,y,w,h),clip(),endPath(),setStrokingRgbColor(0,0,0),setLineWidth(.9),setLineCap(1),setLineJoin(1),moveTo(x+.20*w,y+.52*h),lineTo(x+.42*w,y+.26*h),lineTo(x+.82*w,y+.82*h),stroke(),popGraphicsState());
     }
     async function emergency(families, congregation) {
         const { PDFDocument, StandardFonts, rgb } = requireLibrary();

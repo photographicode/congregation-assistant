@@ -119,6 +119,7 @@ export function LocalAssistant({
     error: null as Error | null,
     refetch: async () => {},
   };
+  const assignmentPreview=(()=>{if(plan?.kind!=='assignment')return null;try{const saved=cache.getQueryData<{revision:number;draft:ScheduleDraft}>(['assistant-schedule',c.account,c.cong]);const program=programSchema.parse(saved?.draft.programs?.[plan.week]);const parts=program.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());if(!saved||parts.length!==1)throw Error('Choose one exact part title from Schedule.');return {caution:prepareAssignment(saved.draft,plan.week,parts[0],publisher).caution,error:null};}catch(error){return {caution:null,error:(error as Error).message};}})();
   async function confirm() {
     if (!c.roles.includes("admin") || lock.current || !plan) return;
     if(plan.kind==='assignment'){
@@ -420,7 +421,7 @@ export function LocalAssistant({
           )}
         </p>
       )}
-      {plan?.kind==='assignment'&&<section className="card stack"><h3>{t('assistant.preview')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.week}: {plan.part}</p><p role="status">{"Review qualifications and any existing same-meeting assignment in Schedule. This saves an unpublished draft."}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
+      {plan?.kind==='assignment'&&<section className="card stack"><h3>{t('assistant.preview')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.week}: {plan.part}</p><p role="status">{assignmentPreview?.error||assignmentPreview?.caution||"No same-meeting conflict found. This saves an unpublished draft."}</p><button disabled={busy||!publisher||Boolean(assignmentPreview?.error)} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
       {plan?.kind==='group-link' &&<section className="card stack"><h3>{t('assistant.preview')}</h3><p>{plan.action}: {plan.group}</p><button disabled={busy} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
       {plan?.kind==='ap-revoke' &&<section className="card stack"><h3>{t('refine.confirmAPQuestion')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.period}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t('refine.confirmAPQuestion')}</button></section>}
       {plan?.kind === "publisher-edit" && <section className="card stack"><h3>{t("assistant.preview")}</h3><PersonPicker label={t("s21.person")} value={publisher} onChange={setPublisher} people={plan.people}/><p translate="no">{plan.field}: {String(plan.value)}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t("assistant.update")}</button></section>}

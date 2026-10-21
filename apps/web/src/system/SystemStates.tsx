@@ -5,7 +5,7 @@ export const stateKeys=['notFound','offline','error','session','forbidden','inac
 export type SystemState=typeof stateKeys[number];
 export function SystemStatePage({state,onHome=()=>location.assign(import.meta.env.BASE_URL),onRetry=()=>location.reload()}:{state:SystemState;onHome?:()=>void;onRetry?:()=>void}){
  const [seconds,setSeconds]=React.useState(state==='rateLimit'?30:0);
- const reference=React.useMemo(()=>`CA-${crypto.getRandomValues(new Uint16Array(1))[0].toString(36).toUpperCase().padStart(4,'0')}`,[]);
+ const reference=React.useMemo(()=>`CA-${Math.floor(Math.random()*1679616).toString(36).toUpperCase().padStart(4,'0')}`,[]);
  React.useEffect(()=>{if(state!=='rateLimit')return;const timer=setInterval(()=>setSeconds(n=>Math.max(0,n-1)),1000);return()=>clearInterval(timer);},[state]);
  React.useEffect(()=>{if(state!=='maintenance')return;const timer=setInterval(onRetry,30000);return()=>clearInterval(timer);},[state,onRetry]);
  const primary={label:t(state==='session'?'system.signIn':state==='notFound'||state==='forbidden'?'system.home':'system.retry'),run:state==='notFound'||state==='forbidden'?onHome:onRetry,disabled:seconds>0};

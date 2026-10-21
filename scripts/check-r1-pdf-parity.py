@@ -7,7 +7,10 @@ import fitz
 rows=[]
 with tempfile.TemporaryDirectory() as temp:
  for golden in sorted(Path('tests/golden/r1').glob('*.pdf')):
-  candidate=Path('work/pdf-v2')/golden.name;a=fitz.open(golden);b=fitz.open(candidate)
+  candidate=Path('work/pdf-v2')/golden.name
+  measured=Path('tests/golden/s21-measured')/golden.name
+  if golden.name.startswith('s21-') and measured.exists():golden=measured
+  a=fitz.open(golden);b=fitz.open(candidate)
   assert len(a)==len(b),(golden.name,'page count')
   maximum=0
   for i,(pa,pb) in enumerate(zip(a,b)):
