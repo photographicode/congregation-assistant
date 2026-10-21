@@ -295,7 +295,7 @@ export function LocalAssistant({
       )}
       <div className={compact ? "assistant-prompt" : "stack"}>
         {compact && (
-          <button className="assistant-plus" type="button" aria-label="Quick actions" aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
+          <button className="assistant-plus" type="button" aria-label={"Quick actions"} aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
             <Plus aria-hidden="true" />
           </button>
         )}
@@ -358,13 +358,13 @@ export function LocalAssistant({
       </button>
       </div>
       {compact && quickOpen && (
-        <div className="assistant-quick-actions" role="group" aria-label="Quick actions">
+        <div className="assistant-quick-actions" role="group" aria-label={"Quick actions"}>
           {["Add publisher", "Enter report", "Download S-21", "Record attendance", "Assign a part"].map((action) => (
             <button type="button" key={action} onClick={() => { setInput(action); setQuickOpen(false); inputRef.current?.focus(); }}>{action}</button>
           ))}
         </div>
       )}
-      {compact && <p className="assistant-device-privacy">Runs on this device. What you type isn’t sent anywhere.</p>}
+      {compact && <p className="assistant-device-privacy">{"Runs on this device. What you type isn’t sent anywhere."}</p>}
       {(error || people.error || current.error) && (
         <p role="alert">
           {error || people.error?.message || current.error?.message}

@@ -411,7 +411,7 @@ export function Dashboard({
             {!loading && !error && roster.length > 0 && (
               <div className="people-table-wrap">
               <table className="people-table">
-                <thead><tr><th>Name</th><th>Roles</th><th>Report</th><th>Studies</th><th>Hours</th><th>Actions</th></tr></thead>
+                <thead><tr><th>{"Name"}</th><th>{"Roles"}</th><th>{"Report"}</th><th>{"Studies"}</th><th>{"Hours"}</th><th>{"Actions"}</th></tr></thead>
                 <tbody>
               {roster.slice(0, 50).map((p) => {
                 const r = summary.rows.find((row) => row.pub_id === p.id);
@@ -420,12 +420,12 @@ export function Dashboard({
                 return (
                   <tr className={r ? "" : "not-submitted"} key={p.id} tabIndex={0}>
                     <td><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
-                    <td>{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>Publisher</span>}</td>
+                    <td>{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
                     <td>{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
                     <td className="number" translate="no">{r?.studies ?? "—"}</td>
                     <td className="number" translate="no">{pioneer && r ? r.hours || 0 : "—"}</td>
                     <td><div className="actions row-actions">
-                      <button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }}>S-21</button>
+                      <button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }}>{"S-21"}</button>
                       {!r && (
                         <button className="tonal warning"
                           onClick={async () => {
@@ -455,7 +455,7 @@ export function Dashboard({
                 );
               })}
                 </tbody>
-                <tfoot><tr><th>Total</th><td>{roster.length} publishers</td><td>{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length} submitted</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
+                <tfoot><tr><th>{"Total"}</th><td>{roster.length}{" publishers"}</td><td>{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
               </table></div>
             )}
             {roster.length > 50 && (
