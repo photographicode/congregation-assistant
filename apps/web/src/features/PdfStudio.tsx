@@ -547,6 +547,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           <label>
             {t("ui.document.d6bd8c0a")}
             <LegacySelect
+              aria-label={t("ui.document.d6bd8c0a")}
               value={kind}
               onChange={(e) => setKind(e.target.value)}
             >
