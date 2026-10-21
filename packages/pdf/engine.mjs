@@ -1,3 +1,4 @@
+import templateCells from './template-cells.json' with {type:'json'};
 import * as library from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import {unicodeFontProvider} from './unicode.mjs';
@@ -36,9 +37,8 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
                 const fitted=tools.fit(text,fontObj,maxWidth,size,7);
                 page.drawText(fitted.text,{x,y:topBaseline,size:fitted.size,font:fontObj,color:dark});
             };
-            const check = (page, cx, cy) => {
-                tools.checkbox(page,{x:cx-5,y:cy-5,width:10,height:10},true);
-            };
+            const squares = templateCells.s21[0].cells.filter(cell => cell.ornament && cell.baseline > srcH / 2).map(cell => cell.square);
+            const check = (page, square) => tools.checkbox(page,{x:square.x,y:square.y-splitYTop,width:square.w,height:square.h},true);
 
             const col = { service:59.45, shared:136.71, studies:207.33, ap:277.90, hours:348.47, remarks:480.80 };
             const monthTops = [158.35,176.26,193.99,211.72,229.46,247.28,265.01,282.74,300.47,318.29,336.02,353.75];
@@ -82,13 +82,8 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
                 drawLeft(page,bapText,109,toOutY(77.8),10.74,font,248);
 
                 // Identity/role checkboxes — the original boxes remain untouched.
-                const checkboxCenters=[
-                    [389.3,60.4,pub.gender==='Male'], [490.7,60.4,pub.gender==='Female'],
-                    [389.3,74.9,pub.hope==='Other Sheep'], [490.7,74.9,pub.hope==='Anointed'],
-                    [22.2,89.2,!!pub.isElder], [85.7,89.2,!!pub.isMS], [221.1,89.2,!!pub.isRP],
-                    [341.4,89.2,!!pub.isSP], [459.9,89.2,!!pub.isFM]
-                ];
-                checkboxCenters.forEach(([x,top,yes])=>{ if(yes) check(page,x,toOutY(top)); });
+                const states=[pub.gender==='Male',pub.gender==='Female',pub.hope==='Other Sheep',pub.hope==='Anointed',!!pub.isElder,!!pub.isMS,!!pub.isRP,!!pub.isSP,!!pub.isFM];
+                states.forEach((yes,index)=>{if(yes)check(page,squares[index]);});
 
                 // Service year sits under the SERVICE YEAR heading, on the original table.
                 drawT(`${sy-1}–${sy}`,col.service,141.0,157.2,9.5,true,0);
@@ -112,10 +107,10 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
                     visible.forEach((line,n)=>drawCentered(page,line,col.remarks,mid-4.5+(visible.length-1)*4-n*8,mid+4.5+(visible.length-1)*4-n*8,7.5,font,1.4,185));
                     if(shared){
                         // Shared-in-ministry checkbox centre is x≈136.7; AP checkbox x≈277.9.
-                        const cy=toOutY((row.top+row.bottom)/2); check(page,col.shared,cy);
+                        check(page,squares[9+i]);
                     }
                     if(r.isAP){
-                        const cy=toOutY((row.top+row.bottom)/2); check(page,col.ap,cy);
+                        check(page,squares[21+i]);
                     }
                 });
                 drawT(reports.some(r=>r.id) ? totalHours : '',348.47,371.93,389.48,9,true,1.9);

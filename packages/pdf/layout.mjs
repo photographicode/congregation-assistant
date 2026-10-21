@@ -44,7 +44,14 @@ export function createPdfTools({library,fontkit,loadFont,fontProvider,now=()=>ne
     }
     function baseline(font,size,bottom,top){return (bottom+top)/2-fontMetrics(font,size).capHeight/2;}
     function field(page,value,rect,font,{size=9,minSize=7,align='center',color}={}){const inset=rect.padding??2,item=fit(value,font,rect.width-2*inset,size,minSize),x=align==='left'?rect.x+inset:align==='right'?rect.x+rect.width-inset-item.width:rect.x+(rect.width-item.width)/2,y=baseline(font,item.size,rect.y+inset,rect.y+rect.height-inset);page.drawText(item.text,{x,y,font,size:item.size,color:color||requireLibrary().rgb(0,0,0)});return {...item,x,y};}
-    function checkbox(page,rect,state){if(state===false||state===null||state===undefined)return;if(state!==true)throw Error('Check the checkbox value before exporting.');const size=Math.min(rect.width,rect.height);if(size<4)throw Error('Checkbox is too small.');tick(page,rect.x+rect.width/2,rect.y+rect.height/2,Math.min(1,size/10));}
+    function checkbox(page,rect,state){
+        if(state===false||state==null)return;
+        if(state!==true)throw Error('Check the checkbox value before exporting.');
+        const {pushGraphicsState,popGraphicsState,rectangle,clip,endPath,moveTo,lineTo,stroke,setLineWidth,setLineCap,setLineJoin,setStrokingRgbColor}=library;
+        const {x,y,width:w,height:h}=rect;
+        if(Math.min(w,h)<4)throw Error('Checkbox is too small.');
+        page.pushOperators(pushGraphicsState(),rectangle(x,y,w,h),clip(),endPath(),setStrokingRgbColor(0,0,0),setLineWidth(.9),setLineCap(1),setLineJoin(1),moveTo(x+.20*w,y+.48*h),lineTo(x+.42*w,y+.74*h),lineTo(x+.82*w,y+.18*h),stroke(),popGraphicsState());
+    }
     async function emergency(families, congregation) {
         const { PDFDocument, StandardFonts, rgb } = requireLibrary();
         const pdf = await PDFDocument.create();
