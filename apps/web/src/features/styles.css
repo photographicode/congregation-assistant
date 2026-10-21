@@ -1221,7 +1221,7 @@ input[type="checkbox"] {
 .home-assistant {position:relative}
 .assistant-prompt {display:grid;grid-template-columns:44px minmax(0,1fr) 48px;gap:.5rem;align-items:center;min-height:64px;padding:.45rem;border:1px solid var(--input-border,var(--border));border-radius:999px;background:var(--input-bg,var(--surface-solid));box-shadow:var(--shadow-card)}
 .assistant-prompt:focus-within {outline:var(--focus-ring);outline-offset:2px}
-.assistant-command-label textarea {width:100%;min-height:44px;max-height:9rem;resize:none;border:0;background:transparent;padding:.7rem .35rem;font:inherit;outline:0}
+.assistant-command-label textarea {width:100%;min-height:44px;max-height:9rem;resize:none;border:0;background:transparent;padding:.7rem .35rem;font:inherit}
 .assistant-plus,.assistant-send {width:44px;height:44px;min-width:44px;border-radius:50%;padding:0;display:grid;place-items:center;touch-action:manipulation}
 .assistant-send {background:var(--accent);color:var(--text-on-accent)}
 .assistant-plus svg,.assistant-send svg {width:1.2rem;height:1.2rem}
