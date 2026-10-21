@@ -27,7 +27,6 @@ self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(ev
 `);
 const index=await readFile('dist/index.html','utf8');
 await writeFile('dist/404.html',index);
-await import('./build-system-pages.mjs');
 await mkdir('dist/v2',{recursive:true});
 await writeFile('dist/redirect.js',`const suffix=location.pathname.split('/v2/')[1]||'';location.replace(${JSON.stringify(base)}+suffix+location.search+location.hash);`);
 await writeFile('dist/v2/index.html',`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Opening Congregation Assistant</title><script src="${base}redirect.js" defer></script><a href="${base}">Open Congregation Assistant</a></html>`);
@@ -40,4 +39,5 @@ await writeFile('dist/build-report.json',JSON.stringify({hash,jsGzipBytes:total,
 await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-site',{recursive:true});await writeFile('dist-site/robots.txt','User-agent: *\nAllow: /\nSitemap: https://congregationassistant.com/sitemap.xml\n');
 const siteReport=JSON.parse(await readFile('dist-site/build-report.json','utf8'));await writeFile('dist-site/build-report.json',JSON.stringify({...siteReport,hash},null,2)+'\n');console.log('Initial website gzip payload',siteReport.initialGzipBytes,'bytes');console.log('Standalone V3 build',hash.slice(0,12),'JS gzip bytes',total);
 
+await import('./build-system-pages.mjs');
 await rm('dist-site/downloads',{recursive:true,force:true});await rm('dist/site/downloads',{recursive:true,force:true});await import('./build-hosting.mjs');
