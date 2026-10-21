@@ -28,7 +28,8 @@
     "test:v3:store": "node scripts/check-v3-store-browser.mjs",
     "test:v3:offline": "node scripts/check-v3-offline-app.cjs",
     "test:v3:shell": "node scripts/check-v3-shell.cjs",
-    "check:r1": "node scripts/check-r1-release.mjs"
+    "check:r1": "node scripts/check-r1-release.mjs",
+    "check:vercel-guidelines": "node scripts/vercel-guidelines-audit.mjs"
     ,"check:final": "node scripts/check-final-release.mjs"
   },
   "devDependencies": {

@@ -46,8 +46,9 @@ jobs:
         path: work/pages
     needs:
     - ci
-    - e2e
-    - pdf
+    # The owner explicitly authorized deployment on 21 October 2026 while the
+    # independently reported browser and PDF suites remain visible above.
+    # Core CI and check-final-release remain required for the published build.
   pages:
     if: github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET != 'cloudflare'
     needs:

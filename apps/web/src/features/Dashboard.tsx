@@ -40,6 +40,8 @@ type DashboardPerson = {
   is_sp?: boolean | null;
   is_fm?: boolean | null;
   is_sfts?: boolean | null;
+  is_elder?: boolean | null;
+  is_ms?: boolean | null;
   transferred_at?: unknown;
 };
 const fictionalPeople: DashboardPerson[] = [
@@ -146,12 +148,23 @@ export function Dashboard({
     .filter((p) =>
       filter === "pending"
         ? summary.missing.some((q: DashboardPerson) => q.id === p.id)
+        : filter === "submitted"
+          ? summary.rows.some((r) => r.pub_id === p.id)
         : filter === "regular"
           ? Boolean(p.is_rp || p.is_sp || p.is_fm)
           : filter === "auxiliary" || filter === "ap-review"
             ? summary.rows.some((r) => r.pub_id === p.id && r.is_ap)
-            : true,
+            : filter === "elders"
+              ? Boolean(p.is_elder)
+              : filter === "ms"
+                ? Boolean(p.is_ms)
+                : filter === "sfts"
+                  ? isSFTS(p)
+                  : filter.startsWith("group:")
+                    ? p.service_group === filter.slice(6)
+                    : true,
     );
+  const groups = [...new Set(livePeople.map((p) => p.service_group).filter(Boolean))] as string[];
   const openReports = (action: string) => {
     sessionStorage.setItem(
       "ca-report-action",
@@ -166,18 +179,14 @@ export function Dashboard({
           <ExperiencePicker />
         </div>
       )}
-      <section className="card dashboard-hero">
-        <span className="eyebrow">
-          {demo ? "Fictional congregation" : "Your congregation"} · {a.style}{" "}
-          {t("ui.experience.53e5e7c5")}
-        </span>
+      <section className="dashboard-hero">
         <Greeting
           name={c.firstName}
           timezone={setup.timezone}
           locale={setup.language}
           clock={a.clock}
         />
-        <div className="actions">
+        <div className="actions dashboard-context">
           <label>
             {t("ui.reporting.month.04bf8d83")}
             <input
@@ -381,6 +390,7 @@ export function Dashboard({
                 onChange={setFilter}
                 options={[
                   { value: "all", label: t("ui.everyone.da2e5dc5") },
+                  { value: "submitted", label: "Submitted" },
                   { value: "pending", label: t("ui.missing.reports.e12d4dd9") },
                   {
                     value: "regular",
@@ -391,39 +401,33 @@ export function Dashboard({
                     label: t("ui.auxiliary.pioneers.0b40b93d"),
                   },
                   { value: "ap-review", label: t("refine.apTitle") },
+                  { value: "ms", label: "MS" },
+                  { value: "elders", label: "Elders" },
+                  ...(special.publishers ? [{ value: "sfts", label: "SFTS" }] : []),
+                  ...groups.map((group) => ({ value: `group:${group}`, label: group })),
                 ]}
               />
             </div>
-            {!loading &&
-              !error &&
-              roster.slice(0, 50).map((p) => {
+            {!loading && !error && roster.length > 0 && (
+              <div className="people-table-wrap">
+              <table className="people-table">
+                <thead><tr><th>{"Name"}</th><th>{"Roles"}</th><th>{"Report"}</th><th>{"Studies"}</th><th>{"Hours"}</th><th>{"Actions"}</th></tr></thead>
+                <tbody>
+              {roster.slice(0, 50).map((p) => {
                 const r = summary.rows.find((row) => row.pub_id === p.id);
+                const pioneer = Boolean(p.is_rp || p.is_sp || p.is_fm || r?.is_ap || isSFTS(p));
+                const roles = [p.is_elder && "Elder", p.is_ms && "MS", (p.is_rp || p.is_sp || p.is_fm) && "RP", r?.is_ap && "AP", isSFTS(p) && "SFTS"].filter(Boolean);
                 return (
-                  <article className="list-row dashboard-row" key={p.id}>
-                    <div>
-                      <strong>{p.name}</strong>
-                      <p>
-                        {p.service_group || "No group"} ·{" "}
-                        {r
-                          ? r.shared_in_ministry
-                            ? "Shared in ministry"
-                            : "Did not participate"
-                          : "Awaiting data"}
-                      </p>
-                      {r && (
-                        <p>
-                          {r.studies || 0} {t("ui.studies.873d50da")}
-                          {r.hours || 0} {t("ui.hours.404314b1")}
-                          {r.is_ap ? " · Auxiliary pioneer" : ""}
-                        </p>
-                      )}
-                    </div>
-                    <div className="actions">
-                      <span className="chip">
-                        {r ? "Submitted" : "Pending"}
-                      </span>
+                  <tr className={r ? "" : "not-submitted"} key={p.id} tabIndex={0}>
+                    <td><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
+                    <td>{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
+                    <td>{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
+                    <td className="number" translate="no">{r?.studies ?? "—"}</td>
+                    <td className="number" translate="no">{pioneer && r ? r.hours || 0 : "—"}</td>
+                    <td><div className="actions row-actions">
+                      <button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }}>{"S-21"}</button>
                       {!r && (
-                        <button
+                        <button className="tonal warning"
                           onClick={async () => {
                             const text = `Hello ${p.name}, a friendly reminder to submit your ${period} ministry report. Thank you.`;
                             try {
@@ -446,13 +450,14 @@ export function Dashboard({
                           {t("ui.remind.3aec36bb")}
                         </button>
                       )}
-                      <button onClick={() => openReports("review")}>
-                        {r ? "Review" : "Enter report"}
-                      </button>
-                    </div>
-                  </article>
+                    </div></td>
+                  </tr>
                 );
               })}
+                </tbody>
+                <tfoot><tr><th>{"Total"}</th><td>{roster.length}{" publishers"}</td><td>{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
+              </table></div>
+            )}
             {roster.length > 50 && (
               <button onClick={() => openReports("review")}>
                 {t("ui.open.all.reports.a7845883")}

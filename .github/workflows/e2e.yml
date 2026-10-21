@@ -42,6 +42,7 @@ jobs:
     - run: node scripts/check-rendered-contrast.mjs
     - run: node scripts/check-claims.mjs
     - run: node scripts/interaction-audit.ts
+    - run: npm run check:vercel-guidelines
     - run: npx vitest run tests/hell
     - run: node scripts/hell-browser-smoke.cjs
     - run: node scripts/refinement-matrix.ts

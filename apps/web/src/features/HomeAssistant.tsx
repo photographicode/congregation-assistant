@@ -49,9 +49,8 @@ export function HomeAssistant({
   });
   if (!c.roles.includes("admin")) return null;
   return (
-    <section className="card stack" aria-label={t("assistant.adminLabel")}>
-      <h2>{t("assistant.adminTitle")}</h2>
-      <p>{t("assistant.adminExamples")}</p>
+    <section className="home-assistant stack" aria-label={t("assistant.adminLabel")}>
+      <h2 className="sr-only">{t("assistant.adminTitle")}</h2>
       {ready.isPending ? (
         <p role="status">{t("assistant.loadingContext")}</p>
       ) : ready.error ? (
