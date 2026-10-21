@@ -1,3 +1,4 @@
+import {SystemStatePage} from '../system/SystemStates';
 import { LegacySelect } from "../../../../packages/ui/components";
 import {
   keepReportDraft,
@@ -282,6 +283,7 @@ export function PublicForm() {
       }
     }
   }
+  if(error&&/unavailable|expired|revoked|inactive/i.test(error))return <SystemStatePage state="inactive"/>;
   return (
     <main
       className={

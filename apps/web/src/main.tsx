@@ -1,3 +1,5 @@
+import {SystemRuntime} from './system/SystemRuntime';
+import {SystemBoundary,SystemStatePage,stateKeys} from './system/SystemStates';
 import {getUILocale,subscribeUILocale} from '../../../packages/core/i18n';
 import {Toast,DismissibleBanner} from '../../../packages/ui/Notices';
 import './features/install-runtime';
@@ -333,7 +335,7 @@ function App() {
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
       <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
-            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>{t("ui.workspace.status.could.not.load.b6ea4a7c")}</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>{t("ui.retry.942087cc")}</button></section>:plan?.congregation!==cong?<p role="status">{t("ui.checking.your.workspace.90719547")}</p>:plan.locked?<Subscription context={context} plan={plan}/>:<Workspace key={cong} route={allowed.some(r=>r.id===route)?route:"home"} go={go} context={context} />}
+            {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>{t("ui.workspace.status.could.not.load.b6ea4a7c")}</h1><p role="alert">{planError}</p><button onClick={()=>location.reload()}>{t("ui.retry.942087cc")}</button></section>:plan?.congregation!==cong?<p role="status">{t("ui.checking.your.workspace.90719547")}</p>:plan.locked?<Subscription context={context} plan={plan}/>:!routes.some(item=>item.id===route)?<SystemStatePage state="notFound" onHome={()=>go("home")}/>:<Workspace key={cong} route={route} go={go} context={context} />}
       </Suspense></div>
     </AppShell>
     <Dialog open={updatesOpen} onClose={()=>setUpdatesOpen(false)} title={t("ui.what.s.new.37e6112e")}><div className="stack"><p><strong>{t("ui.18.october.2026.d6476b3d")}</strong></p><p>{t('refine.updatesForms0')}</p><p>{t('refine.updatesForms1')}</p><p>{t('refine.updatesForms2')}</p><p>{t('refine.updatesLinks0')}</p><p>{t('refine.updatesLinks1')}</p><a href={new URL("updates/#release-2026-10-18",config.PUBLIC_SITE_URL+"/").href} target="_blank" rel="noreferrer">{t("ui.read.the.release.notes.and.how.to.links.40747550")}</a></div></Dialog><CommandPalette open={search} onClose={()=>setSearch(false)} commands={commands}>{searchPeople.isFetching&&<p role="status">{t("search.loadingPeople")}</p>}{searchPeople.error&&<p role="alert">{t("search.failedPeople")} <button onClick={()=>void searchPeople.refetch()}>{t("search.retry")}</button></p>}</CommandPalette>
@@ -347,9 +349,9 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
 });
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <React.StrictMode><SystemBoundary><SystemRuntime>
     <QueryClientProvider client={queryClient}>
-      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>{t("ui.opening.protected.form.e4af4758")}</main>}><PublicForm/></Suspense> : <App />}
+      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>{t("ui.opening.protected.form.e4af4758")}</main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />}
     </QueryClientProvider>
-  </React.StrictMode>,
+  </SystemRuntime></SystemBoundary></React.StrictMode>,
 );

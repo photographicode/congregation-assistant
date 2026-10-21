@@ -1492,3 +1492,4 @@ input[type="checkbox"] {
 .talk-recency.notice {
   border: 2px dashed var(--text-2);
 }
+.system-page{max-width:42rem;margin:clamp(1rem,8vh,5rem) auto;padding:clamp(1rem,4vw,2rem);text-align:center;background:var(--surface-solid);color:var(--text-1);border-radius:var(--radius-l);overflow-wrap:anywhere}.system-page h1{font-family:var(--font-display);text-wrap:balance}.system-page p{color:var(--text-2);text-wrap:pretty}.system-page .actions{justify-content:center;flex-wrap:wrap}.system-illustration{color:var(--accent);margin-bottom:1.5rem}.system-illustration svg{width:7.5rem;height:6rem}.system-page button{touch-action:manipulation;min-height:44px}[data-lighter=true]{--glass-blur:0px;--bg-image:none}[data-lighter=true] *{backdrop-filter:none!important;animation:none!important;transition:none!important}

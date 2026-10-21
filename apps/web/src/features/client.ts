@@ -1,3 +1,4 @@
+import {monitoredFetch} from '../system/network';
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import publicConfig from "../../../../public-config.json";
@@ -10,6 +11,7 @@ import type { Store, StoreEvent } from "../../../../packages/core/store";
 export const config = publicConfig;
 export const demo = new URLSearchParams(location.search).has("demo");
 const sdk = createClient(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY, {
+  global: {fetch:monitoredFetch},
   auth: {
     flowType: "pkce",
     persistSession: !demo,
