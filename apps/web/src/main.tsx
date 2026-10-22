@@ -57,6 +57,7 @@ import "../../../packages/ui/shell.css";
 import { Button } from "../../../packages/ui/components";
 import { TIMING } from "../../../packages/core/timing";
 import { handleError } from "../../../packages/core/errors";
+import type { Context } from "./context";
 
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
@@ -75,17 +76,7 @@ const routes = [
   { id: "pdf", label: "Print & PDF", icon: Printer },
   { id: "settings", label: "Settings", icon: Settings },
 ];
-export type Context = {
-  account?:string;
-  onCounts?: (counts:Record<string,number>)=>void;
-  cong: string;
-  name: string;
-  roles: string[];
-  caps: any;
-  firstName?: string;
-  plan?: WorkspacePlan;
-  notify: (s: string) => void;
-};
+
 function App() {
   React.useSyncExternalStore(subscribeUILocale,getLocaleSnapshot,getLocaleSnapshot);
   const [updatesOpen,setUpdatesOpen]=useState(false);
@@ -359,3 +350,5 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </SystemRuntime></SystemBoundary></React.StrictMode>,
 );
+
+export type { Context } from "./context";

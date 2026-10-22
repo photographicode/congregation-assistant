@@ -5,7 +5,7 @@ import {
   suggestionHistory,
   type Suggestion,
 } from "../../../../packages/core/suggestions";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Button } from "../../../../packages/ui/components";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";

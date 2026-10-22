@@ -42,7 +42,8 @@
     "test:coverage": "vitest run --coverage",
     "changeset": "changeset",
     "quality": "npm run check:strict-types && npm run lint && npm run check:lint-ratchet && npm run check:style && npm run check:css && npm run check:architecture && npm run check:cycles && npm run check:unused && npm run check:duplication && npm run test:coverage",
-    "check:strict-types": "tsc -p apps/web/tsconfig.quality.json --noEmit"
+    "check:strict-types": "tsc -p apps/web/tsconfig.quality.json --noEmit",
+    "check:workflow-security": "node scripts/check-workflow-security.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

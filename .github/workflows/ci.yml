@@ -41,6 +41,9 @@ jobs:
     - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
       env:
         PGPASSWORD: acceptance-only
+    - run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d ca_acceptance -f scripts/check-rls.sql
+      env:
+        PGPASSWORD: acceptance-only
 
   quality:
     name: Quality / ${{ matrix.check }}

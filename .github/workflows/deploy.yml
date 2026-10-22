@@ -17,6 +17,11 @@ concurrency:
   group: canonical-pages
   cancel-in-progress: false
 jobs:
+  security:
+    uses: ./.github/workflows/security.yml
+    permissions:
+      contents: read
+      security-events: write
   ci:
     uses: ./.github/workflows/ci.yml
   e2e:
@@ -46,6 +51,7 @@ jobs:
         path: work/pages
     needs:
     - ci
+    - security
     - e2e
     - pdf
   pages:
@@ -128,5 +134,6 @@ jobs:
         \ [ -n \"$CA_SITE_PAGES_PROJECT\" ]; then\n  npx --yes wrangler@4.45.0 pages deploy dist-site --project-name \"$CA_SITE_PAGES_PROJECT\"\nfi\n"
     needs:
     - ci
+    - security
     - e2e
     - pdf

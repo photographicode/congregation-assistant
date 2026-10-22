@@ -1,10 +1,48 @@
 {
-  "$schema":"https://unpkg.com/knip@6/schema.json",
-  "workspaces":{
-    ".":{"entry":["scripts/**/*.{mjs,cjs,ts,py}","tests/**/*.test.{ts,mjs}"],"project":["scripts/**/*.{mjs,cjs,ts}","tests/**/*.ts"]},
-    "apps/web":{"entry":["src/main.tsx"],"project":["src/**/*.{ts,tsx}"]},
-    "packages/core":{"entry":["*.{ts,mjs}"],"project":["*.{ts,mjs}"]},
-    "packages/ui":{"entry":["*.{ts,tsx}"],"project":["*.{ts,tsx}"]},
-    "packages/pdf":{"entry":["*.{ts,mjs}"],"project":["*.{ts,mjs}"]}
-  }
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [
+        "scripts/**/*.{mjs,cjs,ts,py}",
+        "tests/**/*.test.{ts,mjs}"
+      ],
+      "project": [
+        "scripts/**/*.{mjs,cjs,ts}",
+        "tests/**/*.ts"
+      ]
+    },
+    "apps/web": {
+      "entry": [
+        "src/main.tsx"
+      ],
+      "project": [
+        "src/**/*.{ts,tsx}"
+      ]
+    },
+    "packages/core": {
+      "entry": [
+        "*.{ts,mjs}"
+      ],
+      "project": [
+        "*.{ts,mjs}"
+      ]
+    },
+    "packages/ui": {
+      "entry": [
+        "*.{ts,tsx}"
+      ],
+      "project": [
+        "*.{ts,tsx}"
+      ]
+    },
+    "packages/pdf": {
+      "entry": [
+        "*.{ts,mjs}"
+      ],
+      "project": [
+        "*.{ts,mjs}"
+      ]
+    }
+  },
+  "includeEntryExports": true
 }

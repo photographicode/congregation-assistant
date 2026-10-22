@@ -53,8 +53,8 @@ export function ExperiencePicker() {
           {t("ui.customize.your.experience.d77df982")}
         </DisclosureLabel>
         <div className="form-grid">
-          <label>
-            {t("ui.navigation.3db65f8c")}
+          <div className="ui-field">
+            
             <LegacySelect
               value={a.navigation}
               onChange={(e) =>
@@ -69,9 +69,9 @@ export function ExperiencePicker() {
               <option value="rail">{t("ui.compact.rail.5f42bf75")}</option>
               <option value="tabs">{t("ui.bottom.tabs.0a0c9af3")}</option>
             </LegacySelect>
-          </label>
-          <label>
-            {t("ui.density.77a283d6")}
+          </div>
+          <div className="ui-field">
+            
             <LegacySelect
               value={a.density}
               onChange={(e) =>
@@ -83,9 +83,9 @@ export function ExperiencePicker() {
               </option>
               <option value="compact">{t("ui.compact.99452646")}</option>
             </LegacySelect>
-          </label>
-          <label>
-            {t("ui.motion.8ca34424")}
+          </div>
+          <div className="ui-field">
+            
             <LegacySelect
               value={a.motion}
               onChange={(e) =>
@@ -95,9 +95,9 @@ export function ExperiencePicker() {
               <option value="full">{t("ui.full.008dacb6")}</option>
               <option value="reduced">{t("ui.reduced.9f96285d")}</option>
             </LegacySelect>
-          </label>
-          <label>
-            {t("ui.color.intensity.ad9bc8bf")}
+          </div>
+          <div className="ui-field">
+            
             <LegacySelect
               value={a.colorIntensity}
               onChange={(e) =>
@@ -110,9 +110,9 @@ export function ExperiencePicker() {
               <option value="soft">{t("ui.soft.5964d467")}</option>
               <option value="vivid">{t("ui.vivid.acbbdc93")}</option>
             </LegacySelect>
-          </label>
-          <label>
-            {t("ui.background.ea2b8a87")}
+          </div>
+          <div className="ui-field">
+            
             <LegacySelect
               value={a.background}
               onChange={(e) =>
@@ -127,7 +127,7 @@ export function ExperiencePicker() {
               </option>
               <option value="off">{t("ui.off.ca7981b4")}</option>
             </LegacySelect>
-          </label>
+          </div>
           <label className="check">
             <input
               type="checkbox"

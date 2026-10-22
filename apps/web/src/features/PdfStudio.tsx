@@ -29,7 +29,7 @@ import {
 } from "../../../../packages/pdf/snapshot";
 import { runPDF } from "./pdf-worker-client";
 import { offerPDF, pdfName, deliverPDF } from "./pdf-download";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 
@@ -546,8 +546,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       </div>
       <div className="grid">
         <section className="card stack">
-          <label>
-            {t("ui.document.d6bd8c0a")}
+          <div className="ui-field">
+            
             <LegacySelect
               aria-label={t("ui.document.d6bd8c0a")}
               value={kind}
@@ -559,7 +559,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 </option>
               ))}
             </LegacySelect>
-          </label>
+          </div>
           <div className="form-grid">
             <label>
               {t("ui.service.year.25e93d2c")}
@@ -572,8 +572,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
               />
             </label>
             {kind === "s3" && (
-              <label>
-                {t("ui.month.310ca503")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={month}
                   onChange={(e) => setMonth(Number(e.target.value))} aria-label={t("ui.month.310ca503")}
@@ -586,13 +586,13 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                     </option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
             )}
           </div>
           {kind === "s21" && (
             <div className="stack">
-              <label>
-                {t("s21.group")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   aria-label={t("s21.group")}
                   value={selectionGroup}
@@ -638,7 +638,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                     </option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
               <fieldset>
                 <legend>{t("ui.combine.groups.union.0a319224")}</legend>
                 <div className="form-grid">
@@ -717,8 +717,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                       }
                     />
                   </label>
-                  <label>
-                    {t("ui.report.state.db798be1")}
+                  <div className="ui-field">
+                    
                     <LegacySelect
                       aria-label={t("ui.report.state.db798be1")}
                       value={reportState}
@@ -733,13 +733,13 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                         {t("ui.reported.but.no.activity.c89d7f38")}
                       </option>
                     </LegacySelect>
-                  </label>
+                  </div>
                   <p>{t("s21.inactiveExplanation")}</p>
                 </>
               )}
               {groups.includes("individual") && (
-                <label>
-                  {t("s21.person")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     aria-label={t("s21.person")}
                     value={individual}
@@ -752,10 +752,10 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
               )}
-              <label>
-                {t("ui.download.format.a4902f0f")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={output}
                   onChange={(e) => {
@@ -770,7 +770,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                     {t("ui.zip.of.individual.pdfs.3ef61c30")}
                   </option>
                 </LegacySelect>
-              </label>
+              </div>
               <p role="status">
                 {chosen.length} {t("s21.matched")}
               </p>
@@ -844,8 +844,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           {["weekend", "duties"].includes(kind) && (
             <Disclosure>
               <DisclosureLabel>{t("ui.print.layout.628f0fe9")}</DisclosureLabel>
-              <label>
-                {t("ui.layout.a5119091")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={printLayout}
                   onChange={(e) => {
@@ -857,7 +857,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                   <option value="grid">{t("ui.month.grid.82c6e1de")}</option>
                   <option value="booklet">{t("ui.a5.booklet.5e40d183")}</option>
                 </LegacySelect>
-              </label>
+              </div>
               {printLayout === "booklet" && (
                 <p>
                   {t("ui.print.landscape.with.double.sided.short.ed.37a45137")}

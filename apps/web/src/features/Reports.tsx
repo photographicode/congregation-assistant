@@ -39,7 +39,7 @@ import {
   repositories,
   type Report,
 } from "../../../../packages/core/repositories";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Dialog } from "../../../../packages/ui/Dialog";
 export function reportingPeriod(date: Date) {
   const month = date.getMonth();
@@ -578,8 +578,8 @@ export function Reports({ context: c }: { context: Context }) {
         )}
       </div>
       {!personal && canService && tab === "service" && (
-        <label>
-          {t("sfts.filter")}
+        <div className="ui-field">
+          
           <LegacySelect
             disabled={editing || busy}
             value={reportGroup}
@@ -593,7 +593,7 @@ export function Reports({ context: c }: { context: Context }) {
               <option value="sfts">{t("sfts.name")}</option>
             )}
           </LegacySelect>
-        </label>
+        </div>
       )}
       {reportGroup === "sfts" && tab === "service" && (
         <section className="card">
@@ -1381,8 +1381,8 @@ export function Reports({ context: c }: { context: Context }) {
                 disabled={busy}
                 aria-label={t("refine.reportTitle")}
               >
-                <label>
-                  {t("ui.publisher.21378545")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     aria-label={t("ui.publisher.21378545")}
                     required
@@ -1409,7 +1409,7 @@ export function Reports({ context: c }: { context: Context }) {
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
                 <p>
                   <strong>
                     {t("ui.reporting.month.c996f10c")}

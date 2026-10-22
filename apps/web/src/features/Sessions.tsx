@@ -7,7 +7,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { client, demo, rpc } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 import { TIMING } from "../../../../packages/core/timing";
@@ -82,8 +82,8 @@ export function Sessions({ context: c }: { context: Context }) {
           </div>
         </Disclosure>
       )}
-      <label>
-        {t("ui.admin.idle.timeout.on.this.device.076b6711")}
+      <div className="ui-field">
+        
         <LegacySelect
           value={idle}
           onChange={(e) => {
@@ -103,7 +103,7 @@ export function Sessions({ context: c }: { context: Context }) {
           <option value="30">{t("ui.30.minutes.f01a042b")}</option>
           <option value="60">{t("ui.1.hour.f8b8883f")}</option>
         </LegacySelect>
-      </label>
+      </div>
       <p>{t("refine.signOutHelp0")}</p>
       <p>{t("refine.signOutHelp1")}</p>
       <Button

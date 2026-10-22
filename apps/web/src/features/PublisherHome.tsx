@@ -3,7 +3,7 @@ import React from "react";
 import { ExperiencePicker } from "./ExperiencePicker";
 import { useQuery } from "@tanstack/react-query";
 import { client, demo, rpc } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Greeting } from "../../../../packages/ui/Greeting";
 import { useAppearance } from "./store";
 import { Button } from "../../../../packages/ui/components";

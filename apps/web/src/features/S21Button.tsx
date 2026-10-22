@@ -3,7 +3,7 @@ import {
   DisclosureLabel, Button } from "../../../../packages/ui/components";
 import React from "react";
 import { FileDown, ChevronDown } from "lucide-react";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { t } from "../../../../packages/core/i18n";
 import { demo } from "./client";
 import { publisherS21 } from "./pdf-download";

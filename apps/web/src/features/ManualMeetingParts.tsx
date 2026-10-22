@@ -39,8 +39,8 @@ export function ManualMeetingParts({
             onChange={(e) => setMinutes(Number(e.target.value))}
           />
         </label>
-        <label>
-          {t("ui.section.dfca5da5")}
+        <div className="ui-field">
+          
           <LegacySelect
             value={section}
             onChange={(e) => setSection(e.target.value as typeof section)} aria-label={t("ui.section.dfca5da5")}
@@ -51,7 +51,7 @@ export function ManualMeetingParts({
               {t("ui.living.as.christians.e435a9b4")}
             </option>
           </LegacySelect>
-        </label>
+        </div>
         <Button
           disabled={
             !title.trim() ||

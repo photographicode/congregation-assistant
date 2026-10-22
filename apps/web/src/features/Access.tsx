@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import { storeFor, demo, rpc } from "./client";
 import { repositories } from "../../../../packages/core/repositories";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const roleLabels: Record<string, string> = {
   admin: "Main administrator",
   field_service: "Field service overseer",
@@ -130,8 +130,8 @@ export function Access({
                 onChange={(e) => setEmail(e.target.value)}
               />
             </label>
-            <label>
-              {t("ui.role.14736a2e")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={role}
                 onChange={(e) => setRole(e.target.value)} aria-label={t("ui.role.14736a2e")}
@@ -142,10 +142,10 @@ export function Access({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             {role === "group_overseer" && (
-              <label>
-                {t("ui.assigned.group.3395b08d")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={group}
                   onChange={(e) => setGroup(e.target.value)} aria-label={t("ui.assigned.group.3395b08d")}
@@ -157,7 +157,7 @@ export function Access({
                     </option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
             )}
             <Button disabled={busy || !c.roles.includes("admin")} type="submit">
               {t("ui.approve.account.b593d6e2")}

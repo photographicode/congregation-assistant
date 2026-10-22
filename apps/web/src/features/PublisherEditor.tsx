@@ -121,8 +121,8 @@ export default function PublisherEditor({
                 {t("polish.chooseGender")}
               </small>
             </fieldset>
-            <label>
-              {t("ui.service.group.2c63b4a8")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={editing.group}
                 onChange={(e) => {
@@ -135,7 +135,7 @@ export default function PublisherEditor({
                   <option key={g.id}>{g.name}</option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
           </div>
           <h3>{t("ui.sign.in.contact.e4bd9038")}</h3>
           <label htmlFor="v2-publisher-email">
@@ -246,8 +246,8 @@ export default function PublisherEditor({
                     </label>
                   ))}
                 </div>
-                <label>
-                  {t("ui.household.head.d5d0c49d")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={editing.familyHeadId || ""}
                     onChange={(e) => {
@@ -268,9 +268,9 @@ export default function PublisherEditor({
                         </option>
                       ))}
                   </LegacySelect>
-                </label>
-                <label>
-                  {t("ui.hope.8c765f98")}
+                </div>
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={editing.hope || ""}
                     onChange={(e) => {
@@ -284,7 +284,7 @@ export default function PublisherEditor({
                     <option>{t("ui.other.sheep.48f614b7")}</option>
                     <option>{t("ui.anointed.8edcfa4d")}</option>
                   </LegacySelect>
-                </label>
+                </div>
                 {(
                   [
                     ["isElder", "Elder"],

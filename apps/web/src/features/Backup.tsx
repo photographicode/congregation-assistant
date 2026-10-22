@@ -2,7 +2,7 @@ import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { storeFor, demo } from "./client";
 import { repositories } from "../../../../packages/core/repositories";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Button } from "../../../../packages/ui/components";
 
 export function Backup({ context: c }: { context: Context }) {

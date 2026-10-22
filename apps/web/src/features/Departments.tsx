@@ -13,7 +13,7 @@ import { rpc, demo } from "./client";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import { t } from "../../../../packages/core/i18n";
 import { CurrentAttendance } from "./CurrentAttendance";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const departments = ["av", "attendant", "cleaning"] as const;
 type Department = (typeof departments)[number];
 const assignment = z
@@ -401,8 +401,8 @@ function DepartmentPanel({
               {Array.from({ length: duty.slots }, (_, i) => {
                 const slot = duty.id + "_" + (i + 1);
                 return (
-                  <label key={slot}>
-                    {duty.name} {i + 1}
+                  <div key={slot} className="ui-field">
+                     {i + 1}
                     <LegacySelect
                       disabled={busy}
                       value={choices[slot] || ""}
@@ -421,7 +421,7 @@ function DepartmentPanel({
                         </option>
                       ))}
                     </LegacySelect>
-                  </label>
+                  </div>
                 );
               })}
             </div>

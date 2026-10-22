@@ -32,7 +32,7 @@ import {
 import { offerPDF } from "./pdf-download";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import type { SyncStatus } from "../../../../packages/core/store";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 
 const slots = [

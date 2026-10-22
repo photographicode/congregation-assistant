@@ -1,0 +1,740 @@
+[
+  {
+    "id": "A1.1",
+    "title": "**One design system** used everywhere (14 of 25 shared components are exported but unused; screens hand-build markup). *Verify:* lint bans raw layout markup patterns; `/styleguide` renders every component/state.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.2",
+    "title": "**Accessibility WCAG 2.2 AA** (axe, keyboard, screen reader, forced colors, 200% text). *Verify:* axe 0 serious; manual script `docs/qa/A11Y-MANUAL.md`; conformance statement.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.3",
+    "title": "**Responsive 320–1920 px, text 100–200%.** *Verify:* alignment + layout detectors zero HARD findings.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.4",
+    "title": "**System pages**: 404, offline, slow, error, session expired, no access, link inactive, maintenance, 429, read-only/plan ended (see `V3-SYSTEM-PAGES-AND-FINISH.md`).\r",
+    "status": "partial",
+    "evidence": [
+      "packages/ui/SystemPage.tsx",
+      "apps/web/src/system",
+      "scripts/check-system-pages.cjs",
+      "docs/POLISH-REPORT.md"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.5",
+    "title": "Empty / loading (skeleton) / error / success states for every list and form.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.6",
+    "title": "Onboarding (setup wizard) and in-app help; \"What's new\" page; feedback channel.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A1.7",
+    "title": "i18n (strings in a catalogue, 13 languages scaffolded, RTL check). *Verify:* no hard-coded UI text (lint).\r",
+    "status": "partial",
+    "evidence": [
+      "packages/core/i18n.ts",
+      "packages/core/locales",
+      "tests/v3/language-privacy.test.ts"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.1",
+    "title": "**No god components** (found: `Workspace` 2,036-line function, `Reports` 1,431, `PdfStudio` 904, `Midweek` 904; 20 functions > 150 lines). *Verify:* ESLint `max-lines-per-function` 120, `max-lines` 400, `complexity` 12 (ratchet).\r",
+    "status": "partial",
+    "evidence": [
+      "eslint.config.mjs",
+      "eslint-suppressions.json"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.2",
+    "title": "Clear layers: `packages/core` (pure domain) · `apps/web/src/data` (repositories) · UI. *Verify:* `dependency-cruiser` rules (UI cannot import data internals; core cannot import React).\r",
+    "status": "partial",
+    "evidence": [
+      ".dependency-cruiser.cjs",
+      "tsconfig.architecture.json"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.3",
+    "title": "Strict typing: 54 `any`, 15 empty `catch {}`, `allowJs: true`, no `noUncheckedIndexedAccess`. *Verify:* `no-explicit-any`, `no-empty`, `no-floating-promises` = error.\r",
+    "status": "partial",
+    "evidence": [
+      "apps/web/tsconfig.quality.json",
+      "packages/core/errors.ts",
+      "scripts/codemods/empty-catches.mjs"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.4",
+    "title": "**Every `<button>` has an explicit `type`** (195 do not). *Verify:* `react/button-has-type`.\r",
+    "status": "verified",
+    "evidence": [
+      "scripts/codemods/button-types.mjs",
+      "packages/ui/components.tsx",
+      "eslint.config.mjs"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.5",
+    "title": "No dead code (11% of CSS classes unused; 25 unused exports). *Verify:* `knip` (files/exports/deps), `stylelint` unused selectors report → zero.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.6",
+    "title": "Dependency hygiene (lockfile ✔, Dependabot ✔). *Verify:* `knip`, `depcheck`, license check (no GPL in shipped code).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.7",
+    "title": "Architecture Decision Records (`docs/adr/*`), architecture overview, module READMEs.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A2.8",
+    "title": "Config validated at startup with Zod (env, feature flags, `public-config.json`); typed `storage` wrapper (67 raw `localStorage` calls).\r",
+    "status": "partial",
+    "evidence": [
+      "packages/core/config.ts",
+      "packages/core/storage.ts",
+      "tests/v3/config-validation.test.ts",
+      "tests/v3/preference-storage.test.ts"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.1",
+    "title": "Large test suite (≈100 files: unit, role/SQL, PDF golden, browser, layout).\r",
+    "status": "verified",
+    "evidence": [
+      "vitest.config.ts",
+      "tests/v3",
+      "scripts/v2-tests",
+      "docs/POLISH-REPORT.md"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.2",
+    "title": "**Coverage gates** (none configured): core domain ≥ 85% lines, permission-critical code 100% branches, ratchet up only.\r",
+    "status": "partial",
+    "evidence": [
+      "vitest.config.ts",
+      ".github/workflows/ci.yml",
+      "docs/engineering/OPEN.md"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.3",
+    "title": "Visual regression baselines per screen × theme × breakpoint (sampled PR, full weekly).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.4",
+    "title": "Contract tests for every RPC (input validation, role matrix, tenant isolation).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.5",
+    "title": "Property-based tests (fast-check) for parsers, PDF layout, attendance math, assistant.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.6",
+    "title": "Flaky-test policy: retry ≤ 1, quarantine list with owners, weekly review.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A3.7",
+    "title": "Load test against staging (k6): 300 congregations × 150 publishers, month-start burst.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.1",
+    "title": "Consolidated workflows (`ci, e2e, pdf, deploy, scheduled`).\r",
+    "status": "verified",
+    "evidence": [
+      ".github/workflows"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.2",
+    "title": "Required checks + protected `main` + CODEOWNERS + PR template (**OWNER** sets branch protection; Codex adds the files).\r",
+    "status": "partial",
+    "evidence": [
+      ".github/CODEOWNERS",
+      ".github/pull_request_template.md",
+      "docs/OWNER-TODO.md"
+    ],
+    "ownerAction": true
+  },
+  {
+    "id": "A4.3",
+    "title": "Preview deploys per PR; environments (staging/production) with protection rules.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.4",
+    "title": "Migrations: expand → backfill → contract; every migration has `down`, a dry run, and a pre-migration snapshot step.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.5",
+    "title": "Semantic versioning, `CHANGELOG.md` generated from conventional commits, release notes in `/updates`.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.6",
+    "title": "Feature flags (exists ad hoc) → one typed flag registry with owner + expiry date.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A4.7",
+    "title": "Rollback drill documented and rehearsed.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A5.1",
+    "title": "SLOs (availability 99.5%, p95 API < 500 ms, error rate < 1%) and error budgets in `docs/engineering/SLO.md`.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A5.2",
+    "title": "**OWNER** Uptime monitor on `/`, `/app/`, Supabase health; public status page.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "A5.3",
+    "title": "Backups: Supabase Pro daily + PITR; monthly encrypted off-site export; **restore drill each quarter**; RTO 4 h / RPO 24 h documented.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A5.4",
+    "title": "Runbooks: outage, bad deploy, DB restore, key rotation, rate-limit storm, payment webhook backlog.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A5.5",
+    "title": "Graceful degradation (offline queue exists; add slow-mode, read-only mode).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A5.6",
+    "title": "Rate limiting on every anonymous endpoint (16 mentions found; needs a single tested mechanism).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A6.1",
+    "title": "Structured error reporting that is **local or first-party**, scrubbed of personal data, rate-limited, opt-in for details.\r",
+    "status": "partial",
+    "evidence": [
+      "packages/core/errors.ts",
+      "tests/v3/local-errors.test.ts"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "A6.2",
+    "title": "Metrics: web vitals (cookie-less), RPC latency/error counters, queue depth, webhook failures.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A6.3",
+    "title": "Audit log for admin actions (AP revoke has one) → uniform append-only audit table (no update/delete grants).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A6.4",
+    "title": "Alerts: failed-login spikes, mass export, webhook failures, error-rate burn.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A8.1",
+    "title": "Data map (`docs/PRIVACY-DATA-MAP.md`) generated from the schema; subprocessors list.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A8.2",
+    "title": "Retention + deletion (export pack, delete with receipt, crypto-shred) tested end-to-end.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A8.3",
+    "title": "DPDP Act readiness: notice, consent, purpose limitation, grievance contact, data-principal rights, breach notification (72 h), **children's data** (publishers include minors — verifiable guardian consent) → **OWNER** lawyer review.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "A8.4",
+    "title": "Encryption: in transit ✔ (HTTPS), at rest (Supabase), end-to-end (Vault) — claims gated by tests.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A9.1",
+    "title": "Google sign-in, role presets, invites, no shared passwords (legacy removed).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A9.2",
+    "title": "Least privilege per role (95 authenticated definer functions need a per-function role matrix).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A9.3",
+    "title": "Session management (list devices, sign out everywhere, admin idle timeout ✔).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A9.4",
+    "title": "Offboarding: revoking a person kills sessions, links and pool membership in one action; tested.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A10.1",
+    "title": "Plans/entitlements as data; trial → Lite fallback; proration; invoices (PDF) and GST fields; dunning; refunds.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A10.2",
+    "title": "Razorpay webhooks: signature check, idempotency table, replay-safe, reconciliation report. **OWNER** keys.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "A10.3",
+    "title": "SuperAdmin dashboard: MRR/ARR, funnel, renewals, failed payments (billing metadata only, never content).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A11.1",
+    "title": "Support inbox + SLA, help center (in-app and site), status comms template, bug-report button (no personal data), NPS after first S-21.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A12.1",
+    "title": "Terms, Privacy, Refund & Cancellation, Cookie statement (\"no tracking cookies\"), accessibility statement, third-party licenses (`THIRD-PARTY-NOTICES.md`), `security.txt` — **OWNER** lawyer review.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "A13.1",
+    "title": "Budgets: initial JS ≤ 250 KB gz, LCP ≤ 2.5 s (Slow-4G), INP ≤ 200 ms, CLS ≈ 0; route code-splitting; fonts subsetted.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A13.2",
+    "title": "DB: indexes for every RLS/join path (`EXPLAIN` evidence), no sequential scans on hot tables; connection limits; cost alerts.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "A14.1",
+    "title": "README, AGENTS.md, DESIGN.md ✔; add CONTRIBUTING, architecture, API/RPC reference, runbooks, \"bus-factor\" note and **continuity pledge**.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B1.1",
+    "title": "Google OAuth / magic link; no password storage by us. [ ] ✗ Disable the unused email+password provider in Supabase (advisor warns about leaked-password protection) **OWNER**.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B1.2",
+    "title": "Short session lifetime, refresh-token rotation, revoke-on-sign-out; admin idle timeout ✔. *Verify:* test with expired/rotated tokens.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B1.3",
+    "title": "Link tokens ≥ 256-bit, stored **hashed**, rotate/revoke, rate-limited, exchanged then removed from the URL (`history.replaceState`). *Verify:* brute-force test.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B1.4",
+    "title": "Recommend Google 2-Step Verification to admins (banner) and enforce for SuperAdmin accounts **OWNER**.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B2.1",
+    "title": "**RLS enabled and forced on every table in an exposed schema** (static scan: 9 tables with neither `enable RLS` nor a policy — e.g. `ca_private`, `ca_migrations`, `ca_ap_private`, `ca_oclm_*`, `ca_meeting_*`). Verify in the database: `select relname, relrowsecurity, relforcerowsecurity from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and relkind='r';` → all true, or move internal tables to a non-exposed `private` schema.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B2.2",
+    "title": "**104 SECURITY DEFINER functions** (all have `set search_path` ✔). Reduce exposure: revoke `execute` from `public/anon` by default; grant per function; convert to `security invoker` where RLS suffices; fully qualify names. *Verify:* generated **role × function matrix test** (anonymous, publisher, household, group overseer, each overseer, admin, SuperAdmin, other tenant).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B2.3",
+    "title": "Supabase advisors clean (report: 13 anonymous + 95 authenticated definer-function findings; target: only intended, documented exceptions).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B2.4",
+    "title": "No service-role key in client or repo (scan clean). [ ] ✗ CI secret scan on every push (gitleaks) + GitHub push protection **OWNER** enable.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B2.5",
+    "title": "IDOR tests: for every RPC taking an id, a test that another tenant's/another role's id is rejected.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B3.1",
+    "title": "Zod validation at every boundary (used in a few places) and length/range checks inside SQL functions.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B3.2",
+    "title": "No `dangerouslySetInnerHTML`, `innerHTML=`, `eval`, `new Function`. Keep it banned by lint.\r",
+    "status": "verified",
+    "evidence": [
+      "eslint.config.mjs",
+      "tests/hell/security-hygiene.test.ts"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "B3.3",
+    "title": "**CSV/Excel formula injection** neutralised on every export; import size/type/row limits; zip-bomb guard.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B3.4",
+    "title": "ReDoS review of the assistant parser and import parsers (max input length, linear-time patterns, fuzz test).\r",
+    "status": "partial",
+    "evidence": [
+      "scripts/codemods/button-types.mjs",
+      "eslint.config.mjs"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "B3.5",
+    "title": "`rel=\"noopener noreferrer\"` on all `target=\"_blank\"` (4 missing). Open-redirect test for every redirect/`returnTo`.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B4.1",
+    "title": "Strict CSP in the Cloudflare worker (`default-src 'self'`, no inline styles/scripts, `frame-ancestors 'none'`, `object-src 'none'`, `base-uri 'none'`, `form-action 'self'`), HSTS, nosniff, `Referrer-Policy: no-referrer`, Permissions-Policy.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B4.2",
+    "title": "**GitHub Pages cannot send headers** (no real `frame-ancestors`, HSTS, COOP/CORP) → **OWNER**: move production to Cloudflare Pages before launch; until then keep the CSP meta tag and document the gap.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B4.3",
+    "title": "Add `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Resource-Policy: same-origin`, Trusted Types (`require-trusted-types-for 'script'`) where feasible; SRI for any third-party asset (target: none).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B4.4",
+    "title": "Supabase session in `localStorage` is XSS-sensitive → compensate with strict CSP, zero third-party scripts, short sessions; no secrets in storage (only preferences found ✔).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B4.5",
+    "title": "Service worker scope minimal; no caching of authenticated API responses; update prompt (no silent skipWaiting).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B5.1",
+    "title": "Rate limits + Turnstile on **every** anonymous endpoint (application form, public report/attendance, noticeboard, link exchange) with a single tested mechanism and uniform error responses (no account/link enumeration; constant-time token compare).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B5.2",
+    "title": "Pagination limits and max payload size on every RPC; idempotency keys for submits; replay protection on webhooks (Razorpay, Meta).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B5.3",
+    "title": "CORS allow-list (exact origins), no wildcard.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B6.1",
+    "title": "HTTPS only. [ ] ◐ Encryption at rest (provider) + Vault E2EE (claims gated by tests). [ ] ◐ Backups encrypted; deletion = crypto-shred.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B6.2",
+    "title": "Logs and error reports contain no personal data (redaction tests). [ ] ✗ Data minimisation review for every table (purpose, retention).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B7.1",
+    "title": "No secrets in tree (scan clean; repo is public → keep clean). [ ] ✗ Secrets only in GitHub **environment** secrets and Supabase secrets; rotation calendar (90 days); least-privilege tokens (Cloudflare token scoped to Pages; Razorpay restricted keys).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B7.2",
+    "title": "Startup config validation fails closed.\r",
+    "status": "verified",
+    "evidence": [
+      "packages/core/config.ts",
+      "tests/v3/config-validation.test.ts"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "B8.1",
+    "title": "Lockfile ✔, Dependabot ✔. [ ] ✗ **Pin every GitHub Action to a commit SHA** (all 30 refs use tags); Dependabot for `github-actions`; `npm ci --ignore-scripts`; `npm audit --omit=dev` + OSV scanner in CI; SBOM (CycloneDX) artifact; license allow-list; minimal dependency count.\r",
+    "status": "partial",
+    "evidence": [
+      ".github/action-pins.json",
+      "scripts/check-workflow-security.mjs",
+      ".github/workflows/security.yml",
+      ".github/license-policy.json",
+      "scripts/check-licenses.mjs"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "B8.2",
+    "title": "Reproducible build + published build hash (`version.json`) + visible version in Settings.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B9.1",
+    "title": "**OWNER** Cloudflare: proxy on, WAF managed rules, rate-limit rules on `/rpc` and form paths, Bot Fight Mode, DNSSEC, CAA records, Always HTTPS, TLS ≥ 1.2, HSTS (preload later).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B9.2",
+    "title": "**OWNER** Email auth: SPF, DKIM, DMARC (`p=quarantine` after review). Registrar lock + 2FA everywhere (GitHub, Cloudflare, Supabase, GoDaddy, Google, Razorpay, Titan).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B9.3",
+    "title": "**OWNER** Supabase: Pro (backups/PITR), SSL enforced, network restrictions where possible, separate staging project, least-privilege DB roles, alerts on auth/DB anomalies.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B10.1",
+    "title": "Append-only audit log (who, what, when, via assistant?) for: sign-in, role/access changes, link create/rotate/revoke, exports, backups, plan changes, deletes. Visible to congregation admins.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B10.2",
+    "title": "Alerts (failed-login spike, mass export, webhook failures); `docs/INCIDENT-RUNBOOK.md` with 72-hour notification steps; tabletop exercise once.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B10.3",
+    "title": "`SECURITY.md` / `security.txt` policy; ✗ response-time promise and PGP/contact; **OWNER** independent penetration test before heavy marketing.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B11.1",
+    "title": "Threat model (`docs/engineering/THREAT-MODEL.md`: assets, actors, entry points, abuse cases for each role, assistant, public links, billing).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B11.2",
+    "title": "SAST: Semgrep OSS (+ CodeQL while the repo is public) with SARIF upload; DAST: OWASP ZAP baseline against staging; headers/TLS test in CI.\r",
+    "status": "partial",
+    "evidence": [
+      ".github/workflows/security.yml"
+    ],
+    "ownerAction": false
+  },
+  {
+    "id": "B11.3",
+    "title": "Code review rules: CODEOWNERS for `supabase/`, `.github/`, `packages/core`, `hosting/`; two-step review for security files; signed commits (optional).\r",
+    "status": "partial",
+    "evidence": [
+      ".github/CODEOWNERS",
+      ".github/pull_request_template.md"
+    ],
+    "ownerAction": true
+  },
+  {
+    "id": "B11.4",
+    "title": "Security-relevant tests exist (role/RLS, assistant zero-network, direct downloads); ✗ run in a dedicated `security` workflow.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B12.1",
+    "title": "DPDP checklist (notice, consent, purpose, rights, grievance, breach, **minors**), sensitive-category review (religious affiliation is sensitive personal data) — **OWNER** lawyer.\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": true
+  },
+  {
+    "id": "B12.2",
+    "title": "Data-processing terms with subprocessors (Supabase, Cloudflare, Google, email provider, Razorpay, optional Meta).\r",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  },
+  {
+    "id": "B13.1",
+    "title": "On-device, no network (tested). [ ] ✗ Role-gated actions only from the registry; destructive actions need typed confirmation; every execution audited \"via assistant\"; input length cap + parser fuzzing.",
+    "status": "open",
+    "evidence": [],
+    "ownerAction": false
+  }
+]

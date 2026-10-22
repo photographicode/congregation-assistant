@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
 import { t } from "../../../../packages/core/i18n";
-import type { Context } from "../main";
+import type { Context } from "../context";
 export function ReportLinks({ context: c }: { context: Context }) {
   const reportAllowed = c.roles.some((role) =>
       ["admin", "field_service", "group_overseer"].includes(role),
@@ -72,8 +72,8 @@ export function ReportLinks({ context: c }: { context: Context }) {
         <p>{t("refine.linkHelp2")}</p>
         {reportAllowed && (
           <>
-            <label>
-              {t("links.group")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={group}
                 onChange={(e) => {
@@ -88,7 +88,7 @@ export function ReportLinks({ context: c }: { context: Context }) {
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <Button
               disabled={
                 busy ||

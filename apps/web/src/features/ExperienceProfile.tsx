@@ -10,7 +10,7 @@ import { normalizeTheme } from "../../../../packages/core/themes";
 import { rpc, demo } from "./client";
 import { useAppearance, hasAppearanceProfile } from "./store";
 import { experiencePresets, type Experience } from "./experience";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const style = z.enum(["calm", "balanced", "lively"]);
 const preferences = z.object({
   style,
@@ -189,7 +189,7 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                 <h3>{t("ui.defaults.for.new.devices.a9af3262")}</h3>
                 <div className="form-grid">
                   {(["adminStyle", "publisherStyle"] as const).map((key) => (
-                    <label key={key}>
+                    <div key={key} className="ui-field">
                       {key === "adminStyle"
                         ? "Congregation experience"
                         : "Publisher portal experience"}
@@ -209,7 +209,7 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                           ),
                         )}
                       </LegacySelect>
-                    </label>
+                    </div>
                   ))}
                 </div>
                 <p>

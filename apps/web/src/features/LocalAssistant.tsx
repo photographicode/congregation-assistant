@@ -1,23 +1,23 @@
 import {prepareAssignment} from '../../../../packages/core/assignment-action';
 import {programSchema} from '../../../../packages/core/meeting';
-import type {ScheduleDraft} from '../../../../packages/core/repositories';
+import type {ScheduleDraft, reportSchema } from '../../../../packages/core/repositories';
 import {createReportLink,manageGroupLink} from './link-action';
 import {savePublisherAction} from './publisher-action';
 import React from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
   localCommand,
   type LocalPlan,
 } from "../../../../packages/core/local-command";
-import { repositories, reportSchema } from "../../../../packages/core/repositories";
+import { repositories } from "../../../../packages/core/repositories";
 import { t } from "../../../../packages/core/i18n";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import { rpc, demo,storeFor } from "./client";
 import { publisherS21 } from "./pdf-download";
 import { useDemoReports } from "./demo-reports";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { PersonPicker, Button } from "../../../../packages/ui/components";
 import { commandRegistry } from "../../../../packages/core/command-registry";
 import { Plus, Send } from "lucide-react";

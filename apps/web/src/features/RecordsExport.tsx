@@ -6,7 +6,7 @@ import React from "react";
 import { z } from "zod";
 import { demo, rpc } from "./client";
 import { csvRecords } from "./export.mjs";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const schema = z
   .object({
     format: z.literal("ca-records-export-v2"),

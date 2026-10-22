@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { storeFor, demo, rpc } from "./client";
 import { Dialog } from "../../../../packages/ui/Dialog";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const tenant = z
   .object({
     id: z.string(),
@@ -382,8 +382,8 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 {t("ui.trial.billing.details.10e0dbe3")}
               </DisclosureLabel>
               <div className="stack">
-                <label>
-                  {t("ui.status.920e413c")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={editing.status}
                     onChange={(e) => {
@@ -398,7 +398,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                     <option value="active">{t("ui.active.92340695")}</option>
                     <option value="expired">{t("ui.paused.e159b061")}</option>
                   </LegacySelect>
-                </label>
+                </div>
                 <label>
                   {t("ui.trial.length.in.days.cdeeccb2")}
                   <input

@@ -31,7 +31,7 @@ import {
   dashboardSummary,
   previousReportingPeriod,
 } from "./dashboard-model.mjs";
-import type { Context } from "../main";
+import type { Context } from "../context";
 type DashboardPerson = {
   id: string;
   name: string;

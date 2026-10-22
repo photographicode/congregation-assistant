@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
 import { t } from "../../../../packages/core/i18n";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Button } from "../../../../packages/ui/components";
 
 const schema = z

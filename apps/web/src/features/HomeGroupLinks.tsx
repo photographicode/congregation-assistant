@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import { Button } from "../../../../packages/ui/components";
 

@@ -18,3 +18,15 @@ Strict typing, architecture/duplication, CSS targets, coverage targets, componen
 - The strict type gate reports unchecked-index/checked-JS issues in the existing source and PDF `.mjs` modules. It remains required and failing until real types/guards are added; no wildcard declarations or `any` substitutions were used to conceal it.
 - Stylelint identifies existing specificity, duplicate selectors, raw values and important declarations; Q3 owns the cleanup. No style suppressions were introduced.
 - Architecture analysis uses preserved JSX so it inspects source dependencies rather than TypeScript's generated JSX-runtime imports. With that correction it reports zero violations; genuine React/app imports from core remain forbidden.
+
+## Twice-attempted PDF browser characterization
+
+The repeated-download receipt was corrected using the real dismiss control, and picker label containers were corrected so choosing an option no longer reopens its menu. The second local PDF spec completes download/shaping/offline export, then fails its unchanged zero-console gate on the intentional offline HEAD probe to version.json (`ERR_INTERNET_DISCONNECTED`). No forced click, console-filter waiver or removed assertion was added. This stays open for the network-recovery design and characterization work.
+
+## Supply-chain policy feedback
+
+Production SBOM generation works, but the licence gate finds workspace packages with no declared licence. Do not invent a licence grant for owner-authored code merely to make the gate green; establish the repository licence/owner decision and distinguish first-party components from third-party notices. OSV/Semgrep/CodeQL workflows are configured but not yet live-verified as passing.
+
+The licence-gate workspace finding is resolved by preserving the existing proprietary LICENSE and verifying first-party workspace identity/version separately. No new licence permission was granted. The remaining 104-component production SBOM passes the third-party allow-list. Runtime scanner executions and legal review remain separate requirements.
+
+The isolated database workflow now runs a metadata-only enabled/forced-RLS gate after the existing schema/contracts. It refuses an empty schema, so it cannot pass vacuously. It is expected to expose the pre-existing Q6 gaps until additive, twice-tested, snapshot-backed migrations repair them. No live schema was modified.

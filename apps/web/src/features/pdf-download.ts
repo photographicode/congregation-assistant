@@ -8,7 +8,7 @@ import {
   reportRecord,
 } from "../../../../packages/pdf/snapshot";
 import { storeFor } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 export { pdfAssets } from "./pdf-assets";
 import { runPDF } from "./pdf-worker-client";
 export function offerPDF(

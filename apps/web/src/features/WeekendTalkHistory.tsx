@@ -12,7 +12,7 @@ import {
   type TalkHistory,
 } from "../../../../packages/core/talk-history";
 import { rpc, demo } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 

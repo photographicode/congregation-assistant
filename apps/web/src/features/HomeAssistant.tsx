@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { repositories } from "../../../../packages/core/repositories";
 import { LocalAssistant } from "./LocalAssistant";
 import { demo, rpc, storeFor } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Button } from "../../../../packages/ui/components";
 
 /** Load authorized context before local command review; never send command text. */

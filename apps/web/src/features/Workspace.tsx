@@ -38,7 +38,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Dialog } from "../../../../packages/ui/Dialog";
-import { Context } from "../main";
+import type { Context } from "../context";
 import { storeFor, demo, rpc, config } from "./client";
 import { useAppearance } from "./store";
 import {
@@ -933,8 +933,8 @@ export default function Workspace({
                             />
                           </label>
                         ))}
-                        <label>
-                          {t("ui.group.34ca0e76")}
+                        <div className="ui-field">
+                          
                           <LegacySelect
                             value={r.group}
                             onChange={(e) =>
@@ -952,7 +952,7 @@ export default function Workspace({
                               <option key={g.id}>{g.name}</option>
                             ))}
                           </LegacySelect>
-                        </label>
+                        </div>
                       </div>
                       {r.issues.map((issue: string) => (
                         <p className="error" key={issue}>
@@ -1151,8 +1151,8 @@ export default function Workspace({
                   </span>
                 </div>
                 <div className="form-grid">
-                  <label>
-                    {t("ui.week.exception.0d2efba7")}
+                  <div className="ui-field">
+                    
                     <LegacySelect
                       value={weekend.exception}
                       onChange={(e) =>
@@ -1173,7 +1173,7 @@ export default function Workspace({
                         </option>
                       ))}
                     </LegacySelect>
-                  </label>
+                  </div>
                   <label>
                     {t("ui.meeting.time.3c900468")}
                     <input
@@ -1422,8 +1422,8 @@ export default function Workspace({
             <section className="card no-print">
               <h2>{t("ui.print.center.f6575001")}</h2>
               <div className="form-grid">
-                <label>
-                  {t("ui.layout.a5119091")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={layout}
                     onChange={(e) => setLayout(e.target.value)} aria-label={t("ui.layout.a5119091")}
@@ -1435,9 +1435,9 @@ export default function Workspace({
                       {t("ui.weekend.large.print.d8307148")}
                     </option>
                   </LegacySelect>
-                </label>
-                <label>
-                  {t("ui.font.scale.8112fa23")}
+                </div>
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={printScale}
                     onChange={(e) => setPrintScale(e.target.value)} aria-label={t("ui.font.scale.8112fa23")}
@@ -1448,7 +1448,7 @@ export default function Workspace({
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
               </div>
               <p>
                 {t("ui.use.your.browser.s.print.or.save.as.pdf.th.ab1f0da1")}
@@ -1486,8 +1486,8 @@ export default function Workspace({
         <div className="grid">
           <section className="card stack">
             <h2>{t("ui.whatsapp.smart.share.cc65823b")}</h2>
-            <label>
-              {t("ui.template.0575f29d")}
+            <div className="ui-field">
+              
               <LegacySelect onChange={(e) => setTemplate(e.target.value)} aria-label={t("ui.template.0575f29d")}>
                 {[
                   "Hello {name}, your assignment is {part} on {date}. Schedule: {link}",
@@ -1507,7 +1507,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <label>
               {t("ui.message.2f77668a")}
               <textarea
@@ -1647,8 +1647,8 @@ export default function Workspace({
             <ExperiencePicker />
             <ThemeGallery />
             <ExperienceProfile context={c} />
-            <label>
-              {t("ui.theme.efb52e71")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={normalizeTheme(appearance.theme)}
                 onChange={(e) => appearance.set({ theme: e.target.value })} aria-label={t("ui.theme.efb52e71")}
@@ -1663,7 +1663,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <label>
               {t("appearance.intensity")}
               <input
@@ -1680,8 +1680,8 @@ export default function Workspace({
               <output>{appearance.backgroundIntensity}%</output>
             </label>
             <div className="form-grid">
-              <label>
-                {t("ui.text.tone.267853f6")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.tone}
                   onChange={(e) => appearance.set({ tone: e.target.value })} aria-label={t("ui.text.tone.267853f6")}
@@ -1690,9 +1690,9 @@ export default function Workspace({
                     <option key={t}>{t}</option>
                   ))}
                 </LegacySelect>
-              </label>
-              <label>
-                {t("ui.text.size.d68761cc")}
+              </div>
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.size}
                   onChange={(e) => appearance.set({ size: e.target.value })} aria-label={t("ui.text.size.d68761cc")}
@@ -1701,9 +1701,9 @@ export default function Workspace({
                     <option key={s}>{s}</option>
                   ))}
                 </LegacySelect>
-              </label>
-              <label>
-                {t("ui.icon.weight.fef9b03c")}
+              </div>
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.weight}
                   onChange={(e) => appearance.set({ weight: e.target.value })} aria-label={t("ui.icon.weight.fef9b03c")}
@@ -1712,7 +1712,7 @@ export default function Workspace({
                     <option key={s}>{s}</option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
               <label className="check">
                 <input
                   type="checkbox"
@@ -1722,8 +1722,8 @@ export default function Workspace({
                 {t("ui.reduce.glass.aaacd6db")}
               </label>
             </div>
-            <label>
-              {t("ui.fit.to.my.screen.189a4a53")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={appearance.fit}
                 onChange={(e) =>
@@ -1738,14 +1738,14 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <p className="chip">
               {appearance.fit === "auto"
                 ? "Automatically adjusted for screen size and text"
                 : "Your chosen screen fit"}
             </p>
-            <label>
-              {t("language.label")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={getUILocale()}
                 onChange={(e) => setUILocale(e.target.value as Locale)} aria-label={t("language.label")}
@@ -1756,11 +1756,11 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             {getUILocale() !== "en" && <p>{t("language.draft")}</p>}
             <p>{t("language.browserNote")}</p>
-            <label>
-              {t("ui.time.format.80d7dcf2")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={appearance.clock}
                 onChange={(e) =>
@@ -1775,7 +1775,7 @@ export default function Workspace({
                 <option value="12">{t("ui.12.hour.9ce198d5")}</option>
                 <option value="24">{t("ui.24.hour.84f0698f")}</option>
               </LegacySelect>
-            </label>
+            </div>
             <Greeting
               name={c.firstName}
               timezone={setup.timezone}
@@ -1798,8 +1798,8 @@ export default function Workspace({
             <Button onClick={() => setWizard(true)} type="button">
               {t("ui.open.setup.guide.8d9f188c")}
             </Button>
-            <label>
-              {t("ui.delivery.mode.c9585346")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={setup.delivery}
                 onChange={(e) =>
@@ -1812,7 +1812,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <p>
               {
                 catalogue.deliveryModes.find((m) => m.id === setup.delivery)
