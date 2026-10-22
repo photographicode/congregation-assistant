@@ -1,11 +1,11 @@
 import {savePublisherAction} from './publisher-action';
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import type { Person } from "./publisher-record";
 import {
+  getLocaleSnapshot,
   getUILocale,
   setUILocale,
   subscribeUILocale,
@@ -38,7 +38,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Dialog } from "../../../../packages/ui/Dialog";
-import { Context } from "../main";
+import type { Context } from "../context";
 import { storeFor, demo, rpc, config } from "./client";
 import { useAppearance } from "./store";
 import {
@@ -139,7 +139,7 @@ export default function Workspace({
   go: (s: string) => void;
   context: Context;
 }) {
-  React.useSyncExternalStore(subscribeUILocale, getUILocale, getUILocale);
+  React.useSyncExternalStore(subscribeUILocale, getLocaleSnapshot, getLocaleSnapshot);
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
     [groupsLoaded, setGroupsLoaded] = useState(demo),
@@ -673,9 +673,9 @@ export default function Workspace({
               <section className="card stack">
                 <h2>{t("setup.begin")}</h2>
                 <p>{t("setup.summary")}</p>
-                <button onClick={() => setWizard(true)}>
+                <Button onClick={() => setWizard(true)} type="button">
                   {t("setup.open")}
-                </button>
+                </Button>
               </section>
             ) : null
           }
@@ -729,7 +729,7 @@ export default function Workspace({
           title={t("refine.peopleTitle")}
         >
           {admin && (
-            <button
+            <Button
               className="primary"
               onClick={() => {
                 setEditing({
@@ -744,10 +744,10 @@ export default function Workspace({
                 setDirty(false);
                 setError("");
                 setShared(false);
-              }}
+              }} type="button"
             >
               <Plus /> {t("ui.add.publisher.b13cc36b")}
-            </button>
+            </Button>
           )}
         </Heading>
         <div
@@ -756,7 +756,7 @@ export default function Workspace({
           aria-label={t("ui.people.sections.78224e3a")}
         >
           {["publishers", "groups", "import"].map((s) => (
-            <button
+            <Button
               key={s}
               className={
                 sub === s ||
@@ -764,12 +764,12 @@ export default function Workspace({
                   ? "active"
                   : ""
               }
-              onClick={() => setSub(s)}
+              onClick={() => setSub(s)} type="button"
             >
               {s === "import"
                 ? "Import Center"
                 : s[0].toUpperCase() + s.slice(1)}
-            </button>
+            </Button>
           ))}
         </div>
         {sub === "groups" ? (
@@ -823,7 +823,7 @@ export default function Workspace({
                       onChange={(e) => setGroupName(e.target.value)}
                     />
                   </label>
-                  <button disabled={busy}>{t("ui.add.group.94901258")}</button>
+                  <Button disabled={busy} type="submit">{t("ui.add.group.94901258")}</Button>
                 </form>
               )}
             </section>
@@ -846,12 +846,12 @@ export default function Workspace({
                 />
               </label>
               <div className="actions">
-                <button
+                <Button
                   className="primary"
-                  onClick={() => run(async () => review())}
+                  onClick={() => run(async () => review())} type="button"
                 >
                   {t("ui.review.rows.d14ebd74")}
-                </button>
+                </Button>
                 <label>
                   {t("ui.upload.csv.or.vcard.ae888952")}
                   <input
@@ -868,17 +868,17 @@ export default function Workspace({
                     }}
                   />
                 </label>
-                <button
+                <Button
                   onClick={() =>
                     download(
                       "Name,Phone,Email,Group,Address\n",
                       "publisher-template.csv",
                       "text/csv",
                     )
-                  }
+                  } type="button"
                 >
                   {t("ui.sample.template.8138c817")}
-                </button>
+                </Button>
               </div>
               <Disclosure>
                 <DisclosureLabel>
@@ -933,8 +933,8 @@ export default function Workspace({
                             />
                           </label>
                         ))}
-                        <label>
-                          {t("ui.group.34ca0e76")}
+                        <div className="ui-field">
+                          
                           <LegacySelect
                             value={r.group}
                             onChange={(e) =>
@@ -943,7 +943,7 @@ export default function Workspace({
                                   j === i ? { ...x, group: e.target.value } : x,
                                 ),
                               )
-                            }
+                            } aria-label={t("ui.group.34ca0e76")}
                           >
                             <option value="">
                               {t("ui.no.group.2463cfb8")}
@@ -952,7 +952,7 @@ export default function Workspace({
                               <option key={g.id}>{g.name}</option>
                             ))}
                           </LegacySelect>
-                        </label>
+                        </div>
                       </div>
                       {r.issues.map((issue: string) => (
                         <p className="error" key={issue}>
@@ -963,7 +963,7 @@ export default function Workspace({
                   ))}
                 </div>
                 <div className="actions">
-                  <button
+                  <Button
                     onClick={() =>
                       setImportRows((rows) =>
                         reviewImport(rows, groups, people, setup.country).map(
@@ -973,28 +973,28 @@ export default function Workspace({
                           }),
                         ),
                       )
-                    }
+                    } type="button"
                   >
                     {t("ui.recheck.rows.014c5ab9")}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     className="primary"
                     disabled={busy}
-                    onClick={() => run(saveImport)}
+                    onClick={() => run(saveImport)} type="button"
                   >
                     {t("ui.import.06fe0ef7")}
                     {importRows.filter((r) => r.include).length}{" "}
                     {t("ui.selected.d7cbbb68")}
-                  </button>
+                  </Button>
                 </div>
               </section>
             )}
             {importUndo && (
               <div className="banner">
                 {t("ui.import.complete.80e3a57d")}{" "}
-                <button onClick={() => run(undoImport)}>
+                <Button onClick={() => run(undoImport)} type="button">
                   {t("ui.undo.import.4c2180d2")}
-                </button>
+                </Button>
                 <p>{t("ui.server.undo.is.available.for.7.days.2cea3070")}</p>
               </div>
             )}
@@ -1054,10 +1054,10 @@ export default function Workspace({
                         person={{ ...p }}
                         onOpen={() => go("pdf")}
                       />
-                      <button disabled={!admin} onClick={() => edit(p)}>
+                      <Button disabled={!admin} onClick={() => edit(p)} type="button">
                         {t("ui.edit.464c4ffd")}
                         <span className="sr-only"> {p.name}</span>
-                      </button>
+                      </Button>
                     </div>
                   ))}
               </section>
@@ -1086,20 +1086,20 @@ export default function Workspace({
           aria-label={t("ui.schedule.sections.335ae9a4")}
         >
           {["midweek", "weekend", "duties", "print"].map((s) => (
-            <button
+            <Button
               key={s}
               className={sub === s ? "active" : ""}
-              onClick={() => setSub(s)}
+              onClick={() => setSub(s)} type="button"
             >
               {s[0].toUpperCase() + s.slice(1)}
-            </button>
+            </Button>
           ))}
         </div>
         {sub === "weekend" ? (
           c.caps.weekend && canWeekend ? (
             <div className="stack">
               <div className="actions">
-                <button
+                <Button
                   onClick={() => {
                     if (
                       weekendDirty &&
@@ -1109,10 +1109,10 @@ export default function Workspace({
                     setWeek(
                       weekKey(addWeeks(new Date(week + "T12:00:00"), -1)),
                     );
-                  }}
+                  }} type="button"
                 >
                   {t("ui.previous.week.c0f8bbcd")}
-                </button>
+                </Button>
                 <label>
                   {t("ui.week.starting.553ad9ea")}
                   <input
@@ -1126,15 +1126,15 @@ export default function Workspace({
                     }}
                   />
                 </label>
-                <button
+                <Button
                   onClick={() => {
                     if (weekendDirty && !confirm("Discard unsaved changes?"))
                       return;
                     setWeek(weekKey(addWeeks(new Date(week + "T12:00:00"), 1)));
-                  }}
+                  }} type="button"
                 >
                   {t("ui.next.week.21fbde19")}
-                </button>
+                </Button>
               </div>
               <section className="card stack">
                 <div className="actions">
@@ -1151,13 +1151,13 @@ export default function Workspace({
                   </span>
                 </div>
                 <div className="form-grid">
-                  <label>
-                    {t("ui.week.exception.0d2efba7")}
+                  <div className="ui-field">
+                    
                     <LegacySelect
                       value={weekend.exception}
                       onChange={(e) =>
                         changeWeekend("exception", e.target.value)
-                      }
+                      } aria-label={t("ui.week.exception.0d2efba7")}
                     >
                       {[
                         "normal",
@@ -1173,7 +1173,7 @@ export default function Workspace({
                         </option>
                       ))}
                     </LegacySelect>
-                  </label>
+                  </div>
                   <label>
                     {t("ui.meeting.time.3c900468")}
                     <input
@@ -1361,16 +1361,16 @@ export default function Workspace({
                         </label>
                       </div>
                     ))}
-                    <button
+                    <Button
                       onClick={() =>
                         changeWeekend("duties", [
                           ...weekend.duties,
                           { name: "", people: "" },
                         ])
-                      }
+                      } type="button"
                     >
                       {t("ui.add.duty.07f57514")}
-                    </button>
+                    </Button>
                   </div>
                 </Disclosure>
                 {assignmentConflicts(weekend).map((text: string) => (
@@ -1379,22 +1379,22 @@ export default function Workspace({
                   </div>
                 ))}
                 <div className="actions">
-                  <button
+                  <Button
                     disabled={busy}
-                    onClick={() => run(() => saveWeekend())}
+                    onClick={() => run(() => saveWeekend())} type="button"
                   >
                     {t("ui.save.draft.3de10010")}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     className="primary"
                     disabled={busy}
-                    onClick={() => run(() => saveWeekend(true))}
+                    onClick={() => run(() => saveWeekend(true))} type="button"
                   >
                     {t("ui.publish.weekend.d4ebad9d")}
-                  </button>
-                  <button onClick={() => setSub("print")}>
+                  </Button>
+                  <Button onClick={() => setSub("print")} type="button">
                     {t("ui.review.print.layout.fd5f3d15")}
-                  </button>
+                  </Button>
                 </div>
                 {published && (
                   <p role="status">
@@ -1422,11 +1422,11 @@ export default function Workspace({
             <section className="card no-print">
               <h2>{t("ui.print.center.f6575001")}</h2>
               <div className="form-grid">
-                <label>
-                  {t("ui.layout.a5119091")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={layout}
-                    onChange={(e) => setLayout(e.target.value)}
+                    onChange={(e) => setLayout(e.target.value)} aria-label={t("ui.layout.a5119091")}
                   >
                     <option value="week">
                       {t("ui.weekend.one.week.49362c20")}
@@ -1435,12 +1435,12 @@ export default function Workspace({
                       {t("ui.weekend.large.print.d8307148")}
                     </option>
                   </LegacySelect>
-                </label>
-                <label>
-                  {t("ui.font.scale.8112fa23")}
+                </div>
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={printScale}
-                    onChange={(e) => setPrintScale(e.target.value)}
+                    onChange={(e) => setPrintScale(e.target.value)} aria-label={t("ui.font.scale.8112fa23")}
                   >
                     {["100", "125", "150", "175", "200"].map((x) => (
                       <option key={x} value={x}>
@@ -1448,15 +1448,15 @@ export default function Workspace({
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
               </div>
               <p>
                 {t("ui.use.your.browser.s.print.or.save.as.pdf.th.ab1f0da1")}
               </p>
               <div className="actions">
-                <button className="primary" onClick={() => window.print()}>
+                <Button className="primary" onClick={() => window.print()} type="button">
                   {t("ui.print.save.pdf.bf785022")}
-                </button>
+                </Button>
               </div>
             </section>
             <div style={{ fontSize: Number(printScale) / 100 + "em" }}>
@@ -1486,9 +1486,9 @@ export default function Workspace({
         <div className="grid">
           <section className="card stack">
             <h2>{t("ui.whatsapp.smart.share.cc65823b")}</h2>
-            <label>
-              {t("ui.template.0575f29d")}
-              <LegacySelect onChange={(e) => setTemplate(e.target.value)}>
+            <div className="ui-field">
+              
+              <LegacySelect onChange={(e) => setTemplate(e.target.value)} aria-label={t("ui.template.0575f29d")}>
                 {[
                   "Hello {name}, your assignment is {part} on {date}. Schedule: {link}",
                   "Hello {name}, please submit your monthly report. {link}",
@@ -1507,7 +1507,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <label>
               {t("ui.message.2f77668a")}
               <textarea
@@ -1535,15 +1535,15 @@ export default function Workspace({
                 />
               </label>
             ))}
-            <button
+            <Button
               className="primary"
               onClick={() => {
                 setQueue(people.filter((p) => p.phone));
                 setQueueIndex(0);
-              }}
+              }} type="button"
             >
               {t("ui.prepare.send.queue.098c5943")}
-            </button>
+            </Button>
             <p className="muted">{t("refine.sharingHelp")}</p>
           </section>
           <section className="card stack">
@@ -1585,12 +1585,12 @@ export default function Workspace({
                   >
                     {t("ui.open.whatsapp.5ac4b2d1")}
                   </a>
-                  <button onClick={() => setQueueIndex((i) => i + 1)}>
+                  <Button onClick={() => setQueueIndex((i) => i + 1)} type="button">
                     {t("ui.mark.sent.48b728ec")}
-                  </button>
-                  <button onClick={() => setQueueIndex((i) => i + 1)}>
+                  </Button>
+                  <Button onClick={() => setQueueIndex((i) => i + 1)} type="button">
                     {t("ui.skip.28d03596")}
-                  </button>
+                  </Button>
                 </div>
               </>
             ) : queue.length > 0 ? (
@@ -1600,7 +1600,7 @@ export default function Workspace({
                 {t("ui.choose.recipients.with.a.saved.phone.numbe.a24b47b6")}
               </p>
             )}
-            <button
+            <Button
               onClick={() =>
                 run(async () => {
                   await navigator.clipboard.writeText(
@@ -1608,10 +1608,10 @@ export default function Workspace({
                   );
                   c.notify("Message copied.");
                 })
-              }
+              } type="button"
             >
               {t("ui.copy.message.457efe53")}
-            </button>
+            </Button>
             <Disclosure>
               <DisclosureLabel>
                 {t("ui.whatsapp.business.ai.intake.daaf00f7")}
@@ -1647,11 +1647,11 @@ export default function Workspace({
             <ExperiencePicker />
             <ThemeGallery />
             <ExperienceProfile context={c} />
-            <label>
-              {t("ui.theme.efb52e71")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={normalizeTheme(appearance.theme)}
-                onChange={(e) => appearance.set({ theme: e.target.value })}
+                onChange={(e) => appearance.set({ theme: e.target.value })} aria-label={t("ui.theme.efb52e71")}
               >
                 {["auto", ...themeIds].map((id) => (
                   <option key={id} value={id}>
@@ -1663,7 +1663,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <label>
               {t("appearance.intensity")}
               <input
@@ -1680,39 +1680,39 @@ export default function Workspace({
               <output>{appearance.backgroundIntensity}%</output>
             </label>
             <div className="form-grid">
-              <label>
-                {t("ui.text.tone.267853f6")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.tone}
-                  onChange={(e) => appearance.set({ tone: e.target.value })}
+                  onChange={(e) => appearance.set({ tone: e.target.value })} aria-label={t("ui.text.tone.267853f6")}
                 >
                   {["soft", "standard", "sharp"].map((t) => (
                     <option key={t}>{t}</option>
                   ))}
                 </LegacySelect>
-              </label>
-              <label>
-                {t("ui.text.size.d68761cc")}
+              </div>
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.size}
-                  onChange={(e) => appearance.set({ size: e.target.value })}
+                  onChange={(e) => appearance.set({ size: e.target.value })} aria-label={t("ui.text.size.d68761cc")}
                 >
                   {["S", "M", "L", "XL"].map((s) => (
                     <option key={s}>{s}</option>
                   ))}
                 </LegacySelect>
-              </label>
-              <label>
-                {t("ui.icon.weight.fef9b03c")}
+              </div>
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={appearance.weight}
-                  onChange={(e) => appearance.set({ weight: e.target.value })}
+                  onChange={(e) => appearance.set({ weight: e.target.value })} aria-label={t("ui.icon.weight.fef9b03c")}
                 >
                   {["light", "regular", "bold"].map((s) => (
                     <option key={s}>{s}</option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
               <label className="check">
                 <input
                   type="checkbox"
@@ -1722,15 +1722,15 @@ export default function Workspace({
                 {t("ui.reduce.glass.aaacd6db")}
               </label>
             </div>
-            <label>
-              {t("ui.fit.to.my.screen.189a4a53")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={appearance.fit}
                 onChange={(e) =>
                   appearance.set({
                     fit: e.target.value as typeof appearance.fit,
                   })
-                }
+                } aria-label={t("ui.fit.to.my.screen.189a4a53")}
               >
                 {["auto", "compact", "comfortable", "large"].map((f) => (
                   <option key={f} value={f}>
@@ -1738,17 +1738,17 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <p className="chip">
               {appearance.fit === "auto"
                 ? "Automatically adjusted for screen size and text"
                 : "Your chosen screen fit"}
             </p>
-            <label>
-              {t("language.label")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={getUILocale()}
-                onChange={(e) => setUILocale(e.target.value as Locale)}
+                onChange={(e) => setUILocale(e.target.value as Locale)} aria-label={t("language.label")}
               >
                 {Object.entries(localeMetadata).map(([code, meta]) => (
                   <option key={code} value={code}>
@@ -1756,18 +1756,18 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             {getUILocale() !== "en" && <p>{t("language.draft")}</p>}
             <p>{t("language.browserNote")}</p>
-            <label>
-              {t("ui.time.format.80d7dcf2")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={appearance.clock}
                 onChange={(e) =>
                   appearance.set({
                     clock: e.target.value as typeof appearance.clock,
                   })
-                }
+                } aria-label={t("ui.time.format.80d7dcf2")}
               >
                 <option value="locale">
                   {t("ui.follow.language.9cc37a4f")}
@@ -1775,7 +1775,7 @@ export default function Workspace({
                 <option value="12">{t("ui.12.hour.9ce198d5")}</option>
                 <option value="24">{t("ui.24.hour.84f0698f")}</option>
               </LegacySelect>
-            </label>
+            </div>
             <Greeting
               name={c.firstName}
               timezone={setup.timezone}
@@ -1795,16 +1795,16 @@ export default function Workspace({
           </section>
           <section className="card stack">
             <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
-            <button onClick={() => setWizard(true)}>
+            <Button onClick={() => setWizard(true)} type="button">
               {t("ui.open.setup.guide.8d9f188c")}
-            </button>
-            <label>
-              {t("ui.delivery.mode.c9585346")}
+            </Button>
+            <div className="ui-field">
+              
               <LegacySelect
                 value={setup.delivery}
                 onChange={(e) =>
                   setSetup((s: any) => ({ ...s, delivery: e.target.value }))
-                }
+                } aria-label={t("ui.delivery.mode.c9585346")}
               >
                 {catalogue.deliveryModes.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -1812,7 +1812,7 @@ export default function Workspace({
                   </option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
             <p>
               {
                 catalogue.deliveryModes.find((m) => m.id === setup.delivery)
@@ -1829,12 +1829,12 @@ export default function Workspace({
               />
               {t("ui.prefer.publisher.portal.942fcc6d")}
             </label>
-            <button
+            <Button
               disabled={busy}
-              onClick={() => run(() => saveSetup(wizardStep))}
+              onClick={() => run(() => saveSetup(wizardStep))} type="button"
             >
               {t("ui.save.delivery.preferences.599553af")}
-            </button>
+            </Button>
             <p className="muted">{t("refine.setupAccess")}</p>
           </section>
           <section className="card">
@@ -1861,12 +1861,12 @@ export default function Workspace({
           </section>
           <section className="card stack">
             <h2>{t("ui.data.cec3a9b8")}</h2>
-            <button
+            <Button
               disabled={!canPeople}
-              onClick={() => download(people, "publishers-export.json")}
+              onClick={() => download(people, "publishers-export.json")} type="button"
             >
               {t("ui.export.loaded.publisher.records.6105bd56")}
-            </button>
+            </Button>
             {admin && (
               <>
                 {c.plan && (
@@ -1920,9 +1920,9 @@ export default function Workspace({
       {error && (
         <div className="banner" role="alert">
           <p>{error}</p>
-          <button onClick={() => setError("")}>
+          <Button onClick={() => setError("")} type="button">
             {t("ui.dismiss.48845bff")}
-          </button>
+          </Button>
         </div>
       )}
       {body}
@@ -2025,81 +2025,81 @@ export default function Workspace({
         ) : wizardStep === 3 ? (
           <div className="stack">
             {catalogue.deliveryModes.map((m) => (
-              <button
+              <Button
                 key={m.id}
                 aria-pressed={setup.delivery === m.id}
                 onClick={() => {
                   setSetup((s: any) => ({ ...s, delivery: m.id }));
                   setDirty(true);
-                }}
+                }} type="button"
               >
                 <strong>{m.name}</strong>
                 <p>{m.description}</p>
-              </button>
+              </Button>
             ))}
           </div>
         ) : wizardStep === 4 ? (
           <>
             <p>{t("ui.use.the.groups.screen.to.create.the.dropdo.eafb23cb")}</p>
-            <button
+            <Button
               onClick={() => {
                 setWizard(false);
                 setSub("groups");
                 go("people");
-              }}
+              }} type="button"
             >
               {t("ui.manage.groups.faabea83")}
-            </button>
+            </Button>
           </>
         ) : wizardStep === 5 ? (
           <>
             <p>{t("ui.paste.a.spreadsheet.upload.contacts.or.add.8cd87970")}</p>
-            <button
+            <Button
               onClick={() => {
                 setWizard(false);
                 setSub("import");
                 go("people");
-              }}
+              }} type="button"
             >
               {t("ui.open.import.center.4c1a5823")}
-            </button>
+            </Button>
           </>
         ) : wizardStep === 6 ? (
           <>
             <p>{t("ui.invite.main.administrators.and.overseers.u.cc371329")}</p>
-            <button
+            <Button
               onClick={() => {
                 setWizard(false);
                 go("access");
-              }}
+              }} type="button"
             >
               {t("ui.open.access.links.4072dc35")}
-            </button>
+            </Button>
           </>
         ) : wizardStep === 7 ? (
           <>
             <p>{t("ui.prepare.your.first.midweek.and.weekend.sch.3e4cb7c3")}</p>
-            <button
+            <Button
               onClick={() => {
                 setWizard(false);
                 setSub("weekend");
                 go("schedule");
-              }}
+              }} type="button"
             >
               {t("ui.open.weekend.schedule.5c9fdf1b")}
-            </button>
+            </Button>
           </>
         ) : wizardStep === 8 ? (
           <>
             <p>{t("ui.publish.from.schedule.then.copy.your.stabl.39f031a9")}</p>
-            <button
+            <Button
               onClick={() => {
                 setWizard(false);
                 go("access");
-              }}
+              }} type="button"
             >
               {t("ui.open.links.hub.4a2ac880")}
-            </button>
+            </Button>
           </>
         ) : wizardStep === 9 ? (
           <>
@@ -2125,32 +2125,32 @@ export default function Workspace({
           </>
         )}
         <div className="actions" style={{ marginTop: "1.5rem" }}>
-          <button
+          <Button
             disabled={wizardStep === 0 || busy}
-            onClick={() => run(() => saveSetup(wizardStep - 1))}
+            onClick={() => run(() => saveSetup(wizardStep - 1))} type="button"
           >
             {t("ui.back.76900f1b")}
-          </button>
+          </Button>
           {wizardStep < 10 ? (
             <>
-              <button
+              <Button
                 className="primary"
                 disabled={busy}
-                onClick={() => run(() => saveSetup(wizardStep + 1))}
+                onClick={() => run(() => saveSetup(wizardStep + 1))} type="button"
               >
                 {t("ui.save.continue.b75e6d06")}
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={busy}
-                onClick={() => run(() => saveSetup(wizardStep + 1))}
+                onClick={() => run(() => saveSetup(wizardStep + 1))} type="button"
               >
                 {t("ui.skip.for.now.b58eb52c")}
-              </button>
+              </Button>
             </>
           ) : (
-            <button className="primary" onClick={() => setWizard(false)}>
+            <Button className="primary" onClick={() => setWizard(false)} type="button">
               {t("ui.done.11a6767d")}
-            </button>
+            </Button>
           )}
         </div>
         {error && (

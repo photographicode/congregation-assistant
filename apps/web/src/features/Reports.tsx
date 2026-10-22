@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import {
   keepReportDraft,
@@ -40,7 +39,7 @@ import {
   repositories,
   type Report,
 } from "../../../../packages/core/repositories";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Dialog } from "../../../../packages/ui/Dialog";
 export function reportingPeriod(date: Date) {
   const month = date.getMonth();
@@ -579,14 +578,14 @@ export function Reports({ context: c }: { context: Context }) {
         )}
       </div>
       {!personal && canService && tab === "service" && (
-        <label>
-          {t("sfts.filter")}
+        <div className="ui-field">
+          
           <LegacySelect
             disabled={editing || busy}
             value={reportGroup}
             onChange={(e) =>
               setReportGroup(e.target.value as "all" | "regular" | "sfts")
-            }
+            } aria-label={t("sfts.filter")}
           >
             <option value="all">{t("sfts.all")}</option>
             <option value="regular">{t("sfts.rp")}</option>
@@ -594,7 +593,7 @@ export function Reports({ context: c }: { context: Context }) {
               <option value="sfts">{t("sfts.name")}</option>
             )}
           </LegacySelect>
-        </label>
+        </div>
       )}
       {reportGroup === "sfts" && tab === "service" && (
         <section className="card">
@@ -615,13 +614,13 @@ export function Reports({ context: c }: { context: Context }) {
         <div className="segmented">
           {(canService ? ["service", "attendance"] : ["attendance"]).map(
             (t) => (
-              <button
+              <Button
                 key={t}
                 className={tab === t ? "active" : ""}
-                onClick={() => setTab(t)}
+                onClick={() => setTab(t)} type="button"
               >
                 {t === "service" ? "Service reports" : "Attendance"}
-              </button>
+              </Button>
             ),
           )}
         </div>
@@ -662,7 +661,7 @@ export function Reports({ context: c }: { context: Context }) {
               ))}
             </div>
           ))}
-          <button
+          <Button
             disabled={busy}
             onClick={async () => {
               setBusy(true);
@@ -681,13 +680,13 @@ export function Reports({ context: c }: { context: Context }) {
               } finally {
                 setBusy(false);
               }
-            }}
+            }} type="button"
           >
             {t("ui.save.attendance.15e51ffc")}
-          </button>
-          <button onClick={() => window.print()}>
+          </Button>
+          <Button onClick={() => window.print()} type="button">
             {t("ui.print.attendance.2d133c42")}
-          </button>
+          </Button>
         </section>
       ) : (
         <>
@@ -708,7 +707,7 @@ export function Reports({ context: c }: { context: Context }) {
                 </p>
               )}
               {(canWrite || personal) && (
-                <button
+                <Button
                   className="primary"
                   disabled={editing || busy}
                   onClick={() => {
@@ -718,10 +717,10 @@ export function Reports({ context: c }: { context: Context }) {
                     setEditing(true);
                     setPerson(persons[0]?.id || "");
                     setForm(valuesFor(persons[0]?.id || ""));
-                  }}
+                  }} type="button"
                 >
                   {t("ui.enter.report.63ad9d6b")}
-                </button>
+                </Button>
               )}
             </section>
             <section className="card">
@@ -751,7 +750,7 @@ export function Reports({ context: c }: { context: Context }) {
                 ? persons.map((p) => (
                     <div className="list-row" key={p.id}>
                       <strong>{p.name}</strong>
-                      <button
+                      <Button
                         disabled={editing || busy}
                         onClick={() => {
                           setPerson(p.id);
@@ -759,10 +758,10 @@ export function Reports({ context: c }: { context: Context }) {
                           setReportDirty(false);
                           setError("");
                           setEditing(true);
-                        }}
+                        }} type="button"
                       >
                         {t("ui.review.report.d515fdd2")}
-                      </button>
+                      </Button>
                     </div>
                   ))
                 : submitted.map((r) => (
@@ -791,7 +790,7 @@ export function Reports({ context: c }: { context: Context }) {
                         <p>{r.comments}</p>
                       </div>
                       {canWrite && (
-                        <button
+                        <Button
                           disabled={editing || busy}
                           onClick={() => {
                             setPerson(r.pub_id);
@@ -806,17 +805,17 @@ export function Reports({ context: c }: { context: Context }) {
                             setReportDirty(false);
                             setError("");
                             setEditing(true);
-                          }}
+                          }} type="button"
                         >
                           {t("ui.edit.report.b81811d5")}
-                        </button>
+                        </Button>
                       )}
                     </div>
                   ))}
             </div>
-            <button onClick={() => window.print()}>
+            <Button onClick={() => window.print()} type="button">
               {t("ui.print.monthly.roster.103bec84")}
-            </button>
+            </Button>
           </section>
         </>
       )}
@@ -873,7 +872,7 @@ export function Reports({ context: c }: { context: Context }) {
                   <span className="ap-review-mobile-label">
                     {t("refine.adminAction")}
                   </span>
-                  <button
+                  <Button
                     disabled={busy || editing}
                     onClick={() => {
                       c.notify("");
@@ -885,10 +884,10 @@ export function Reports({ context: c }: { context: Context }) {
                       t("refine.revokeAPFor") +
                       (allPersons.find((p) => p.id === row.pub_id)?.name ||
                         t("refine.publisher"))
-                    }
+                    } type="button"
                   >
                     {t("refine.revoke")}
-                  </button>
+                  </Button>
                 </div>
               </article>
             ))}
@@ -903,9 +902,9 @@ export function Reports({ context: c }: { context: Context }) {
               onClose={() => setAPUndo(null)}
             >
               {!undoExpired && (
-                <button disabled={busy} onClick={() => void undoAP()}>
+                <Button disabled={busy} onClick={() => void undoAP()} type="button">
                   {t("common.undo")}
-                </button>
+                </Button>
               )}
               {undoExpired && <span>{t("refine.apUndoExpired")}</span>}
             </Toast>
@@ -932,16 +931,16 @@ export function Reports({ context: c }: { context: Context }) {
               </p>
               <p>{t("refine.retain")}</p>
               <div className="actions">
-                <button
+                <Button
                   disabled={busy}
                   className="danger"
-                  onClick={() => void revokeAP()}
+                  onClick={() => void revokeAP()} type="button"
                 >
                   {busy ? t("refine.revoking") : t("refine.confirmAP")}
-                </button>
-                <button onClick={() => setRevokeTarget(null)}>
+                </Button>
+                <Button onClick={() => setRevokeTarget(null)} type="button">
                   {busy ? t("common.close") : t("refine.keepAP")}
-                </button>
+                </Button>
               </div>
             </section>
           )}
@@ -953,7 +952,7 @@ export function Reports({ context: c }: { context: Context }) {
             <DisclosureLabel>{t("ui.month.tools.9e7446f2")}</DisclosureLabel>
             <div className="actions">
               {canWrite && (
-                <button
+                <Button
                   onClick={() => {
                     setError("");
                     setBulkRows(
@@ -967,10 +966,10 @@ export function Reports({ context: c }: { context: Context }) {
                     setBulkFilter("");
                     setBulkLimit(25);
                     setBulk(true);
-                  }}
+                  }} type="button"
                 >
                   {t("ui.enter.several.reports.d52f2dc2")}
-                </button>
+                </Button>
               )}
               {canWrite && (
                 <>
@@ -1011,7 +1010,7 @@ export function Reports({ context: c }: { context: Context }) {
                       }}
                     />
                   </label>
-                  <button
+                  <Button
                     onClick={() =>
                       exportCSV(
                         [
@@ -1029,13 +1028,13 @@ export function Reports({ context: c }: { context: Context }) {
                         ],
                         "report-template.csv",
                       )
-                    }
+                    } type="button"
                   >
                     {t("ui.download.report.template.b3244755")}
-                  </button>
+                  </Button>
                 </>
               )}
-              <button
+              <Button
                 onClick={() =>
                   exportCSV(
                     submitted.map((r) => ({
@@ -1045,20 +1044,20 @@ export function Reports({ context: c }: { context: Context }) {
                     })),
                     "reports-" + period + ".csv",
                   )
-                }
+                } type="button"
               >
                 {t("ui.download.month.csv.88a02790")}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() =>
                   exportCSV(
                     missing.map((p) => ({ name: p.name, id: p.id })),
                     "missing-" + period + ".csv",
                   )
-                }
+                } type="button"
               >
                 {t("ui.download.missing.list.f112f557")}
-              </button>
+              </Button>
             </div>
           </Disclosure>
           <Disclosure open={annualOpen}>
@@ -1068,9 +1067,9 @@ export function Reports({ context: c }: { context: Context }) {
             {annual.error ? (
               <p role="alert">
                 {t("ui.annual.records.could.not.load.6eee18a8")}
-                <button onClick={() => void annual.refetch()}>
+                <Button onClick={() => void annual.refetch()} type="button">
                   {t("ui.retry.942087cc")}
-                </button>
+                </Button>
               </p>
             ) : (
               <div className="stack">
@@ -1158,7 +1157,7 @@ export function Reports({ context: c }: { context: Context }) {
                 <p>
                   {t("ui.regular.special.pioneer.and.field.missiona.22b2d7a9")}
                 </p>
-                <button
+                <Button
                   onClick={() =>
                     exportCSV(
                       (demo ? local : annual.data || []).map((r) => ({
@@ -1168,10 +1167,10 @@ export function Reports({ context: c }: { context: Context }) {
                       })),
                       "service-year-" + year + ".csv",
                     )
-                  }
+                  } type="button"
                 >
                   {t("ui.download.service.year.csv.08f82185")}
-                </button>
+                </Button>
               </div>
             )}
           </Disclosure>
@@ -1305,22 +1304,22 @@ export function Reports({ context: c }: { context: Context }) {
           {bulkRows.filter((r) =>
             r.name.toLowerCase().includes(bulkFilter.toLowerCase()),
           ).length > bulkLimit && (
-            <button onClick={() => setBulkLimit((n) => n + 25)}>
+            <Button onClick={() => setBulkLimit((n) => n + 25)} type="button">
               {t("ui.show.more.publishers.5d5de480")}
-            </button>
+            </Button>
           )}
           {error && (
             <p role="alert" className="error">
               {error}
             </p>
           )}
-          <button
+          <Button
             className="primary"
             disabled={busy}
-            onClick={() => void saveBulk()}
+            onClick={() => void saveBulk()} type="button"
           >
             {t("ui.save.selected.reports.1c455ac2")}
-          </button>
+          </Button>
         </fieldset>
       </Dialog>
       {editing && (
@@ -1334,7 +1333,7 @@ export function Reports({ context: c }: { context: Context }) {
               <h2>{t("refine.reportTitle")}</h2>
               <p>{t("refine.reportIntro")}</p>
             </div>
-            <button
+            <Button
               onClick={() => {
                 if (reportDirty) {
                   pendingNavigation.current = null;
@@ -1343,10 +1342,10 @@ export function Reports({ context: c }: { context: Context }) {
                   setEditing(false);
                   setReceipt(null);
                 }
-              }}
+              }} type="button"
             >
               {t("refine.cancelReport")}
-            </button>
+            </Button>
           </div>
           {receipt ? (
             <ReportReceipt
@@ -1382,8 +1381,8 @@ export function Reports({ context: c }: { context: Context }) {
                 disabled={busy}
                 aria-label={t("refine.reportTitle")}
               >
-                <label>
-                  {t("ui.publisher.21378545")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     aria-label={t("ui.publisher.21378545")}
                     required
@@ -1410,7 +1409,7 @@ export function Reports({ context: c }: { context: Context }) {
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
                 <p>
                   <strong>
                     {t("ui.reporting.month.c996f10c")}
@@ -1430,12 +1429,12 @@ export function Reports({ context: c }: { context: Context }) {
                   commentLimit={personal ? 2000 : 4000}
                 />
                 {error && <p role="alert">{error}</p>}
-                <button
+                <Button
                   className="primary"
-                  disabled={busy || (!demo && personal && !own.data)}
+                  disabled={busy || (!demo && personal && !own.data)} type="submit"
                 >
                   {busy ? t("refine.submitting") : t("refine.submit")}
-                </button>
+                </Button>
               </fieldset>
             </form>
           )}
@@ -1451,15 +1450,15 @@ export function Reports({ context: c }: { context: Context }) {
       >
         <p>{busy ? t("refine.busyLeave") : t("refine.discardReportBody")}</p>
         <div className="actions">
-          <button
+          <Button
             onClick={() => {
               pendingNavigation.current = null;
               setCloseReport(false);
-            }}
+            }} type="button"
           >
             {t("ui.keep.editing.e76fd2ad")}
-          </button>
-          <button
+          </Button>
+          <Button
             className="danger"
             onClick={() => {
               setCloseReport(false);
@@ -1469,10 +1468,10 @@ export function Reports({ context: c }: { context: Context }) {
               const proceed = pendingNavigation.current;
               pendingNavigation.current = null;
               proceed?.();
-            }}
+            }} type="button"
           >
             {busy ? t("refine.leaveForm") : "Discard changes"}
-          </button>
+          </Button>
         </div>
       </Dialog>
     </>

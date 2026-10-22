@@ -1,10 +1,9 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import React from "react";
 import { FileDown, ChevronDown } from "lucide-react";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { t } from "../../../../packages/core/i18n";
 import { demo } from "./client";
 import { publisherS21 } from "./pdf-download";
@@ -38,14 +37,14 @@ export function S21Button({
   }
   return (
     <div className="actions">
-      <button
+      <Button
         disabled={busy || !Number.isInteger(year) || year < 1900 || year > 2200}
         aria-label={t("s21.downloadFor") + " " + person.name}
-        onClick={() => void save()}
+        onClick={() => void save()} type="button"
       >
         <FileDown aria-hidden="true" />
         {busy ? "Preparing…" : "S-21"}
-      </button>
+      </Button>
       <Disclosure>
         <DisclosureLabel aria-label={"S-21 options for " + person.name}>
           <ChevronDown aria-hidden="true" />
@@ -61,12 +60,12 @@ export function S21Button({
             onChange={(e) => setYear(Number(e.target.value))}
           />
         </label>
-        <button disabled={busy} onClick={() => void save("print")}>
+        <Button disabled={busy} onClick={() => void save("print")} type="button">
           {t("ui.print.df0fe798")}
-        </button>
-        <button disabled={busy} onClick={() => void save("share")}>
+        </Button>
+        <Button disabled={busy} onClick={() => void save("share")} type="button">
           {t("ui.share.29887a5f")}
-        </button>
+        </Button>
       </Disclosure>
     </div>
   );

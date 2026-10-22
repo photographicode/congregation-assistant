@@ -26,7 +26,7 @@ export const Button = React.forwardRef<
       ref={ref}
       className={[variant, props.className].filter(Boolean).join(" ")}
       disabled={props.disabled || busy}
-      aria-busy={busy || undefined}
+      aria-busy={busy || undefined} type={props.type ?? "button"}
     >
       {children}
     </button>
@@ -425,6 +425,7 @@ export function Combobox({
         ref={trigger}
         type="button"
         className="ui-combobox-trigger"
+        data-value={value}
         disabled={disabled}
         role="combobox"
         aria-labelledby={id + "-label"}
@@ -465,6 +466,7 @@ export function Combobox({
                 id={id + "-" + index}
                 key={option.value}
                 role="option"
+                data-value={option.value}
                 aria-selected={option.value === value}
                 aria-disabled={option.disabled || undefined}
                 className={index === active ? "active" : ""}
@@ -963,26 +965,7 @@ export function Row({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return <div {...props} className={"ui-row " + className} />;
 }
-export function Field({
-  label,
-  help,
-  children,
-}: {
-  label: string;
-  help?: string;
-  children: React.ReactNode;
-}) {
-  const id = React.useId();
-  return (
-    <div className="ui-field">
-      <label>
-        {label}
-        {children}
-      </label>
-      {help && <small id={id}>{help}</small>}
-    </div>
-  );
-}
+
 export function Section({
   title,
   children,
@@ -995,3 +978,6 @@ export function Section({
     </section>
   );
 }
+
+export { Field } from "./Field";
+export { Page, PageHeader, Stack, Inline, Grid, Split, Toolbar, FormRow, TableShell } from "./layout";

@@ -1,0 +1,3 @@
+import {readFile,writeFile,readdir} from 'node:fs/promises';
+const pins=JSON.parse(await readFile('.github/action-pins.json','utf8'));let count=0;
+for(const name of await readdir('.github/workflows')){if(!/\.ya?ml$/.test(name))continue;const file='.github/workflows/'+name;const source=await readFile(file,'utf8');const updated=source.replace(/(uses:\s+)([^@\s]+)@([^\s#]+)/g,(full,prefix,action,ref)=>{if(/^[a-f\d]{40}$/.test(ref))return full;const sha=pins[action+'@'+ref];if(!sha)throw Error('Resolve and verify upstream commit first: '+action+'@'+ref);count++;return `${prefix}${action}@${sha} # ${ref}`;});await writeFile(file,updated);}console.log('Pinned verified upstream action commits:',count);

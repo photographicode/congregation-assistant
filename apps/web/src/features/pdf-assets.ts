@@ -1,3 +1,5 @@
+import { handleError } from "../../../../packages/core/errors";
+
 export async function pdfAssets(path: string) {
   const url =
     import.meta.env.BASE_URL +
@@ -15,12 +17,12 @@ export async function pdfAssets(path: string) {
     );
     const saved = await cache.match(url);
     if (saved) return new Uint8Array(await saved.arrayBuffer());
-  } catch {}
+  } catch (error) { handleError(error, {scope:"features/pdf-assets.ts",severity:'warning'}); }
   const response = await fetch(url);
   if (!response.ok)
     throw Error("PDF assets are unavailable. Connect once and try again.");
   try {
     await cache?.put(url, response.clone());
-  } catch {}
+  } catch (error) { handleError(error, {scope:"features/pdf-assets.ts",severity:'warning'}); }
   return new Uint8Array(await response.arrayBuffer());
 }

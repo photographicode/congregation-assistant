@@ -1,10 +1,11 @@
 # Incident response
 
-1. Record detection time, impacted services and known facts. Preserve platform logs with restricted access; do not copy private records into issues.
-2. Contain: revoke exposed links/sessions, disable affected entry points, rotate compromised credentials in Supabase/Cloudflare/Google/email/GitHub as applicable. Deploy a verified fix or rollback.
-3. Determine scope: tenants, record categories, time window, evidence of access and whether exports or backups were affected. Separate confirmed facts from unknowns.
-4. Notify affected administrators promptly. Aim for initial notification within 72 hours of awareness where applicable; assess legal/regulatory notification obligations rather than assuming a universal rule. Explain what happened, what data may be involved, actions taken and user actions.
-5. Verify containment with isolated regression tests, production read-only checks and account review. Do not restore deleted records from backup without reapplying deletion decisions.
-6. Publish a factual post-mortem with dates, cause, impact and preventive actions. Retain only the minimum incident evidence required.
+1. Record a minimal reference/time/severity locally. Preserve audit metadata without copying publisher names, reports, tokens or backup keys into chat/issues/logs.
+2. Contain the affected path: revoke compromised credentials/links, stop unsafe writes, or roll back to a verified artifact. Preserve evidence and avoid deleting data.
+3. Determine affected tenants/data and earliest/latest exposure with access-controlled evidence. Involve the OWNER and appropriate legal/security contacts.
+4. Apply and test a fix in isolation, verify authorization/tenant boundaries, and stage recovery before restoring normal access.
+5. OWNER/legal counsel determines applicable notifications and statutory deadlines, including the requested 72-hour planning window. This document does not assert that one deadline applies to every incident or jurisdiction.
+6. Communicate confirmed facts, impact, workarounds and next update time. Do not promise resolution before it is known.
+7. Document root cause, measured recovery, action owners and prevention tests. Run a tabletop/restore drill and retain dated evidence.
 
-Owner verifies dashboard access, backup restoration, alert routing and staffing before launch. This runbook does not prove those operational controls are already active.
+Escalation contact is the configured security email in public-config.json and security.txt. Account access, alert routing and delivery acceptance require OWNER verification. Never invent an incident, breach notification or completed exercise.

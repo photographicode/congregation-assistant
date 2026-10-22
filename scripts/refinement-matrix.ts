@@ -1,3 +1,4 @@
+import {themeIds} from '../packages/core/themes.ts';
 import synthetic from './synthetic-session.cjs';
 import {inspectAlignment} from './alignment-audit.ts';
 import {chromium} from 'playwright';
@@ -5,7 +6,7 @@ import {createServer} from 'node:http';
 import {existsSync} from 'node:fs';
 import {readFile,writeFile,stat} from 'node:fs/promises';
 import path from 'node:path';
-const widths=(process.env.CA_REFINEMENT_WIDTHS||'320,360,390,430,600,768,820,1024,1280,1366,1440,1920').split(',').map(Number),scales=(process.env.CA_REFINEMENT_SCALES||'1,1.3,2').split(',').map(Number),themes=(process.env.CA_REFINEMENT_THEMES||'mono-light,mono-dark,paper,lagoon-glass,neon-night,sunset-pop,neo-brutal,forest,aurora').split(',');const fontMap=JSON.parse(await readFile('packages/core/theme-fonts.json','utf8'));
+const widths=(process.env.CA_REFINEMENT_WIDTHS||'320,360,390,430,600,768,820,1024,1280,1366,1440,1920').split(',').map(Number),scales=(process.env.CA_REFINEMENT_SCALES||'1,1.3,2').split(',').map(Number),themes=(process.env.CA_REFINEMENT_THEMES||themeIds.join(',')).split(',');const fontMap=JSON.parse(await readFile('packages/core/theme-fonts.json','utf8'));
 const allScreens=(process.env.CA_REFINEMENT_SCREENS||'home,people,groups,import,reports,report-entry,pdf,schedule,weekend,duties,messages,access,settings,emergency,search,quick,assistant,add-person,setup,bulk,report-discard,auto-assign,updates,more,assignment-picker,publisher-edit,publisher-discard,report-saved,AP-confirm,group-qr,shared-review,ap-error,ap-pending').split(',');const shard=Number(process.env.CA_REFINEMENT_SHARD||0),shards=Number(process.env.CA_REFINEMENT_SHARDS||4),screens=shard?allScreens.filter((_,i)=>i%shards===shard-1):allScreens;
 const fontMode=process.env.CA_REFINEMENT_FONT_MODE||'css';const viewports=[...widths.map(width=>({width,height:1100})),...(process.env.CA_REFINEMENT_LANDSCAPE==='true'?[{width:844,height:390},{width:667,height:375}]:[])];
 const root=path.resolve(process.env.CA_REFINEMENT_DIST||'dist'),server=createServer(async(req,res)=>{try{const url=new URL(req.url!,'http://localhost'),file=path.resolve(root,'.'+(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname));if(!file.startsWith(root+'/'))return res.writeHead(403).end();await stat(file);res.setHeader('Content-Type',({'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.wasm':'application/wasm','.woff2':'font/woff2'})[path.extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.writeHead(404).end();}});

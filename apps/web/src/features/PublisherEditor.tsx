@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import React from "react";
 import { Dialog, DialogCancel } from "../../../../packages/ui/Dialog";
@@ -122,21 +121,21 @@ export default function PublisherEditor({
                 {t("polish.chooseGender")}
               </small>
             </fieldset>
-            <label>
-              {t("ui.service.group.2c63b4a8")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={editing.group}
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, group: e.target.value } : p));
                   setDirty(true);
-                }}
+                }} aria-label={t("ui.service.group.2c63b4a8")}
               >
                 <option value="">{t("ui.no.group.2463cfb8")}</option>
                 {groups.map((g) => (
                   <option key={g.id}>{g.name}</option>
                 ))}
               </LegacySelect>
-            </label>
+            </div>
           </div>
           <h3>{t("ui.sign.in.contact.e4bd9038")}</h3>
           <label htmlFor="v2-publisher-email">
@@ -165,17 +164,17 @@ export default function PublisherEditor({
                 {t("ui.treat.as.a.household.so.one.sign.in.can.re.c707f656")}
               </p>
               <div className="actions">
-                <button type="button" onClick={() => setShared(true)}>
+                <Button type="button" onClick={() => setShared(true)}>
                   {t("ui.yes.share.reports.8a4792a9")}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={() =>
                     setEditing((p) => (p ? { ...p, email: "" } : p))
                   }
                 >
                   {t("ui.no.use.a.different.email.3efc239d")}
-                </button>
+                </Button>
               </div>
             </section>
           )}
@@ -247,8 +246,8 @@ export default function PublisherEditor({
                     </label>
                   ))}
                 </div>
-                <label>
-                  {t("ui.household.head.d5d0c49d")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={editing.familyHeadId || ""}
                     onChange={(e) => {
@@ -256,7 +255,7 @@ export default function PublisherEditor({
                         p ? { ...p, familyHeadId: e.target.value } : p,
                       );
                       setDirty(true);
-                    }}
+                    }} aria-label={t("ui.household.head.d5d0c49d")}
                   >
                     <option value="">
                       {t("ui.this.person.is.the.household.head.79acde35")}
@@ -269,9 +268,9 @@ export default function PublisherEditor({
                         </option>
                       ))}
                   </LegacySelect>
-                </label>
-                <label>
-                  {t("ui.hope.8c765f98")}
+                </div>
+                <div className="ui-field">
+                  
                   <LegacySelect
                     value={editing.hope || ""}
                     onChange={(e) => {
@@ -279,13 +278,13 @@ export default function PublisherEditor({
                         p ? { ...p, hope: e.target.value } : p,
                       );
                       setDirty(true);
-                    }}
+                    }} aria-label={t("ui.hope.8c765f98")}
                   >
                     <option value="">{t("ui.not.recorded.b37c7879")}</option>
                     <option>{t("ui.other.sheep.48f614b7")}</option>
                     <option>{t("ui.anointed.8edcfa4d")}</option>
                   </LegacySelect>
-                </label>
+                </div>
                 {(
                   [
                     ["isElder", "Elder"],
@@ -324,9 +323,9 @@ export default function PublisherEditor({
             </p>
           )}
           <div className="actions">
-            <button type="submit" className="primary" disabled={busy}>
+            <Button type="submit" className="primary" disabled={busy}>
               {t("ui.save.publisher.email.bc9559db")}
-            </button>
+            </Button>
             <DialogCancel>{t("ui.cancel.19766ed6")}</DialogCancel>
           </div>
         </form>

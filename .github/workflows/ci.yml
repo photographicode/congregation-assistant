@@ -3,6 +3,7 @@ name: CI
   push:
     branches:
     - v3/resume
+    - v3/quality
   pull_request: {}
   workflow_call: {}
   workflow_dispatch: {}
@@ -13,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: '22'
         cache: npm
@@ -22,7 +23,7 @@ jobs:
     - run: npm run check && node scripts/check-public-safety.cjs && node scripts/check-no-legacy.mjs
     - run: npm run check:vercel-guidelines
     - run: node --test scripts/meetings/parse.test.mjs
-    - run: npm run build && npm run check:bundle
+    - run: npm run build && npm run check:bundle && npm run check:size
   database:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -36,8 +37,46 @@ jobs:
         - 5432:5432
         options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
     - run: sudo apt-get update && sudo apt-get install -y postgresql-client
     - run: psql -h localhost -U postgres -d ca_acceptance -f scripts/check-supabase.sql
       env:
         PGPASSWORD: acceptance-only
+    - run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d ca_acceptance -f scripts/check-rls.sql
+      env:
+        PGPASSWORD: acceptance-only
+
+  quality:
+    name: Quality / ${{ matrix.check }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [strict-types, style, css, architecture, cycles, unused, duplication, lint-ratchet]
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: npm run check:${{ matrix.check }}
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version: '22'
+        cache: npm
+    - run: npm ci --ignore-scripts
+    - run: npm run test:coverage
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      if: always()
+      with:
+        name: coverage-evidence
+        path: work/quality/coverage

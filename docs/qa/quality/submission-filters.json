@@ -1,0 +1,65 @@
+{
+  "views": 12,
+  "results": [
+    {
+      "width": 320,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 320,
+      "scale": 2,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "scale": 2,
+      "passed": true
+    },
+    {
+      "width": 600,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 600,
+      "scale": 2,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "scale": 2,
+      "passed": true
+    },
+    {
+      "width": 1024,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 1024,
+      "scale": 2,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "scale": 2,
+      "passed": true
+    }
+  ]
+}

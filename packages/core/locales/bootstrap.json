@@ -1,0 +1,93 @@
+{
+  "en": {
+    "nativeName": "English",
+    "reviewed": true,
+    "messages": {
+      "common.close": "Close"
+    }
+  },
+  "hi": {
+    "nativeName": "हिन्दी",
+    "reviewed": false,
+    "messages": {
+      "common.close": "बंद करें"
+    }
+  },
+  "ta": {
+    "nativeName": "தமிழ்",
+    "reviewed": false,
+    "messages": {
+      "common.close": "மூடு"
+    }
+  },
+  "ml": {
+    "nativeName": "മലയാളം",
+    "reviewed": false,
+    "messages": {
+      "common.close": "അടയ്ക്കുക"
+    }
+  },
+  "kn": {
+    "nativeName": "ಕನ್ನಡ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ಮುಚ್ಚಿ"
+    }
+  },
+  "te": {
+    "nativeName": "తెలుగు",
+    "reviewed": false,
+    "messages": {
+      "common.close": "మూసివేయి"
+    }
+  },
+  "or": {
+    "nativeName": "ଓଡ଼ିଆ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ବନ୍ଦ କରନ୍ତୁ"
+    }
+  },
+  "as": {
+    "nativeName": "অসমীয়া",
+    "reviewed": false,
+    "messages": {
+      "common.close": "বন্ধ কৰক"
+    }
+  },
+  "mr": {
+    "nativeName": "मराठी",
+    "reviewed": false,
+    "messages": {
+      "common.close": "बंद करा"
+    }
+  },
+  "gu": {
+    "nativeName": "ગુજરાતી",
+    "reviewed": false,
+    "messages": {
+      "common.close": "બંધ કરો"
+    }
+  },
+  "bn": {
+    "nativeName": "বাংলা",
+    "reviewed": false,
+    "messages": {
+      "common.close": "বন্ধ করুন"
+    }
+  },
+  "pa": {
+    "nativeName": "ਪੰਜਾਬੀ",
+    "reviewed": false,
+    "messages": {
+      "common.close": "ਬੰਦ ਕਰੋ"
+    }
+  },
+  "ur": {
+    "nativeName": "اردو",
+    "reviewed": false,
+    "messages": {
+      "common.close": "بند کریں"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import {qualityFingerprint} from './quality-fingerprint.mjs';
 import {chromium} from 'playwright';
 import {createServer} from 'node:http';
 import {existsSync,createReadStream} from 'node:fs';
@@ -26,4 +27,4 @@ try{
   await context.close();
  }
 }finally{await browser.close();server.close();}
-const summary={views:10,controlsChecked:'all visible operational controls',hard:findings.filter(f=>f.severity==='HARD').length,soft:findings.filter(f=>f.severity==='SOFT').length,findings};await writeFile('docs/qa/interaction-audit.json',JSON.stringify(summary,null,2)+'\n');console.log(JSON.stringify({views:summary.views,hard:summary.hard,soft:summary.soft}));assert.equal(summary.hard,0,'Interaction HARD findings remain');
+const summary={fingerprint:await qualityFingerprint(),views:10,controlsChecked:'all visible operational controls',hard:findings.filter(f=>f.severity==='HARD').length,soft:findings.filter(f=>f.severity==='SOFT').length,findings};await writeFile('docs/qa/interaction-audit.json',JSON.stringify(summary,null,2)+'\n');console.log(JSON.stringify({views:summary.views,hard:summary.hard,soft:summary.soft}));assert.equal(summary.hard,0,'Interaction HARD findings remain');

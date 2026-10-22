@@ -3,17 +3,10 @@ import React from "react";
 import { z } from "zod";
 import { config } from "./client";
 import { RecordsExport } from "./RecordsExport";
-import type { Context } from "../main";
-export const planSchema = z.object({
-  congregation: z.string(),
-  name: z.string(),
-  status: z.enum(["trial", "active", "expired"]),
-  trialEndsAt: z.string(),
-  paymentDate: z.string().nullable(),
-  locked: z.boolean(),
-  serverTime: z.string(),
-});
-export type WorkspacePlan = z.infer<typeof planSchema>;
+import type { Context } from "../context";
+import { planSchema } from "../../../../packages/core/plan";
+import type { WorkspacePlan } from "../../../../packages/core/plan";
+
 export function Subscription({
   context: c,
   plan,
@@ -79,3 +72,6 @@ export function Subscription({
     </div>
   );
 }
+
+export { planSchema } from "../../../../packages/core/plan";
+export type { WorkspacePlan } from "../../../../packages/core/plan";

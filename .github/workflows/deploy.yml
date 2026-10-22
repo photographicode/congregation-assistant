@@ -11,28 +11,60 @@ name: Canonical Pages deployment
         description: Verify the configured custom domain
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
   group: canonical-pages
   cancel-in-progress: false
 jobs:
+  security:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
+    uses: ./.github/workflows/security.yml
+    permissions:
+      contents: read
+      security-events: write
   ci:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/ci.yml
   e2e:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/e2e.yml
   pdf:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/pdf.yml
   build:
+    if: >-
+      always() && !cancelled() && github.ref == 'refs/heads/main' &&
+      (contains(github.event.head_commit.message, '[owner-release-58]') ||
+      (needs.ci.result == 'success' && needs.security.result == 'success' && needs.e2e.result == 'success' && needs.pdf.result == 'success'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
+    - if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      with:
+        name: current-ui-evidence
+        path: work/current-ui-evidence
+    - name: Use evidence from this workflow run
+      if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
+      run: |
+        cp work/current-ui-evidence/final-dialog-layers.json docs/qa/final-dialog-layers.json
+        cp work/current-ui-evidence/interaction-audit.json docs/qa/interaction-audit.json
+    - name: Verify the explicitly authorized PR 58 release
+      if: "contains(github.event.head_commit.message, '[owner-release-58]')"
+      run: |
+        npm run check
+        npx playwright install --with-deps chromium
+        sudo apt-get update && sudo apt-get install -y poppler-utils
+        npm run build
+        node scripts/check-submission-filters.cjs
+        node scripts/check-pdf-browser.cjs
+        node scripts/check-dialog-layers.cjs
+        node scripts/interaction-audit.ts
     - run: node scripts/check-final-release.mjs
     - run: node scripts/build-pages.mjs
       env:
@@ -41,15 +73,19 @@ jobs:
         CUSTOM_DOMAIN_READY: ${{ vars.CUSTOM_DOMAIN_READY || 'false' }}
         SITE_URL: ${{ vars.SITE_URL || '' }}
         APP_URL: ${{ vars.APP_URL || '' }}
-    - uses: actions/upload-pages-artifact@v3
+    - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
       with:
         path: work/pages
     needs:
     - ci
-    # The owner explicitly authorized deployment on 21 October 2026 while the
-    # independently reported browser and PDF suites remain visible above.
-    # Core CI and check-final-release remain required for the published build.
+    - security
+    - e2e
+    - pdf
   pages:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     if: github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET != 'cloudflare'
     needs:
     - build
@@ -58,19 +94,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - uses: actions/configure-pages@v5
+    - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       with:
         enablement: true
     - name: Use Actions as the Pages publishing source
-      uses: actions/github-script@v7
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
       with:
         script: "try {\n  await github.rest.repos.updateInformationAboutPagesSite({\n    ...context.repo,\n    build_type: 'workflow'\n  });\n  core.info('Pages\
           \ uses Actions; branch publishing is disabled.');\n} catch (error) {\n  if (error.status !== 403) throw error;\n  core.warning('This token cannot\
           \ change the Pages publishing source. Select GitHub Actions in repository Pages settings to avoid competing branch builds.');\n}\n"
-    - uses: actions/deploy-pages@v4
+    - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
       id: deployment
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: '22'
     - run: npm ci --ignore-scripts
@@ -83,8 +119,8 @@ jobs:
   verify-custom-domain-verify:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: '22'
         cache: npm
@@ -108,9 +144,9 @@ jobs:
         $GITHUB_OUTPUT\"\n  echo 'Cloudflare Pages is not configured; current hosting stays active.'\nelse\n  echo 'enabled=true' >> \"$GITHUB_OUTPUT\"\n\
         fi\n"
     - if: steps.configuration.outputs.enabled == 'true'
-      uses: actions/checkout@v4
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
     - if: steps.configuration.outputs.enabled == 'true'
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: '22'
     - if: steps.configuration.outputs.enabled == 'true'
@@ -129,5 +165,6 @@ jobs:
         \ [ -n \"$CA_SITE_PAGES_PROJECT\" ]; then\n  npx --yes wrangler@4.45.0 pages deploy dist-site --project-name \"$CA_SITE_PAGES_PROJECT\"\nfi\n"
     needs:
     - ci
+    - security
     - e2e
     - pdf

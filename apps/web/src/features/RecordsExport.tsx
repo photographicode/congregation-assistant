@@ -1,13 +1,12 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { z } from "zod";
 import { demo, rpc } from "./client";
 import { csvRecords } from "./export.mjs";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const schema = z
   .object({
     format: z.literal("ca-records-export-v2"),
@@ -84,9 +83,9 @@ export function RecordsExport({ context: c }: { context: Context }) {
       <p>{t("refine.exportIncludes")}</p>
       <p>{t("refine.exportHelp1")}</p>
       <p>{t("refine.exportHelp2")}</p>
-      <button disabled={busy} onClick={() => void download()}>
+      <Button disabled={busy} onClick={() => void download()} type="button">
         {t("ui.download.records.archive.a4559a69")}
-      </button>
+      </Button>
       <Disclosure>
         <DisclosureLabel>
           {t("ui.encrypt.this.records.export.6a00e7c7")}
@@ -102,12 +101,12 @@ export function RecordsExport({ context: c }: { context: Context }) {
               onChange={(e) => setPhrase(e.target.value)}
             />
           </label>
-          <button
+          <Button
             disabled={busy || phrase.length < 16}
-            onClick={() => void download(true)}
+            onClick={() => void download(true)} type="button"
           >
             {t("ui.download.encrypted.records.export.36d53913")}
-          </button>
+          </Button>
           <p>{t("ui.keep.the.phrase.separately.without.it.this.c2151027")}</p>
         </div>
       </Disclosure>

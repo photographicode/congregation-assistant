@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { AssignmentPicker } from "../../../../packages/ui/AssignmentPicker";
 import {
   assignmentRecency,
@@ -33,7 +32,9 @@ import {
 import { offerPDF } from "./pdf-download";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import type { SyncStatus } from "../../../../packages/core/store";
-import type { Context } from "../main";
+import type { Context } from "../context";
+import { handleError } from "../../../../packages/core/errors";
+
 const slots = [
   ["Chairman", "Chairman"],
   ["OpeningPrayer", "Opening prayer"],
@@ -171,7 +172,7 @@ export function Midweek({
         .then((value) => {
           if (active) setSyncStatus(value);
         })
-        .catch(() => {});
+        .catch((error)=>{handleError(error,{scope:"features/Midweek.tsx",severity:'warning'});});
     update();
     const unsubscribe = subscribeStores(update);
     return () => {
@@ -586,11 +587,11 @@ export function Midweek({
               )}
             </p>
             <div className="actions">
-              <button onClick={localCopy}>{t("store.localCopy")}</button>
+              <Button onClick={localCopy} type="button">{t("store.localCopy")}</Button>
               {(syncStatus.conflicts > 0 || syncStatus.forbidden > 0) && (
-                <button onClick={() => setReview(true)}>
+                <Button onClick={() => setReview(true)} type="button">
                   {t("store.loadShared")}
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -637,7 +638,7 @@ export function Midweek({
             .map((p) => (
               <div className="list-row" key={p.id}>
                 <strong>{p.name}</strong>
-                <button
+                <Button
                   onClick={() =>
                     change({
                       ...draft,
@@ -661,10 +662,10 @@ export function Midweek({
                         },
                       ],
                     })
-                  }
+                  } type="button"
                 >
                   {t("oclm.addRoster")}
-                </button>
+                </Button>
               </div>
             ))}
         {draft.personnel.map((person) => (
@@ -811,7 +812,7 @@ export function Midweek({
                   t("oclm.counselor"),
                 )}
             </div>
-            <button
+            <Button
               onClick={() => {
                 setProposal(
                   autoAssign(
@@ -822,22 +823,22 @@ export function Midweek({
                     auxiliary,
                   ),
                 );
-              }}
+              }} type="button"
             >
               {t("oclm.autoAssign")}
-            </button>
+            </Button>
             <p>{t("refine.suggest0")}</p>
             <p>{t("refine.suggest1")}</p>
             <p>{t("refine.suggest2")}</p>
             {undo && (
-              <button
+              <Button
                 onClick={() => {
                   change({ ...draft, assignments: undo });
                   setUndo(null);
-                }}
+                }} type="button"
               >
                 {t("ui.undo.auto.assignment.ce885e40")}
-              </button>
+              </Button>
             )}
           </div>
           {program.parts.map((part, index) => (
@@ -891,13 +892,13 @@ export function Midweek({
                       "Beliefs",
                     ].includes(part.type) && (
                       <div className="actions">
-                        <button
+                        <Button
                           disabled={busy || !student}
-                          onClick={() => void slip(part, hall, 1)}
+                          onClick={() => void slip(part, hall, 1)} type="button"
                         >
                           {t("oclm.s89Student")}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           disabled={busy || !student}
                           onClick={() =>
                             void slip(
@@ -906,17 +907,17 @@ export function Midweek({
                               part.assistant && assistant ? 2 : 1,
                               true,
                             )
-                          }
+                          } type="button"
                         >
                           {t("ui.send.on.whatsapp.58c29887")}
-                        </button>
+                        </Button>
                         {part.assistant && (
-                          <button
+                          <Button
                             disabled={busy || !student || !assistant}
-                            onClick={() => void slip(part, hall, 2)}
+                            onClick={() => void slip(part, hall, 2)} type="button"
                           >
                             {t("oclm.s89Both")}
-                          </button>
+                          </Button>
                         )}
                       </div>
                     )}
@@ -941,22 +942,22 @@ export function Midweek({
         </section>
       )}
       <div className="actions">
-        <button disabled={busy || query.isLoading} onClick={() => void save()}>
+        <Button disabled={busy || query.isLoading} onClick={() => void save()} type="button">
           {t("oclm.save")}
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={busy || query.isLoading || !program}
           className="primary"
-          onClick={() => void save(true)}
+          onClick={() => void save(true)} type="button"
         >
           {t("oclm.publish")}
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={busy || !program}
-          onClick={() => void downloadSchedule()}
+          onClick={() => void downloadSchedule()} type="button"
         >
           {t("oclm.download")}
-        </button>
+        </Button>
       </div>
       <p className="muted">
         {t("oclm.revision")} {revision} · {t("oclm.version")} {version}
@@ -970,16 +971,16 @@ export function Midweek({
           </label>
           <div className="actions">
             <a href={link}>{t("oclm.openLive")}</a>
-            <button
+            <Button
               onClick={() =>
                 void navigator.clipboard
                   .writeText(link)
                   .then(() => c.notify(t("common.copied")))
                   .catch(() => setError(t("oclm.copyFailed")))
-              }
+              } type="button"
             >
               {t("common.copy")}
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -1002,18 +1003,18 @@ export function Midweek({
               )}
             </ul>
             <p>{t("refine.autoHelp")}</p>
-            <button
+            <Button
               onClick={() => {
                 setUndo(draft.assignments);
                 change({ ...draft, assignments: proposal });
                 setProposal(null);
-              }}
+              }} type="button"
             >
               {t("ui.accept.proposal.c7dbe4a7")}
-            </button>
-            <button onClick={() => setProposal(null)}>
+            </Button>
+            <Button onClick={() => setProposal(null)} type="button">
               {t("ui.cancel.19766ed6")}
-            </button>
+            </Button>
           </div>
         )}
       </Dialog>
@@ -1026,10 +1027,10 @@ export function Midweek({
           <p>{t("store.reviewBody")}</p>
           <p>{t("refine.sharedReview1")}</p>
           <p>{t("refine.sharedReview2")}</p>
-          <button onClick={localCopy}>{t("store.localCopy")}</button>
-          <button disabled={busy} onClick={() => void loadShared()}>
+          <Button onClick={localCopy} type="button">{t("store.localCopy")}</Button>
+          <Button disabled={busy} onClick={() => void loadShared()} type="button">
             {t("store.confirmShared")}
-          </button>
+          </Button>
           {error && <p role="alert">{error}</p>}
         </div>
       </Dialog>

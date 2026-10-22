@@ -1,0 +1,12 @@
+{
+  "plugins":["stylelint-declaration-strict-value"],
+  "ignoreFiles":["packages/ui/themes.css","packages/ui/v3-eclipse-theme.css","packages/ui/v3-dialog-layer.css","packages/ui/noir-pop.css","packages/ui/fonts.css","packages/ui/tokens.css","packages/ui/design-system.css"],
+  "rules":{
+    "declaration-no-important":true,
+    "no-duplicate-selectors":true,
+    "selector-max-specificity":"0,3,0",
+    "selector-class-pattern":"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+    "color-no-hex":true,
+    "scale-unlimited/declaration-strict-value":[["color","background-color","border-color","font-size","border-radius","z-index","padding","margin","gap"],{"ignoreValues":["0","1px","inherit","initial","unset","transparent","currentColor","none","auto"],"disableFix":true}]
+  }
+}

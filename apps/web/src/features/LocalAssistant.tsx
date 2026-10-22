@@ -1,26 +1,28 @@
 import {prepareAssignment} from '../../../../packages/core/assignment-action';
 import {programSchema} from '../../../../packages/core/meeting';
-import type {ScheduleDraft} from '../../../../packages/core/repositories';
+import type {ScheduleDraft, reportSchema } from '../../../../packages/core/repositories';
 import {createReportLink,manageGroupLink} from './link-action';
 import {savePublisherAction} from './publisher-action';
 import React from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
   localCommand,
   type LocalPlan,
 } from "../../../../packages/core/local-command";
-import { repositories, reportSchema } from "../../../../packages/core/repositories";
+import { repositories } from "../../../../packages/core/repositories";
 import { t } from "../../../../packages/core/i18n";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import { rpc, demo,storeFor } from "./client";
 import { publisherS21 } from "./pdf-download";
 import { useDemoReports } from "./demo-reports";
-import type { Context } from "../main";
-import { PersonPicker } from "../../../../packages/ui/components";
+import type { Context } from "../context";
+import { PersonPicker, Button } from "../../../../packages/ui/components";
 import { commandRegistry } from "../../../../packages/core/command-registry";
 import { Plus, Send } from "lucide-react";
+import { TIMING } from "../../../../packages/core/timing";
+
 export function LocalAssistant({
   context: c,
   onExport,
@@ -141,7 +143,7 @@ export function LocalAssistant({
       const [calendarYear,calendarMonth]=plan.period.split('-').map(Number);const serviceYear=calendarYear+(calendarMonth>=9?1:0);
       const record=rows.find(row=>row.pub_id===publisher&&row.service_year===serviceYear&&row.month===calendarMonth-1);
       if(!record?.is_ap){setError('No auxiliary-pioneer report exists for this publisher and month.');return;}
-      lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),10000);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+      lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),TIMING.undo);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
     }
     if (plan.kind === "publisher-edit") {
       if(!publisher||lock.current)return;
@@ -155,7 +157,7 @@ export function LocalAssistant({
         const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisher});
         const person={...sourceRecord,[field]:plan.value,expected_login:expected};
         const shared=Boolean(sourceRecord.email&&people.data.some(row=>row.id!==publisher&&(row as Record<string,unknown>).email===sourceRecord.email));
-        await savePublisherAction(c.cong,person,shared,c.roles);setPublisherUndo({id:publisher,field,previous:sourceRecord[field],value:plan.value,until:Date.now()+10000});setTimeout(()=>setPublisherUndo(null),10000);cache.setQueryData(["assistant-people",c.account,c.cong],people.data.map(row=>row.id===publisher?person:row));await cache.invalidateQueries({queryKey:["dashboard-people"]});setPlan(null);setInput("");c.notify(demo?"Publisher edit applied to this fictional preview.":"Publisher saved.");}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}
+        await savePublisherAction(c.cong,person,shared,c.roles);setPublisherUndo({id:publisher,field,previous:sourceRecord[field],value:plan.value,until:Date.now()+10000});setTimeout(()=>setPublisherUndo(null),TIMING.undo);cache.setQueryData(["assistant-people",c.account,c.cong],people.data.map(row=>row.id===publisher?person:row));await cache.invalidateQueries({queryKey:["dashboard-people"]});setPlan(null);setInput("");c.notify(demo?"Publisher edit applied to this fictional preview.":"Publisher saved.");}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}
       return;
     }
     if (plan.kind === "s21-person") {
@@ -322,7 +324,7 @@ export function LocalAssistant({
             )
             .flatMap((command) => command.examples.slice(0, 1))
             .map((suggestion) => (
-              <button
+              <Button
                 type="button"
                 className="subtle"
                 key={suggestion}
@@ -333,15 +335,15 @@ export function LocalAssistant({
                 }}
               >
                 {suggestion}
-              </button>
+              </Button>
             ))}
         </div>
       )}
       <div className={compact ? "assistant-prompt" : "stack"}>
         {compact && (
-          <button className="assistant-plus" type="button" aria-label={"Quick actions"} aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
+          <Button className="assistant-plus" type="button" aria-label={"Quick actions"} aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
             <Plus aria-hidden="true" />
-          </button>
+          </Button>
         )}
         <label className="assistant-command-label">
         <span className="sr-only">{t("assistant.command")}</span>
@@ -365,7 +367,7 @@ export function LocalAssistant({
           }}
         />
       </label>
-      <button
+      <Button
         ref={sendRef}
         className={compact ? "assistant-send" : undefined}
         aria-label={compact ? "Send command" : undefined}
@@ -396,47 +398,47 @@ export function LocalAssistant({
           } catch (error) {
             setError((error as Error).message);
           }
-        }}
+        }} type="button"
       >
         {compact ? <Send aria-hidden="true" /> : t("assistant.review")}
-      </button>
+      </Button>
       </div>
       {compact && quickOpen && (
         <div className="assistant-quick-actions" role="group" aria-label={"Quick actions"}>
           {["Add publisher", "Enter report", "Download S-21", "Record attendance", "Assign a part"].map((action) => (
-            <button type="button" key={action} onClick={() => { setInput(action); setQuickOpen(false); inputRef.current?.focus(); }}>{action}</button>
+            <Button type="button" key={action} onClick={() => { setInput(action); setQuickOpen(false); inputRef.current?.focus(); }}>{action}</Button>
           ))}
         </div>
       )}
       {compact && <p className="assistant-device-privacy">{"Runs on this device. What you type isn’t sent anywhere."}</p>}
-      {apUndo&&<p role="status">{"AP revoked for this month. "}<button disabled={busy} onClick={async()=>{if(!apUndo||Date.now()>apUndo.until||lock.current)return;lock.current=true;setBusy(true);try{if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).reports.undoAP(apUndo.id);else updateDemo(current=>current.map(row=>row.id===apUndo.record.id?apUndo.record:row));await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setAPUndo(null);c.notify('AP status restored.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}}>{"Undo"}</button></p>}
-      {publisherUndo&&<p role="status">{"Publisher saved. "}<button disabled={busy} onClick={async()=>{if(!publisherUndo||Date.now()>publisherUndo.until||lock.current)return;lock.current=true;setBusy(true);try{const currentPeople=demo?people.data:await rpc('ca_v2_people',{p_cong_id:c.cong});const person=(currentPeople as Record<string,unknown>[]).find(row=>row.id===publisherUndo.id);if(!person||person[publisherUndo.field]!==publisherUndo.value)throw Error('This record changed. Review it in People before undoing.');const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisherUndo.id});await savePublisherAction(c.cong,{...person,[publisherUndo.field]:publisherUndo.previous??null,expected_login:expected},Boolean(person.email&&(currentPeople as Record<string,unknown>[]).some(row=>row.id!==person.id&&row.email===person.email)),c.roles);cache.setQueryData(['assistant-people',c.account,c.cong],(currentPeople as Record<string,unknown>[]).map(row=>row.id===publisherUndo.id?{...row,[publisherUndo.field]:publisherUndo.previous??null}:row));await cache.invalidateQueries({queryKey:['dashboard-people']});setPublisherUndo(null);c.notify('Publisher change undone.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}}>{"Undo"}</button></p>}
+      {apUndo&&<p role="status">{"AP revoked for this month. "}<Button disabled={busy} onClick={async()=>{if(!apUndo||Date.now()>apUndo.until||lock.current)return;lock.current=true;setBusy(true);try{if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).reports.undoAP(apUndo.id);else updateDemo(current=>current.map(row=>row.id===apUndo.record.id?apUndo.record:row));await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setAPUndo(null);c.notify('AP status restored.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}} type="button">{"Undo"}</Button></p>}
+      {publisherUndo&&<p role="status">{"Publisher saved. "}<Button disabled={busy} onClick={async()=>{if(!publisherUndo||Date.now()>publisherUndo.until||lock.current)return;lock.current=true;setBusy(true);try{const currentPeople=demo?people.data:await rpc('ca_v2_people',{p_cong_id:c.cong});const person=(currentPeople as Record<string,unknown>[]).find(row=>row.id===publisherUndo.id);if(!person||person[publisherUndo.field]!==publisherUndo.value)throw Error('This record changed. Review it in People before undoing.');const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisherUndo.id});await savePublisherAction(c.cong,{...person,[publisherUndo.field]:publisherUndo.previous??null,expected_login:expected},Boolean(person.email&&(currentPeople as Record<string,unknown>[]).some(row=>row.id!==person.id&&row.email===person.email)),c.roles);cache.setQueryData(['assistant-people',c.account,c.cong],(currentPeople as Record<string,unknown>[]).map(row=>row.id===publisherUndo.id?{...row,[publisherUndo.field]:publisherUndo.previous??null}:row));await cache.invalidateQueries({queryKey:['dashboard-people']});setPublisherUndo(null);c.notify('Publisher change undone.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}}} type="button">{"Undo"}</Button></p>}
       {(error || people.error || current.error) && (
         <p role="alert">
           {error || people.error?.message || current.error?.message}
           {current.error && (
-            <button onClick={() => void current.refetch()}>
+            <Button onClick={() => void current.refetch()} type="button">
               {t("search.retry")}
-            </button>
+            </Button>
           )}
         </p>
       )}
-      {plan?.kind==='assignment'&&<section className="card stack"><h3>{t('assistant.preview')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.week}: {plan.part}</p><p role="status">{assignmentPreview?.error||assignmentPreview?.caution||"No same-meeting conflict found. This saves an unpublished draft."}</p><button disabled={busy||!publisher||Boolean(assignmentPreview?.error)} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
-      {plan?.kind==='group-link' &&<section className="card stack"><h3>{t('assistant.preview')}</h3><p>{plan.action}: {plan.group}</p><button disabled={busy} onClick={()=>void confirm()}>{t('assistant.update')}</button></section>}
-      {plan?.kind==='ap-revoke' &&<section className="card stack"><h3>{t('refine.confirmAPQuestion')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.period}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t('refine.confirmAPQuestion')}</button></section>}
-      {plan?.kind === "publisher-edit" && <section className="card stack"><h3>{t("assistant.preview")}</h3><PersonPicker label={t("s21.person")} value={publisher} onChange={setPublisher} people={plan.people}/><p translate="no">{plan.field}: {String(plan.value)}</p><button disabled={busy||!publisher} onClick={()=>void confirm()}>{t("assistant.update")}</button></section>}
+      {plan?.kind==='assignment'&&<section className="card stack"><h3>{t('assistant.preview')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.week}: {plan.part}</p><p role="status">{assignmentPreview?.error||assignmentPreview?.caution||"No same-meeting conflict found. This saves an unpublished draft."}</p><Button disabled={busy||!publisher||Boolean(assignmentPreview?.error)} onClick={()=>void confirm()} type="button">{t('assistant.update')}</Button></section>}
+      {plan?.kind==='group-link' &&<section className="card stack"><h3>{t('assistant.preview')}</h3><p>{plan.action}: {plan.group}</p><Button disabled={busy} onClick={()=>void confirm()} type="button">{t('assistant.update')}</Button></section>}
+      {plan?.kind==='ap-revoke' &&<section className="card stack"><h3>{t('refine.confirmAPQuestion')}</h3><PersonPicker label={t('s21.person')} value={publisher} onChange={setPublisher} people={plan.people}/><p>{plan.period}</p><Button disabled={busy||!publisher} onClick={()=>void confirm()} type="button">{t('refine.confirmAPQuestion')}</Button></section>}
+      {plan?.kind === "publisher-edit" && <section className="card stack"><h3>{t("assistant.preview")}</h3><PersonPicker label={t("s21.person")} value={publisher} onChange={setPublisher} people={plan.people}/><p translate="no">{plan.field}: {String(plan.value)}</p><Button disabled={busy||!publisher} onClick={()=>void confirm()} type="button">{t("assistant.update")}</Button></section>}
       {plan?.kind === "s21-person" && plan.people.length > 1 && (
         <section className="card stack">
           <h3>{t("assistant.choosePublisher")}</h3>
           <p>{t("assistant.ambiguous")}</p>
           {plan.people.map((person) => (
-            <button
+            <Button
               key={person.id}
               disabled={busy}
-              onClick={() => void download(person.id)}
+              onClick={() => void download(person.id)} type="button"
             >
               {t("assistant.downloadPerson")} {person.name}
-            </button>
+            </Button>
           ))}
         </section>
       )}
@@ -454,9 +456,9 @@ export function LocalAssistant({
           (plan.meeting && plan.meeting !== meeting?.kind) ? (
             <p role="alert">{t("assistant.noCurrentMeeting")}</p>
           ) : (
-            <button disabled={busy} onClick={() => void confirm()}>
+            <Button disabled={busy} onClick={() => void confirm()} type="button">
               {t("assistant.attendanceSave")}
-            </button>
+            </Button>
           )}
         </section>
       )}
@@ -464,9 +466,9 @@ export function LocalAssistant({
         <section className="card">
           <h3>{t("assistant.exportTitle")}</h3>
           <p>{t("assistant.exportExplanation")}</p>
-          <button onClick={() => void confirm()}>
+          <Button onClick={() => void confirm()} type="button">
             {t("assistant.openExport")}
-          </button>
+          </Button>
         </section>
       )}
       {plan?.kind === "report" && (
@@ -493,14 +495,14 @@ export function LocalAssistant({
               · {current.data.studies || 0} {t("home.studies")}
             </p>
           )}
-          <button
+          <Button
             disabled={
               !publisher || busy || current.isPending || !!current.error
             }
-            onClick={() => void confirm()}
+            onClick={() => void confirm()} type="button"
           >
             {t(current.data ? "assistant.update" : "assistant.confirm")}
-          </button>
+          </Button>
         </section>
       )}
     </div>

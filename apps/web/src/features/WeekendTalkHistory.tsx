@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +12,10 @@ import {
   type TalkHistory,
 } from "../../../../packages/core/talk-history";
 import { rpc, demo } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+
 const schema = z.array(
   z.object({
     date: z.string(),
@@ -42,7 +44,7 @@ export function WeekendTalkHistory({
   const key = "ca-talk-threshold:" + c.account + ":" + c.cong,
     [threshold, setThreshold] = React.useState(() => {
       try {
-        return Number(localStorage.getItem(key)) || 12;
+        return Number(preferenceStorage.getItem(key)) || 12;
       } catch {
         return 12;
       }
@@ -124,8 +126,8 @@ export function WeekendTalkHistory({
                 );
                 setThreshold(value);
                 try {
-                  localStorage.setItem(key, String(value));
-                } catch {}
+                  preferenceStorage.setItem(key, String(value));
+                } catch (error) { handleError(error, {scope:"features/WeekendTalkHistory.tsx",severity:'warning'}); }
               }}
             />
           </label>
@@ -141,12 +143,12 @@ export function WeekendTalkHistory({
           {talkFinder(rows, date, query)
             .slice(0, 50)
             .map((row) => (
-              <button
+              <Button
                 key={row.talk_no}
-                onClick={() => onChoose(row.talk_no, row.title)}
+                onClick={() => onChoose(row.talk_no, row.title)} type="button"
               >
                 {row.talk_no} · {row.title || "Untitled talk"} · {row.date}
-              </button>
+              </Button>
             ))}
           <label>
             {t("ui.past.talks.yyyy.mm.dd.number.487b21d4")}
@@ -176,7 +178,7 @@ export function WeekendTalkHistory({
               }}
             />
           </label>
-          <button
+          <Button
             disabled={busy || !paste.trim()}
             onClick={() => {
               void (async () => {
@@ -200,10 +202,10 @@ export function WeekendTalkHistory({
                   setBusy(false);
                 }
               })();
-            }}
+            }} type="button"
           >
             {t("ui.add.past.talk.records.131cac3c")}
-          </button>
+          </Button>
           {error && <p role="alert">{error}</p>}
         </div>
       </Disclosure>

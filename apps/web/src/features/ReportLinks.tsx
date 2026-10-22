@@ -1,12 +1,12 @@
 import {createReportLink} from './link-action';
-import { LegacySelect } from "../../../../packages/ui/components";
+import { LegacySelect, Button } from "../../../../packages/ui/components";
 import { HomeGroupLinks } from "./HomeGroupLinks";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
 import { t } from "../../../../packages/core/i18n";
-import type { Context } from "../main";
+import type { Context } from "../context";
 export function ReportLinks({ context: c }: { context: Context }) {
   const reportAllowed = c.roles.some((role) =>
       ["admin", "field_service", "group_overseer"].includes(role),
@@ -72,14 +72,14 @@ export function ReportLinks({ context: c }: { context: Context }) {
         <p>{t("refine.linkHelp2")}</p>
         {reportAllowed && (
           <>
-            <label>
-              {t("links.group")}
+            <div className="ui-field">
+              
               <LegacySelect
                 value={group}
                 onChange={(e) => {
                   setGroup(e.target.value);
                   setLink("");
-                }}
+                }} aria-label={t("links.group")}
               >
                 {!groupOnly && <option value="">{t("s21.all")}</option>}
                 {groups.data?.map((item) => (
@@ -88,24 +88,24 @@ export function ReportLinks({ context: c }: { context: Context }) {
                   </option>
                 ))}
               </LegacySelect>
-            </label>
-            <button
+            </div>
+            <Button
               disabled={
                 busy ||
                 groups.isLoading ||
                 !!groups.error ||
                 (groupOnly && !group)
               }
-              onClick={() => void create("report")}
+              onClick={() => void create("report")} type="button"
             >
               {t("links.report")}
-            </button>
+            </Button>
           </>
         )}
         {attendanceAllowed && (
-          <button disabled={busy} onClick={() => void create("attendance")}>
+          <Button disabled={busy} onClick={() => void create("attendance")} type="button">
             {t("links.attendance")}
-          </button>
+          </Button>
         )}
         {(error || groups.error) && (
           <p role="alert">{error || groups.error?.message}</p>
@@ -116,16 +116,16 @@ export function ReportLinks({ context: c }: { context: Context }) {
               {t("links.protected")}
               <input readOnly value={link} />
             </label>
-            <button
+            <Button
               onClick={() =>
                 void navigator.clipboard
                   .writeText(link)
                   .then(() => c.notify(t("common.copied")))
                   .catch(() => setError(t("oclm.copyFailed")))
-              }
+              } type="button"
             >
               {t("common.copy")}
-            </button>
+            </Button>
             <a href={link} target="_blank" rel="noreferrer">
               {t("links.open")}
             </a>

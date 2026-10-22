@@ -1,5 +1,5 @@
 import {SystemStatePage} from '../system/SystemStates';
-import { LegacySelect } from "../../../../packages/ui/components";
+import { LegacySelect, Button } from "../../../../packages/ui/components";
 import {
   keepReportDraft,
   loadReportDraft,
@@ -367,8 +367,8 @@ export function PublicForm() {
                   </p>
                   <p>{t("refine.publicIntro")}</p>
                   {!groupBound && groupNames.length > 0 && (
-                    <label>
-                      {t("polish.serviceGroup")}
+                    <div className="ui-field">
+                      
                       <LegacySelect
                         aria-label={t("polish.serviceGroup")}
                         required
@@ -389,7 +389,7 @@ export function PublicForm() {
                           </option>
                         ))}
                       </LegacySelect>
-                    </label>
+                    </div>
                   )}
                   {context.publishers.length === 1 ? (
                     <p>
@@ -399,8 +399,8 @@ export function PublicForm() {
                       </strong>
                     </p>
                   ) : (
-                    <label>
-                      {t("ui.publisher.21378545")}
+                    <div className="ui-field">
+                      
                       <LegacySelect
                         aria-label={t("ui.publisher.21378545")}
                         required
@@ -420,7 +420,7 @@ export function PublicForm() {
                           </option>
                         ))}
                       </LegacySelect>
-                    </label>
+                    </div>
                   )}
                   <label>
                     {t("ui.reporting.month.04bf8d83")}
@@ -448,16 +448,16 @@ export function PublicForm() {
                   />
                 </>
               )}
-              <button
+              <Button
                 disabled={busy || (kind === "report" && !person)}
-                className="primary"
+                className="primary" type="submit"
               >
                 {busy
                   ? t("refine.submitting")
                   : kind === "report"
                     ? t("refine.submit")
                     : "Submit attendance"}
-              </button>
+              </Button>
             </fieldset>
           </form>
         )
@@ -527,9 +527,9 @@ export function PublicForm() {
               {t("ui.source.wol.jw.org.f4aa1fbe")}
             </a>
           )}
-          <button onClick={() => window.print()}>
+          <Button onClick={() => window.print()} type="button">
             {t("ui.print.schedule.8808f1e7")}
-          </button>
+          </Button>
         </>
       )}
       <p className="muted">

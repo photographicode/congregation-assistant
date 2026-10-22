@@ -1,6 +1,9 @@
 import React from 'react';
 import {Info,CheckCircle2,AlertTriangle,CircleAlert} from 'lucide-react';
 import {t} from '../core/i18n';
+import { handleError } from "../core/errors";
+import { preferenceStorage } from "../core/storage";
+
 // One app notice is mounted at a time. A paused timer retains its remaining time.
 export function Toast({message,onClose,children,duration=5000,className='notice',tone='info'}:{message:string;onClose:()=>void;children?:React.ReactNode;duration?:number;className?:string;tone?:'info'|'success'|'warning'|'danger'}){
  const [hover,setHover]=React.useState(false),[focused,setFocused]=React.useState(false),remaining=React.useRef(duration),close=React.useRef(onClose);close.current=onClose;
@@ -11,7 +14,7 @@ export function Toast({message,onClose,children,duration=5000,className='notice'
 }
 export function DismissibleBanner({stateKey,children,className='banner',untilChanged=false}:{stateKey:string;children:React.ReactNode;className?:string;untilChanged?:boolean}){
  const key='ca-banner:'+stateKey;
- const [dismissed,setDismissed]=React.useState(()=>{try{const at=Number(localStorage.getItem(key));return at>0&&(untilChanged||Date.now()-at<86400000);}catch{return false;}});
+ const [dismissed,setDismissed]=React.useState(()=>{try{const at=Number(preferenceStorage.getItem(key));return at>0&&(untilChanged||Date.now()-at<86400000);}catch{return false;}});
  if(dismissed)return null;
- return <aside className={className} role="status"><div>{children}</div><button type="button" aria-label={t('polish.dismissBanner')} onClick={()=>{try{localStorage.setItem(key,String(Date.now()));}catch{/* Dismiss for this visit when storage is unavailable. */}setDismissed(true);}}>{t('common.close')}</button></aside>;
+ return <aside className={className} role="status"><div>{children}</div><button type="button" aria-label={t('polish.dismissBanner')} onClick={()=>{try{preferenceStorage.setItem(key,String(Date.now()));}catch (error) { handleError(error, {scope:"../../../packages/ui/Notices.tsx",severity:'warning'}); }setDismissed(true);}}>{t('common.close')}</button></aside>;
 }

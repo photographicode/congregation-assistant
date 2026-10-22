@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import {
   dutyRosterLines,
@@ -30,7 +29,10 @@ import {
 } from "../../../../packages/pdf/snapshot";
 import { runPDF } from "./pdf-worker-client";
 import { offerPDF, pdfName, deliverPDF } from "./pdf-download";
-import type { Context } from "../main";
+import type { Context } from "../context";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+
 const documents = [
   ["s21", "S-21 publisher records"],
   ["s3", "S-3-E monthly attendance"],
@@ -69,7 +71,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       "missing",
     ),
     [output, setOutput] = React.useState(() =>
-      localStorage.getItem("ca-s21-format") === "zip" ? "zip" : "merged",
+      preferenceStorage.getItem("ca-s21-format") === "zip" ? "zip" : "merged",
     ),
     [, setZipBytes] = React.useState<Uint8Array | null>(null);
   const [scheduleWeek, setScheduleWeek] = React.useState(
@@ -88,7 +90,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       try {
         const value =
           sessionStorage.getItem("ca-pdf-open") ||
-          localStorage.getItem("ca-pdf-kind");
+          preferenceStorage.getItem("ca-pdf-kind");
         sessionStorage.removeItem("ca-pdf-open");
         return available.some(([id]) => id === value)
           ? value!
@@ -298,8 +300,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
     setBytes(null);
     setSelected([]);
     try {
-      localStorage.setItem("ca-pdf-kind", kind);
-    } catch {}
+      preferenceStorage.setItem("ca-pdf-kind", kind);
+    } catch (error) { handleError(error, {scope:"features/PdfStudio.tsx",severity:'warning'}); }
   }, [kind, year, month]);
   React.useEffect(() => () => abort.current?.abort(), []);
   React.useEffect(
@@ -336,7 +338,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           if (preset.year) setYear(preset.year);
           sessionStorage.removeItem("ca-s21-person");
         }
-      } catch {}
+      } catch (error) { handleError(error, {scope:"features/PdfStudio.tsx",severity:'warning'}); }
     };
     if (sessionStorage.getItem("ca-s21-person")) open();
     window.addEventListener("ca:select-s21", open);
@@ -544,8 +546,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       </div>
       <div className="grid">
         <section className="card stack">
-          <label>
-            {t("ui.document.d6bd8c0a")}
+          <div className="ui-field">
+            
             <LegacySelect
               aria-label={t("ui.document.d6bd8c0a")}
               value={kind}
@@ -557,7 +559,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 </option>
               ))}
             </LegacySelect>
-          </label>
+          </div>
           <div className="form-grid">
             <label>
               {t("ui.service.year.25e93d2c")}
@@ -570,11 +572,11 @@ export default function PdfStudio({ context: c }: { context: Context }) {
               />
             </label>
             {kind === "s3" && (
-              <label>
-                {t("ui.month.310ca503")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={month}
-                  onChange={(e) => setMonth(Number(e.target.value))}
+                  onChange={(e) => setMonth(Number(e.target.value))} aria-label={t("ui.month.310ca503")}
                 >
                   {Array.from({ length: 12 }, (_, i) => (
                     <option key={i} value={i}>
@@ -584,13 +586,13 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                     </option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
             )}
           </div>
           {kind === "s21" && (
             <div className="stack">
-              <label>
-                {t("s21.group")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   aria-label={t("s21.group")}
                   value={selectionGroup}
@@ -636,7 +638,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                     </option>
                   ))}
                 </LegacySelect>
-              </label>
+              </div>
               <fieldset>
                 <legend>{t("ui.combine.groups.union.0a319224")}</legend>
                 <div className="form-grid">
@@ -715,8 +717,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                       }
                     />
                   </label>
-                  <label>
-                    {t("ui.report.state.db798be1")}
+                  <div className="ui-field">
+                    
                     <LegacySelect
                       aria-label={t("ui.report.state.db798be1")}
                       value={reportState}
@@ -731,13 +733,13 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                         {t("ui.reported.but.no.activity.c89d7f38")}
                       </option>
                     </LegacySelect>
-                  </label>
+                  </div>
                   <p>{t("s21.inactiveExplanation")}</p>
                 </>
               )}
               {groups.includes("individual") && (
-                <label>
-                  {t("s21.person")}
+                <div className="ui-field">
+                  
                   <LegacySelect
                     aria-label={t("s21.person")}
                     value={individual}
@@ -750,25 +752,25 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                       </option>
                     ))}
                   </LegacySelect>
-                </label>
+                </div>
               )}
-              <label>
-                {t("ui.download.format.a4902f0f")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={output}
                   onChange={(e) => {
                     setOutput(e.target.value);
-                    localStorage.setItem("ca-s21-format", e.target.value);
+                    preferenceStorage.setItem("ca-s21-format", e.target.value);
                     setBytes(null);
                     setZipBytes(null);
-                  }}
+                  }} aria-label={t("ui.download.format.a4902f0f")}
                 >
                   <option value="merged">{t("ui.merged.pdf.382cc825")}</option>
                   <option value="zip">
                     {t("ui.zip.of.individual.pdfs.3ef61c30")}
                   </option>
                 </LegacySelect>
-              </label>
+              </div>
               <p role="status">
                 {chosen.length} {t("s21.matched")}
               </p>
@@ -842,20 +844,20 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           {["weekend", "duties"].includes(kind) && (
             <Disclosure>
               <DisclosureLabel>{t("ui.print.layout.628f0fe9")}</DisclosureLabel>
-              <label>
-                {t("ui.layout.a5119091")}
+              <div className="ui-field">
+                
                 <LegacySelect
                   value={printLayout}
                   onChange={(e) => {
                     setPrintLayout(e.target.value);
                     setBytes(null);
-                  }}
+                  }} aria-label={t("ui.layout.a5119091")}
                 >
                   <option value="list">{t("ui.weekly.list.f93ceecb")}</option>
                   <option value="grid">{t("ui.month.grid.82c6e1de")}</option>
                   <option value="booklet">{t("ui.a5.booklet.5e40d183")}</option>
                 </LegacySelect>
-              </label>
+              </div>
               {printLayout === "booklet" && (
                 <p>
                   {t("ui.print.landscape.with.double.sided.short.ed.37a45137")}
@@ -885,7 +887,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
             </p>
           )}
           <div className="actions">
-            <button
+            <Button
               className="primary"
               disabled={
                 busy ||
@@ -895,24 +897,24 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 year < 1900 ||
                 year > 2200
               }
-              onClick={() => void generate()}
+              onClick={() => void generate()} type="button"
             >
               {busy ? "Preparing…" : "Download"}
-            </button>
+            </Button>
             <Disclosure>
               <DisclosureLabel>{t("ui.print.share.e31afdd0")}</DisclosureLabel>
-              <button
+              <Button
                 disabled={busy || data.isLoading}
-                onClick={() => void generate("print")}
+                onClick={() => void generate("print")} type="button"
               >
                 {t("ui.print.df0fe798")}
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={busy || data.isLoading}
-                onClick={() => void generate("share")}
+                onClick={() => void generate("share")} type="button"
               >
                 {t("ui.share.29887a5f")}
-              </button>
+              </Button>
             </Disclosure>
           </div>
           {busy && (
@@ -922,9 +924,9 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 max={100}
                 aria-label={t("ui.pdf.generation.abfc7308")}
               />
-              <button onClick={() => abort.current?.abort()}>
+              <Button onClick={() => abort.current?.abort()} type="button">
                 {t("ui.cancel.generation.12ad4ee6")}
-              </button>
+              </Button>
             </>
           )}
           <p className="muted">{t("refine.pdfPrivacy")}</p>
@@ -932,15 +934,15 @@ export default function PdfStudio({ context: c }: { context: Context }) {
         <section className="card">
           <h2>{t("ui.accuracy.guard.c7262bfe")}</h2>
           <p>{t("ui.missing.reports.remain.blank.and.never.blo.169f911e")}</p>
-          <button
+          <Button
             onClick={() => {
               const url = new URL(location.href);
               url.searchParams.set("screen", "reports");
               location.assign(url);
-            }}
+            }} type="button"
           >
             {t("ui.review.reports.5356c355")}
-          </button>
+          </Button>
         </section>
       </div>
     </>

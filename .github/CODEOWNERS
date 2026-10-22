@@ -1,0 +1,7 @@
+# Sensitive paths require owner review; branch protection is enabled in GitHub settings.
+* @photographicode
+/supabase/ @photographicode
+/.github/ @photographicode
+/hosting/ @photographicode
+/packages/core/ @photographicode
+/packages/pdf/ @photographicode

@@ -4,8 +4,10 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
-import type { Context } from "../main";
+import type { Context } from "../context";
 import { Dialog } from "../../../../packages/ui/Dialog";
+import { Button } from "../../../../packages/ui/components";
+
 const schema = z.array(
   z.object({
     id: z.string(),
@@ -100,9 +102,9 @@ export function HomeGroupLinks({
       {query.error && (
         <p role="alert">
           {t("ui.group.links.could.not.load.35780a65")}
-          <button onClick={() => void query.refetch()}>
+          <Button onClick={() => void query.refetch()} type="button">
             {t("ui.retry.942087cc")}
-          </button>
+          </Button>
         </p>
       )}
       {query.data?.map((group) => (
@@ -123,10 +125,10 @@ export function HomeGroupLinks({
           <div className="actions">
             {group.token ? (
               <>
-                <button onClick={() => void copy(url(group.token!))}>
+                <Button onClick={() => void copy(url(group.token!))} type="button">
                   {t("ui.copy.link.dbf362d4")}
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => {
                     void import("qrcode")
                       .then(async ({ default: QRCode }) => {
@@ -143,11 +145,11 @@ export function HomeGroupLinks({
                           "QR generation failed. Copy the link instead.",
                         ),
                       );
-                  }}
+                  }} type="button"
                 >
                   {t("ui.qr.a439fba4")}
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => {
                     const text =
                       group.name +
@@ -161,10 +163,10 @@ export function HomeGroupLinks({
                           c.notify("Share unavailable. Use Copy link.");
                       });
                     else void copy(text);
-                  }}
+                  }} type="button"
                 >
                   {t("ui.share.29887a5f")}
-                </button>
+                </Button>
                 <a
                   className="button"
                   href={url(group.token)}
@@ -175,7 +177,7 @@ export function HomeGroupLinks({
                 </a>
                 {manage &&
                   (["rotate", "revoke"] as const).map((action) => (
-                    <button
+                    <Button
                       key={action}
                       disabled={!!busy}
                       onClick={() => {
@@ -191,14 +193,14 @@ export function HomeGroupLinks({
                           )
                           .catch((error) => c.notify(error.message))
                           .finally(() => setBusy(""));
-                      }}
+                      }} type="button"
                     >
                       {action === "rotate" ? "Rotate link" : "Revoke link"}
-                    </button>
+                    </Button>
                   ))}
               </>
             ) : (
-              <button
+              <Button
                 disabled={!!busy}
                 onClick={() => {
                   if (demo) {
@@ -215,10 +217,10 @@ export function HomeGroupLinks({
                     .then(() => query.refetch())
                     .catch((error) => c.notify(error.message))
                     .finally(() => setBusy(""));
-                }}
+                }} type="button"
               >
                 {t("ui.create.link.e6b850cf")}
-              </button>
+              </Button>
             )}
           </div>
         </article>
@@ -226,7 +228,7 @@ export function HomeGroupLinks({
       {!query.isPending && !query.error && !query.data?.length && (
         <p>{t("ui.add.your.field.service.groups.in.people.to.24551af2")}</p>
       )}
-      <button
+      <Button
         disabled={!query.data?.some((g) => g.token)}
         onClick={() =>
           void copy(
@@ -235,10 +237,10 @@ export function HomeGroupLinks({
               .map((g) => g.name + " · " + period + " report: " + url(g.token!))
               .join("\n"),
           )
-        }
+        } type="button"
       >
         {t("ui.copy.all.for.whatsapp.93e107d6")}
-      </button>
+      </Button>
       <Dialog
         open={!!qr}
         title={t("refine.qrReportTitle")}

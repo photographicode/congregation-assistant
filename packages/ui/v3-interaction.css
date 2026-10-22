@@ -12,7 +12,7 @@
  :where(button.primary,.card-link):not(:disabled):hover{transform:translateY(-1px)}
 }
 :where(button,[role=button],a[href],.card-link,.tab,.switch,.assignment-options [role=option]):not(:disabled):not([aria-disabled=true]):active{transform:scale(.98)}
-:where(button,[role=button],a[href],.card-link,.tab,.switch,.assignment-options [role=option]):focus-visible{outline:2px solid var(--link);outline-offset:2px}
+:where(button,[role=button],a[href],.card-link,.tab,.switch,.assignment-options [role=option]):is(:focus,:focus-visible){outline:2px solid var(--link);outline-offset:2px}
 :where(button,[role=button],a[href]):is(:disabled,[aria-disabled=true]){opacity:.5;cursor:not-allowed;transform:none}
 [aria-busy=true]{cursor:progress;position:relative}
 button[aria-busy=true]::after{content:"";position:absolute;right:4px;bottom:4px;width:8px;height:8px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:ca-spin .8s linear infinite}

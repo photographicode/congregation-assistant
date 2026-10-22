@@ -7,7 +7,7 @@ import {
   sftsTotals,
 } from "../../../../packages/core/publisher-selection";
 import { HomeKpis } from "../../../../packages/ui/HomePreview";
-import { Segmented } from "../../../../packages/ui/components";
+import { Segmented, Button, Card, Stack, Inline } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -31,7 +31,7 @@ import {
   dashboardSummary,
   previousReportingPeriod,
 } from "./dashboard-model.mjs";
-import type { Context } from "../main";
+import type { Context } from "../context";
 type DashboardPerson = {
   id: string;
   name: string;
@@ -173,11 +173,11 @@ export function Dashboard({
     go("reports");
   };
   return (
-    <div className="dashboard stack">
+    <Stack className="dashboard">
       {!a.experienceChosen && (
-        <div className="card">
+        <Card>
           <ExperiencePicker />
-        </div>
+        </Card>
       )}
       <section className="dashboard-hero">
         <Greeting
@@ -186,7 +186,7 @@ export function Dashboard({
           locale={setup.language}
           clock={a.clock}
         />
-        <div className="actions dashboard-context">
+        <Inline className="dashboard-context">
           <label>
             {t("ui.reporting.month.04bf8d83")}
             <input
@@ -212,17 +212,17 @@ export function Dashboard({
                       : "Connected"}
           </span>
           {canReports && !demo && (
-            <button
+            <Button
               aria-label={t("ui.refresh.dashboard.d612730f")}
               onClick={() => {
                 void people.refetch();
                 void reports.refetch();
-              }}
+              }} type="button"
             >
               <RefreshCw /> {t("ui.refresh.0e916101")}
-            </button>
+            </Button>
           )}
-        </div>
+        </Inline>
       </section>
       <HomeAssistant context={c} go={go} />
       <HomeGroupLinks context={c} period={period} />
@@ -240,25 +240,25 @@ export function Dashboard({
         </p>
       )}
       {a.style === "calm" && (
-        <section className="card stack">
+        <Card className="stack">
           <h2>{t("home.nextTask")}</h2>
           <p>{t("home.previewTask")}</p>
           <div className="dashboard-actions">
             {canReports && (
-              <button onClick={() => openReports("bulk")}>
+              <Button onClick={() => openReports("bulk")} type="button">
                 {t("tool.month")}
-              </button>
+              </Button>
             )}
             {canSchedule && (
-              <button onClick={() => go("schedule")}>
+              <Button onClick={() => go("schedule")} type="button">
                 {t("tool.midweek")}
-              </button>
+              </Button>
             )}
             {canPDF && (
-              <button onClick={() => go("pdf")}>{t("tool.s21")}</button>
+              <Button onClick={() => go("pdf")} type="button">{t("tool.s21")}</Button>
             )}
           </div>
-        </section>
+        </Card>
       )}
       <div className="home-rich-details" aria-label={t("home.allTools")}>
         {canReports && (
@@ -276,7 +276,7 @@ export function Dashboard({
           />
         )}
         {canReports && !loading && !error && special.publishers > 0 && (
-          <section className="card stack">
+          <Card className="stack">
             <h2>{t("sfts.summary")}</h2>
             <p>
               {period} · {special.submitted} / {special.publishers}{" "}
@@ -301,71 +301,71 @@ export function Dashboard({
                 );
               })}
             </div>
-            <button onClick={() => openReports("review")}>
+            <Button onClick={() => openReports("review")} type="button">
               {t("ui.open.monthly.reports.0436ae79")}
-            </button>
-          </section>
+            </Button>
+          </Card>
         )}
-        <section className="card">
+        <Card>
           <h2>{t("ui.your.tools.close.at.hand.66b5ceca")}</h2>
           <div className="dashboard-actions">
             {canReports && (
               <>
-                <button onClick={() => openReports("bulk")}>
+                <Button onClick={() => openReports("bulk")} type="button">
                   <Plus />
                   {t("ui.bulk.entry.bc2ab04d")}
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => {
                     setFilter("pending");
                     document
                       .getElementById("dashboard-submissions")
                       ?.scrollIntoView();
-                  }}
+                  }} type="button"
                 >
                   <MessageCircle />
                   {t("ui.missing.reports.remind.6a80d46e")}
-                </button>
+                </Button>
               </>
             )}
             {canPDF && (
-              <button onClick={() => go("pdf")}>
+              <Button onClick={() => go("pdf")} type="button">
                 <FileDown />
                 {t("ui.download.reports.b6a9809c")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={addPublisher}>
+              <Button onClick={addPublisher} type="button">
                 <Users />
                 {t("ui.add.publisher.b13cc36b")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={() => go("access")}>
+              <Button onClick={() => go("access")} type="button">
                 <ArrowUpRight />
                 {t("ui.report.links.c7ccf54c")}
-              </button>
+              </Button>
             )}
             {canSchedule && (
-              <button onClick={() => go("schedule")}>
+              <Button onClick={() => go("schedule")} type="button">
                 <CalendarDays />
                 {t("ui.this.week.s.schedule.fbe36acb")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={() => go("messages")}>
+              <Button onClick={() => go("messages")} type="button">
                 <MessageCircle />
                 {t("ui.messages.04d7b483")}
-              </button>
+              </Button>
             )}
-            <button onClick={() => go("settings")}>
+            <Button onClick={() => go("settings")} type="button">
               <Plus />
               {t("ui.install.app.all.settings.15eaa3f0")}
-            </button>
+            </Button>
           </div>
-        </section>
+        </Card>
         {canReports && (
-          <section className="card stack" id="dashboard-submissions">
+          <Card className="stack" id="dashboard-submissions">
             <div>
               <span className="eyebrow">{period}</span>
               <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
@@ -375,7 +375,7 @@ export function Dashboard({
                   : "A clear view of what’s in and who may need a reminder."}
               </p>
             </div>
-            <div className="form-grid">
+            <Stack>
               <label>
                 {t("ui.find.publisher.9607fbc9")}
                 <input
@@ -407,7 +407,7 @@ export function Dashboard({
                   ...groups.map((group) => ({ value: `group:${group}`, label: group })),
                 ]}
               />
-            </div>
+            </Stack>
             {!loading && !error && roster.length > 0 && (
               <div className="people-table-wrap">
               <table className="people-table">
@@ -419,15 +419,15 @@ export function Dashboard({
                 const roles = [p.is_elder && "Elder", p.is_ms && "MS", (p.is_rp || p.is_sp || p.is_fm) && "RP", r?.is_ap && "AP", isSFTS(p) && "SFTS"].filter(Boolean);
                 return (
                   <tr className={r ? "" : "not-submitted"} key={p.id} tabIndex={0}>
-                    <td><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
-                    <td>{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
-                    <td>{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
-                    <td className="number" translate="no">{r?.studies ?? "—"}</td>
-                    <td className="number" translate="no">{pioneer && r ? r.hours || 0 : "—"}</td>
-                    <td><div className="actions row-actions">
-                      <button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }}>{"S-21"}</button>
+                    <td data-label="Name"><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
+                    <td data-label="Roles">{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
+                    <td data-label="Report">{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
+                    <td className="number" translate="no" data-label="Studies">{r?.studies ?? "—"}</td>
+                    <td className="number" translate="no" data-label="Hours">{pioneer && r ? r.hours || 0 : "—"}</td>
+                    <td data-label="Actions"><div className="actions row-actions">
+                      <Button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }} type="button">{"S-21"}</Button>
                       {!r && (
-                        <button className="tonal warning"
+                        <Button className="tonal warning"
                           onClick={async () => {
                             const text = `Hello ${p.name}, a friendly reminder to submit your ${period} ministry report. Thank you.`;
                             try {
@@ -445,23 +445,23 @@ export function Dashboard({
                                   "Sharing is unavailable. You can use Messages to prepare a reminder.",
                                 );
                             }
-                          }}
+                          }} type="button"
                         >
                           {t("ui.remind.3aec36bb")}
-                        </button>
+                        </Button>
                       )}
                     </div></td>
                   </tr>
                 );
               })}
                 </tbody>
-                <tfoot><tr><th>{"Total"}</th><td>{roster.length}{" publishers"}</td><td>{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
+                <tfoot><tr><th data-label="Name">{"Total"}</th><td data-label="Roles">{roster.length}{" publishers"}</td><td data-label="Report">{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number" data-label="Studies">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number" data-label="Hours">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
               </table></div>
             )}
             {roster.length > 50 && (
-              <button onClick={() => openReports("review")}>
+              <Button onClick={() => openReports("review")} type="button">
                 {t("ui.open.all.reports.a7845883")}
-              </button>
+              </Button>
             )}
             {!loading && !error && !roster.length && (
               <div className="empty-scene">
@@ -473,9 +473,9 @@ export function Dashboard({
                 </p>
               </div>
             )}
-          </section>
+          </Card>
         )}
       </div>
-    </div>
+    </Stack>
   );
 }

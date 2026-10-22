@@ -4,6 +4,9 @@ import {
 } from "../../../../packages/core/themes";
 import { create } from "zustand";
 import { experiencePresets, type Experience } from "./experience";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+
 type Appearance = Experience & {
   theme: string;
   backgroundIntensity: number;
@@ -31,8 +34,8 @@ const initial: Appearance = {
 let appearanceStorageKey = "ca-v2-appearance";
 let saved = {};
 try {
-  saved = JSON.parse(localStorage.getItem("ca-v2-appearance") || "{}");
-} catch {}
+  saved = JSON.parse(preferenceStorage.getItem("ca-v2-appearance") || "{}");
+} catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
 if (new URLSearchParams(location.search).get("demo") === "publisher")
   saved = { ...experiencePresets.calm, experienceChosen: false, ...saved };
 export const useAppearance = create<
@@ -48,7 +51,7 @@ export const useAppearance = create<
         theme: normalizeTheme(patch.theme || state.theme),
       };
       try {
-        localStorage.setItem(
+        preferenceStorage.setItem(
           appearanceStorageKey,
           JSON.stringify({
             style: next.style,
@@ -70,7 +73,7 @@ export const useAppearance = create<
             clock: next.clock,
           }),
         );
-      } catch {}
+      } catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
       return next;
     }),
 }));
@@ -88,8 +91,8 @@ export function activateAppearanceProfile(
     encodeURIComponent(congregation);
   let profile = {};
   try {
-    profile = JSON.parse(localStorage.getItem(appearanceStorageKey) || "{}");
-  } catch {}
+    profile = JSON.parse(preferenceStorage.getItem(appearanceStorageKey) || "{}");
+  } catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
   useAppearance.setState({
     ...initial,
     ...(publisher ? experiencePresets.calm : {}),
@@ -100,7 +103,7 @@ export function activateAppearanceProfile(
 
 export function hasAppearanceProfile() {
   try {
-    return Boolean(localStorage.getItem(appearanceStorageKey));
+    return Boolean(preferenceStorage.getItem(appearanceStorageKey));
   } catch {
     return false;
   }

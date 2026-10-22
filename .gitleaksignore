@@ -17,3 +17,8 @@ e7b438480a0296b68a8c99cbf0d2107b3acd29c7:staging/index.html:jwt:2785
 82598e136fff4788bfc9b3f8dd41e5870768b815:secretary-assistant-oclm-v2.html:jwt:1838
 # Reviewed non-secret documentation/UI text or retired browser-only password constant; see docs/security-historical-findings.md.
 82598e136fff4788bfc9b3f8dd41e5870768b815:secretary-assistant-oclm-v2.html:generic-api-key:1843
+
+# Confirmed catalogue-key false positive: this line contains only an English UI
+# message and its generated lookup key. Scope to this exact historical finding;
+# future changes and other findings remain scanned.
+85c44b5d3770a3ae6674b39ed7945aafc744312c:packages/core/locales/en.json:generic-api-key:173

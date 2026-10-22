@@ -14,6 +14,8 @@ import {
   type SectionId,
   type Tool,
 } from "../../../../packages/core/navigation";
+import { Button } from "../../../../packages/ui/components";
+
 const icons = {
   home: CalendarDays,
   people: Users,
@@ -49,11 +51,11 @@ export function SectionHub({
         {tools
           .filter((tool) => tool.section === section)
           .map((tool) => (
-            <button
+            <Button
               className="card v3-tool-tile"
               key={tool.id}
               disabled={!tool.available}
-              onClick={() => onOpen(tool)}
+              onClick={() => onOpen(tool)} type="button"
             >
               <span className="v3-tool-icon">
                 <Icon aria-hidden="true" />
@@ -69,7 +71,7 @@ export function SectionHub({
                   t("hub.openingSoon")
                 )}
               </span>
-            </button>
+            </Button>
           ))}
       </div>
     </section>

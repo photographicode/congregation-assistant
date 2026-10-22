@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { runPDF } from "./pdf-worker-client";
 import { offerPDF } from "./pdf-download";
@@ -14,7 +13,7 @@ import { rpc, demo } from "./client";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import { t } from "../../../../packages/core/i18n";
 import { CurrentAttendance } from "./CurrentAttendance";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const departments = ["av", "attendant", "cleaning"] as const;
 type Department = (typeof departments)[number];
 const assignment = z
@@ -69,13 +68,13 @@ export function Departments({ context: c }: { context: Context }) {
     <div className="stack">
       <div className="segmented">
         {allowed.map((department) => (
-          <button
+          <Button
             key={department}
             aria-pressed={selected === department}
-            onClick={() => setSelected(department)}
+            onClick={() => setSelected(department)} type="button"
           >
             {t(`duties.${department}`)}
-          </button>
+          </Button>
         ))}
       </div>
       <DepartmentPanel key={selected} context={c} department={selected} />
@@ -211,9 +210,9 @@ function DepartmentPanel({
         <p role={query.error ? "alert" : "status"}>
           {query.error?.message || t("common.loading")}
         </p>
-        <button onClick={() => void query.refetch()}>
+        <Button onClick={() => void query.refetch()} type="button">
           {t("search.retry")}
-        </button>
+        </Button>
       </section>
     );
   return (
@@ -289,7 +288,7 @@ function DepartmentPanel({
               onChange={(e) => setSlots(Number(e.target.value))}
             />
           </label>
-          <button disabled={busy || dirty}>{t("duties.add")}</button>
+          <Button disabled={busy || dirty} type="submit">{t("duties.add")}</Button>
         </form>
         {
           <Disclosure>
@@ -314,7 +313,7 @@ function DepartmentPanel({
                   {p.name}
                 </label>
               ))}
-            <button
+            <Button
               disabled={busy || !requested.length || requested.length > 100}
               onClick={() =>
                 void run(async () => {
@@ -337,10 +336,10 @@ function DepartmentPanel({
                   setRequested([]);
                   c.notify(t("duties.requested"));
                 })
-              }
+              } type="button"
             >
               {t("duties.request")} ({requested.length})
-            </button>
+            </Button>
             {value.people
               .filter((p) => p.status !== "not_requested")
               .map((person) => (
@@ -350,7 +349,7 @@ function DepartmentPanel({
                   {admin && (
                     <div className="actions">
                       {[true, false].map((approve) => (
-                        <button
+                        <Button
                           key={String(approve)}
                           disabled={busy}
                           onClick={() =>
@@ -377,10 +376,10 @@ function DepartmentPanel({
                                   p_approve: approve,
                                 });
                             })
-                          }
+                          } type="button"
                         >
                           {t(approve ? "duties.approve" : "duties.reject")}
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   )}
@@ -388,12 +387,12 @@ function DepartmentPanel({
               ))}
           </Disclosure>
         }
-        <button
+        <Button
           disabled={busy || !pool.length || !value.duties.length}
-          onClick={rotate}
+          onClick={rotate} type="button"
         >
           {t("oclm.autoAssign")}
-        </button>
+        </Button>
         {!pool.length && <p>{t("duties.emptyPool")}</p>}
         {value.duties
           .filter((d) => d.enabled !== false)
@@ -402,8 +401,8 @@ function DepartmentPanel({
               {Array.from({ length: duty.slots }, (_, i) => {
                 const slot = duty.id + "_" + (i + 1);
                 return (
-                  <label key={slot}>
-                    {duty.name} {i + 1}
+                  <div key={slot} className="ui-field">
+                     {i + 1}
                     <LegacySelect
                       disabled={busy}
                       value={choices[slot] || ""}
@@ -413,7 +412,7 @@ function DepartmentPanel({
                           [slot]: e.target.value,
                         }));
                         setDirty(true);
-                      }}
+                      }} aria-label={duty.name}
                     >
                       <option value="">{t("oclm.needsPerson")}</option>
                       {pool.map((p) => (
@@ -422,13 +421,13 @@ function DepartmentPanel({
                         </option>
                       ))}
                     </LegacySelect>
-                  </label>
+                  </div>
                 );
               })}
             </div>
           ))}
         <div className="actions">
-          <button
+          <Button
             disabled={busy || !value.duties.length}
             onClick={() =>
               void run(async () => {
@@ -445,11 +444,11 @@ function DepartmentPanel({
                   department + "_roster_" + week + ".pdf",
                 );
               })
-            }
+            } type="button"
           >
             {t("ui.download.roster.0725b571")}
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={busy || !dirty}
             onClick={() =>
               void run(async () => {
@@ -489,11 +488,11 @@ function DepartmentPanel({
                 setDirty(false);
                 c.notify(t("duties.saved"));
               })
-            }
+            } type="button"
           >
             {t("duties.save")}
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={
               busy || dirty || !value.canPublish || !value.duties.length
             }
@@ -511,10 +510,10 @@ function DepartmentPanel({
                   demo ? t("duties.demoPublished") : t("duties.published"),
                 );
               })
-            }
+            } type="button"
           >
             {t("duties.publish")}
-          </button>
+          </Button>
         </div>
         {value.token && (
           <a

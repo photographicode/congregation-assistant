@@ -2,6 +2,8 @@ import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { installController } from "./install-runtime";
 import { installPlatform } from "../../../../packages/core/install-controller";
+import { Button } from "../../../../packages/ui/components";
+
 const steps = {
   ios: "Tap Share, then Add to Home Screen, then Add.",
   samsung:
@@ -43,7 +45,7 @@ export function InstallApp() {
     );
   return (
     <div className="stack">
-      <button
+      <Button
         disabled={busy}
         onClick={() => {
           setBusy(true);
@@ -55,10 +57,10 @@ export function InstallApp() {
               else setInstructions(result === "instructions");
             })
             .finally(() => setBusy(false));
-        }}
+        }} type="button"
       >
         {busy ? "Opening your browser’s install prompt…" : "Install app"}
-      </button>
+      </Button>
       {busy && (
         <progress
           aria-label={t("ui.waiting.for.browser.install.prompt.74061354")}

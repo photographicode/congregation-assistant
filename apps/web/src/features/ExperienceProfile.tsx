@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -11,7 +10,7 @@ import { normalizeTheme } from "../../../../packages/core/themes";
 import { rpc, demo } from "./client";
 import { useAppearance, hasAppearanceProfile } from "./store";
 import { experiencePresets, type Experience } from "./experience";
-import type { Context } from "../main";
+import type { Context } from "../context";
 const style = z.enum(["calm", "balanced", "lively"]);
 const preferences = z.object({
   style,
@@ -125,15 +124,15 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
         {profile.error && (
           <p role="alert">
             {t("ui.account.appearance.could.not.load.device.c.2c92cfab")}
-            <button onClick={() => void profile.refetch()}>
+            <Button onClick={() => void profile.refetch()} type="button">
               {t("ui.retry.account.profile.86032f8f")}
-            </button>
+            </Button>
           </p>
         )}
         {profile.data && (
           <>
             <div className="actions">
-              <button
+              <Button
                 disabled={busy}
                 onClick={() =>
                   void run(async () => {
@@ -157,11 +156,11 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                       "Account appearance saved. Existing device choices are preserved.",
                     );
                   })
-                }
+                } type="button"
               >
                 {t("ui.save.these.choices.to.my.account.5c7ac6f9")}
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={busy || !profile.data.preferences}
                 onClick={() => {
                   if (profile.data?.preferences)
@@ -169,28 +168,28 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                       ...profile.data.preferences,
                       experienceChosen: true,
                     });
-                }}
+                }} type="button"
               >
                 {t("ui.use.my.saved.account.profile.2762df04")}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   const key =
                     c.roles.includes("publisher") && !c.roles.includes("admin")
                       ? "publisherStyle"
                       : "adminStyle";
                   a.set(experiencePresets[profile.data![key]]);
-                }}
+                }} type="button"
               >
                 {t("ui.use.congregation.default.6f0e2e50")}
-              </button>
+              </Button>
             </div>
             {c.roles.includes("admin") && (
               <>
                 <h3>{t("ui.defaults.for.new.devices.a9af3262")}</h3>
                 <div className="form-grid">
                   {(["adminStyle", "publisherStyle"] as const).map((key) => (
-                    <label key={key}>
+                    <div key={key} className="ui-field">
                       {key === "adminStyle"
                         ? "Congregation experience"
                         : "Publisher portal experience"}
@@ -198,7 +197,9 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                         value={defaults[key]}
                         onChange={(e) =>
                           setDefaults({ ...defaults, [key]: e.target.value })
-                        }
+                        } aria-label={key === "adminStyle"
+                                                      ? "Congregation experience"
+                                                      : "Publisher portal experience"}
                       >
                         {(["calm", "balanced", "lively"] as const).map(
                           (value) => (
@@ -208,13 +209,13 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                           ),
                         )}
                       </LegacySelect>
-                    </label>
+                    </div>
                   ))}
                 </div>
                 <p>
                   {t("ui.defaults.never.remove.tools.or.overwrite.s.3985c07d")}
                 </p>
-                <button
+                <Button
                   disabled={busy}
                   onClick={() =>
                     void run(async () => {
@@ -231,10 +232,10 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                         });
                       c.notify("Congregation experience defaults saved.");
                     })
-                  }
+                  } type="button"
                 >
                   {t("ui.save.congregation.defaults.ee2d5f03")}
-                </button>
+                </Button>
               </>
             )}
           </>
@@ -242,9 +243,9 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
         {error && (
           <p className="error" role="alert">
             {error}{" "}
-            <button onClick={() => void profile.refetch()}>
+            <Button onClick={() => void profile.refetch()} type="button">
               {t("ui.reload.saved.profile.a187f03a")}
-            </button>
+            </Button>
           </p>
         )}
       </div>

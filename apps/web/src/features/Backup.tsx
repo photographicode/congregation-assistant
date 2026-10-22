@@ -2,7 +2,9 @@ import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { storeFor, demo } from "./client";
 import { repositories } from "../../../../packages/core/repositories";
-import type { Context } from "../main";
+import type { Context } from "../context";
+import { Button } from "../../../../packages/ui/components";
+
 export function Backup({ context: c }: { context: Context }) {
   const repo = React.useMemo(
     () => repositories(storeFor(c.cong, c.roles), c.cong, demo),
@@ -40,7 +42,7 @@ export function Backup({ context: c }: { context: Context }) {
           onChange={(e) => setPhrase(e.target.value)}
         />
       </label>
-      <button
+      <Button
         disabled={busy || phrase.length < 16}
         onClick={() =>
           void run(async () => {
@@ -66,10 +68,10 @@ export function Backup({ context: c }: { context: Context }) {
             setPhrase("");
             c.notify("Encrypted backup downloaded.");
           })
-        }
+        } type="button"
       >
         {t("ui.download.encrypted.backup.0a729b90")}
-      </button>
+      </Button>
       <label>
         {t("ui.restore.backup.file.c2b19d7e")}
         <input
@@ -96,7 +98,7 @@ export function Backup({ context: c }: { context: Context }) {
               onChange={(e) => setConfirmation(e.target.value)}
             />
           </label>
-          <button
+          <Button
             className="danger"
             disabled={busy || confirmation !== "RESTORE" || phrase.length < 16}
             onClick={() =>
@@ -116,10 +118,10 @@ export function Backup({ context: c }: { context: Context }) {
                 setConfirmation("");
                 c.notify("Workspace restored. Reload to refresh all records.");
               })
-            }
+            } type="button"
           >
             {t("ui.restore.workspace.ae070150")}
-          </button>
+          </Button>
         </>
       )}
       {error && (

@@ -1,5 +1,6 @@
 {
-  "views": 9,
+  "fingerprint": "da0199cace8272f708c99ca7c961de00eb57989383a7200e115a0127e67acfe1",
+  "views": 11,
   "results": [
     {
       "theme": "mono-light",
@@ -88,6 +89,36 @@
         "--text-1": 15.664252944347304,
         "--text-2": 9.254809581647669,
         "--text-3": 6.898213096472487
+      },
+      "aboveScrim": true
+    },
+    {
+      "theme": "eclipse",
+      "background": "rgb(255, 255, 255)",
+      "alpha": 1,
+      "scrim": 0.45,
+      "border": 1,
+      "shadow": "rgba(10, 10, 10, 0.28) 0px 28px 70px 0px",
+      "strip": 4,
+      "contrast": {
+        "--text-1": 19.79814571052481,
+        "--text-2": 10.443633928552316,
+        "--text-3": 7.729820868495424
+      },
+      "aboveScrim": true
+    },
+    {
+      "theme": "eclipse-night",
+      "background": "rgb(28, 28, 32)",
+      "alpha": 1,
+      "scrim": 0.7,
+      "border": 1,
+      "shadow": "rgba(0, 0, 0, 0.65) 0px 28px 70px 0px",
+      "strip": 4,
+      "contrast": {
+        "--text-1": 16.27349197792186,
+        "--text-2": 11.492347362361562,
+        "--text-3": 6.627512279819028
       },
       "aboveScrim": true
     },

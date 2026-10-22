@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -40,11 +39,11 @@ export function ManualMeetingParts({
             onChange={(e) => setMinutes(Number(e.target.value))}
           />
         </label>
-        <label>
-          {t("ui.section.dfca5da5")}
+        <div className="ui-field">
+          
           <LegacySelect
             value={section}
-            onChange={(e) => setSection(e.target.value as typeof section)}
+            onChange={(e) => setSection(e.target.value as typeof section)} aria-label={t("ui.section.dfca5da5")}
           >
             <option value="treasures">{t("ui.treasures.a6fe878a")}</option>
             <option value="field">{t("ui.field.ministry.e3b9a1fe")}</option>
@@ -52,8 +51,8 @@ export function ManualMeetingParts({
               {t("ui.living.as.christians.e435a9b4")}
             </option>
           </LegacySelect>
-        </label>
-        <button
+        </div>
+        <Button
           disabled={
             !title.trim() ||
             !Number.isInteger(minutes) ||
@@ -79,10 +78,10 @@ export function ManualMeetingParts({
               },
             ]);
             setTitle("");
-          }}
+          }} type="button"
         >
           {t("ui.add.part.16b7300b")}
-        </button>
+        </Button>
         <ol>
           {parts.map((part) => (
             <li key={part.id}>
@@ -90,7 +89,7 @@ export function ManualMeetingParts({
             </li>
           ))}
         </ol>
-        <button
+        <Button
           disabled={!parts.length}
           onClick={() =>
             onSave({
@@ -99,10 +98,10 @@ export function ManualMeetingParts({
               sourceMonth: new Date().toISOString().slice(0, 7),
               parts,
             })
-          }
+          } type="button"
         >
           {t("ui.use.these.parts.5b269055")}
-        </button>
+        </Button>
       </div>
     </Disclosure>
   );

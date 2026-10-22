@@ -16,7 +16,7 @@ button.danger,.button-danger{background:var(--danger);color:#fff}
 button.danger-subtle,.button-danger-subtle{background:var(--danger-50);color:var(--danger)}
 button.success-subtle,.button-success-subtle{background:var(--success-50);color:var(--ok)}
 button.warning-subtle,.button-warning-subtle{background:var(--warning-50);color:var(--warn)}
-button:focus-visible,a:focus-visible,[role=option]:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--ring);outline-offset:3px}
+button:focus-visible,a:focus-visible,[role=option]:focus-visible,[role=tab]:focus-visible{outline:var(--focus-ring);outline-offset:3px}
 button:disabled,[aria-disabled=true]{cursor:not-allowed;opacity:.55}
 .chip-success{background:var(--success-50);color:var(--ok)}.chip-warning{background:var(--warning-50);color:var(--warn)}.chip-danger{background:var(--danger-50);color:var(--danger)}
 .ui-combobox{position:relative}.ui-combobox-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left;background:var(--surface-solid);color:var(--text-1)}
@@ -27,3 +27,4 @@ button:disabled,[aria-disabled=true]{cursor:not-allowed;opacity:.55}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 .dashboard-hero{text-align:center;padding-block:clamp(2rem,8vw,5rem)}.dashboard-hero .greeting h1{font-size:var(--type-2xl);max-width:18ch;margin-inline:auto}.dashboard>.card[aria-label]{max-width:52rem;width:100%;margin-inline:auto;padding:clamp(1rem,4vw,2rem)}.dashboard>.card[aria-label] textarea{min-height:7rem;font-size:var(--type-lg);border-radius:var(--radius-lg)}.assistant-suggestions{justify-content:center}.home-rich-details{display:grid;gap:var(--space-6)}
 .dashboard-row:not(:has(.chip)){opacity:.62}.dashboard-row strong,.ui-table-scroll td:first-child{font-weight:650}.dashboard-row p{margin:.2rem 0;font-variant-numeric:tabular-nums}
+.ui-field{display:grid;gap:var(--space-2);font-weight:700}

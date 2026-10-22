@@ -1,3 +1,11 @@
+# Current user release override — 2026-10-22
+
+The owner explicitly requests fixing the Monthly submissions layout and deploying all of PR #58 despite the unfinished quality backlog. The one-time [owner-release-58] merge marker in deploy.yml records that exception; subsequent releases use the normal gates. Keep quality/security checks intact and report failures; validate normal compilation/tests and the affected browser paths. No production data/schema mutation is included in this release.
+
+# Current authority: V3 QUALITY ORDERS
+
+Read DESIGN.md, CHECKLISTS.md and docs/V3-QUALITY-ORDERS.md first. The quality sequence supersedes previous deployment overrides. All §11 gates must pass before merging or deploying. Preserve production data, locked website design and golden PDFs. Additive database changes require verified encrypted snapshots, isolated twice-run tests and down paths. Do not weaken tests. Use codemods, push completed items, and record twice-failed fixes in docs/engineering/OPEN.md.
+
 # Current authority: V3 FINAL ORDERS
 
 Follow docs/V3-FINAL-ORDERS.md over earlier release instructions. Canonical repository is congregation-assistant; convert the public repository to a path-preserving redirect only after canonical live verification. Push each completed numbered item to v3/resume; merge/deploy only after current gates pass. The user additionally authorizes an admin-only Home assistant for individual S-21 downloads and attendance entry. Retained R1 results are historical, not proof for changed UI.

@@ -77,7 +77,7 @@ export function Dialog({
                 <h3>{t("common.discardTitle")}</h3>
                 <p>{t("common.unsaved")}</p>
                 <div className="actions">
-                  <button onClick={() => setConfirm(false)}>
+                  <button onClick={() => setConfirm(false)} type="button">
                     {t("common.keepEditing")}
                   </button>
                   <button
@@ -85,7 +85,7 @@ export function Dialog({
                     onClick={() => {
                       setConfirm(false);
                       onClose();
-                    }}
+                    }} type="button"
                   >
                     {t("common.discard")}
                   </button>
