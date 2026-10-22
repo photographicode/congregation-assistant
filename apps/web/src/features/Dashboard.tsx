@@ -375,7 +375,7 @@ export function Dashboard({
                   : "A clear view of what’s in and who may need a reminder."}
               </p>
             </div>
-            <div className="form-grid">
+            <Stack>
               <label>
                 {t("ui.find.publisher.9607fbc9")}
                 <input
@@ -407,7 +407,7 @@ export function Dashboard({
                   ...groups.map((group) => ({ value: `group:${group}`, label: group })),
                 ]}
               />
-            </div>
+            </Stack>
             {!loading && !error && roster.length > 0 && (
               <div className="people-table-wrap">
               <table className="people-table">

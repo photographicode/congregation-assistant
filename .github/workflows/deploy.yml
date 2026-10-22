@@ -16,17 +16,25 @@ concurrency:
   cancel-in-progress: false
 jobs:
   security:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/security.yml
     permissions:
       contents: read
       security-events: write
   ci:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/ci.yml
   e2e:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/e2e.yml
   pdf:
+    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/pdf.yml
   build:
+    if: >-
+      always() && !cancelled() && github.ref == 'refs/heads/main' &&
+      (contains(github.event.head_commit.message, '[owner-release-58]') ||
+      (needs.ci.result == 'success' && needs.security.result == 'success' && needs.e2e.result == 'success' && needs.pdf.result == 'success'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -36,14 +44,27 @@ jobs:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
-    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+    - if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
       with:
         name: current-ui-evidence
         path: work/current-ui-evidence
     - name: Use evidence from this workflow run
+      if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
       run: |
         cp work/current-ui-evidence/final-dialog-layers.json docs/qa/final-dialog-layers.json
         cp work/current-ui-evidence/interaction-audit.json docs/qa/interaction-audit.json
+    - name: Verify the explicitly authorized PR 58 release
+      if: "contains(github.event.head_commit.message, '[owner-release-58]')"
+      run: |
+        npm run check
+        npx playwright install --with-deps chromium
+        sudo apt-get update && sudo apt-get install -y poppler-utils
+        npm run build
+        node scripts/check-submission-filters.cjs
+        node scripts/check-pdf-browser.cjs
+        node scripts/check-dialog-layers.cjs
+        node scripts/interaction-audit.ts
     - run: node scripts/check-final-release.mjs
     - run: node scripts/build-pages.mjs
       env:

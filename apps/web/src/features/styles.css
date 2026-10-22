@@ -351,7 +351,10 @@ svg {
   margin-bottom: 1.5rem;
 }
 .segmented button {
-  flex: 1;
+  flex: 0 1 auto;
+  min-width: min(100%, 8rem);
+  overflow-wrap: normal;
+  word-break: normal;
   border-color: transparent;
   background: transparent;
   white-space: normal;
