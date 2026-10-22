@@ -43,7 +43,7 @@ export function ManualMeetingParts({
           {t("ui.section.dfca5da5")}
           <LegacySelect
             value={section}
-            onChange={(e) => setSection(e.target.value as typeof section)}
+            onChange={(e) => setSection(e.target.value as typeof section)} aria-label={t("ui.section.dfca5da5")}
           >
             <option value="treasures">{t("ui.treasures.a6fe878a")}</option>
             <option value="field">{t("ui.field.ministry.e3b9a1fe")}</option>

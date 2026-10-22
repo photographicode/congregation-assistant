@@ -2,6 +2,7 @@ import { t } from "../../../../packages/core/i18n";
 import { DismissibleBanner } from "../../../../packages/ui/Notices";
 import React from "react";
 import { Button } from "../../../../packages/ui/components";
+import { handleError } from "../../../../packages/core/errors";
 
 export function UpdatePrompt() {
   const [waiting, setWaiting] = React.useState<ServiceWorker | null>(null),
@@ -21,7 +22,7 @@ export function UpdatePrompt() {
         const match = text.match(/const CACHE=PREFIX\+'([a-f0-9]+)'/);
         if (active && match) setVersion(match[1]);
       })
-      .catch(() => {});
+      .catch((error)=>{handleError(error,{scope:"features/UpdatePrompt.tsx",severity:'warning'});});
     return () => {
       active = false;
       channel.port1.close();
@@ -48,9 +49,7 @@ export function UpdatePrompt() {
           });
         });
       })
-      .catch(() => {
-        /* Browsers without persistent storage can still use the online app. */
-      });
+      .catch((error)=>{handleError(error,{scope:"features/UpdatePrompt.tsx",severity:'warning'});});
     const changed = () => {
       if (sessionStorage.getItem("ca-update-requested")) {
         sessionStorage.removeItem("ca-update-requested");

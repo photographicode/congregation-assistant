@@ -30,6 +30,9 @@ import {
 import { runPDF } from "./pdf-worker-client";
 import { offerPDF, pdfName, deliverPDF } from "./pdf-download";
 import type { Context } from "../main";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+
 const documents = [
   ["s21", "S-21 publisher records"],
   ["s3", "S-3-E monthly attendance"],
@@ -68,7 +71,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       "missing",
     ),
     [output, setOutput] = React.useState(() =>
-      localStorage.getItem("ca-s21-format") === "zip" ? "zip" : "merged",
+      preferenceStorage.getItem("ca-s21-format") === "zip" ? "zip" : "merged",
     ),
     [, setZipBytes] = React.useState<Uint8Array | null>(null);
   const [scheduleWeek, setScheduleWeek] = React.useState(
@@ -87,7 +90,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       try {
         const value =
           sessionStorage.getItem("ca-pdf-open") ||
-          localStorage.getItem("ca-pdf-kind");
+          preferenceStorage.getItem("ca-pdf-kind");
         sessionStorage.removeItem("ca-pdf-open");
         return available.some(([id]) => id === value)
           ? value!
@@ -297,8 +300,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
     setBytes(null);
     setSelected([]);
     try {
-      localStorage.setItem("ca-pdf-kind", kind);
-    } catch {}
+      preferenceStorage.setItem("ca-pdf-kind", kind);
+    } catch (error) { handleError(error, {scope:"features/PdfStudio.tsx",severity:'warning'}); }
   }, [kind, year, month]);
   React.useEffect(() => () => abort.current?.abort(), []);
   React.useEffect(
@@ -335,7 +338,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           if (preset.year) setYear(preset.year);
           sessionStorage.removeItem("ca-s21-person");
         }
-      } catch {}
+      } catch (error) { handleError(error, {scope:"features/PdfStudio.tsx",severity:'warning'}); }
     };
     if (sessionStorage.getItem("ca-s21-person")) open();
     window.addEventListener("ca:select-s21", open);
@@ -573,7 +576,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 {t("ui.month.310ca503")}
                 <LegacySelect
                   value={month}
-                  onChange={(e) => setMonth(Number(e.target.value))}
+                  onChange={(e) => setMonth(Number(e.target.value))} aria-label={t("ui.month.310ca503")}
                 >
                   {Array.from({ length: 12 }, (_, i) => (
                     <option key={i} value={i}>
@@ -757,10 +760,10 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                   value={output}
                   onChange={(e) => {
                     setOutput(e.target.value);
-                    localStorage.setItem("ca-s21-format", e.target.value);
+                    preferenceStorage.setItem("ca-s21-format", e.target.value);
                     setBytes(null);
                     setZipBytes(null);
-                  }}
+                  }} aria-label={t("ui.download.format.a4902f0f")}
                 >
                   <option value="merged">{t("ui.merged.pdf.382cc825")}</option>
                   <option value="zip">
@@ -848,7 +851,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                   onChange={(e) => {
                     setPrintLayout(e.target.value);
                     setBytes(null);
-                  }}
+                  }} aria-label={t("ui.layout.a5119091")}
                 >
                   <option value="list">{t("ui.weekly.list.f93ceecb")}</option>
                   <option value="grid">{t("ui.month.grid.82c6e1de")}</option>

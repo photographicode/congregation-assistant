@@ -128,7 +128,7 @@ export default function PublisherEditor({
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, group: e.target.value } : p));
                   setDirty(true);
-                }}
+                }} aria-label={t("ui.service.group.2c63b4a8")}
               >
                 <option value="">{t("ui.no.group.2463cfb8")}</option>
                 {groups.map((g) => (
@@ -255,7 +255,7 @@ export default function PublisherEditor({
                         p ? { ...p, familyHeadId: e.target.value } : p,
                       );
                       setDirty(true);
-                    }}
+                    }} aria-label={t("ui.household.head.d5d0c49d")}
                   >
                     <option value="">
                       {t("ui.this.person.is.the.household.head.79acde35")}
@@ -278,7 +278,7 @@ export default function PublisherEditor({
                         p ? { ...p, hope: e.target.value } : p,
                       );
                       setDirty(true);
-                    }}
+                    }} aria-label={t("ui.hope.8c765f98")}
                   >
                     <option value="">{t("ui.not.recorded.b37c7879")}</option>
                     <option>{t("ui.other.sheep.48f614b7")}</option>

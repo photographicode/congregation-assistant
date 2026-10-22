@@ -585,7 +585,7 @@ export function Reports({ context: c }: { context: Context }) {
             value={reportGroup}
             onChange={(e) =>
               setReportGroup(e.target.value as "all" | "regular" | "sfts")
-            }
+            } aria-label={t("sfts.filter")}
           >
             <option value="all">{t("sfts.all")}</option>
             <option value="regular">{t("sfts.rp")}</option>

@@ -412,7 +412,7 @@ function DepartmentPanel({
                           [slot]: e.target.value,
                         }));
                         setDirty(true);
-                      }}
+                      }} aria-label={duty.name}
                     >
                       <option value="">{t("oclm.needsPerson")}</option>
                       {pool.map((p) => (

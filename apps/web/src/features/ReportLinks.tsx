@@ -79,7 +79,7 @@ export function ReportLinks({ context: c }: { context: Context }) {
                 onChange={(e) => {
                   setGroup(e.target.value);
                   setLink("");
-                }}
+                }} aria-label={t("links.group")}
               >
                 {!groupOnly && <option value="">{t("s21.all")}</option>}
                 {groups.data?.map((item) => (

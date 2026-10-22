@@ -1,6 +1,6 @@
 import {SystemRuntime} from './system/SystemRuntime';
 import {SystemBoundary,SystemStatePage,stateKeys} from './system/SystemStates';
-import {getUILocale,subscribeUILocale} from '../../../packages/core/i18n';
+import {getLocaleSnapshot,getUILocale,subscribeUILocale} from '../../../packages/core/i18n';
 import {Toast,DismissibleBanner} from '../../../packages/ui/Notices';
 import './features/install-runtime';
 import {z} from "zod";
@@ -55,6 +55,8 @@ import "../../../packages/ui/v3-glass.css";
 import "../../../packages/ui/v3-interaction.css";
 import "../../../packages/ui/shell.css";
 import { Button } from "../../../packages/ui/components";
+import { TIMING } from "../../../packages/core/timing";
+import { handleError } from "../../../packages/core/errors";
 
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
@@ -85,7 +87,7 @@ export type Context = {
   notify: (s: string) => void;
 };
 function App() {
-  React.useSyncExternalStore(subscribeUILocale,getUILocale,getUILocale);
+  React.useSyncExternalStore(subscribeUILocale,getLocaleSnapshot,getLocaleSnapshot);
   const [updatesOpen,setUpdatesOpen]=useState(false);
   const [session, setSession] = useState<any>(null),
     [loading, setLoading] = useState(!demo),
@@ -235,7 +237,7 @@ function App() {
   };
   const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(storeFor(cong,roles),cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
   const roleScope=[...roles].sort().join(',');
-  useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch(()=>{});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch(()=>{});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,30000);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
+  useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,TIMING.maintenanceRetry);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
   async function signOut() {
     setQuick(false);setSearch(false);setAssistantOpen(false);setUpdatesOpen(false);setNotice("");window.dispatchEvent(new Event("ca:after-navigate"));
     const { clearDevice } = await import("./features/device-keys");

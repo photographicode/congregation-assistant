@@ -61,7 +61,7 @@ export function ExperiencePicker() {
                 a.set({
                   navigation: e.target.value as Experience["navigation"],
                 })
-              }
+              } aria-label={t("ui.navigation.3db65f8c")}
             >
               <option value="classic">
                 {t("ui.classic.sidebar.aa73889e")}
@@ -76,7 +76,7 @@ export function ExperiencePicker() {
               value={a.density}
               onChange={(e) =>
                 a.set({ density: e.target.value as Experience["density"] })
-              }
+              } aria-label={t("ui.density.77a283d6")}
             >
               <option value="comfortable">
                 {t("ui.comfortable.459a23a5")}
@@ -90,7 +90,7 @@ export function ExperiencePicker() {
               value={a.motion}
               onChange={(e) =>
                 a.set({ motion: e.target.value as Experience["motion"] })
-              }
+              } aria-label={t("ui.motion.8ca34424")}
             >
               <option value="full">{t("ui.full.008dacb6")}</option>
               <option value="reduced">{t("ui.reduced.9f96285d")}</option>
@@ -105,7 +105,7 @@ export function ExperiencePicker() {
                   colorIntensity: e.target
                     .value as Experience["colorIntensity"],
                 })
-              }
+              } aria-label={t("ui.color.intensity.ad9bc8bf")}
             >
               <option value="soft">{t("ui.soft.5964d467")}</option>
               <option value="vivid">{t("ui.vivid.acbbdc93")}</option>
@@ -119,7 +119,7 @@ export function ExperiencePicker() {
                 a.set({
                   background: e.target.value as Experience["background"],
                 })
-              }
+              } aria-label={t("ui.background.ea2b8a87")}
             >
               <option value="static">{t("ui.static.1d2c73dc")}</option>
               <option value="ambient">

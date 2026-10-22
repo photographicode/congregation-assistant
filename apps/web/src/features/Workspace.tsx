@@ -5,6 +5,7 @@ import {
 import { LegacySelect } from "../../../../packages/ui/components";
 import type { Person } from "./publisher-record";
 import {
+  getLocaleSnapshot,
   getUILocale,
   setUILocale,
   subscribeUILocale,
@@ -138,7 +139,7 @@ export default function Workspace({
   go: (s: string) => void;
   context: Context;
 }) {
-  React.useSyncExternalStore(subscribeUILocale, getUILocale, getUILocale);
+  React.useSyncExternalStore(subscribeUILocale, getLocaleSnapshot, getLocaleSnapshot);
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
     [groupsLoaded, setGroupsLoaded] = useState(demo),
@@ -942,7 +943,7 @@ export default function Workspace({
                                   j === i ? { ...x, group: e.target.value } : x,
                                 ),
                               )
-                            }
+                            } aria-label={t("ui.group.34ca0e76")}
                           >
                             <option value="">
                               {t("ui.no.group.2463cfb8")}
@@ -1156,7 +1157,7 @@ export default function Workspace({
                       value={weekend.exception}
                       onChange={(e) =>
                         changeWeekend("exception", e.target.value)
-                      }
+                      } aria-label={t("ui.week.exception.0d2efba7")}
                     >
                       {[
                         "normal",
@@ -1425,7 +1426,7 @@ export default function Workspace({
                   {t("ui.layout.a5119091")}
                   <LegacySelect
                     value={layout}
-                    onChange={(e) => setLayout(e.target.value)}
+                    onChange={(e) => setLayout(e.target.value)} aria-label={t("ui.layout.a5119091")}
                   >
                     <option value="week">
                       {t("ui.weekend.one.week.49362c20")}
@@ -1439,7 +1440,7 @@ export default function Workspace({
                   {t("ui.font.scale.8112fa23")}
                   <LegacySelect
                     value={printScale}
-                    onChange={(e) => setPrintScale(e.target.value)}
+                    onChange={(e) => setPrintScale(e.target.value)} aria-label={t("ui.font.scale.8112fa23")}
                   >
                     {["100", "125", "150", "175", "200"].map((x) => (
                       <option key={x} value={x}>
@@ -1487,7 +1488,7 @@ export default function Workspace({
             <h2>{t("ui.whatsapp.smart.share.cc65823b")}</h2>
             <label>
               {t("ui.template.0575f29d")}
-              <LegacySelect onChange={(e) => setTemplate(e.target.value)}>
+              <LegacySelect onChange={(e) => setTemplate(e.target.value)} aria-label={t("ui.template.0575f29d")}>
                 {[
                   "Hello {name}, your assignment is {part} on {date}. Schedule: {link}",
                   "Hello {name}, please submit your monthly report. {link}",
@@ -1650,7 +1651,7 @@ export default function Workspace({
               {t("ui.theme.efb52e71")}
               <LegacySelect
                 value={normalizeTheme(appearance.theme)}
-                onChange={(e) => appearance.set({ theme: e.target.value })}
+                onChange={(e) => appearance.set({ theme: e.target.value })} aria-label={t("ui.theme.efb52e71")}
               >
                 {["auto", ...themeIds].map((id) => (
                   <option key={id} value={id}>
@@ -1683,7 +1684,7 @@ export default function Workspace({
                 {t("ui.text.tone.267853f6")}
                 <LegacySelect
                   value={appearance.tone}
-                  onChange={(e) => appearance.set({ tone: e.target.value })}
+                  onChange={(e) => appearance.set({ tone: e.target.value })} aria-label={t("ui.text.tone.267853f6")}
                 >
                   {["soft", "standard", "sharp"].map((t) => (
                     <option key={t}>{t}</option>
@@ -1694,7 +1695,7 @@ export default function Workspace({
                 {t("ui.text.size.d68761cc")}
                 <LegacySelect
                   value={appearance.size}
-                  onChange={(e) => appearance.set({ size: e.target.value })}
+                  onChange={(e) => appearance.set({ size: e.target.value })} aria-label={t("ui.text.size.d68761cc")}
                 >
                   {["S", "M", "L", "XL"].map((s) => (
                     <option key={s}>{s}</option>
@@ -1705,7 +1706,7 @@ export default function Workspace({
                 {t("ui.icon.weight.fef9b03c")}
                 <LegacySelect
                   value={appearance.weight}
-                  onChange={(e) => appearance.set({ weight: e.target.value })}
+                  onChange={(e) => appearance.set({ weight: e.target.value })} aria-label={t("ui.icon.weight.fef9b03c")}
                 >
                   {["light", "regular", "bold"].map((s) => (
                     <option key={s}>{s}</option>
@@ -1729,7 +1730,7 @@ export default function Workspace({
                   appearance.set({
                     fit: e.target.value as typeof appearance.fit,
                   })
-                }
+                } aria-label={t("ui.fit.to.my.screen.189a4a53")}
               >
                 {["auto", "compact", "comfortable", "large"].map((f) => (
                   <option key={f} value={f}>
@@ -1747,7 +1748,7 @@ export default function Workspace({
               {t("language.label")}
               <LegacySelect
                 value={getUILocale()}
-                onChange={(e) => setUILocale(e.target.value as Locale)}
+                onChange={(e) => setUILocale(e.target.value as Locale)} aria-label={t("language.label")}
               >
                 {Object.entries(localeMetadata).map(([code, meta]) => (
                   <option key={code} value={code}>
@@ -1766,7 +1767,7 @@ export default function Workspace({
                   appearance.set({
                     clock: e.target.value as typeof appearance.clock,
                   })
-                }
+                } aria-label={t("ui.time.format.80d7dcf2")}
               >
                 <option value="locale">
                   {t("ui.follow.language.9cc37a4f")}
@@ -1803,7 +1804,7 @@ export default function Workspace({
                 value={setup.delivery}
                 onChange={(e) =>
                   setSetup((s: any) => ({ ...s, delivery: e.target.value }))
-                }
+                } aria-label={t("ui.delivery.mode.c9585346")}
               >
                 {catalogue.deliveryModes.map((m) => (
                   <option key={m.id} value={m.id}>

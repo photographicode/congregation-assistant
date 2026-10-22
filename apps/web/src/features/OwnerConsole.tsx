@@ -392,7 +392,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                         status: e.target.value,
                       }));
                       setDirty(true);
-                    }}
+                    }} aria-label={t("ui.status.920e413c")}
                   >
                     <option value="trial">{t("ui.trial.98a66e97")}</option>
                     <option value="active">{t("ui.active.92340695")}</option>

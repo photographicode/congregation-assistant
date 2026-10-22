@@ -8,6 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { client, demo, rpc } from "./client";
 import type { Context } from "../main";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+import { TIMING } from "../../../../packages/core/timing";
+
 const schema = z.array(
   z.object({
     id: z.string(),
@@ -35,7 +39,7 @@ export function Sessions({ context: c }: { context: Context }) {
     [error, setError] = React.useState("");
   const [idle, setIdle] = React.useState(() => {
     try {
-      return localStorage.getItem("ca-admin-idle-minutes") || "0";
+      return preferenceStorage.getItem("ca-admin-idle-minutes") || "0";
     } catch {
       return "0";
     }
@@ -85,14 +89,14 @@ export function Sessions({ context: c }: { context: Context }) {
           onChange={(e) => {
             setIdle(e.target.value);
             try {
-              localStorage.setItem("ca-admin-idle-minutes", e.target.value);
+              preferenceStorage.setItem("ca-admin-idle-minutes", e.target.value);
               window.dispatchEvent(new Event("ca-idle-preference"));
             } catch {
               setError(
                 "This browser could not save the timeout. Keep this device locked when away.",
               );
             }
-          }}
+          }} aria-label={t("ui.admin.idle.timeout.on.this.device.076b6711")}
         >
           <option value="0">{t("ui.off.ca7981b4")}</option>
           <option value="15">{t("ui.15.minutes.2f18bc2a")}</option>
@@ -151,8 +155,8 @@ export function AdminIdleTimeout({
       check = async () => {
         let minutes = 0;
         try {
-          minutes = Number(localStorage.getItem("ca-admin-idle-minutes") || 0);
-        } catch {}
+          minutes = Number(preferenceStorage.getItem("ca-admin-idle-minutes") || 0);
+        } catch (error) { handleError(error, {scope:"features/Sessions.tsx",severity:'warning'}); }
         if (
           ![15, 30, 60].includes(minutes) ||
           Date.now() - last < minutes * 60000 ||
@@ -174,7 +178,7 @@ export function AdminIdleTimeout({
     window.addEventListener("keydown", mark);
     window.addEventListener("ca-idle-preference", mark);
     document.addEventListener("visibilitychange", resume);
-    const timer = setInterval(() => void check(), 10000);
+    const timer = setInterval(() => void check(), TIMING.undo);
     return () => {
       clearInterval(timer);
       window.removeEventListener("pointerdown", mark);

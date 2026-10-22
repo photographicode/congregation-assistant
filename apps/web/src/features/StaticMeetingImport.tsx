@@ -7,6 +7,8 @@ import {
   type Program,
 } from "../../../../packages/core/meeting";
 import { publicationJSON } from "./publication-data";
+import { handleError } from "../../../../packages/core/errors";
+
 const sourceSchema = z.object({
   source_url: z.url().refine((url) => new URL(url).hostname === "wol.jw.org"),
   weekStart: z.string(),
@@ -108,7 +110,7 @@ export function StaticMeetingImport({
             .join(" · "),
         );
       }
-    })().catch(() => {});
+    })().catch((error)=>{handleError(error,{scope:"features/StaticMeetingImport.tsx",severity:'warning'});});
     return () => {
       active = false;
     };

@@ -1,3 +1,4 @@
+import {validatePublicConfig} from '../../../../packages/core/config';
 import {monitoredFetch} from '../system/network';
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
@@ -8,7 +9,9 @@ import {
 } from "../../../../packages/core/plain-store";
 import { plainTransport } from "../../../../packages/core/plain-transport";
 import type { Store, StoreEvent } from "../../../../packages/core/store";
-export const config = publicConfig;
+import { handleError } from "../../../../packages/core/errors";
+
+export const config = validatePublicConfig(publicConfig);
 export const demo = new URLSearchParams(location.search).has("demo");
 const sdk = createClient(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY, {
   global: {fetch:monitoredFetch},
@@ -66,7 +69,7 @@ export async function clearStores() {
 }
 export function switchStoreAccount(next: string | null) {
   if (account === (next || "")) return;
-  void clearStores().catch(() => {});
+  void clearStores().catch((error)=>{handleError(error,{scope:"features/client.ts",severity:'warning'});});
   account = next || "";
 }
 export async function syncStores() {

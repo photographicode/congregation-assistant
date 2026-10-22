@@ -134,7 +134,7 @@ export function Access({
               {t("ui.role.14736a2e")}
               <LegacySelect
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(e) => setRole(e.target.value)} aria-label={t("ui.role.14736a2e")}
               >
                 {roles.map((r) => (
                   <option key={r} value={r}>
@@ -148,7 +148,7 @@ export function Access({
                 {t("ui.assigned.group.3395b08d")}
                 <LegacySelect
                   value={group}
-                  onChange={(e) => setGroup(e.target.value)}
+                  onChange={(e) => setGroup(e.target.value)} aria-label={t("ui.assigned.group.3395b08d")}
                 >
                   <option value="">{t("ui.choose.a.group.005a6177")}</option>
                   {groups.data?.map((g) => (

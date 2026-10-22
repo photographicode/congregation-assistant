@@ -13,6 +13,9 @@ import {
 } from "../../../../packages/core/talk-history";
 import { rpc, demo } from "./client";
 import type { Context } from "../main";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
+
 const schema = z.array(
   z.object({
     date: z.string(),
@@ -41,7 +44,7 @@ export function WeekendTalkHistory({
   const key = "ca-talk-threshold:" + c.account + ":" + c.cong,
     [threshold, setThreshold] = React.useState(() => {
       try {
-        return Number(localStorage.getItem(key)) || 12;
+        return Number(preferenceStorage.getItem(key)) || 12;
       } catch {
         return 12;
       }
@@ -123,8 +126,8 @@ export function WeekendTalkHistory({
                 );
                 setThreshold(value);
                 try {
-                  localStorage.setItem(key, String(value));
-                } catch {}
+                  preferenceStorage.setItem(key, String(value));
+                } catch (error) { handleError(error, {scope:"features/WeekendTalkHistory.tsx",severity:'warning'}); }
               }}
             />
           </label>

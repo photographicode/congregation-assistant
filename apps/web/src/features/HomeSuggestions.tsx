@@ -7,6 +7,8 @@ import {
 } from "../../../../packages/core/suggestions";
 import type { Context } from "../main";
 import { Button } from "../../../../packages/ui/components";
+import { handleError } from "../../../../packages/core/errors";
+import { preferenceStorage } from "../../../../packages/core/storage";
 
 const all = [
   "admin",
@@ -270,14 +272,14 @@ export function HomeSuggestions({
     let history: string[][] = [],
       excluded: string[] = [];
     try {
-      history = suggestionHistory(localStorage.getItem(key));
+      history = suggestionHistory(preferenceStorage.getItem(key));
       const snoozes = JSON.parse(
-        localStorage.getItem(key + ":snoozes") || "{}",
+        preferenceStorage.getItem(key + ":snoozes") || "{}",
       );
       excluded = Object.entries(snoozes)
         .filter(([, until]) => Number(until) > Date.now())
         .map(([id]) => id);
-    } catch {}
+    } catch (error) { handleError(error, {scope:"features/HomeSuggestions.tsx",severity:'warning'}); }
     const candidates: Suggestion[] = ideas.map(
       ([id, title, action, route, roles]) => ({
         id,
@@ -308,11 +310,11 @@ export function HomeSuggestions({
     launches.set(key, picked);
     setCards(picked);
     try {
-      localStorage.setItem(
+      preferenceStorage.setItem(
         key,
         JSON.stringify([...history, picked.map((card) => card.id)].slice(-5)),
       );
-    } catch {}
+    } catch (error) { handleError(error, {scope:"features/HomeSuggestions.tsx",severity:'warning'}); }
   }, [key, ready]);
   function dismiss(id: string, snooze = false) {
     const next = cards.filter((card) => card.id !== id);
@@ -321,11 +323,11 @@ export function HomeSuggestions({
     if (snooze)
       try {
         const stored = JSON.parse(
-          localStorage.getItem(key + ":snoozes") || "{}",
+          preferenceStorage.getItem(key + ":snoozes") || "{}",
         );
         stored[id] = Date.now() + 86400000;
-        localStorage.setItem(key + ":snoozes", JSON.stringify(stored));
-      } catch {}
+        preferenceStorage.setItem(key + ":snoozes", JSON.stringify(stored));
+      } catch (error) { handleError(error, {scope:"features/HomeSuggestions.tsx",severity:'warning'}); }
   }
   return ready && cards.length ? (
     <section className="stack" aria-label={t("ui.suggestions.16c1d601")}>

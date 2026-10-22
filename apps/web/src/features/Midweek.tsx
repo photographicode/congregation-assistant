@@ -33,6 +33,8 @@ import { offerPDF } from "./pdf-download";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import type { SyncStatus } from "../../../../packages/core/store";
 import type { Context } from "../main";
+import { handleError } from "../../../../packages/core/errors";
+
 const slots = [
   ["Chairman", "Chairman"],
   ["OpeningPrayer", "Opening prayer"],
@@ -170,7 +172,7 @@ export function Midweek({
         .then((value) => {
           if (active) setSyncStatus(value);
         })
-        .catch(() => {});
+        .catch((error)=>{handleError(error,{scope:"features/Midweek.tsx",severity:'warning'});});
     update();
     const unsubscribe = subscribeStores(update);
     return () => {

@@ -134,9 +134,6 @@
     "max-lines-per-function": {
       "count": 1
     },
-    "no-empty": {
-      "count": 3
-    },
     "no-magic-numbers": {
       "count": 2
     },
@@ -167,7 +164,7 @@
       "count": 2
     },
     "no-magic-numbers": {
-      "count": 11
+      "count": 9
     }
   },
   "apps/web/src/features/ManualMeetingParts.tsx": {
@@ -233,9 +230,6 @@
     },
     "max-lines-per-function": {
       "count": 3
-    },
-    "no-empty": {
-      "count": 2
     },
     "no-magic-numbers": {
       "count": 25
@@ -345,11 +339,8 @@
     "@typescript-eslint/no-misused-promises": {
       "count": 1
     },
-    "no-empty": {
-      "count": 1
-    },
     "no-magic-numbers": {
-      "count": 5
+      "count": 4
     },
     "no-nested-ternary": {
       "count": 1
@@ -373,9 +364,6 @@
   },
   "apps/web/src/features/WeekendTalkHistory.tsx": {
     "max-lines-per-function": {
-      "count": 1
-    },
-    "no-empty": {
       "count": 1
     },
     "no-magic-numbers": {
@@ -446,9 +434,6 @@
     }
   },
   "apps/web/src/features/pdf-assets.ts": {
-    "no-empty": {
-      "count": 2
-    },
     "no-magic-numbers": {
       "count": 1
     }
@@ -472,16 +457,6 @@
       "count": 1
     }
   },
-  "apps/web/src/features/publication-data.ts": {
-    "no-empty": {
-      "count": 2
-    }
-  },
-  "apps/web/src/features/store.ts": {
-    "no-empty": {
-      "count": 3
-    }
-  },
   "apps/web/src/main.tsx": {
     "@typescript-eslint/no-explicit-any": {
       "count": 4
@@ -499,7 +474,7 @@
       "count": 1
     },
     "no-magic-numbers": {
-      "count": 2
+      "count": 1
     },
     "no-nested-ternary": {
       "count": 10
@@ -510,7 +485,7 @@
   },
   "apps/web/src/system/SystemRuntime.tsx": {
     "no-magic-numbers": {
-      "count": 6
+      "count": 5
     }
   },
   "apps/web/src/system/SystemStates.tsx": {
@@ -518,7 +493,7 @@
       "count": 1
     },
     "no-magic-numbers": {
-      "count": 6
+      "count": 5
     },
     "no-nested-ternary": {
       "count": 2
@@ -532,7 +507,7 @@
       "count": 1
     },
     "no-magic-numbers": {
-      "count": 12
+      "count": 8
     }
   },
   "packages/core/assignment-recency.ts": {
@@ -549,11 +524,6 @@
     },
     "no-nested-ternary": {
       "count": 2
-    }
-  },
-  "packages/core/install-controller.ts": {
-    "no-magic-numbers": {
-      "count": 1
     }
   },
   "packages/core/local-command.ts": {
@@ -682,11 +652,6 @@
       "count": 6
     },
     "complexity": {
-      "count": 1
-    }
-  },
-  "packages/ui/AppShell.tsx": {
-    "no-empty": {
       "count": 1
     }
   },

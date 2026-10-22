@@ -21,6 +21,8 @@ import type { Context } from "../main";
 import { PersonPicker, Button } from "../../../../packages/ui/components";
 import { commandRegistry } from "../../../../packages/core/command-registry";
 import { Plus, Send } from "lucide-react";
+import { TIMING } from "../../../../packages/core/timing";
+
 export function LocalAssistant({
   context: c,
   onExport,
@@ -141,7 +143,7 @@ export function LocalAssistant({
       const [calendarYear,calendarMonth]=plan.period.split('-').map(Number);const serviceYear=calendarYear+(calendarMonth>=9?1:0);
       const record=rows.find(row=>row.pub_id===publisher&&row.service_year===serviceYear&&row.month===calendarMonth-1);
       if(!record?.is_ap){setError('No auxiliary-pioneer report exists for this publisher and month.');return;}
-      lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),10000);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+      lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),TIMING.undo);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
     }
     if (plan.kind === "publisher-edit") {
       if(!publisher||lock.current)return;
@@ -155,7 +157,7 @@ export function LocalAssistant({
         const expected=demo?[]:await rpc('get_publisher_login',{p_cong_id:c.cong,p_publisher_id:publisher});
         const person={...sourceRecord,[field]:plan.value,expected_login:expected};
         const shared=Boolean(sourceRecord.email&&people.data.some(row=>row.id!==publisher&&(row as Record<string,unknown>).email===sourceRecord.email));
-        await savePublisherAction(c.cong,person,shared,c.roles);setPublisherUndo({id:publisher,field,previous:sourceRecord[field],value:plan.value,until:Date.now()+10000});setTimeout(()=>setPublisherUndo(null),10000);cache.setQueryData(["assistant-people",c.account,c.cong],people.data.map(row=>row.id===publisher?person:row));await cache.invalidateQueries({queryKey:["dashboard-people"]});setPlan(null);setInput("");c.notify(demo?"Publisher edit applied to this fictional preview.":"Publisher saved.");}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}
+        await savePublisherAction(c.cong,person,shared,c.roles);setPublisherUndo({id:publisher,field,previous:sourceRecord[field],value:plan.value,until:Date.now()+10000});setTimeout(()=>setPublisherUndo(null),TIMING.undo);cache.setQueryData(["assistant-people",c.account,c.cong],people.data.map(row=>row.id===publisher?person:row));await cache.invalidateQueries({queryKey:["dashboard-people"]});setPlan(null);setInput("");c.notify(demo?"Publisher edit applied to this fictional preview.":"Publisher saved.");}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}
       return;
     }
     if (plan.kind === "s21-person") {

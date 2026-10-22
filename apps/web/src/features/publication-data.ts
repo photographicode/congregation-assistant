@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { handleError } from "../../../../packages/core/errors";
+
 export async function publicationJSON(url: URL) {
   let cache: Cache | undefined;
   try {
     cache = await caches.open("ca-publications:" + import.meta.env.BASE_URL);
-  } catch {}
+  } catch (error) { handleError(error, {scope:"features/publication-data.ts",severity:'warning'}); }
   try {
     const response = await fetch(url);
     if (!response.ok) return null;
@@ -15,7 +17,7 @@ export async function publicationJSON(url: URL) {
           headers: { "Content-Type": "application/json" },
         }),
       );
-    } catch {}
+    } catch (error) { handleError(error, {scope:"features/publication-data.ts",severity:'warning'}); }
     return value;
   } catch {
     const saved = await cache?.match(url);

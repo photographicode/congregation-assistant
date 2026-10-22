@@ -197,7 +197,9 @@ export function ExperienceProfile({ context: c }: { context: Context }) {
                         value={defaults[key]}
                         onChange={(e) =>
                           setDefaults({ ...defaults, [key]: e.target.value })
-                        }
+                        } aria-label={key === "adminStyle"
+                                                      ? "Congregation experience"
+                                                      : "Publisher portal experience"}
                       >
                         {(["calm", "balanced", "lively"] as const).map(
                           (value) => (

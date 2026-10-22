@@ -425,6 +425,7 @@ export function Combobox({
         ref={trigger}
         type="button"
         className="ui-combobox-trigger"
+        data-value={value}
         disabled={disabled}
         role="combobox"
         aria-labelledby={id + "-label"}
@@ -465,6 +466,7 @@ export function Combobox({
                 id={id + "-" + index}
                 key={option.value}
                 role="option"
+                data-value={option.value}
                 aria-selected={option.value === value}
                 aria-disabled={option.disabled || undefined}
                 className={index === active ? "active" : ""}
