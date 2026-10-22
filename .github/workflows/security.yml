@@ -71,7 +71,7 @@ jobs:
         cache: npm
     - run: npm ci --ignore-scripts
     - run: npm audit --omit=dev --audit-level=high
-    - run: mkdir -p work/security && npx cyclonedx-npm --omit dev --output-file work/security/sbom.json
+    - run: mkdir -p work/security && npx cyclonedx-npm --package-lock-only --omit dev --output-file work/security/sbom.json
     - name: OSV source lockfile scan
       run: |
         go install github.com/google/osv-scanner/v2/cmd/osv-scanner@v2.3.1

@@ -246,3 +246,11 @@ Source dependency analysis passes. Extracting shared Context out of the entrypoi
 - The 30-view Home sample failed (749 HARD, 17 soft); narrow-table and privacy-note corrections are implemented pending next-batch characterization. Full geometry is not accepted. Strict types, legacy Stylelint/CSS targets, unused/duplication, coverage and database/security runtime gates still block merge/deploy.
 
 The final local check for this batch passed 209 Vitest tests (30 files), 83 script contracts, default TypeScript and ESLint. The suppression baseline remains 651, down from 681. Deployment permissions now escalate Pages/OIDC only in the Pages job; other jobs default to contents-read. CI quality runs on the quality branch and checks bundle size after building.
+
+### Quality feedback: Actions and responsive table correction
+
+At b38411b, the 30-view Home sample reaches zero HARD findings, with 17 soft text-wrapping findings still open. See docs/qa/quality/home-layout.json; this remains a limited sample, not full-product acceptance.
+
+Actions confirms architecture, cycles, duplication, lint-ratchet, Semgrep and CodeQL pass. Strict typing, CSS/style, unused, coverage and forced RLS fail as expected from the open work. The public-safety test fixture and a precisely scoped historical Gitleaks catalogue-key false positive were corrected without disabling scanner rules.
+
+Vitest/coverage 4.1.12, Wrangler 4.151.3 and fflate 0.8.3 address fixable dependency advisories. The upgraded suite passes 209 Vitest tests and 83 script contracts; build passes; production npm audit reports zero vulnerabilities. The reproducible lockfile production SBOM passes the unchanged licence allow-list. OSV results for the upgraded lockfile are pending; the unfixed braces advisory is explicitly open. No release was merged or deployed.
