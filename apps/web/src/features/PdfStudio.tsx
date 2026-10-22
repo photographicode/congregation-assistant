@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import {
   dutyRosterLines,
@@ -885,7 +884,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
             </p>
           )}
           <div className="actions">
-            <button
+            <Button
               className="primary"
               disabled={
                 busy ||
@@ -895,24 +894,24 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 year < 1900 ||
                 year > 2200
               }
-              onClick={() => void generate()}
+              onClick={() => void generate()} type="button"
             >
               {busy ? "Preparing…" : "Download"}
-            </button>
+            </Button>
             <Disclosure>
               <DisclosureLabel>{t("ui.print.share.e31afdd0")}</DisclosureLabel>
-              <button
+              <Button
                 disabled={busy || data.isLoading}
-                onClick={() => void generate("print")}
+                onClick={() => void generate("print")} type="button"
               >
                 {t("ui.print.df0fe798")}
-              </button>
-              <button
+              </Button>
+              <Button
                 disabled={busy || data.isLoading}
-                onClick={() => void generate("share")}
+                onClick={() => void generate("share")} type="button"
               >
                 {t("ui.share.29887a5f")}
-              </button>
+              </Button>
             </Disclosure>
           </div>
           {busy && (
@@ -922,9 +921,9 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                 max={100}
                 aria-label={t("ui.pdf.generation.abfc7308")}
               />
-              <button onClick={() => abort.current?.abort()}>
+              <Button onClick={() => abort.current?.abort()} type="button">
                 {t("ui.cancel.generation.12ad4ee6")}
-              </button>
+              </Button>
             </>
           )}
           <p className="muted">{t("refine.pdfPrivacy")}</p>
@@ -932,15 +931,15 @@ export default function PdfStudio({ context: c }: { context: Context }) {
         <section className="card">
           <h2>{t("ui.accuracy.guard.c7262bfe")}</h2>
           <p>{t("ui.missing.reports.remain.blank.and.never.blo.169f911e")}</p>
-          <button
+          <Button
             onClick={() => {
               const url = new URL(location.href);
               url.searchParams.set("screen", "reports");
               location.assign(url);
-            }}
+            }} type="button"
           >
             {t("ui.review.reports.5356c355")}
-          </button>
+          </Button>
         </section>
       </div>
     </>

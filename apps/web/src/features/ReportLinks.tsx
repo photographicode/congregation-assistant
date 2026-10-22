@@ -1,5 +1,5 @@
 import {createReportLink} from './link-action';
-import { LegacySelect } from "../../../../packages/ui/components";
+import { LegacySelect, Button } from "../../../../packages/ui/components";
 import { HomeGroupLinks } from "./HomeGroupLinks";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -89,23 +89,23 @@ export function ReportLinks({ context: c }: { context: Context }) {
                 ))}
               </LegacySelect>
             </label>
-            <button
+            <Button
               disabled={
                 busy ||
                 groups.isLoading ||
                 !!groups.error ||
                 (groupOnly && !group)
               }
-              onClick={() => void create("report")}
+              onClick={() => void create("report")} type="button"
             >
               {t("links.report")}
-            </button>
+            </Button>
           </>
         )}
         {attendanceAllowed && (
-          <button disabled={busy} onClick={() => void create("attendance")}>
+          <Button disabled={busy} onClick={() => void create("attendance")} type="button">
             {t("links.attendance")}
-          </button>
+          </Button>
         )}
         {(error || groups.error) && (
           <p role="alert">{error || groups.error?.message}</p>
@@ -116,16 +116,16 @@ export function ReportLinks({ context: c }: { context: Context }) {
               {t("links.protected")}
               <input readOnly value={link} />
             </label>
-            <button
+            <Button
               onClick={() =>
                 void navigator.clipboard
                   .writeText(link)
                   .then(() => c.notify(t("common.copied")))
                   .catch(() => setError(t("oclm.copyFailed")))
-              }
+              } type="button"
             >
               {t("common.copy")}
-            </button>
+            </Button>
             <a href={link} target="_blank" rel="noreferrer">
               {t("links.open")}
             </a>

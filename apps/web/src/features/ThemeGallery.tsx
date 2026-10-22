@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import React from "react";
 import { useAppearance } from "./store";
 import { themeIds } from "../../../../packages/core/themes";
@@ -13,23 +12,23 @@ export function ThemeGallery() {
     <Disclosure className="theme-gallery">
       <DisclosureLabel>{t("theme.gallery")}</DisclosureLabel>
       <div className="actions">
-        <button
+        <Button
           onClick={() => {
             const choice = new Uint32Array(1);
             crypto.getRandomValues(choice);
             a.set({ theme: themeIds[choice[0] % themeIds.length] });
-          }}
+          }} type="button"
         >
           {t("theme.surprise")}
-        </button>
+        </Button>
       </div>
       <div className="experience-cards">
         {themes.map(([id, label]) => (
-          <button
+          <Button
             key={id}
             className="theme-option"
             aria-pressed={a.theme === id}
-            onClick={() => a.set({ theme: id })}
+            onClick={() => a.set({ theme: id })} type="button"
           >
             <span className="theme-preview" data-theme={id}>
               <span className="theme-preview-surface">
@@ -41,7 +40,7 @@ export function ThemeGallery() {
               </span>
             </span>
             <strong>{label}</strong>
-          </button>
+          </Button>
         ))}
       </div>
       <p>{t("theme.hint")}</p>

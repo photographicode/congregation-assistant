@@ -4,6 +4,8 @@ import { z } from "zod";
 import { rpc, demo } from "./client";
 import { t } from "../../../../packages/core/i18n";
 import type { Context } from "../main";
+import { Button } from "../../../../packages/ui/components";
+
 const schema = z
   .object({
     configured: z.boolean(),
@@ -113,7 +115,7 @@ export function CurrentAttendance({ context: c }: { context: Context }) {
               }}
             />
           </label>
-          <button disabled={busy}>{t("attendance.save")}</button>
+          <Button disabled={busy} type="submit">{t("attendance.save")}</Button>
         </form>
       ) : (
         <p>

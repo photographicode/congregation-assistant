@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -53,7 +52,7 @@ export function ManualMeetingParts({
             </option>
           </LegacySelect>
         </label>
-        <button
+        <Button
           disabled={
             !title.trim() ||
             !Number.isInteger(minutes) ||
@@ -79,10 +78,10 @@ export function ManualMeetingParts({
               },
             ]);
             setTitle("");
-          }}
+          }} type="button"
         >
           {t("ui.add.part.16b7300b")}
-        </button>
+        </Button>
         <ol>
           {parts.map((part) => (
             <li key={part.id}>
@@ -90,7 +89,7 @@ export function ManualMeetingParts({
             </li>
           ))}
         </ol>
-        <button
+        <Button
           disabled={!parts.length}
           onClick={() =>
             onSave({
@@ -99,10 +98,10 @@ export function ManualMeetingParts({
               sourceMonth: new Date().toISOString().slice(0, 7),
               parts,
             })
-          }
+          } type="button"
         >
           {t("ui.use.these.parts.5b269055")}
-        </button>
+        </Button>
       </div>
     </Disclosure>
   );

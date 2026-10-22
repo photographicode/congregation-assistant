@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -51,9 +50,9 @@ export function Sessions({ context: c }: { context: Context }) {
       ) : data.error ? (
         <p role="alert">
           {t("ui.sessions.could.not.load.apply.the.session..3c2f68dc")}
-          <button onClick={() => void data.refetch()}>
+          <Button onClick={() => void data.refetch()} type="button">
             {t("ui.retry.942087cc")}
-          </button>
+          </Button>
           .
         </p>
       ) : (
@@ -103,7 +102,7 @@ export function Sessions({ context: c }: { context: Context }) {
       </label>
       <p>{t("refine.signOutHelp0")}</p>
       <p>{t("refine.signOutHelp1")}</p>
-      <button
+      <Button
         disabled={busy}
         onClick={async () => {
           setBusy(true);
@@ -123,10 +122,10 @@ export function Sessions({ context: c }: { context: Context }) {
           } finally {
             setBusy(false);
           }
-        }}
+        }} type="button"
       >
         {t("ui.sign.out.everywhere.af180fca")}
-      </button>
+      </Button>
       {error && (
         <p className="error" role="alert">
           {error}

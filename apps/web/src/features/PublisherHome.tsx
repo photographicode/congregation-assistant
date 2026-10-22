@@ -6,6 +6,8 @@ import { client, demo, rpc } from "./client";
 import type { Context } from "../main";
 import { Greeting } from "../../../../packages/ui/Greeting";
 import { useAppearance } from "./store";
+import { Button } from "../../../../packages/ui/components";
+
 export function PublisherHome({
   context: c,
   go,
@@ -55,9 +57,9 @@ export function PublisherHome({
             {data?.report?.period || "Your current reporting period"} ·{" "}
             {data?.report?.submitted ? "Submitted" : "Ready to report"}
           </p>
-          <button className="primary" onClick={() => go("reports")}>
+          <Button className="primary" onClick={() => go("reports")} type="button">
             {t("ui.open.household.reports.e625ea75")}
-          </button>
+          </Button>
         </section>
         <section className="card stack">
           <h2>{t("ui.my.assignments.3a57df89")}</h2>
@@ -78,9 +80,9 @@ export function PublisherHome({
           {!data?.assignments?.length && (
             <p>{t("ui.no.published.assignments.are.available.ac5d3d10")}</p>
           )}
-          <button onClick={() => go("schedule")}>
+          <Button onClick={() => go("schedule")} type="button">
             {t("ui.open.schedule.2a724cdf")}
-          </button>
+          </Button>
         </section>
       </div>
     </>

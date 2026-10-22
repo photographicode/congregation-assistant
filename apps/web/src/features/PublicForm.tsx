@@ -1,5 +1,5 @@
 import {SystemStatePage} from '../system/SystemStates';
-import { LegacySelect } from "../../../../packages/ui/components";
+import { LegacySelect, Button } from "../../../../packages/ui/components";
 import {
   keepReportDraft,
   loadReportDraft,
@@ -448,16 +448,16 @@ export function PublicForm() {
                   />
                 </>
               )}
-              <button
+              <Button
                 disabled={busy || (kind === "report" && !person)}
-                className="primary"
+                className="primary" type="submit"
               >
                 {busy
                   ? t("refine.submitting")
                   : kind === "report"
                     ? t("refine.submit")
                     : "Submit attendance"}
-              </button>
+              </Button>
             </fieldset>
           </form>
         )
@@ -527,9 +527,9 @@ export function PublicForm() {
               {t("ui.source.wol.jw.org.f4aa1fbe")}
             </a>
           )}
-          <button onClick={() => window.print()}>
+          <Button onClick={() => window.print()} type="button">
             {t("ui.print.schedule.8808f1e7")}
-          </button>
+          </Button>
         </>
       )}
       <p className="muted">

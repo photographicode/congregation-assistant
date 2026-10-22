@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -26,7 +25,7 @@ export function ExperiencePicker() {
         {(["calm", "balanced", "lively"] as const).map((style) => (
           <article key={style} className={"experience-option " + style}>
             <HomePreview style={style} />
-            <button
+            <Button
               aria-pressed={a.style === style && a.experienceChosen}
               onClick={() =>
                 a.set({
@@ -35,7 +34,7 @@ export function ExperiencePicker() {
                     ? { theme: "lagoon-glass" }
                     : {}),
                 })
-              }
+              } type="button"
             >
               <strong>{style[0].toUpperCase() + style.slice(1)}</strong>
               <span>
@@ -45,7 +44,7 @@ export function ExperiencePicker() {
                     ? "A useful overview. Clear numbers and gentle accents."
                     : "A richer dashboard. Color, charts and a little motion."}
               </span>
-            </button>
+            </Button>
           </article>
         ))}
       </div>

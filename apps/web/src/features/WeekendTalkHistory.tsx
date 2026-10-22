@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -141,12 +140,12 @@ export function WeekendTalkHistory({
           {talkFinder(rows, date, query)
             .slice(0, 50)
             .map((row) => (
-              <button
+              <Button
                 key={row.talk_no}
-                onClick={() => onChoose(row.talk_no, row.title)}
+                onClick={() => onChoose(row.talk_no, row.title)} type="button"
               >
                 {row.talk_no} · {row.title || "Untitled talk"} · {row.date}
-              </button>
+              </Button>
             ))}
           <label>
             {t("ui.past.talks.yyyy.mm.dd.number.487b21d4")}
@@ -176,7 +175,7 @@ export function WeekendTalkHistory({
               }}
             />
           </label>
-          <button
+          <Button
             disabled={busy || !paste.trim()}
             onClick={() => {
               void (async () => {
@@ -200,10 +199,10 @@ export function WeekendTalkHistory({
                   setBusy(false);
                 }
               })();
-            }}
+            }} type="button"
           >
             {t("ui.add.past.talk.records.131cac3c")}
-          </button>
+          </Button>
           {error && <p role="alert">{error}</p>}
         </div>
       </Disclosure>

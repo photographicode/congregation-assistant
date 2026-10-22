@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel,
-} from "../../../../packages/ui/components";
+  DisclosureLabel, Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
@@ -200,7 +199,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           <h1>{t("ui.command.centre.44cd32e8")}</h1>
           <p>{t("ui.manage.workspace.requests.billing.status.a.2bb31c60")}</p>
         </div>
-        <button
+        <Button
           className="primary"
           onClick={() => {
             setError("");
@@ -213,10 +212,10 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
               trial_days: 30,
               payment_date: "",
             });
-          }}
+          }} type="button"
         >
           {t("ui.add.congregation.b66889a4")}
-        </button>
+        </Button>
       </div>
       {error && (
         <p className="error" role="alert">
@@ -231,9 +230,9 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           {requests.error ? (
             <p role="alert">
               {t("ui.requests.could.not.load.2692df29")}
-              <button onClick={() => void requests.refetch()}>
+              <Button onClick={() => void requests.refetch()} type="button">
                 {t("ui.retry.942087cc")}
-              </button>
+              </Button>
             </p>
           ) : pending.length ? (
             pending.map((r) => (
@@ -244,14 +243,14 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                     {r.contact_name} · {r.admin_email}
                   </p>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setSelectedRequest(r);
                     setError("");
-                  }}
+                  }} type="button"
                 >
                   {t("ui.review.request.dcea8abb")}
-                </button>
+                </Button>
               </article>
             ))
           ) : (
@@ -269,9 +268,9 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           ) : (
             <p>
               {t("ui.delivery.status.could.not.load.d1e76d07")}
-              <button onClick={() => void mail.refetch()}>
+              <Button onClick={() => void mail.refetch()} type="button">
                 {t("ui.retry.942087cc")}
-              </button>
+              </Button>
             </p>
           )}
           <p>{t("ui.a.queued.message.is.not.proof.of.delivery..afbd1ada")}</p>
@@ -288,9 +287,9 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
         ) : tenants.error ? (
           <p role="alert">
             {t("ui.the.directory.could.not.load.a9cf9bf9")}
-            <button onClick={() => void tenants.refetch()}>
+            <Button onClick={() => void tenants.refetch()} type="button">
               {t("ui.retry.942087cc")}
-            </button>
+            </Button>
           </p>
         ) : list.length ? (
           list.map((workspaceRow) => (
@@ -302,7 +301,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                   {workspaceRow.email || "Administrator not recorded"}
                 </p>
               </div>
-              <button
+              <Button
                 onClick={() => {
                   setEditing({
                     ...workspaceRow,
@@ -310,10 +309,10 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                   });
                   setDirty(false);
                   setError("");
-                }}
+                }} type="button"
               >
                 {t("ui.manage.congregation.2b347b3f")}
-              </button>
+              </Button>
             </article>
           ))
         ) : (
@@ -440,9 +439,9 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 {error}
               </p>
             )}
-            <button className="primary" disabled={busy}>
+            <Button className="primary" disabled={busy} type="submit">
               {t("ui.save.congregation.9547ae26")}
-            </button>
+            </Button>
           </form>
         )}
       </Dialog>
@@ -475,7 +474,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
             </label>
             <p>{t("refine.ownerCreate")}</p>
             <p>{t("refine.ownerPermission")}</p>
-            <button
+            <Button
               className="primary"
               disabled={busy}
               onClick={() =>
@@ -526,11 +525,11 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                     "Request approved. Check mail delivery before saying the email was received.",
                   );
                 })
-              }
+              } type="button"
             >
               {t("ui.approve.request.9ed200ae")}
-            </button>
-            <button
+            </Button>
+            <Button
               disabled={busy}
               onClick={() =>
                 void run(async () => {
@@ -555,10 +554,10 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                     });
                   c.notify("Request declined.");
                 })
-              }
+              } type="button"
             >
               {t("ui.decline.request.72740f4a")}
-            </button>
+            </Button>
             {error && (
               <p className="error" role="alert">
                 {error}

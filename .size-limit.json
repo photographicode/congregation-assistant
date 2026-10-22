@@ -1,0 +1,1 @@
+[{"name":"Application entry gzip","path":"dist/assets/index-*.js","limit":"250 kB"},{"name":"Application CSS gzip","path":"dist/assets/index-*.css","limit":"70 kB"}]

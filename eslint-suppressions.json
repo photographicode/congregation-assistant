@@ -1,0 +1,770 @@
+{
+  "apps/web/src/features/Access.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Backup.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 4
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/CurrentAttendance.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "eqeqeq": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 2
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Dashboard.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 1
+    },
+    "complexity": {
+      "count": 2
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 4
+    },
+    "no-nested-ternary": {
+      "count": 12
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Departments.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 10
+    }
+  },
+  "apps/web/src/features/EmergencyContacts.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 4
+    }
+  },
+  "apps/web/src/features/ExperiencePicker.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/ExperienceProfile.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 3
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/HomeAssistant.tsx": {
+    "no-magic-numbers": {
+      "count": 2
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/HomeGroupLinks.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 1
+    },
+    "no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/HomeSuggestions.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-empty": {
+      "count": 3
+    },
+    "no-magic-numbers": {
+      "count": 2
+    },
+    "no-nested-ternary": {
+      "count": 1
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/LocalAssistant.tsx": {
+    "@typescript-eslint/consistent-type-imports": {
+      "count": 2
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 2
+    },
+    "complexity": {
+      "count": 3
+    },
+    "eqeqeq": {
+      "count": 1
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 11
+    }
+  },
+  "apps/web/src/features/ManualMeetingParts.tsx": {
+    "no-magic-numbers": {
+      "count": 4
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Midweek.tsx": {
+    "complexity": {
+      "count": 3
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 9
+    },
+    "no-nested-ternary": {
+      "count": 3
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 3
+    }
+  },
+  "apps/web/src/features/OwnerConsole.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 11
+    },
+    "complexity": {
+      "count": 1
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 3
+    },
+    "no-nested-ternary": {
+      "count": 3
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 3
+    }
+  },
+  "apps/web/src/features/PdfStudio.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "complexity": {
+      "count": 3
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 3
+    },
+    "no-empty": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 25
+    },
+    "no-nested-ternary": {
+      "count": 8
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 2
+    }
+  },
+  "apps/web/src/features/PublicForm.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 9
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 1
+    },
+    "complexity": {
+      "count": 3
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 5
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 2
+    }
+  },
+  "apps/web/src/features/PublisherEditor.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/PublisherHome.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "complexity": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/RecordsExport.tsx": {
+    "no-magic-numbers": {
+      "count": 2
+    }
+  },
+  "apps/web/src/features/ReportLinks.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Reports.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 1
+    },
+    "complexity": {
+      "count": 1
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 31
+    },
+    "no-restricted-syntax": {
+      "count": 1
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 6
+    }
+  },
+  "apps/web/src/features/S21Button.tsx": {
+    "no-magic-numbers": {
+      "count": 3
+    }
+  },
+  "apps/web/src/features/SectionHub.tsx": {
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Sessions.tsx": {
+    "@typescript-eslint/no-misused-promises": {
+      "count": 1
+    },
+    "no-empty": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 5
+    },
+    "no-nested-ternary": {
+      "count": 1
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/StaticMeetingImport.tsx": {
+    "no-magic-numbers": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 7
+    }
+  },
+  "apps/web/src/features/Subscription.tsx": {
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/WeekendTalkHistory.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-empty": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 6
+    },
+    "no-nested-ternary": {
+      "count": 3
+    },
+    "no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/Workspace.tsx": {
+    "@typescript-eslint/consistent-type-imports": {
+      "count": 1
+    },
+    "@typescript-eslint/no-explicit-any": {
+      "count": 23
+    },
+    "@typescript-eslint/no-floating-promises": {
+      "count": 2
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 12
+    },
+    "complexity": {
+      "count": 2
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 20
+    },
+    "no-nested-ternary": {
+      "count": 17
+    },
+    "no-restricted-syntax": {
+      "count": 2
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 4
+    }
+  },
+  "apps/web/src/features/accessibility.ts": {
+    "complexity": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 16
+    },
+    "no-nested-ternary": {
+      "count": 5
+    }
+  },
+  "apps/web/src/features/device-keys.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/pdf-assets.ts": {
+    "no-empty": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/pdf-download.ts": {
+    "max-params": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 3
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/pdf.worker.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "apps/web/src/features/publication-data.ts": {
+    "no-empty": {
+      "count": 2
+    }
+  },
+  "apps/web/src/features/store.ts": {
+    "no-empty": {
+      "count": 3
+    }
+  },
+  "apps/web/src/main.tsx": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 4
+    },
+    "@typescript-eslint/no-floating-promises": {
+      "count": 2
+    },
+    "@typescript-eslint/no-misused-promises": {
+      "count": 3
+    },
+    "complexity": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 2
+    },
+    "no-nested-ternary": {
+      "count": 10
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 5
+    }
+  },
+  "apps/web/src/system/SystemRuntime.tsx": {
+    "no-magic-numbers": {
+      "count": 6
+    }
+  },
+  "apps/web/src/system/SystemStates.tsx": {
+    "complexity": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 6
+    },
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "apps/web/src/system/network.ts": {
+    "@typescript-eslint/no-misused-promises": {
+      "count": 2
+    },
+    "complexity": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 12
+    }
+  },
+  "packages/core/assignment-recency.ts": {
+    "no-magic-numbers": {
+      "count": 2
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "packages/core/duty-roster.ts": {
+    "complexity": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "packages/core/install-controller.ts": {
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "packages/core/local-command.ts": {
+    "complexity": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 2
+    }
+  },
+  "packages/core/meeting.ts": {
+    "max-params": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 12
+    }
+  },
+  "packages/core/pdf-accuracy.ts": {
+    "no-magic-numbers": {
+      "count": 10
+    }
+  },
+  "packages/core/plain-store.ts": {
+    "complexity": {
+      "count": 3
+    },
+    "no-magic-numbers": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "packages/core/plain-transport.ts": {
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "packages/core/publisher-command.ts": {
+    "complexity": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 8
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "packages/core/publisher-selection.ts": {
+    "@typescript-eslint/switch-exhaustiveness-check": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 3
+    }
+  },
+  "packages/core/report-draft.ts": {
+    "no-magic-numbers": {
+      "count": 2
+    }
+  },
+  "packages/core/report-rules.ts": {
+    "complexity": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 4
+    }
+  },
+  "packages/core/repositories.ts": {
+    "max-params": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 5
+    },
+    "no-nested-ternary": {
+      "count": 4
+    }
+  },
+  "packages/core/suggestions.ts": {
+    "max-params": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 3
+    }
+  },
+  "packages/core/talk-history.ts": {
+    "max-params": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 4
+    },
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "packages/core/themes.ts": {
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "packages/pdf/layout.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 5
+    },
+    "complexity": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 21
+    },
+    "no-nested-ternary": {
+      "count": 2
+    }
+  },
+  "packages/pdf/snapshot.ts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 6
+    },
+    "complexity": {
+      "count": 1
+    }
+  },
+  "packages/ui/AppShell.tsx": {
+    "no-empty": {
+      "count": 1
+    }
+  },
+  "packages/ui/AssignmentPicker.tsx": {
+    "complexity": {
+      "count": 2
+    },
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": {
+      "count": 3
+    },
+    "no-magic-numbers": {
+      "count": 11
+    },
+    "no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "packages/ui/CommandPalette.tsx": {
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": {
+      "count": 3
+    },
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "packages/ui/Dialog.tsx": {
+    "no-magic-numbers": {
+      "count": 2
+    }
+  },
+  "packages/ui/HomePreview.tsx": {
+    "no-magic-numbers": {
+      "count": 1
+    },
+    "no-nested-ternary": {
+      "count": 1
+    }
+  },
+  "packages/ui/Notices.tsx": {
+    "jsx-a11y/no-noninteractive-element-interactions": {
+      "count": 1
+    },
+    "no-magic-numbers": {
+      "count": 1
+    }
+  },
+  "packages/ui/OclmSchedule.tsx": {
+    "no-magic-numbers": {
+      "count": 6
+    }
+  },
+  "packages/ui/components.tsx": {
+    "@typescript-eslint/no-misused-promises": {
+      "count": 1
+    },
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": {
+      "count": 3
+    },
+    "max-lines": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 2
+    },
+    "no-magic-numbers": {
+      "count": 16
+    },
+    "no-nested-ternary": {
+      "count": 2
+    },
+    "no-restricted-syntax": {
+      "count": 2
+    },
+    "react-hooks/exhaustive-deps": {
+      "count": 1
+    },
+    "react/button-has-type": {
+      "count": 1
+    }
+  }
+}

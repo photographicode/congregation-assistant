@@ -1,6 +1,8 @@
 import { t } from "../../../../packages/core/i18n";
 import { DismissibleBanner } from "../../../../packages/ui/Notices";
 import React from "react";
+import { Button } from "../../../../packages/ui/components";
+
 export function UpdatePrompt() {
   const [waiting, setWaiting] = React.useState<ServiceWorker | null>(null),
     [version, setVersion] = React.useState("");
@@ -70,14 +72,14 @@ export function UpdatePrompt() {
     >
       <strong>{t("ui.update.available.ff8b555d")}</strong>
       <p>{t("ui.a.new.version.is.ready.save.your.work.befo.5075260a")}</p>
-      <button
+      <Button
         onClick={() => {
           sessionStorage.setItem("ca-update-requested", "1");
           waiting.postMessage({ type: "ACTIVATE_UPDATE" });
-        }}
+        }} type="button"
       >
         {t("ui.reload.app.10f0b454")}
-      </button>
+      </Button>
     </DismissibleBanner>
   ) : null;
 }

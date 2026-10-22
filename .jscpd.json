@@ -1,0 +1,1 @@
+{"threshold":3,"minLines":8,"minTokens":60,"reporters":["console","json"],"output":"work/quality/duplication","path":["apps/web/src","packages/core","packages/ui","packages/pdf"],"ignore":["**/*.json","**/*.css","**/*.d.ts"]}

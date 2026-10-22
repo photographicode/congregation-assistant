@@ -3,6 +3,8 @@ import React from "react";
 import { FileDown, Phone, Search } from "lucide-react";
 import { csvRecords } from "./export.mjs";
 import { Scene } from "./Scene";
+import { Button } from "../../../../packages/ui/components";
+
 type Contact = {
   id: string;
   name: string;
@@ -85,7 +87,7 @@ export function EmergencyContacts({
           />
         </label>
         <div className="actions">
-          <button
+          <Button
             disabled={loading || !!error || pdfBusy}
             onClick={() => {
               setPdfBusy(true);
@@ -94,14 +96,14 @@ export function EmergencyContacts({
                 .then(() => openPDF(filtered))
                 .catch(() => setPdfError("Emergency export failed. Retry."))
                 .finally(() => setPdfBusy(false));
-            }}
+            }} type="button"
           >
             <FileDown />
             {pdfBusy ? "Preparing…" : "Emergency PDF"}
-          </button>
-          <button disabled={loading || !!error} onClick={exportContacts}>
+          </Button>
+          <Button disabled={loading || !!error} onClick={exportContacts} type="button">
             {t("ui.download.contact.csv.c9a41c3f")}
-          </button>
+          </Button>
         </div>
         <p>{t("refine.emergencyHelp0")}</p>
         <p>{t("refine.emergencyHelp1")}</p>
@@ -150,9 +152,9 @@ export function EmergencyContacts({
             </article>
           ))}
         {filtered.length > limit && (
-          <button onClick={() => setLimit((n) => n + 50)}>
+          <Button onClick={() => setLimit((n) => n + 50)} type="button">
             {t("ui.show.more.contacts.925a1906")}
-          </button>
+          </Button>
         )}
         {!loading && !error && !filtered.length && (
           <div className="empty-scene">

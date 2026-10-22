@@ -6,6 +6,8 @@ import {
   type Suggestion,
 } from "../../../../packages/core/suggestions";
 import type { Context } from "../main";
+import { Button } from "../../../../packages/ui/components";
+
 const all = [
   "admin",
   "field_service",
@@ -338,7 +340,7 @@ export function HomeSuggestions({
                   : "Review the current month’s reports"
                 : card.title}
             </h3>
-            <button
+            <Button
               className="primary"
               onClick={() => {
                 if (card.route === "themes") go("settings");
@@ -376,17 +378,17 @@ export function HomeSuggestions({
                   sessionStorage.setItem("ca-pdf-open", "s21");
                   go("pdf");
                 } else go(card.route);
-              }}
+              }} type="button"
             >
               {card.action}
-            </button>
+            </Button>
             <div className="actions">
-              <button onClick={() => dismiss(card.id)}>
+              <Button onClick={() => dismiss(card.id)} type="button">
                 {t("ui.dismiss.48845bff")}
-              </button>
-              <button onClick={() => dismiss(card.id, true)}>
+              </Button>
+              <Button onClick={() => dismiss(card.id, true)} type="button">
                 {t("ui.snooze.for.a.day.2ced3e55")}
-              </button>
+              </Button>
             </div>
           </article>
         ))}

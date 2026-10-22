@@ -26,7 +26,7 @@ export const Button = React.forwardRef<
       ref={ref}
       className={[variant, props.className].filter(Boolean).join(" ")}
       disabled={props.disabled || busy}
-      aria-busy={busy || undefined}
+      aria-busy={busy || undefined} type={props.type ?? "button"}
     >
       {children}
     </button>

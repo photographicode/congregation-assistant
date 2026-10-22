@@ -1,4 +1,4 @@
-import { LegacySelect } from "../../../../packages/ui/components";
+import { LegacySelect, Button } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { ReportLinks } from "./ReportLinks";
@@ -159,9 +159,9 @@ export function Access({
                 </LegacySelect>
               </label>
             )}
-            <button disabled={busy || !c.roles.includes("admin")}>
+            <Button disabled={busy || !c.roles.includes("admin")} type="submit">
               {t("ui.approve.account.b593d6e2")}
-            </button>
+            </Button>
           </form>
           <div className="list">
             {(demo ? local : query.data || []).map((a) => (
@@ -175,7 +175,7 @@ export function Access({
                   </p>
                 </div>
                 {a.active && (
-                  <button
+                  <Button
                     disabled={busy}
                     onClick={() => {
                       if (
@@ -201,10 +201,10 @@ export function Access({
                         }
                         c.notify("Access revoked.");
                       });
-                    }}
+                    }} type="button"
                   >
                     {t("ui.revoke.87e6d00b")}
-                  </button>
+                  </Button>
                 )}
               </div>
             ))}

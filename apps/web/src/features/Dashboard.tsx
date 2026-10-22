@@ -7,7 +7,7 @@ import {
   sftsTotals,
 } from "../../../../packages/core/publisher-selection";
 import { HomeKpis } from "../../../../packages/ui/HomePreview";
-import { Segmented } from "../../../../packages/ui/components";
+import { Segmented, Button } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -212,15 +212,15 @@ export function Dashboard({
                       : "Connected"}
           </span>
           {canReports && !demo && (
-            <button
+            <Button
               aria-label={t("ui.refresh.dashboard.d612730f")}
               onClick={() => {
                 void people.refetch();
                 void reports.refetch();
-              }}
+              }} type="button"
             >
               <RefreshCw /> {t("ui.refresh.0e916101")}
-            </button>
+            </Button>
           )}
         </div>
       </section>
@@ -245,17 +245,17 @@ export function Dashboard({
           <p>{t("home.previewTask")}</p>
           <div className="dashboard-actions">
             {canReports && (
-              <button onClick={() => openReports("bulk")}>
+              <Button onClick={() => openReports("bulk")} type="button">
                 {t("tool.month")}
-              </button>
+              </Button>
             )}
             {canSchedule && (
-              <button onClick={() => go("schedule")}>
+              <Button onClick={() => go("schedule")} type="button">
                 {t("tool.midweek")}
-              </button>
+              </Button>
             )}
             {canPDF && (
-              <button onClick={() => go("pdf")}>{t("tool.s21")}</button>
+              <Button onClick={() => go("pdf")} type="button">{t("tool.s21")}</Button>
             )}
           </div>
         </section>
@@ -301,9 +301,9 @@ export function Dashboard({
                 );
               })}
             </div>
-            <button onClick={() => openReports("review")}>
+            <Button onClick={() => openReports("review")} type="button">
               {t("ui.open.monthly.reports.0436ae79")}
-            </button>
+            </Button>
           </section>
         )}
         <section className="card">
@@ -311,57 +311,57 @@ export function Dashboard({
           <div className="dashboard-actions">
             {canReports && (
               <>
-                <button onClick={() => openReports("bulk")}>
+                <Button onClick={() => openReports("bulk")} type="button">
                   <Plus />
                   {t("ui.bulk.entry.bc2ab04d")}
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => {
                     setFilter("pending");
                     document
                       .getElementById("dashboard-submissions")
                       ?.scrollIntoView();
-                  }}
+                  }} type="button"
                 >
                   <MessageCircle />
                   {t("ui.missing.reports.remind.6a80d46e")}
-                </button>
+                </Button>
               </>
             )}
             {canPDF && (
-              <button onClick={() => go("pdf")}>
+              <Button onClick={() => go("pdf")} type="button">
                 <FileDown />
                 {t("ui.download.reports.b6a9809c")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={addPublisher}>
+              <Button onClick={addPublisher} type="button">
                 <Users />
                 {t("ui.add.publisher.b13cc36b")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={() => go("access")}>
+              <Button onClick={() => go("access")} type="button">
                 <ArrowUpRight />
                 {t("ui.report.links.c7ccf54c")}
-              </button>
+              </Button>
             )}
             {canSchedule && (
-              <button onClick={() => go("schedule")}>
+              <Button onClick={() => go("schedule")} type="button">
                 <CalendarDays />
                 {t("ui.this.week.s.schedule.fbe36acb")}
-              </button>
+              </Button>
             )}
             {admin && (
-              <button onClick={() => go("messages")}>
+              <Button onClick={() => go("messages")} type="button">
                 <MessageCircle />
                 {t("ui.messages.04d7b483")}
-              </button>
+              </Button>
             )}
-            <button onClick={() => go("settings")}>
+            <Button onClick={() => go("settings")} type="button">
               <Plus />
               {t("ui.install.app.all.settings.15eaa3f0")}
-            </button>
+            </Button>
           </div>
         </section>
         {canReports && (
@@ -425,9 +425,9 @@ export function Dashboard({
                     <td className="number" translate="no">{r?.studies ?? "—"}</td>
                     <td className="number" translate="no">{pioneer && r ? r.hours || 0 : "—"}</td>
                     <td><div className="actions row-actions">
-                      <button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }}>{"S-21"}</button>
+                      <Button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }} type="button">{"S-21"}</Button>
                       {!r && (
-                        <button className="tonal warning"
+                        <Button className="tonal warning"
                           onClick={async () => {
                             const text = `Hello ${p.name}, a friendly reminder to submit your ${period} ministry report. Thank you.`;
                             try {
@@ -445,10 +445,10 @@ export function Dashboard({
                                   "Sharing is unavailable. You can use Messages to prepare a reminder.",
                                 );
                             }
-                          }}
+                          }} type="button"
                         >
                           {t("ui.remind.3aec36bb")}
-                        </button>
+                        </Button>
                       )}
                     </div></td>
                   </tr>
@@ -459,9 +459,9 @@ export function Dashboard({
               </table></div>
             )}
             {roster.length > 50 && (
-              <button onClick={() => openReports("review")}>
+              <Button onClick={() => openReports("review")} type="button">
                 {t("ui.open.all.reports.a7845883")}
-              </button>
+              </Button>
             )}
             {!loading && !error && !roster.length && (
               <div className="empty-scene">

@@ -5,6 +5,7 @@ import { repositories } from "../../../../packages/core/repositories";
 import { LocalAssistant } from "./LocalAssistant";
 import { demo, rpc, storeFor } from "./client";
 import type { Context } from "../main";
+import { Button } from "../../../../packages/ui/components";
 
 /** Load authorized context before local command review; never send command text. */
 export function HomeAssistant({
@@ -58,9 +59,9 @@ export function HomeAssistant({
       ) : ready.error ? (
         <p role="alert">
           {t("assistant.contextError")}{" "}
-          <button onClick={() => void ready.refetch()}>
+          <Button onClick={() => void ready.refetch()} type="button">
             {t("search.retry")}
-          </button>
+          </Button>
         </p>
       ) : (
         <LocalAssistant
