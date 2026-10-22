@@ -3,6 +3,7 @@ name: CI
   push:
     branches:
     - v3/resume
+    - v3/quality
   pull_request: {}
   workflow_call: {}
   workflow_dispatch: {}
@@ -22,7 +23,7 @@ jobs:
     - run: npm run check && node scripts/check-public-safety.cjs && node scripts/check-no-legacy.mjs
     - run: npm run check:vercel-guidelines
     - run: node --test scripts/meetings/parse.test.mjs
-    - run: npm run build && npm run check:bundle
+    - run: npm run build && npm run check:bundle && npm run check:size
   database:
     runs-on: ubuntu-latest
     timeout-minutes: 15

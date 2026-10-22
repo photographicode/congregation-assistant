@@ -53,6 +53,15 @@ jobs:
         CA_REFINEMENT_THEMES: mono-light,lagoon-glass,aurora
         CA_REFINEMENT_SCREENS: home,people,reports,schedule,settings,assistant
         CA_REFINEMENT_HARD_ONLY: 'true'
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      if: always()
+      with:
+        name: current-ui-evidence
+        if-no-files-found: error
+        path: |
+          docs/qa/final-dialog-layers.json
+          docs/qa/interaction-audit.json
+
   full:
     if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest

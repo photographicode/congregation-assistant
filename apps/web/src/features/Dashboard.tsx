@@ -7,7 +7,7 @@ import {
   sftsTotals,
 } from "../../../../packages/core/publisher-selection";
 import { HomeKpis } from "../../../../packages/ui/HomePreview";
-import { Segmented, Button } from "../../../../packages/ui/components";
+import { Segmented, Button, Card, Stack, Inline } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -173,11 +173,11 @@ export function Dashboard({
     go("reports");
   };
   return (
-    <div className="dashboard stack">
+    <Stack className="dashboard">
       {!a.experienceChosen && (
-        <div className="card">
+        <Card>
           <ExperiencePicker />
-        </div>
+        </Card>
       )}
       <section className="dashboard-hero">
         <Greeting
@@ -186,7 +186,7 @@ export function Dashboard({
           locale={setup.language}
           clock={a.clock}
         />
-        <div className="actions dashboard-context">
+        <Inline className="dashboard-context">
           <label>
             {t("ui.reporting.month.04bf8d83")}
             <input
@@ -222,7 +222,7 @@ export function Dashboard({
               <RefreshCw /> {t("ui.refresh.0e916101")}
             </Button>
           )}
-        </div>
+        </Inline>
       </section>
       <HomeAssistant context={c} go={go} />
       <HomeGroupLinks context={c} period={period} />
@@ -240,7 +240,7 @@ export function Dashboard({
         </p>
       )}
       {a.style === "calm" && (
-        <section className="card stack">
+        <Card className="stack">
           <h2>{t("home.nextTask")}</h2>
           <p>{t("home.previewTask")}</p>
           <div className="dashboard-actions">
@@ -258,7 +258,7 @@ export function Dashboard({
               <Button onClick={() => go("pdf")} type="button">{t("tool.s21")}</Button>
             )}
           </div>
-        </section>
+        </Card>
       )}
       <div className="home-rich-details" aria-label={t("home.allTools")}>
         {canReports && (
@@ -276,7 +276,7 @@ export function Dashboard({
           />
         )}
         {canReports && !loading && !error && special.publishers > 0 && (
-          <section className="card stack">
+          <Card className="stack">
             <h2>{t("sfts.summary")}</h2>
             <p>
               {period} · {special.submitted} / {special.publishers}{" "}
@@ -304,9 +304,9 @@ export function Dashboard({
             <Button onClick={() => openReports("review")} type="button">
               {t("ui.open.monthly.reports.0436ae79")}
             </Button>
-          </section>
+          </Card>
         )}
-        <section className="card">
+        <Card>
           <h2>{t("ui.your.tools.close.at.hand.66b5ceca")}</h2>
           <div className="dashboard-actions">
             {canReports && (
@@ -363,9 +363,9 @@ export function Dashboard({
               {t("ui.install.app.all.settings.15eaa3f0")}
             </Button>
           </div>
-        </section>
+        </Card>
         {canReports && (
-          <section className="card stack" id="dashboard-submissions">
+          <Card className="stack" id="dashboard-submissions">
             <div>
               <span className="eyebrow">{period}</span>
               <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
@@ -419,12 +419,12 @@ export function Dashboard({
                 const roles = [p.is_elder && "Elder", p.is_ms && "MS", (p.is_rp || p.is_sp || p.is_fm) && "RP", r?.is_ap && "AP", isSFTS(p) && "SFTS"].filter(Boolean);
                 return (
                   <tr className={r ? "" : "not-submitted"} key={p.id} tabIndex={0}>
-                    <td><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
-                    <td>{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
-                    <td>{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
-                    <td className="number" translate="no">{r?.studies ?? "—"}</td>
-                    <td className="number" translate="no">{pioneer && r ? r.hours || 0 : "—"}</td>
-                    <td><div className="actions row-actions">
+                    <td data-label="Name"><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
+                    <td data-label="Roles">{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
+                    <td data-label="Report">{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
+                    <td className="number" translate="no" data-label="Studies">{r?.studies ?? "—"}</td>
+                    <td className="number" translate="no" data-label="Hours">{pioneer && r ? r.hours || 0 : "—"}</td>
+                    <td data-label="Actions"><div className="actions row-actions">
                       <Button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }} type="button">{"S-21"}</Button>
                       {!r && (
                         <Button className="tonal warning"
@@ -455,7 +455,7 @@ export function Dashboard({
                 );
               })}
                 </tbody>
-                <tfoot><tr><th>{"Total"}</th><td>{roster.length}{" publishers"}</td><td>{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
+                <tfoot><tr><th data-label="Name">{"Total"}</th><td data-label="Roles">{roster.length}{" publishers"}</td><td data-label="Report">{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number" data-label="Studies">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number" data-label="Hours">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
               </table></div>
             )}
             {roster.length > 50 && (
@@ -473,9 +473,9 @@ export function Dashboard({
                 </p>
               </div>
             )}
-          </section>
+          </Card>
         )}
       </div>
-    </div>
+    </Stack>
   );
 }

@@ -30,3 +30,9 @@ Production SBOM generation works, but the licence gate finds workspace packages 
 The licence-gate workspace finding is resolved by preserving the existing proprietary LICENSE and verifying first-party workspace identity/version separately. No new licence permission was granted. The remaining 104-component production SBOM passes the third-party allow-list. Runtime scanner executions and legal review remain separate requirements.
 
 The isolated database workflow now runs a metadata-only enabled/forced-RLS gate after the existing schema/contracts. It refuses an empty schema, so it cannot pass vacuously. It is expected to expose the pre-existing Q6 gaps until additive, twice-tested, snapshot-backed migrations repair them. No live schema was modified.
+
+## Q4 Home layout characterization (30 views)
+
+A 30-view sample (Home × paper/Eclipse/Eclipse Night × 320/600/1024/1440/1920 × 100/200% text) found 749 HARD findings and 17 soft findings. Most were descendants of the 720px-minimum publisher spreadsheet exceeding narrow viewports; the privacy note also mixed centered and left alignment. The table now has shared component-owned CSS with labelled rows in narrow containers, and the privacy note follows its stack alignment. Verification of that correction is the next batch; this sample is not acceptance proof.
+
+The offline HEAD-probe issue above is resolved: the network monitor now avoids probing when navigator.onLine is false. The unchanged PDF browser contract passes direct downloads, eight selectable scripts, offline emergency regeneration, zero browser errors, and demo isolation. This does not establish general network recovery, all-screen geometry, or production security acceptance.

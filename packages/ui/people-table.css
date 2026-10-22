@@ -1,0 +1,20 @@
+/* Responsive publisher spreadsheet; narrow containers show labelled rows. */
+.people-table-wrap{overflow-x:auto;overscroll-behavior-inline:contain;container-type:inline-size}
+.people-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.people-table th,.people-table td{padding:var(--space-3) var(--space-2);text-align:left;vertical-align:middle;border:0}
+.people-table thead{position:sticky;top:0;z-index:var(--z-sticky);background:var(--surface-solid)}
+.people-table tbody tr{content-visibility:auto;contain-intrinsic-size:auto 64px;border-block-end:1px solid color-mix(in srgb,var(--border) 55%,transparent)}
+.people-table tbody tr:hover,.people-table tbody tr:focus-within{background:var(--surface-2)}
+.people-table .not-submitted,.people-table .not-submitted strong{color:var(--text-3);font-weight:400}
+.people-table .number{text-align:right}
+.people-table tfoot{font-weight:700;background:var(--surface-2)}
+.people-table td:first-child strong{display:block;color:var(--text-1)}
+@container (width < 45rem){
+ .people-table,.people-table tbody,.people-table tfoot{display:block;width:100%}
+ .people-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+ .people-table tr{display:grid;grid-template-columns:minmax(0,1fr);padding-block:var(--space-3)}
+ .people-table td,.people-table tfoot th{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-2);min-width:0;overflow-wrap:anywhere;text-align:left}
+ .people-table .number{text-align:left}
+ .people-table td::before,.people-table tfoot th::before{content:attr(data-label);font-weight:600;color:var(--text-2)}
+ .people-table .row-actions{flex-wrap:wrap;min-width:0}
+}
