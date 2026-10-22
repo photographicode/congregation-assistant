@@ -1,8 +1,12 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
-const checklist=await readFile('CHECKLISTS.md','utf8');
+const checklist=(await readFile('CHECKLISTS.md','utf8')).replaceAll('\r\n','\n');
 let section='',number=0;const items=[];
 for(const line of checklist.split('\n')){const heading=line.match(/^## ([AB]\d+)\./);if(heading){section=heading[1];number=0;}if(line.startsWith('- [ ]')||line.startsWith('- [x]')){number++;items.push({id:section+'.'+number,title:line.replace(/^- \[[ x]\]\s*[✔◐✗?]?\s*/,''),status:'open',evidence:[]});}}
 const known={
+ 'A1.1':{status:'partial',evidence:['packages/ui/layout.tsx','packages/ui/Field.tsx','apps/web/src/features/Dashboard.tsx','docs/engineering/OPEN.md']},
+ 'A1.3':{status:'partial',evidence:['docs/qa/quality/home-layout.json','docs/engineering/OPEN.md']},
+ 'A2.7':{status:'partial',evidence:['docs/adr','docs/engineering/ARCHITECTURE.md','docs/engineering/OPEN.md']},
+ 'A5.1':{status:'partial',evidence:['docs/engineering/SLO.md']},
  'A2.4':{status:'verified',evidence:['scripts/codemods/button-types.mjs','packages/ui/components.tsx','eslint.config.mjs']},
  'A3.1':{status:'verified',evidence:['vitest.config.ts','tests/v3','scripts/v2-tests','docs/POLISH-REPORT.md']},
  'A3.2':{status:'partial',evidence:['vitest.config.ts','.github/workflows/ci.yml','docs/engineering/OPEN.md']},

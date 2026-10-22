@@ -7,9 +7,9 @@ Legend: ✔ done (evidence found in the repo) · ◐ partial · ✗ missing · ?
 # PART A — Enterprise SaaS checklist
 
 ## A1. Product and UX
-- [ ] ✗ **One design system** used everywhere (14 of 25 shared components are exported but unused; screens hand-build markup). *Verify:* lint bans raw layout markup patterns; `/styleguide` renders every component/state.
+- [ ] ◐ **One design system** used everywhere (14 of 25 shared components are exported but unused; screens hand-build markup). *Verify:* lint bans raw layout markup patterns; `/styleguide` renders every component/state.
 - [ ] ✗ **Accessibility WCAG 2.2 AA** (axe, keyboard, screen reader, forced colors, 200% text). *Verify:* axe 0 serious; manual script `docs/qa/A11Y-MANUAL.md`; conformance statement.
-- [ ] ✗ **Responsive 320–1920 px, text 100–200%.** *Verify:* alignment + layout detectors zero HARD findings.
+- [ ] ◐ **Responsive 320–1920 px, text 100–200%.** *Verify:* alignment + layout detectors zero HARD findings.
 - [ ] ◐ **System pages**: 404, offline, slow, error, session expired, no access, link inactive, maintenance, 429, read-only/plan ended (see `V3-SYSTEM-PAGES-AND-FINISH.md`).
 - [ ] ✗ Empty / loading (skeleton) / error / success states for every list and form.
 - [ ] ✗ Onboarding (setup wizard) and in-app help; "What's new" page; feedback channel.
@@ -22,7 +22,7 @@ Legend: ✔ done (evidence found in the repo) · ◐ partial · ✗ missing · ?
 - [x] ✔ **Every `<button>` has an explicit `type`** (195 do not). *Verify:* `react/button-has-type`.
 - [ ] ✗ No dead code (11% of CSS classes unused; 25 unused exports). *Verify:* `knip` (files/exports/deps), `stylelint` unused selectors report → zero.
 - [ ] ✗ Dependency hygiene (lockfile ✔, Dependabot ✔). *Verify:* `knip`, `depcheck`, license check (no GPL in shipped code).
-- [ ] ✗ Architecture Decision Records (`docs/adr/*`), architecture overview, module READMEs.
+- [ ] ◐ Architecture Decision Records (`docs/adr/*`), architecture overview, module READMEs.
 - [ ] ◐ Config validated at startup with Zod (env, feature flags, `public-config.json`); typed `storage` wrapper (67 raw `localStorage` calls).
 
 ## A3. Testing
@@ -44,7 +44,7 @@ Legend: ✔ done (evidence found in the repo) · ◐ partial · ✗ missing · ?
 - [ ] ✗ Rollback drill documented and rehearsed.
 
 ## A5. Reliability and operations
-- [ ] ✗ SLOs (availability 99.5%, p95 API < 500 ms, error rate < 1%) and error budgets in `docs/engineering/SLO.md`.
+- [ ] ◐ SLOs (availability 99.5%, p95 API < 500 ms, error rate < 1%) and error budgets in `docs/engineering/SLO.md`.
 - [ ] ✗ **OWNER** Uptime monitor on `/`, `/app/`, Supabase health; public status page.
 - [ ] ✗ Backups: Supabase Pro daily + PITR; monthly encrypted off-site export; **restore drill each quarter**; RTO 4 h / RPO 24 h documented.
 - [ ] ✗ Runbooks: outage, bad deploy, DB restore, key rotation, rate-limit storm, payment webhook backlog.

@@ -71,7 +71,7 @@ button.danger {
   background: var(--danger-soft);
 }
 :focus-visible {
-  outline: 3px solid var(--focus-ring);
+  outline: var(--focus-ring);
   outline-offset: 3px;
 }
 input,

@@ -16,7 +16,7 @@ button.danger,.button-danger{background:var(--danger);color:#fff}
 button.danger-subtle,.button-danger-subtle{background:var(--danger-50);color:var(--danger)}
 button.success-subtle,.button-success-subtle{background:var(--success-50);color:var(--ok)}
 button.warning-subtle,.button-warning-subtle{background:var(--warning-50);color:var(--warn)}
-button:focus-visible,a:focus-visible,[role=option]:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--ring);outline-offset:3px}
+button:focus-visible,a:focus-visible,[role=option]:focus-visible,[role=tab]:focus-visible{outline:var(--focus-ring);outline-offset:3px}
 button:disabled,[aria-disabled=true]{cursor:not-allowed;opacity:.55}
 .chip-success{background:var(--success-50);color:var(--ok)}.chip-warning{background:var(--warning-50);color:var(--warn)}.chip-danger{background:var(--danger-50);color:var(--danger)}
 .ui-combobox{position:relative}.ui-combobox-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left;background:var(--surface-solid);color:var(--text-1)}
