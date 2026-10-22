@@ -9,12 +9,15 @@
 .people-table .number{text-align:right}
 .people-table tfoot{font-weight:700;background:var(--surface-2)}
 .people-table td:first-child strong{display:block;color:var(--text-1)}
-@container (width < 45rem){
+@container (width < 40em){
  .people-table,.people-table tbody,.people-table tfoot{display:block;width:100%}
  .people-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+ .people-table thead tr,.people-table thead th{display:block;padding:0;overflow:hidden;white-space:nowrap}
  .people-table tr{display:grid;grid-template-columns:minmax(0,1fr);padding-block:var(--space-3)}
- .people-table td,.people-table tfoot th{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-2);min-width:0;overflow-wrap:anywhere;text-align:left}
+ .people-table td,.people-table tfoot th{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-2);min-width:0;overflow-wrap:anywhere;text-align:left}
  .people-table .number{text-align:left}
  .people-table td::before,.people-table tfoot th::before{content:attr(data-label);font-weight:600;color:var(--text-2)}
  .people-table .row-actions{flex-wrap:wrap;min-width:0}
+ .people-table .row-actions button{white-space:normal;max-width:100%;min-width:0}
+ .people-table tfoot td:empty{display:none}
 }
