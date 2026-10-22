@@ -86,7 +86,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    if: github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET != 'cloudflare'
+    if: always() && !cancelled() && needs.build.result == 'success' && github.ref == 'refs/heads/main' && vars.DEPLOY_TARGET != 'cloudflare'
     needs:
     - build
     runs-on: ubuntu-latest
