@@ -19,4 +19,4 @@ for(const directory of directories)for(const file of (await readdir(directory)).
  }
  const snapshot={fixture:file,source:directory,pages,failures};await writeFile('tests/pdf-geometry/'+path.basename(directory)+'-'+file.replace('.pdf','.json'),JSON.stringify(snapshot,null,2)+'\n');hard+=failures.length;summaries.push({fixture:filename,pages:pdf.numPages,runs:pages.reduce((n,p)=>n+p.runs.length,0),hard:failures.length});await pdf.destroy();
 }
-const summary={fixtures:summaries.length,hard,results:summaries};await writeFile('docs/qa/r1-pdf-geometry.json',JSON.stringify(summary,null,2)+'\n');console.log(JSON.stringify(summary));if(hard)process.exitCode=1;
+const summary={fixtures:summaries.length,hard,results:summaries};await writeFile(process.env.CA_PDF_GEOMETRY_REPORT||'docs/qa/r1-pdf-geometry.json',JSON.stringify(summary,null,2)+'\n');console.log(JSON.stringify(summary));if(hard)process.exitCode=1;

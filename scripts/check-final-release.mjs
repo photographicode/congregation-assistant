@@ -7,6 +7,8 @@ const fingerprint=await qualityFingerprint();
 const interaction=await json('docs/qa/interaction-audit.json');assert.equal(interaction.fingerprint,fingerprint,'Interaction evidence is stale for this source.');assert.equal(interaction.hard,0);
 const dialogs=await json('docs/qa/final-dialog-layers.json');assert.equal(dialogs.fingerprint,fingerprint,'Dialog evidence is stale for this source.');assert.equal(dialogs.results.length,11);assert(dialogs.results.every(result=>result.alpha===1&&result.scrim>=.4&&result.border>=1&&result.strip>=4));
 const geometry=await json('docs/qa/r1-pdf-geometry.json');assert.equal(geometry.hard,0);assert.equal(geometry.fixtures,49);assert.equal(geometry.results.length,49);
+const s21=await json('docs/qa/s21-measured-hardening.json');assert.equal(s21.dpi,400);assert.equal(s21.coveredSquares,33);assert.equal(s21.hard,0);assert.equal(s21.checkedTicks,s21.rasterTicks);assert(s21.maxTickDeltaPt<=.4&&s21.maxRowDeltaPt<=1);
+const s21Geometry=await json('docs/qa/s21-hardening-geometry.json');assert.equal(s21Geometry.hard,0);assert.equal(s21Geometry.fixtures,1);
 const v1=await json('docs/qa/pdf-vs-v1.json');assert(v1.results.length>=14);assert.equal(v1.results.flatMap(result=>result.failures).length,0);
 for(const file of ['docs/qa/final-pdf-contact.png','docs/qa/BUG-BASH-REPORT.md','packages/ui/v3-dialog-layer.css'])await access(file);
 console.log(JSON.stringify({workflows:workflows.length,interactionHard:0,dialogThemes:11,pdfFixtures:49,v1GeometryFailures:0}));

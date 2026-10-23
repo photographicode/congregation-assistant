@@ -17,7 +17,11 @@ jobs:
     - run: npm ci --ignore-scripts
     - run: sudo apt-get update && sudo apt-get install -y poppler-utils python3-pil python3-numpy python3-fitz
     - run: node scripts/generate-v2-pdf-fixtures.mjs
+    - run: node scripts/generate-s21-hardening.mjs
     - run: python3 scripts/check-s21-measured.py
+    - run: node scripts/pdf-geometry.ts work/pdf-s21-hardening
+      env:
+        CA_PDF_GEOMETRY_REPORT: docs/qa/s21-hardening-geometry.json
     - run: node scripts/check-r1-pdf-semantic.mjs
     - run: node scripts/pdf-vs-v1.mjs
     - run: npx vitest run tests/v3/pdf-property.test.ts
@@ -39,6 +43,8 @@ jobs:
         path: 'docs/review-evidence/pdf-*.json
 
           docs/qa/r1-pdf*.json
+
+          docs/qa/s21-*.json
 
           tests/pdf-geometry/
 

@@ -1,0 +1,12 @@
+{
+  "fixtures": 1,
+  "hard": 0,
+  "results": [
+    {
+      "fixture": "work/pdf-s21-hardening/s21-checkbox-variants.pdf",
+      "pages": 3,
+      "runs": 243,
+      "hard": 0
+    }
+  ]
+}
