@@ -7,6 +7,9 @@ name: Browser and layout gates
   - cron: 15 3 * * 0
 permissions:
   contents: read
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   sample:
     runs-on: ubuntu-latest
@@ -21,6 +24,7 @@ jobs:
     - run: npx playwright install --with-deps chromium firefox webkit
     - run: sudo apt-get update && sudo apt-get install -y poppler-utils
     - run: npm run build
+    - run: node scripts/check-ui-kit-contracts.mjs
     - run: node scripts/check-v3-resume.cjs
     - run: node scripts/check-system-pages.cjs
     - run: node scripts/check-admin-assistant.cjs
@@ -63,7 +67,7 @@ jobs:
           docs/qa/interaction-audit.json
 
   full:
-    if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:

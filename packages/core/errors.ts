@@ -1,5 +1,5 @@
 /** Privacy-safe, device-memory diagnostics. Never stores messages, stacks, URLs or records. */
-export type ErrorSeverity = 'info' | 'warning' | 'error';
+type ErrorSeverity = 'info' | 'warning' | 'error';
 export type LocalError = Readonly<{
   at: number;
   scope: string;

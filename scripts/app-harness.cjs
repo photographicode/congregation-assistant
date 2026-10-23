@@ -82,4 +82,4 @@ function createHarness({ cloudAvailable = true, date = Date } = {}) {
     return { window, document, elements, localStorage, sessionStorage, globals, scripts, markup, calls, messages, consoleErrors, timers, events, execute,
         setCloud(result, error = null) { outcome = result; thrown = error; } };
 }
-module.exports = { createHarness, html, scripts, root };
+module.exports = { createHarness, html, scripts };

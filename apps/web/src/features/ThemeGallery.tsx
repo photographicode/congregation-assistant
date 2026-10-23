@@ -5,7 +5,7 @@ import React from "react";
 import { useAppearance } from "./store";
 import { themeIds } from "../../../../packages/core/themes";
 import { t } from "../../../../packages/core/i18n";
-export const themes = themeIds.map((id) => [id, t(`theme.${id}`)] as const);
+const themes = themeIds.map((id) => [id, t(`theme.${id}`)] as const);
 export function ThemeGallery() {
   const a = useAppearance();
   return (
@@ -16,7 +16,9 @@ export function ThemeGallery() {
           onClick={() => {
             const choice = new Uint32Array(1);
             crypto.getRandomValues(choice);
-            a.set({ theme: themeIds[choice[0] % themeIds.length] });
+            const index = choice.at(0) ?? 0;
+            const theme = themeIds[index % themeIds.length];
+            if (theme) a.set({ theme });
           }} type="button"
         >
           {t("theme.surprise")}

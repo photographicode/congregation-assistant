@@ -1,6 +1,6 @@
 {
   "typescript": "5.9.3",
-  "total": 434,
+  "total": 425,
   "files": {
     "apps/web/src/features/Dashboard.tsx": {
       "count": 2,
@@ -57,12 +57,6 @@
       }
     },
     "apps/web/src/features/ReportLinks.tsx": {
-      "count": 1,
-      "diagnostics": {
-        "2532:Object is possibly 'undefined'.": 1
-      }
-    },
-    "apps/web/src/features/ThemeGallery.tsx": {
       "count": 1,
       "diagnostics": {
         "2532:Object is possibly 'undefined'.": 1
@@ -247,15 +241,6 @@
       "count": 1,
       "diagnostics": {
         "2532:Object is possibly 'undefined'.": 1
-      }
-    },
-    "packages/core/publisher-command.ts": {
-      "count": 8,
-      "diagnostics": {
-        "2532:Object is possibly 'undefined'.": 5,
-        "18048:'field' is possibly 'undefined'.": 1,
-        "2538:Type 'undefined' cannot be used as an index type.": 1,
-        "2322:Type '\"name\" | \"address\" | \"email\" | \"service_group\" | \"is_rp\" | \"is_sp\" | \"is_fm\" | \"is_sfts\" | \"gender\" | \"dob\" | \"baptized\" | \"phone\" | \"emergencyName\" | \"emergencyRelationship\" | \"emergencyPhone\" | \"is_elder\" | \"is_ms\" | undefined' is not assignable to type '\"name\" | \"address\" | \"email\" | \"service_group\" | \"is_rp\" | \"is_sp\" | \"is_fm\" | \"is_sfts\" | \"gender\" | \"dob\" | \"baptized\" | \"phone\" | \"emergencyName\" | \"emergencyRelationship\" | \"emergencyPhone\" | \"is_elder\" | \"is_ms\"'.   Type 'undefined' is not assignable to type '\"name\" | \"address\" | \"email\" | \"service_group\" | \"is_rp\" | \"is_sp\" | \"is_fm\" | \"is_sfts\" | \"gender\" | \"dob\" | \"baptized\" | \"phone\" | \"emergencyName\" | \"emergencyRelationship\" | \"emergencyPhone\" | \"is_elder\" | \"is_ms\"'.": 1
       }
     },
     "packages/core/publisher-selection.ts": {

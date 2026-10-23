@@ -41,7 +41,7 @@ import {
 } from "../../../../packages/core/repositories";
 import type { Context } from "../context";
 import { Dialog } from "../../../../packages/ui/Dialog";
-export function reportingPeriod(date: Date) {
+function reportingPeriod(date: Date) {
   const month = date.getMonth();
   return { month, year: date.getFullYear() + (month >= 8 ? 1 : 0) };
 }

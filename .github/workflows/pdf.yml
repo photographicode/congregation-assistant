@@ -1,6 +1,9 @@
 name: Native PDF golden and script contracts
 permissions:
   contents: read
+concurrency:
+  group: pdf-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   pdf:
     runs-on: ubuntu-latest

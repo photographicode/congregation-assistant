@@ -1,6 +1,6 @@
-export type CommandPermission =
+type CommandPermission =
   "admin" | "field_service" | "oclm" | "weekend" | "attendance";
-export type CommandMode = "read" | "write";
+type CommandMode = "read" | "write";
 export type CommandDefinition = {
   name: string;
   mode: CommandMode;

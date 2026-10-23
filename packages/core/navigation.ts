@@ -2,7 +2,7 @@ import type {MessageKey} from './i18n';
 export type SectionId='home'|'people'|'reports'|'meetings'|'messages'|'forms'|'admin';
 export type Tool={id:string;section:SectionId;label:MessageKey;description:MessageKey;route:string;sub?:string;roles:string[];owner?:boolean;available:boolean};
 export const sections:Array<{id:SectionId;label:MessageKey}>=[{id:'home',label:'nav.home'},{id:'people',label:'nav.people'},{id:'reports',label:'nav.reports'},{id:'meetings',label:'nav.meetings'},{id:'messages',label:'nav.messages'},{id:'forms',label:'nav.forms'},{id:'admin',label:'nav.admin'}];
-export const tools:Tool[]=[
+const tools:Tool[]=[
  {id:'publishers',section:'people',label:'tool.publishers',description:'purpose.publishers',route:'people',sub:'publishers',roles:['admin','field_service','group_overseer'],available:true},
  {id:'groups',section:'people',label:'tool.groups',description:'purpose.groups',route:'people',sub:'groups',roles:['admin','field_service'],available:true},
  {id:'households',section:'people',label:'tool.households',description:'purpose.households',route:'reports',roles:['admin','field_service','group_overseer','publisher'],available:true},
