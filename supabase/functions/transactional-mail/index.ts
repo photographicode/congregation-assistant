@@ -1,6 +1,7 @@
+import {acceptsOrigin} from '../_shared/origins.ts';
 /* Server-only delivery. No secret or private report is returned to a browser. */
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
-Deno.serve(async(req:Request)=>{
+Deno.serve(async(req:Request)=>{if(!acceptsOrigin(req.headers.get('origin')))return new Response('Origin not allowed',{status:403});
  if(req.method!=='POST')return new Response('Method not allowed',{status:405});
  const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),header=req.headers.get('authorization');
  if(!service||header!==`Bearer ${service}`)return new Response('Worker access required',{status:403});

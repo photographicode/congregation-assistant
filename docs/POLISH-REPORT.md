@@ -88,7 +88,7 @@ The harness now independently changes Chromium's default font preference to 16/2
 
 pricing.json records all ordered INR/USD/founder amounts, Lite/Complete lists, founding date, reverse-trial terms and expiry actions. Eight pricing tests pass boundary tiers, pay-for-two arithmetic, exact amounts, founding cutoff and honest null founder-count handling. It is explicitly not activated: server entitlements, live founder counts, Razorpay, invoices/approval letter and expiry flow are still missing. Existing public pricing was not changed to advertise unverified plans.
 
-site/DESIGN-LOCK.md records the deployed design reference and permitted edits. The website assets/layout are unchanged. The required screenshot baselines/pixel test remain open. OWNER-MANUAL.md records fallback hosts, intended domain/configuration, provider login and CNAME/snapshot requirements; it is not evidence of DNS/provider changes.
+docs/SITE-DESIGN-LOCK.md records the deployed design reference and permitted edits. The website assets/layout are unchanged. The required screenshot baselines/pixel test remain open. OWNER-MANUAL.md records fallback hosts, intended domain/configuration, provider login and CNAME/snapshot requirements; it is not evidence of DNS/provider changes.
 
 ## Publishing
 
@@ -270,3 +270,30 @@ The owner explicitly overrides the previous all-quality-gates release hold and r
 Fixed Monthly submissions search/filter collapse: search now precedes the filter group in shared Stack layout, and segmented buttons use content-based widths with a minimum readable width and normal word wrapping. This prevents the single-character columns and stretched search input shown in the owner's screenshot. The PDF browser contract passes. Layout/selection verification covers 320, 390, 600, 768, 1024 and 1440 pixels at 100/200% text; the full quality/security backlog and its known failures remain visible in CI.
 
 The initial PR #58 release run 39750608262 built and verified successfully, but GitHub skipped Pages through its implicit skipped-ancestor status check. Publishing now explicitly requires always(), a successful build, main and the Pages target. This preserves the successful-build requirement while allowing the owner-authorized release exception to reach publication.
+
+
+## V3 Launch Hardening — 2026-10-23 (in progress, no release claim)
+
+Authority: [launch orders](V3-LAUNCH-HARDENING.md). No production records or schema changed. The previous PR 58 one-time gate exception is not reused.
+
+| Item | Command / evidence | Result |
+|---|---|---|
+| Engineering rules | `AGENTS.md`, `docs/DECISIONS.md` | Verbatim rules recorded; prior decisions retained. |
+| Legacy website | `scripts/build-marketing-site.mjs`, `apps/site/README.md` | Duplicate `site/`, HTML/Android/download templates and unused trust generator removed; help/install and downloadable text guide generated. Design lock preserved at `docs/SITE-DESIGN-LOCK.md`. |
+| Built metadata and internal links | `node scripts/site-audit.mjs` | 196 pages, zero static failures after shared generator fixes. Covers titles/descriptions, locale alternates, canonical, image metadata, favicons, copyright, placeholders, links/anchors and button types; not proof of all owner criteria. |
+| Responsive matrix | `node scripts/site-audit-browser.mjs` | First completed run: 1,464 views, 79 oversized marquee spans, zero document horizontal scroll failures. Constrained decorative strip; final run PASS: 1,464 views, zero failures. |
+| Normal application checks | `npm run check` | PASS: lint, application TypeScript, 213 Vitest tests, 83 script tests at run time. Added artifact regression test separately passes. |
+| New input limits | `npx vitest run tests/v3/input-limits.test.ts tests/v3/edge-origins.test.ts` | 5 pass. Shared Zod validation applied at publisher save/public report submit; visible fields bounded; studies 99/comments 500. Complete all-input/all-RPC coverage remains open. |
+| Exposed artifact guard | `node scripts/check-published-files.mjs dist`; `node --test scripts/v2-tests/published-files.test.mjs` | Zero findings in current app output; regression rejects SQL/maps/private dirs, oversized files and secret patterns. Guard wired before Pages upload. |
+| Full-history secrets | `work/gitleaks git --log-opts=--all --config .gitleaks.toml --redact ...` | 309 commits, 22.61 MB, zero findings. |
+| Independent history scanner | `work/security/trufflehog git file://. --only-verified --fail --json` | 10,887 chunks, 17,554,594 bytes, zero verified and zero unverified secrets. Pinned binary checksum and CI command added. |
+| Production dependencies | `npm audit --omit=dev --audit-level=high` | Zero vulnerabilities; OSV is separate and unresolved braces advisory is not waived. `docs/engineering/DEPENDENCIES.md` records plans; no bulk major upgrades. |
+| Workflow policy | `node scripts/check-workflow-security.mjs` | PASS: 51 immutable action references, read-only defaults. |
+| Production password/RLS/advisor audit | Supabase `execute_sql` metadata query and `get_advisors` | Both rejected: “You do not have permission to perform this action.” No results claimed. Existing guarded legacy-auth migration/down retained; fresh schema no longer creates password columns/table. Read-only CI password-column guard added. |
+| Retired function / CORS | Deleted owner-password-session source; shared exact-origin guard, tested allowed/hostile origins | Source fixed. Remote deletion and deployment of worker changes unverified; `OWNER-TODO.md`. Server-only functions still require service authorization and do not grant browser CORS access. |
+| Strict quality types | `npm run check:strict-types` | FAIL: 447 diagnostics, no relaxed configuration. |
+| CSS budgets | `npm run check:css` | FAIL: 108,052 bytes / 44 sizes / 21 radii / 10 breakpoints / 36 important / 102 feature classes. Targets unchanged. |
+
+Remaining launch gates: every anonymous RPC rate limiter and two-token/11th-request tests; shared SQL boundary checks; exhaustive role × function matrix and forced-RLS repair verified on an isolated schema; production advisors; production snapshot and schema rollout; contact/application server delivery with Turnstile/rate limiting and error/retry tests; weekly external-link checks; mobile Lighthouse ≥95; reference visual lock; live unknown-URL HTTP404 and complete live audit; coverage/style/unused/geometry backlog from quality orders. Current app has an honest mailto contact action; no server-send success is claimed. Guide/trust copy in non-English pages still needs translation review. PNG/ICO icons are required-format exceptions; other shipped raster imagery is WebP.
+
+Not verified: real devices/printers, independent penetration test, production database audit, remote Edge Function deletion, DNS/mailbox/Cloudflare configuration, or new deployment. Supabase denied project-scoped audit access; GitHub Pages settings require owner administration. The competing branch publisher can overwrite Actions artifacts until Source is GitHub Actions. No guarantee of being unhackable is made.

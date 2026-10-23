@@ -1426,7 +1426,7 @@ export function Reports({ context: c }: { context: Context }) {
                     setReportDirty(true);
                   }}
                   canAP={canWrite}
-                  commentLimit={personal ? 2000 : 4000}
+                  commentLimit={500}
                 />
                 {error && <p role="alert">{error}</p>}
                 <Button

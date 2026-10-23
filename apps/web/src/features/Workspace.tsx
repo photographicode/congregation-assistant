@@ -1,3 +1,4 @@
+import {publisherInput} from "../../../../packages/core/input-limits";
 import {savePublisherAction} from './publisher-action';
 import {
   Disclosure,
@@ -494,7 +495,7 @@ export default function Workspace({
       expected_login: editing.expected_login || [],
       name: editing.name.trim(),
     };
-    if (!person.name) throw Error("Name is required.");
+    publisherInput.parse(person);
     if (!["Male", "Female"].includes(person.gender || ""))
       throw Error(t("polish.chooseGender"));
     if (person.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(person.email))

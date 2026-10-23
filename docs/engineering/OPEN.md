@@ -61,3 +61,12 @@ The first interaction correction still failed. Direct browser inspection identif
 The second focus correction passes the unchanged 10-view interaction audit: 0 HARD and 0 soft findings. The current-source dialog audit also passes all 11 themes; both reports have the same current fingerprint. check-final-release passes its evidence/geometry subset. This is not the complete quality release gate: strict types, CSS, unused code, coverage, database hardening and the unfixed dependency advisory still block release.
 
 The refreshed Actions OSV artifact for 42ade4c contains only braces 3.0.3 / GHSA-vfj7-8cjw-p6xm. Gitleaks, Semgrep, CodeQL and the policy scanner pass. No OSV ignore was introduced. The final local PDF browser contract also passes after the dependency and focus changes, including zero console/backend errors in the fictional demo.
+
+
+## Launch hardening, 2026-10-23
+
+Production Supabase metadata and security-advisor reads were rejected by project permission checks. No plaintext counts, schema state, backup verification or remote migration/deletion are claimed. The existing guarded legacy-auth drop/down migration is the intended removal path after the encrypted snapshot gate.
+
+Current strict quality check: 447 diagnostics. CSS: 108,052 bytes, 44 font sizes, 21 radii, 10 breakpoints, 36 important declarations, 102 feature classes. No targets were weakened. Anonymous RPC rate limiting, exhaustive server validation/role matrix, contact Turnstile delivery and complete launch website audit remain blocking work. See POLISH-REPORT.md for current checks and OWNER-TODO.md for provider actions.
+
+One browser run was invalidated when a build replaced its output tree mid-run, causing a navigation failure. That run was discarded; subsequent browser runs use stable generated output and no overlapping build. The first complete matrix found only 79 oversized marquee spans in 1,464 views; the corrected strip passed the stable-output repeat: 1,464 views, zero findings.

@@ -1,3 +1,4 @@
+import {serviceInput} from "../../../../packages/core/input-limits";
 import {SystemStatePage} from '../system/SystemStates';
 import { LegacySelect, Button } from "../../../../packages/ui/components";
 import {
@@ -233,6 +234,7 @@ export function PublicForm() {
     setBusy(true);
     setError("");
     try {
+      if (kind === "report") serviceInput.parse({hours:Number(hours),studies:Number(studies),comments});
       if (kind === "report" && !navigator.onLine) {
         const kept = await keepReportDraft("public:" + token, {
           shared,
