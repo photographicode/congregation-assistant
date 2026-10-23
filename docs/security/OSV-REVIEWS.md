@@ -5,3 +5,7 @@ Reviewed 24 October 2026. CI run 39913848072 supplied the scanner JSON: one advi
 `npm explain braces --json` traces development-only Tailwind/chokidar and micromatch tooling; the lockfile entry is dev-only. The production CycloneDX graph excludes braces and application source does not import it. This is a build-tool availability risk when consuming malicious patterns, not a reason to accept arbitrary build input. CI builds only trusted repository configuration and PR review remains required.
 
 The single advisory has an explicit expiry of 15 January 2027 in `osv-scanner.toml` (under 90 days). `scripts/check-osv-reviews.mjs` fails on expiry, missing/overlong review, changed braces version or appearance in the production graph. OSV still scans all dependencies and fails any new unreviewed advisory. No blanket ignore and no production dependency exception. Upgrade or re-review before expiry; do not extend silently.
+
+## Updated feed — 24 October 2026
+
+Run 40006331896 reports the former braces ignore as unused and instead finds **production** Zod 4.1.12 advisory [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5), constrained-collection memory exhaustion, fixed in 4.6.6. The unused braces exception is removed. App and core pin Zod 4.6.7, the current published patch. No active ignores remain; new-head OSV must prove zero unreviewed advisories. This supersedes the earlier historical dev-only exception, rather than adding an ignore for a reachable production dependency.
