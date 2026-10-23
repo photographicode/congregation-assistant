@@ -1,3 +1,14 @@
+# Current authority: V3 Launch Hardening
+
+Follow docs/V3-LAUNCH-HARDENING.md in order, in addition to V3-QUALITY-ORDERS.md. No new product features. Verify generated output; retain honest failures. The PR 58 release override was one-time and does not apply here.
+
+1. **Think before coding.** State the assumption and the success check before you change code; if two readings exist, pick one, write it in `docs/DECISIONS.md`, move on.
+2. **Simplicity first.** The smallest change that solves the problem; no speculative abstractions, flags or "future" code.
+3. **Surgical changes.** Touch only what the task needs; match the surrounding style; do not reformat unrelated code.
+4. **Goal-driven, verified.** Write the failing test or measurable check first; do not say "done" until the check ran green; show the command and result in `docs/POLISH-REPORT.md`.
+5. **Systematic debugging.** Reproduce → isolate → fix root cause → add a regression test. No retry-until-green; a fix that fails twice is logged and escalated.
+6. **Evidence over claims.** Every ✔ in `CHECKLISTS.md` links to a test, script or document. Unverified = say so.
+
 # Current user release override — 2026-10-22
 
 The owner explicitly requests fixing the Monthly submissions layout and deploying all of PR #58 despite the unfinished quality backlog. The one-time [owner-release-58] merge marker in deploy.yml records that exception; subsequent releases use the normal gates. Keep quality/security checks intact and report failures; validate normal compilation/tests and the affected browser paths. No production data/schema mutation is included in this release.
