@@ -12,16 +12,19 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   sample:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
     - run: npx playwright install --with-deps chromium firefox webkit
+      timeout-minutes: 6
+      env:
+        PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '60000'
     - run: sudo apt-get update && sudo apt-get install -y poppler-utils
     - run: npm run build
     - run: node scripts/check-ui-kit-contracts.mjs
@@ -57,18 +60,20 @@ jobs:
         CA_REFINEMENT_THEMES: mono-light,lagoon-glass,aurora
         CA_REFINEMENT_SCREENS: home,people,reports,schedule,settings,assistant
         CA_REFINEMENT_HARD_ONLY: 'true'
-    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: current-ui-evidence
         if-no-files-found: error
-        path: |
-          docs/qa/final-dialog-layers.json
+        path: 'docs/qa/final-dialog-layers.json
+
           docs/qa/interaction-audit.json
 
+          '
+        overwrite: true
   full:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -89,20 +94,23 @@ jobs:
       CA_REFINEMENT_SHARD: ${{ matrix.shard }}
       CA_REFINEMENT_REPORT: docs/qa/refinement-matrix-${{ matrix.fontMode }}-${{ matrix.shard }}.json
     steps:
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
     - run: npx playwright install --with-deps chromium
+      timeout-minutes: 6
+      env:
+        PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '60000'
     - run: npm run build
     - run: node scripts/refinement-matrix.ts
     - run: node scripts/refinement-matrix.ts
       env:
         CA_REFINEMENT_SCREENS: publisher-entry,group-entry,public-entry,public-error,public-pending,owner-editor,owner-request,public-schedule,public-schedule-aux
         CA_REFINEMENT_REPORT: docs/qa/refinement-role-matrix-${{ matrix.fontMode }}-${{ matrix.shard }}.json
-    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: refinement-geometry-${{ matrix.fontMode }}-${{ matrix.shard }}

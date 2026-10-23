@@ -339,3 +339,5 @@ Deployment protection: the previous run's artifact has expired, so the workflow 
 Final local full check after retained-security/API tests: `npm run check` PASS: 219 Vitest tests (33 files) and 87 script contracts, including stale-live-byte rejection. Workflow policy PASS: 63 immutable action references. Final-head Actions remain authoritative for merge.
 
 Clean-runner follow-up: focus restoration now passes in Actions. The contract then exposed a missing report-directory initialization (ENOENT); create work/quality before saving its result. This is a separate setup defect, not a second failed focus correction; browser assertions remain unchanged.
+
+Final-head 079b583: CI (including 224 pages/1,672 views), security and PDF PASS. Browser job 120632748654 timed out during Playwright OS dependency download on Ubuntu 26.04; no app assertions ran. Logs identify 142MB/185 new apt packages, stalled on libflite. Pin affected browser/PDF/Pages jobs to ubuntu-24.04 and bound installation; final-head gates must run again. No passing browser result or deployment is claimed from that cancelled job.
