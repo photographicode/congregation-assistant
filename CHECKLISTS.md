@@ -2,6 +2,18 @@
 
 Legend: ✔ done (evidence found in the repo) · ◐ partial · ✗ missing · ? cannot verify from the code (needs a runtime/dashboard check) · **OWNER** = only the owner can do it (dashboard/account). "Verify" says how an automated check or a human proves it. Codex turns every ✗/◐ into a task in `V3-QUALITY-ORDERS.md`; every checked item must have a test, script or document as evidence in `docs/engineering/EVIDENCE.md`.
 
+## Current PR #59 evidence (2026-10-24)
+
+The findings below retain the original audit as backlog; this section records current measured evidence. Release status remains pending until final-head Actions and live checks pass.
+
+- [x] ✔ Isolated RLS/grant checks and all 1,696 RPC caller cases pass: [RPC matrix](docs/security/RPC-MATRIX.md), [table classification](docs/security/RLS-TABLE-CLASSIFICATION.md). This is not production evidence.
+- [ ] ? **Production database audit remains not verified**: connector reads denied; [owner queries](OWNER-DB-AUDIT.sql), [access evidence](docs/qa/PROD-DB-ACCESS.md). No production migration applied.
+- [x] ✔ Type, CSS, Stylelint and coverage ratchets retain original targets: [decisions](docs/DECISIONS.md), [open targets](docs/engineering/OPEN.md). Changed source has zero strict diagnostics; legacy debt remains.
+- [x] ✔ Unused graph passes; retained shared components have real browser contracts: [contract check](scripts/check-ui-kit-contracts.mjs). This does not establish whole-product accessibility.
+- [x] ✔ S-21 measured 400-dpi tick/label/month checks and independent variant geometry pass: [measurement](docs/qa/s21-measured-hardening.json), [geometry](docs/qa/s21-hardening-geometry.json). Canonical reviewed PDFs unchanged.
+- [x] ✔ PR inventory reduced to three open PRs: [inventory](docs/engineering/PR-INVENTORY.md).
+- [ ] ◐ Final-head CI/security/PDF/browser and post-deploy evidence: pending; deployment has no historical release bypass. [Release report](docs/POLISH-REPORT.md).
+
 ---
 
 # PART A — Enterprise SaaS checklist
