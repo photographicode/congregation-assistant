@@ -1,7 +1,7 @@
-# Public website V2
+# Generated marketing website
 
-Source template fetched from photographicode/Congregation-Assistant_Public on 2026-10-13. Assets and guide retained; rebuilt index uses the shared UI tokens, fictional device frame, capability cards, delivery comparison, honest privacy status, request wizard, INR price with USD quote disclosure, and install guide.
+`scripts/build-marketing-site.mjs` generates the public B/W website into `dist/site` using `site.css`, `site.js`, locale catalogues and content flags in this directory. `npm run build` copies that output to `dist-site`; `scripts/build-pages.mjs` assembles the canonical Pages artifact.
 
-Build with `npm run build:v2` from repository root. Output is `dist/site/` and shares `dist/assets/fonts` and `dist/capabilities.json`. When publishing standalone at the apex, adjust sibling paths to the configured APP_URL, publish shared fonts/catalogue at their referenced locations, and verify links; the app's preview path is supported directly.
+The old HTML, Android and downloadable-guide templates and duplicate root `site/` tree are retired. Installation and usage instructions are generated pages; the usage page offers a text download. The contact form opens the visitor's email app; server delivery and Turnstile are not active.
 
-Requests wrap the existing approved request RPC and persist versioned choices for newly created requests. A duplicate pending request is acknowledged without allowing an anonymous caller to overwrite its existing choices. Private selections record interest only.
+Verify generated output with `node scripts/site-audit.mjs` and `node scripts/site-audit-browser.mjs`. Design authority: `docs/SITE-DESIGN-LOCK.md`. Translation review and reference screenshot baselines remain open.

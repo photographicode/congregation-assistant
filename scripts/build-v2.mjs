@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import path from 'node:path';
 async function walk(dir){return(await Promise.all((await readdir(dir,{withFileTypes:true})).map(e=>e.isDirectory()?walk(path.join(dir,e.name)):path.join(dir,e.name)))).flat().sort();}
-const fingerprint=createHash('sha256');for(const file of ['package-lock.json','pricing.json','public-config.json','capabilities.json','apps/web/index.html','apps/web/vite.config.ts','scripts/build-v2.mjs','scripts/build-trust-pages.mjs','scripts/build-hosting.mjs','scripts/pages-config.mjs',...await walk('hosting'),...await walk('apps/web/src'),...await walk('packages/ui'),...await walk('packages/core'),...await walk('packages/pdf'),...await walk('apps/site'),...await walk('assets')])fingerprint.update(file).update(await readFile(file));
+const fingerprint=createHash('sha256');for(const file of ['package-lock.json','pricing.json','public-config.json','capabilities.json','apps/web/index.html','apps/web/vite.config.ts','scripts/build-v2.mjs','scripts/build-hosting.mjs','scripts/pages-config.mjs',...await walk('hosting'),...await walk('apps/web/src'),...await walk('packages/ui'),...await walk('packages/core'),...await walk('packages/pdf'),...await walk('apps/site'),...await walk('assets')])fingerprint.update(file).update(await readFile(file));
 for(const file of ['NotoSans-Latin-Regular.woff2','NotoSans-Latin-Bold.woff2'])await readFile('apps/site/assets/fonts/'+file);
 const hash=fingerprint.digest('hex');process.env.VITE_BUILD_HASH=hash;
 const base=process.env.BASE_URL||'/';if(!/^\/(?:[a-zA-Z0-9_-]+\/)*$/.test(base))throw Error('BASE_URL must be an absolute directory path ending in /');
@@ -40,4 +40,4 @@ await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-sit
 const siteReport=JSON.parse(await readFile('dist-site/build-report.json','utf8'));await writeFile('dist-site/build-report.json',JSON.stringify({...siteReport,hash},null,2)+'\n');console.log('Initial website gzip payload',siteReport.initialGzipBytes,'bytes');console.log('Standalone V3 build',hash.slice(0,12),'JS gzip bytes',total);
 
 await import('./build-system-pages.mjs');
-await rm('dist-site/downloads',{recursive:true,force:true});await rm('dist/site/downloads',{recursive:true,force:true});await import('./build-hosting.mjs');
+await import('./build-hosting.mjs');
