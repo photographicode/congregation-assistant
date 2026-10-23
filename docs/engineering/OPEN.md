@@ -78,3 +78,15 @@ Owner-authorized initial baselines are `ts-baseline.json`, `css-baseline.json` a
 Separate unratcheted gates still require real fixes: Stylelint (452 errors observed in CI), knip unused items, complete RPC role matrix, PDF/geometry checks and fresh assembled/live audits. Do not remove those gates merely to obtain green CI.
 
 Stylelint CSS debt ratchet (review 2026-11-23): 452 existing findings, target zero, rules retained. New findings and findings in changed CSS are hard failures. `check:style:all` still reports the complete unresolved list.
+
+## Post-#59 queue (separate PRs, in owner order)
+
+Each new PR stays under 800 changed lines excluding generated evidence/fixtures; no feature work is folded into the launch-hardening release.
+
+1. S-21: current measured tick/label/month checks pass; make any further correction only from a failing 400-dpi case, with reviewed goldens unchanged.
+2. Consolidate the remaining app system pages onto SystemPage, retaining opaque dialogs and existing theme tokens.
+3. Add the requested assistant actions through the action registry, with role authorization and review/Undo tests.
+4. Split Home, People and Reports using existing shared primitives, with behavior and responsive regression checks.
+5. Continue remaining Experience/Quality orders, including dated type/CSS/coverage debt and independent accessibility/provider reviews.
+
+Completed blocker corrections: unused dependency/export graph passes; the full 106-signature role matrix passes all 1,696 cases; canonical PDF checks plus strengthened S-21 measurements pass locally. Fresh final-head and live deployment results are separate release evidence, not inferred from these local results. The historical braces exception was retired when the current OSV feed stopped reporting it; Zod upgraded to 4.6.7 for GHSA-mrhx-c7xc-m3w5. No active OSV ignores remain.
