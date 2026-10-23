@@ -13,28 +13,23 @@ permissions:
   contents: read
 concurrency:
   group: canonical-pages
-  cancel-in-progress: ${{ contains(github.event.head_commit.message, '[owner-release-58]') }}
+  cancel-in-progress: false
 jobs:
   security:
-    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/security.yml
     permissions:
       contents: read
       security-events: write
   ci:
-    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/ci.yml
   e2e:
-    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/e2e.yml
   pdf:
-    if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
     uses: ./.github/workflows/pdf.yml
   build:
     if: >-
       always() && !cancelled() && github.ref == 'refs/heads/main' &&
-      (contains(github.event.head_commit.message, '[owner-release-58]') ||
-      (needs.ci.result == 'success' && needs.security.result == 'success' && needs.e2e.result == 'success' && needs.pdf.result == 'success'))
+      needs.ci.result == 'success' && needs.security.result == 'success' && needs.e2e.result == 'success' && needs.pdf.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -44,27 +39,14 @@ jobs:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
-    - if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
-      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
       with:
         name: current-ui-evidence
         path: work/current-ui-evidence
     - name: Use evidence from this workflow run
-      if: "!contains(github.event.head_commit.message, '[owner-release-58]')"
       run: |
         cp work/current-ui-evidence/final-dialog-layers.json docs/qa/final-dialog-layers.json
         cp work/current-ui-evidence/interaction-audit.json docs/qa/interaction-audit.json
-    - name: Verify the explicitly authorized PR 58 release
-      if: "contains(github.event.head_commit.message, '[owner-release-58]')"
-      run: |
-        npm run check
-        npx playwright install --with-deps chromium
-        sudo apt-get update && sudo apt-get install -y poppler-utils
-        npm run build
-        node scripts/check-submission-filters.cjs
-        node scripts/check-pdf-browser.cjs
-        node scripts/check-dialog-layers.cjs
-        node scripts/interaction-audit.ts
     - run: node scripts/check-final-release.mjs
     - run: node scripts/build-pages.mjs
       env:
@@ -161,8 +143,8 @@ jobs:
         CA_SITE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_SITE_PROJECT_NAME }}
         CA_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
       run: "if [ -z \"$CLOUDFLARE_API_TOKEN\" ] || [ -z \"$CLOUDFLARE_ACCOUNT_ID\" ] || [ -z \"$CA_PAGES_PROJECT\" ]; then\n  echo 'Cloudflare Pages not\
-        \ set up; existing hosting remains in use.'\n  exit 0\nfi\nnpx --yes wrangler@4.45.0 pages deploy dist --project-name \"$CA_PAGES_PROJECT\"\nif\
-        \ [ -n \"$CA_SITE_PAGES_PROJECT\" ]; then\n  npx --yes wrangler@4.45.0 pages deploy dist-site --project-name \"$CA_SITE_PAGES_PROJECT\"\nfi\n"
+        \ set up; existing hosting remains in use.'\n  exit 0\nfi\nnpx --no-install wrangler pages deploy dist --project-name \"$CA_PAGES_PROJECT\"\nif\
+        \ [ -n \"$CA_SITE_PAGES_PROJECT\" ]; then\n  npx --no-install wrangler pages deploy dist-site --project-name \"$CA_SITE_PAGES_PROJECT\"\nfi\n"
     needs:
     - ci
     - security
