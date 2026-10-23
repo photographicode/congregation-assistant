@@ -82,6 +82,8 @@ do $$ declare t text; begin
   execute format('grant select,insert,update,delete on public.%I to authenticated',t);
  end loop;
 end $$;
+-- Owner membership writes use server authority; no authenticated write policy exists.
+revoke insert,update,delete on public.ca_superadmins from authenticated;
 create policy superadmins_self on public.ca_superadmins for select to authenticated using((select public.ca_google_identity()) and email=lower((select auth.jwt())->>'email'));
 create policy congregations_read on public.congregations for select to authenticated using(public.ca_has_role(id,array['admin','field_service','attendance','oclm']));
 create policy congregations_insert on public.congregations for insert to authenticated with check((select public.ca_is_superadmin()));

@@ -817,4 +817,18 @@ $ca_body$;
  end if;
  insert into ca_migrations.applied(name) values('20261018153524_v3_polish_ap_undo.sql') on conflict do nothing;
 end $ca_ordered$;
+
+-- 20261023184449_revoke_unintended_owner_table_writes.sql
+do $ca_ordered$
+declare already_applied boolean=false;begin
+ if to_regclass('supabase_migrations.schema_migrations') is not null then execute 'select exists(select 1 from supabase_migrations.schema_migrations where name=$1)' into already_applied using 'revoke_unintended_owner_table_writes';end if;
+ if not already_applied and not exists(select 1 from ca_migrations.applied where name='20261023184449_revoke_unintended_owner_table_writes.sql') then
+ execute $ca_body$-- Permission-only change. Production: reconcile OWNER-DB-AUDIT results and verify
+-- an encrypted full snapshot first. No FORCE RLS, policy change or customer-row mutation.
+-- The sole intended authenticated policy is superadmins_self (SELECT).
+revoke insert,update,delete on public.ca_superadmins from authenticated;
+$ca_body$;
+ end if;
+ insert into ca_migrations.applied(name) values('20261023184449_revoke_unintended_owner_table_writes.sql') on conflict do nothing;
+end $ca_ordered$;
 commit;

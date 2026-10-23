@@ -307,3 +307,9 @@ A compiled-output probe found 10 `console.log` calls and zero debugger statement
 CI database result: password-column gate PASS; RLS gate FAIL on 16 enabled-but-not-forced tables. This is a reproduced security gate failure, not a passing isolated database audit. See Actions run 39913848298 (database job 120282778962). No production ALTER/DROP was attempted.
 
 Current PR CI security jobs: CodeQL PASS, Semgrep PASS, secrets PASS, workflow policy PASS; dependencies FAIL (OSV). Database password-column check PASS, forced-RLS check FAIL. These failures remain release blockers. PR: https://github.com/photographicode/congregation-assistant/pull/59.
+
+## Close blockers — 24 October 2026
+
+Latest authority: `docs/V3-CLOSE-BLOCKERS.md`; production evidence is still unavailable. Supabase rejected RLS metadata, role flags, advisors and Edge Function listing. See `docs/qa/PROD-DB-ACCESS.md`; no `PROD-DB-AUDIT.md` result was invented.
+
+RLS gate changed per owner correction: enabled RLS and reviewed policy-backed grants, no forced-RLS blanket requirement. It caught unbacked owner-table write grants. Permission-only migration ran twice on isolated PostgreSQL 17; down restored the expected rejection; corrected fresh setup ran the complete `scripts/check-supabase.sql` suite (19 PASS markers, zero errors), then `scripts/check-rls.sql` and `scripts/check-no-password-columns.sql` passed. All 16 public tables classified in `docs/security/RLS-TABLE-CLASSIFICATION.md`. No production schema/data change or snapshot claim.
