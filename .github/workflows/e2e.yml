@@ -21,6 +21,12 @@ jobs:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
+    - name: Use official signed Ubuntu archives for browser dependencies
+      run: "for mirror in /etc/apt/apt-mirrors.txt /etc/apt/apt-mirrors-security.txt /etc/apt/sources.list.d/ubuntu.sources; do\n  if [ -f \"$mirror\" ]; then\n \
+        \   sudo sed -i -e 's#http://azure.archive.ubuntu.com/ubuntu#https://archive.ubuntu.com/ubuntu#g' -e 's#https://azure.archive.ubuntu.com/ubuntu#https://archive.ubuntu.com/ubuntu#g'\
+        \ \"$mirror\"\n  fi\ndone\nprintf '%s\\n' 'Acquire::Retries \"2\";' 'Acquire::http::Timeout \"30\";' 'Acquire::https::Timeout \"30\";' | sudo tee /etc/apt/apt.conf.d/80-ca-download-timeouts\
+        \ >/dev/null\n"
+      timeout-minutes: 1
     - run: npx playwright install --with-deps chromium firefox webkit
       timeout-minutes: 6
       env:
@@ -100,6 +106,12 @@ jobs:
         node-version: '22'
         cache: npm
     - run: npm ci --ignore-scripts
+    - name: Use official signed Ubuntu archives for browser dependencies
+      run: "for mirror in /etc/apt/apt-mirrors.txt /etc/apt/apt-mirrors-security.txt /etc/apt/sources.list.d/ubuntu.sources; do\n  if [ -f \"$mirror\" ]; then\n \
+        \   sudo sed -i -e 's#http://azure.archive.ubuntu.com/ubuntu#https://archive.ubuntu.com/ubuntu#g' -e 's#https://azure.archive.ubuntu.com/ubuntu#https://archive.ubuntu.com/ubuntu#g'\
+        \ \"$mirror\"\n  fi\ndone\nprintf '%s\\n' 'Acquire::Retries \"2\";' 'Acquire::http::Timeout \"30\";' 'Acquire::https::Timeout \"30\";' | sudo tee /etc/apt/apt.conf.d/80-ca-download-timeouts\
+        \ >/dev/null\n"
+      timeout-minutes: 1
     - run: npx playwright install --with-deps chromium
       timeout-minutes: 6
       env:
