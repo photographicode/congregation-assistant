@@ -82,10 +82,11 @@ jobs:
     - run: npm ci --ignore-scripts
     - run: npm audit --omit=dev --audit-level=high
     - run: mkdir -p work/security && npx cyclonedx-npm --package-lock-only --omit dev --output-file work/security/sbom.json
+    - run: node scripts/check-osv-reviews.mjs
     - name: OSV source lockfile scan
       run: |
         go install github.com/google/osv-scanner/v2/cmd/osv-scanner@v2.3.1
-        "$HOME/go/bin/osv-scanner" scan source --lockfile=package-lock.json --format=json --output=work/security/osv.json
+        "$HOME/go/bin/osv-scanner" scan source --config=osv-scanner.toml --lockfile=package-lock.json --format=json --output=work/security/osv.json
     - run: node scripts/check-licenses.mjs work/security/sbom.json
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()

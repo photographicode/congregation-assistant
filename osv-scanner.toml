@@ -1,0 +1,5 @@
+# Reviewed 2026-10-24. Re-review before expiry; no broad package or ecosystem ignores.
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+ignoreUntil = 2027-01-15
+reason = "braces 3.0.3 is dev-only (Tailwind/chokidar and micromatch tooling); absent from the production SBOM and browser graph. The application does not evaluate user patterns with braces. No fixed release exists as of review. Build only trusted repository inputs. Review/upgrade before 2027-01-15."
