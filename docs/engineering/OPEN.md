@@ -70,3 +70,9 @@ Production Supabase metadata and security-advisor reads were rejected by project
 Current strict quality check: 447 diagnostics. CSS: 108,052 bytes, 44 font sizes, 21 radii, 10 breakpoints, 36 important declarations, 102 feature classes. No targets were weakened. Anonymous RPC rate limiting, exhaustive server validation/role matrix, contact Turnstile delivery and complete launch website audit remain blocking work. See POLISH-REPORT.md for current checks and OWNER-TODO.md for provider actions.
 
 One browser run was invalidated when a build replaced its output tree mid-run, causing a navigation failure. That run was discarded; subsequent browser runs use stable generated output and no overlapping build. The first complete matrix found only 79 oversized marquee spans in 1,464 views; the corrected strip passed the stable-output repeat: 1,464 views, zero findings.
+
+## Ratchet burn-down review — 23 November 2026
+
+Owner-authorized initial baselines are `ts-baseline.json`, `css-baseline.json` and `coverage-baseline.json`. Strict diagnostics 447 → 434; changed PR files must have zero. CSS current budgets: 108052 bytes, 44 font sizes, 21 radii, 10 breakpoints, 36 important declarations, 102 feature classes. Original targets remain 71680 bytes /9 /5 /4 /0 /40. Coverage current global lines 9.15%, statements 15.04%, functions 12.48%, branches 12.76%; core lines 81.54%, PDF-layout branches 15.76%. Original targets remain global70%, core85% lines, PDF95% branches, permission-critical100% branches. The historical auth glob matches no source file and is not proof of permission coverage.
+
+Separate unratcheted gates still require real fixes: Stylelint (452 errors observed in CI), knip unused items, complete RPC role matrix, PDF/geometry checks and fresh assembled/live audits. Do not remove those gates merely to obtain green CI.

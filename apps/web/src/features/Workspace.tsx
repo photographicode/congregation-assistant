@@ -195,6 +195,7 @@ export default function Workspace({
     [layout, setLayout] = useState("week"),
     [printScale, setPrintScale] = useState("100"),
     [moreDetails, setMoreDetails] = useState(false);
+  const currentRecipient = queue[queueIndex];
   const wizardSnapshot = React.useRef<any>(null);
   useEffect(() => {
     if (wizard) {
@@ -769,7 +770,7 @@ export default function Workspace({
             >
               {s === "import"
                 ? "Import Center"
-                : s[0].toUpperCase() + s.slice(1)}
+                : s.charAt(0).toUpperCase() + s.slice(1)}
             </Button>
           ))}
         </div>
@@ -919,7 +920,7 @@ export default function Workspace({
                       <div className="form-grid">
                         {["name", "email", "phone"].map((key) => (
                           <label key={key}>
-                            {key[0].toUpperCase() + key.slice(1)}
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
                             <input
                               value={r[key]}
                               onChange={(e) =>
@@ -1092,7 +1093,7 @@ export default function Workspace({
               className={sub === s ? "active" : ""}
               onClick={() => setSub(s)} type="button"
             >
-              {s[0].toUpperCase() + s.slice(1)}
+              {s.charAt(0).toUpperCase() + s.slice(1)}
             </Button>
           ))}
         </div>
@@ -1552,17 +1553,17 @@ export default function Workspace({
             <div className="bubble">
               {formatMessage(template, messageValues)}
             </div>
-            {queue.length > 0 && queueIndex < queue.length ? (
+            {currentRecipient ? (
               <>
                 <h3>
                   {t("ui.recipient.2fd56e88")}
                   {queueIndex + 1} {t("ui.of.4acb731c")}
-                  {queue.length}: {queue[queueIndex].name}
+                  {queue.length}: {currentRecipient.name}
                 </h3>
                 <div className="bubble">
                   {formatMessage(template, {
                     ...messageValues,
-                    name: queue[queueIndex].name,
+                    name: currentRecipient.name,
                   })}
                 </div>
                 {new Date().getHours() >= 21 || new Date().getHours() < 7 ? (
@@ -1575,10 +1576,10 @@ export default function Workspace({
                 <div className="actions">
                   <a
                     href={whatsappURL(
-                      queue[queueIndex].phone,
+                      currentRecipient.phone,
                       formatMessage(template, {
                         ...messageValues,
-                        name: queue[queueIndex].name,
+                        name: currentRecipient.name,
                       }),
                     )}
                     target="_blank"
@@ -1735,7 +1736,7 @@ export default function Workspace({
               >
                 {["auto", "compact", "comfortable", "large"].map((f) => (
                   <option key={f} value={f}>
-                    {f[0].toUpperCase() + f.slice(1)}
+                    {f.charAt(0).toUpperCase() + f.slice(1)}
                   </option>
                 ))}
               </LegacySelect>

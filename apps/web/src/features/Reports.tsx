@@ -1356,7 +1356,7 @@ export function Reports({ context: c }: { context: Context }) {
               pending={receipt === "pending"}
               onAnother={() => {
                 setReceipt(null);
-                setPerson(persons.length === 1 ? persons[0].id : "");
+                setPerson(persons.length === 1 ? (persons[0]?.id ?? "") : "");
                 setForm({
                   shared: true,
                   studies: 0,
