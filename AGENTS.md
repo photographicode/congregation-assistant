@@ -1,3 +1,7 @@
+# Current authority: V3 Close the Blockers
+
+Follow docs/V3-CLOSE-BLOCKERS.md. The owner replaces forced-RLS and fixed historical type/CSS/coverage targets with documented ratchets, preserving no-new-diagnostic and changed-file rules. Production evidence remains unverified until OWNER supplies docs/qa/PROD-DB-AUDIT.md. Do not force RLS blindly. All current HARD checks must pass on the final head before merge/deploy.
+
 # Current authority: V3 Launch Hardening
 
 Follow docs/V3-LAUNCH-HARDENING.md in order, in addition to V3-QUALITY-ORDERS.md. No new product features. Verify generated output; retain honest failures. The PR 58 release override was one-time and does not apply here.
