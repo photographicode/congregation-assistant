@@ -31,4 +31,4 @@ try{
  for(const width of [320,768,1440]){await page.setViewportSize({width,height:900});await page.evaluate(()=>window.scrollTo(0,0));const findings=await page.evaluate(inspectLayout);failures.push(...findings.map(rule=>({width,rule})));}
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
-await writeFile('work/quality/ui-kit-contracts.json',JSON.stringify({errors,external,failures},null,2)+'\n');console.log(JSON.stringify({errors,externalRequests:external.length,failures},null,2));if(failures.length)process.exitCode=1;
+await mkdir('work/quality',{recursive:true});await writeFile('work/quality/ui-kit-contracts.json',JSON.stringify({errors,external,failures},null,2)+'\n');console.log(JSON.stringify({errors,externalRequests:external.length,failures},null,2));if(failures.length)process.exitCode=1;
