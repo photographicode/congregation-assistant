@@ -99,7 +99,7 @@
     "apps/web/src/features/crypto-core.mjs": {
       "count": 14,
       "diagnostics": {
-        "7016:Could not find a declaration file for module 'libsodium-wrappers-sumo'. '/workspace/congregation-assistant/node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-wrappers.js' implicitly has an 'any' type.   Try `npm i --save-dev @types/libsodium-wrappers-sumo` if it exists or add a new declaration (.d.ts) file containing `declare module 'libsodium-wrappers-sumo';`": 1,
+        "7016:Could not find a declaration file for module 'libsodium-wrappers-sumo'. '<repo>/node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-wrappers.js' implicitly has an 'any' type.   Try `npm i --save-dev @types/libsodium-wrappers-sumo` if it exists or add a new declaration (.d.ts) file containing `declare module 'libsodium-wrappers-sumo';`": 1,
         "7006:Parameter 'key' implicitly has an 'any' type.": 3,
         "7006:Parameter 'value' implicitly has an 'any' type.": 2,
         "7006:Parameter 'meta' implicitly has an 'any' type.": 1,
@@ -416,7 +416,7 @@
       "count": 33,
       "diagnostics": {
         "5097:An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.": 1,
-        "7016:Could not find a declaration file for module 'fontkit'. '/workspace/congregation-assistant/node_modules/fontkit/dist/browser-module.mjs' implicitly has an 'any' type.   Try `npm i --save-dev @types/fontkit` if it exists or add a new declaration (.d.ts) file containing `declare module 'fontkit';`": 1,
+        "7016:Could not find a declaration file for module 'fontkit'. '<repo>/node_modules/fontkit/dist/browser-module.mjs' implicitly has an 'any' type.   Try `npm i --save-dev @types/fontkit` if it exists or add a new declaration (.d.ts) file containing `declare module 'fontkit';`": 1,
         "7031:Binding element 'library' implicitly has an 'any' type.": 1,
         "7031:Binding element 'fontkit' implicitly has an 'any' type.": 1,
         "7031:Binding element 'loadFont' implicitly has an 'any' type.": 1,
