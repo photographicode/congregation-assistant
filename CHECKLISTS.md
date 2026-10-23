@@ -136,7 +136,7 @@ No product is unhackable. The goal is **defence in depth, tested continuously, w
 - [x] ✔ Startup config validation fails closed.
 
 ## B8. Supply chain
-- [ ] ◐ Lockfile ✔, Dependabot ✔. [ ] ✗ **Pin every GitHub Action to a commit SHA** (all 30 refs use tags); Dependabot for `github-actions`; `npm ci --ignore-scripts`; `npm audit --omit=dev` + OSV scanner in CI; SBOM (CycloneDX) artifact; license allow-list; minimal dependency count.
+- [ ] ◐ Lockfile ✔, Dependabot ✔. [ ] ✗ **Pin every GitHub Action to a commit SHA** (54 references verified by [workflow policy](scripts/check-workflow-security.mjs)); Dependabot for `github-actions`; `npm ci --ignore-scripts`; `npm audit --omit=dev` + OSV scanner in CI; SBOM (CycloneDX) artifact; license allow-list; minimal dependency count.
 - [ ] ✗ Reproducible build + published build hash (`version.json`) + visible version in Settings.
 
 ## B9. Infrastructure
@@ -161,3 +161,12 @@ No product is unhackable. The goal is **defence in depth, tested continuously, w
 
 ## B13. The assistant
 - [ ] ✗ On-device, no network (tested). [ ] ✗ Role-gated actions only from the registry; destructive actions need typed confirmation; every execution audited "via assistant"; input length cap + parser fuzzing.
+
+## Launch hardening evidence — 2026-10-23
+- [x] ✔ Generated marketing output: [static report](docs/qa/launch/site-static.json), 224 assembled pages / zero covered-rule failures. This is not a claim that every website-owner criterion is complete.
+- [x] ✔ Covered responsive marketing checks: [browser report](docs/qa/launch/site-browser.json), 1,672 views / zero overflow findings, including menu Escape/focus and local unknown-path HTTP404. Production HTTP404 is not verified.
+- [x] ✔ Published artifact guard and rejection regressions: [scanner](scripts/check-published-files.mjs), [tests](scripts/v2-tests/published-files.test.mjs).
+- [x] ✔ Input boundary and origin regression tests: [input tests](tests/v3/input-limits.test.ts), [origin tests](tests/v3/edge-origins.test.ts). Complete every-input/every-RPC coverage remains open.
+- [x] ✔ Full-history secret scans: [sanitized result](docs/qa/launch/history-summary.json), [workflow](.github/workflows/security.yml), [report](docs/POLISH-REPORT.md). No raw TruffleHog credentials are retained in CI artifacts.
+- [ ] ✗ Production database metadata/advisors: connection denied project permission. No production result claimed; [owner actions](OWNER-TODO.md).
+- [ ] ✗ Complete launch release: OSV, forced RLS, strict quality types, CSS/coverage/geometry and remaining server-boundary gates are not green. [Open work](docs/engineering/OPEN.md).

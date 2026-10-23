@@ -12,7 +12,8 @@ test('published artifact rejects private files, oversized files and privileged k
   assert.equal(run().status,0);
   await mkdir(path.join(root,'supabase'));await writeFile(path.join(root,'bundle.js.map'),'{}');
   await writeFile(path.join(root,'large.bin'),Buffer.alloc(5*1024*1024+1));
+  await writeFile(path.join(root,'debug.js'),'console.log(1); debugger;');
   await writeFile(path.join(root,'bad.js'),'const key="sb_secret_'+ 'A'.repeat(24)+'";');
-  const result=run();assert.equal(result.status,1);for(const rule of ['private directory','private extension','over 5MB','credential pattern'])assert(result.stdout.includes(rule));
+  const result=run();assert.equal(result.status,1);for(const rule of ['private directory','private extension','over 5MB','credential pattern','production debug code'])assert(result.stdout.includes(rule));
  }finally{await rm(root,{recursive:true,force:true});}
 });

@@ -3,7 +3,7 @@ import {existsSync} from 'node:fs';
 import {readFile,stat,mkdir,writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {chromium} from 'playwright';
-const root=path.resolve(process.env.SITE_AUDIT_ROOT||'dist/site'),config=JSON.parse(await readFile('public-config.json','utf8')),canonical=new URL(config.PUBLIC_SITE_URL);
+const root=path.resolve(process.env.SITE_AUDIT_ROOT||'dist/site'),config=JSON.parse(await readFile('public-config.json','utf8')),canonical=new URL(process.env.SITE_AUDIT_URL||config.PUBLIC_SITE_URL);
 const base=canonical.pathname.replace(/\/$/,'')+'/', failures=[], widths=[320,390,768,1440];
 const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.woff2':'font/woff2','.svg':'image/svg+xml','.png':'image/png','.ico':'image/x-icon','.webp':'image/webp','.json':'application/json','.txt':'text/plain'};
 const server=http.createServer(async(req,res)=>{try{let name=new URL(req.url,'http://localhost').pathname;if(!name.startsWith(base)){res.writeHead(404).end();return;}let file=path.resolve(root,name.slice(base.length)||'index.html');if(file!==root&&!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}try{if((await stat(file)).isDirectory())file=path.join(file,'index.html');await stat(file);}catch{res.statusCode=404;file=path.join(root,'404.html');}res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.writeHead(500).end();}});

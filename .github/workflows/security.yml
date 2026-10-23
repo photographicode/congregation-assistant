@@ -3,8 +3,7 @@ name: Security contracts and supply chain
   pull_request: {}
   workflow_call: {}
   workflow_dispatch: {}
-  push:
-    branches: [main, v3/quality, v3/launch-hardening]
+  push: {}
 permissions:
   contents: read
 jobs:
