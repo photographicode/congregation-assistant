@@ -56,7 +56,7 @@ jobs:
       run: |
         mkdir -p work/security
         semgrep scan --metrics=off --config p/typescript --config p/react --config p/security-audit --config p/owasp-top-ten --sarif --output work/security/semgrep.sarif --error apps/web/src packages/core packages/ui packages/pdf
-    - uses: github/codeql-action/upload-sarif@4bfa242aa49c5f7c6770b98670d354a7dfac05f8 # v3
+    - uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
       if: always()
       with:
         sarif_file: work/security/semgrep.sarif
