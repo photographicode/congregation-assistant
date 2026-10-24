@@ -165,7 +165,7 @@ export function Reports({ context: c }: { context: Context }) {
       );
       entry?.scrollIntoView({ block: "start" });
       entry
-        ?.querySelector<HTMLElement>("select,input")
+        ?.querySelector<HTMLElement>('[role="combobox"],select,input')
         ?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);

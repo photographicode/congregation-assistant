@@ -14,6 +14,8 @@ export const monitoredFetch:typeof fetch=async(input,init={})=>{
  const slow=(level:6|15)=>window.dispatchEvent(new CustomEvent('ca:slow-request',{detail:level}));
  let response:Response;try{response=await fetchWithPatience(input,init,slow);}finally{window.dispatchEvent(new CustomEvent('ca:slow-request',{detail:null}));}
  const states:Record<number,string>={401:'session',403:'forbidden',429:'rateLimit',500:'error',503:'maintenance'};
- if(states[response.status])window.dispatchEvent(new CustomEvent('ca:system-state',{detail:states[response.status]}));
+ const method=(init.method||(input instanceof Request?input.method:'GET')).toUpperCase();
+ // Forms handle failed mutations inline so their drafts and retry controls stay visible.
+ if(['GET','HEAD'].includes(method)&&states[response.status])window.dispatchEvent(new CustomEvent('ca:system-state',{detail:states[response.status]}));
  return response;
 };
