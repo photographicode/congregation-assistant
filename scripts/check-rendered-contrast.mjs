@@ -5,6 +5,8 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { PNG } from "pngjs";
 import { ratio } from "./contrast-check.mjs";
+import assert from "node:assert/strict";
+const negativeGradientFixture = process.argv.includes("--negative-gradient-fixture");
 const root = path.resolve("dist"),
   server = createServer(async (req, res) => {
     try {
@@ -41,7 +43,7 @@ const base = "http://127.0.0.1:" + server.address().port,
   views = [],
   failures = [];
 try {
-  for (const theme of [
+  for (const theme of (negativeGradientFixture ? ["mono-light"] : [
     "mono-light",
     "mono-dark",
     "paper",
@@ -51,7 +53,7 @@ try {
     "neo-brutal",
     "forest",
     "aurora",
-  ]) {
+  ])) {
     const context = await browser.newContext({
       viewport: { width: 390, height: 1100 },
       deviceScaleFactor: 1,
@@ -72,16 +74,17 @@ try {
     );
     await context.route("**/*.supabase.co/**", (r) => r.abort());
     const page = await context.newPage();
-    for (const [screen, heading] of [
+    for (const [screen, heading] of (negativeGradientFixture ? [["home", "Monthly submissions"]] : [
       ["home", "Monthly submissions"],
       ["people", "A place for all."],
       ["pdf", "Forms to share"],
       ["schedule", "Midweek assignments"],
-    ]) {
+    ])) {
       await page.goto(base + "/?demo=admin&screen=" + screen);
       await page.getByRole("heading", { name: heading, exact: true }).waitFor();
       await page.evaluate(() => document.fonts.ready);
-      for (const scroll of [0, 0.5, 1]) {
+      if (negativeGradientFixture) await page.addStyleTag({content:".greeting-name{background-image:linear-gradient(transparent,transparent)!important}"});
+      for (const scroll of (negativeGradientFixture ? [0] : [0, 0.5, 1])) {
         await page.evaluate((scroll) => {
           const node = document.querySelector(".main-content");
           node.scrollTop = (node.scrollHeight - node.clientHeight) * scroll;
@@ -128,6 +131,8 @@ try {
             const range = document.createRange();
             range.selectNodeContents(node);
             const fg = rgba(style.color);
+            const gradient = fg[3] === 0 && style.backgroundClip.includes("text") && style.backgroundImage !== "none";
+            if (gradient) el.setAttribute("data-contrast-gradient-paint", "");
             let opacity = 1;
             for (let parent = el; parent; parent = parent.parentElement)
               opacity *= Number(getComputedStyle(parent).opacity);
@@ -179,7 +184,7 @@ try {
                 y: r.y + scrollY,
                 width: r.width,
                 height: r.height,
-                fractions: [0.2, 0.5, 0.8].filter((f) => {
+                fractions: (gradient ? Array.from({length:21},(_,index)=>(index+.5)/21) : [0.2, 0.5, 0.8]).filter((f) => {
                   const hit = document.elementFromPoint(
                     r.x + r.width * f,
                     r.y + r.height / 2,
@@ -197,6 +202,7 @@ try {
                   ? "." + el.className.split(" ").filter(Boolean).join(".")
                   : ""),
               foreground: fg,
+              gradient,
               required:
                 !el.closest("button.primary,.oclm-section,.oclm-week") &&
                 fg.slice(0, 3).every((n, i) => n === primary[i])
@@ -208,14 +214,21 @@ try {
           }
           return out;
         });
+        let gradientPaint;
+        if (pairs.some(pair=>pair.gradient)) {
+          const paintMask = await page.addStyleTag({content:'[data-contrast-gradient-paint]{background-clip:border-box!important;-webkit-background-clip:border-box!important}'});
+          gradientPaint = PNG.sync.read(await page.screenshot({fullPage:true,animations:"disabled"}));
+          await paintMask.evaluate(el=>el.remove());
+        }
         const mask = await page.addStyleTag({
           content:
-            "*{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important}svg text{fill:transparent!important}",
+            "*{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important}svg text{fill:transparent!important}[data-contrast-gradient-paint]{background-image:none!important}",
         });
         const bitmap = PNG.sync.read(
           await page.screenshot({ fullPage: true, animations: "disabled" }),
         );
         await mask.evaluate((el) => el.remove());
+        await page.locator("[data-contrast-gradient-paint]").evaluateAll(elements=>elements.forEach(el=>el.removeAttribute("data-contrast-gradient-paint")));
         const results = [];
         for (const pair of pairs) {
           let min = Infinity,
@@ -231,13 +244,13 @@ try {
               const i = (y * bitmap.width + x) * 4,
                 bg = [...bitmap.data.subarray(i, i + 3)],
                 alpha = pair.foreground[3] / 255,
-                fg = pair.foreground
-                  .slice(0, 3)
-                  .map((n, i) => Math.round(n * alpha + bg[i] * (1 - alpha))),
+                fg = pair.gradient
+                  ? [...gradientPaint.data.subarray(i,i+3)]
+                  : pair.foreground.slice(0,3).map((n,index)=>Math.round(n*alpha+bg[index]*(1-alpha))),
                 value = ratio(fg, bg);
               if (value < min) {
                 min = value;
-                point = { x, y, background: bg };
+                point = { x, y, foreground:fg, background: bg };
               }
             }
           }
@@ -278,13 +291,13 @@ try {
   await browser.close();
   server.close();
 }
-await mkdir("docs/qa", { recursive: true });
+await mkdir(negativeGradientFixture ? "work/quality" : "docs/qa", { recursive: true });
 await writeFile(
-  "docs/qa/contrast-rendered.json",
+  negativeGradientFixture ? "work/quality/contrast-gradient-negative.json" : "docs/qa/contrast-rendered.json",
   JSON.stringify(
     {
       method:
-        "Actual visible, unoccluded rendered text colors and background pixels with text paint suppressed, full-intensity backgrounds, panel-ancestor requirement. Synthetic panel gate separately composites every gradient stop. Text-1 >=7, all other text >=4.5.",
+        "Actual visible, unoccluded rendered text colors and background pixels with text paint suppressed; gradient text foreground sampled from browser-rendered unclipped paint and suppressed separately from the panel background, full-intensity backgrounds, panel-ancestor requirement. Synthetic panel gate separately composites every gradient stop. Text-1 >=7, all other text >=4.5.",
       views,
       failures,
     },
@@ -304,4 +317,7 @@ console.log(
     2,
   ),
 );
-if (failures.length) process.exitCode = 1;
+if (negativeGradientFixture) {
+  assert(failures.some(row=>row.gradient && row.ratio===1),"An invisible gradient must fail the unchanged contrast threshold");
+  console.log("PASS invisible-gradient negative control is rejected");
+} else if (failures.length) process.exitCode = 1;

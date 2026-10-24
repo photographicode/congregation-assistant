@@ -1,4 +1,3 @@
-/* The artwork lives on the fixed pseudo-layer, never a fixed body background. */
 body{background-attachment:scroll}
 :root:is([data-theme=aurora],[data-theme=lagoon-glass]){--surface:var(--surface-solid)}
 :root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.card,.main-content,.list-row,.rail){backdrop-filter:none;background:var(--surface-solid)}
@@ -9,3 +8,4 @@ body{background-attachment:scroll}
 @media(max-width:599px),(prefers-reduced-transparency:reduce){
  :root:is([data-theme=aurora],[data-theme=lagoon-glass]) :is(.topbar,.bottom-tabs,.dashboard-hero){backdrop-filter:none;background:var(--surface-solid)}
 }
+[data-theme=neo-brutal] .greeting-name{--accent:var(--text-1)}

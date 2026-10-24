@@ -54,6 +54,7 @@ jobs:
     - run: node scripts/check-v3-store-browser.mjs
     - run: node scripts/check-v3-offline-app.cjs
     - run: node scripts/check-rendered-contrast.mjs
+    - run: node scripts/check-rendered-contrast.mjs --negative-gradient-fixture
     - run: node scripts/check-claims.mjs
     - run: node scripts/interaction-audit.ts
     - run: npm run check:vercel-guidelines
@@ -77,6 +78,15 @@ jobs:
 
           '
         overwrite: true
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      if: always()
+      with:
+        name: current-contrast-evidence
+        path: |
+          docs/qa/contrast-rendered.json
+          work/quality/contrast-gradient-negative.json
+        retention-days: 14
+
   full:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
