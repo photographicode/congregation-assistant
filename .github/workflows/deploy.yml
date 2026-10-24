@@ -119,13 +119,13 @@ jobs:
       with:
         enablement: true
     - name: Use Actions as the Pages publishing source
-      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
       with:
         script: "try {\n  await github.rest.repos.updateInformationAboutPagesSite({\n    ...context.repo,\n    build_type: 'workflow'\n  });\n  core.info('Pages uses\
           \ Actions; branch publishing is disabled.');\n} catch (error) {\n  if (error.status !== 403) throw error;\n  core.warning('This token cannot change the\
           \ Pages publishing source. Select GitHub Actions in repository Pages settings to avoid competing branch builds.');\n}\n"
     - name: Wait for competing branch publisher before canonical deployment
-      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
       with:
         script: "for (let attempt = 0; attempt < 40; attempt++) {\n  const {data} = await github.rest.actions.listWorkflowRunsForRepo({...context.repo, head_sha:\
           \ context.sha, per_page: 100});\n  const competing = data.workflow_runs.filter(run => run.name === 'pages build and deployment' && run.status !== 'completed');\n\
