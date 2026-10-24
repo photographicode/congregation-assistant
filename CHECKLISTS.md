@@ -2,6 +2,18 @@
 
 Legend: ✔ done (evidence found in the repo) · ◐ partial · ✗ missing · ? cannot verify from the code (needs a runtime/dashboard check) · **OWNER** = only the owner can do it (dashboard/account). "Verify" says how an automated check or a human proves it. Codex turns every ✗/◐ into a task in `V3-QUALITY-ORDERS.md`; every checked item must have a test, script or document as evidence in `docs/engineering/EVIDENCE.md`.
 
+## Current PR #59 evidence (2026-10-24)
+
+The findings below retain the original audit as backlog; this section records current measured evidence. Release status remains pending until final-head Actions and live checks pass.
+
+- [x] ✔ Isolated RLS/grant checks and all 1,696 RPC caller cases pass: [RPC matrix](docs/security/RPC-MATRIX.md), [table classification](docs/security/RLS-TABLE-CLASSIFICATION.md). This is not production evidence.
+- [ ] ? **Production database audit remains not verified**: connector reads denied; [owner queries](OWNER-DB-AUDIT.sql), [access evidence](docs/qa/PROD-DB-ACCESS.md). No production migration applied.
+- [x] ✔ Type, CSS, Stylelint and coverage ratchets retain original targets: [decisions](docs/DECISIONS.md), [open targets](docs/engineering/OPEN.md). Changed source has zero strict diagnostics; legacy debt remains.
+- [x] ✔ Unused graph passes; retained shared components have real browser contracts: [contract check](scripts/check-ui-kit-contracts.mjs). This does not establish whole-product accessibility.
+- [x] ✔ S-21 measured 400-dpi tick/label/month checks and independent variant geometry pass: [measurement](docs/qa/s21-measured-hardening.json), [geometry](docs/qa/s21-hardening-geometry.json). Canonical reviewed PDFs unchanged.
+- [x] ✔ PR inventory reduced to three open PRs: [inventory](docs/engineering/PR-INVENTORY.md).
+- [ ] ◐ Final-head CI/security/PDF/browser and post-deploy evidence: pending; deployment has no historical release bypass. [Release report](docs/POLISH-REPORT.md).
+
 ---
 
 # PART A — Enterprise SaaS checklist
@@ -136,7 +148,7 @@ No product is unhackable. The goal is **defence in depth, tested continuously, w
 - [x] ✔ Startup config validation fails closed.
 
 ## B8. Supply chain
-- [ ] ◐ Lockfile ✔, Dependabot ✔. [ ] ✗ **Pin every GitHub Action to a commit SHA** (all 30 refs use tags); Dependabot for `github-actions`; `npm ci --ignore-scripts`; `npm audit --omit=dev` + OSV scanner in CI; SBOM (CycloneDX) artifact; license allow-list; minimal dependency count.
+- [ ] ◐ Lockfile ✔, Dependabot ✔. [ ] ✗ **Pin every GitHub Action to a commit SHA** (54 references verified by [workflow policy](scripts/check-workflow-security.mjs)); Dependabot for `github-actions`; `npm ci --ignore-scripts`; `npm audit --omit=dev` + OSV scanner in CI; SBOM (CycloneDX) artifact; license allow-list; minimal dependency count.
 - [ ] ✗ Reproducible build + published build hash (`version.json`) + visible version in Settings.
 
 ## B9. Infrastructure
@@ -161,3 +173,12 @@ No product is unhackable. The goal is **defence in depth, tested continuously, w
 
 ## B13. The assistant
 - [ ] ✗ On-device, no network (tested). [ ] ✗ Role-gated actions only from the registry; destructive actions need typed confirmation; every execution audited "via assistant"; input length cap + parser fuzzing.
+
+## Launch hardening evidence — 2026-10-23
+- [x] ✔ Generated marketing output: [static report](docs/qa/launch/site-static.json), 224 assembled pages / zero covered-rule failures. This is not a claim that every website-owner criterion is complete.
+- [x] ✔ Covered responsive marketing checks: [browser report](docs/qa/launch/site-browser.json), 1,672 views / zero overflow findings, including menu Escape/focus and local unknown-path HTTP404. Production HTTP404 is not verified.
+- [x] ✔ Published artifact guard and rejection regressions: [scanner](scripts/check-published-files.mjs), [tests](scripts/v2-tests/published-files.test.mjs).
+- [x] ✔ Input boundary and origin regression tests: [input tests](tests/v3/input-limits.test.ts), [origin tests](tests/v3/edge-origins.test.ts). Complete every-input/every-RPC coverage remains open.
+- [x] ✔ Full-history secret scans: [sanitized result](docs/qa/launch/history-summary.json), [workflow](.github/workflows/security.yml), [report](docs/POLISH-REPORT.md). No raw TruffleHog credentials are retained in CI artifacts.
+- [ ] ✗ Production database metadata/advisors: connection denied project permission. No production result claimed; [owner actions](OWNER-TODO.md).
+- [ ] ✗ Complete launch release: OSV, forced RLS, strict quality types, CSS/coverage/geometry and remaining server-boundary gates are not green. [Open work](docs/engineering/OPEN.md).

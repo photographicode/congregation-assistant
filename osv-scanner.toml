@@ -1,0 +1,4 @@
+# No active advisory exceptions as of the latest 2026-10-24 scan.
+# GHSA-vfj7-8cjw-p6xm was not reported by run 40006331896; its unused ignore is removed.
+# GHSA-mrhx-c7xc-m3w5 is fixed by upgrading production Zod to 4.6.7 (fixed >=4.6.6).
+# Future exceptions require a specific ID, reachability reason and expiry <=90 days.

@@ -22,7 +22,7 @@ function applyDocumentLocale():void{
  document.documentElement.dir=currentLocale==='ur'?'rtl':'ltr';
 }
 function notify():void{revision++;for(const listener of listeners)listener();}
-export async function loadLocale(locale:Locale):Promise<void>{
+async function loadLocale(locale:Locale):Promise<void>{
  if(loaded.has(locale)||locale==='en')return;
  const existing=loading.get(locale);if(existing)return existing;
  const task=importers[locale]().then(value=>{messages[locale]=value.default;loaded.add(locale);notify();}).catch(error=>{handleError(error,{scope:'i18n.catalogue',severity:'warning'});}).finally(()=>{loading.delete(locale);});

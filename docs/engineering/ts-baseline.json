@@ -1,0 +1,424 @@
+{
+  "typescript": "5.9.3",
+  "total": 419,
+  "files": {
+    "apps/web/src/features/Dashboard.tsx": {
+      "count": 2,
+      "diagnostics": {
+        "18048:'m' is possibly 'undefined'.": 1,
+        "18048:'y' is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/Departments.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2769:No overload matches this call.   Overload 1 of 2, '(o: { [s: string]: { [x: string]: unknown; publisherId?: string | null | undefined; personId?: string | null | undefined; name?: string | undefined; status?: string | undefined; }; } | ArrayLike<{ [x: string]: unknown; publisherId?: string | ... 1 more ... | undefined; personId?: string | ... 1 more ... | undefined; name?: string | undefined; status?: string | undefined; }>): [...][]', gave the following error.     Argument of type 'Record<string, { [x: string]: unknown; publisherId?: string | null | undefined; personId?: string | null | undefined; name?: string | undefined; status?: string | undefined; }> | undefined' is not assignable to parameter of type '{ [s: string]: { [x: string]: unknown; publisherId?: string | null | undefined; personId?: string | null | undefined; name?: string | undefined; status?: string | undefined; }; } | ArrayLike<{ [x: string]: unknown; publisherId?: string | ... 1 more ... | undefined; personId?: string | ... 1 more ... | undefined; nam...'.       Type 'undefined' is not assignable to type '{ [s: string]: { [x: string]: unknown; publisherId?: string | null | undefined; personId?: string | null | undefined; name?: string | undefined; status?: string | undefined; }; } | ArrayLike<{ [x: string]: unknown; publisherId?: string | ... 1 more ... | undefined; personId?: string | ... 1 more ... | undefined; nam...'.   Overload 2 of 2, '(o: {}): [string, any][]', gave the following error.     Argument of type 'Record<string, { [x: string]: unknown; publisherId?: string | null | undefined; personId?: string | null | undefined; name?: string | undefined; status?: string | undefined; }> | undefined' is not assignable to parameter of type '{}'.       Type 'undefined' is not assignable to type '{}'.": 1
+      }
+    },
+    "apps/web/src/features/ExperiencePicker.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/ExperienceProfile.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/HomeGroupLinks.tsx": {
+      "count": 3,
+      "diagnostics": {
+        "18048:'year' is possibly 'undefined'.": 1,
+        "18048:'month' is possibly 'undefined'.": 2
+      }
+    },
+    "apps/web/src/features/LocalAssistant.tsx": {
+      "count": 7,
+      "diagnostics": {
+        "2345:Argument of type '{ id: string; type: \"Chairman\" | \"Assistant\" | \"Prayer\" | \"TreasuresTalk\" | \"SpiritualGems\" | \"BibleReading\" | \"Conversation\" | \"FollowingUp\" | \"Disciples\" | \"Beliefs\" | \"ChristianParts\" | \"BibleStudy\" | \"BibleStudyReader\"; ... 4 more ...; reader?: boolean | undefined; } | undefined' is not assignable to parameter of type '{ id: string; type: \"Chairman\" | \"Assistant\" | \"Prayer\" | \"TreasuresTalk\" | \"SpiritualGems\" | \"BibleReading\" | \"Conversation\" | \"FollowingUp\" | \"Disciples\" | \"Beliefs\" | \"ChristianParts\" | \"BibleStudy\" | \"BibleStudyReader\"; ... 4 more ...; reader?: boolean | undefined; }'.   Type 'undefined' is not assignable to type '{ id: string; type: \"Chairman\" | \"Assistant\" | \"Prayer\" | \"TreasuresTalk\" | \"SpiritualGems\" | \"BibleReading\" | \"Conversation\" | \"FollowingUp\" | \"Disciples\" | \"Beliefs\" | \"ChristianParts\" | \"BibleStudy\" | \"BibleStudyReader\"; ... 4 more ...; reader?: boolean | undefined; }'.": 2,
+        "18048:'calendarYear' is possibly 'undefined'.": 1,
+        "18048:'calendarMonth' is possibly 'undefined'.": 2,
+        "2532:Object is possibly 'undefined'.": 2
+      }
+    },
+    "apps/web/src/features/PdfStudio.tsx": {
+      "count": 12,
+      "diagnostics": {
+        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'string'.   Type 'undefined' is not assignable to type 'string'.": 1,
+        "2722:Cannot invoke an object which is possibly 'undefined'.": 5,
+        "18048:'engine.s21' is possibly 'undefined'.": 1,
+        "18048:'engine.s3' is possibly 'undefined'.": 1,
+        "18048:'engine.s88' is possibly 'undefined'.": 1,
+        "18048:'engine.emergency' is possibly 'undefined'.": 1,
+        "18048:'engine.schedule' is possibly 'undefined'.": 1,
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/ReportLinks.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/UpdatePrompt.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'SetStateAction<string>'.   Type 'undefined' is not assignable to type 'SetStateAction<string>'.": 1
+      }
+    },
+    "apps/web/src/features/WeekendTalkHistory.tsx": {
+      "count": 1,
+      "diagnostics": {
+        "2345:Argument of type '(old: TalkHistory[]) => (TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to parameter of type 'SetStateAction<TalkHistory[]>'.   Type '(old: TalkHistory[]) => (TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to type '(prevState: TalkHistory[]) => TalkHistory[]'.     Type '(TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to type 'TalkHistory[]'.       Type 'TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; }' is not assignable to type 'TalkHistory'.         Type '{ date: string; talk_no: string | undefined; title: string; speaker: string; source: string; }' is not assignable to type 'TalkHistory'.           Types of property 'talk_no' are incompatible.             Type 'string | undefined' is not assignable to type 'string'.               Type 'undefined' is not assignable to type 'string'.": 1
+      }
+    },
+    "apps/web/src/features/auth-scope.mjs": {
+      "count": 4,
+      "diagnostics": {
+        "7034:Variable 'account' implicitly has type 'any' in some locations where its type cannot be determined.": 1,
+        "7006:Parameter 'session' implicitly has an 'any' type.": 1,
+        "7005:Variable 'account' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'metadata' implicitly has an 'any' type.": 1
+      }
+    },
+    "apps/web/src/features/crypto-core.mjs": {
+      "count": 14,
+      "diagnostics": {
+        "7016:Could not find a declaration file for module 'libsodium-wrappers-sumo'. '<repo>/node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-wrappers.js' implicitly has an 'any' type.   Try `npm i --save-dev @types/libsodium-wrappers-sumo` if it exists or add a new declaration (.d.ts) file containing `declare module 'libsodium-wrappers-sumo';`": 1,
+        "7006:Parameter 'key' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'meta' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'record' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'publicKey' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'envelope' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'id' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'phrase' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'backup' implicitly has an 'any' type.": 1
+      }
+    },
+    "apps/web/src/features/crypto.worker.ts": {
+      "count": 1,
+      "diagnostics": {
+        "2722:Cannot invoke an object which is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/dashboard-model.mjs": {
+      "count": 19,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 2,
+        "7006:Parameter 'people' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'reports' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 6,
+        "7006:Parameter 'q' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'rows' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'n' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'r' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'publishers' implicitly has an 'any' type.": 1
+      }
+    },
+    "apps/web/src/features/export.mjs": {
+      "count": 4,
+      "diagnostics": {
+        "7006:Parameter 'value' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'rows' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'row' implicitly has an 'any' type.": 2
+      }
+    },
+    "apps/web/src/features/model.mjs": {
+      "count": 25,
+      "diagnostics": {
+        "7006:Parameter 'value' implicitly has an 'any' type.": 3,
+        "7053:Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ IN: string; US: string; GB: string; AU: string; CA: string; }'.   No index signature with a parameter of type 'string' was found on type '{ IN: string; US: string; GB: string; AU: string; CA: string; }'.": 1,
+        "7006:Parameter 'text' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'name' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'rows' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'v' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'row' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'groups' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'people' implicitly has an 'any[]' type.": 1,
+        "7006:Parameter 'person' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'index' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'g' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'week' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'away' implicitly has an 'any[]' type.": 1,
+        "7006:Parameter 'template' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'values' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'phone' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'message' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'meta' implicitly has an 'any' type.": 1
+      }
+    },
+    "apps/web/src/features/pdf-download.ts": {
+      "count": 1,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "apps/web/src/features/report-model.mjs": {
+      "count": 40,
+      "diagnostics": {
+        "7006:Parameter 'rows' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'row' implicitly has an 'any' type.": 6,
+        "7006:Parameter 'person' implicitly has an 'any' type.": 1,
+        "2339:Property 'shared_in_ministry' does not exist on type '{}'.": 1,
+        "2339:Property 'studies' does not exist on type '{}'.": 1,
+        "2339:Property 'hours' does not exist on type '{}'.": 1,
+        "2339:Property 'comments' does not exist on type '{}'.": 1,
+        "2339:Property 'is_ap' does not exist on type '{}'.": 1,
+        "7006:Parameter 'draft' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'cong' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'year' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'month' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'id' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'table' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'people' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'period' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'names' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'h' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'v' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'index' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 2,
+        "2339:Property 'row' does not exist on type '{ pub_id: any; name: any; include: boolean; shared_in_ministry: any; studies: number; hours: number; comments: any; is_ap: any; }'.": 1,
+        "18046:'e' is of type 'unknown'.": 1,
+        "2339:Property 'errors' does not exist on type '{ pub_id: any; name: any; include: boolean; shared_in_ministry: any; studies: number; hours: number; comments: any; is_ap: any; }'.": 1,
+        "7006:Parameter 'other' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'i' implicitly has an 'any' type.": 1
+      }
+    },
+    "apps/web/src/features/theme-fonts.ts": {
+      "count": 1,
+      "diagnostics": {
+        "2322:Type 'string | undefined' is not assignable to type 'string'.   Type 'undefined' is not assignable to type 'string'.": 1
+      }
+    },
+    "apps/web/src/system/SystemStates.tsx": {
+      "count": 2,
+      "diagnostics": {
+        "4114:This member must have an 'override' modifier because it overrides a member in the base class 'Component<{ children: ReactNode; }, { failed: boolean; }, any>'.": 2
+      }
+    },
+    "packages/core/greeting.mjs": {
+      "count": 6,
+      "diagnostics": {
+        "7006:Parameter 'hour' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'now' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'name' implicitly has an 'any' type.": 1,
+        "2532:Object is possibly 'undefined'.": 1,
+        "2538:Type 'undefined' cannot be used as an index type.": 1,
+        "7006:Parameter 'time' implicitly has an 'any' type.": 1
+      }
+    },
+    "packages/core/local-command.ts": {
+      "count": 9,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 5,
+        "2322:Type 'string | undefined' is not assignable to type 'string'.   Type 'undefined' is not assignable to type 'string'.": 3,
+        "2769:No overload matches this call.   The last overload gave the following error.     Type 'string | undefined' is not assignable to type 'string'.       Type 'undefined' is not assignable to type 'string'.": 1
+      }
+    },
+    "packages/core/meeting.ts": {
+      "count": 8,
+      "diagnostics": {
+        "2769:No overload matches this call.   Overload 1 of 2, '(year: number, monthIndex?: number | undefined, date?: number | undefined, hours?: number | undefined, minutes?: number | undefined, seconds?: number | undefined, ms?: number | undefined): number', gave the following error.     Argument of type 'number | undefined' is not assignable to parameter of type 'number'.       Type 'undefined' is not assignable to type 'number'.   Overload 2 of 2, '(year: number, monthIndex: number, date?: number | undefined, hours?: number | undefined, minutes?: number | undefined, seconds?: number | undefined, ms?: number | undefined): number', gave the following error.     Argument of type 'number | undefined' is not assignable to parameter of type 'number'.       Type 'undefined' is not assignable to type 'number'.": 1,
+        "18048:'number' is possibly 'undefined'.": 1,
+        "2769:No overload matches this call.   Overload 1 of 2, '(o: { [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>): { ...; }[]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | undefined' is not assignable to parameter of type '{ [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>'.       Type 'undefined' is not assignable to type '{ [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>'.   Overload 2 of 2, '(o: {}): any[]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | undefined' is not assignable to parameter of type '{}'.       Type 'undefined' is not assignable to type '{}'.": 1,
+        "2769:No overload matches this call.   Overload 1 of 2, '(o: ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | { [s: string]: { ...; }; }): [...][]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | undefined' is not assignable to parameter of type 'ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | { [s: string]: { personId?: string | ... 1 more ... | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefine...'.       Type 'undefined' is not assignable to type 'ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | { [s: string]: { personId?: string | ... 1 more ... | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefine...'.   Overload 2 of 2, '(o: {}): [string, any][]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | undefined' is not assignable to parameter of type '{}'.       Type 'undefined' is not assignable to type '{}'.": 1,
+        "2769:No overload matches this call.   Overload 1 of 2, '(o: { [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>): { ...; }[]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | { [k: string]: { ...; }; } | undefined' is not assignable to parameter of type '{ [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>'.       Type 'undefined' is not assignable to type '{ [s: string]: { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }; } | ArrayLike<{ personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }>'.   Overload 2 of 2, '(o: {}): any[]', gave the following error.     Argument of type 'Record<string, { personId?: string | null | undefined; assignmentType?: string | undefined; status?: string | undefined; customTitle?: string | undefined; }> | { [k: string]: { ...; }; } | undefined' is not assignable to parameter of type '{}'.       Type 'undefined' is not assignable to type '{}'.": 1,
+        "2532:Object is possibly 'undefined'.": 3
+      }
+    },
+    "packages/core/program-refresh.ts": {
+      "count": 1,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1
+      }
+    },
+    "packages/core/publisher-selection.ts": {
+      "count": 4,
+      "diagnostics": {
+        "2769:No overload matches this call.   Overload 1 of 2, '(year: number, monthIndex?: number | undefined, date?: number | undefined, hours?: number | undefined, minutes?: number | undefined, seconds?: number | undefined, ms?: number | undefined): number', gave the following error.     Argument of type 'number | undefined' is not assignable to parameter of type 'number'.       Type 'undefined' is not assignable to type 'number'.   Overload 2 of 2, '(year: number, monthIndex: number, date?: number | undefined, hours?: number | undefined, minutes?: number | undefined, seconds?: number | undefined, ms?: number | undefined): number', gave the following error.     Argument of type 'number | undefined' is not assignable to parameter of type 'number'.       Type 'undefined' is not assignable to type 'number'.": 1,
+        "18048:'month' is possibly 'undefined'.": 1,
+        "2532:Object is possibly 'undefined'.": 2
+      }
+    },
+    "packages/core/suggestions.ts": {
+      "count": 2,
+      "diagnostics": {
+        "2532:Object is possibly 'undefined'.": 1,
+        "2345:Argument of type 'Suggestion | undefined' is not assignable to parameter of type 'Suggestion'.   Type 'undefined' is not assignable to type 'Suggestion'.": 1
+      }
+    },
+    "packages/core/talk-history.ts": {
+      "count": 3,
+      "diagnostics": {
+        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'string'.   Type 'undefined' is not assignable to type 'string'.": 3
+      }
+    },
+    "packages/pdf/engine.mjs": {
+      "count": 77,
+      "diagnostics": {
+        "7031:Binding element 'snapshot' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'loadTemplate' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'loadFont' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'signal' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'done' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'total' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'i' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'publishers' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'sy' implicitly has an 'any' type.": 4,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'r' implicitly has an 'any' type.": 1,
+        "7034:Variable 'continuationNotes' implicitly has type 'any[]' in some locations where its type cannot be determined.": 1,
+        "7006:Parameter 'page' implicitly has an 'any' type.": 4,
+        "7006:Parameter 'text' implicitly has an 'any' type.": 8,
+        "7006:Parameter 'cx' implicitly has an 'any' type.": 4,
+        "7006:Parameter 'bottom' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'top' implicitly has an 'any' type.": 7,
+        "2554:Expected 0-4 arguments, but got 5.": 1,
+        "7006:Parameter 'x' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'topBaseline' implicitly has an 'any' type.": 1,
+        "2532:Object is possibly 'undefined'.": 1,
+        "7006:Parameter 'square' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'pub' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'yOffset' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'y' implicitly has an 'any' type.": 1,
+        "18048:'row' is possibly 'undefined'.": 6,
+        "18048:'row.bottom' is possibly 'undefined'.": 1,
+        "7005:Variable 'continuationNotes' implicitly has an 'any[]' type.": 1,
+        "7006:Parameter 'month' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'congName' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'a' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'v' implicitly has an 'any' type.": 1,
+        "7034:Variable 'w' implicitly has type 'any[]' in some locations where its type cannot be determined.": 1,
+        "7005:Variable 'w' implicitly has an 'any[]' type.": 2,
+        "7006:Parameter 'syRight' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'field' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'centerX' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'bottomY' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'colSet' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'bottoms' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'footerBottom' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'topY' implicitly has an 'any' type.": 1
+      }
+    },
+    "packages/pdf/layout.mjs": {
+      "count": 108,
+      "diagnostics": {
+        "5097:An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.": 1,
+        "7031:Binding element 'library' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'fontkit' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'loadFont' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'fontProvider' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 8,
+        "7006:Parameter 'font' implicitly has an 'any' type.": 6,
+        "7006:Parameter 'maxWidth' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'pdf' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'values' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'weight' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'size' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'g' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'b' implicitly has an 'any' type.": 4,
+        "7006:Parameter 'bottom' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'top' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'page' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'rect' implicitly has an 'any' type.": 2,
+        "2339:Property 'color' does not exist on type '{ size?: number | undefined; minSize?: number | undefined; align?: string | undefined; }'.": 1,
+        "7006:Parameter 'state' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'families' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'congregation' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'f' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 3,
+        "7034:Variable 'page' implicitly has type 'any' in some locations where its type cannot be determined.": 2,
+        "7034:Variable 'y' implicitly has type 'any' in some locations where its type cannot be determined.": 2,
+        "7034:Variable 'fullDetails' implicitly has type 'any[]' in some locations where its type cannot be determined.": 1,
+        "7006:Parameter 'x' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'baseline' implicitly has an 'any' type.": 1,
+        "7005:Variable 'page' implicitly has an 'any' type.": 7,
+        "7005:Variable 'y' implicitly has an 'any' type.": 10,
+        "2532:Object is possibly 'undefined'.": 5,
+        "18048:'y' is possibly 'undefined'.": 9,
+        "7005:Variable 'fullDetails' implicitly has an 'any[]' type.": 1,
+        "7006:Parameter 'i' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'bold' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'entries' implicitly has an 'any' type.": 1,
+        "18048:'page' is possibly 'undefined'.": 4,
+        "7006:Parameter 'cx' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'cy' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'title' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'sections' implicitly has an 'any' type.": 1,
+        "7006:Parameter 's' implicitly has an 'any' type.": 1,
+        "2538:Type 'undefined' cannot be used as an index type.": 2,
+        "7006:Parameter 'record' implicitly has an 'any' type.": 1,
+        "7053:Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ name: string; phone: string; dob: string; baptized: string; gender: string; hope: string; address: string; emergency_name: string; emergency_relationship: string; emergency_phone: string; spiritual_status: string; ... 8 more ...; transferred_at: string; }'.   No index signature with a parameter of type 'string' was found on type '{ name: string; phone: string; dob: string; baptized: string; gender: string; hope: string; address: string; emergency_name: string; emergency_relationship: string; emergency_phone: string; spiritual_status: string; ... 8 more ...; transferred_at: string; }'.": 1,
+        "7006:Parameter 'r' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'letter' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'bytes' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'name' implicitly has an 'any' type.": 1
+      }
+    },
+    "packages/pdf/layout.ts": {
+      "count": 2,
+      "diagnostics": {
+        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'string'.   Type 'undefined' is not assignable to type 'string'.": 2
+      }
+    },
+    "packages/pdf/meeting-output.mjs": {
+      "count": 25,
+      "diagnostics": {
+        "7031:Binding element 'name' implicitly has an 'any' type.": 2,
+        "7031:Binding element 'week' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'date' implicitly has an 'any' type.": 2,
+        "7031:Binding element 'program' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'assignments' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'people' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'loadFont' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 3,
+        "7006:Parameter 'text' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'x' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'y' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'width' implicitly has an 'any' type.": 1,
+        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'string'.   Type 'undefined' is not assignable to type 'string'.": 1,
+        "7006:Parameter 'slot' implicitly has an 'any' type.": 1,
+        "7053:Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ treasures: RGB; field: RGB; living: RGB; }'.": 1,
+        "7053:Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ treasures: string; field: string; living: string; }'.": 1,
+        "7031:Binding element 'part' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'top' implicitly has an 'any' type.": 1
+      }
+    },
+    "packages/pdf/unicode.mjs": {
+      "count": 33,
+      "diagnostics": {
+        "5097:An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.": 1,
+        "7016:Could not find a declaration file for module 'fontkit'. '<repo>/node_modules/fontkit/dist/browser-module.mjs' implicitly has an 'any' type.   Try `npm i --save-dev @types/fontkit` if it exists or add a new declaration (.d.ts) file containing `declare module 'fontkit';`": 1,
+        "7031:Binding element 'library' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'fontkit' implicitly has an 'any' type.": 1,
+        "7031:Binding element 'loadFont' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'pdf' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'values' implicitly has an 'any' type.": 1,
+        "18048:'pattern' is possibly 'undefined'.": 2,
+        "2339:Property 'test' does not exist on type 'string | RegExp'.   Property 'test' does not exist on type 'string'.": 2,
+        "7006:Parameter 'weight' implicitly has an 'any' type.": 1,
+        "7034:Variable 'fonts' implicitly has type 'any[]' in some locations where its type cannot be determined.": 1,
+        "7006:Parameter 'value' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'text' implicitly has an 'any' type.": 4,
+        "7022:'font' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.": 1,
+        "7005:Variable 'fonts' implicitly has an 'any[]' type.": 2,
+        "18047:'current' is possibly 'null'.": 1,
+        "7006:Parameter 'size' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'sum' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'run' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'n' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'p' implicitly has an 'any' type.": 2,
+        "7006:Parameter 'page' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'options' implicitly has an 'any' type.": 1,
+        "7006:Parameter 'i' implicitly has an 'any' type.": 1,
+        "7019:Rest parameter 'args' implicitly has an 'any[]' type.": 2
+      }
+    }
+  }
+}

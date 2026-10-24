@@ -313,7 +313,7 @@
       "count": 1
     },
     "no-magic-numbers": {
-      "count": 31
+      "count": 29
     },
     "no-restricted-syntax": {
       "count": 1
@@ -709,9 +709,6 @@
     },
     "max-lines-per-function": {
       "count": 2
-    },
-    "no-magic-numbers": {
-      "count": 16
     },
     "no-nested-ternary": {
       "count": 2

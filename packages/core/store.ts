@@ -1,6 +1,6 @@
 import type {z} from 'zod';
 export type Filter={column:string;op:'eq'|'is';value:unknown};
-export type Source={kind:'rpc';name:string;args:Record<string,unknown>}|{kind:'table';name:string;columns:string;filters?:Filter[];order?:string;ascending?:boolean;offset?:number;limit?:number};
+type Source={kind:'rpc';name:string;args:Record<string,unknown>}|{kind:'table';name:string;columns:string;filters?:Filter[];order?:string;ascending?:boolean;offset?:number;limit?:number};
 export type Mutation={kind:'rpc';name:string;args:Record<string,unknown>}|{kind:'upsert'|'update';name:string;value:Record<string,unknown>;conflict?:string;filters?:Filter[]};
 export type ReadRequest={source:Source;cacheKey?:string;fresh?:boolean};
 export type DraftCommand={kind:'oclm-draft';key:'schedule';expectedRevision:number;draft:Record<string,unknown>};

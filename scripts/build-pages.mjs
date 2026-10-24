@@ -11,3 +11,7 @@ await rewrite('work/pages');await writeFile('work/pages/.nojekyll','');
 // The owner variable is the only activation switch; purchasing a domain is not activation.
 await rm('work/pages/CNAME',{force:true});if(cname)await writeFile('work/pages/CNAME',cname+'\n');
 if(custom){await rm('work/pages/app',{recursive:true,force:true});await mkdir('work/pages/app',{recursive:true});await writeFile('work/pages/app/redirect.js','location.replace('+JSON.stringify(app) +');');await writeFile('work/pages/app/index.html','<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open Congregation Assistant</title><script src="redirect.js" defer></script><a href="'+app+'">Open Congregation Assistant</a></html>');}const commit=process.env.GITHUB_SHA||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();await writeFile('work/pages/deployment.json',JSON.stringify({sourceCommit:commit,site,app,builtAt:new Date().toISOString(),customDomain:custom},null,2)+'\n');console.log('Pages artifact:',site,app);
+
+const published=spawnSync(process.execPath,['scripts/check-published-files.mjs'],{stdio:'inherit'});if(published.status)throw Error('Unsafe Pages artifact');
+
+const siteAudit=spawnSync(process.execPath,['scripts/site-audit.mjs'],{stdio:'inherit',env:{...process.env,SITE_AUDIT_ROOT:'work/pages',SITE_AUDIT_URL:site+'/'}});if(siteAudit.status)throw Error('Pages marketing audit failed');

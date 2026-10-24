@@ -1,3 +1,4 @@
+import {serviceInput} from "../../../../packages/core/input-limits";
 import {SystemStatePage} from '../system/SystemStates';
 import { LegacySelect, Button } from "../../../../packages/ui/components";
 import {
@@ -233,6 +234,7 @@ export function PublicForm() {
     setBusy(true);
     setError("");
     try {
+      if (kind === "report") serviceInput.parse({hours:Number(hours),studies:Number(studies),comments});
       if (kind === "report" && !navigator.onLine) {
         const kept = await keepReportDraft("public:" + token, {
           shared,
@@ -254,6 +256,7 @@ export function PublicForm() {
         });
       else {
         const [y, m] = period.split("-").map(Number);
+        if (y === undefined || m === undefined) throw Error("Choose a reporting month.");
         await rpc("submit_public_report", {
           p_token: token,
           p_report: {
@@ -467,7 +470,7 @@ export function PublicForm() {
           <h2>{snapshot.congregation || "Meeting schedule"}</h2>
           {kind === "weekend" ? (
             <div className="list">
-              {[
+              {([
                 ["chairman", "Chairman"],
                 ["talkTitle", "Public talk"],
                 ["speaker", "Speaker"],
@@ -480,7 +483,7 @@ export function PublicForm() {
                 ["reader", "Watchtower reader"],
                 ["prayer", "Closing prayer"],
                 ["meetingTime", "Meeting time"],
-              ].map(([key, label]) => (
+              ] as const).map(([key, label]) => (
                 <div className="list-row" key={key}>
                   <strong>{label}</strong>
                   <span>{String(snapshot[key] || "—")}</span>

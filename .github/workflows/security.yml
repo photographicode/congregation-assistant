@@ -3,10 +3,12 @@ name: Security contracts and supply chain
   pull_request: {}
   workflow_call: {}
   workflow_dispatch: {}
-  push:
-    branches: [main, v3/quality]
+  push: {}
 permissions:
   contents: read
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   secrets:
     runs-on: ubuntu-latest
@@ -21,12 +23,23 @@ jobs:
         curl --fail --location --retry 2 https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz -o work/security/gitleaks.tar.gz
         echo 'a65b5253807a68ac0cafa4414031fd740aeb55f54fb7e55f386acb52e6a840eb  work/security/gitleaks.tar.gz' | sha256sum --check
         tar -xzf work/security/gitleaks.tar.gz -C work/security gitleaks
-        work/security/gitleaks git --config .gitleaks.toml --redact --report-format json --report-path work/security/gitleaks.json .
+        work/security/gitleaks git --log-opts="--all" --config .gitleaks.toml --redact --report-format json --report-path work/security/gitleaks.json .
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version: '22'
+    - name: Scan full history with TruffleHog
+      run: |
+        curl --fail --location --retry 2 https://github.com/trufflesecurity/trufflehog/releases/download/v3.90.12/trufflehog_3.90.12_linux_amd64.tar.gz -o work/security/trufflehog.tar.gz
+        echo '318fd1e8af68b54f4465437208582003a5948293ea401c5c67bb55f17e4e2102  work/security/trufflehog.tar.gz' | sha256sum --check
+        tar -xzf work/security/trufflehog.tar.gz -C work/security trufflehog
+        node scripts/scan-history.mjs work/security/trufflehog
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()
       with:
         name: secret-scan
-        path: work/security/gitleaks.json
+        path: |
+          work/security/gitleaks.json
+          work/security/trufflehog-summary.json
   sast:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -72,10 +85,11 @@ jobs:
     - run: npm ci --ignore-scripts
     - run: npm audit --omit=dev --audit-level=high
     - run: mkdir -p work/security && npx cyclonedx-npm --package-lock-only --omit dev --output-file work/security/sbom.json
+    - run: node scripts/check-osv-reviews.mjs
     - name: OSV source lockfile scan
       run: |
         go install github.com/google/osv-scanner/v2/cmd/osv-scanner@v2.3.1
-        "$HOME/go/bin/osv-scanner" scan source --lockfile=package-lock.json --format=json --output=work/security/osv.json
+        "$HOME/go/bin/osv-scanner" scan source --config=osv-scanner.toml --lockfile=package-lock.json --format=json --output=work/security/osv.json
     - run: node scripts/check-licenses.mjs work/security/sbom.json
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()

@@ -1,2 +1,0 @@
-// Retired owner-password route. Owner uses the ordinary Google sign-in button.
-Deno.serve(request => new Response(JSON.stringify({error:'Use Continue with Google.'}),{status:410,headers:{'Access-Control-Allow-Origin':'https://photographicode.github.io','Access-Control-Allow-Headers':'apikey,content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'}}));

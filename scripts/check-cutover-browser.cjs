@@ -298,8 +298,7 @@ const server = http.createServer((req, res) => {
     await redirect.locator(".greeting h1").waitFor();
     assert.equal(new URL(redirect.url()).pathname, "/");
     await redirect.goto(base + "/site/");
-    await redirect.locator(".tour-controls").waitFor();
-    await redirect.getByRole("button", { name: "Pause guided tour" }).click();
+    await redirect.locator(".site-header").waitFor();
     await redirect.screenshot({
       path: path.join(output, "website.png"),
       fullPage: false,

@@ -1,3 +1,4 @@
+import {INPUT_LIMITS} from "../../../../packages/core/input-limits";
 import {
   Disclosure,
   DisclosureLabel, Button } from "../../../../packages/ui/components";
@@ -72,6 +73,7 @@ export default function PublisherEditor({
               {t("ui.full.name.f13a64ba")}
               <input
                 required
+                maxLength={INPUT_LIMITS.name}
                 value={editing.name}
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, name: e.target.value } : p));
@@ -144,6 +146,7 @@ export default function PublisherEditor({
               id="v2-publisher-email"
               aria-describedby="v2-publisher-email-hint"
               type="email"
+              maxLength={INPUT_LIMITS.email}
               value={editing.email}
               disabled={busy || (!admin && !demo)}
               onChange={(e) => {
@@ -188,6 +191,7 @@ export default function PublisherEditor({
               {t("ui.phone.63dceb88")}
               <input
                 type="tel"
+                maxLength={INPUT_LIMITS.phone}
                 value={editing.phone}
                 onChange={(e) => {
                   setEditing((p) => (p ? { ...p, phone: e.target.value } : p));
@@ -198,6 +202,7 @@ export default function PublisherEditor({
             <label>
               {t("ui.address.56ef8f20")}
               <input
+                maxLength={INPUT_LIMITS.comment}
                 value={editing.address}
                 onChange={(e) => {
                   setEditing((p) =>
@@ -235,6 +240,7 @@ export default function PublisherEditor({
                               ? "tel"
                               : "text"
                         }
+                        maxLength={key === "emergencyPhone" ? INPUT_LIMITS.phone : INPUT_LIMITS.name}
                         value={editing[key] || ""}
                         onChange={(e) => {
                           setEditing((p) =>

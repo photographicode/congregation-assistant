@@ -350,5 +350,3 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </SystemRuntime></SystemBoundary></React.StrictMode>,
 );
-
-export type { Context } from "./context";

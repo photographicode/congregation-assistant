@@ -61,3 +61,36 @@ The first interaction correction still failed. Direct browser inspection identif
 The second focus correction passes the unchanged 10-view interaction audit: 0 HARD and 0 soft findings. The current-source dialog audit also passes all 11 themes; both reports have the same current fingerprint. check-final-release passes its evidence/geometry subset. This is not the complete quality release gate: strict types, CSS, unused code, coverage, database hardening and the unfixed dependency advisory still block release.
 
 The refreshed Actions OSV artifact for 42ade4c contains only braces 3.0.3 / GHSA-vfj7-8cjw-p6xm. Gitleaks, Semgrep, CodeQL and the policy scanner pass. No OSV ignore was introduced. The final local PDF browser contract also passes after the dependency and focus changes, including zero console/backend errors in the fictional demo.
+
+
+## Launch hardening, 2026-10-23
+
+Production Supabase metadata and security-advisor reads were rejected by project permission checks. No plaintext counts, schema state, backup verification or remote migration/deletion are claimed. The existing guarded legacy-auth drop/down migration is the intended removal path after the encrypted snapshot gate.
+
+Current strict quality check: 447 diagnostics. CSS: 108,052 bytes, 44 font sizes, 21 radii, 10 breakpoints, 36 important declarations, 102 feature classes. No targets were weakened. Anonymous RPC rate limiting, exhaustive server validation/role matrix, contact Turnstile delivery and complete launch website audit remain blocking work. See POLISH-REPORT.md for current checks and OWNER-TODO.md for provider actions.
+
+One browser run was invalidated when a build replaced its output tree mid-run, causing a navigation failure. That run was discarded; subsequent browser runs use stable generated output and no overlapping build. The first complete matrix found only 79 oversized marquee spans in 1,464 views; the corrected strip passed the stable-output repeat: 1,464 views, zero findings.
+
+## Ratchet burn-down review — 23 November 2026
+
+Owner-authorized initial baselines are `ts-baseline.json`, `css-baseline.json` and `coverage-baseline.json`. Strict diagnostics 447 → 434; changed PR files must have zero. CSS current budgets: 108052 bytes, 44 font sizes, 21 radii, 10 breakpoints, 36 important declarations, 102 feature classes. Original targets remain 71680 bytes /9 /5 /4 /0 /40. Coverage current global lines 9.15%, statements 15.04%, functions 12.48%, branches 12.76%; core lines 81.54%, PDF-layout branches 15.76%. Original targets remain global70%, core85% lines, PDF95% branches, permission-critical100% branches. The historical auth glob matches no source file and is not proof of permission coverage.
+
+Separate unratcheted gates still require real fixes: Stylelint (452 errors observed in CI), knip unused items, complete RPC role matrix, PDF/geometry checks and fresh assembled/live audits. Do not remove those gates merely to obtain green CI.
+
+Stylelint CSS debt ratchet (review 2026-11-23): 452 existing findings, target zero, rules retained. New findings and findings in changed CSS are hard failures. `check:style:all` still reports the complete unresolved list.
+
+## Post-#59 queue (separate PRs, in owner order)
+
+Each new PR stays under 800 changed lines excluding generated evidence/fixtures; no feature work is folded into the launch-hardening release.
+
+1. S-21: current measured tick/label/month checks pass; make any further correction only from a failing 400-dpi case, with reviewed goldens unchanged.
+2. Consolidate the remaining app system pages onto SystemPage, retaining opaque dialogs and existing theme tokens.
+3. Add the requested assistant actions through the action registry, with role authorization and review/Undo tests.
+4. Split Home, People and Reports using existing shared primitives, with behavior and responsive regression checks.
+5. Continue remaining Experience/Quality orders, including dated type/CSS/coverage debt and independent accessibility/provider reviews.
+
+Completed blocker corrections: unused dependency/export graph passes; the full 106-signature role matrix passes all 1,696 cases; canonical PDF checks plus strengthened S-21 measurements pass locally. Fresh final-head and live deployment results are separate release evidence, not inferred from these local results. The historical braces exception was retired when the current OSV feed stopped reporting it; Zod upgraded to 4.6.7 for GHSA-mrhx-c7xc-m3w5. No active OSV ignores remain.
+
+Runner setup incident: browser job 120632748654 (source 079b583) timed out before any test on ubuntu-latest → Ubuntu 26.04, while apt fetched 142MB /185 new Playwright OS packages from azure.archive.ubuntu.com (libflite download stalled). This is an infrastructure failure, not passing browser evidence. Pin browser/PDF/build/publishing jobs to ubuntu-24.04, bound Playwright installation to six minutes, retain all browser engines/assertions, and rerun the new head. No retry-until-green or release waiver.
+
+Runner correction 1 failed: job 120644427467 on pinned Ubuntu 24.04 still hit its six-minute install limit while azure.archive downloaded media packages slowly (through libavfilter9). The OS pin alone is insufficient. Correction 2 switches only browser-job apt mirror URLs to official HTTPS archive.ubuntu.com, preserving signed repositories/package hashes, all browser engines and the six-minute cap. No dependency or test skipped. If this correction also fails, stop this fix loop and retain/escalate the blocker with both logs.

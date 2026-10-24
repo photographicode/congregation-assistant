@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    groups:
+      patch-and-minor:
+        update-types: [patch, minor]
+    # Majors remain separate PRs and require a planned compatibility review.
   - package-ecosystem: github-actions
     directory: /
     schedule:

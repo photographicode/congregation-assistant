@@ -1,0 +1,26 @@
+{
+  "measuredAt": "2026-10-24",
+  "vitest": "4.1.12",
+  "thresholds": {
+    "lines": 9.15,
+    "functions": 12.48,
+    "statements": 15.04,
+    "branches": 12.76,
+    "packages/core/**": {
+      "lines": 81.54
+    },
+    "packages/pdf/layout.{ts,mjs}": {
+      "branches": 15.76
+    },
+    "packages/core/auth*": {
+      "branches": 95
+    }
+  },
+  "longTermTargets": {
+    "global": 70,
+    "coreLines": 85,
+    "pdfBranches": 95,
+    "authBranches": 100
+  },
+  "note": "Auth glob currently has no matching files; preserving its existing threshold is not proof of authentication coverage."
+}

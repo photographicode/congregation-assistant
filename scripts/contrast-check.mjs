@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { PNG } from "pngjs";
 import { existsSync } from "node:fs";
-export function luminance(rgb) {
+function luminance(rgb) {
   return rgb
     .map((v) => v / 255)
     .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
@@ -21,7 +21,7 @@ export function themeIds(css) {
     ),
   ];
 }
-export async function checkContrast(css) {
+async function checkContrast(css) {
   const browser = await chromium.launch(
     existsSync("/usr/bin/chromium")
       ? { executablePath: "/usr/bin/chromium", args: ["--no-sandbox"] }

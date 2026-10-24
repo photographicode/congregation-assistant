@@ -1,0 +1,20 @@
+{
+  "measuredAt": "2026-10-24",
+  "metrics": {
+    "bytes": 108033,
+    "fontSizes": 44,
+    "radii": 21,
+    "breakpoints": 10,
+    "important": 36,
+    "featureClasses": 102
+  },
+  "longTermTargets": {
+    "bytes": 71680,
+    "fontSizes": 9,
+    "radii": 5,
+    "breakpoints": 4,
+    "important": 0,
+    "featureClasses": 40
+  },
+  "reviewBy": "2026-11-23"
+}

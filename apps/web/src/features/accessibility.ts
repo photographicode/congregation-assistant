@@ -22,7 +22,7 @@ export function adapt(preferences: {
     for (const [selector, property] of [
       [".bottom-tabs", "--nav-h"],
       [".topbar", "--header-h"],
-    ]) {
+    ] as const) {
       const element = document.querySelector(selector),
         value =
           element && getComputedStyle(element).display !== "none"
@@ -166,10 +166,8 @@ export function adapt(preferences: {
   fontProbe.style.cssText =
     "position:fixed;inset:0 auto auto 0;width:1rem;height:1rem;visibility:hidden;pointer-events:none";
   document.body.append(fontProbe);
-  const observer = new ResizeObserver(() => {
-    measureChrome();
-    schedule();
-  });
+  // Measuring chrome writes layout tokens; update them after the observer delivery.
+  const observer = new ResizeObserver(schedule);
   observer.observe(root);
   observer.observe(fontProbe);
   let bar: Element | null = null,

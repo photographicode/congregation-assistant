@@ -1,0 +1,25 @@
+{
+  "source": "isolated fixture only",
+  "functions": 106,
+  "actors": [
+    "anonymous",
+    "unapproved",
+    "non-google-owner-email",
+    "publisher-other-tenant",
+    "field_service-other-tenant",
+    "group_overseer-other-tenant",
+    "attendance-other-tenant",
+    "oclm-other-tenant",
+    "weekend-other-tenant",
+    "av-other-tenant",
+    "attendant-other-tenant",
+    "cleaning-other-tenant",
+    "admin-other-tenant",
+    "household-other-tenant",
+    "superadmin",
+    "service-worker"
+  ],
+  "expected": 1696,
+  "passed": 1696,
+  "failures": []
+}

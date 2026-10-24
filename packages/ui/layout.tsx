@@ -1,7 +1,7 @@
 import React from 'react';
 import type {HTMLAttributes,ReactNode} from 'react';
 function classes(base:string,extra?:string){return [base,extra].filter(Boolean).join(' ');}
-export type Space='none'|'xs'|'s'|'m'|'l'|'xl';
+type Space='none'|'xs'|'s'|'m'|'l'|'xl';
 type LayoutProps=HTMLAttributes<HTMLDivElement>&{gap?:Space};
 export function Page({children,className,...props}:HTMLAttributes<HTMLElement>){return <main {...props} className={classes("ui-page",className)}>{children}</main>;}
 export function PageHeader({title,description,actions}:{title:string;description?:string;actions?:ReactNode}){return <header className="ui-page-header"><div><h1>{title}</h1>{description&&<p>{description}</p>}</div>{actions&&<div className="ui-toolbar">{actions}</div>}</header>;}

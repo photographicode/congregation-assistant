@@ -1,3 +1,18 @@
+# Current authority: V3 Close the Blockers
+
+Follow docs/V3-CLOSE-BLOCKERS.md. The owner replaces forced-RLS and fixed historical type/CSS/coverage targets with documented ratchets, preserving no-new-diagnostic and changed-file rules. Production evidence remains unverified until OWNER supplies docs/qa/PROD-DB-AUDIT.md. Do not force RLS blindly. All current HARD checks must pass on the final head before merge/deploy.
+
+# Current authority: V3 Launch Hardening
+
+Follow docs/V3-LAUNCH-HARDENING.md in order, in addition to V3-QUALITY-ORDERS.md. No new product features. Verify generated output; retain honest failures. The PR 58 release override was one-time and does not apply here.
+
+1. **Think before coding.** State the assumption and the success check before you change code; if two readings exist, pick one, write it in `docs/DECISIONS.md`, move on.
+2. **Simplicity first.** The smallest change that solves the problem; no speculative abstractions, flags or "future" code.
+3. **Surgical changes.** Touch only what the task needs; match the surrounding style; do not reformat unrelated code.
+4. **Goal-driven, verified.** Write the failing test or measurable check first; do not say "done" until the check ran green; show the command and result in `docs/POLISH-REPORT.md`.
+5. **Systematic debugging.** Reproduce → isolate → fix root cause → add a regression test. No retry-until-green; a fix that fails twice is logged and escalated.
+6. **Evidence over claims.** Every ✔ in `CHECKLISTS.md` links to a test, script or document. Unverified = say so.
+
 # Current user release override — 2026-10-22
 
 The owner explicitly requests fixing the Monthly submissions layout and deploying all of PR #58 despite the unfinished quality backlog. The one-time [owner-release-58] merge marker in deploy.yml records that exception; subsequent releases use the normal gates. Keep quality/security checks intact and report failures; validate normal compilation/tests and the affected browser paths. No production data/schema mutation is included in this release.
@@ -16,7 +31,7 @@ docs/V3-R1-SHIP-ORDERS.md supersedes earlier polish gates: ship R1 after its PDF
 
 # Congregation Assistant
 
-Latest authority: docs/V3-POLISH-ORDERS.md supersedes earlier briefs where they conflict. This is refinement/restoration only. Never reset production data; export a pre-migration snapshot and provide additive/down paths before any new production migration. Public website design is locked by site/DESIGN-LOCK.md. Run affected checks per item, commit/push focused work, and run the full suite once at the end in Actions. Merge and deploy both repositories only after all POLISH §8 gates pass. docs/POLISH-REPORT.md must retain honest incomplete items. Do not move v1-final, change the supplied themes.css, or claim a reduced test sample proves whole-product parity.
+Latest authority: docs/V3-POLISH-ORDERS.md supersedes earlier briefs where they conflict. This is refinement/restoration only. Never reset production data; export a pre-migration snapshot and provide additive/down paths before any new production migration. Public website design is locked by docs/SITE-DESIGN-LOCK.md. Run affected checks per item, commit/push focused work, and run the full suite once at the end in Actions. Merge and deploy both repositories only after all POLISH §8 gates pass. docs/POLISH-REPORT.md must retain honest incomplete items. Do not move v1-final, change the supplied themes.css, or claim a reduced test sample proves whole-product parity.
 
 The owner's docs/V3-ORDERS.md supersedes V2 briefs. Follow its package order, supplied themes.css, acceptance gates and per-package check/commit/push protocol. Do not move the immutable v1-final tag. V3 source replaces apps/web/src/v2; PlainStore precedes gated VaultStore. Keep the nine supplied CSS themes authoritative. Native app source lives in apps/web/src/features, core/store logic in packages/core, PDF engine in packages/pdf, shared UI in packages/ui, and website in apps/site. Build only these trees; never copy legacy root scripts into deployment output.
 

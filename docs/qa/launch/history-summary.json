@@ -1,0 +1,7 @@
+{
+  "scanner": "trufflehog",
+  "exitCode": 0,
+  "verified": 0,
+  "invalidOutputLines": 0,
+  "executionError": false
+}

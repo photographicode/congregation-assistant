@@ -11,6 +11,18 @@ import {
   Undo2,
 } from "lucide-react";
 import { t } from "../core/i18n";
+import { TIMING } from "../core/timing";
+const PERCENT_SCALE = 100;
+const STAT_ANIMATION_MS = 240;
+const SPARKLINE_BOTTOM = 28;
+const SPARKLINE_SPAN = 26;
+const COMBOBOX_RESULT_LIMIT = 200;
+const COMBOBOX_SEARCH_THRESHOLD = 8;
+const WEEK_DAYS = 7;
+const MONDAY_OFFSET = 6;
+const ISO_DATE_LENGTH = 10;
+const MIN_ROW_HEIGHT = 72;
+const TABLE_WINDOW_ROWS = 14;
 export { Dialog as BottomSheet } from "./Dialog";
 export { Dialog };
 export const Button = React.forwardRef<
@@ -62,7 +74,7 @@ export function Card({
 }
 export function ProgressRing({
   value,
-  max = 100,
+  max = PERCENT_SCALE,
   label,
 }: {
   value: number;
@@ -70,7 +82,7 @@ export function ProgressRing({
   label: string;
 }) {
   const percentage =
-    max > 0 ? Math.max(0, Math.min(100, (value / max) * 100)) : 0;
+    max > 0 ? Math.max(0, Math.min(PERCENT_SCALE, (value / max) * PERCENT_SCALE)) : 0;
   return (
     <svg
       className="ui-progress-ring"
@@ -117,7 +129,7 @@ export function StatTile({
     let frame = 0;
     const start = performance.now();
     const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / 240);
+      const progress = Math.min(1, (now - start) / STAT_ANIMATION_MS);
       setCount(Math.round(value * progress));
       if (progress < 1) frame = requestAnimationFrame(tick);
     };
@@ -141,7 +153,7 @@ export function StatTile({
             points={trend
               .map(
                 (v, i) =>
-                  `${(i / (trend.length - 1)) * 100},${28 - ((v - low) / range) * 26}`,
+                  `${(i / (trend.length - 1)) * PERCENT_SCALE},${SPARKLINE_BOTTOM - ((v - low) / range) * SPARKLINE_SPAN}`,
               )
               .join(" ")}
           />
@@ -291,12 +303,18 @@ export function Disclosure({
   children,
   className = "",
   open: initial = false,
+  onOpenChange,
+  triggerRef,
 }: {
   children: React.ReactNode;
   className?: string;
   open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  triggerRef?: React.Ref<HTMLButtonElement>;
 }) {
-  const [open, setOpen] = React.useState(initial),
+  const [internalOpen, setInternalOpen] = React.useState(initial),
+    open = onOpenChange ? initial : internalOpen,
+    setOpen = onOpenChange || setInternalOpen,
     items = React.Children.toArray(children),
     labelNode = items.find(
       (node) => React.isValidElement(node) && node.type === DisclosureLabel,
@@ -305,7 +323,7 @@ export function Disclosure({
     label = labelNode?.props.children || t("common.more");
   return (
     <div className={className}>
-      <Button type="button" className="secondary" onClick={() => setOpen(true)}>
+      <Button ref={triggerRef} type="button" className="secondary" onClick={() => setOpen(true)}>
         {label}
       </Button>
       <Dialog
@@ -356,7 +374,7 @@ export function Combobox({
               .includes(query.toLocaleLowerCase()),
           )
         : all
-    ).slice(0, 200),
+    ).slice(0, COMBOBOX_RESULT_LIMIT),
     selected = all.find((option) => option.value === value);
   const close = React.useCallback(() => {
     setOpen(false);
@@ -440,7 +458,7 @@ export function Combobox({
       </button>
       {open && (
         <div className="ui-combobox-popover">
-          {all.length > 8 && (
+          {all.length > COMBOBOX_SEARCH_THRESHOLD && (
             <label>
               {t("common.search")}
               <input
@@ -570,8 +588,8 @@ export function WeekPicker({
         onChange={(event) => {
           const date = new Date(event.target.value + "T12:00:00Z");
           if (Number.isFinite(date.getTime())) {
-            date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7));
-            onChange(date.toISOString().slice(0, 10));
+            date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + MONDAY_OFFSET) % WEEK_DAYS));
+            onChange(date.toISOString().slice(0, ISO_DATE_LENGTH));
           }
         }}
       />
@@ -592,7 +610,7 @@ export function Toast({
       className="ui-toast"
       message={message}
       onClose={onClose}
-      duration={onUndo ? 8000 : 5000}
+      duration={onUndo ? TIMING.noticeWithUndo : TIMING.notice}
     >
       {onUndo && <Button onClick={onUndo}>{t("common.undo")}</Button>}
     </TimedToast>
@@ -797,9 +815,11 @@ export function Tabs({
                           (event.key === "ArrowRight" ? 1 : -1) +
                           tabs.length) %
                         tabs.length;
-                onChange(tabs[next].value);
+                const nextTab = tabs[next];
+                if (!nextTab) return;
+                onChange(nextTab.value);
                 document
-                  .getElementById(id + "-tab-" + tabs[next].value)
+                  .getElementById(id + "-tab-" + nextTab.value)
                   ?.focus();
               }
             }}
@@ -845,12 +865,12 @@ export function DataTable<Row extends { id: string }>({
       ascending: boolean;
     } | null>(null),
     [scroll, setScroll] = React.useState(0),
-    [height, setHeight] = React.useState(72),
+    [height, setHeight] = React.useState(MIN_ROW_HEIGHT),
     measure = React.useRef<HTMLTableRowElement | null>(null);
   React.useEffect(() => {
     if (!measure.current) return;
     const observer = new ResizeObserver((entries) =>
-      setHeight(Math.max(72, Math.ceil(entries[0].contentRect.height))),
+      setHeight(Math.max(MIN_ROW_HEIGHT, Math.ceil(entries[0]?.contentRect.height ?? MIN_ROW_HEIGHT))),
     );
     observer.observe(measure.current);
     return () => observer.disconnect();
@@ -871,7 +891,7 @@ export function DataTable<Row extends { id: string }>({
       : rows;
   }, [rows, sort, columns]);
   const start = Math.max(0, Math.floor(scroll / height) - 2),
-    visible = sorted.slice(start, start + 14),
+    visible = sorted.slice(start, start + TABLE_WINDOW_ROWS),
     count = columns.length + (actions ? 1 : 0);
   return (
     <div

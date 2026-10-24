@@ -1,0 +1,8 @@
+{
+  "extends": "./apps/web/tsconfig.quality.json",
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true
+  }
+}

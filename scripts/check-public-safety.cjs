@@ -10,5 +10,5 @@ for(const relative of execFileSync('git',['ls-files','-z'],{encoding:'utf8'}).sp
 }
 assert.deepEqual(failures,[],'Tracked source contains credentials: '+JSON.stringify(failures));
 const html=fs.readFileSync(path.join(root,'apps/web/index.html'),'utf8');assert.match(html,/<meta name="referrer" content="no-referrer">/);assert.match(html,/Content-Security-Policy/);
-const site=fs.readFileSync(path.join(root,'apps/site/index.html'),'utf8');assert.match(site,/name="referrer" content="no-referrer"/);
+// Generated website metadata is checked by scripts/site-audit.mjs after build.
 console.log('PASS tracked source credential scan and native entry privacy metadata');

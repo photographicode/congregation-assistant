@@ -4,19 +4,26 @@
     ".": {
       "entry": [
         "scripts/**/*.{mjs,cjs,ts,py}",
-        "tests/**/*.test.{ts,mjs}"
+        "tests/**/*.test.{ts,mjs}",
+        "eslint.config.mjs",
+        "vitest.config.ts",
+        "tests/v3/store-browser-fixture.ts",
+        "tests/v3/ui-kit-browser-fixture.tsx",
+        "tests/v3/overlay-fixture.tsx",
+        "tests/v3/ui-fixture.tsx"
       ],
       "project": [
         "scripts/**/*.{mjs,cjs,ts}",
-        "tests/**/*.ts"
+        "tests/**/*.{ts,tsx}"
       ]
     },
     "apps/web": {
       "entry": [
-        "src/main.tsx"
+        "src/main.tsx",
+        "src/features/crypto.worker.ts"
       ],
       "project": [
-        "src/**/*.{ts,tsx}"
+        "src/**/*.{ts,tsx,mjs}"
       ]
     },
     "packages/core": {
@@ -44,5 +51,21 @@
       ]
     }
   },
-  "includeEntryExports": true
+  "includeEntryExports": true,
+  "ignoreDependencies": [
+    "@fontsource-variable/*",
+    "@fontsource/*"
+  ],
+  "ignoreBinaries": [
+    "pdffonts",
+    "pdftotext"
+  ],
+  "ignoreIssues": {
+    "eslint.config.mjs": [
+      "exports"
+    ],
+    "vitest.config.ts": [
+      "exports"
+    ]
+  }
 }

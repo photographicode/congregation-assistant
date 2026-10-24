@@ -9,7 +9,7 @@ end $$;
 create table public.ca_superadmins(email text primary key check(email=lower(trim(email))),active boolean not null default true);
 create table public.congregations(
  id text primary key check(length(id) between 1 and 100),name text not null,
- admin_password text, status text not null default 'trial' check(status in ('trial','active','expired')),
+ status text not null default 'trial' check(status in ('trial','active','expired')),
  trial_days integer not null default 30 check(trial_days between 1 and 365),created_at timestamptz not null default now(),
  payment_date date,feature_attendance boolean not null default true,feature_emergency_contacts boolean not null default true,
  feature_oclm boolean not null default true,email text,notes text,wipe_requested_at timestamptz,wipe_device_info text
@@ -39,7 +39,6 @@ create table public.meeting_attendance(
  w1_mid text default '',w1_end text default '',w2_mid text default '',w2_end text default '',w3_mid text default '',w3_end text default '',
  w4_mid text default '',w4_end text default '',w5_mid text default '',w5_end text default '',unique(cong_id,service_year,month)
 );
-create table public.group_access(id uuid primary key default gen_random_uuid(),cong_id text not null references public.congregations(id) on delete cascade,service_group text,password text,unique(cong_id,service_group));
 create table public.wipe_requests(id uuid primary key default gen_random_uuid(),cong_id text not null references public.congregations(id) on delete cascade,requested_at timestamptz default now(),device_info text);
 create table public.ca_oclm_publications(
  cong_id text primary key references public.congregations(id) on delete cascade,
@@ -77,12 +76,14 @@ $$;
 create function public.ca_is_congregation_admin(p_cong_id text) returns boolean language sql stable security definer set search_path='' as $$ select public.ca_has_role(p_cong_id,array['admin']); $$;
 -- All underlying tables deny anonymous reads and writes. Public links use narrow functions below.
 do $$ declare t text; begin
- foreach t in array array['ca_superadmins','congregations','congregation_access','publishers','reports','meeting_attendance','group_access','wipe_requests','ca_oclm_publications','ca_public_links'] loop
+ foreach t in array array['ca_superadmins','congregations','congregation_access','publishers','reports','meeting_attendance','wipe_requests','ca_oclm_publications','ca_public_links'] loop
   execute format('alter table public.%I enable row level security',t);
   execute format('revoke all on public.%I from public,anon',t);
   execute format('grant select,insert,update,delete on public.%I to authenticated',t);
  end loop;
 end $$;
+-- Owner membership writes use server authority; no authenticated write policy exists.
+revoke insert,update,delete on public.ca_superadmins from authenticated;
 create policy superadmins_self on public.ca_superadmins for select to authenticated using((select public.ca_google_identity()) and email=lower((select auth.jwt())->>'email'));
 create policy congregations_read on public.congregations for select to authenticated using(public.ca_has_role(id,array['admin','field_service','attendance','oclm']));
 create policy congregations_insert on public.congregations for insert to authenticated with check((select public.ca_is_superadmin()));
@@ -95,7 +96,6 @@ create policy access_delete on public.congregation_access for delete to authenti
 create policy publishers_manage on public.publishers for all to authenticated using(public.ca_has_role(cong_id,array['field_service'])) with check(public.ca_has_role(cong_id,array['field_service']));
 create policy reports_manage on public.reports for all to authenticated using(public.ca_has_role(cong_id,array['field_service'])) with check(public.ca_has_role(cong_id,array['field_service']));
 create policy attendance_manage on public.meeting_attendance for all to authenticated using(public.ca_has_role(cong_id,array['attendance'])) with check(public.ca_has_role(cong_id,array['attendance']));
-create policy group_access_manage on public.group_access for all to authenticated using(public.ca_is_congregation_admin(cong_id)) with check(public.ca_is_congregation_admin(cong_id));
 create policy wipe_manage on public.wipe_requests for all to authenticated using(public.ca_is_congregation_admin(cong_id)) with check(public.ca_is_congregation_admin(cong_id));
 create policy publications_manage on public.ca_oclm_publications for all to authenticated using(public.ca_has_role(cong_id,array['oclm'])) with check(public.ca_has_role(cong_id,array['oclm']));
 create policy links_manage on public.ca_public_links for all to authenticated using(public.ca_is_congregation_admin(cong_id)) with check(public.ca_is_congregation_admin(cong_id));

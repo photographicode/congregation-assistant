@@ -9,6 +9,7 @@ export function Dialog({
   children,
   dirty = false,
   tone = "info",
+  returnFocusTo,
 }: {
   open: boolean;
   onClose: () => void;
@@ -16,6 +17,7 @@ export function Dialog({
   children: React.ReactNode;
   dirty?: boolean;
   tone?: "info"|"success"|"warning"|"danger";
+  returnFocusTo?: React.RefObject<HTMLElement | null>;
 }) {
   const ToneIcon={info:Info,success:CheckCircle2,warning:AlertTriangle,danger:CircleAlert}[tone];
   const opener = React.useRef<HTMLElement | null>(null);
@@ -47,7 +49,8 @@ export function Dialog({
           aria-describedby={undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
-            if(opener.current?.isConnected)opener.current.focus({preventScroll:true});
+            const target = returnFocusTo?.current || opener.current;
+            if(target?.isConnected)target.focus({preventScroll:true});
             else {const main=document.querySelector<HTMLElement>('main');if(main){const previous=main.getAttribute('tabindex');main.setAttribute('tabindex','-1');main.focus({preventScroll:true});if(previous===null)main.removeAttribute('tabindex');}}
           }}
           onEscapeKeyDown={(e) => {
