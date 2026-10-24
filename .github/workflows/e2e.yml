@@ -60,6 +60,7 @@ jobs:
     - run: npm run check:vercel-guidelines
     - run: npx vitest run tests/hell
     - run: node scripts/hell-browser-smoke.cjs
+      timeout-minutes: 4
     - run: node scripts/refinement-matrix.ts
       env:
         CA_REFINEMENT_WIDTHS: 320,390,768,1024,1440
