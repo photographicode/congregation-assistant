@@ -133,6 +133,8 @@ export function Reports({ context: c }: { context: Context }) {
     sessionStorage.removeItem("ca-report-action");
     if (launch?.action === "annual") setAnnualOpen(true);
   }, []);
+  const [monthToolsOpen, setMonthToolsOpen] = React.useState(false);
+  const monthToolsTrigger = React.useRef<HTMLButtonElement | null>(null);
   const initial = new Date();
   initial.setDate(1);
   initial.setMonth(initial.getMonth() - 1);
@@ -948,7 +950,7 @@ export function Reports({ context: c }: { context: Context }) {
       )}
       {!personal && tab === "service" && (
         <section className="card stack">
-          <Disclosure>
+          <Disclosure open={monthToolsOpen} onOpenChange={setMonthToolsOpen} triggerRef={monthToolsTrigger}>
             <DisclosureLabel>{t("ui.month.tools.9e7446f2")}</DisclosureLabel>
             <div className="actions">
               {canWrite && (
@@ -965,6 +967,7 @@ export function Reports({ context: c }: { context: Context }) {
                     );
                     setBulkFilter("");
                     setBulkLimit(25);
+                    setMonthToolsOpen(false);
                     setBulk(true);
                   }} type="button"
                 >
@@ -1002,7 +1005,8 @@ export function Reports({ context: c }: { context: Context }) {
                             setBulkFilter("");
                             setBulkLimit(25);
                             setError("");
-                            setBulk(true);
+                            setMonthToolsOpen(false);
+                    setBulk(true);
                           } catch (e) {
                             setError((e as Error).message);
                           }
@@ -1178,6 +1182,7 @@ export function Reports({ context: c }: { context: Context }) {
       )}
       <Dialog
         open={bulk}
+        returnFocusTo={monthToolsTrigger}
         onClose={() => setBulk(false)}
         title={t("ui.enter.several.reports.d52f2dc2")}
         dirty={!busy && bulkRows.some((r) => r.include)}

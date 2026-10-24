@@ -710,9 +710,6 @@
     "max-lines-per-function": {
       "count": 2
     },
-    "no-magic-numbers": {
-      "count": 16
-    },
     "no-nested-ternary": {
       "count": 2
     },

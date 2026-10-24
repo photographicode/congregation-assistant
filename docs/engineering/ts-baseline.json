@@ -1,6 +1,6 @@
 {
   "typescript": "5.9.3",
-  "total": 425,
+  "total": 419,
   "files": {
     "apps/web/src/features/Dashboard.tsx": {
       "count": 2,
@@ -72,13 +72,6 @@
       "count": 1,
       "diagnostics": {
         "2345:Argument of type '(old: TalkHistory[]) => (TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to parameter of type 'SetStateAction<TalkHistory[]>'.   Type '(old: TalkHistory[]) => (TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to type '(prevState: TalkHistory[]) => TalkHistory[]'.     Type '(TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; })[]' is not assignable to type 'TalkHistory[]'.       Type 'TalkHistory | { date: string; talk_no: string | undefined; title: string; speaker: string; source: string; }' is not assignable to type 'TalkHistory'.         Type '{ date: string; talk_no: string | undefined; title: string; speaker: string; source: string; }' is not assignable to type 'TalkHistory'.           Types of property 'talk_no' are incompatible.             Type 'string | undefined' is not assignable to type 'string'.               Type 'undefined' is not assignable to type 'string'.": 1
-      }
-    },
-    "apps/web/src/features/accessibility.ts": {
-      "count": 3,
-      "diagnostics": {
-        "2769:No overload matches this call.   The last overload gave the following error.     Argument of type 'string | undefined' is not assignable to parameter of type 'string'.       Type 'undefined' is not assignable to type 'string'.": 1,
-        "2345:Argument of type 'string | undefined' is not assignable to parameter of type 'string'.   Type 'undefined' is not assignable to type 'string'.": 2
       }
     },
     "apps/web/src/features/auth-scope.mjs": {
@@ -425,12 +418,6 @@
         "7006:Parameter 'options' implicitly has an 'any' type.": 1,
         "7006:Parameter 'i' implicitly has an 'any' type.": 1,
         "7019:Rest parameter 'args' implicitly has an 'any[]' type.": 2
-      }
-    },
-    "packages/ui/components.tsx": {
-      "count": 3,
-      "diagnostics": {
-        "2532:Object is possibly 'undefined'.": 3
       }
     }
   }
