@@ -19,10 +19,10 @@ type Appearance = Experience & {
   clock: "locale" | "12" | "24";
 };
 const initial: Appearance = {
-  ...experiencePresets.balanced,
-  experienceChosen: false,
+  ...experiencePresets.calm,
+  experienceChosen: true,
   theme: "auto",
-  backgroundIntensity: 100,
+  backgroundIntensity: 0,
   tone: "standard",
   size: "M",
   weight: "regular",
@@ -37,7 +37,7 @@ try {
   saved = JSON.parse(preferenceStorage.getItem("ca-v2-appearance") || "{}");
 } catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
 if (new URLSearchParams(location.search).get("demo") === "publisher")
-  saved = { ...experiencePresets.calm, experienceChosen: false, ...saved };
+  saved = { ...experiencePresets.calm, experienceChosen: true, ...saved };
 export const useAppearance = create<
   Appearance & { set: (patch: Partial<Appearance>) => void }
 >((set) => ({
@@ -96,7 +96,7 @@ export function activateAppearanceProfile(
   useAppearance.setState({
     ...initial,
     ...(publisher ? experiencePresets.calm : {}),
-    experienceChosen: false,
+    experienceChosen: true,
     ...profile,
   });
 }

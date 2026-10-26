@@ -275,14 +275,6 @@
       "count": 1
     }
   },
-  "apps/web/src/features/PublisherHome.tsx": {
-    "@typescript-eslint/no-explicit-any": {
-      "count": 1
-    },
-    "complexity": {
-      "count": 1
-    }
-  },
   "apps/web/src/features/RecordsExport.tsx": {
     "no-magic-numbers": {
       "count": 2

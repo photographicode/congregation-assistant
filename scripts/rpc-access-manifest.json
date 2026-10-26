@@ -78,6 +78,11 @@
     "ca_v3_save_setup(text,integer,jsonb)",
     "ca_v3_submit_attendance(text,date,integer)",
     "ca_v3_talk_history(text)",
+    "ca_v4_admin_notifications(text)",
+    "ca_v4_announcements(text)",
+    "ca_v4_archive_announcement(text,uuid)",
+    "ca_v4_publish_announcement(text,text,text)",
+    "ca_v4_read_notification(text,uuid)",
     "claim_transactional_mail()",
     "claim_workspace_push()",
     "create_public_link(text,text,text,text)",
@@ -160,7 +165,12 @@
     "ca_undo_ap",
     "ca_v2_export_records",
     "ca_v2_workspace_plan",
-    "submit_my_attendance"
+    "submit_my_attendance",
+    "ca_v4_announcements",
+    "ca_v4_publish_announcement",
+    "ca_v4_archive_announcement",
+    "ca_v4_admin_notifications",
+    "ca_v4_read_notification"
   ],
   "scopeNotes": {
     "ca_undo_ap": "The fixture has no matching actor-bound Undo action; even SuperAdmin must be denied. Positive valid-action cases are in check-ap-undo.sql.",
@@ -170,7 +180,12 @@
     "ca_v3_manage_group_link": "Uses an existing fictional Group 1 token to test cross-tenant denial and authorized rotation.",
     "create_public_link": "Uses report kind and a publisher actually belonging to Group 1.",
     "save_department_duty": "Uses null id to create a new fictional duty; unknown existing ids must be denied.",
-    "register_push_subscription": "The endpoint/keys are fictional syntactically valid inputs; no push is sent and the insert is rolled back."
+    "register_push_subscription": "The endpoint/keys are fictional syntactically valid inputs; no push is sent and the insert is rolled back.",
+    "ca_v4_announcements": "Requires explicit approved congregation membership; global owner authority alone cannot access publisher announcements or main-admin notifications. Positive lifecycle tests are in scripts/v4-tests/publisher-workspace.sql.",
+    "ca_v4_publish_announcement": "Requires explicit approved congregation membership; global owner authority alone cannot access publisher announcements or main-admin notifications. Positive lifecycle tests are in scripts/v4-tests/publisher-workspace.sql.",
+    "ca_v4_archive_announcement": "Requires explicit approved congregation membership; global owner authority alone cannot access publisher announcements or main-admin notifications. Positive lifecycle tests are in scripts/v4-tests/publisher-workspace.sql.",
+    "ca_v4_admin_notifications": "Requires explicit approved congregation membership; global owner authority alone cannot access publisher announcements or main-admin notifications. Positive lifecycle tests are in scripts/v4-tests/publisher-workspace.sql.",
+    "ca_v4_read_notification": "Requires explicit approved congregation membership; global owner authority alone cannot access publisher announcements or main-admin notifications. Positive lifecycle tests are in scripts/v4-tests/publisher-workspace.sql."
   },
   "workerOnly": [
     "claim_transactional_mail",

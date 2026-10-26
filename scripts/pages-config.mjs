@@ -6,5 +6,6 @@ export function pagesConfig(config,env={}){
  const siteURL=new URL(site),appURL=new URL(app),base=siteURL.pathname.replace(/\/$/,'')+'/',appBase=appURL.pathname.replace(/\/$/,'')+'/';
  if(!/^\/(?:[a-zA-Z0-9_-]+\/)*$/.test(base)||!/^\/(?:[a-zA-Z0-9_-]+\/)*$/.test(appBase))throw Error('Deployment paths must be absolute directory paths.');
  if(custom&&(/\.github\.io$/.test(siteURL.hostname)||siteURL.pathname!=='/'))throw Error('CUSTOM_DOMAIN_READY requires the owner-confirmed apex website URL. Keep it false for Pages fallbacks.');
- return {site,app,base,appBase,custom,cname:custom?siteURL.hostname:null};
+ if(custom&&appURL.origin===siteURL.origin&&appBase!=='/app/')throw Error('A same-origin application must use /app/.');
+ return {site,app,base,appBase,custom,externalApp:custom&&appURL.origin!==siteURL.origin,cname:custom?siteURL.hostname:null};
 }

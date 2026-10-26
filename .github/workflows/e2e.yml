@@ -32,6 +32,8 @@ jobs:
       env:
         PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '60000'
     - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+    - name: Verify publisher-first V4 workspace and website
+      run: node scripts/build-pages.mjs && node scripts/v4-tests/browser.cjs
     - run: npm run build
     - run: node scripts/check-ui-kit-contracts.mjs
     - run: node scripts/check-v3-resume.cjs
