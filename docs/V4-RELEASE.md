@@ -17,3 +17,5 @@ Publisher browser checks pass at 390px and 1440px, including contact save, time-
 
 ## Independent review
 Two important findings corrected: persisted overlapping away ranges no longer block account/home loading; existing publisher appearance/accessibility controls are preserved. Deferred minor observations: sidebar collapse preference is written but not restored on reload; compressed source styles are harder to review. They do not affect record access or saving.
+
+Production: additive V4 migration applied successfully; fresh metadata verifies RLS/no direct client grants on both tables, authenticated-only execution on five scoped RPCs, and one enabled contact trigger. See docs/qa/V4-DB-VERIFICATION.md. No existing records erased.

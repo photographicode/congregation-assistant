@@ -265,7 +265,7 @@ const server = http.createServer((req, res) => {
     });
     await publisher.goto(base + "/?demo=publisher");
     await publisher
-      .getByRole("heading", { name: "My service report", exact: true })
+      .getByRole("heading", { name: "A small task. A meaningful record.", exact: true })
       .waitFor();
     await publisher.goto(base + "/?demo=publisher&screen=reports");
     await publisher.getByText("Household reports", { exact: true }).waitFor();
