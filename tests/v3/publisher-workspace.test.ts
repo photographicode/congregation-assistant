@@ -18,3 +18,4 @@ describe('publisher workspace',()=>{
  });
 });
 it('loads overlapping historical away periods so publishers can still open their account',()=>{expect(portalSchema.parse({name:'Daniel',report:{submitted:false},contact:{},away:[{from:'2027-03-01',to:'2027-03-05'},{from:'2027-03-04',to:'2027-03-08'}]}).away).toHaveLength(2);});
+it('keeps the exact server contact snapshot for optimistic concurrency checks',()=>{const value=portalSchema.parse({name:'Daniel',report:{submitted:false},contact:{phone:' 123 ',address:' Old address '}});expect(value.contact.phone).toBe(' 123 ');expect(value.contact.address).toBe(' Old address ');});

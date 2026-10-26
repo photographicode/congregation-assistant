@@ -9,11 +9,13 @@ export const awaySchema=savedAwaySchema.max(AWAY_LIMIT).superRefine((periods,ctx
  const sorted=[...periods].sort((a,b)=>a.from.localeCompare(b.from));
  for(let i=1;i<sorted.length;i++){const previous=sorted[i-1],current=sorted[i];if(previous&&current&&current.from<=previous.to)ctx.addIssue({code:'custom',message:'These dates overlap an existing time away. Edit or remove that period first.'});}
 });
+const storedText=z.string().default('');
+const storedContactSchema=z.object({phone:storedText,address:storedText,emergency_name:storedText,emergency_relationship:storedText,emergency_phone:storedText});
 export const portalSchema=z.object({
  name:z.string().default(''),notice:z.string().nullable().optional(),
  report:z.object({period:z.string().default('Current reporting period'),submitted:z.boolean().default(false)}).passthrough(),
  assignments:z.array(z.object({week:z.string().optional(),date:z.string().optional(),title:z.string().optional(),slot:z.string().optional(),time:z.string().nullable().optional(),isAssistant:z.boolean().optional()}).passthrough()).default([]),
- contact:contactSchema,away:savedAwaySchema.default([]),scheduleRevision:z.number().int().nonnegative().default(0),
+ contact:storedContactSchema,away:savedAwaySchema.default([]),scheduleRevision:z.number().int().nonnegative().default(0),
 }).passthrough();
 export const announcementSchema=z.object({id:z.string(),title:z.string(),body:z.string(),created_at:z.string()});
 export const notificationSchema=z.object({id:z.string(),publisher_name:z.string(),changed_fields:z.array(z.string()),created_at:z.string(),read_at:z.string().nullable()});

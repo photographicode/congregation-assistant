@@ -1,3 +1,9 @@
+# Current authority: V4 Publisher-first — 2026-10-26
+
+The owner explicitly authorized implementation and deployment of V4 after one batched questionnaire. This supersedes the V3 product/design freezes below. Read `docs/superpowers/specs/2026-10-26-v4-design.md`, `docs/superpowers/plans/2026-10-26-v4.md` and `docs/V4-RELEASE.md` for the accepted scope and current evidence.
+
+Priority: Publishers > Department Overseers > Main Admin. English launch. Retain Google approved-account sign-in, existing department/role boundaries, all existing tools, PDFs and recovery formats. Publishers may edit contact fields with atomic Main Admin in-app notifications and mark time away without approval; do not add assignment-change requests. Public website redesign is authorized. No new paid services. GoDaddy/DNS activation is deferred by the owner; keep CUSTOM_DOMAIN_READY false. Existing records are owner-confirmed fictional and erasure is authorized, but no erasure is needed for V4. Preserve the owner's CNAME edits. Keep current security, quality, PDF and browser release gates; do not bypass them to deploy.
+
 # Current authority: V3 Close the Blockers
 
 Follow docs/V3-CLOSE-BLOCKERS.md. The owner replaces forced-RLS and fixed historical type/CSS/coverage targets with documented ratchets, preserving no-new-diagnostic and changed-file rules. Production evidence remains unverified until OWNER supplies docs/qa/PROD-DB-AUDIT.md. Do not force RLS blindly. All current HARD checks must pass on the final head before merge/deploy.

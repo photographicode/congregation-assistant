@@ -168,8 +168,8 @@ reset role;rollback;
 \i scripts/check-ap-undo.sql
 
 -- V4 additive workspace acceptance, including rollback/reapply and repeatability.
-\i supabase/migrations/20261026180855_v4_publisher_workspace.sql
+\i supabase/migrations/20261026183947_v4_publisher_workspace.sql
 \i scripts/v4-tests/publisher-workspace.sql
-\i supabase/rollbacks/20261026180855_v4_publisher_workspace.sql
-\i supabase/migrations/20261026180855_v4_publisher_workspace.sql
+\i supabase/rollbacks/20261026183947_v4_publisher_workspace.sql
+\i supabase/migrations/20261026183947_v4_publisher_workspace.sql
 \i scripts/v4-tests/publisher-workspace.sql

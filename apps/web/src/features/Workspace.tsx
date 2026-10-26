@@ -84,6 +84,10 @@ const initialGroups = [
 ];
 const weekKey = (d: Date) =>
   format(startOfWeek(d, { weekStartsOn: 1 }), "yyyy-MM-dd");
+function AppearanceSettings({compact,children}:{compact:boolean;children:React.ReactNode}) {
+  if(compact)return <Disclosure className="card"><DisclosureLabel>{t("ui.appearance.3907fa7f")}</DisclosureLabel><div className="stack">{children}</div></Disclosure>;
+  return <section className="card stack"><h2>{t("ui.appearance.3907fa7f")}</h2>{children}</section>;
+}
 function Heading({
   eyebrow,
   title,
@@ -1648,7 +1652,7 @@ export default function Workspace({
           title={t("ui.your.settings.7760b023")}
         />}
         <div className="stack">
-          <Disclosure className="card"><DisclosureLabel>{t("ui.appearance.3907fa7f")}</DisclosureLabel><div className="stack">
+          <AppearanceSettings compact={c.roles.includes("publisher")&&!admin}>
             <ExperiencePicker />
             <ThemeGallery />
             <ExperienceProfile context={c} />
@@ -1797,7 +1801,7 @@ export default function Workspace({
               {t("ui.automatically.adapt.contrast.transparency..0052122f")}
             </label>
             <p className="muted">{t("refine.systemHelp")}</p>
-          </div></Disclosure>
+          </AppearanceSettings>
           {admin&&<section className="card stack">
             <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
             <Button onClick={() => setWizard(true)} type="button">
