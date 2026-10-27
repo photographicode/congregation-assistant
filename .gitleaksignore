@@ -22,3 +22,8 @@ e7b438480a0296b68a8c99cbf0d2107b3acd29c7:staging/index.html:jwt:2785
 # message and its generated lookup key. Scope to this exact historical finding;
 # future changes and other findings remain scanned.
 85c44b5d3770a3ae6674b39ed7945aafc744312c:packages/core/locales/en.json:generic-api-key:173
+
+# SQL relation identifier, not a credential: ca_private.v4_announcements.
+# Exact V4 permission-test finding; future findings remain blocking.
+cbb0212c7eadf2682ba8334dde53d5da951d7921:scripts/v4-tests/publisher-workspace.sql:generic-api-key:6
+cd3af92b9a862610d77890a96ec3d3e82aa7aa42:scripts/v4-tests/publisher-workspace.sql:generic-api-key:6
