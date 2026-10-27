@@ -58,6 +58,15 @@ export function Dialog({
             e.preventDefault();
             request();
           }}
+          onKeyDown={(e) => {
+            // Focus can enter before Radix registers its document-level layer.
+            // Handle an otherwise unclaimed Escape without closing nested layers.
+            if (e.key === "Escape" && !e.defaultPrevented) {
+              e.preventDefault();
+              e.stopPropagation();
+              request();
+            }
+          }}
           onPointerDownOutside={(e) => {
             if (dirty) e.preventDefault();
           }}
