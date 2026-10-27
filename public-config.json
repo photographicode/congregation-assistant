@@ -1,7 +1,7 @@
 {
   "SUPPORT_EMAIL": "support@congregationassistant.com",
   "PUBLIC_SITE_URL": "https://congregationassistant.com",
-  "APP_URL": "https://app.congregationassistant.com",
+  "APP_URL": "https://congregationassistant.com/app",
   "domainConfigured": false,
   "mailConfigured": false,
   "SECURITY_EMAIL": "security@congregationassistant.com",

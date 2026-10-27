@@ -49,7 +49,7 @@ export function SectionHub({
       </header>
       <div className="v3-tool-grid">
         {tools
-          .filter((tool) => tool.section === section)
+          .filter((tool) => tool.section === section && tool.available)
           .map((tool) => (
             <Button
               className="card v3-tool-tile"

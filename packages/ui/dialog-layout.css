@@ -1,0 +1,2 @@
+@media(max-width:599px){.dialog[role=dialog]{inset:8px;transform:none;width:auto;height:auto;max-height:calc(var(--visible-h,100dvh) - 16px);border-radius:var(--radius-l)}.dialog[role=dialog] .dialog-body{min-height:0;overflow:auto}}
+.dialog[role=dialog] input{min-width:44px;min-height:44px}

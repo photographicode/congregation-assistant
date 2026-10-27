@@ -1,3 +1,4 @@
+import "./dialog-layout.css";
 import React from "react";
 import {t} from "../core/i18n";
 import * as Primitive from "@radix-ui/react-dialog";
@@ -56,6 +57,15 @@ export function Dialog({
           onEscapeKeyDown={(e) => {
             e.preventDefault();
             request();
+          }}
+          onKeyDown={(e) => {
+            // Focus can enter before Radix registers its document-level layer.
+            // Handle an otherwise unclaimed Escape without closing nested layers.
+            if (e.key === "Escape" && !e.defaultPrevented) {
+              e.preventDefault();
+              e.stopPropagation();
+              request();
+            }
           }}
           onPointerDownOutside={(e) => {
             if (dirty) e.preventDefault();

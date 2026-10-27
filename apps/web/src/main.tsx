@@ -1,6 +1,6 @@
 import {SystemRuntime} from './system/SystemRuntime';
 import {SystemBoundary,SystemStatePage,stateKeys} from './system/SystemStates';
-import {getLocaleSnapshot,getUILocale,subscribeUILocale} from '../../../packages/core/i18n';
+import {getLocaleSnapshot,getUILocale,subscribeUILocale,setUILocale} from '../../../packages/core/i18n';
 import {Toast,DismissibleBanner} from '../../../packages/ui/Notices';
 import './features/install-runtime';
 import {z} from "zod";
@@ -59,6 +59,8 @@ import { TIMING } from "../../../packages/core/timing";
 import { handleError } from "../../../packages/core/errors";
 import type { Context } from "./context";
 
+// V4 launches in English; translation resources remain available for later releases.
+setUILocale('en');
 const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
 const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));
@@ -77,6 +79,7 @@ const routes = [
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
+function workspaceRoleLabel(owner:boolean,admin:boolean,roles:string[]){if(owner)return "Owner";if(admin)return "Main admin";if(roles.some(role=>role!=="publisher"))return "Department overseer";return "Publisher";}
 function App() {
   React.useSyncExternalStore(subscribeUILocale,getLocaleSnapshot,getLocaleSnapshot);
   const [updatesOpen,setUpdatesOpen]=useState(false);
@@ -313,7 +316,7 @@ function App() {
   const visibleTools=allowedTools(roles,owner);
   const availableSections=sections.filter(section=>section.id==='home'||visibleTools.some(tool=>tool.section===section.id&&tool.available)).map(section=>section.id);
   const activeSection=hub||sectionForRoute(route);
-  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}guardNavigation(()=>{window.dispatchEvent(new Event("ca:after-navigate"));setHub(section);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);});};
+  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}if(roles.includes('publisher')&&!admin&&['reports','meetings','admin'].includes(section)){go(({meetings:'schedule',admin:'settings',reports:'reports'} as Partial<Record<SectionId,string>>)[section]||'home');return;}guardNavigation(()=>{window.dispatchEvent(new Event("ca:after-navigate"));setHub(section);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);});};
   const openNativeTool=(tool:Tool,afterNavigate?:()=>void)=>{if(!visibleTools.some(item=>item.id===tool.id)||!tool.available||!allowed.some(route=>route.id===tool.route))return;setQuick(false);setSearch(false);guardNavigation(()=>{
     if(tool.route==='reports'&&tool.sub&&!sessionStorage.getItem('ca-report-action'))sessionStorage.setItem('ca-report-action',JSON.stringify({action:tool.sub}));
     if(tool.route==='pdf'&&tool.sub)sessionStorage.setItem('ca-pdf-open',tool.sub);
@@ -325,7 +328,7 @@ function App() {
   const inspector=<section className="stack"><h2>{t('nav.details')}</h2><p>{t('inspector.empty')}</p><Button onClick={()=>selectSection(availableSections.includes('people')?'people':'admin')} type="button">{t(availableSections.includes('people')?'nav.people':'nav.admin')}</Button></section>;
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
-    <AppShell onUpdates={()=>setUpdatesOpen(true)} name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.includes("admin")?()=>void prepareAssistant():undefined} signOut={()=>guardNavigation(()=>void signOut())} demo={demo} inspector={inspector}>
+    <AppShell roleLabel={workspaceRoleLabel(owner,admin,roles)} onAccount={()=>go("settings")} onUpdates={()=>setUpdatesOpen(true)} name={context.name} firstName={context.firstName} active={activeSection} available={availableSections} onSection={selectSection} onSearch={()=>setSearch(true)} onQuick={()=>setQuick(true)} onAssistant={!owner&&roles.includes("admin")?()=>void prepareAssistant():undefined} signOut={()=>guardNavigation(()=>void signOut())} demo={demo} inspector={inspector}>
       {!online&&<DismissibleBanner key="offline" stateKey="offline">{t('shell.offline')}</DismissibleBanner>}
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}

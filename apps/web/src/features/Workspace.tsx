@@ -65,6 +65,9 @@ import { ThemeGallery } from "./ThemeGallery";
 import { ExperiencePicker } from "./ExperiencePicker";
 import { Reports } from "./Reports";
 import { Midweek } from "./Midweek";
+import { PublisherAccount } from "./PublisherAccount";
+import { Announcements } from "./Announcements";
+import { AdminNotifications } from "./AdminNotifications";
 import { PublisherHome } from "./PublisherHome";
 import { Access } from "./Access";
 import { Backup } from "./Backup";
@@ -81,6 +84,10 @@ const initialGroups = [
 ];
 const weekKey = (d: Date) =>
   format(startOfWeek(d, { weekStartsOn: 1 }), "yyyy-MM-dd");
+function AppearanceSettings({compact,children}:{compact:boolean;children:React.ReactNode}) {
+  if(compact)return <Disclosure className="card"><DisclosureLabel>{t("ui.appearance.3907fa7f")}</DisclosureLabel><div className="stack">{children}</div></Disclosure>;
+  return <section className="card stack"><h2>{t("ui.appearance.3907fa7f")}</h2>{children}</section>;
+}
 function Heading({
   eyebrow,
   title,
@@ -666,6 +673,7 @@ export default function Workspace({
   else if (route === "home")
     body = (
       <>
+        <div className="v4-home-columns"><AdminNotifications context={c}/><Announcements context={c}/></div>
         <Dashboard
           context={c}
           go={go}
@@ -1639,13 +1647,12 @@ export default function Workspace({
   else
     body = (
       <>
-        <Heading
+        {c.roles.includes("publisher")&&!admin?<PublisherAccount context={c}/>:<Heading
           eyebrow={t("ui.settings.74a883a0")}
           title={t("ui.your.settings.7760b023")}
-        />
+        />}
         <div className="stack">
-          <section className="card stack">
-            <h2>{t("ui.appearance.3907fa7f")}</h2>
+          <AppearanceSettings compact={c.roles.includes("publisher")&&!admin}>
             <ExperiencePicker />
             <ThemeGallery />
             <ExperienceProfile context={c} />
@@ -1752,7 +1759,7 @@ export default function Workspace({
                 value={getUILocale()}
                 onChange={(e) => setUILocale(e.target.value as Locale)} aria-label={t("language.label")}
               >
-                {Object.entries(localeMetadata).map(([code, meta]) => (
+                {Object.entries(localeMetadata).filter(([code])=>code === "en").map(([code, meta]) => (
                   <option key={code} value={code}>
                     {meta.nativeName}
                   </option>
@@ -1794,8 +1801,8 @@ export default function Workspace({
               {t("ui.automatically.adapt.contrast.transparency..0052122f")}
             </label>
             <p className="muted">{t("refine.systemHelp")}</p>
-          </section>
-          <section className="card stack">
+          </AppearanceSettings>
+          {admin&&<section className="card stack">
             <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
             <Button onClick={() => setWizard(true)} type="button">
               {t("ui.open.setup.guide.8d9f188c")}
@@ -1838,7 +1845,7 @@ export default function Workspace({
               {t("ui.save.delivery.preferences.599553af")}
             </Button>
             <p className="muted">{t("refine.setupAccess")}</p>
-          </section>
+          </section>}
           <section className="card">
             <h2>{t("ui.privacy.protection.28602257")}</h2>
             <p>
