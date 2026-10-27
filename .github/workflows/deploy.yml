@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         ref: 151396149ad8942ecd331230eb86d1395c3d4f1b
         path: work/rollback-source
@@ -54,7 +54,7 @@ jobs:
         path: work/rollback-source/work/pages
         include-hidden-files: true
         retention-days: 30
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: '22'
@@ -134,7 +134,7 @@ jobs:
           \ still active; preserve the currently verified deployment.');"
     - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
       id: deployment
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: '22'
@@ -179,7 +179,7 @@ jobs:
   verify-custom-domain-verify:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: '22'
@@ -203,7 +203,7 @@ jobs:
       run: "if [ -z \"$CLOUDFLARE_API_TOKEN\" ] || [ -z \"$CLOUDFLARE_ACCOUNT_ID\" ] || [ -z \"$CA_PAGES_PROJECT\" ]; then\n  echo 'enabled=false' >> \"$GITHUB_OUTPUT\"\
         \n  echo 'Cloudflare Pages is not configured; current hosting stays active.'\nelse\n  echo 'enabled=true' >> \"$GITHUB_OUTPUT\"\nfi\n"
     - if: steps.configuration.outputs.enabled == 'true'
-      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - if: steps.configuration.outputs.enabled == 'true'
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
