@@ -1,3 +1,4 @@
+import "./dialog-layout.css";
 import React from "react";
 import {t} from "../core/i18n";
 import * as Primitive from "@radix-ui/react-dialog";
