@@ -235,7 +235,7 @@
       "count": 8
     },
     "react-hooks/exhaustive-deps": {
-      "count": 2
+      "count": 1
     }
   },
   "apps/web/src/features/PublicForm.tsx": {
@@ -311,7 +311,7 @@
       "count": 1
     },
     "react-hooks/exhaustive-deps": {
-      "count": 6
+      "count": 5
     }
   },
   "apps/web/src/features/S21Button.tsx": {

@@ -35,3 +35,5 @@ const tools:Tool[]=[
 ];
 export function allowedTools(roles:string[],owner=false){return tools.filter(tool=>owner?['owner','settings'].includes(tool.id):!tool.owner&&tool.roles.some(role=>roles.includes(role)));}
 export function sectionForRoute(route:string):SectionId{return ({schedule:'meetings',pdf:'forms',settings:'admin',access:'admin',owner:'admin',emergency:'people'} as Record<string,SectionId>)[route]||(['home','people','reports','messages'].includes(route)?route as SectionId:'home');}
+
+export function toolById(id:string){return tools.find(tool=>tool.id===id);}

@@ -1,3 +1,4 @@
+import {useRoute,useRouteField,clearRouteAction} from "../useRoute";
 import {
   Disclosure,
   DisclosureLabel, Button } from "../../../../packages/ui/components";
@@ -47,6 +48,7 @@ function reportingPeriod(date: Date) {
 }
 const sample = demoPublishers;
 export function Reports({ context: c }: { context: Context }) {
+  const locationRoute=useRoute();
   const local = useDemoReports((s) => s.rows),
     setLocal = useDemoReports((s) => s.update);
   const repo = React.useMemo(
@@ -106,48 +108,17 @@ export function Reports({ context: c }: { context: Context }) {
     [bulkFilter, setBulkFilter] = React.useState(""),
     [bulkLimit, setBulkLimit] = React.useState(25),
     [annualOpen, setAnnualOpen] = React.useState(false);
-  const launch = React.useMemo(() => {
-    try {
-      const value = JSON.parse(
-        sessionStorage.getItem("ca-report-action") || "null",
-      );
-      return value &&
-        typeof value === "object" &&
-        ["bulk", "review", "attendance", "annual", "service", "entry"].includes(
-          value.action,
-        )
-        ? {
-            action: String(value.action),
-            period:
-              typeof value.period === "string" &&
-              /^\d{4}-\d{2}$/.test(value.period)
-                ? value.period
-                : undefined,
-          }
-        : null;
-    } catch {
-      return null;
-    }
-  }, []);
-  React.useEffect(() => {
-    sessionStorage.removeItem("ca-report-action");
-    if (launch?.action === "annual") setAnnualOpen(true);
-  }, []);
+  const launch={action:locationRoute.action||locationRoute.tab,period:locationRoute.month};
+  React.useEffect(() => {if(launch.action==="annual")setAnnualOpen(true);}, [launch.action]);
   const [monthToolsOpen, setMonthToolsOpen] = React.useState(false);
   const monthToolsTrigger = React.useRef<HTMLButtonElement | null>(null);
   const initial = new Date();
   initial.setDate(1);
   initial.setMonth(initial.getMonth() - 1);
-  const [period, setPeriod] = React.useState(
-      launch?.period ||
-        `${initial.getFullYear()}-${String(initial.getMonth() + 1).padStart(2, "0")}`,
-    ),
-    [tab, setTab] = React.useState(
-      canAttendance && (launch?.action === "attendance" || !canService)
-        ? "attendance"
-        : "service",
-    ),
-    [editing, setEditing] = React.useState(false),
+  const [period,setPeriod]=useRouteField("month",`${initial.getFullYear()}-${String(initial.getMonth()+1).padStart(2,"0")}`);
+  const [routeTab,setTab]=useRouteField("tab",canAttendance&&!canService?"attendance":"service");
+  const tab=routeTab==="annual"?"service":routeTab;
+  const     [editing, setEditing] = React.useState(false),
     [busy, setBusy] = React.useState(false),
     [error, setError] = React.useState(""),
     [person, setPerson] = React.useState(""),
@@ -190,7 +161,7 @@ export function Reports({ context: c }: { context: Context }) {
       window.removeEventListener("beforeunload", unload);
     };
   }, [editing, reportDirty]);
-  const [y, m] = period.split("-").map(Number);
+  const [y=new Date().getFullYear(), m=new Date().getMonth()+1] = period.split("-").map(Number);
   const month = m - 1,
     year = y + (month >= 8 ? 1 : 0);
   const reportScope =
@@ -289,20 +260,7 @@ export function Reports({ context: c }: { context: Context }) {
       );
       setBulk(true);
     }
-  }, [people.isSuccess]);
-  React.useEffect(() => {
-    const open = (event: Event) => {
-      const destination = (event as CustomEvent).detail;
-      if (destination === "attendance" && canAttendance) setTab("attendance");
-      else if (destination === "service" && canService) setTab("service");
-      else if (destination === "annual" && canService) {
-        setTab("service");
-        setAnnualOpen(true);
-      }
-    };
-    window.addEventListener("ca:open-tool", open);
-    return () => window.removeEventListener("ca:open-tool", open);
-  }, [canAttendance, canService]);
+  }, [people.isSuccess,launch.action]);
   React.useEffect(() => {
     if (launch?.action === "entry" && (demo || people.isSuccess)) {
       setPerson(persons[0]?.id || "");
@@ -311,19 +269,10 @@ export function Reports({ context: c }: { context: Context }) {
       setError("");
       setEditing(true);
     }
-    const quick = (event: Event) => {
-      if ((event as CustomEvent).detail === "entry" && (canWrite || personal)) {
-        setForm(valuesFor(persons[0]?.id || ""));
-        setPerson(persons[0]?.id || "");
-        setReceipt(null);
-        setReportDirty(false);
-        setError("");
-        setEditing(true);
-      }
-    };
-    window.addEventListener("ca:quick-action", quick);
-    return () => window.removeEventListener("ca:quick-action", quick);
-  }, [people.isSuccess, canWrite, personal]);
+  }, [people.isSuccess, canWrite, personal, launch.action]);
+  const wasEntryOpen=React.useRef(false),wasBulkOpen=React.useRef(false);
+  React.useEffect(()=>{if(wasEntryOpen.current&&!editing)clearRouteAction("entry");wasEntryOpen.current=editing;},[editing]);
+  React.useEffect(()=>{if(wasBulkOpen.current&&!bulk)clearRouteAction("bulk");wasBulkOpen.current=bulk;},[bulk]);
   async function save() {
     if (saving.current) return;
     saving.current = true;

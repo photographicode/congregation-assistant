@@ -131,3 +131,6 @@ Owner requests publisher-first redesign of application and website, English laun
 - The baseline matrix is the permitted single252-view stratified sample, covering all seven roles, six viewports, three text sizes and four themes with rotated secondary screens, not the full Cartesian matrix. Seven contact sheets summarize it.
 
 - F9 corrected by runtime/source inspection: LegacySelect is a custom Select adapter; sampled UI contains zero native selects/details. Replacing these with segmented controls is an IA choice, not remediation of native elements. Settings has five visible h1 headings and needs structural repair.
+
+- Phase1 retains the hub presentation via URL section state until Phase2, resolving the plan's conflicting no-visual-change and remove-hubs directions. Legacy inputs already resolve typed destinations. Phase2 removes that temporary presentation field.
+- Corrected routing-era S21 preselection and retained assistant export-all reset as URL actions; no PDF-engine/template change.

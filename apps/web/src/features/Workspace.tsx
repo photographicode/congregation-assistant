@@ -1,3 +1,4 @@
+import {useRoute,useRouteField,clearRouteAction,navigateRoute} from "../useRoute";
 import {publisherInput} from "../../../../packages/core/input-limits";
 import {savePublisherAction} from './publisher-action';
 import {
@@ -148,16 +149,16 @@ export default function Workspace({
   context: Context;
 }) {
   React.useSyncExternalStore(subscribeUILocale, getLocaleSnapshot, getLocaleSnapshot);
+  const locationRoute=useRoute();
+  const [sub,setSub]=useRouteField("tab",route==="people"?"publishers":"midweek");
+  const [week,setWeek]=useRouteField("week",weekKey(new Date()));
+  const [query,setQuery]=useRouteField("q","");
   const [people, setPeople] = useState<Person[]>(demo ? samplePeople : []),
     [groups, setGroups] = useState<any[]>(demo ? initialGroups : []),
     [groupsLoaded, setGroupsLoaded] = useState(demo),
-    [sub, setSub] = useState(
-      () => sessionStorage.getItem("ca-workspace-tool") || "midweek",
-    ),
     [editing, setEditing] = useState<Person | null>(null),
     [dirty, setDirty] = useState(false),
     [shared, setShared] = useState(false),
-    [query, setQuery] = useState(""),
     [sftsOnly, setSftsOnly] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
@@ -179,7 +180,6 @@ export default function Workspace({
       portal: true,
       groupCount: 2,
     }),
-    [week, setWeek] = useState(weekKey(new Date())),
     [weekend, setWeekend] = useState<any>(weekendDefaults(week)),
     [weekendDirty, setWeekendDirty] = useState(false),
     [weekendRevision, setWeekendRevision] = useState(0),
@@ -218,25 +218,6 @@ export default function Workspace({
       c.roles.includes("group_overseer"),
     canWeekend = admin || c.roles.includes("weekend");
   useEffect(() => {
-    const open = (event: Event) => {
-      const value = (event as CustomEvent<string>).detail;
-      if (["groups", "import", "midweek", "weekend", "duties"].includes(value))
-        setSub(value);
-      sessionStorage.removeItem("ca-workspace-tool");
-    };
-    window.addEventListener("ca:open-tool", open);
-    return () => window.removeEventListener("ca:open-tool", open);
-  }, []);
-  useEffect(() => {
-    const find = (event: Event) => {
-      setQuery((event as CustomEvent<string>).detail);
-      setSub("publishers");
-      if (route === "people") sessionStorage.removeItem("ca-person-search");
-    };
-    window.addEventListener("ca:find-person", find);
-    return () => window.removeEventListener("ca:find-person", find);
-  }, [route]);
-  useEffect(() => {
     const add = () => {
       if (!admin) return;
       setEditing({
@@ -251,15 +232,12 @@ export default function Workspace({
       setDirty(false);
       setError("");
       setShared(false);
-      sessionStorage.removeItem("ca-quick-action");
+
     };
-    const quick = (event: Event) => {
-      if ((event as CustomEvent).detail === "add-publisher") add();
-    };
-    if (sessionStorage.getItem("ca-quick-action") === "add-publisher") add();
-    window.addEventListener("ca:quick-action", quick);
-    return () => window.removeEventListener("ca:quick-action", quick);
-  }, [admin, groups]);
+    if(locationRoute.screen==="people"&&locationRoute.action==="add")add();
+  }, [admin, groups, locationRoute.screen, locationRoute.action]);
+  const editorWasOpen=React.useRef(false);
+  useEffect(()=>{if(editorWasOpen.current&&!editing)clearRouteAction("add");editorWasOpen.current=Boolean(editing);},[editing]);
   const peopleQuery = useQuery({
     queryKey: ["v2-people", c.cong],
     enabled: !demo && canPeople,
@@ -437,15 +415,7 @@ export default function Workspace({
       active = false;
     };
   }, [week, weekendRevision, canWeekend]);
-  useEffect(() => {
-    setError("");
-    setQuery(
-      route === "people"
-        ? sessionStorage.getItem("ca-person-search") || ""
-        : "",
-    );
-    if (route === "people") sessionStorage.removeItem("ca-person-search");
-  }, [route]);
+  useEffect(() => {setError("");}, [route]);
   const run = async (action: () => Promise<void>) => {
     setBusy(true);
     setError("");
@@ -2053,8 +2023,7 @@ export default function Workspace({
             <Button
               onClick={() => {
                 setWizard(false);
-                setSub("groups");
-                go("people");
+                navigateRoute({screen:"people",tab:"groups"});
               }} type="button"
             >
               {t("ui.manage.groups.faabea83")}
@@ -2066,8 +2035,7 @@ export default function Workspace({
             <Button
               onClick={() => {
                 setWizard(false);
-                setSub("import");
-                go("people");
+                navigateRoute({screen:"people",tab:"import"});
               }} type="button"
             >
               {t("ui.open.import.center.4c1a5823")}
@@ -2091,8 +2059,7 @@ export default function Workspace({
             <Button
               onClick={() => {
                 setWizard(false);
-                setSub("weekend");
-                go("schedule");
+                navigateRoute({screen:"schedule",tab:"weekend"});
               }} type="button"
             >
               {t("ui.open.weekend.schedule.5c9fdf1b")}

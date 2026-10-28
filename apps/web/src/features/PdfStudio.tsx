@@ -1,3 +1,5 @@
+import {useRoute,useRouteField,clearRouteAction} from "../useRoute";
+import {useScheduleWeek} from "../useScheduleWeek";
 import {
   Disclosure,
   DisclosureLabel, Button } from "../../../../packages/ui/components";
@@ -33,7 +35,7 @@ import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 
-const documents = [
+const documents:Array<[string,string]> = [
   ["s21", "S-21 publisher records"],
   ["s3", "S-3-E monthly attendance"],
   ["s88", "S-88-E yearly attendance"],
@@ -44,6 +46,7 @@ const documents = [
 ];
 const sample = demoPublishers;
 export default function PdfStudio({ context: c }: { context: Context }) {
+  const locationRoute=useRoute();
   const departments = ["av", "attendant", "cleaning"].filter(
     (role) => c.roles.includes("admin") || c.roles.includes(role),
   );
@@ -74,32 +77,16 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       preferenceStorage.getItem("ca-s21-format") === "zip" ? "zip" : "merged",
     ),
     [, setZipBytes] = React.useState<Uint8Array | null>(null);
-  const [scheduleWeek, setScheduleWeek] = React.useState(
-    format(new Date(), "RRRR-'W'II"),
-  );
+  const [scheduleWeek,setScheduleWeek]=useScheduleWeek();
   const [selectionGroup, setSelectionGroup] =
       React.useState<PublisherGroup>("all"),
-    [individual, setIndividual] = React.useState(""),
-    [selectionMonth, setSelectionMonth] = React.useState(() => {
-      const date = new Date();
-      date.setDate(1);
-      date.setMonth(date.getMonth() - 1);
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-    });
-  const [kind, setKind] = React.useState(() => {
-      try {
-        const value =
-          sessionStorage.getItem("ca-pdf-open") ||
-          preferenceStorage.getItem("ca-pdf-kind");
-        sessionStorage.removeItem("ca-pdf-open");
-        return available.some(([id]) => id === value)
-          ? value!
-          : available[0]?.[0] || "s21";
-      } catch {
-        return available[0]?.[0] || "s21";
-      }
-    }),
-    [year, setYear] = React.useState(
+    [individual, setIndividual] = React.useState("");
+  const initialMonth=new Date();initialMonth.setDate(1);initialMonth.setMonth(initialMonth.getMonth()-1);
+  const [selectionMonth,setSelectionMonth]=useRouteField("month",format(initialMonth,"yyyy-MM"));
+  const savedKind=preferenceStorage.getItem("ca-pdf-kind")||"s21";
+  const [requestedKind,setKind]=useRouteField("doc",savedKind);
+  const kind=available.some(([id])=>id===requestedKind)?requestedKind:available[0]?.[0]||"s21";
+  const [year, setYear] = React.useState(
       new Date().getFullYear() + (new Date().getMonth() >= 8 ? 1 : 0),
     ),
     [month, setMonth] = React.useState(new Date().getMonth()),
@@ -321,29 +308,14 @@ export default function PdfStudio({ context: c }: { context: Context }) {
     reportState,
   ]);
   React.useEffect(() => {
-    const open = () => {
-      setKind("s21");
-      setSelectionGroup("all");
-      setGroups(["all"]);
-      setSelected([]);
-      setQuery("");
-      try {
-        const preset = JSON.parse(
-          sessionStorage.getItem("ca-s21-person") || "null",
-        );
-        if (preset && preset.congregation === c.cong) {
-          setGroups(["individual"]);
-          setSelectionGroup("individual");
-          setIndividual(preset.id);
-          if (preset.year) setYear(preset.year);
-          sessionStorage.removeItem("ca-s21-person");
-        }
-      } catch (error) { handleError(error, {scope:"features/PdfStudio.tsx",severity:'warning'}); }
-    };
-    if (sessionStorage.getItem("ca-s21-person")) open();
-    window.addEventListener("ca:select-s21", open);
-    return () => window.removeEventListener("ca:select-s21", open);
-  }, []);
+    if(!locationRoute.person)return;
+    setSelectionGroup("individual");setGroups(["individual"]);setSelected([]);setIndividual(locationRoute.person);
+  }, [locationRoute.person]);
+  React.useEffect(()=>{
+    if(locationRoute.action!=="export")return;
+    setSelectionGroup("all");setGroups(["all"]);setSelected([]);setQuery("");setIndividual("");
+    clearRouteAction("export");
+  },[locationRoute.action]);
   const eligible =
     kind === "s21"
       ? unionPublishers(
@@ -372,16 +344,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
     abort.current = new AbortController();
     try {
       const snapshot = { ...data.data, id: c.cong, name: c.name };
-      const engine = Object.fromEntries(
-        ["s21", "s3", "s88", "emergency", "schedule"].map((method) => [
-          method,
-          (...args: unknown[]) =>
-            runPDF(method, snapshot, args, {
-              signal: abort.current!.signal,
-              onProgress: setProgress,
-            }),
-        ]),
-      );
+      const engine = (method:string,...args:unknown[]) => runPDF(method,snapshot,args,{signal:abort.current!.signal,onProgress:setProgress});
       let result;
       if (kind === "s21") {
         if (!chosen.length)
@@ -401,11 +364,11 @@ export default function PdfStudio({ context: c }: { context: Context }) {
               "application/zip",
             );
         } else {
-          result = await engine.s21(chosen, year);
+          result = await engine("s21",chosen, year);
           setZipBytes(null);
         }
-      } else if (kind === "s3") result = await engine.s3(year, month, c.name);
-      else if (kind === "s88") result = await engine.s88(year);
+      } else if (kind === "s3") result = await engine("s3",year, month, c.name);
+      else if (kind === "s88") result = await engine("s88",year);
       else if (kind === "midweek") {
         const draft = data.data.schedule as any;
         const parsed = programSchema.safeParse(draft?.programs?.[scheduleWeek]);
@@ -427,7 +390,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           { signal: abort.current.signal },
         );
       } else if (kind === "emergency")
-        result = await engine.emergency(families(chosen), c.name);
+        result = await engine("emergency",families(chosen), c.name);
       else {
         const draft: any = data.data.schedule;
         const sections: { heading: string; lines: string[] }[] =
@@ -474,7 +437,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           throw Error(
             "There are no assignments to print. Add assignments in the schedule, then retry.",
           );
-        result = await engine.schedule(
+        result = await engine("schedule",
           `${c.name} · ${kind} schedule${large ? " · large print" : ""}`,
           sections,
           { largePrint: large, layout: printLayout },
@@ -486,7 +449,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       const filename =
         kind === "s21"
           ? "S-21_" +
-            (chosen.length === 1 ? pdfName(chosen[0].name) : groups.join("-")) +
+            (chosen.length === 1 ? pdfName(chosen[0]!.name) : groups.join("-")) +
             "_" +
             year +
             ".pdf"
