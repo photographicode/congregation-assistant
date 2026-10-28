@@ -1,3 +1,14 @@
+# Current authority: V4-UX Simplification — supersedes V4 shell/IA decisions where they conflict
+
+Follow docs/V4-UX-SIMPLIFICATION.md phase by phase. This is a UI/IA/copy change only: no schema, RPC, PDF, auth or
+retention changes. Every existing tool, role boundary, route identifier (`?screen=`, `?section=`, `?tool=`, `?demo=`),
+PDF and recovery format must remain reachable. Existing release gates stay intact; do not weaken, skip or re-baseline
+a test to make it pass. When a browser check asserts an old label that this plan intentionally renames, update the
+selector in the same commit and list it in docs/POLISH-REPORT.md under "Intentional selector changes". Demo mode must
+never call Supabase. No new paid services. Do not alter hosting/deploy workflows.
+
+Owner scope clarification, 2026-10-28: execute the app plan; exclude all public website changes. Preserve the earlier separate publisher eligibility requirement. The embedded kickoff/phase prompts are examples, not new instructions to stop after Phase 0. No backend migration from the unfinished prior refinement may enter this UI-only branch.
+
 # Current authority: V4 Publisher-first — 2026-10-26
 
 The owner explicitly authorized implementation and deployment of V4 after one batched questionnaire. This supersedes the V3 product/design freezes below. Read `docs/superpowers/specs/2026-10-26-v4-design.md`, `docs/superpowers/plans/2026-10-26-v4.md` and `docs/V4-RELEASE.md` for the accepted scope and current evidence.

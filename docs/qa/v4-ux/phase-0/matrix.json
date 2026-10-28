@@ -1,0 +1,5790 @@
+{
+  "sample": true,
+  "selection": "252 deterministic role/viewport/scale pairs; theme and secondary route rotated; not full Cartesian matrix",
+  "rows": [
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-320x640-1-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "people",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-people-320x640-1-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "reports",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-reports-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-320x640-2-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "schedule",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-schedule-320x640-2-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-settings-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "messages",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A thoughtful reminder."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-messages-390x844-1.3-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "pdf",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Forms to share"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "admin-pdf-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-768x1024-1-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "people",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-people-768x1024-1-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "reports",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-reports-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-768x1024-2-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "schedule",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-schedule-768x1024-2-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-settings-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "messages",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A thoughtful reminder."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-messages-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "pdf",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Forms to share"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-pdf-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1440x900-1-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "people",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-people-1440x900-1-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "reports",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-reports-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-1440x900-2-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "schedule",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-schedule-1440x900-2-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-settings-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "admin",
+      "screen": "messages",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A thoughtful reminder."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-messages-844x390-1.3-paper.png"
+    },
+    {
+      "role": "admin",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "admin",
+      "screen": "pdf",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Forms to share"
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "admin-pdf-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-320x640-1-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-reports-320x640-1-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-settings-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-320x640-2-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-schedule-320x640-2-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-reports-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-settings-390x844-1.3-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "publisher-schedule-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-768x1024-1-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-reports-768x1024-1-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-settings-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-768x1024-2-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-schedule-768x1024-2-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-reports-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-settings-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-schedule-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1440x900-1-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-reports-1440x900-1-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-settings-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-1440x900-2-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-schedule-1440x900-2-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "reports",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-reports-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Profile & time away"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-settings-844x390-1.3-paper.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Hello, Daniel."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "publisher",
+      "screen": "schedule",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "publisher-schedule-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-320x640-1-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-people-320x640-1-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-reports-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-320x640-2-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-settings-320x640-2-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-people-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-reports-390x844-1.3-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "group-settings-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-768x1024-1-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-people-768x1024-1-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-reports-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-768x1024-2-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-settings-768x1024-2-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-people-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-reports-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-settings-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1440x900-1-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-people-1440x900-1-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-reports-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-1440x900-2-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-settings-1440x900-2-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "people",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-people-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "group",
+      "screen": "reports",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-reports-844x390-1.3-paper.png"
+    },
+    {
+      "role": "group",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "group",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "group-settings-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-320x640-1-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-reports-320x640-1-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-settings-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-320x640-2-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-schedule-320x640-2-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-reports-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-settings-390x844-1.3-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "attendance-schedule-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-768x1024-1-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-reports-768x1024-1-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-settings-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-768x1024-2-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-schedule-768x1024-2-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-reports-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-settings-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-schedule-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1440x900-1-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-reports-1440x900-1-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-settings-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-1440x900-2-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-schedule-1440x900-2-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "reports",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-reports-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-settings-844x390-1.3-paper.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "attendance",
+      "screen": "schedule",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Weekly schedule"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "attendance-schedule-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-320x640-1-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-people-320x640-1-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-reports-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-320x640-2-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-settings-320x640-2-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-people-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-reports-390x844-1.3-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "field-settings-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-768x1024-1-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-people-768x1024-1-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-reports-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-768x1024-2-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-settings-768x1024-2-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-people-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-reports-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-settings-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1440x900-1-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-people-1440x900-1-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-reports-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-1440x900-2-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-settings-1440x900-2-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "people",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "A place for all."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-people-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "field",
+      "screen": "reports",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Keep reporting simple."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-reports-844x390-1.3-paper.png"
+    },
+    {
+      "role": "field",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "field",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your settings",
+        "Good morning.",
+        "Good morning.",
+        "Good morning.",
+        "Good afternoon"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "field-settings-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-320x640-1-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-320x640-1-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-320x640-2-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-320x640-2-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-390x844-1.3-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "owner-settings-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-768x1024-1-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-768x1024-1-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-768x1024-2-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-768x1024-2-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1440x900-1-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1440x900-1-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-1440x900-2-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 4,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-1440x900-2-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-844x390-1.3-paper.png"
+    },
+    {
+      "role": "owner",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "owner",
+      "screen": "settings",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Command centre"
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "owner-settings-844x390-2-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-1-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-1-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-1.3-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-1.3-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-2-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 320,
+      "height": 640,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-320x640-2-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-1-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-1-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-1.3-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-1.3-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-2-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 390,
+      "height": 844,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [
+        "Today",
+        "People",
+        "Reports",
+        "Meetings",
+        "More"
+      ],
+      "axe": [],
+      "screenshot": "expired-home-390x844-2-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-1-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-1-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-1.3-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-1.3-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-2-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 768,
+      "height": 1024,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-768x1024-2-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-1-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-1-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-1.3-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-1.3-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-2-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1024,
+      "height": 768,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1024x768-2-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-1-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-1-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-1.3-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 1.3,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-1.3-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-2-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 1440,
+      "height": 900,
+      "scale": 2,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 5,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-1440x900-2-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-1-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-1-eclipse-night.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "default",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-1.3-default.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 1.3,
+      "theme": "paper",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-1.3-paper.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "mono-dark",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-2-mono-dark.png"
+    },
+    {
+      "role": "expired",
+      "screen": "home",
+      "width": 844,
+      "height": 390,
+      "scale": 2,
+      "theme": "eclipse-night",
+      "errors": [],
+      "cloud": [],
+      "headings": [
+        "Your workspace is paused."
+      ],
+      "headerControls": 6,
+      "pageOverflow": false,
+      "mainOverflow": false,
+      "nativeSelects": 0,
+      "details": 0,
+      "tabs": [],
+      "axe": [],
+      "screenshot": "expired-home-844x390-2-eclipse-night.png"
+    }
+  ]
+}

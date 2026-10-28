@@ -1,0 +1,20 @@
+{
+  "before": {
+    "length": 2,
+    "url": "http://localhost:4188/?demo=admin"
+  },
+  "weekend": {
+    "length": 2,
+    "url": "http://localhost:4188/?demo=admin&screen=schedule&tool=midweek",
+    "active": [
+      "Weekend"
+    ]
+  },
+  "refreshed": {
+    "length": 2,
+    "url": "http://localhost:4188/?demo=admin&screen=schedule&tool=midweek",
+    "active": [
+      "Midweek"
+    ]
+  }
+}

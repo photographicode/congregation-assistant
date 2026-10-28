@@ -377,3 +377,10 @@ V4 release follow-up: production smoke test now asserts the redesigned headline 
 System-state audit timing: measured Aurora theme switching showed foreground colors update immediately while button backgrounds retain previous theme colors during a CSS transition (Search briefly light text on white; final background rgb(26,18,69)). The audit now waits for actual CSS transitions and font readiness before measuring final theme contrast; no contrast rule is disabled. All 198 views and 33 Axe scans pass locally. The Gitleaks explanatory comment itself was subsequently classified as the same SQL-name false positive; its exact historical fingerprints are recorded, and scanning all fetched branch histories passes.
 
 V4 Escape correction: reproduced clean modal ignoring Escape between autofocus and Radix document-layer registration. Content handles otherwise unclaimed Escape through the existing dirty guard. A deterministic autofocus regression fails with old code and passes with new code; all 12 dialog lifecycle checks and the complete local check suite pass. Independent review found no important new issue.
+
+## V4-UX Phase0 — 2026-10-28
+
+App-only baseline from8565b6b. See [BASELINE](qa/v4-ux/BASELINE.md) for every command, result,252-view sample and task measures. No product/website/backend/PDF/deployment edits. Three supplied legacy browser scripts failed; current native equivalents passed. Initial cutover font-preload warning failed; isolated rerun passed48screens. SonarQube and human usability unverified.
+
+### Intentional selector changes
+None in product acceptance scripts. New baseline measurement script targets current native controls.

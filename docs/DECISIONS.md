@@ -113,3 +113,21 @@ Added private own-account/congregation-scoped preference storage, revision-check
 
 ## V4 authority — 2026-10-26
 Owner requests publisher-first redesign of application and website, English launch, existing roles/sign-in retained, immediate implementation/deployment after batched answers. This supersedes V3 feature/design freezes. DNS deferred. Contact edits require Main Admin in-app notifications; time away has no approval. No test records need erasure. Existing security/PDF/release checks remain requirements.
+
+## V4-UX execution rulings — 2026-10-28
+- Execute the complete app plan; public website is excluded. Embedded per-phase prompt examples do not override the owner's request to execute the plan.
+- Start baseline from deployed V4 commit 8565b6b. Preserve unfinished navigation refinement in git stash `Preserved navigation refinement before UI-only V4-UX plan`; do not apply its proposed RPC migration.
+- D1 Me; D2 query-string/push screens and tabs/replace filters; D3 admin Inbox; D4 Meetings attendance; D5 search replaces Today prompts; D6 contextual PDF; D7 basic Display then Customise look; D8 hide unavailable tools; D9 warm neutral/teal with Auto; D10 shared confirmation dialog.
+- Earlier publisher eligibility request remains part of Meetings/People management UI. Publisher schedule must not expose editing/printing controls.
+- Phase 9 human usability sessions cannot be simulated as real participants. Prepare observer sheets and report unverified until actual participant evidence exists.
+
+### Baseline corrections to the supplied source-only diagnosis
+- F1 reproduced in the browser: history length remains 2 after screen/tab changes; Weekend refreshes to Midweek. See `qa/v4-ux/navigation-baseline.json`.
+- T1/T2/T3/T4 already take 0/3/2/2 action taps. The source-only plan overestimated profile/time-away effort. Field entry is excluded from action-tap counts, consistently with the plan's Add → Save example.
+- F6 confirmed: attendance, group and field demos use the shared Dashboard. Attendance recording needs Meetings → Attendance → Save (3 actions), not the requested single Today action.
+- Header has five visible phone controls for admin. At200% text, avatar overflows its header vertically despite zero horizontal overflow; Axe/overflow success alone does not prove layout usability.
+- The literal §1.5 publisher-portal/scheduling-simplicity scripts target removed window.db/window.ui V1 fixtures and require an unavailable bundled Chromium. check-reachability expects the pre-hub direct navigation and obsolete Generate preview. Preserve their failures as evidence; use current native V4 publisher, v3-resume, direct-download, shell, cutover and PDF contracts to gate actual app changes. No existing CI check is removed, suppressed or weakened.
+- Existing native PDF studio downloads directly; the plan's Generate preview instruction contradicts current direct-download contracts. Preserve direct download; contextual preselection must work.
+- The baseline matrix is the permitted single252-view stratified sample, covering all seven roles, six viewports, three text sizes and four themes with rotated secondary screens, not the full Cartesian matrix. Seven contact sheets summarize it.
+
+- F9 corrected by runtime/source inspection: LegacySelect is a custom Select adapter; sampled UI contains zero native selects/details. Replacing these with segmented controls is an IA choice, not remediation of native elements. Settings has five visible h1 headings and needs structural repair.

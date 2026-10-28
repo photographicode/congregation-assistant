@@ -1,0 +1,100 @@
+{
+  "method": "Clicks on actual fictional demo UI at390px; text input excluded; incomplete tasks explicitly not scored",
+  "rows": [
+    {
+      "id": "T1",
+      "role": "publisher",
+      "taps": 0,
+      "completed": true,
+      "endpoint": "Assignment visible on Today",
+      "cloud": []
+    },
+    {
+      "id": "T2",
+      "role": "publisher",
+      "taps": 3,
+      "completed": true,
+      "cloud": []
+    },
+    {
+      "id": "T3",
+      "role": "publisher",
+      "taps": 2,
+      "completed": true,
+      "cloud": []
+    },
+    {
+      "id": "T4",
+      "role": "publisher",
+      "taps": 2,
+      "completed": true,
+      "cloud": []
+    },
+    {
+      "id": "T5",
+      "role": "admin",
+      "taps": 4,
+      "completed": true,
+      "endpoint": "Assigned first available part",
+      "cloud": []
+    },
+    {
+      "id": "T6",
+      "role": "admin",
+      "taps": 3,
+      "completed": true,
+      "endpoint": "Report entry via Quick actions; row-specific path remains absent",
+      "cloud": []
+    },
+    {
+      "id": "T7",
+      "role": "admin",
+      "taps": 2,
+      "completed": true,
+      "endpoint": "User-initiated WhatsApp reminder opened; no external message sent",
+      "cloud": []
+    },
+    {
+      "id": "T8",
+      "role": "admin",
+      "taps": 3,
+      "completed": true,
+      "endpoint": "One named publisher PDF downloaded from People",
+      "cloud": []
+    },
+    {
+      "id": "T9",
+      "role": "admin",
+      "taps": 2,
+      "completed": true,
+      "cloud": []
+    },
+    {
+      "id": "T10",
+      "role": "attendance",
+      "taps": 3,
+      "completed": true,
+      "endpoint": "Attendance save in demo; Today has no entry",
+      "cloud": []
+    },
+    {
+      "id": "T11",
+      "role": "admin",
+      "taps": 3,
+      "completed": false,
+      "endpoint": "Publish attempted",
+      "alerts": [],
+      "reason": "Demo cannot issue real publication link; share endpoint unverified",
+      "cloud": []
+    },
+    {
+      "id": "T12",
+      "role": "group",
+      "taps": 0,
+      "completed": false,
+      "endpoint": "Today inspected",
+      "reason": "No role-specific next duty card; shared Dashboard confirmed",
+      "cloud": []
+    }
+  ]
+}
