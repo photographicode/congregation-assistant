@@ -1,3 +1,5 @@
+import {useRouteField} from "../useRoute";
+import {useScheduleWeek} from "../useScheduleWeek";
 import {
   Disclosure,
   DisclosureLabel, Button } from "../../../../packages/ui/components";
@@ -7,7 +9,6 @@ import { offerPDF } from "./pdf-download";
 import { dutyRosterLines } from "../../../../packages/core/duty-roster";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { z } from "zod";
 import { rpc, demo } from "./client";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
@@ -60,9 +61,8 @@ export function Departments({ context: c }: { context: Context }) {
         c.roles.includes(department) ||
         (department === "attendant" && c.roles.includes("attendance")),
     ),
-    [selected, setSelected] = React.useState<Department>(
-      allowed[0] || "attendant",
-    );
+    [selectedView,setSelected]=useRouteField("view",allowed[0]||"attendant"),
+    selected=allowed.find(department=>department===selectedView)||allowed[0]||"attendant";
   if (!allowed.length) return <p>{t("duties.noAccess")}</p>;
   return (
     <div className="stack">
@@ -90,7 +90,7 @@ function DepartmentPanel({
 }) {
   const cache = useQueryClient(),
     admin = c.roles.includes("admin"),
-    [week, setWeek] = React.useState(format(new Date(), "RRRR-'W'II")),
+    [week, setWeek] = useScheduleWeek(),
     [name, setName] = React.useState(""),
     [slots, setSlots] = React.useState(1),
     [busy, setBusy] = React.useState(false),
@@ -181,7 +181,7 @@ function DepartmentPanel({
                 .filter(
                   (w) =>
                     w < week &&
-                    Object.entries(value.assignments[w]).some(
+                    Object.entries(value.assignments[w]||{}).some(
                       ([slot, p]) =>
                         slot.startsWith(duty.id + "_") &&
                         (p.publisherId || p.personId) === id &&

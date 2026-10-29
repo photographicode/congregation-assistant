@@ -1,7 +1,5 @@
 import {navigateRoute,useRouteField} from "../useRoute";
-import { HomeAssistant } from "./HomeAssistant";
 import { HomeGroupLinks } from "./HomeGroupLinks";
-import { HomeSuggestions } from "./HomeSuggestions";
 import React from "react";
 import {
   isSFTS,
@@ -27,7 +25,6 @@ import { demo, storeFor } from "./client";
 import { useAppearance } from "./store";
 import { Scene } from "./Scene";
 import { ExperiencePicker } from "./ExperiencePicker";
-import { Greeting } from "../../../../packages/ui/Greeting";
 import {
   dashboardSummary,
   previousReportingPeriod,
@@ -79,10 +76,8 @@ export function Dashboard({
   go,
   setup,
   addPublisher,
-  setupEntry,
 }: {
   context: Context;
-  setupEntry?: React.ReactNode;
   go: (s: string) => void;
   setup: any;
   addPublisher: () => void;
@@ -173,12 +168,6 @@ export function Dashboard({
         </Card>
       )}
       <section className="dashboard-hero">
-        <Greeting
-          name={c.firstName}
-          timezone={setup.timezone}
-          locale={setup.language}
-          clock={a.clock}
-        />
         <Inline className="dashboard-context">
           <label>
             {t("ui.reporting.month.04bf8d83")}
@@ -217,16 +206,7 @@ export function Dashboard({
           )}
         </Inline>
       </section>
-      <HomeAssistant context={c} go={go} />
       <HomeGroupLinks context={c} period={period} />
-      {setupEntry}
-      <HomeSuggestions
-        context={c}
-        period={period}
-        missing={summary.pending}
-        ready={!loading && !error}
-        go={go}
-      />
       {error && (
         <p className="error" role="alert">
           {t("ui.records.could.not.load.refresh.to.try.agai.7090d449")}

@@ -68,7 +68,7 @@ import { Reports } from "./Reports";
 import { Midweek } from "./Midweek";
 import { PublisherAccount } from "./PublisherAccount";
 import { Announcements } from "./Announcements";
-import { AdminNotifications } from "./AdminNotifications";
+import {AdminToday,OverseerToday} from "./today/Today";
 import { PublisherHome } from "./PublisherHome";
 import { Access } from "./Access";
 import { Backup } from "./Backup";
@@ -143,10 +143,12 @@ export default function Workspace({
   route,
   go,
   context: c,
+  openInbox=()=>{},
 }: {
   route: string;
   go: (s: string) => void;
   context: Context;
+  openInbox?:()=>void;
 }) {
   React.useSyncExternalStore(subscribeUILocale, getLocaleSnapshot, getLocaleSnapshot);
   const locationRoute=useRoute();
@@ -638,44 +640,10 @@ export default function Workspace({
         <PdfStudio context={c} />
       </Suspense>
     );
-  else if (route === "home" && c.roles.includes("publisher") && !admin)
-    body = <PublisherHome context={c} go={go} />;
+  else if (route === "home" && !admin)
+    body = c.roles.every(role=>role==='publisher')?<PublisherHome context={c} go={go}/>:<OverseerToday context={c} go={go} timezone={setup.timezone}/>;
   else if (route === "home")
-    body = (
-      <>
-        <div className="v4-home-columns"><AdminNotifications context={c}/><Announcements context={c}/></div>
-        <Dashboard
-          context={c}
-          go={go}
-          setup={setup}
-          setupEntry={
-            admin && wizardStep < 10 ? (
-              <section className="card stack">
-                <h2>{t("setup.begin")}</h2>
-                <p>{t("setup.summary")}</p>
-                <Button onClick={() => setWizard(true)} type="button">
-                  {t("setup.open")}
-                </Button>
-              </section>
-            ) : null
-          }
-          addPublisher={() => {
-            setEditing({
-              id: crypto.randomUUID(),
-              name: "",
-              gender: "",
-              group: groups[0]?.name || "",
-              email: "",
-              phone: "",
-              address: "",
-            });
-            setDirty(false);
-            setError("");
-            setShared(false);
-          }}
-        />
-      </>
-    );
+    body = <AdminToday openInbox={openInbox} context={c} setupStep={wizardStep} timezone={setup.timezone} openSetup={()=>setWizard(true)} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:'',gender:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError('');setShared(false);}}/>;
   else if (route === "emergency" && admin)
     body = (
       <EmergencyContacts
@@ -1454,6 +1422,7 @@ export default function Workspace({
     body = (
       <>
         <Reports context={c} />
+        {c.roles.some(role=>['admin','field_service','group_overseer'].includes(role))&&<Disclosure><DisclosureLabel>{t('ux.today.monthlyTools')}</DisclosureLabel><Dashboard context={c} go={go} setup={setup} addPublisher={()=>{setEditing({id:crypto.randomUUID(),name:'',gender:'',group:groups[0]?.name||'',email:'',phone:'',address:''});setDirty(false);setError('');setShared(false);}}/></Disclosure>}
       </>
     );
   else if (route === "messages")
@@ -1463,6 +1432,7 @@ export default function Workspace({
           eyebrow={t("ui.messages.04d7b483")}
           title={t("ui.a.thoughtful.reminder.b74a0931")}
         />
+        {admin&&<Announcements context={c}/>}
         <div className="grid">
           <section className="card stack">
             <h2>{t("ui.whatsapp.smart.share.cc65823b")}</h2>

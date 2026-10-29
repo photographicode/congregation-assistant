@@ -140,7 +140,7 @@ function App() {
       setMemberships([
         {
           cong_id: "demo",
-          role: ({publisher:"publisher",group:"group_overseer",attendance:"attendance",field:"field_service"} as Record<string,string>)[new URLSearchParams(location.search).get("demo")||""]||"admin",
+          role: ({publisher:"publisher",group:"group_overseer",attendance:"attendance",field:"field_service",oclm:"oclm",weekend:"weekend",av:"av",attendant:"attendant",cleaning:"cleaning"} as Record<string,string>)[new URLSearchParams(location.search).get("demo")||""]||"admin",
           congregations: { name: "River Park Congregation" },
         },
       ]);
@@ -316,7 +316,8 @@ function App() {
     setQuick(false);setSearch(false);
     navigateRoute({...routeForTool(tool.id),...refinement});
   };
-  const prepareAssistant=async()=>{if(!roles.includes('admin'))return;try{if(!demo){setNotice('Loading authorized records before opening the on-device assistant…');const repo=repositories(storeFor(cong,roles),cong),year=new Date().getFullYear()+(new Date().getMonth()>=8?1:0);const [people,current,previous,meeting]=await Promise.all([repo.people.names(),repo.reports.year(year),repo.reports.year(year-1),rpc('ca_v3_meeting_context',{p_cong_id:cong})]);queryClient.setQueryData(['assistant-meeting',context.account,cong],meeting);queryClient.setQueryData(['assistant-people',context.account,cong],people);queryClient.setQueryData(['assistant-records',context.account,cong],[...current,...previous]);}setNotice('');setAssistantOpen(true);}catch(error){setNotice((error as Error).message);}};
+  const SERVICE_YEAR_START_MONTH=8;
+  const prepareAssistant=async()=>{if(!roles.includes('admin'))return;try{if(!demo){setNotice('Loading authorized records before opening the on-device assistant…');const repo=repositories(storeFor(cong,roles),cong),year=new Date().getFullYear()+(new Date().getMonth()>=SERVICE_YEAR_START_MONTH?1:0);const [people,current,previous,meeting,schedule]=await Promise.all([rpc('ca_v2_people',{p_cong_id:cong}),repo.reports.year(year),repo.reports.year(year-1),rpc('ca_v3_meeting_context',{p_cong_id:cong}),repo.schedules.get()]);queryClient.setQueryData(['assistant-schedule',context.account,cong],schedule);queryClient.setQueryData(['assistant-meeting',context.account,cong],meeting);queryClient.setQueryData(['assistant-people',context.account,cong],people);queryClient.setQueryData(['assistant-records',context.account,cong],[...current,...previous]);}else{queryClient.setQueryData(['assistant-meeting',context.account,cong],{date:new Date().toISOString().split('T')[0],kind:'midweek',canSubmit:true,count:null,timezone:'UTC'});}setNotice('');setAssistantOpen(true);}catch(error){setNotice((error as Error).message);}};
   const commands:Command[]=[...(admin?[{id:'assistant',label:t('ux.nav.assistant'),run:()=>void prepareAssistant()}]:[]),...visibleTools.filter(tool=>tool.available).map(tool=>({id:tool.id,label:t(tool.label),description:t(tool.description),run:()=>openNativeTool(tool)})),...(searchPeople.data||[]).map(person=>({id:'person-'+person.id,label:person.name,description:t('purpose.publishers'),run:()=>{const native=visibleTools.find(tool=>tool.id===(roles.includes('publisher')&&!admin?'households':'publishers'));if(native){openNativeTool(native,{q:person.name});}}})),...(roles.some(r=>['admin','field_service','group_overseer'].includes(r))?(searchPeople.data||[]).map(person=>({id:'s21-'+person.id,label:'S-21 · '+person.name,description:'Download publisher record',run:()=>{void import('./features/pdf-download').then(({publisherS21})=>publisherS21(context,person.id,demo?person:undefined)).catch(error=>setNotice((error as Error).message));}})):[]),...themeIds.map(theme=>({id:'theme-'+theme,label:t('theme.gallery')+': '+t(`theme.${theme}`),run:()=>appearance.set({theme})}))];
   function workspaceContent(){
     if(owner&&route!=="settings")return <OwnerConsole context={context}/>;
@@ -326,7 +327,7 @@ function App() {
     if(plan.locked)return <Subscription context={context} plan={plan}/>;
     if(route==='more')return <MorePage tools={visibleTools} onOpen={openNativeTool} onUpdates={()=>setUpdatesOpen(true)} onHelp={()=>setHelpOpen(true)} signOut={()=>guardNavigation(()=>void signOut())} demo={demo}/>;
     if(!allowed.some(item=>item.id===route))return <SystemStatePage state="notFound" onHome={()=>go("home")}/>;
-    return <Workspace key={cong} route={route} go={go} context={context}/>;
+    return <Workspace key={cong} route={route} go={go} context={context} openInbox={()=>setInboxOpen(true)}/>;
   }
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>

@@ -17,7 +17,7 @@ const schema = z
     message: z.string().optional(),
   })
   .passthrough();
-export function CurrentAttendance({ context: c }: { context: Context }) {
+export function CurrentAttendance({ context: c, today=false }: { context: Context; today?: boolean }) {
   const [dirty, setDirty] = React.useState(false),
     [entryDate, setEntryDate] = React.useState(""),
     [count, setCount] = React.useState(""),
@@ -50,9 +50,9 @@ export function CurrentAttendance({ context: c }: { context: Context }) {
   }, [query.data]);
   const value = query.data;
   return (
-    <section className="card stack">
-      <h3>{t("attendance.today")}</h3>
-      <p>{t("attendance.automatic")}</p>
+    <section className={today?"card stack today-attendance":"card stack"}>
+      <h2>{t(today?"ux.today.countAttendance":"attendance.today")}</h2>
+      {!today&&<p>{t("attendance.automatic")}</p>}
       {value && (
         <p>
           {value.date} ·{" "}
@@ -115,7 +115,7 @@ export function CurrentAttendance({ context: c }: { context: Context }) {
               }}
             />
           </label>
-          <Button disabled={busy} type="submit">{t("attendance.save")}</Button>
+          <Button disabled={busy} type="submit">{t(today?"ui.save.attendance.15e51ffc":"attendance.save")}</Button>
         </form>
       ) : (
         <p>
