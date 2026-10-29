@@ -319,11 +319,6 @@
       "count": 3
     }
   },
-  "apps/web/src/features/SectionHub.tsx": {
-    "no-nested-ternary": {
-      "count": 1
-    }
-  },
   "apps/web/src/features/Sessions.tsx": {
     "@typescript-eslint/no-misused-promises": {
       "count": 1
@@ -463,7 +458,7 @@
       "count": 1
     },
     "no-nested-ternary": {
-      "count": 10
+      "count": 5
     },
     "react-hooks/exhaustive-deps": {
       "count": 5

@@ -11,7 +11,11 @@ export function Dialog({
   dirty = false,
   tone = "info",
   returnFocusTo,
+  variant = "modal",
+  onAfterCloseFocus,
 }: {
+  onAfterCloseFocus?:()=>void;
+  variant?: "modal"|"popover";
   open: boolean;
   onClose: () => void;
   title: string;
@@ -36,15 +40,16 @@ export function Dialog({
   }, [open]);
   return (
     <Primitive.Root
+      modal={variant!=="popover"}
       open={open}
       onOpenChange={(value) => {
         if (!value) request();
       }}
     >
       <Primitive.Portal>
-        <Primitive.Overlay className="dialog-overlay" />
+        {variant!=="popover"&&<Primitive.Overlay className="dialog-overlay" />}
         <Primitive.Content
-          className="dialog"
+          className={variant==="popover"?"dialog ui-popover":"dialog"}
           data-tone={confirm?"warning":tone}
           translate="no"
           aria-describedby={undefined}
@@ -53,6 +58,7 @@ export function Dialog({
             const target = returnFocusTo?.current || opener.current;
             if(target?.isConnected)target.focus({preventScroll:true});
             else {const main=document.querySelector<HTMLElement>('main');if(main){const previous=main.getAttribute('tabindex');main.setAttribute('tabindex','-1');main.focus({preventScroll:true});if(previous===null)main.removeAttribute('tabindex');}}
+            onAfterCloseFocus?.();
           }}
           onEscapeKeyDown={(e) => {
             e.preventDefault();

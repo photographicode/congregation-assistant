@@ -1046,5 +1046,22 @@
   "v4.37e6112e84": "What’s new",
   "v4.1810407f5a": "Quick actions",
   "v4.addbe3d6f5": "Search tools and people",
-  "v4.eb355944b9": "Main navigation"
+  "v4.eb355944b9": "Main navigation",
+  "ux.nav.today": "Today",
+  "ux.nav.me": "Me",
+  "ux.nav.more": "More",
+  "ux.nav.owner": "Owner console",
+  "ux.nav.expand": "Expand navigation",
+  "ux.nav.collapse": "Collapse navigation",
+  "ux.nav.display": "Display",
+  "ux.nav.help": "Help",
+  "ux.nav.inbox": "Inbox",
+  "ux.nav.assistant": "Ask the assistant",
+  "ux.more.everyday": "Everyday",
+  "ux.more.people": "People",
+  "ux.more.congregation": "Congregation",
+  "ux.more.you": "You",
+  "ux.more.tasks": "Find a tool or setting",
+  "ux.more.noResults": "No tools match your search.",
+  "ux.tools.dutiesPdf": "Duties PDF"
 }
