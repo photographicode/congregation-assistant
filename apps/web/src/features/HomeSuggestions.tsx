@@ -1,3 +1,4 @@
+import {navigateRoute} from "../useRoute";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import {
@@ -347,17 +348,9 @@ export function HomeSuggestions({
               onClick={() => {
                 if (card.route === "themes") go("settings");
                 else if (card.route === "current-attendance") {
-                  sessionStorage.setItem(
-                    "ca-report-action",
-                    JSON.stringify({ action: "attendance" }),
-                  );
-                  go("reports");
+                  navigateRoute({screen:"reports",tab:"attendance"});
                 } else if (card.route === "duties") {
-                  sessionStorage.setItem("ca-workspace-tool", "duties");
-                  go("schedule");
-                  window.dispatchEvent(
-                    new CustomEvent("ca:open-tool", { detail: "duties" }),
-                  );
+                  navigateRoute({screen:"schedule",tab:"duties"});
                 } else if (card.route === "assistant")
                   document
                     .querySelector<HTMLButtonElement>(
@@ -365,20 +358,11 @@ export function HomeSuggestions({
                     )
                     ?.click();
                 else if (card.route === "weekend") {
-                  sessionStorage.setItem("ca-workspace-tool", "weekend");
-                  go("schedule");
-                  window.dispatchEvent(
-                    new CustomEvent("ca:open-tool", { detail: "weekend" }),
-                  );
+                  navigateRoute({screen:"schedule",tab:"weekend"});
                 } else if (card.route === "reports") {
-                  sessionStorage.setItem(
-                    "ca-report-action",
-                    JSON.stringify({ action: "review", period }),
-                  );
-                  go("reports");
+                  navigateRoute({screen:"reports",action:"review",month:period});
                 } else if (card.route === "pdf") {
-                  sessionStorage.setItem("ca-pdf-open", "s21");
-                  go("pdf");
+                  navigateRoute({screen:"pdf",doc:"s21"});
                 } else go(card.route);
               }} type="button"
             >

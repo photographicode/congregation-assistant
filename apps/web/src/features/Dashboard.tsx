@@ -1,3 +1,4 @@
+import {navigateRoute,useRouteField} from "../useRoute";
 import { HomeAssistant } from "./HomeAssistant";
 import { HomeGroupLinks } from "./HomeGroupLinks";
 import { HomeSuggestions } from "./HomeSuggestions";
@@ -110,12 +111,10 @@ export function Dashboard({
         "publisher",
       ].includes(r),
     );
-  const [period, setPeriod] = React.useState(() =>
-      previousReportingPeriod(new Date(), setup.timezone),
-    ),
-    [filter, setFilter] = React.useState("all"),
+  const [period,setPeriod]=useRouteField("month",previousReportingPeriod(new Date(),setup.timezone));
+  const [filter, setFilter] = React.useState("all"),
     [search, setSearch] = React.useState("");
-  const [y, m] = period.split("-").map(Number),
+  const [y=new Date().getFullYear(), m=new Date().getMonth()+1] = period.split("-").map(Number),
     month = m - 1,
     year = y + (month >= 8 ? 1 : 0);
   const people = useQuery({
@@ -165,13 +164,7 @@ export function Dashboard({
                     : true,
     );
   const groups = [...new Set(livePeople.map((p) => p.service_group).filter(Boolean))] as string[];
-  const openReports = (action: string) => {
-    sessionStorage.setItem(
-      "ca-report-action",
-      JSON.stringify({ action, period }),
-    );
-    go("reports");
-  };
+  const openReports = (action: string) => {navigateRoute({screen:"reports",action,month:period});};
   return (
     <Stack className="dashboard">
       {!a.experienceChosen && (
@@ -425,7 +418,7 @@ export function Dashboard({
                     <td className="number" translate="no" data-label="Studies">{r?.studies ?? "—"}</td>
                     <td className="number" translate="no" data-label="Hours">{pioneer && r ? r.hours || 0 : "—"}</td>
                     <td data-label="Actions"><div className="actions row-actions">
-                      <Button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }} type="button">{"S-21"}</Button>
+                      <Button className="tonal" onClick={() => { navigateRoute({screen:"pdf",doc:"s21",person:p.id}); }} type="button">{"S-21"}</Button>
                       {!r && (
                         <Button className="tonal warning"
                           onClick={async () => {

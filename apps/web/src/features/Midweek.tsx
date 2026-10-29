@@ -1,3 +1,4 @@
+import {useScheduleWeek} from "../useScheduleWeek";
 import {
   Disclosure,
   DisclosureLabel, Button } from "../../../../packages/ui/components";
@@ -144,10 +145,10 @@ export function Midweek({
     () => repositories(storeFor(c.cong, c.roles), c.cong, demo),
     [c.cong],
   );
+  const [week,setWeek]=useScheduleWeek();
   const [draft, setDraft] = React.useState<ScheduleDraft>(blank),
     [revision, setRevision] = React.useState(0),
     [version, setVersion] = React.useState(0),
-    [week, setWeek] = React.useState(format(new Date(), "RRRR-'W'II")),
     [busy, setBusy] = React.useState(false),
     [dirty, setDirty] = React.useState(false),
     [error, setError] = React.useState(""),

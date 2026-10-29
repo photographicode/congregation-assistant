@@ -384,3 +384,19 @@ App-only baseline from8565b6b. See [BASELINE](qa/v4-ux/BASELINE.md) for every co
 
 ### Intentional selector changes
 None in product acceptance scripts. New baseline measurement script targets current native controls.
+
+## V4-UX Phase1 — typed URL navigation
+
+New router/unit tests and browser history acceptance replace hidden navigation state. Screens/tabs push history; week/month/search/document refinements replace it. Demo role is retained. Legacy section/tool inputs remain accepted, and hub presentation is intentionally retained until Phase2 to keep Phase1 visually stable. Native public form tokens/auth/repositories/RPCs/PDF templates are unchanged.
+
+Verification: `npm run check` passed244unit tests plus90script contracts before the last two parser edge cases; final targeted router suite15/15 passed. `npm run build`, `check:bundle`, `check:css`, `check:style`, `check:contrast`, `check:vercel-guidelines` passed. Strict diagnostics419→405, zero in changed files. ESLint suppressions only pruned downward. Full PDF suite passed17goldens,3433retention assertions and8Indian scripts.
+
+Browser: router regression RED on baseline missing tab URL, then GREEN for tabs/week, refresh, Back/Forward, legacy links, both native and asynchronous dirty Back cancellation/acceptance, per-person S21 preselection, preserved demo and zero navigation storage keys. Shell15views; native acceptance60views; cutover48screens;26downloads; AP stale-write recovery; dialog/form refinement; short navigation; fresh Pages publisher/profile/time-away/announcement tests all passed, with zero demo cloud calls. Four current screen captures are in `qa/v4-ux/phase-1/`.
+
+One integration regression was found and fixed: assistant export-all no longer reset PDF filters after removing ca:select-s21. Explicit action=export now preserves that reset; existing native resume test failed then passed. No acceptance assertion was weakened.
+
+### Intentional selector changes
+None to existing acceptance scripts in Phase1. Added router acceptance.
+
+### Limits
+Human usability and SonarQube remain unverified. Full Cartesian screenshot matrix not rerun; current CSS/layout unchanged and existing affected screen matrices passed. New production schema changes remain excluded.

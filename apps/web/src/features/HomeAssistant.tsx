@@ -1,3 +1,4 @@
+import {navigateRoute} from "../useRoute";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -68,8 +69,7 @@ export function HomeAssistant({
           compact
           context={c}
           onExport={() => {
-            sessionStorage.setItem("ca-pdf-open", "s21");
-            go("pdf");
+            navigateRoute({screen:"pdf",doc:"s21",action:"export"});
           }}
         />
       )}
