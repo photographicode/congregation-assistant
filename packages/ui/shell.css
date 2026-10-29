@@ -8,7 +8,7 @@ body{font-family:var(--font-body);background-image:none}.v4-shell{height:var(--v
 
 .ux-tool-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--space-3);width:100%;text-align:left;border:0;border-bottom:1px solid var(--border);border-radius:0;background:transparent;justify-self:stretch}.ux-tool-description{display:block;font-weight:400}.ux-tool-row>span{min-width:0}
 
-.ux-more-search{position:sticky;top:0;z-index:1;background:var(--surface-solid);padding-block:var(--space-2)}
+.ux-more-search{position:sticky;top:0;z-index:var(--z-sticky);background:var(--surface-solid);padding-block:var(--space-2)}
 
 /* V4 Today: one reading column for publishers; two columns for admin. */
 .today {

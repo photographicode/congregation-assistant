@@ -1,4 +1,4 @@
-import shellActions from './v4-shell-actions.cjs';
+import {openAssistant,openQuick,openUpdates} from './v4-shell-actions.cjs';
 import controls from './select-control.cjs';
 const {selectControl}=controls;
 import {themeIds} from '../packages/core/themes.ts';
@@ -26,9 +26,9 @@ if(screen==='publisher-edit')await page.getByRole('button',{name:'Edit Maria Tho
 if(screen==='publisher-discard'){await page.getByRole('button',{name:'Add publisher',exact:true}).click();await page.getByRole('radio',{name:'Sister',exact:true}).check();await page.keyboard.press('Escape');}
 if(['report-saved','AP-confirm'].includes(screen)){await page.getByRole('button',{name:'Enter report',exact:true}).click();await selectControl(page.getByLabel('Publisher',{exact:true}),'maria');await page.getByLabel('Hours',{exact:true}).fill('.25');await page.getByLabel('Auxiliary pioneer for this month',{exact:true}).check();await page.getByRole('button',{name:'Submit Report',exact:true}).click();await page.getByRole('heading',{name:'Report Submitted',exact:true}).waitFor();if(screen==='AP-confirm'){await page.getByRole('button',{name:'Cancel report',exact:true}).click();await page.getByRole('button',{name:'Revoke AP for Maria Thomas',exact:true}).click();}}
 if(screen==='search')await page.getByRole('button',{name:'Search people and actions',exact:true}).click();
-if(screen==='quick')await shellActions.openQuick(page);
-if(screen==='assistant')await shellActions.openAssistant(page);
-if(screen==='updates')await shellActions.openUpdates(page);
+if(screen==='quick')await openQuick(page);
+if(screen==='assistant')await openAssistant(page);
+if(screen==='updates')await openUpdates(page);
 if(screen==='more')await page.getByRole('button',{name:'More',exact:true}).click();
 if(screen==='add-person')await page.getByRole('button',{name:'Add publisher',exact:true}).click();
 if(['report-entry','report-discard'].includes(screen)){await page.getByRole('button',{name:'Enter report',exact:true}).click();await page.locator('.service-report-form').waitFor();if(screen==='report-discard'){await page.getByLabel('Comments',{exact:true}).fill('Synthetic unsaved report');await page.getByRole('button',{name:'Cancel report',exact:true}).click();}}
