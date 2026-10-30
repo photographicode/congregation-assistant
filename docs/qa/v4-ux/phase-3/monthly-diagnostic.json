@@ -1,0 +1,7 @@
+{
+  "cause": "Offscreen people-table rows use content-visibility:auto; innerText can be empty while the filtered row data is correct.",
+  "rowInnerText": "",
+  "publisherNameTextContent": "Anna Joseph",
+  "assertion": "Exactly one missing report row; td strong.textContent equals Anna Joseph.",
+  "result": "PASS six style/width cases after exact DOM name assertion; no arbitrary wait or production change."
+}

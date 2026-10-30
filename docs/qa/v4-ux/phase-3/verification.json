@@ -1,0 +1,228 @@
+{
+  "histories": {
+    "initial_browser": [
+      {
+        "command": "node scripts/v4-tests/today.cjs",
+        "exit": 0,
+        "seconds": 51.5,
+        "log": "/tmp/phase3-gate-0.log"
+      },
+      {
+        "command": "node scripts/check-v4-ux-router.cjs",
+        "exit": 0,
+        "seconds": 3.6,
+        "log": "/tmp/phase3-gate-1.log"
+      },
+      {
+        "command": "node scripts/check-home-next.cjs",
+        "exit": 0,
+        "seconds": 3.1,
+        "log": "/tmp/phase3-gate-2.log"
+      },
+      {
+        "command": "node scripts/check-dashboard-browser.cjs",
+        "exit": 1,
+        "seconds": 2.1,
+        "log": "/tmp/phase3-gate-3.log"
+      },
+      {
+        "command": "npm run test:browser",
+        "exit": 1,
+        "seconds": 31.3,
+        "log": "/tmp/phase3-gate-4.log"
+      },
+      {
+        "command": "node scripts/check-v3-shell.cjs",
+        "exit": 1,
+        "seconds": 31.4,
+        "log": "/tmp/phase3-gate-5.log"
+      },
+      {
+        "command": "node scripts/check-short-navigation.cjs",
+        "exit": 1,
+        "seconds": 31.4,
+        "log": "/tmp/phase3-gate-6.log"
+      },
+      {
+        "command": "node scripts/check-v3-resume.cjs",
+        "exit": 0,
+        "seconds": 19.5,
+        "log": "/tmp/phase3-gate-7.log"
+      },
+      {
+        "command": "node scripts/check-direct-downloads.cjs",
+        "exit": 0,
+        "seconds": 19.4,
+        "log": "/tmp/phase3-gate-8.log"
+      },
+      {
+        "command": "CA_OVERLAY_COMPONENTS_ONLY=true npx tsx scripts/overlay-audit.ts",
+        "exit": 1,
+        "seconds": 4.4,
+        "log": "/tmp/phase3-gate-9.log"
+      },
+      {
+        "command": "npm run test:pdf",
+        "exit": 0,
+        "seconds": 62.2,
+        "log": "/tmp/phase3-gate-10.log"
+      }
+    ],
+    "final_source_and_browser": [
+      {
+        "command": "npm run check",
+        "exit": 0,
+        "seconds": 35.9,
+        "log": "/tmp/phase3-final-0.log"
+      },
+      {
+        "command": "npm test",
+        "exit": 0,
+        "seconds": 6.0,
+        "log": "/tmp/phase3-final-1.log"
+      },
+      {
+        "command": "npm run build",
+        "exit": 0,
+        "seconds": 8.6,
+        "log": "/tmp/phase3-final-2.log"
+      },
+      {
+        "command": "npm run check:bundle",
+        "exit": 0,
+        "seconds": 0.2,
+        "log": "/tmp/phase3-final-3.log"
+      },
+      {
+        "command": "npm run check:strict-types",
+        "exit": 0,
+        "seconds": 7.9,
+        "log": "/tmp/phase3-final-4.log"
+      },
+      {
+        "command": "node scripts/check-dashboard-browser.cjs",
+        "exit": 1,
+        "seconds": 2.0,
+        "log": "/tmp/phase3-final-5.log"
+      },
+      {
+        "command": "npm run test:browser",
+        "exit": 1,
+        "seconds": 74.0,
+        "log": "/tmp/phase3-final-6.log"
+      },
+      {
+        "command": "node scripts/check-v3-shell.cjs",
+        "exit": 0,
+        "seconds": 17.4,
+        "log": "/tmp/phase3-final-7.log"
+      },
+      {
+        "command": "node scripts/check-short-navigation.cjs",
+        "exit": 0,
+        "seconds": 2.7,
+        "log": "/tmp/phase3-final-8.log"
+      },
+      {
+        "command": "node scripts/v4-tests/today.cjs",
+        "exit": 0,
+        "seconds": 42.9,
+        "log": "/tmp/phase3-final-9.log"
+      },
+      {
+        "command": "node scripts/check-admin-assistant.cjs",
+        "exit": 0,
+        "seconds": 5.4,
+        "log": "/tmp/phase3-final-10.log"
+      },
+      {
+        "command": "node scripts/overlay-audit.ts",
+        "exit": 1,
+        "seconds": 33.4,
+        "log": "/tmp/phase3-final-11.log"
+      }
+    ],
+    "completed_browser_and_packaging": [
+      {
+        "command": "npm run test:browser",
+        "exit": 0,
+        "seconds": 51.5,
+        "log": "/tmp/phase3-last-0.log"
+      },
+      {
+        "command": "node scripts/check-qr-refinement.cjs",
+        "exit": 0,
+        "seconds": 2.1,
+        "log": "/tmp/phase3-last-1.log"
+      },
+      {
+        "command": "node scripts/build-pages.mjs",
+        "exit": 0,
+        "seconds": 14.0,
+        "log": "/tmp/phase3-last-2.log"
+      },
+      {
+        "command": "node scripts/v4-tests/browser.cjs",
+        "exit": 0,
+        "seconds": 7.3,
+        "log": "/tmp/phase3-last-3.log"
+      },
+      {
+        "command": "node scripts/check-pages-deploy.cjs",
+        "exit": 0,
+        "seconds": 2.9,
+        "log": "/tmp/phase3-last-4.log"
+      }
+    ]
+  },
+  "summary": {
+    "source": {
+      "unitTests": 257,
+      "scriptContracts": 90,
+      "strictDiagnostics": 404,
+      "strictBaseline": 419,
+      "changedFileFailures": 0,
+      "lintSuppressions": 613,
+      "priorLintSuppressions": 631,
+      "nativeJsGzipBytes": 199834
+    },
+    "static": {
+      "cssBytes": 107868,
+      "cssBudget": 108033,
+      "styleFindings": 191,
+      "styleBaseline": 452,
+      "contrastChecks": 429,
+      "themes": 11,
+      "contrastFailures": 0,
+      "vercelHard": 0,
+      "vercelSoft": 28,
+      "unused": "PASS"
+    },
+    "pdf": {
+      "fixturesAndGoldens": 17,
+      "retentionAssertions": 3433,
+      "indianScripts": 8,
+      "result": "PASS"
+    },
+    "focused": {
+      "assistantRed": "assistant-red.txt",
+      "assistantGreen": "assistant-green.txt",
+      "router": "PASS refresh/history/legacy/dirty Back/no navigation storage",
+      "groupTodayAndLinks": "PASS synthetic scoped group, QR, rotate and revoke",
+      "resumeViews": 60,
+      "resumeFailures": 0,
+      "directDownloads": 26,
+      "dashboardCases": 6,
+      "dashboard": "PASS exact missing-row count/name, bulk entry, device persistence, Axe; diagnostic in monthly-diagnostic.json",
+      "composedOverlay": "PASS after native rebuild: toast/component timing+pause+dirty outside/swipe, 12 dialogs/11 setup steps, picker and protected QR"
+    },
+    "knownAttemptFailures": [
+      "Removed notice exclusion reproduces Assistant closing on active toast Dismiss (expected RED).",
+      "Legacy Home greeting, publisher slogan, setup and QR entry selectors migrated to current destinations without removing behavior assertions.",
+      "Monthly innerText empty under existing content-visibility:auto; exact publisher cell textContent retains identity assertion.",
+      "npx tsx could not run top-level-await TypeScript in this CommonJS package; repository-supported node scripts/overlay-audit.ts is used."
+    ],
+    "scope": "All records and screenshots fictional; no production, backend, hosting, auth, PDF or website-source mutation.",
+    "nativeBuildHash": "d184a3dd8629"
+  }
+}

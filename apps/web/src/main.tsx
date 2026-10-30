@@ -39,6 +39,7 @@ import {sections,allowedTools,sectionForRoute,navigationFor,type Tool} from "../
 import {themeIds} from "../../../packages/core/themes";
 import {LocalAssistant} from "./features/LocalAssistant";
 import {MorePage} from "./features/more/MorePage";
+import {useInboxCount} from "./features/today/inbox";
 import {AdminNotifications} from "./features/AdminNotifications";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
@@ -231,6 +232,7 @@ function App() {
     caps,
     notify: setNotice,
   };
+  const inboxUnread=useInboxCount(context);
   const searchPeople=useQuery({queryKey:['search-people',session?.user?.id,cong],enabled:!owner&&search&&!!cong&&(demo||roles.some(role=>['admin','field_service','group_overseer','publisher'].includes(role))),queryFn:async()=>{if(demo){const names=[{id:'daniel',name:'Daniel Thomas'},{id:'maria',name:'Maria Thomas'},{id:'samuel',name:'Samuel George'},{id:'anna',name:'Anna Joseph'}];return roles.includes('publisher')?names.slice(0,2):names;}const repo=repositories(storeFor(cong,roles),cong);return roles.includes('publisher')&&!admin?await repo.reports.family():await repo.people.names();}});
   const roleScope=[...roles].sort().join(',');
   useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,TIMING.maintenanceRetry);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
@@ -331,7 +333,7 @@ function App() {
   }
   return <>
     <ExperienceDefaults key={(session?.user?.id||'demo')+cong} context={context}/><UpdatePrompt/><AdminIdleTimeout enabled={admin} notify={setNotice}/>
-    <AppShell searchRef={searchRef} accountRef={accountRef} quickRef={quickRef} roleLabel={workspaceRoleLabel(owner,admin,roles)} onAccount={()=>navigateRoute({screen:'settings',tab:'account'})} onDisplay={()=>navigateRoute({screen:'settings',tab:'display'})} onHelp={()=>setHelpOpen(true)} onUpdates={()=>setUpdatesOpen(true)} onInbox={admin?()=>setInboxOpen(true):undefined} name={context.name} firstName={context.firstName} active={activeSection} tabs={tabs} onNavigate={tab=>navigateRoute({screen:tab.route as Screen,tab:tab.tab})} onSearch={()=>setSearch(true)} onQuick={admin?()=>setQuick(true):undefined} signOut={()=>guardNavigation(()=>void signOut())} demo={demo}>
+    <AppShell inboxCount={inboxUnread} searchRef={searchRef} accountRef={accountRef} quickRef={quickRef} roleLabel={workspaceRoleLabel(owner,admin,roles)} onAccount={()=>navigateRoute({screen:'settings',tab:'account'})} onDisplay={()=>navigateRoute({screen:'settings',tab:'display'})} onHelp={()=>setHelpOpen(true)} onUpdates={()=>setUpdatesOpen(true)} onInbox={admin?()=>setInboxOpen(true):undefined} name={context.name} firstName={context.firstName} active={activeSection} tabs={tabs} onNavigate={tab=>navigateRoute({screen:tab.route as Screen,tab:tab.tab})} onSearch={()=>setSearch(true)} onQuick={admin?()=>setQuick(true):undefined} signOut={()=>guardNavigation(()=>void signOut())} demo={demo}>
       <span className="sr-only" aria-live="polite">{t(sections.find(section=>section.id===sectionForRoute(route))?.label||"nav.home")}</span>
       {!online&&<DismissibleBanner key="offline" stateKey="offline">{t('shell.offline')}</DismissibleBanner>}
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}

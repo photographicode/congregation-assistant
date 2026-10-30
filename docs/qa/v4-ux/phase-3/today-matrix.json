@@ -1,0 +1,189 @@
+{
+  "results": [
+    {
+      "role": "publisher",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "admin",
+      "width": 390,
+      "scale": 1,
+      "blocksAboveFold": 2,
+      "violations": []
+    },
+    {
+      "role": "attendance",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "group",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "field",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "oclm",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "weekend",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "av",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "attendant",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "cleaning",
+      "width": 390,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "publisher",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "admin",
+      "width": 320,
+      "scale": 2,
+      "blocksAboveFold": 1,
+      "violations": []
+    },
+    {
+      "role": "attendance",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "group",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "field",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "oclm",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "weekend",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "av",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "attendant",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "cleaning",
+      "width": 320,
+      "scale": 2,
+      "violations": []
+    },
+    {
+      "role": "publisher",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "admin",
+      "width": 1440,
+      "scale": 1,
+      "blocksAboveFold": 3,
+      "violations": []
+    },
+    {
+      "role": "attendance",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "group",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "field",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "oclm",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "weekend",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "av",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "attendant",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    },
+    {
+      "role": "cleaning",
+      "width": 1440,
+      "scale": 1,
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "cloud": []
+}

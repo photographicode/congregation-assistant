@@ -59,6 +59,7 @@ import {
 import { Greeting } from "../../../../packages/ui/Greeting";
 import { EmergencyContacts } from "./EmergencyContacts";
 import { Dashboard } from "./Dashboard";
+import {previousReportingPeriod} from "./dashboard-model.mjs";
 import { ExperienceProfile } from "./ExperienceProfile";
 import { t } from "../../../../packages/core/i18n";
 import { themeIds, normalizeTheme } from "../../../../packages/core/themes";
@@ -722,7 +723,7 @@ export default function Workspace({
         </div>
         {sub === "groups" ? (
           c.caps.groups ? (
-            <section className="card stack">
+            <><section className="card stack">
               <h2>{t("ui.service.groups.c222d1cb")}</h2>
               <p>
                 {t("ui.only.the.main.administrator.can.create.or..daa818bf")}
@@ -774,7 +775,7 @@ export default function Workspace({
                   <Button disabled={busy} type="submit">{t("ui.add.group.94901258")}</Button>
                 </form>
               )}
-            </section>
+            </section><HomeGroupLinks context={c} period={previousReportingPeriod(new Date(),setup.timezone)}/></>
           ) : (
             <Pending name="Managed groups" />
           )

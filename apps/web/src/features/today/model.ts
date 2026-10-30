@@ -15,3 +15,5 @@ export function reportPeriod(report:Record<string,unknown>,fallback:string){
  return typeof month==='number'&&Number.isInteger(month)&&month>=0&&month<MONTHS&&typeof year==='number'?`${year-(month>=SERVICE_YEAR_START?1:0)}-${String(month+1).padStart(2,'0')}`:fallback;
 }
 export function roleCards(roles:string[]){return ['attendance','oclm','weekend','group_overseer','field_service','av','cleaning','attendant'].filter(role=>roles.includes(role));}
+
+export function inboxCount(updates:{read_at:string|null}[],approvals:number){return updates.filter(update=>!update.read_at).length+approvals;}

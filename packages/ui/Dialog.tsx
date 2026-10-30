@@ -73,6 +73,10 @@ export function Dialog({
               request();
             }
           }}
+          onInteractOutside={(event) => {
+            const target=event.target;
+            if(target instanceof Element&&target.closest('[data-dialog-notice]'))event.preventDefault();
+          }}
           onPointerDownOutside={(e) => {
             if (dirty) e.preventDefault();
           }}

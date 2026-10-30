@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: Dismissing a success notice must keep Assistant open
+
+false !== true
+
+    at /workspace/congregation-assistant/scripts/check-admin-assistant.cjs:7:520 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

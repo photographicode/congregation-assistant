@@ -1,0 +1,1 @@
+{"directPublisherDownload":true,"attendancePreviewZeroNetwork":true,"attendanceDemoSave":true,"nonAdminRolesHidden":4,"browserErrors":0,"demoCloudRequests":0}

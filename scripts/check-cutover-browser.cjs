@@ -108,7 +108,7 @@ const server = http.createServer((req, res) => {
           });
           await page.goto(base + "/?demo=admin");
           await page
-            .locator(".dashboard > .dashboard-hero > .greeting h1")
+            .getByRole("heading", {name:"Today", exact:true})
             .waitFor();
           await page.evaluate(
             ({ scale, theme }) => {
@@ -130,7 +130,7 @@ const server = http.createServer((req, res) => {
             );
           }
           await page
-            .locator(".dashboard > .dashboard-hero > .greeting h1")
+            .getByRole("heading", {name:"Today", exact:true})
             .waitFor();
           const nav = async (label) => {
             const routes={"Schedule":"schedule","People":"people","Reports":"reports","Messages":"messages","Access & Links":"access","Print & PDF":"pdf","Settings":"settings"};
@@ -265,7 +265,7 @@ const server = http.createServer((req, res) => {
     });
     await publisher.goto(base + "/?demo=publisher");
     await publisher
-      .getByRole("heading", { name: "A small task. A meaningful record.", exact: true })
+      .getByRole("heading", { name: "Today", exact: true })
       .waitFor();
     await publisher.goto(base + "/?demo=publisher&screen=reports");
     await publisher.getByText("Household reports", { exact: true }).waitFor();
@@ -295,7 +295,7 @@ const server = http.createServer((req, res) => {
     await expiredContext.close();
     const redirect = await browser.newPage();
     await redirect.goto(base + "/v2/?demo=admin");
-    await redirect.locator(".greeting h1").waitFor();
+    await redirect.getByRole("heading", {name:"Today", exact:true}).waitFor();
     assert.equal(new URL(redirect.url()).pathname, "/");
     await redirect.goto(base + "/site/");
     await redirect.locator(".site-header").waitFor();
@@ -323,7 +323,7 @@ const server = http.createServer((req, res) => {
       .getByRole("button", { name: "Reload app", exact: true })
       .click();
     await migration.waitForLoadState("networkidle");
-    await migration.locator(".greeting h1").waitFor();
+    await migration.getByRole("heading", {name:"Today", exact:true}).waitFor();
     assert.equal(
       await migration.evaluate(async () =>
         (await caches.keys()).includes("ca-shell-old-v1"),

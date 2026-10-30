@@ -5,7 +5,7 @@ import {AlertCircle,Info} from 'lucide-react';
 import {Button} from '../../../../../packages/ui/components';
 import type {ScheduleDraft} from '../../../../../packages/core/repositories';
 import {programSchema,monday} from '../../../../../packages/core/meeting';
-import {notificationSchema} from '../../../../../packages/core/publisher-workspace';
+import type {notificationSchema} from '../../../../../packages/core/publisher-workspace';
 import {t} from '../../../../../packages/core/i18n';
 import type {Context} from '../../context';
 import {navigateRoute} from '../../useRoute';
@@ -16,6 +16,7 @@ import {previousReportingPeriod} from '../dashboard-model.mjs';
 import {TodayHeading} from './TodayHeading';
 import {needsAttention,roleCards} from './model';
 import {currentWeek,useTodayDepartment,useTodayGroups,useTodayReports,useTodaySchedule} from './data';
+import {useInboxFeed} from './inbox';
 import {usePendingApprovals} from './approvals';
 function LoadState({pending,error,retry}:{pending:boolean;error:Error|null;retry:()=>void}){if(pending)return <p role="status">{t('ux.today.loading')}</p>;if(!error)return null;return <div role="alert"><p>{t('ux.today.loadError')}</p><Button type="button" onClick={retry}>{t('v4.d8b8392e2c')}</Button></div>;}
 function PartsCard({context:c,weekend=false}:{context:Context;weekend?:boolean}){return weekend?<WeekendParts context={c}/>:<MidweekParts context={c}/>;}
@@ -48,7 +49,7 @@ export function OverseerToday({context:c,go,timezone}:{context:Context;go:(route
 }
 export function AdminToday({context:c,setupStep,openSetup,addPublisher,timezone,openInbox}:{context:Context;setupStep:number;openSetup:()=>void;addPublisher:()=>void;timezone:string;openInbox:()=>void}){
  const period=previousReportingPeriod(new Date(),timezone),reports=useTodayReports(c,period),schedule=useTodaySchedule(c),approvals=usePendingApprovals(c),cache=useQueryClient(),[showAll,setShowAll]=React.useState(false);
- const notifications=useQuery({queryKey:['v4-admin-notifications',c.account||'demo',c.cong],queryFn:async()=>z.array(notificationSchema).parse(demo?[]:await rpc('ca_v4_admin_notifications',{p_cong_id:c.cong}))});
+ const notifications=useInboxFeed(c);
  const meeting=useQuery({queryKey:['current-meeting',c.cong],queryFn:async()=>demo?{configured:true,count:null,canSubmit:true,kind:'midweek'}:z.object({configured:z.boolean(),count:z.number().nullable().optional(),canSubmit:z.boolean().optional(),kind:z.string().nullable().optional()}).parse(await rpc('ca_v3_meeting_context',{p_cong_id:c.cong}))});
  const week=currentWeek(),unassigned=unassignedParts(schedule.data?.draft,week);
  const rows=needsAttention({setupStep,requests:approvalCount(approvals.data),missing:missingCount(reports),unassigned,attendance:attendanceMissing(meeting.data),updates:updateCount(notifications.data)});

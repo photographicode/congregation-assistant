@@ -9,13 +9,13 @@
   "textScale": 2,
   "longIndicOptionDomStress": true,
   "state": {
-    "x": 50,
-    "y": 232.578125,
-    "right": 294,
-    "bottom": 308.65625,
+    "x": 56,
+    "y": 220.5625,
+    "right": 300,
+    "bottom": 296.65625,
     "viewport": {
-      "x": 42,
-      "y": 50,
+      "x": 48,
+      "y": 38,
       "width": 260,
       "height": 266.66668701171875
     },

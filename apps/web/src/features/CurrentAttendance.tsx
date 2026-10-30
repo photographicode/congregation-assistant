@@ -1,4 +1,5 @@
 import React from "react";
+import {Minus,Plus} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
@@ -115,7 +116,8 @@ export function CurrentAttendance({ context: c, today=false }: { context: Contex
               }}
             />
           </label>
-          <Button disabled={busy} type="submit">{t(today?"ui.save.attendance.15e51ffc":"attendance.save")}</Button>
+          {today&&<div className="actions"><Button type="button" disabled={busy} aria-label={t('ux.today.decreaseAttendance')} onClick={()=>{setCount(String(Math.max(0,Number(count)-1)));setDirty(true);}}><Minus aria-hidden="true"/></Button><Button type="button" disabled={busy} aria-label={t('ux.today.increaseAttendance')} onClick={()=>{const MAX_COUNT=99999;setCount(String(Math.min(MAX_COUNT,Number(count)+1)));setDirty(true);}}><Plus aria-hidden="true"/></Button></div>}
+          <Button className={today?'primary':undefined} disabled={busy} type="submit">{t(today?"ui.save.attendance.15e51ffc":"attendance.save")}</Button>
         </form>
       ) : (
         <p>

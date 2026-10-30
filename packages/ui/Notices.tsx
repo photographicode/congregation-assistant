@@ -10,7 +10,7 @@ export function Toast({message,onClose,children,duration=5000,className='notice'
  React.useEffect(()=>{remaining.current=duration;},[message,duration]);
  React.useEffect(()=>{if(hover||focused)return;const start=performance.now(),timer=setTimeout(()=>close.current(),remaining.current);return()=>{clearTimeout(timer);remaining.current=Math.max(0,remaining.current-(performance.now()-start));};},[message,duration,hover,focused]);
  const ToneIcon={info:Info,success:CheckCircle2,warning:AlertTriangle,danger:CircleAlert}[tone];
- return <div className={className} data-tone={tone} role="status" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false);}}><ToneIcon aria-hidden="true" className="dialog-tone-icon"/><span>{message}</span>{children}<button type="button" onClick={onClose} aria-label={t('polish.dismissNotice')}>{t('common.close')}</button></div>;
+ return <div className={className} data-dialog-notice data-tone={tone} role="status" onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)} onFocus={()=>setFocused(true)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setFocused(false);}}><ToneIcon aria-hidden="true" className="dialog-tone-icon"/><span>{message}</span>{children}<button type="button" onClick={onClose} aria-label={t('polish.dismissNotice')}>{t('common.close')}</button></div>;
 }
 export function DismissibleBanner({stateKey,children,className='banner',untilChanged=false}:{stateKey:string;children:React.ReactNode;className?:string;untilChanged?:boolean}){
  const key='ca-banner:'+stateKey;

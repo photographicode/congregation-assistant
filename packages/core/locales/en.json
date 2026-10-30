@@ -1125,5 +1125,8 @@
   "ux.today.assignWeek": "Assign week",
   "ux.today.s21": "S-21",
   "ux.today.countAttendance": "Count attendance",
-  "ux.today.monthlyTools": "Monthly overview"
+  "ux.today.monthlyTools": "Monthly overview",
+  "ux.inbox.unread": "Inbox, {count} unread",
+  "ux.today.decreaseAttendance": "Decrease attendance",
+  "ux.today.increaseAttendance": "Increase attendance"
 }

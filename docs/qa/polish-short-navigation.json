@@ -6,9 +6,8 @@
       "textScale": 2,
       "tabsPreference": true,
       "oneNavigation": true,
-      "headerMore": true,
-      "dialogClose": true,
-      "focusRestored": true
+      "railMore": true,
+      "pageBack": true
     },
     {
       "width": 844,
@@ -16,9 +15,8 @@
       "textScale": 2,
       "tabsPreference": true,
       "oneNavigation": true,
-      "headerMore": true,
-      "dialogClose": true,
-      "focusRestored": true
+      "railMore": true,
+      "pageBack": true
     }
   ]
 }

@@ -134,3 +134,11 @@ Owner requests publisher-first redesign of application and website, English laun
 
 - Phase1 retains the hub presentation via URL section state until Phase2, resolving the plan's conflicting no-visual-change and remove-hubs directions. Legacy inputs already resolve typed destinations. Phase2 removes that temporary presentation field.
 - Corrected routing-era S21 preselection and retained assistant export-all reset as URL actions; no PDF-engine/template change.
+
+### V4-UX Phase 3 — Today and preserved destinations
+- Replace “Hello, Daniel.” on Home with “Today” and a localized date. Replace the published-assignment check with a date chip and a separate Assistant chip. Remove the static meeting/details marketing cards; “My details” and time away share the Me row.
+- “Submit report” on Today becomes “Report my service” when unsent and “View report” when sent. Open the matching report month with `screen=reports&action=entry` directly. Embedded publisher report actions remain secondary beneath staff role cards, preserving one solid action for attendance.
+- Main Admin alone receives Needs attention, This month and Shortcuts. Department memberships receive their own role cards; a publisher membership also adds publisher blocks. Setup appears in Needs attention only while incomplete; the full setup guide remains in Settings.
+- Dashboard KPI/submissions/RP/AP/SFTS capabilities remain under Reports → Monthly overview. Group links remain under People → Groups and Monthly overview. Admin announcement management remains under More → Messages. Retire unused HomeAssistant/HomeSuggestions; on-device Assistant remains Main Admin only through Search.
+- Inbox presents pending approval requests in a labeled group before contact updates, which are newest first. The existing department workspace RPC has no request timestamp; cross-kind newest-first ordering cannot be supplied without a backend change. Preserve atomic approval/read actions and count unread updates plus pending approvals; do not fabricate timestamps.
+- App notices are marked as independent dialog interactions. Dismissing a notice must preserve its originating Assistant dialog and permit the next command; ordinary outside clicks and dirty-form guards retain their behavior.
