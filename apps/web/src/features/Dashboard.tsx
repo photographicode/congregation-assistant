@@ -79,9 +79,11 @@ export function Dashboard({
   setup,
   addPublisher,
   setupEntry,
+  updates,
 }: {
   context: Context;
   setupEntry?: React.ReactNode;
+  updates?: React.ReactNode;
   go: (s: string) => void;
   setup: any;
   addPublisher: () => void;
@@ -115,7 +117,7 @@ export function Dashboard({
     ),
     [filter, setFilter] = React.useState("all"),
     [search, setSearch] = React.useState("");
-  const [y, m] = period.split("-").map(Number),
+  const [y = 0, m = 1] = period.split("-").map(Number),
     month = m - 1,
     year = y + (month >= 8 ? 1 : 0);
   const people = useQuery({
@@ -225,6 +227,7 @@ export function Dashboard({
         </Inline>
       </section>
       <HomeAssistant context={c} go={go} />
+      {updates}
       <HomeGroupLinks context={c} period={period} />
       {setupEntry}
       <HomeSuggestions

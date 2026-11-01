@@ -332,7 +332,7 @@ export function HomeSuggestions({
   return ready && cards.length ? (
     <section className="stack" aria-label={t("ui.suggestions.16c1d601")}>
       <h2>{t("ui.next.steps.dd00d3d3")}</h2>
-      <div className="grid">
+      <div className="grid v4-suggestions">
         {cards.map((card) => (
           <article className="card stack" key={card.id}>
             <h3>

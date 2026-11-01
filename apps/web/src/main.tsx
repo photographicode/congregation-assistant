@@ -54,6 +54,7 @@ import "../../../packages/ui/v3-eclipse-theme.css";
 import "../../../packages/ui/v3-glass.css";
 import "../../../packages/ui/v3-interaction.css";
 import "../../../packages/ui/shell.css";
+import "../../../packages/ui/v4-layout.css";
 import { Button } from "../../../packages/ui/components";
 import { TIMING } from "../../../packages/core/timing";
 import { handleError } from "../../../packages/core/errors";

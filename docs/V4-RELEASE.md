@@ -10,6 +10,15 @@ Owner decisions: publishers use the app daily, then department overseers, then M
 - Matching public website and truthful inactive email messaging. Translation resources retained; launch navigation is English.
 - Same-origin custom-domain packaging retains /app; cross-origin redirects still supported. Activation remains false. Existing root CNAME owner edits are preserved.
 
+## V4 layout refinement — 2026-11-01
+Owner request: the workspace felt cramped and misaligned and the landing page looked poor. Layout and typography only; no data, permission or feature changes.
+- Admin/overseer home: greeting first and left-aligned (`Welcome, Daniel.` in one heading), contact updates and announcements moved below the assistant, every block on one shared column edge (was a 760 px centered column under full-width cards). Next steps and KPI tiles fill their rows instead of leaving an orphan card.
+- Publisher home: date sits under the subtitle, heading uses the theme display font like the cards, profile icon uses the same tile as the meeting card, and both columns end on the same line.
+- Website: feature list is a ruled two-column list that holds any feature count (was boxed tiles with an orphan); pricing and FAQ use a heading/content split; product preview and body copy are readable sizes.
+- New `packages/ui/v4-layout.css` (Stylelint-clean, loaded last). CSS byte budget kept by deleting unused rules (`.button-*` aliases, `.chip-success/-warning/-danger`, `.dashboard-row`) and the centered-hero rules in `design-system.css`.
+
+Evidence (local, Windows): `npm run check` — 231 unit tests and 90 script contracts pass, lint and app type check pass; ESLint ratchet 631 → 631; Vercel guideline audit 0 HARD; changed CSS has zero Stylelint findings; strict-type ratchet clean for changed files; site audit on the assembled Pages tree 224 pages, 0 failures. Publisher and admin demos at 390 px and 1440 px: required headings and single Submit report button present, admin greeting precedes updates, zero Axe violations, zero page errors. Not verifiable on Windows and left to CI: Pages assembly (Windows path separators double the base path and skip the Nimbus font filter) and two declaration diagnostics whose baseline path is normalised as `<repo>/`.
+
 ## Verification in progress
 Baseline: 226 unit tests passed. Current check: 231 unit tests and 90 script contracts pass, including stored overlapping away-period compatibility. The full isolated database fixture passes after replacing an expired fixed-week test fixture with a relative upcoming week. V4 lifecycle/permission checks pass twice and rollback/reapply is tested. RPC role matrix: 111 functions × 16 actors = 1776 passed, zero failures. App compilation, strict diagnostic ratchet, lint, CSS budget and Stylelint ratchet pass. Assembled Pages safety and marketing audit: 224 pages, zero failures.
 

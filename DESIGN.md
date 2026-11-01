@@ -55,7 +55,7 @@ States: default · hover (`@media (hover:hover)`, +contrast) · `:active` (scale
 - **Skeletons** mirror final content exactly; empty/sparse/dense/error states are designed for every list.
 
 ## 5. Layout Principles
-4 px spacing scale (4/8/12/16/24/32/48/64); one container padding per breakpoint; max content width 1200 px (1440 wide). Grid rows `align-items: stretch`. Cards in a row have equal height. Equal outer margins; the first screen always shows a clear title. **Home (Gemini-style welcome):** centered column (max 760 px): greeting → prompt bar → suggestion chips → *Group report links* → **People table** → RP / AP lists → AP review. Figures aligned right with tabular digits. Colour used for data (status, counts), not decoration.
+4 px spacing scale (4/8/12/16/24/32/48/64); one container padding per breakpoint; max content width 1200 px (1440 wide). Grid rows `align-items: stretch`. Cards in a row have equal height. Equal outer margins; the first screen always shows a clear title. **Home:** one left-aligned column shared with the publisher home, so every block starts on the same edge: greeting (title on first screen) → prompt bar → suggestion chips → contact updates + announcements (equal-height pair) → *Group report links* → next steps (equal-height cards) → **People table** → RP / AP lists → AP review. Figures aligned right with tabular digits. Colour used for data (status, counts), not decoration.
 **Frame checks (Taste Skill):** title visible on first screen · equal margins · no section shoved to one side · no blank stretches > 96 px · aligned figures.
 
 ## 6. Depth & Elevation

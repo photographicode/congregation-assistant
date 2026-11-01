@@ -672,12 +672,12 @@ export default function Workspace({
     body = <PublisherHome context={c} go={go} />;
   else if (route === "home")
     body = (
-      <>
-        <div className="v4-home-columns"><AdminNotifications context={c}/><Announcements context={c}/></div>
+      <div className="v4-dashboard-home">
         <Dashboard
           context={c}
           go={go}
           setup={setup}
+          updates={<div className="v4-home-columns"><AdminNotifications context={c}/><Announcements context={c}/></div>}
           setupEntry={
             admin && wizardStep < 10 ? (
               <section className="card stack">
@@ -704,7 +704,7 @@ export default function Workspace({
             setShared(false);
           }}
         />
-      </>
+      </div>
     );
   else if (route === "emergency" && admin)
     body = (
