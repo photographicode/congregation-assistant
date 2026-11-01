@@ -1,0 +1,11 @@
+import {test,expect} from 'vitest';
+import {normalizeTheme,resolvedTheme,migrateAppearanceProfile,themeIds} from '../../packages/core/themes';
+const retired={'lagoon-glass':'forest','neon-night':'mono-dark','sunset-pop':'paper',eclipse:'mono-light','eclipse-night':'mono-dark','neo-brutal':'mono-light',aurora:'forest'};
+test('only the four kept themes remain',()=>expect([...themeIds]).toEqual(['mono-light','mono-dark','paper','forest']));
+test('every retired theme maps to a kept theme in normalizeTheme and resolvedTheme',()=>{for(const [name,kept] of Object.entries(retired)){expect(normalizeTheme(name)).toBe(kept);expect(resolvedTheme(name,false)).toBe(kept);expect(resolvedTheme(name,true)).toBe(kept);}});
+test('kept themes and auto are unchanged; auto follows Mono',()=>{for(const id of themeIds)expect(normalizeTheme(id)).toBe(id);expect(normalizeTheme('auto')).toBe('auto');expect(resolvedTheme('auto',false)).toBe('mono-light');expect(resolvedTheme('auto',true)).toBe('mono-dark');});
+test('legacy V2 names still resolve to a kept theme',()=>{for(const name of ['daylight','midnight','dusk','slate','lagoon','glass-lagoon','glass-arctic','glass-aurora','glass-sunset','glass-graphite','noir-pop'])expect(themeIds).toContain(resolvedTheme(name,false));});
+test('unknown names fall back to a kept theme',()=>expect(themeIds).toContain(resolvedTheme('not-a-theme',true)));
+test('stored profiles with a retired theme are rewritten and keep other settings',()=>{const {profile,changed}=migrateAppearanceProfile(JSON.stringify({theme:'aurora',size:'L',style:'calm'}));expect(changed).toBe(true);expect(profile).toEqual({theme:'forest',size:'L',style:'calm'});});
+test('stored profiles with a kept theme, auto, no theme or no profile are left alone',()=>{for(const raw of [JSON.stringify({theme:'paper'}),JSON.stringify({theme:'auto'}),JSON.stringify({size:'XL'}),null])expect(migrateAppearanceProfile(raw).changed).toBe(false);});
+test('non-object stored values become an empty profile',()=>{for(const raw of ['null','42','"paper"','[]'])expect(migrateAppearanceProfile(raw)).toEqual({profile:{},changed:false});});

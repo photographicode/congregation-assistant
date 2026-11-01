@@ -135,9 +135,7 @@ async function checkContrast(css) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const css = process.argv[2]
       ? await readFile(process.argv[2], "utf8")
-      : (await readFile("packages/ui/themes.css", "utf8")) +
-        "\\n" +
-        (await readFile("packages/ui/v3-eclipse-theme.css", "utf8")),
+      : await readFile("packages/ui/themes.css", "utf8"),
     report = await checkContrast(css);
   report.oclm = [
     ["crimson", [126, 0, 36], [255, 255, 255]],

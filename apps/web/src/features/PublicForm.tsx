@@ -8,7 +8,7 @@ import {
   offlineReportMessage,
   offlineUnstoredMessage,
 } from "../../../../packages/core/report-draft";
-import { themeIds } from "../../../../packages/core/themes";
+import { resolvedTheme } from "../../../../packages/core/themes";
 import {
   v1PublicReport,
   previousReportingMonth,
@@ -222,8 +222,8 @@ export function PublicForm() {
     return () => window.removeEventListener("hashchange", change);
   }, [token]);
   React.useLayoutEffect(() => {
-    document.documentElement.dataset.theme = themeIds.includes(context?.theme)
-      ? context.theme
+    document.documentElement.dataset.theme = context?.theme
+      ? resolvedTheme(context.theme, false)
       : "mono-light";
   }, [context?.theme]);
   async function submit(e: React.FormEvent) {

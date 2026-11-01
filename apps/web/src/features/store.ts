@@ -1,4 +1,5 @@
 import {
+  migrateAppearanceProfile,
   normalizeTheme,
   resolvedTheme,
 } from "../../../../packages/core/themes";
@@ -32,10 +33,18 @@ const initial: Appearance = {
   clock: "locale",
 };
 let appearanceStorageKey = "ca-v2-appearance";
-let saved = {};
-try {
-  saved = JSON.parse(preferenceStorage.getItem("ca-v2-appearance") || "{}");
-} catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
+// Read a stored profile and rewrite a retired theme name to the kept theme it now maps to.
+function readProfile(key: string): Partial<Appearance> {
+  try {
+    const { profile, changed } = migrateAppearanceProfile(preferenceStorage.getItem(key));
+    if (changed) preferenceStorage.setItem(key, JSON.stringify(profile));
+    return profile as Partial<Appearance>;
+  } catch (error) {
+    handleError(error, {scope:"features/store.ts",severity:'warning'});
+    return {};
+  }
+}
+let saved: Partial<Appearance> = readProfile("ca-v2-appearance");
 if (new URLSearchParams(location.search).get("demo") === "publisher")
   saved = { ...experiencePresets.calm, experienceChosen: true, ...saved };
 export const useAppearance = create<
@@ -89,10 +98,7 @@ export function activateAppearanceProfile(
     encodeURIComponent(account) +
     ":" +
     encodeURIComponent(congregation);
-  let profile = {};
-  try {
-    profile = JSON.parse(preferenceStorage.getItem(appearanceStorageKey) || "{}");
-  } catch (error) { handleError(error, {scope:"features/store.ts",severity:'warning'}); }
+  const profile = readProfile(appearanceStorageKey);
   useAppearance.setState({
     ...initial,
     ...(publisher ? experiencePresets.calm : {}),

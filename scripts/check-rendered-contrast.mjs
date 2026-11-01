@@ -47,12 +47,7 @@ try {
     "mono-light",
     "mono-dark",
     "paper",
-    "lagoon-glass",
-    "neon-night",
-    "sunset-pop",
-    "neo-brutal",
     "forest",
-    "aurora",
   ])) {
     const context = await browser.newContext({
       viewport: { width: 390, height: 1100 },

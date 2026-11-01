@@ -67,7 +67,7 @@ jobs:
       env:
         CA_REFINEMENT_WIDTHS: 320,390,768,1024,1440
         CA_REFINEMENT_SCALES: 1,2
-        CA_REFINEMENT_THEMES: mono-light,lagoon-glass,aurora
+        CA_REFINEMENT_THEMES: mono-light,mono-dark,forest
         CA_REFINEMENT_SCREENS: home,people,reports,schedule,settings,assistant
         CA_REFINEMENT_HARD_ONLY: 'true'
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -31,7 +31,7 @@ export function ExperiencePicker() {
                 a.set({
                   ...experiencePresets[style],
                   ...(style === "lively" && a.theme === "auto"
-                    ? { theme: "lagoon-glass" }
+                    ? { theme: "forest" }
                     : {}),
                 })
               } type="button"

@@ -50,7 +50,6 @@ import { adapt } from "./features/accessibility";
 import "./features/styles.css";
 import "../../../packages/ui/theme-bridge.css";
 import "../../../packages/ui/v3-dialog-layer.css";
-import "../../../packages/ui/v3-eclipse-theme.css";
 import "../../../packages/ui/v3-glass.css";
 import "../../../packages/ui/v3-interaction.css";
 import "../../../packages/ui/shell.css";
