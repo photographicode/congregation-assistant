@@ -1,4 +1,14 @@
-# No active advisory exceptions as of the latest 2026-10-24 scan.
+# Advisory exceptions, reviewed 2026-11-02. Each needs a specific ID, reachability reason and expiry <=90 days.
+# GHSA-8g5g-mxqh-grgj (Vite server.fs.deny bypass) is fixed by upgrading Vite to 6.4.5.
 # GHSA-vfj7-8cjw-p6xm was not reported by run 40006331896; its unused ignore is removed.
 # GHSA-mrhx-c7xc-m3w5 is fixed by upgrading production Zod to 4.6.7 (fixed >=4.6.6).
-# Future exceptions require a specific ID, reachability reason and expiry <=90 days.
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2027-01-30
+reason = "minimatch 3/9/10 is dev-only (ESLint, typescript-eslint, ts-morph); patterns come from repository config, never user input. Fix needs minimatch 11, a major its dependents do not yet accept."
+
+[[IgnoredVulns]]
+id = "GHSA-3g3m-2fjr-6pw4"
+ignoreUntil = 2027-01-30
+reason = "glob 10 is dev-only via npm cacache in build tooling; it never receives an AbortSignal from untrusted input and is absent from the production SBOM. Fix needs glob 14, a breaking major."
