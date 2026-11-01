@@ -1,3 +1,7 @@
+# Current authority: V4.1 redesign — 2026-11-02
+
+The owner requested a full app UI/UX redesign and a cut to four appearance themes (mono-light and mono-dark carrying the Eclipse look, paper, forest; Auto follows Mono/Eclipse; Noto Sans in every theme). This overrides the older "keep the nine supplied themes" and "do not change the supplied themes.css" freezes below. See docs/DECISIONS.md (V4.1) and docs/V4-RELEASE.md. All V4 constraints on tools, roles, PDFs, sign-in, recovery formats and release gates still apply.
+
 # Current authority: V4 Publisher-first — 2026-10-26
 
 The owner explicitly authorized implementation and deployment of V4 after one batched questionnaire. This supersedes the V3 product/design freezes below. Read `docs/superpowers/specs/2026-10-26-v4-design.md`, `docs/superpowers/plans/2026-10-26-v4.md` and `docs/V4-RELEASE.md` for the accepted scope and current evidence.

@@ -12,6 +12,438 @@
       "tone": "soft",
       "surface": "surface",
       "text": "text-1",
+      "ratio": 18.654,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 9.84,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 7.283,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 17.792,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-1",
+      "ratio": 18.654,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 9.84,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 7.283,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 17.792,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-1",
+      "ratio": 18.654,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-2",
+      "ratio": 18.654,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "text-3",
+      "ratio": 18.654,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface",
+      "text": "link",
+      "ratio": 17.792,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 345,
+        "y": 355,
+        "background": [
+          248,
+          248,
+          249
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 18.968,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 10.006,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 7.406,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 18.091,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 18.968,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 10.006,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 7.406,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "standard",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 18.091,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-1",
+      "ratio": 18.968,
+      "required": 7,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-2",
+      "ratio": 18.968,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "text-3",
+      "ratio": 18.968,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "sharp",
+      "surface": "surface-solid",
+      "text": "link",
+      "ratio": 18.091,
+      "required": 4.5,
+      "passed": true,
+      "point": {
+        "x": 5,
+        "y": 5,
+        "background": [
+          250,
+          250,
+          250
+        ]
+      }
+    },
+    {
+      "theme": "mono-light",
+      "tone": "soft",
+      "surface": "surface-2",
+      "text": "text-1",
       "ratio": 19.798,
       "required": 7,
       "passed": true,
@@ -28,9 +460,9 @@
     {
       "theme": "mono-light",
       "tone": "soft",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-2",
-      "ratio": 10.862,
+      "ratio": 10.444,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -46,9 +478,9 @@
     {
       "theme": "mono-light",
       "tone": "soft",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-3",
-      "ratio": 7.226,
+      "ratio": 7.73,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -64,9 +496,9 @@
     {
       "theme": "mono-light",
       "tone": "soft",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "link",
-      "ratio": 19.798,
+      "ratio": 18.883,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -82,7 +514,7 @@
     {
       "theme": "mono-light",
       "tone": "standard",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-1",
       "ratio": 19.798,
       "required": 7,
@@ -100,9 +532,9 @@
     {
       "theme": "mono-light",
       "tone": "standard",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-2",
-      "ratio": 10.862,
+      "ratio": 10.444,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -118,9 +550,9 @@
     {
       "theme": "mono-light",
       "tone": "standard",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-3",
-      "ratio": 7.226,
+      "ratio": 7.73,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -136,9 +568,9 @@
     {
       "theme": "mono-light",
       "tone": "standard",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "link",
-      "ratio": 19.798,
+      "ratio": 18.883,
       "required": 4.5,
       "passed": true,
       "point": {
@@ -154,7 +586,7 @@
     {
       "theme": "mono-light",
       "tone": "sharp",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-1",
       "ratio": 19.798,
       "required": 7,
@@ -172,7 +604,7 @@
     {
       "theme": "mono-light",
       "tone": "sharp",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-2",
       "ratio": 19.798,
       "required": 4.5,
@@ -190,7 +622,7 @@
     {
       "theme": "mono-light",
       "tone": "sharp",
-      "surface": "surface",
+      "surface": "surface-2",
       "text": "text-3",
       "ratio": 19.798,
       "required": 4.5,
@@ -208,450 +640,18 @@
     {
       "theme": "mono-light",
       "tone": "sharp",
-      "surface": "surface",
-      "text": "link",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-solid",
-      "text": "text-1",
-      "ratio": 19.798,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-solid",
-      "text": "text-2",
-      "ratio": 10.862,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-solid",
-      "text": "text-3",
-      "ratio": 7.226,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-solid",
-      "text": "link",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-solid",
-      "text": "text-1",
-      "ratio": 19.798,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-solid",
-      "text": "text-2",
-      "ratio": 10.862,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-solid",
-      "text": "text-3",
-      "ratio": 7.226,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-solid",
-      "text": "link",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-solid",
-      "text": "text-1",
-      "ratio": 19.798,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-solid",
-      "text": "text-2",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-solid",
-      "text": "text-3",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-solid",
-      "text": "link",
-      "ratio": 19.798,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          255,
-          255,
-          255
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-2",
-      "text": "text-1",
-      "ratio": 17.207,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-2",
-      "text": "text-2",
-      "ratio": 9.441,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
-      "surface": "surface-2",
-      "text": "text-3",
-      "ratio": 6.28,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "soft",
       "surface": "surface-2",
       "text": "link",
-      "ratio": 17.207,
+      "ratio": 18.883,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-2",
-      "text": "text-1",
-      "ratio": 17.207,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-2",
-      "text": "text-2",
-      "ratio": 9.441,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-2",
-      "text": "text-3",
-      "ratio": 6.28,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "standard",
-      "surface": "surface-2",
-      "text": "link",
-      "ratio": 17.207,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-2",
-      "text": "text-1",
-      "ratio": 17.207,
-      "required": 7,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-2",
-      "text": "text-2",
-      "ratio": 17.207,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-2",
-      "text": "text-3",
-      "ratio": 17.207,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
-        ]
-      }
-    },
-    {
-      "theme": "mono-light",
-      "tone": "sharp",
-      "surface": "surface-2",
-      "text": "link",
-      "ratio": 17.207,
-      "required": 4.5,
-      "passed": true,
-      "point": {
-        "x": 5,
-        "y": 5,
-        "background": [
-          239,
-          239,
-          238
+          255,
+          255,
+          255
         ]
       }
     },
@@ -714,16 +714,16 @@
       "tone": "soft",
       "surface": "surface",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.463,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -732,16 +732,16 @@
       "tone": "soft",
       "surface": "surface",
       "text": "text-2",
-      "ratio": 11.011,
+      "ratio": 11.626,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -750,16 +750,16 @@
       "tone": "soft",
       "surface": "surface",
       "text": "text-3",
-      "ratio": 7.303,
+      "ratio": 6.705,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -768,16 +768,16 @@
       "tone": "soft",
       "surface": "surface",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.183,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -786,16 +786,16 @@
       "tone": "standard",
       "surface": "surface",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.463,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -804,16 +804,16 @@
       "tone": "standard",
       "surface": "surface",
       "text": "text-2",
-      "ratio": 11.011,
+      "ratio": 11.626,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -822,16 +822,16 @@
       "tone": "standard",
       "surface": "surface",
       "text": "text-3",
-      "ratio": 7.303,
+      "ratio": 6.705,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -840,16 +840,16 @@
       "tone": "standard",
       "surface": "surface",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.183,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -858,16 +858,16 @@
       "tone": "sharp",
       "surface": "surface",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.463,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -876,16 +876,16 @@
       "tone": "sharp",
       "surface": "surface",
       "text": "text-2",
-      "ratio": 16.898,
+      "ratio": 16.463,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -894,16 +894,16 @@
       "tone": "sharp",
       "surface": "surface",
       "text": "text-3",
-      "ratio": 16.898,
+      "ratio": 16.463,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -912,16 +912,16 @@
       "tone": "sharp",
       "surface": "surface",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.183,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          27,
+          27,
+          30
         ]
       }
     },
@@ -930,16 +930,16 @@
       "tone": "soft",
       "surface": "surface-solid",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.974,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -948,16 +948,16 @@
       "tone": "soft",
       "surface": "surface-solid",
       "text": "text-2",
-      "ratio": 11.011,
+      "ratio": 11.987,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -966,16 +966,16 @@
       "tone": "soft",
       "surface": "surface-solid",
       "text": "text-3",
-      "ratio": 7.303,
+      "ratio": 6.913,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -984,16 +984,16 @@
       "tone": "soft",
       "surface": "surface-solid",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.717,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1002,16 +1002,16 @@
       "tone": "standard",
       "surface": "surface-solid",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.974,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1020,16 +1020,16 @@
       "tone": "standard",
       "surface": "surface-solid",
       "text": "text-2",
-      "ratio": 11.011,
+      "ratio": 11.987,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1038,16 +1038,16 @@
       "tone": "standard",
       "surface": "surface-solid",
       "text": "text-3",
-      "ratio": 7.303,
+      "ratio": 6.913,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1056,16 +1056,16 @@
       "tone": "standard",
       "surface": "surface-solid",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.717,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1074,16 +1074,16 @@
       "tone": "sharp",
       "surface": "surface-solid",
       "text": "text-1",
-      "ratio": 16.898,
+      "ratio": 16.974,
       "required": 7,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1092,16 +1092,16 @@
       "tone": "sharp",
       "surface": "surface-solid",
       "text": "text-2",
-      "ratio": 16.898,
+      "ratio": 16.974,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1110,16 +1110,16 @@
       "tone": "sharp",
       "surface": "surface-solid",
       "text": "text-3",
-      "ratio": 16.898,
+      "ratio": 16.974,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1128,16 +1128,16 @@
       "tone": "sharp",
       "surface": "surface-solid",
       "text": "link",
-      "ratio": 18.423,
+      "ratio": 17.717,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          20,
-          20,
-          20
+          24,
+          24,
+          27
         ]
       }
     },
@@ -1146,16 +1146,16 @@
       "tone": "soft",
       "surface": "surface-2",
       "text": "text-1",
-      "ratio": 15.291,
+      "ratio": 13.724,
       "required": 7,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1164,16 +1164,16 @@
       "tone": "soft",
       "surface": "surface-2",
       "text": "text-2",
-      "ratio": 9.964,
+      "ratio": 9.692,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1182,16 +1182,16 @@
       "tone": "soft",
       "surface": "surface-2",
       "text": "text-3",
-      "ratio": 6.609,
+      "ratio": 5.589,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1200,16 +1200,16 @@
       "tone": "soft",
       "surface": "surface-2",
       "text": "link",
-      "ratio": 16.671,
+      "ratio": 14.325,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1218,16 +1218,16 @@
       "tone": "standard",
       "surface": "surface-2",
       "text": "text-1",
-      "ratio": 15.291,
+      "ratio": 13.724,
       "required": 7,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1236,16 +1236,16 @@
       "tone": "standard",
       "surface": "surface-2",
       "text": "text-2",
-      "ratio": 9.964,
+      "ratio": 9.692,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1254,16 +1254,16 @@
       "tone": "standard",
       "surface": "surface-2",
       "text": "text-3",
-      "ratio": 6.609,
+      "ratio": 5.589,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1272,16 +1272,16 @@
       "tone": "standard",
       "surface": "surface-2",
       "text": "link",
-      "ratio": 16.671,
+      "ratio": 14.325,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1290,16 +1290,16 @@
       "tone": "sharp",
       "surface": "surface-2",
       "text": "text-1",
-      "ratio": 15.291,
+      "ratio": 13.724,
       "required": 7,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1308,16 +1308,16 @@
       "tone": "sharp",
       "surface": "surface-2",
       "text": "text-2",
-      "ratio": 15.291,
+      "ratio": 13.724,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1326,16 +1326,16 @@
       "tone": "sharp",
       "surface": "surface-2",
       "text": "text-3",
-      "ratio": 15.291,
+      "ratio": 13.724,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1344,16 +1344,16 @@
       "tone": "sharp",
       "surface": "surface-2",
       "text": "link",
-      "ratio": 16.671,
+      "ratio": 14.325,
       "required": 4.5,
       "passed": true,
       "point": {
-        "x": 5,
+        "x": 25,
         "y": 5,
         "background": [
-          30,
-          30,
-          30
+          42,
+          42,
+          44
         ]
       }
     },
@@ -1362,16 +1362,16 @@
       "tone": "soft",
       "surface": "accent",
       "text": "text-on-accent",
-      "ratio": 18.16,
+      "ratio": 18.968,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          245,
-          245,
-          245
+          250,
+          250,
+          250
         ]
       }
     },
@@ -1380,16 +1380,16 @@
       "tone": "standard",
       "surface": "accent",
       "text": "text-on-accent",
-      "ratio": 18.16,
+      "ratio": 18.968,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          245,
-          245,
-          245
+          250,
+          250,
+          250
         ]
       }
     },
@@ -1398,16 +1398,16 @@
       "tone": "sharp",
       "surface": "accent",
       "text": "text-on-accent",
-      "ratio": 18.16,
+      "ratio": 18.968,
       "required": 4.5,
       "passed": true,
       "point": {
         "x": 5,
         "y": 5,
         "background": [
-          245,
-          245,
-          245
+          250,
+          250,
+          250
         ]
       }
     },

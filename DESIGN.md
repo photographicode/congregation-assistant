@@ -9,7 +9,7 @@
 **Mood:** quiet, premium, unhurried. Whitespace and hierarchy do the work; colour is spent on **data and state**, not decoration. Familiar to people who use jw.org and JW Library: content first, large readable type, bottom tabs on phone.
 **Density:** two axes the user controls — **Experience** (Calm / Balanced / Lively) and **Theme** (mood). Experience changes richness (charts, motion, background), never capability.
 **Art direction (Taste Skill):** one clear idea per screen; no template look (no gradient-orb heroes, no emoji icons, no card-soup, no identical rounded rectangles everywhere). Each screen has a clear title on first view, equal margins, no section shoved to one side, no random blank stretches. Dashboards and app screens use **quiet panels, aligned figures and honest data**; navigation folds away on phones.
-**Themes (11):** `mono-light`, `mono-dark`, `paper`, `lagoon-glass`, `neon-night`, `sunset-pop`, **`eclipse`** (black-and-white Sunset Pop), **`eclipse-night`**, `neo-brutal`, `forest`, `aurora`. Tokens live in `themes.css`, `v3-eclipse-theme.css`, `v3-dialog-layer.css`. Mapping to Taste Skill styles: Eclipse/Sunset ≈ *soft* (soft contrast, whitespace, spring motion); Mono ≈ *minimalist* (editorial, restrained); Neo-Brutal ≈ *brutalist*; Glass themes ≈ *soft with depth*.
+**Themes (4, V4.1):** `mono-light`, `mono-dark` (labelled **Eclipse** / **Eclipse Night**: black and white, pearl or graphite gradient, soft frosted panels, very round corners, spring motion; *soft*), `paper` (warm light, forest-green accent) and `forest` (dark green). *Follow system* uses Eclipse / Eclipse Night. Retired themes map to these (see `packages/core/themes.ts` and docs/DECISIONS.md). Tokens live in `themes.css` and `v3-dialog-layer.css`.
 **Brand constraints:** independent and unofficial; no JW logos/trade dress; no emoji; icons are Lucide (inline sprite).
 
 ## 2. Color Palette & Roles (semantic; never raw hex in components)
@@ -28,17 +28,8 @@
 
 ## 3. Typography Rules
 Self-hosted OFL fonts, `font-display: swap`, metric-matched fallbacks, Latin subset + Indic scripts on demand (`unicode-range`).
-| Theme | Display | Body | Numbers/labels |
-|---|---|---|---|
-| mono-light / mono-dark | Instrument Serif | Inter | JetBrains Mono |
-| paper | Newsreader | Source Sans 3 | — |
-| lagoon-glass | Outfit | Inter | — |
-| neon-night | Space Grotesk | Inter | JetBrains Mono |
-| sunset-pop / **eclipse / eclipse-night** | Bricolage Grotesque | DM Sans | — |
-| neo-brutal | Archivo Black | Inter | Space Mono |
-| forest | Fraunces | Source Sans 3 | — |
-| aurora | Sora | Inter | — |
-Indic: Noto Sans <script> (Noto Serif where the theme is serif and the script exists), `line-height ≥ 1.7`, no letter-spacing. **PDFs: Noto Sans only.**
+**All four themes use Noto Sans** (`@fontsource-variable/noto-sans`, Latin variable 100–900) for headings, body and figures, the same family as the PDFs and Indian scripts. Hierarchy comes from size and weight (600–700 headings), not from a second typeface.
+Indic: Noto Sans <script>, `line-height ≥ 1.7`, no letter-spacing. **PDFs: Noto Sans only.**
 **Scale (rem × `--text-scale`):** 0.75 · 0.875 · 1 · 1.125 · 1.25 · 1.5 · 1.875 · 2.25 · 3 (greeting). Headings `text-wrap: balance`; paragraphs `pretty`. **Figures use `font-variant-numeric: tabular-nums`.** Typographic punctuation: curly quotes, the ellipsis character `…`, non-breaking space between a number and its unit (`12.5 h`).
 **Inputs are ≥ 16 px on mobile** (prevents iOS zoom). Never disable zoom.
 
@@ -55,7 +46,7 @@ States: default · hover (`@media (hover:hover)`, +contrast) · `:active` (scale
 - **Skeletons** mirror final content exactly; empty/sparse/dense/error states are designed for every list.
 
 ## 5. Layout Principles
-4 px spacing scale (4/8/12/16/24/32/48/64); one container padding per breakpoint; max content width 1200 px (1440 wide). Grid rows `align-items: stretch`. Cards in a row have equal height. Equal outer margins; the first screen always shows a clear title. **Home:** one left-aligned column shared with the publisher home, so every block starts on the same edge: greeting (title on first screen) → prompt bar → suggestion chips → contact updates + announcements (equal-height pair) → *Group report links* → next steps (equal-height cards) → **People table** → RP / AP lists → AP review. Figures aligned right with tabular digits. Colour used for data (status, counts), not decoration.
+4 px spacing scale (4/8/12/16/24/32/48/64); one container padding per breakpoint; max content width 1200 px (1440 wide). Grid rows `align-items: stretch`. Cards in a row have equal height. Equal outer margins; the first screen always shows a clear title. **Home:** one left-aligned column, work first. Admin/overseer: greeting with date and a one-line clock → reporting month → this month (KPI tiles, totals, tools, submissions table) → *Group report links* → contact updates + announcements → assistant → setup guide → suggestions. Publisher *Today*: greeting → one report card with plain status ("Not sent yet") → next assignments → three shortcuts (Meeting schedules, Household reports, My profile & time away) → announcements. Section labels are sentence case; no uppercase eyebrows above page titles. Figures aligned right with tabular digits. Colour used for data (status, counts), not decoration.
 **Frame checks (Taste Skill):** title visible on first screen · equal margins · no section shoved to one side · no blank stretches > 96 px · aligned figures.
 
 ## 6. Depth & Elevation

@@ -36,7 +36,7 @@ export function ExperiencePicker() {
                 })
               } type="button"
             >
-              <strong>{style[0].toUpperCase() + style.slice(1)}</strong>
+              <strong>{style.charAt(0).toUpperCase() + style.slice(1)}</strong>
               <span>
                 {style === "calm"
                   ? "Room to focus. Bigger actions and a quiet Home."

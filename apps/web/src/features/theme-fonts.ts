@@ -10,14 +10,15 @@ export function preloadThemeFonts(theme: string) {
   ))
     if (!selected.includes(link.dataset.themeFont!)) link.remove();
   for (const family of selected) {
-    if (document.querySelector('link[data-theme-font="' + family + '"]'))
+    const href = urls[family];
+    if (!href || document.querySelector('link[data-theme-font="' + family + '"]'))
       continue;
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "font";
     link.type = "font/woff2";
     link.crossOrigin = "anonymous";
-    link.href = urls[family];
+    link.href = href;
     link.dataset.themeFont = family;
     document.head.append(link);
   }

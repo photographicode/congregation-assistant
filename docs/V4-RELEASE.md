@@ -41,3 +41,23 @@ Owner request: redesign the public landing page to match the application. Websit
 - Entrance motion only hides content that is off screen once fonts have loaded, and hiding is instant, so Axe never measures half-faded text; reduced motion shows everything.
 
 Evidence (local, Windows): initial gzip payload 98,945 bytes (limit 204,800). `site-audit.mjs` on the built tree with an `app/` stub: 224 pages, 0 failures (without the stub only the cross-tree `/app/` links fail, as before). `site-audit-browser.mjs`: 1,672 views, 0 failures. `check-marketing-site.cjs` (run from a copy with `path.sep` for Windows): PASS. `check-site-browser.cjs` Axe/overflow: 84 views, 0 failures on real routes; `data-processing/` and `cookies/` fall back to `404.html`, whose stylesheet is loaded from the absolute Pages URL and blocked by CSP on a local server (no CSS loads, old or new), so they overflow locally only. `check-claims.mjs`: PASS. Vercel guideline audit: 0 HARD.
+
+## V4.1 app redesign and four themes — 2026-11-02
+Owner request: redesign the app the way a senior product designer would, publisher-first, and cut appearance themes from 11 to 4. Presentation and wording only: no tool, role boundary, PDF, Google approved-account sign-in or recovery format removed; no data or permission change. Branch `redesign/v4-four-themes`; not merged or deployed.
+
+Audit of the live demos (390 px and 1440 px) before the change: uppercase eyebrow labels above every title; a persistent "Update available" panel covering content on phones; publisher Today stacked five cards, three of them a sentence and a button, and the report card's headline ("A small task. A meaningful record.") did not say what to do; publisher Meetings showed a 2×2 tab grid over a one-sentence card; publisher Reports had a "My report" card that told the publisher to "choose a publisher"; More was a sparse tile grid; admin Home put a large clock card, the assistant and an empty contact-updates card above the month's work, its phone top bar wrapped onto two rows, and it printed "1 Bible studies".
+
+Themes (owner choices; see docs/DECISIONS.md V4.1):
+- Kept: `mono-light`, `mono-dark` (now carrying the Eclipse look and labelled Eclipse / Eclipse Night), `paper`, `forest`. Auto follows Eclipse / Eclipse Night.
+- Retired names map to kept themes in `normalizeTheme`/`resolvedTheme`; stored `ca-v2-appearance` profiles (device and account-scoped) are rewritten on load; server profiles and the public form resolve through the same map. `tests/v3/theme-migration.test.ts` covers every retired and legacy name, Auto, unknown values and malformed stored JSON.
+- Noto Sans in every theme (owner choice), from `@fontsource-variable/noto-sans` 5.3.0 (OFL, 35.8 KB Latin variable). Six web fonts are no longer loaded.
+- Paper/Forest colours moved from `tokens.css` overrides into `themes.css` (they previously also forced Mono light to render as green paper).
+
+Screens:
+- Publisher Today: greeting and date; one report card ("Your report for October 2026 · Not sent yet. It takes about a minute." + Submit report); next assignments; three shortcuts (Meeting schedules, Household reports, My profile & time away); announcements. Two columns from 1023 px.
+- Publisher Meetings: the publisher's own published assignments (same `get_my_publisher_portal` data as Today) instead of an empty card; section tabs stay on one row and scroll if text is enlarged.
+- Publisher Reports: one household card with the publisher's own report status; "People you report for" list.
+- More: a list titled "More" with icons, current section marked, two columns from 600 px.
+- Admin/overseer Home: greeting with a one-line date and clock; the month's work (KPIs, totals, tools, submissions) first, then group links, contact updates and announcements, assistant, setup guide and suggestions. Singular "1 Bible study". Phone top bar stays on one row (congregation name truncates) unless large text is on.
+- Global: eyebrow labels are sentence case and hidden above page titles; the update prompt is a compact bar.
+
