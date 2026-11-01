@@ -1,5 +1,5 @@
-// English home page. Visual language matches the V4 app (paper/forest themes): Newsreader display,
-// Source Sans 3 text, forest accent, quiet panels. Pictures are real V4 demo screens (fictional data).
+// English home page. Monochrome, matching the app's Eclipse themes and Noto Sans.
+// Pictures are real V4 demo screens in the Eclipse theme (fictional data).
 const screens=[
  ['today','phone-today','Today in the publisher workspace: the monthly report card and the next assignment','Today shows what’s next.','Your published assignments with their date and time, the monthly report and congregation announcements wait on your home screen.'],
  ['meetings','phone-meetings','The weekly schedule in the publisher workspace with Midweek, Weekend, Duties and Print','Meetings, ready when you are.','Open the schedule your meeting overseer has published: midweek, weekend and duties, ready to print.'],
@@ -7,9 +7,8 @@ const screens=[
 ];
 const tools={
  s21:['people-s21','Publisher rows with S-21 download and Options buttons',1000,451],
- reports:['reports-month','Monthly submissions beside the list of missing reports',1120,444],
- meetings:['meetings-midweek','Weekly schedule with Midweek, Weekend, Duties and Print tabs',1120,405],
- assistant:['assistant','On-device assistant with suggested commands and a command field',1120,227]
+ reports:['reports-month','Monthly submissions beside the list of missing reports',1120,443],
+ meetings:['meetings-midweek','Weekly schedule with Midweek, Weekend, Duties and Print tabs',1120,475]
 };
 export function v4Home({app,site,escape:e,mark,t,featureKeys,price,pricingText,pricingHref,pricingLabel,securityHref}){
  const img=(file,alt,w,h,lazy=true)=>`<img src="assets/app/${file}.webp" alt="${e(alt)}" width="${w}" height="${h}" decoding="async"${lazy?' loading="lazy"':''}>`;

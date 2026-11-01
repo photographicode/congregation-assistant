@@ -41,3 +41,12 @@ Owner request: redesign the public landing page to match the application. Websit
 - Entrance motion only hides content that is off screen once fonts have loaded, and hiding is instant, so Axe never measures half-faded text; reduced motion shows everything.
 
 Evidence (local, Windows): initial gzip payload 98,945 bytes (limit 204,800). `site-audit.mjs` on the built tree with an `app/` stub: 224 pages, 0 failures (without the stub only the cross-tree `/app/` links fail, as before). `site-audit-browser.mjs`: 1,672 views, 0 failures. `check-marketing-site.cjs` (run from a copy with `path.sep` for Windows): PASS. `check-site-browser.cjs` Axe/overflow: 84 views, 0 failures on real routes; `data-processing/` and `cookies/` fall back to `404.html`, whose stylesheet is loaded from the absolute Pages URL and blocked by CSP on a local server (no CSS loads, old or new), so they overflow locally only. `check-claims.mjs`: PASS. Vercel guideline audit: 0 HARD.
+
+## Monochrome website — 2026-11-02
+Owner request: a minimal black/grey/white website with background animation that works on phones. Website only.
+- Tokens follow the app's Eclipse pair from branch `redesign/v4-four-themes` (four themes, Noto Sans everywhere): `#fafafa`/`#0a0a0a` grounds, grey steps, black or white accent, pill buttons, 28 px panels, Noto Sans only (`assets/fonts/noto-sans-latin-wght-normal.woff2`, the same file as that branch).
+- A fixed canvas dot field (`site.js`) runs behind every page: a slow interference wave, scroll parallax, ripples from taps/clicks, automatic ripples after six idle seconds, and a soft lift under a mouse pointer. It is capped at 2x pixel ratio, batches dots into 12 alpha paths per frame, stops when the tab is hidden, draws one still frame under reduced motion, and follows the light/dark toggle.
+- Screens in `apps/site/assets/app/` were recaptured from that branch's Pages build in the Eclipse theme (fictional demo data). The assistant crop was dropped because its layout moved. The "Themes and comfort" copy no longer claims nine themes.
+- Initial gzip payload: 49,064 bytes (was 98,945), because only one font file is preloaded.
+
+Evidence (local, Windows, same method as above): site audit 224 pages, 0 failures; overflow audit 1,672 views, 0 failures (a 2 px Malayalam button overflow at 320 px / 2x was fixed by letting button labels wrap); marketing check PASS; Axe/overflow 84 views, 0 failures on real routes; claims check PASS. Deploy this together with or after the app redesign, because the screenshots show that design.
