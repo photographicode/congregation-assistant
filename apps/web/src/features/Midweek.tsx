@@ -34,6 +34,7 @@ import { Dialog } from "../../../../packages/ui/Dialog";
 import type { SyncStatus } from "../../../../packages/core/store";
 import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
+import { PublisherAssignments } from "./PublisherHome";
 
 const slots = [
   ["Chairman", "Chairman"],
@@ -540,7 +541,9 @@ export function Midweek({
     }
   }
   if (!allowed)
-    return (
+    return c.roles.includes("publisher") ? (
+      <PublisherAssignments context={c} />
+    ) : (
       <section className="card">
         <h2>{t("ui.your.published.schedule.759c9c43")}</h2>
         <p>{t("ui.use.the.live.schedule.link.shared.by.your..d2b98718")}</p>

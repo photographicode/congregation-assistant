@@ -1039,5 +1039,19 @@
   "v4.37e6112e84": "What’s new",
   "v4.1810407f5a": "Quick actions",
   "v4.addbe3d6f5": "Search tools and people",
-  "v4.eb355944b9": "Main navigation"
+  "v4.eb355944b9": "Main navigation",
+  "v41.myAssignments": "Your assignments",
+  "v41.reportFor": "Your report for ",
+  "v41.reportDue": "Not sent yet. It takes about a minute.",
+  "v41.reportDone": "Sent. Thank you. You can still review or correct it.",
+  "v41.meetingSchedules": "Meeting schedules",
+  "v41.meetingSchedulesHint": "Midweek, weekend and duties",
+  "v41.householdReports": "Household reports",
+  "v41.householdReportsHint": "Your report and those of people you report for",
+  "v41.profileHint": "Contact details and dates you’re away",
+  "v41.more": "More",
+  "home.study": "Bible study",
+  "v41.ownReportDue": "Your own report for this month hasn’t been sent yet.",
+  "v41.ownReportDone": "Your own report is in. You can review and correct it below.",
+  "v41.reportFor.people": "People you report for"
 }

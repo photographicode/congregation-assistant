@@ -226,17 +226,6 @@ export function Dashboard({
           )}
         </Inline>
       </section>
-      <HomeAssistant context={c} go={go} />
-      {updates}
-      <HomeGroupLinks context={c} period={period} />
-      {setupEntry}
-      <HomeSuggestions
-        context={c}
-        period={period}
-        missing={summary.pending}
-        ready={!loading && !error}
-        go={go}
-      />
       {error && (
         <p className="error" role="alert">
           {t("ui.records.could.not.load.refresh.to.try.agai.7090d449")}
@@ -479,6 +468,18 @@ export function Dashboard({
           </Card>
         )}
       </div>
+      {/* V4.1: the month's work comes first; links, updates, the assistant and setup follow it. */}
+      <HomeGroupLinks context={c} period={period} />
+      {updates}
+      <HomeAssistant context={c} go={go} />
+      {setupEntry}
+      <HomeSuggestions
+        context={c}
+        period={period}
+        missing={summary.pending}
+        ready={!loading && !error}
+        go={go}
+      />
     </Stack>
   );
 }

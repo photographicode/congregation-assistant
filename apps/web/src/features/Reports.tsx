@@ -700,6 +700,13 @@ export function Reports({ context: c }: { context: Context }) {
                   ? t("refine.linkedIntro")
                   : `${submitted.length} submitted · ${missing.length} missing`}
               </p>
+              {personal && (
+                <p className="muted">
+                  {own.data?.report.submitted
+                    ? t("v41.ownReportDone")
+                    : t("v41.ownReportDue")}
+                </p>
+              )}
               {!personal && (
                 <p>
                   {submitted.reduce((sum, r) => sum + (r.studies || 0), 0)}{" "}
@@ -725,15 +732,9 @@ export function Reports({ context: c }: { context: Context }) {
                 </Button>
               )}
             </section>
-            <section className="card">
-              <h2>{personal ? "My report" : "Missing reports"}</h2>
-              {personal ? (
-                <p>
-                  {own.data?.report.submitted
-                    ? "Submitted. You can review and correct your report."
-                    : "Choose a publisher to submit or review their report."}
-                </p>
-              ) : (
+            {!personal && (
+              <section className="card">
+                <h2>{"Missing reports"}</h2>
                 <div className="list">
                   {missing.map((p) => (
                     <div className="list-row" key={p.id}>
@@ -742,11 +743,11 @@ export function Reports({ context: c }: { context: Context }) {
                     </div>
                   ))}
                 </div>
-              )}
-            </section>
+              </section>
+            )}
           </div>
           <section className="card" style={{ marginTop: "1.25rem" }}>
-            <h2>{personal ? "Linked publishers" : "Submitted reports"}</h2>
+            <h2>{personal ? t("v41.reportFor.people") : "Submitted reports"}</h2>
             <div className="list">
               {personal
                 ? persons.map((p) => (

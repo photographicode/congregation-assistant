@@ -1,20 +1,14 @@
 {
   "mono-light": [
-    "Instrument Serif",
-    "Inter",
-    "JetBrains Mono"
+    "Noto Sans"
   ],
   "mono-dark": [
-    "Instrument Serif",
-    "Inter",
-    "JetBrains Mono"
+    "Noto Sans"
   ],
   "paper": [
-    "Newsreader",
-    "Source Sans 3"
+    "Noto Sans"
   ],
   "forest": [
-    "Fraunces",
-    "Source Sans 3"
+    "Noto Sans"
   ]
 }

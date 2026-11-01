@@ -1,7 +1,7 @@
-/* themes.css — the four V4.1 themes: Mono light/dark (Instrument Serif + Inter) and Paper/Forest (Newsreader/Fraunces + Source Sans 3).
+/* themes.css — the four V4.1 themes: Mono light/dark and Paper/Forest, all set in Noto Sans (Latin and Indian scripts).
    Retired theme names map to these in packages/core/themes.ts. Contrast checked (WCAG 2.x): text-1 >= 7:1, other text and
    text-on-accent >= 4.5:1 on surface, surface-solid and surface-2. Re-run scripts/contrast-check.mjs after any edit. */
-:root{--font-body:'Inter','Noto Sans',system-ui,sans-serif;--text-scale:1;--density:1;--blur:0px}
+:root{--font-body:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--text-scale:1;--density:1;--blur:0px}
 html{font-size:calc(100% * var(--text-scale))}
 
 [data-theme="mono-light"]{color-scheme:light;--theme-family:mono;
@@ -9,28 +9,28 @@ html{font-size:calc(100% * var(--text-scale))}
  --text-1:#0A0A0A;--text-2:#3D3D3D;--text-3:#575757;--border:#DCDCDA;--border-w:1px;
  --accent:#0A0A0A;--text-on-accent:#FFFFFF;--link:#0A0A0A;--ok:#0A0A0A;--warn:#0A0A0A;--danger:#0A0A0A;
  --radius-s:8px;--radius-m:12px;--radius-l:16px;--shadow-card:0 1px 2px rgba(0,0,0,.04);--glass-blur:0px;
- --font-display:'Instrument Serif','Noto Serif',Georgia,serif;--dur:180ms;--ease:cubic-bezier(.2,0,0,1);--focus-ring:2px solid #0A0A0A;}
+ --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:180ms;--ease:cubic-bezier(.2,0,0,1);--focus-ring:2px solid #0A0A0A;}
 
 [data-theme="mono-dark"]{color-scheme:dark;--theme-family:mono;
  --bg:#0B0B0B;--bg-image:none;--surface:#141414;--surface-solid:#141414;--surface-2:#1E1E1E;
  --text-1:#F5F5F5;--text-2:#C8C8C8;--text-3:#A3A3A3;--border:#2C2C2C;--border-w:1px;
  --accent:#F5F5F5;--text-on-accent:#0A0A0A;--link:#FFFFFF;--ok:#F5F5F5;--warn:#F5F5F5;--danger:#F5F5F5;
  --radius-s:8px;--radius-m:12px;--radius-l:16px;--shadow-card:none;--glass-blur:0px;
- --font-display:'Instrument Serif','Noto Serif',Georgia,serif;--dur:180ms;--ease:cubic-bezier(.2,0,0,1);--focus-ring:2px solid #FFFFFF;}
+ --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:180ms;--ease:cubic-bezier(.2,0,0,1);--focus-ring:2px solid #FFFFFF;}
 
 [data-theme="paper"]{color-scheme:light;--theme-family:paper;
  --bg:#F5F6F3;--bg-image:none;--surface:#FFFFFF;--surface-solid:#FFFFFF;--surface-2:#EDF2EF;
  --text-1:#203B36;--text-2:#4A5D58;--text-3:#56665F;--border:#DCE4DF;--border-w:1px;
  --accent:#226353;--text-on-accent:#FFFFFF;--link:#226353;--ok:#2E6B3F;--warn:#8A5A00;--danger:#A12B2B;
  --radius-s:8px;--radius-m:14px;--radius-l:18px;--shadow-card:0 2px 8px rgba(32,59,54,.04);--glass-blur:0px;
- --font-display:'Newsreader','Noto Serif',Georgia,serif;--dur:200ms;--ease:cubic-bezier(.3,.7,.2,1);--focus-ring:2px solid #226353;}
+ --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:200ms;--ease:cubic-bezier(.3,.7,.2,1);--focus-ring:2px solid #226353;}
 
 [data-theme="forest"]{color-scheme:dark;--theme-family:forest;
  --bg:#13221F;--bg-image:none;--surface:#1A2D28;--surface-solid:#1A2D28;--surface-2:#243C34;
  --text-1:#EEF5EF;--text-2:#C2D4CB;--text-3:#A7BDB1;--border:#365347;--border-w:1px;
  --accent:#A4DCC0;--text-on-accent:#13221F;--link:#A4DCC0;--ok:#7BE0A0;--warn:#E6C86E;--danger:#FF9B9B;
  --radius-s:8px;--radius-m:14px;--radius-l:18px;--shadow-card:0 6px 24px rgba(0,0,0,.25);--glass-blur:0px;
- --font-display:'Fraunces','Noto Serif',Georgia,serif;--dur:200ms;--ease:cubic-bezier(.3,.7,.2,1);--focus-ring:2px solid #A4DCC0;}
+ --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:200ms;--ease:cubic-bezier(.3,.7,.2,1);--focus-ring:2px solid #A4DCC0;}
 
 /* Solid mode: user toggle, prefers-reduced-transparency, or low-end device => no blur, opaque surfaces */
 [data-solid="true"]{--glass-blur:0px;--surface:var(--surface-solid);--bg-image:none}
