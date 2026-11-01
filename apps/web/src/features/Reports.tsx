@@ -692,7 +692,7 @@ export function Reports({ context: c }: { context: Context }) {
         </section>
       ) : (
         <>
-          <div className="grid">
+          <div className="grid v41-report-summary">
             <section className="card">
               <h2>{personal ? "Household reports" : "Monthly submissions"}</h2>
               <p>

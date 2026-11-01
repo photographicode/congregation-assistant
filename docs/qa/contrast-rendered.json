@@ -23,7 +23,7 @@
       "theme": "mono-light",
       "screen": "home",
       "scroll": 1,
-      "pairs": 21,
+      "pairs": 22,
       "minimum": 7.406,
       "bareCanvasText": 0,
       "failures": []
@@ -131,7 +131,7 @@
       "theme": "mono-dark",
       "screen": "home",
       "scroll": 1,
-      "pairs": 22,
+      "pairs": 21,
       "minimum": 6.913,
       "bareCanvasText": 0,
       "failures": []
@@ -239,7 +239,7 @@
       "theme": "paper",
       "screen": "home",
       "scroll": 1,
-      "pairs": 22,
+      "pairs": 21,
       "minimum": 5.872,
       "bareCanvasText": 0,
       "failures": []
@@ -347,7 +347,7 @@
       "theme": "forest",
       "screen": "home",
       "scroll": 1,
-      "pairs": 22,
+      "pairs": 21,
       "minimum": 6.987,
       "bareCanvasText": 0,
       "failures": []
