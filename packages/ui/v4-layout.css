@@ -28,8 +28,8 @@
 .v41-shortcut strong,.v41-shortcut small{display:block}
 .v41-shortcut small{margin:var(--space-1) 0 0;color:var(--text-2);font-size:var(--fs-2)}
 @media (hover:hover){.v41-shortcut:hover{border-color:var(--text-3)}}
-.segmented{width:fit-content;max-width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
-.segmented button{flex:1 0 auto;min-width:0;padding:var(--space-2) var(--space-3);white-space:nowrap}
+.segmented{width:fit-content;max-width:100%}
+.segmented button{flex:0 1 auto;min-width:0;padding:var(--space-2) var(--space-3)}
 .more-grid{grid-template-columns:minmax(0,1fr);gap:0}
 .more-grid>button{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;justify-items:start;gap:var(--space-3);padding:var(--space-3) var(--space-2);border:0;border-bottom:1px solid var(--border);border-radius:0;background:transparent;color:var(--text-1);text-align:start}
 .more-grid>button.active{font-weight:700}
