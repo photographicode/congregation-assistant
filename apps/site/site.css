@@ -1,9 +1,10 @@
-/* Public website. Shares the V4 app's visual language: paper (light) and forest (dark) theme tokens,
-   Newsreader display, Source Sans 3 text, forest accent, quiet panels. The data-theme names
+/* Public website. Monochrome: the app's Eclipse pair (black, greys, white) with Noto Sans, the app's
+   one typeface. A canvas dot field (site.js) moves behind the page. The data-theme names
    mono-light / mono-dark are kept for the site's toggle and stored preference. */
-:root,[data-theme=mono-light]{color-scheme:light;--paper:#f5f6f3;--panel:#fff;--soft:#edf2ef;--ink:#203b36;--muted:#50635e;--line:#dce4df;--accent:#226353;--on-accent:#fff;--field:#226353;--on-field:#fff;--on-field-muted:#d7e8e0;--shadow-float:0 24px 60px #0f2a2333}
-[data-theme=mono-dark]{color-scheme:dark;--paper:#13221f;--panel:#1a2d28;--soft:#1a2d28;--ink:#eef5ef;--muted:#c2d4cb;--line:#365347;--accent:#a4dcc0;--on-accent:#13221f;--field:#243c34;--on-field:#eef5ef;--on-field-muted:#c2d4cb;--shadow-float:0 24px 60px #0008}
-:root{--site-display:'Newsreader','Noto Serif',Georgia,serif;--site-body:'Source Sans 3','Noto Sans',system-ui,sans-serif;--radius-s:8px;--radius-l:18px;--margin:max(24px,calc((100vw - 1240px)/2));--ease:cubic-bezier(.2,.7,.2,1);--step-display:clamp(2.125rem,4.2vw,4.5rem);--step-h2:clamp(2.125rem,3.2vw,3.125rem);--step-h3:clamp(1.375rem,1.8vw,1.75rem);--step-body:1.0625rem;--step-small:.875rem}
+@font-face{font-family:'Noto Sans';src:url('assets/fonts/noto-sans-latin-wght-normal.woff2') format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root,[data-theme=mono-light]{color-scheme:light;--paper:#fafafa;--panel:#fff;--soft:#f0f0f0;--ink:#0a0a0a;--muted:#595959;--line:#e3e3e3;--accent:#0a0a0a;--on-accent:#fafafa;--field:#0a0a0a;--on-field:#fafafa;--on-field-muted:#b3b3b3;--dot:10,10,10;--shadow-float:0 24px 60px #0000002e}
+[data-theme=mono-dark]{color-scheme:dark;--paper:#0a0a0a;--panel:#161616;--soft:#141414;--ink:#f5f5f5;--muted:#a6a6a6;--line:#2b2b2b;--accent:#f5f5f5;--on-accent:#0a0a0a;--field:#1a1a1a;--on-field:#f5f5f5;--on-field-muted:#a6a6a6;--dot:245,245,245;--shadow-float:0 24px 60px #000a}
+:root{--site-display:'Noto Sans',system-ui,sans-serif;--site-body:'Noto Sans',system-ui,sans-serif;--radius-s:12px;--radius-l:28px;--radius-pill:999px;--margin:max(24px,calc((100vw - 1240px)/2));--ease:cubic-bezier(.2,.7,.2,1);--step-display:clamp(2.125rem,4.2vw,4.5rem);--step-h2:clamp(2rem,3.2vw,3rem);--step-h3:clamp(1.25rem,1.7vw,1.625rem);--step-body:1.0625rem;--step-small:.875rem}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -14,10 +15,10 @@ button,input,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 svg{width:20px;height:20px;flex:none}
 img{display:block;max-width:100%;height:auto}
-h1,h2,h3{font-family:var(--site-display);font-weight:600;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0 0 24px;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--site-display);font-weight:650;line-height:1.04;letter-spacing:-.035em;text-wrap:balance;margin:0 0 24px;overflow-wrap:anywhere}
 h1{font-size:var(--step-display)}
 h2{font-size:var(--step-h2)}
-h3{font-size:var(--step-h3);line-height:1.15}
+h3{font-size:var(--step-h3);line-height:1.2;letter-spacing:-.02em}
 p{margin:0 0 16px;text-wrap:pretty;overflow-wrap:anywhere}
 ul,ol{padding-inline-start:24px}
 li{margin-block:8px}
@@ -27,19 +28,21 @@ input,textarea{width:100%;min-height:48px;padding:12px 14px;font-size:1rem;backg
 textarea{min-height:144px}
 .wrap{width:100%;max-width:calc(1240px + 48px);margin-inline:auto;padding-inline:24px;min-width:0}
 
-/* Buttons: the app's shape and shades. */
-button,.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;min-width:44px;padding:12px 22px;border:1px solid var(--line);border-radius:var(--radius-s);background:var(--panel);color:var(--ink);font-weight:600;text-decoration:none;cursor:pointer;touch-action:manipulation;transition:transform .15s var(--ease),background-color .2s,border-color .2s}
+/* Buttons: the app's pill shape. */
+button,.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;min-width:44px;padding:12px 24px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel);color:var(--ink);font-weight:600;text-decoration:none;cursor:pointer;touch-action:manipulation;transition:transform .15s var(--ease),background-color .2s,border-color .2s}
 .button.primary,.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-@media(hover:hover){.button:hover,button:hover{border-color:var(--ink);text-decoration:none}.button.primary:hover{border-color:var(--ink);background:color-mix(in srgb,var(--accent) 88%,var(--ink))}}
+@media(hover:hover){.button:hover,button:hover{border-color:var(--ink);text-decoration:none}.button.primary:hover{background:color-mix(in srgb,var(--accent) 84%,var(--paper))}}
 .button:active,button:active{transform:scale(.98)}
+.button{max-width:100%;min-width:0;text-align:center;overflow-wrap:anywhere}
 
 /* Header */
-.skip-link{position:absolute;top:-100px;left:16px;z-index:50;background:var(--panel);padding:12px 16px;border-radius:var(--radius-s)}
+.skip-link{position:absolute;top:-100px;left:16px;z-index:50;background:var(--panel);color:var(--ink);padding:12px 16px;border-radius:var(--radius-s)}
 .skip-link:focus{top:8px}
-.site-header{position:relative;z-index:20;background:var(--paper)}
+.site-header{position:relative;z-index:20}
+.field-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 .header-inner{display:flex;align-items:center;flex-wrap:wrap;gap:16px 32px;min-height:80px;padding-block:12px}
 .wordmark{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-weight:650;font-size:1.0625rem;text-decoration:none;letter-spacing:-.01em}
-.wordmark svg{width:40px;height:40px;padding:8px;border-radius:12px;background:var(--accent);color:var(--on-accent)}
+.wordmark svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--accent);color:var(--on-accent)}
 .nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 28px;margin-inline-start:auto}
 .nav>a:not(.button){display:inline-flex;align-items:center;min-height:44px;font-size:1rem;text-decoration:none}
 .nav>a:not(.button):hover{text-decoration:underline}
@@ -72,7 +75,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .stage-frame{position:relative;height:100%;max-height:780px;aspect-ratio:390/844;align-self:center}
 .stage-screen{position:absolute;inset:0;opacity:0;transform:scale(.985);transition:opacity .7s var(--ease),transform .9s var(--ease)}
 .stage-screen[data-active]{opacity:1;transform:none}
-.stage-screen img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:28px;background:#fff}
+.stage-screen img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:32px;background:#fff}
 .stage-tabs{display:flex;gap:8px;margin-top:24px}
 .stage-tabs button{min-height:44px;padding:8px 18px;background:transparent;border-color:transparent;color:var(--on-field);font-weight:600}
 .stage-tabs button[aria-pressed=true]{background:var(--on-field);color:var(--field)}
@@ -87,7 +90,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .tools{display:grid;gap:96px}
 .tool{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px 64px;align-items:center}
 .tool-picture{background:var(--soft);border-radius:var(--radius-l);padding:clamp(16px,2.4vw,32px);overflow:hidden}
-.tool-picture img{width:100%;border-radius:10px;border:1px solid var(--line)}
+.tool-picture img{width:100%;border-radius:16px}
 .tool-copy p{font-size:1.125rem;max-width:28em}
 .more-tools{list-style:none;padding:0;margin:120px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 48px}
 .more-tools li{margin:0}
@@ -101,7 +104,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .trust-answers h3{font-size:1.25rem;font-weight:650;letter-spacing:0;margin-bottom:8px}
 .trust-answers p{font-size:1.125rem;margin:0;max-width:34em}
 .pricing-layout{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px 96px;align-items:start}
-.pricing-figure .price{font:600 clamp(2rem,12vw,7rem)/1 var(--site-display);letter-spacing:-.03em;margin-bottom:24px}
+.pricing-figure .price{font:650 clamp(2rem,12vw,7rem)/1 var(--site-display);letter-spacing:-.05em;margin-bottom:24px}
 .price small{font:400 1.25rem var(--site-body);letter-spacing:0;color:var(--muted)}
 .pricing-figure p:not(.price){font-size:1.125rem;max-width:32em}
 .pricing-figure .button{margin-top:16px}
@@ -116,7 +119,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .closing-copy p{font-size:1.25rem;color:var(--on-field-muted);max-width:26em;margin:0}
 .signin-card{justify-self:end;width:100%;max-width:460px;background:var(--panel);color:var(--ink);border-radius:var(--radius-l);padding:40px;box-shadow:var(--shadow-float)}
 .signin-mark{display:flex;align-items:center;gap:12px;font-weight:650;margin-bottom:32px}
-.signin-logo svg{width:40px;height:40px;padding:8px;border-radius:12px;background:var(--accent);color:var(--on-accent)}
+.signin-logo svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--accent);color:var(--on-accent)}
 .signin-card h3{margin-bottom:12px}
 .signin-card p{color:var(--muted)}
 .signin-card .button{width:100%;margin-block:16px}
@@ -141,7 +144,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
 .trust-grid h3{font:650 1.125rem/1.5 var(--site-body);letter-spacing:0;margin-bottom:8px}
 .pricing{max-width:780px}
-.price{font:600 2.5rem/1.2 var(--site-display);margin-block:16px}
+.price{font:650 2.5rem/1.2 var(--site-display);margin-block:16px}
 .faq{max-width:780px}
 .page{padding-block:clamp(56px,8vw,112px)}
 .page h1{font-size:clamp(2.5rem,5vw,4rem)}
@@ -180,7 +183,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
  .statements{padding-block:48px 24px;max-width:none}
  .statement{min-height:0;display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:24px 48px;align-items:center;padding-block:40px}
  .statement-picture{display:block;grid-row:span 2;background:var(--field);border-radius:var(--radius-l);padding:24px 24px 0;overflow:hidden;max-height:520px}
- .statement-picture img{border-radius:20px 20px 0 0}
+ .statement-picture img{border-radius:24px 24px 0 0}
  .statement h3{align-self:end;margin-bottom:0}
  .statement p{align-self:start}
  .tools-head,.trust-layout,.pricing-layout,.faq-layout,.closing-layout{grid-template-columns:minmax(0,1fr)}
@@ -201,7 +204,9 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 }
 @media(max-width:599px){
  .wrap,.stage-copy{padding-inline:16px}
- .wordmark{font-size:1rem;gap:10px}
+ .wordmark{font-size:.9375rem;gap:10px}
+ .header-inner{gap:8px}
+ .mobile-menu-toggle{padding:10px 16px}
  .wordmark svg{width:36px;height:36px;padding:7px}
  .hero-copy-block{padding-block:48px 32px}
  .lead,.hero-copy,.tools-head p,.closing-copy p{font-size:1.125rem}
@@ -222,3 +227,5 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
  .reveal-ready .reveal{opacity:1;transform:none}
  .stage-screen{transform:none}
 }
+
+@media(max-width:429px){.wordmark span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.header-inner{flex-wrap:nowrap}}
