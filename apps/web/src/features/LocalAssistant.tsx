@@ -121,14 +121,14 @@ export function LocalAssistant({
     error: null as Error | null,
     refetch: async () => {},
   };
-  const assignmentPreview=(()=>{if(plan?.kind!=='assignment')return null;try{const saved=cache.getQueryData<{revision:number;draft:ScheduleDraft}>(['assistant-schedule',c.account,c.cong]);const program=programSchema.parse(saved?.draft.programs?.[plan.week]);const parts=program.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());if(!saved||parts.length!==1)throw Error('Choose one exact part title from Schedule.');return {caution:prepareAssignment(saved.draft,plan.week,parts[0],publisher).caution,error:null};}catch(error){return {caution:null,error:(error as Error).message};}})();
+  const assignmentPreview=(()=>{if(plan?.kind!=='assignment')return null;try{const saved=cache.getQueryData<{revision:number;draft:ScheduleDraft}>(['assistant-schedule',c.account,c.cong]);const program=programSchema.parse(saved?.draft.programs?.[plan.week]);const parts=program.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());const [part]=parts;if(!saved||!part||parts.length!==1)throw Error('Choose one exact part title from Schedule.');return {caution:prepareAssignment(saved.draft,plan.week,part,publisher).caution,error:null};}catch(error){return {caution:null,error:(error as Error).message};}})();
   async function confirm() {
     if (!c.roles.includes("admin") || lock.current || !plan) return;
     if(plan.kind==='assignment'){
       const saved=cache.getQueryData<{revision:number;draft:ScheduleDraft}>(['assistant-schedule',c.account,c.cong]);
       const parsed=programSchema.safeParse(saved?.draft?.programs?.[plan.week]);if(!saved?.draft||!parsed.success){setError('Load a meeting program for this week in Schedule first.');return;}
-      const matches=parsed.data.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());if(matches.length!==1){setError('Use the exact title of one part in this week’s program.');return;}
-      lock.current=true;setBusy(true);try{const next=prepareAssignment(saved.draft,plan.week,matches[0],publisher);if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).schedules.save(saved.revision,next.draft);await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify(demo?'Fictional assignment reviewed.':'Assignment saved in the unpublished draft. Review Schedule before publishing.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
+      const matches=parsed.data.parts.filter(part=>part.title.toLowerCase()===plan.part.toLowerCase()||part.type.toLowerCase()===plan.part.replace(/\s/g,'').toLowerCase());const [match]=matches;if(!match||matches.length!==1){setError('Use the exact title of one part in this week’s program.');return;}
+      lock.current=true;setBusy(true);try{const next=prepareAssignment(saved.draft,plan.week,match,publisher);if(!demo)await repositories(storeFor(c.cong,c.roles),c.cong).schedules.save(saved.revision,next.draft);await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify(demo?'Fictional assignment reviewed.':'Assignment saved in the unpublished draft. Review Schedule before publishing.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
     }
     if(plan.kind==='group-link'){
       lock.current=true;setBusy(true);try{
@@ -140,7 +140,7 @@ export function LocalAssistant({
       }catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
     }
     if(plan.kind==='ap-revoke'){
-      const [calendarYear,calendarMonth]=plan.period.split('-').map(Number);const serviceYear=calendarYear+(calendarMonth>=9?1:0);
+      const [calendarYear=0,calendarMonth=0]=plan.period.split('-').map(Number);const serviceYear=calendarYear+(calendarMonth>=9?1:0);
       const record=rows.find(row=>row.pub_id===publisher&&row.service_year===serviceYear&&row.month===calendarMonth-1);
       if(!record?.is_ap){setError('No auxiliary-pioneer report exists for this publisher and month.');return;}
       lock.current=true;setBusy(true);try{if(demo)updateDemo(current=>current.map(row=>row.id===record.id?{...row,is_ap:false}:row));else {const result=await repositories(storeFor(c.cong,c.roles),c.cong).reports.revokeAP(record);setAPUndo({id:result.actionId,until:Date.now()+10000,record});setTimeout(()=>setAPUndo(null),TIMING.undo);}await cache.invalidateQueries({queryKey:['reports']});await cache.invalidateQueries({queryKey:['assistant-home-ready']});setPlan(null);c.notify('Auxiliary-pioneer status revoked for this month. The report is retained.');}catch(error){setError((error as Error).message);}finally{lock.current=false;setBusy(false);}return;
@@ -390,11 +390,11 @@ export function LocalAssistant({
             setPublisher(
               (next.kind === "report" || next.kind === "s21-person" || next.kind === "publisher-edit" || next.kind === "ap-revoke" || next.kind === "assignment") &&
                 next.people.length === 1
-                ? next.people[0].id
+                ? (next.people[0]?.id ?? "")
                 : "",
             );
-            if (next.kind === "s21-person" && next.people.length === 1)
-              void download(next.people[0].id);
+            const only = next.kind === "s21-person" && next.people.length === 1 ? next.people[0] : undefined;
+            if (only) void download(only.id);
           } catch (error) {
             setError((error as Error).message);
           }
