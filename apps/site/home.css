@@ -7,7 +7,7 @@
  --bg:#fafafa;--surface:#f0f0f0;--surface-2:#e4e4e4;--ink:#0a0a0a;--muted:#595959;--line:#e0e0e0;
  --accent:#0a0a0a;--accent-ink:#fafafa;--stage:#0a0a0a;--panel:#fff;--panel-line:#e4e4e4;
  --m:24px;--r:14px;--ease:cubic-bezier(.2,.7,.1,1);
- background:var(--bg);color:var(--ink);overflow-x:clip;
+ color:var(--ink);overflow-x:clip;
  [data-theme=mono-dark] &{
   --bg:#0a0a0a;--surface:#161616;--surface-2:#222;--ink:#f5f5f5;--muted:#a6a6a6;--line:#262626;
   --accent:#f5f5f5;--accent-ink:#0a0a0a;--stage:#1c1c1c;--panel:#111;--panel-line:#2c2c2c;
@@ -28,7 +28,7 @@
  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
  /* hero */
- .v5-hero{position:relative;min-height:clamp(900px,calc(100svh - 80px),980px);padding-top:64px;overflow:hidden}
+ .v5-hero{position:relative;min-height:clamp(900px,calc(100svh - 80px),980px);padding-top:64px}
  .v5-copy{max-width:780px;position:relative;z-index:2}
  .v5-hero h1{font-size:clamp(46px,5.2vw,82px)}
  .v5-lead{font-size:18px;max-width:40ch;margin-top:28px}

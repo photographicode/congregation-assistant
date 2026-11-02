@@ -39,7 +39,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .skip-link{position:absolute;top:-100px;left:16px;z-index:50;background:var(--panel);color:var(--ink);padding:12px 16px;border-radius:var(--radius-s)}
 .skip-link:focus{top:8px}
 .site-header{position:relative;z-index:20}
-.field-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.field-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 110% 85% at 50% 35%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 110% 85% at 50% 35%,#000 35%,transparent 100%)}
 .header-inner{display:flex;align-items:center;flex-wrap:wrap;gap:16px 32px;min-height:80px;padding-block:12px}
 .wordmark{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-weight:650;font-size:1.0625rem;text-decoration:none;letter-spacing:-.01em}
 .wordmark svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--accent);color:var(--on-accent)}
