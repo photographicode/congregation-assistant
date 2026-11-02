@@ -77,3 +77,9 @@ Owner request: a minimal black/grey/white website with background animation that
 - Initial gzip payload: 49,064 bytes (was 98,945), because only one font file is preloaded.
 
 Evidence (local, Windows, same method as above): site audit 224 pages, 0 failures; overflow audit 1,672 views, 0 failures (a 2 px Malayalam button overflow at 320 px / 2x was fixed by letting button labels wrap); marketing check PASS; Axe/overflow 84 views, 0 failures on real routes; claims check PASS. Deploy this together with or after the app redesign, because the screenshots show that design.
+
+## Product-performs website — 2026-11-02
+
+The English home is rebuilt as working fragments of the app (fictional data): a publisher report that lands on the secretary's list and S-21 row, a four-step slider, a searchable tool list, an on-device assistant example, trust tiles, pricing, FAQ and a sign-in preview. Source: `apps/site/v5-home.mjs`, `apps/site/home.css` (scoped to `.v5`, nesting lowered at build), demo behaviour in `apps/site/site.js`. The dot field is skipped on this page. Other locales and pages are unchanged.
+
+Evidence on the final build: site audit 224 pages, 0 failures; overflow 1,672 views, 0 failures; marketing check PASS; claims check PASS; Axe 84 views with 0 failures on real routes (the 6 on `cookies/` and `data-processing/` are the local 404-fallback CSP case). Hero demo verified by click at 1440x900, 1280x720, 1920x1080, 1024x768 and 390x844 with no console errors. Initial gzip payload 55,829 bytes; site.js 11,399 bytes.
