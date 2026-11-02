@@ -227,3 +227,5 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
  .reveal-ready .reveal{opacity:1;transform:none}
  .stage-screen{transform:none}
 }
+
+@media(max-width:429px){.wordmark span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.header-inner{flex-wrap:nowrap}}
