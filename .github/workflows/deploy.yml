@@ -92,7 +92,7 @@ jobs:
         CUSTOM_DOMAIN_READY: ${{ vars.CUSTOM_DOMAIN_READY || 'false' }}
         SITE_URL: ${{ vars.SITE_URL || '' }}
         APP_URL: ${{ vars.APP_URL || '' }}
-    - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
+    - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
       with:
         path: work/pages
         retention-days: 30
