@@ -10,7 +10,7 @@ const PREVIEW_ASSIGNMENTS=5;
 type Assignment=NonNullable<ReturnType<typeof usePublisherPortal>['data']>['assignments'][number];
 function when(assignment:Assignment){return (assignment.date?new Date(assignment.date+'T12:00:00').toLocaleDateString('en',{weekday:'short',day:'numeric',month:'long'}):assignment.week||'')+(assignment.time?' · '+assignment.time:'')+(assignment.isAssistant?' · Assistant':'');}
 /** The publisher's own published assignments; shared by Today and the publisher Meetings view. */
-export function AssignmentList({assignments,limit=PREVIEW_ASSIGNMENTS}:{assignments:Assignment[];limit?:number}){
+function AssignmentList({assignments,limit=PREVIEW_ASSIGNMENTS}:{assignments:Assignment[];limit?:number}){
  return assignments.length?<ul className="v41-assignments">{assignments.slice(0,limit).map((assignment,i)=><li className="v4-assignment" key={`${assignment.slot||assignment.title}-${assignment.date||assignment.week}-${i}`}><span className="v4-assignment-icon"><BookOpen aria-hidden="true"/></span><div><h3>{assignment.title||assignment.slot||'Meeting assignment'}</h3><p className="muted">{when(assignment)}</p></div><CheckCircle2 aria-label={t('v4.2071bb2aa6')} className="muted"/></li>)}</ul>:<p className="v4-empty">{t('v4.b51a40c568')}</p>;
 }
 export function PublisherAssignments({context:c}:{context:Context}){
