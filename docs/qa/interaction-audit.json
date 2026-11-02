@@ -1,8 +1,534 @@
 {
-  "fingerprint": "da0199cace8272f708c99ca7c961de00eb57989383a7200e115a0127e67acfe1",
+  "fingerprint": "577d5f361c3a4f7c1010184f8351478da03b7259e6f3f9d2b68f845c4a93aec7",
   "views": 10,
   "controlsChecked": "all visible operational controls",
   "hard": 0,
-  "soft": 0,
-  "findings": []
+  "soft": 75,
+  "findings": [
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 390,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 390,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 390,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 390,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 390,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 390,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 390,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 390,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 390,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 390,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 390,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 390,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 390,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 390,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 390,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 390,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 390,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 390,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 390,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 390,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Today",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "People",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Reports",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Meetings",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "More",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Account and appearance",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Collapse navigation",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "home",
+      "width": 1024,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Today",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "People",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Reports",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Meetings",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "More",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Account and appearance",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Collapse navigation",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "people",
+      "width": 1024,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Today",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "People",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Reports",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Meetings",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "More",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Account and appearance",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Collapse navigation",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "reports",
+      "width": 1024,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Today",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "People",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Reports",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Meetings",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "More",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Account and appearance",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Collapse navigation",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "schedule",
+      "width": 1024,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Skip to content",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Today",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "People",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Reports",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Meetings",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "More",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Account and appearance",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Collapse navigation",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Search people and actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Quick actions",
+      "rule": "transition"
+    },
+    {
+      "severity": "SOFT",
+      "screen": "settings",
+      "width": 1024,
+      "label": "Assistant (on-device)",
+      "rule": "transition"
+    }
+  ]
 }

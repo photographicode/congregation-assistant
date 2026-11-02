@@ -14,7 +14,7 @@
       "theme": "mono-light",
       "screen": "home",
       "scroll": 0.5,
-      "pairs": 29,
+      "pairs": 23,
       "minimum": 7.406,
       "bareCanvasText": 0,
       "failures": []
@@ -86,7 +86,7 @@
       "theme": "mono-light",
       "screen": "schedule",
       "scroll": 0,
-      "pairs": 21,
+      "pairs": 20,
       "minimum": 7.406,
       "bareCanvasText": 0,
       "failures": []
@@ -95,7 +95,7 @@
       "theme": "mono-light",
       "screen": "schedule",
       "scroll": 0.5,
-      "pairs": 27,
+      "pairs": 28,
       "minimum": 7.406,
       "bareCanvasText": 0,
       "failures": []
@@ -122,7 +122,7 @@
       "theme": "mono-dark",
       "screen": "home",
       "scroll": 0.5,
-      "pairs": 29,
+      "pairs": 23,
       "minimum": 6.913,
       "bareCanvasText": 0,
       "failures": []
@@ -131,7 +131,7 @@
       "theme": "mono-dark",
       "screen": "home",
       "scroll": 1,
-      "pairs": 21,
+      "pairs": 22,
       "minimum": 6.913,
       "bareCanvasText": 0,
       "failures": []
@@ -194,7 +194,7 @@
       "theme": "mono-dark",
       "screen": "schedule",
       "scroll": 0,
-      "pairs": 21,
+      "pairs": 20,
       "minimum": 6.913,
       "bareCanvasText": 0,
       "failures": []
@@ -203,7 +203,7 @@
       "theme": "mono-dark",
       "screen": "schedule",
       "scroll": 0.5,
-      "pairs": 27,
+      "pairs": 28,
       "minimum": 6.913,
       "bareCanvasText": 0,
       "failures": []
@@ -230,7 +230,7 @@
       "theme": "paper",
       "screen": "home",
       "scroll": 0.5,
-      "pairs": 29,
+      "pairs": 23,
       "minimum": 5.872,
       "bareCanvasText": 0,
       "failures": []
@@ -302,7 +302,7 @@
       "theme": "paper",
       "screen": "schedule",
       "scroll": 0,
-      "pairs": 21,
+      "pairs": 20,
       "minimum": 5.872,
       "bareCanvasText": 0,
       "failures": []
@@ -311,7 +311,7 @@
       "theme": "paper",
       "screen": "schedule",
       "scroll": 0.5,
-      "pairs": 27,
+      "pairs": 28,
       "minimum": 5.872,
       "bareCanvasText": 0,
       "failures": []
@@ -338,7 +338,7 @@
       "theme": "forest",
       "screen": "home",
       "scroll": 0.5,
-      "pairs": 29,
+      "pairs": 23,
       "minimum": 6.987,
       "bareCanvasText": 0,
       "failures": []
@@ -410,7 +410,7 @@
       "theme": "forest",
       "screen": "schedule",
       "scroll": 0,
-      "pairs": 21,
+      "pairs": 20,
       "minimum": 6.987,
       "bareCanvasText": 0,
       "failures": []
@@ -419,7 +419,7 @@
       "theme": "forest",
       "screen": "schedule",
       "scroll": 0.5,
-      "pairs": 27,
+      "pairs": 28,
       "minimum": 6.987,
       "bareCanvasText": 0,
       "failures": []
