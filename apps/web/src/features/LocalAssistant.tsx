@@ -341,7 +341,7 @@ export function LocalAssistant({
       )}
       <div className={compact ? "assistant-prompt" : "stack"}>
         {compact && (
-          <Button className="assistant-plus" type="button" aria-label={"Quick actions"} aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
+          <Button className="assistant-plus" type="button" aria-label={"Assistant shortcuts"} aria-expanded={quickOpen} onClick={() => setQuickOpen((value) => !value)}>
             <Plus aria-hidden="true" />
           </Button>
         )}
