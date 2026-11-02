@@ -146,7 +146,7 @@ jobs:
     - name: Verify published site app worker and on-device demo
       run: node scripts/check-pages-deploy.cjs
       env:
-        CA_LIVE_URL: https://photographicode.github.io/congregation-assistant/
+        CA_LIVE_URL: ${{ vars.CUSTOM_DOMAIN_READY == 'true' && format('{0}/', vars.SITE_URL || 'https://congregationassistant.com') || 'https://photographicode.github.io/congregation-assistant/' }}
         CA_EXPECTED_COMMIT: ${{ github.sha }}
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
@@ -163,10 +163,10 @@ jobs:
 
         node scripts/site-audit.mjs'
       env:
-        CA_LIVE_URL: https://photographicode.github.io/congregation-assistant/
+        CA_LIVE_URL: ${{ vars.CUSTOM_DOMAIN_READY == 'true' && format('{0}/', vars.SITE_URL || 'https://congregationassistant.com') || 'https://photographicode.github.io/congregation-assistant/' }}
         CA_EXPECTED_COMMIT: ${{ github.sha }}
         SITE_AUDIT_ROOT: work/live-published
-        SITE_AUDIT_URL: https://photographicode.github.io/congregation-assistant/
+        SITE_AUDIT_URL: ${{ vars.CUSTOM_DOMAIN_READY == 'true' && format('{0}/', vars.SITE_URL || 'https://congregationassistant.com') || 'https://photographicode.github.io/congregation-assistant/' }}
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
