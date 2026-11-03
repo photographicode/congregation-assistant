@@ -15,6 +15,7 @@ import {
   BarChart3,
   FileDown,
   Plus,
+  Settings,
   MessageCircle,
   CalendarDays,
   ArrowUpRight,
@@ -231,6 +232,8 @@ export function Dashboard({
           {t("ui.records.could.not.load.refresh.to.try.agai.7090d449")}
         </p>
       )}
+      {/* Until setup is finished it is the first thing a new admin sees; it disappears afterwards. */}
+      {setupEntry}
       {a.style === "calm" && (
         <Card className="stack">
           <h2>{t("home.nextTask")}</h2>
@@ -351,7 +354,7 @@ export function Dashboard({
               </Button>
             )}
             <Button onClick={() => go("settings")} type="button">
-              <Plus />
+              <Settings />
               {t("ui.install.app.all.settings.15eaa3f0")}
             </Button>
           </div>
@@ -468,11 +471,10 @@ export function Dashboard({
           </Card>
         )}
       </div>
-      {/* V4.1: the month's work comes first; links, updates, the assistant and setup follow it. */}
+      {/* V4.1: the month's work comes first; links, updates and the assistant follow it. */}
       <HomeGroupLinks context={c} period={period} />
       {updates}
       <HomeAssistant context={c} go={go} />
-      {setupEntry}
       <HomeSuggestions
         context={c}
         period={period}
