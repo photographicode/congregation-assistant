@@ -42,23 +42,17 @@
     "@typescript-eslint/no-explicit-any": {
       "count": 1
     },
-    "@typescript-eslint/no-misused-promises": {
-      "count": 1
-    },
     "complexity": {
-      "count": 2
-    },
-    "max-lines": {
       "count": 1
     },
     "max-lines-per-function": {
       "count": 1
     },
     "no-magic-numbers": {
-      "count": 4
+      "count": 2
     },
     "no-nested-ternary": {
-      "count": 12
+      "count": 4
     },
     "react-hooks/exhaustive-deps": {
       "count": 1

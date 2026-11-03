@@ -58,8 +58,9 @@
  .v41-today-grid>:last-child{grid-area:news}
 }
 .v4-nav-caption,.v4-version{text-transform:none;letter-spacing:0}
-.segmented>button:not(.active){border-color:transparent;background:transparent;color:var(--text-2)}
-.segmented>button.active{border-color:var(--text-3);background-color:var(--surface-solid);color:var(--text-1);box-shadow:var(--shadow-card)}
+/* Every option reads as a button; the chosen one is solid. Tabs mark it with aria-selected, toggles with aria-pressed. */
+.segmented>button:not(:disabled){border-color:var(--border);background:var(--surface-solid);color:var(--text-1)}
+.segmented>button:is(.active,[aria-pressed=true],[aria-selected=true]):not(:disabled){border-color:var(--accent);background:var(--accent);color:var(--text-on-accent);box-shadow:var(--shadow-card)}
 .v41-report-summary{align-items:start}
 @media (min-width:600px){
  :is(.ap-review-head,.ap-review-row){grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) auto}

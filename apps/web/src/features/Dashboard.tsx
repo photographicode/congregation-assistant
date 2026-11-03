@@ -7,7 +7,7 @@ import {
   sftsTotals,
 } from "../../../../packages/core/publisher-selection";
 import { HomeKpis } from "../../../../packages/ui/HomePreview";
-import { Segmented, Button, Card, Stack, Inline } from "../../../../packages/ui/components";
+import { Button, Card, Stack, Inline } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { repositories } from "../../../../packages/core/repositories";
 import { demo, storeFor } from "./client";
+import { useDemoReports } from "./demo-reports";
+import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import { useAppearance } from "./store";
 import { Scene } from "./Scene";
 import { ExperiencePicker } from "./ExperiencePicker";
@@ -45,35 +47,8 @@ type DashboardPerson = {
   is_ms?: boolean | null;
   transferred_at?: unknown;
 };
-const fictionalPeople: DashboardPerson[] = [
-  { id: "daniel", name: "Daniel Thomas", service_group: "North", is_rp: true },
-  { id: "maria", name: "Maria Thomas", service_group: "North" },
-  { id: "samuel", name: "Samuel George", service_group: "South" },
-  { id: "anna", name: "Anna Joseph", service_group: "South", is_sfts: true },
-];
-const fictionalReports = [
-  {
-    pub_id: "daniel",
-    hours: 50,
-    studies: 3,
-    is_ap: false,
-    shared_in_ministry: true,
-  },
-  {
-    pub_id: "maria",
-    hours: 15,
-    studies: 1,
-    is_ap: true,
-    shared_in_ministry: true,
-  },
-  {
-    pub_id: "samuel",
-    hours: 0,
-    studies: 0,
-    is_ap: false,
-    shared_in_ministry: false,
-  },
-];
+// Demo Home reads the same fictional people and reports as the Reports screen.
+const fictionalPeople: DashboardPerson[] = demoPublishers.map((p) => ({ ...p, service_group: p.group }));
 export function Dashboard({
   context: c,
   go,
@@ -115,9 +90,7 @@ export function Dashboard({
     );
   const [period, setPeriod] = React.useState(() =>
       previousReportingPeriod(new Date(), setup.timezone),
-    ),
-    [filter, setFilter] = React.useState("all"),
-    [search, setSearch] = React.useState("");
+    );
   const [y = 0, m = 1] = period.split("-").map(Number),
     month = m - 1,
     year = y + (month >= 8 ? 1 : 0);
@@ -131,6 +104,8 @@ export function Dashboard({
     queryFn: () => repo.reports.list(year, month),
     enabled: !demo && canReports,
   });
+  const demoRows = useDemoReports((s) => s.rows),
+    fictionalReports = demoRows.filter((r) => r.service_year === year && r.month === month);
   const summary = dashboardSummary(
     demo ? fictionalPeople : people.data || [],
     demo ? fictionalReports : reports.data || [],
@@ -142,32 +117,22 @@ export function Dashboard({
       (p) => !p.transferred_at,
     ),
     liveReports = demo
-      ? fictionalReports.map((row) => ({ ...row, service_year: year, month }))
+      ? fictionalReports
       : reports.data || [],
     special = sftsTotals(livePeople, liveReports, period);
-  const roster = (demo ? fictionalPeople : people.data || [])
-    .filter((p) => !p.transferred_at)
-    .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-    .filter((p) =>
-      filter === "pending"
-        ? summary.missing.some((q: DashboardPerson) => q.id === p.id)
-        : filter === "submitted"
-          ? summary.rows.some((r) => r.pub_id === p.id)
-        : filter === "regular"
-          ? Boolean(p.is_rp || p.is_sp || p.is_fm)
-          : filter === "auxiliary" || filter === "ap-review"
-            ? summary.rows.some((r) => r.pub_id === p.id && r.is_ap)
-            : filter === "elders"
-              ? Boolean(p.is_elder)
-              : filter === "ms"
-                ? Boolean(p.is_ms)
-                : filter === "sfts"
-                  ? isSFTS(p)
-                  : filter.startsWith("group:")
-                    ? p.service_group === filter.slice(6)
-                    : true,
-    );
-  const groups = [...new Set(livePeople.map((p) => p.service_group).filter(Boolean))] as string[];
+  const remind = async (name: string) => {
+    const text = `Hello ${name}, a friendly reminder to submit your ${period} ministry report. Thank you.`;
+    try {
+      if (navigator.share) await navigator.share({ text });
+      else {
+        await navigator.clipboard.writeText(text);
+        c.notify("Reminder copied. Choose where to send it.");
+      }
+    } catch (e) {
+      if ((e as Error).name !== "AbortError")
+        c.notify("Sharing is unavailable. You can use Messages to prepare a reminder.");
+    }
+  };
   const openReports = (action: string) => {
     sessionStorage.setItem(
       "ca-report-action",
@@ -262,12 +227,7 @@ export function Dashboard({
             loading={loading}
             error={!!error}
             charts={a.charts}
-            onSelect={(filter) => {
-              setFilter(filter);
-              document
-                .getElementById("dashboard-submissions")
-                ?.scrollIntoView({ block: "start" });
-            }}
+            onSelect={() => openReports("review")}
           />
         )}
         {canReports && !loading && !error && special.publishers > 0 && (
@@ -312,7 +272,6 @@ export function Dashboard({
                 </Button>
                 <Button
                   onClick={() => {
-                    setFilter("pending");
                     document
                       .getElementById("dashboard-submissions")
                       ?.scrollIntoView();
@@ -361,113 +320,37 @@ export function Dashboard({
         </Card>
         {canReports && (
           <Card className="stack" id="dashboard-submissions">
+            {/* Home shows who still has to report; the full list, filters and totals live in Reports. */}
             <div>
               <span className="eyebrow">{period}</span>
               <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
               <p>
                 {summary.pending === 0 && summary.publishers > 0
                   ? `All ${summary.publishers} reports are in — nicely done.`
-                  : "A clear view of what’s in and who may need a reminder."}
+                  : `${summary.publishers - summary.pending} of ${summary.publishers} reports are in.`}
               </p>
             </div>
-            <Stack>
-              <label>
-                {t("ui.find.publisher.9607fbc9")}
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  type="search"
-                />
-              </label>
-              <Segmented
-                label={t("ui.show.0df6f1ca")}
-                value={filter}
-                onChange={setFilter}
-                options={[
-                  { value: "all", label: t("ui.everyone.da2e5dc5") },
-                  { value: "submitted", label: "Submitted" },
-                  { value: "pending", label: t("ui.missing.reports.e12d4dd9") },
-                  {
-                    value: "regular",
-                    label: t("ui.regular.pioneers.ea3147c8"),
-                  },
-                  {
-                    value: "auxiliary",
-                    label: t("ui.auxiliary.pioneers.0b40b93d"),
-                  },
-                  { value: "ap-review", label: t("refine.apTitle") },
-                  { value: "ms", label: "MS" },
-                  { value: "elders", label: "Elders" },
-                  ...(special.publishers ? [{ value: "sfts", label: "SFTS" }] : []),
-                  ...groups.map((group) => ({ value: `group:${group}`, label: group })),
-                ]}
-              />
-            </Stack>
-            {!loading && !error && roster.length > 0 && (
-              <div className="people-table-wrap">
-              <table className="people-table">
-                <thead><tr><th>{"Name"}</th><th>{"Roles"}</th><th>{"Report"}</th><th>{"Studies"}</th><th>{"Hours"}</th><th>{"Actions"}</th></tr></thead>
-                <tbody>
-              {roster.slice(0, 50).map((p) => {
-                const r = summary.rows.find((row) => row.pub_id === p.id);
-                const pioneer = Boolean(p.is_rp || p.is_sp || p.is_fm || r?.is_ap || isSFTS(p));
-                const roles = [p.is_elder && "Elder", p.is_ms && "MS", (p.is_rp || p.is_sp || p.is_fm) && "RP", r?.is_ap && "AP", isSFTS(p) && "SFTS"].filter(Boolean);
-                return (
-                  <tr className={r ? "" : "not-submitted"} key={p.id} tabIndex={0}>
-                    <td data-label="Name"><strong translate="no">{p.name}</strong><span className="group-chip">{p.service_group || "No group"}</span></td>
-                    <td data-label="Roles">{roles.length ? roles.map((role) => <span className="role-chip" key={String(role)}>{role}</span>) : <span>{"Publisher"}</span>}</td>
-                    <td data-label="Report">{r ? (r.shared_in_ministry ? `Shared${r.comments ? " · Comment" : ""}` : "Did not share") : "Not submitted"}</td>
-                    <td className="number" translate="no" data-label="Studies">{r?.studies ?? "—"}</td>
-                    <td className="number" translate="no" data-label="Hours">{pioneer && r ? r.hours || 0 : "—"}</td>
-                    <td data-label="Actions"><div className="actions row-actions">
-                      <Button className="tonal" onClick={() => { sessionStorage.setItem("ca-pdf-open", `s21:${p.id}`); go("pdf"); }} type="button">{"S-21"}</Button>
-                      {!r && (
-                        <Button className="tonal warning"
-                          onClick={async () => {
-                            const text = `Hello ${p.name}, a friendly reminder to submit your ${period} ministry report. Thank you.`;
-                            try {
-                              if (navigator.share)
-                                await navigator.share({ text });
-                              else {
-                                await navigator.clipboard.writeText(text);
-                                c.notify(
-                                  "Reminder copied. Choose where to send it.",
-                                );
-                              }
-                            } catch (e) {
-                              if ((e as Error).name !== "AbortError")
-                                c.notify(
-                                  "Sharing is unavailable. You can use Messages to prepare a reminder.",
-                                );
-                            }
-                          }} type="button"
-                        >
-                          {t("ui.remind.3aec36bb")}
-                        </Button>
-                      )}
-                    </div></td>
-                  </tr>
-                );
-              })}
-                </tbody>
-                <tfoot><tr><th data-label="Name">{"Total"}</th><td data-label="Roles">{roster.length}{" publishers"}</td><td data-label="Report">{roster.filter((p) => summary.rows.some((r) => r.pub_id === p.id)).length}{" submitted"}</td><td className="number" data-label="Studies">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.studies || 0),0)}</td><td className="number" data-label="Hours">{roster.reduce((total,p) => total + (summary.rows.find((r) => r.pub_id === p.id)?.hours || 0),0)}</td><td /></tr></tfoot>
-              </table></div>
-            )}
-            {roster.length > 50 && (
-              <Button onClick={() => openReports("review")} type="button">
-                {t("ui.open.all.reports.a7845883")}
-              </Button>
-            )}
-            {!loading && !error && !roster.length && (
-              <div className="empty-scene">
-                <Scene kind={summary.publishers ? "caughtUp" : "publishers"} />
-                <p>
-                  {summary.publishers
-                    ? "No publishers match this view. Try another filter."
-                    : "Add your first publisher to start seeing reporting progress."}
-                </p>
+            {!loading && !error && summary.missing.length > 0 && (
+              <div className="list">
+                {summary.missing.slice(0, 5).map((p: DashboardPerson) => (
+                  <article className="list-row" key={p.id}>
+                    <strong translate="no">{p.name}</strong>
+                    <Button className="tonal warning" onClick={() => void remind(p.name)} type="button">
+                      {t("ui.remind.3aec36bb")}
+                    </Button>
+                  </article>
+                ))}
               </div>
             )}
+            {!loading && !error && !summary.publishers && (
+              <div className="empty-scene">
+                <Scene kind="publishers" />
+                <p>{"Add your first publisher to start seeing reporting progress."}</p>
+              </div>
+            )}
+            <Button onClick={() => openReports("review")} type="button">
+              {t("ui.open.monthly.reports.0436ae79")}
+            </Button>
           </Card>
         )}
       </div>

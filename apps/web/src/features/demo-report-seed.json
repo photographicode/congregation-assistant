@@ -1,0 +1,5 @@
+[
+  { "pub_id": "daniel", "hours": 50, "studies": 3, "is_ap": false, "shared_in_ministry": true },
+  { "pub_id": "maria", "hours": 15, "studies": 1, "is_ap": true, "shared_in_ministry": true },
+  { "pub_id": "samuel", "hours": 0, "studies": 0, "is_ap": false, "shared_in_ministry": false }
+]

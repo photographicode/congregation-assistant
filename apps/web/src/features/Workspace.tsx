@@ -1558,7 +1558,13 @@ export default function Workspace({
           <section className="card stack">
             <h2>{t("ui.review.message.042e6954")}</h2>
             <div className="bubble">
-              {formatMessage(template, messageValues)}
+              {/* Preview only: show which blanks are still to fill instead of "Hello , your assignment is  on". */}
+              {formatMessage(template, {
+                ...messageValues,
+                name: messageValues.name || "[name]",
+                part: messageValues.part || "[part]",
+                link: messageValues.link || "[schedule link]",
+              })}
             </div>
             {currentRecipient ? (
               <>
