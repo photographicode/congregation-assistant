@@ -2,16 +2,12 @@ import {publisherInput} from "../../../../packages/core/input-limits";
 import {savePublisherAction} from './publisher-action';
 import {
   Disclosure,
-  DisclosureLabel, Button } from "../../../../packages/ui/components";
+  DisclosureLabel, Button, Segmented, Tabs } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import type { Person } from "./publisher-record";
 import {
   getLocaleSnapshot,
-  getUILocale,
-  setUILocale,
   subscribeUILocale,
-  localeMetadata,
-  type Locale,
 } from "../../../../packages/core/i18n";
 import { watchtowerWeek } from "./publication-data";
 import { InstallApp } from "./InstallApp";
@@ -84,10 +80,11 @@ const initialGroups = [
 ];
 const weekKey = (d: Date) =>
   format(startOfWeek(d, { weekStartsOn: 1 }), "yyyy-MM-dd");
-function AppearanceSettings({compact,children}:{compact:boolean;children:React.ReactNode}) {
-  if(compact)return <Disclosure className="card"><DisclosureLabel>{t("ui.appearance.3907fa7f")}</DisclosureLabel><div className="stack">{children}</div></Disclosure>;
-  return <section className="card stack"><h2>{t("ui.appearance.3907fa7f")}</h2>{children}</section>;
+function Choice({label,value,options,onChange}:{label:string;value:string;options:string[][];onChange:(value:string)=>void}) {
+  return <div className="stack"><strong>{label}</strong><Segmented label={label} value={value} options={options.map(([value="",label=""])=>({value,label}))} onChange={onChange}/></div>;
 }
+// Admin hub cards for backup and plan open settings; land them on the matching tab.
+const settingsTabFor=()=>({backup:"privacy",plan:"congregation"} as Record<string,string>)[new URLSearchParams(location.search).get("tool")||""]||"appearance";
 function Heading({
   eyebrow,
   title,
@@ -162,6 +159,7 @@ export default function Workspace({
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [wizard, setWizard] = useState(false),
+    [settingsTab, setSettingsTab] = useState(settingsTabFor),
     [wizardStep, setWizardStep] = useState(0),
     [setup, setSetup] = useState<any>({
       name: c.name,
@@ -223,6 +221,7 @@ export default function Workspace({
       if (["groups", "import", "midweek", "weekend", "duties"].includes(value))
         setSub(value);
       sessionStorage.removeItem("ca-workspace-tool");
+      setSettingsTab(settingsTabFor());
     };
     window.addEventListener("ca:open-tool", open);
     return () => window.removeEventListener("ca:open-tool", open);
@@ -1644,273 +1643,256 @@ export default function Workspace({
         <Access context={c} />
       </>
     );
-  else
+  else {
+    const appearancePanel = (
+      <section className="card stack">
+        <h2>{t("ui.appearance.3907fa7f")}</h2>
+        <ExperiencePicker />
+        <ThemeGallery />
+        <ExperienceProfile context={c} />
+        <Choice
+          label={t("ui.theme.efb52e71")}
+          value={normalizeTheme(appearance.theme)}
+          options={["auto", ...themeIds].map((id) => [
+            id,
+            id === "auto"
+              ? t("v41.settings.followSystem")
+              : t(`theme.${id as (typeof themeIds)[number]}`),
+          ])}
+          onChange={(theme) => appearance.set({ theme })}
+        />
+        <Choice
+          label={t("ui.text.size.d68761cc")}
+          value={appearance.size}
+          options={[
+            ["S", t("v41.option.small")],
+            ["M", t("v41.option.medium")],
+            ["L", t("v41.option.large")],
+            ["XL", t("v41.option.extraLarge")],
+          ]}
+          onChange={(size) => appearance.set({ size })}
+        />
+        <Choice
+          label={t("ui.fit.to.my.screen.189a4a53")}
+          value={appearance.fit}
+          options={[
+            ["auto", t("v41.option.auto")],
+            ["compact", t("ui.compact.99452646")],
+            ["comfortable", t("ui.comfortable.459a23a5")],
+            ["large", t("v41.option.large")],
+          ]}
+          onChange={(fit) => appearance.set({ fit: fit as typeof appearance.fit })}
+        />
+        <Choice
+          label={t("ui.text.tone.267853f6")}
+          value={appearance.tone}
+          options={[
+            ["soft", t("ui.soft.5964d467")],
+            ["standard", t("ui.standard.ef669154")],
+            ["sharp", t("v41.option.sharp")],
+          ]}
+          onChange={(tone) => appearance.set({ tone })}
+        />
+        <Choice
+          label={t("ui.icon.weight.fef9b03c")}
+          value={appearance.weight}
+          options={[
+            ["light", t("v41.option.light")],
+            ["regular", t("v41.option.regular")],
+            ["bold", t("v41.option.bold")],
+          ]}
+          onChange={(weight) => appearance.set({ weight })}
+        />
+        <label>
+          {t("appearance.intensity")}
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={appearance.backgroundIntensity}
+            onChange={(e) =>
+              appearance.set({
+                backgroundIntensity: Number(e.target.value),
+              })
+            }
+          />
+          <output>{appearance.backgroundIntensity}%</output>
+        </label>
+        <label className="check">
+          <input
+            type="checkbox"
+            checked={appearance.solid}
+            onChange={(e) => appearance.set({ solid: e.target.checked })}
+          />
+          {t("ui.reduce.glass.aaacd6db")}
+        </label>
+        <Choice
+          label={t("ui.time.format.80d7dcf2")}
+          value={appearance.clock}
+          options={[
+            ["locale", t("ui.follow.language.9cc37a4f")],
+            ["12", t("ui.12.hour.9ce198d5")],
+            ["24", t("ui.24.hour.84f0698f")],
+          ]}
+          onChange={(clock) =>
+            appearance.set({ clock: clock as typeof appearance.clock })
+          }
+        />
+        <Greeting
+          name={c.firstName}
+          timezone={setup.timezone}
+          locale={setup.language}
+          clock={appearance.clock}
+        />
+        <p className="muted">{t("language.browserNote")}</p>
+        <h3>{t("ui.adapted.to.your.device.20e6c7f6")}</h3>
+        <label className="check">
+          <input
+            type="checkbox"
+            checked={appearance.auto}
+            onChange={(e) => appearance.set({ auto: e.target.checked })}
+          />
+          {t("ui.automatically.adapt.contrast.transparency..0052122f")}
+        </label>
+        <p className="muted">{t("refine.systemHelp")}</p>
+      </section>
+    );
+    const congregationPanel = (
+      <div className="stack">
+        <section className="card stack">
+          <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
+          <Button onClick={() => setWizard(true)} type="button">
+            {t("ui.open.setup.guide.8d9f188c")}
+          </Button>
+          <Choice
+            label={t("ui.delivery.mode.c9585346")}
+            value={setup.delivery}
+            options={catalogue.deliveryModes.map((m) => [m.id, m.name])}
+            onChange={(delivery) => setSetup((s: any) => ({ ...s, delivery }))}
+          />
+          <p>
+            {
+              catalogue.deliveryModes.find((m) => m.id === setup.delivery)
+                ?.description
+            }
+          </p>
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={setup.portal}
+              onChange={(e) =>
+                setSetup((s: any) => ({ ...s, portal: e.target.checked }))
+              }
+            />
+            {t("ui.prefer.publisher.portal.942fcc6d")}
+          </label>
+          <Button
+            disabled={busy}
+            onClick={() => run(() => saveSetup(wizardStep))} type="button"
+          >
+            {t("ui.save.delivery.preferences.599553af")}
+          </Button>
+          <p className="muted">{t("refine.setupAccess")}</p>
+        </section>
+        {c.plan && (
+          <section className="card stack">
+            <Subscription context={c} plan={c.plan} standalone={false} />
+          </section>
+        )}
+      </div>
+    );
+    const privacyPanel = (
+      <div className="stack">
+        <section className="card">
+          <h2>{t("ui.privacy.protection.28602257")}</h2>
+          <p>
+            {t("ui.current.mode.bd4d698e")}
+            <strong>{t("ui.standard.ef669154")}</strong>
+            {t("ui.https.and.server.access.controls.protect.r.cc2fb558")}
+          </p>
+          <Disclosure>
+            <DisclosureLabel>
+              {t("ui.private.mode.verification.pending.be6e3463")}
+            </DisclosureLabel>
+            <p>
+              {t("ui.private.mode.is.not.available.for.real.rec.ea869e6e")}
+            </p>
+            <p>
+              {t("ui.private.mode.will.encrypt.sensitive.data.o.6bd6c9d1")}
+            </p>
+            <p>
+              {t("ui.metadata.login.emails.compromised.devices..f0ad270c")}
+            </p>
+          </Disclosure>
+        </section>
+        {admin && (
+          <section className="card stack">
+            <Sessions context={c} />
+          </section>
+        )}
+        <section className="card stack">
+          <h2>{t("ui.data.cec3a9b8")}</h2>
+          <Button
+            disabled={!canPeople}
+            onClick={() => download(people, "publishers-export.json")} type="button"
+          >
+            {t("ui.export.loaded.publisher.records.6105bd56")}
+          </Button>
+          {admin && (
+            <>
+              <RecordsExport context={c} />
+              <Backup context={c} />
+            </>
+          )}
+          <p className="muted">
+            {t("ui.exports.contain.personal.information.store.a3c3fe4c")}
+          </p>
+        </section>
+      </div>
+    );
+    const helpPanel = (
+      <section className="card stack">
+        <h2>{t("ui.help.install.74927d4c")}</h2>
+        <InstallApp />
+        <a href={appBaseURL + "site/android/"}>
+          {t("ui.android.and.ios.installation.guide.1f9fce34")}
+        </a>
+        <a href={`mailto:${config.SUPPORT_EMAIL}`}>
+          {t("ui.contact.support.814f4ed2")}
+        </a>
+        <p className="muted">
+          {t("ui.build.ceca98bc")}
+          {import.meta.env.VITE_BUILD_HASH || "development"}{" "}
+          {t("ui.independent.and.unofficial.9fd7d37d")}
+        </p>
+        <a href={appBaseURL + ".well-known/build-hash.txt"}>
+          {t("ui.verify.published.build.hash.d6fcd9ae")}
+        </a>
+      </section>
+    );
+    const settingsTabs = [
+      { value: "appearance", label: t("ui.appearance.3907fa7f"), content: appearancePanel },
+      ...(admin
+        ? [{ value: "congregation", label: t("v4.170f378d80"), content: congregationPanel }]
+        : []),
+      { value: "privacy", label: t("v41.settings.privacy"), content: privacyPanel },
+      { value: "help", label: t("ui.help.install.74927d4c"), content: helpPanel },
+    ];
     body = (
       <>
         {c.roles.includes("publisher")&&!admin?<PublisherAccount context={c}/>:<Heading
           eyebrow={t("ui.settings.74a883a0")}
           title={t("ui.your.settings.7760b023")}
         />}
-        <div className="stack">
-          <AppearanceSettings compact={c.roles.includes("publisher")&&!admin}>
-            <ExperiencePicker />
-            <ThemeGallery />
-            <ExperienceProfile context={c} />
-            <div className="ui-field">
-              
-              <LegacySelect
-                value={normalizeTheme(appearance.theme)}
-                onChange={(e) => appearance.set({ theme: e.target.value })} aria-label={t("ui.theme.efb52e71")}
-              >
-                {["auto", ...themeIds].map((id) => (
-                  <option key={id} value={id}>
-                    {t(
-                      id === "auto"
-                        ? "theme.auto"
-                        : `theme.${id as (typeof themeIds)[number]}`,
-                    )}
-                  </option>
-                ))}
-              </LegacySelect>
-            </div>
-            <label>
-              {t("appearance.intensity")}
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={appearance.backgroundIntensity}
-                onChange={(e) =>
-                  appearance.set({
-                    backgroundIntensity: Number(e.target.value),
-                  })
-                }
-              />
-              <output>{appearance.backgroundIntensity}%</output>
-            </label>
-            <div className="form-grid">
-              <div className="ui-field">
-                
-                <LegacySelect
-                  value={appearance.tone}
-                  onChange={(e) => appearance.set({ tone: e.target.value })} aria-label={t("ui.text.tone.267853f6")}
-                >
-                  {["soft", "standard", "sharp"].map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </LegacySelect>
-              </div>
-              <div className="ui-field">
-                
-                <LegacySelect
-                  value={appearance.size}
-                  onChange={(e) => appearance.set({ size: e.target.value })} aria-label={t("ui.text.size.d68761cc")}
-                >
-                  {["S", "M", "L", "XL"].map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </LegacySelect>
-              </div>
-              <div className="ui-field">
-                
-                <LegacySelect
-                  value={appearance.weight}
-                  onChange={(e) => appearance.set({ weight: e.target.value })} aria-label={t("ui.icon.weight.fef9b03c")}
-                >
-                  {["light", "regular", "bold"].map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </LegacySelect>
-              </div>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={appearance.solid}
-                  onChange={(e) => appearance.set({ solid: e.target.checked })}
-                />
-                {t("ui.reduce.glass.aaacd6db")}
-              </label>
-            </div>
-            <div className="ui-field">
-              
-              <LegacySelect
-                value={appearance.fit}
-                onChange={(e) =>
-                  appearance.set({
-                    fit: e.target.value as typeof appearance.fit,
-                  })
-                } aria-label={t("ui.fit.to.my.screen.189a4a53")}
-              >
-                {["auto", "compact", "comfortable", "large"].map((f) => (
-                  <option key={f} value={f}>
-                    {f.charAt(0).toUpperCase() + f.slice(1)}
-                  </option>
-                ))}
-              </LegacySelect>
-            </div>
-            <p className="chip">
-              {appearance.fit === "auto"
-                ? "Automatically adjusted for screen size and text"
-                : "Your chosen screen fit"}
-            </p>
-            <div className="ui-field">
-              
-              <LegacySelect
-                value={getUILocale()}
-                onChange={(e) => setUILocale(e.target.value as Locale)} aria-label={t("language.label")}
-              >
-                {Object.entries(localeMetadata).filter(([code])=>code === "en").map(([code, meta]) => (
-                  <option key={code} value={code}>
-                    {meta.nativeName}
-                  </option>
-                ))}
-              </LegacySelect>
-            </div>
-            {getUILocale() !== "en" && <p>{t("language.draft")}</p>}
-            <p>{t("language.browserNote")}</p>
-            <div className="ui-field">
-              
-              <LegacySelect
-                value={appearance.clock}
-                onChange={(e) =>
-                  appearance.set({
-                    clock: e.target.value as typeof appearance.clock,
-                  })
-                } aria-label={t("ui.time.format.80d7dcf2")}
-              >
-                <option value="locale">
-                  {t("ui.follow.language.9cc37a4f")}
-                </option>
-                <option value="12">{t("ui.12.hour.9ce198d5")}</option>
-                <option value="24">{t("ui.24.hour.84f0698f")}</option>
-              </LegacySelect>
-            </div>
-            <Greeting
-              name={c.firstName}
-              timezone={setup.timezone}
-              locale={setup.language}
-              clock={appearance.clock}
-            />
-            <h3>{t("ui.adapted.to.your.device.20e6c7f6")}</h3>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={appearance.auto}
-                onChange={(e) => appearance.set({ auto: e.target.checked })}
-              />
-              {t("ui.automatically.adapt.contrast.transparency..0052122f")}
-            </label>
-            <p className="muted">{t("refine.systemHelp")}</p>
-          </AppearanceSettings>
-          {admin&&<section className="card stack">
-            <h2>{t("ui.congregation.delivery.8c50a108")}</h2>
-            <Button onClick={() => setWizard(true)} type="button">
-              {t("ui.open.setup.guide.8d9f188c")}
-            </Button>
-            <div className="ui-field">
-              
-              <LegacySelect
-                value={setup.delivery}
-                onChange={(e) =>
-                  setSetup((s: any) => ({ ...s, delivery: e.target.value }))
-                } aria-label={t("ui.delivery.mode.c9585346")}
-              >
-                {catalogue.deliveryModes.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name}
-                  </option>
-                ))}
-              </LegacySelect>
-            </div>
-            <p>
-              {
-                catalogue.deliveryModes.find((m) => m.id === setup.delivery)
-                  ?.description
-              }
-            </p>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={setup.portal}
-                onChange={(e) =>
-                  setSetup((s: any) => ({ ...s, portal: e.target.checked }))
-                }
-              />
-              {t("ui.prefer.publisher.portal.942fcc6d")}
-            </label>
-            <Button
-              disabled={busy}
-              onClick={() => run(() => saveSetup(wizardStep))} type="button"
-            >
-              {t("ui.save.delivery.preferences.599553af")}
-            </Button>
-            <p className="muted">{t("refine.setupAccess")}</p>
-          </section>}
-          <section className="card">
-            <h2>{t("ui.privacy.protection.28602257")}</h2>
-            <p>
-              {t("ui.current.mode.bd4d698e")}
-              <strong>{t("ui.standard.ef669154")}</strong>
-              {t("ui.https.and.server.access.controls.protect.r.cc2fb558")}
-            </p>
-            <Disclosure>
-              <DisclosureLabel>
-                {t("ui.private.mode.verification.pending.be6e3463")}
-              </DisclosureLabel>
-              <p>
-                {t("ui.private.mode.is.not.available.for.real.rec.ea869e6e")}
-              </p>
-              <p>
-                {t("ui.private.mode.will.encrypt.sensitive.data.o.6bd6c9d1")}
-              </p>
-              <p>
-                {t("ui.metadata.login.emails.compromised.devices..f0ad270c")}
-              </p>
-            </Disclosure>
-          </section>
-          <section className="card stack">
-            <h2>{t("ui.data.cec3a9b8")}</h2>
-            <Button
-              disabled={!canPeople}
-              onClick={() => download(people, "publishers-export.json")} type="button"
-            >
-              {t("ui.export.loaded.publisher.records.6105bd56")}
-            </Button>
-            {admin && (
-              <>
-                {c.plan && (
-                  <Subscription context={c} plan={c.plan} standalone={false} />
-                )}
-                <Sessions context={c} />
-                <RecordsExport context={c} />
-                <Backup context={c} />
-              </>
-            )}
-            <p className="muted">
-              {t("ui.exports.contain.personal.information.store.a3c3fe4c")}
-            </p>
-          </section>
-          <section className="card stack">
-            <h2>{t("ui.help.install.74927d4c")}</h2>
-            <InstallApp />
-            <a href={appBaseURL + "site/android/"}>
-              {t("ui.android.and.ios.installation.guide.1f9fce34")}
-            </a>
-            <a href={`mailto:${config.SUPPORT_EMAIL}`}>
-              {t("ui.contact.support.814f4ed2")}
-            </a>
-            <p className="muted">
-              {t("ui.build.ceca98bc")}
-              {import.meta.env.VITE_BUILD_HASH || "development"}{" "}
-              {t("ui.independent.and.unofficial.9fd7d37d")}
-            </p>
-            <a href={appBaseURL + ".well-known/build-hash.txt"}>
-              {t("ui.verify.published.build.hash.d6fcd9ae")}
-            </a>
-          </section>
-        </div>
+        <Tabs
+          label={t("v41.settings.sections")}
+          tabs={settingsTabs}
+          value={settingsTabs.some((tab) => tab.value === settingsTab) ? settingsTab : "appearance"}
+          onChange={setSettingsTab}
+        />
       </>
     );
+  }
   const steps = [
     "Welcome",
     "Congregation basics",

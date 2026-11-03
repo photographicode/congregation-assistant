@@ -1053,5 +1053,17 @@
   "home.study": "Bible study",
   "v41.ownReportDue": "Your own report for this month hasn’t been sent yet.",
   "v41.ownReportDone": "Your own report is in. You can review and correct it below.",
-  "v41.reportFor.people": "People you report for"
+  "v41.reportFor.people": "People you report for",
+  "v41.settings.sections": "Settings sections",
+  "v41.settings.privacy": "Privacy & data",
+  "v41.settings.followSystem": "Follow system",
+  "v41.option.sharp": "Sharp",
+  "v41.option.small": "Small",
+  "v41.option.medium": "Medium",
+  "v41.option.large": "Large",
+  "v41.option.extraLarge": "Extra large",
+  "v41.option.light": "Light",
+  "v41.option.regular": "Regular",
+  "v41.option.bold": "Bold",
+  "v41.option.auto": "Auto"
 }
