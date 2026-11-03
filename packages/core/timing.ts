@@ -12,4 +12,8 @@ export const TIMING = Object.freeze({
   localSyncDebounce:300,
   inputDebounce:200,
   blurDelay:120,
+  typeLetter:45,
+  typeHold:1800,
+  typeErase:20,
+  typeNext:400,
 });

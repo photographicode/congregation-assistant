@@ -33,7 +33,7 @@ import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 
-const documents = [
+const documents: Array<[string, string]> = [
   ["s21", "S-21 publisher records"],
   ["s3", "S-3-E monthly attendance"],
   ["s88", "S-88-E yearly attendance"],
@@ -372,16 +372,11 @@ export default function PdfStudio({ context: c }: { context: Context }) {
     abort.current = new AbortController();
     try {
       const snapshot = { ...data.data, id: c.cong, name: c.name };
-      const engine = Object.fromEntries(
-        ["s21", "s3", "s88", "emergency", "schedule"].map((method) => [
-          method,
-          (...args: unknown[]) =>
-            runPDF(method, snapshot, args, {
-              signal: abort.current!.signal,
-              onProgress: setProgress,
-            }),
-        ]),
-      );
+      const pdf = (method: string, ...args: unknown[]) =>
+        runPDF(method, snapshot, args, {
+          signal: abort.current!.signal,
+          onProgress: setProgress,
+        });
       let result;
       if (kind === "s21") {
         if (!chosen.length)
@@ -401,11 +396,11 @@ export default function PdfStudio({ context: c }: { context: Context }) {
               "application/zip",
             );
         } else {
-          result = await engine.s21(chosen, year);
+          result = await pdf("s21", chosen, year);
           setZipBytes(null);
         }
-      } else if (kind === "s3") result = await engine.s3(year, month, c.name);
-      else if (kind === "s88") result = await engine.s88(year);
+      } else if (kind === "s3") result = await pdf("s3", year, month, c.name);
+      else if (kind === "s88") result = await pdf("s88", year);
       else if (kind === "midweek") {
         const draft = data.data.schedule as any;
         const parsed = programSchema.safeParse(draft?.programs?.[scheduleWeek]);
@@ -427,7 +422,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           { signal: abort.current.signal },
         );
       } else if (kind === "emergency")
-        result = await engine.emergency(families(chosen), c.name);
+        result = await pdf("emergency", families(chosen), c.name);
       else {
         const draft: any = data.data.schedule;
         const sections: { heading: string; lines: string[] }[] =
@@ -474,7 +469,8 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           throw Error(
             "There are no assignments to print. Add assignments in the schedule, then retry.",
           );
-        result = await engine.schedule(
+        result = await pdf(
+          "schedule",
           `${c.name} · ${kind} schedule${large ? " · large print" : ""}`,
           sections,
           { largePrint: large, layout: printLayout },
@@ -486,7 +482,7 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       const filename =
         kind === "s21"
           ? "S-21_" +
-            (chosen.length === 1 ? pdfName(chosen[0].name) : groups.join("-")) +
+            (chosen.length === 1 ? pdfName(chosen[0]?.name ?? "") : groups.join("-")) +
             "_" +
             year +
             ".pdf"

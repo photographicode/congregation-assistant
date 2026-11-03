@@ -23,6 +23,36 @@ import { commandRegistry } from "../../../../packages/core/command-registry";
 import { Plus, Send } from "lucide-react";
 import { TIMING } from "../../../../packages/core/timing";
 
+const samples: string[] = commandRegistry.flatMap((command) => command.examples.slice(0, 1));
+// Types each sample into the placeholder and erases it. Writes the DOM attribute directly so
+// the whole assistant does not re-render on every letter; returns the sample being shown.
+function useTypedPlaceholder(ref: React.RefObject<HTMLTextAreaElement | null>, paused: boolean) {
+  const shown = React.useRef(samples[0] ?? "");
+  React.useEffect(() => {
+    const box = ref.current;
+    if (!box) return;
+    if (paused || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      box.placeholder = shown.current;
+      return;
+    }
+    let index = samples.indexOf(shown.current), length = 0, erasing = false, timer = 0;
+    const tick = () => {
+      const text = samples[index] ?? "";
+      shown.current = text;
+      let wait: number = TIMING.typeLetter;
+      if (!erasing && length < text.length) length++;
+      else if (!erasing) { erasing = true; wait = TIMING.typeHold; }
+      else if (length > 0) { length--; wait = TIMING.typeErase; }
+      else { erasing = false; index = (index + 1) % samples.length; wait = TIMING.typeNext; }
+      box.placeholder = text.slice(0, length);
+      timer = window.setTimeout(tick, wait);
+    };
+    tick();
+    return () => window.clearTimeout(timer);
+  }, [ref, paused]);
+  return shown;
+}
+
 export function LocalAssistant({
   context: c,
   onExport,
@@ -44,15 +74,7 @@ export function LocalAssistant({
   const sendRef = React.useRef<HTMLButtonElement>(null);
   const [quickOpen, setQuickOpen] = React.useState(false);
   const [lastCommand, setLastCommand] = React.useState("");
-  const placeholder = React.useMemo(
-    () =>
-      [
-        "S-21 for Maria Thomas",
-        "add attendance 45",
-        "set Daniel’s baptism to 4 May 2019",
-      ][Math.floor(Math.random() * 3)],
-    [],
-  );
+  const sample = useTypedPlaceholder(inputRef, input !== "");
   React.useEffect(() => {
     const keys = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -305,39 +327,7 @@ export function LocalAssistant({
             <p>{t("refine.assistantPrivacy3")}</p>
             <p>{t("refine.assistantPrivacy4")}</p>
           </div>
-          <section>
-            <h3>{t("refine.assistantExamples")}</h3>
-            <ul>
-              <li>{t("refine.assistantExample0")}</li>
-              <li>{t("refine.assistantExample1")}</li>
-            </ul>
-          </section>
         </>
-      )}
-      {compact && (
-        <div className="actions assistant-suggestions">
-          {commandRegistry
-            .filter((command) =>
-              ["pdf.s21", "attendance.save", "report.save"].includes(
-                command.name,
-              ),
-            )
-            .flatMap((command) => command.examples.slice(0, 1))
-            .map((suggestion) => (
-              <Button
-                type="button"
-                className="subtle"
-                key={suggestion}
-                onClick={() => {
-                  setInput(suggestion);
-                  setPlan(null);
-                  setError("");
-                }}
-              >
-                {suggestion}
-              </Button>
-            ))}
-        </div>
       )}
       <div className={compact ? "assistant-prompt" : "stack"}>
         {compact && (
@@ -351,7 +341,6 @@ export function LocalAssistant({
           ref={inputRef}
           disabled={busy}
           aria-label={t("assistant.command")}
-          placeholder={compact ? placeholder : undefined}
           maxLength={500}
           value={input}
           onChange={(e) => {
@@ -375,7 +364,8 @@ export function LocalAssistant({
         onClick={() => {
           setError("");
           if (!input.trim()) {
-            setError("Type a command first.");
+            // Empty send fills in the sample on screen so it can be edited before running.
+            setInput(sample.current);
             inputRef.current?.focus();
             return;
           }
