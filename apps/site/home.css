@@ -242,9 +242,9 @@
   .ptile.head{grid-column:1/-1;min-height:120px}
   .price-sec{grid-template-columns:1fr;min-height:0}
   .figure{grid-column:1;margin-top:56px}
-  .numwrap{max-width:calc(100% - 20vw)}
-  .num{font-size:30vw}
-  .phone{width:26vw;left:calc(100% - 9vw);top:-40%}
+  .numwrap{display:flex;align-items:flex-end;gap:16px}
+  .num{font-size:18vw;white-space:nowrap}
+  .phone{position:static;width:24vw;flex-shrink:0}
   .incl{font-size:17px}
   .v5-faq{grid-template-columns:1fr;gap:28px}
   .v5-faq h2{position:static;font-size:9vw;max-width:none}

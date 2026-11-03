@@ -1,6 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel, Button } from "../../../../packages/ui/components";
+  DisclosureLabel, Button, Segmented } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import {
   dutyRosterLines,
@@ -546,20 +546,17 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       </div>
       <div className="grid">
         <section className="card stack">
-          <div className="ui-field">
-            
-            <LegacySelect
-              aria-label={t("ui.document.d6bd8c0a")}
-              value={kind}
-              onChange={(e) => setKind(e.target.value)}
-            >
-              {available.map(([id, label]) => (
-                <option key={id} value={id}>
-                  {label}
-                </option>
-              ))}
-            </LegacySelect>
-          </div>
+          {available.length > 1 && (
+            <div className="stack">
+              <strong>{t("ui.document.d6bd8c0a")}</strong>
+              <Segmented
+                label={t("ui.document.d6bd8c0a")}
+                value={kind}
+                options={available.map(([value, label]) => ({ value, label }))}
+                onChange={setKind}
+              />
+            </div>
+          )}
           <div className="form-grid">
             <label>
               {t("ui.service.year.25e93d2c")}
@@ -591,43 +588,46 @@ export default function PdfStudio({ context: c }: { context: Context }) {
           </div>
           {kind === "s21" && (
             <div className="stack">
-              <div className="ui-field">
-                
-                <LegacySelect
-                  aria-label={t("s21.group")}
-                  value={selectionGroup}
-                  onChange={(e) => {
-                    const group = e.target.value as PublisherGroup;
-                    setSelectionGroup(group);
-                    setGroups([group]);
-                  }}
-                >
-                  {(
-                    [
-                      "all",
-                      "auxiliary",
-                      "regular",
-                      "individual",
-                      "inactive",
-                      "elders",
-                      "ms",
-                      "sfts",
-                    ] as const
-                  ).map((id) => (
-                    <option
-                      key={id}
-                      value={id}
+              <strong>{t("s21.group")}</strong>
+              {/* One multi-select list replaces the old group dropdown plus the duplicate "combine groups" checkboxes. */}
+              <div className="segmented" role="group" aria-label={t("s21.group")}>
+                {(
+                  [
+                    "all",
+                    "auxiliary",
+                    "regular",
+                    "individual",
+                    "inactive",
+                    "elders",
+                    "ms",
+                    "sfts",
+                  ] as const
+                ).map((group) => {
+                  const on = groups.includes(group);
+                  return (
+                    <Button
+                      key={group}
+                      type="button"
+                      aria-pressed={on}
+                      className={on ? "active" : ""}
                       disabled={
-                        id === "sfts" && !data.data?.publishers.some(isSFTS)
+                        group === "sfts" && !data.data?.publishers.some(isSFTS)
                       }
+                      onClick={() => {
+                        const rest = groups.filter((id) => id !== group && id !== "all");
+                        const list: PublisherGroup[] = on ? rest : [...rest, group];
+                        if (group === "all" || !list.length) list.splice(0, list.length, "all");
+                        setGroups(list);
+                        setSelectionGroup(list[0] ?? "all");
+                      }}
                     >
-                      {t(`s21.${id}`)} ·{" "}
+                      {t(`s21.${group}`)} ·{" "}
                       {
                         selectPublishers(
                           data.data?.publishers || [],
                           data.data?.reports || [],
                           {
-                            group: id,
+                            group,
                             period: selectionMonth,
                             individual,
                             months: missingMonths,
@@ -635,46 +635,10 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                           },
                         ).length
                       }
-                    </option>
-                  ))}
-                </LegacySelect>
+                    </Button>
+                  );
+                })}
               </div>
-              <fieldset>
-                <legend>{t("ui.combine.groups.union.0a319224")}</legend>
-                <div className="form-grid">
-                  {(
-                    [
-                      "all",
-                      "auxiliary",
-                      "regular",
-                      "individual",
-                      "inactive",
-                      "elders",
-                      "ms",
-                      "sfts",
-                    ] as const
-                  ).map((group) => (
-                    <label className="check" key={group}>
-                      <input
-                        type="checkbox"
-                        disabled={
-                          group === "sfts" &&
-                          !data.data?.publishers.some(isSFTS)
-                        }
-                        checked={groups.includes(group)}
-                        onChange={(e) =>
-                          setGroups((list) =>
-                            e.target.checked
-                              ? [...list, group]
-                              : list.filter((id) => id !== group),
-                          )
-                        }
-                      />
-                      {t(`s21.${group}`)}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
               {!data.data?.publishers.some(isSFTS) && (
                 <p>{t("ui.mark.someone.as.sfts.in.their.profile.fb507ff6")}</p>
               )}
@@ -717,23 +681,15 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                       }
                     />
                   </label>
-                  <div className="ui-field">
-                    
-                    <LegacySelect
-                      aria-label={t("ui.report.state.db798be1")}
-                      value={reportState}
-                      onChange={(e) =>
-                        setReportState(e.target.value as typeof reportState)
-                      }
-                    >
-                      <option value="missing">
-                        {t("ui.no.report.submitted.a949e466")}
-                      </option>
-                      <option value="no-activity">
-                        {t("ui.reported.but.no.activity.c89d7f38")}
-                      </option>
-                    </LegacySelect>
-                  </div>
+                  <Segmented
+                    label={t("ui.report.state.db798be1")}
+                    value={reportState}
+                    options={[
+                      { value: "missing", label: t("ui.no.report.submitted.a949e466") },
+                      { value: "no-activity", label: t("ui.reported.but.no.activity.c89d7f38") },
+                    ]}
+                    onChange={(value) => setReportState(value as typeof reportState)}
+                  />
                   <p>{t("s21.inactiveExplanation")}</p>
                 </>
               )}
@@ -754,23 +710,21 @@ export default function PdfStudio({ context: c }: { context: Context }) {
                   </LegacySelect>
                 </div>
               )}
-              <div className="ui-field">
-                
-                <LegacySelect
-                  value={output}
-                  onChange={(e) => {
-                    setOutput(e.target.value);
-                    preferenceStorage.setItem("ca-s21-format", e.target.value);
-                    setBytes(null);
-                    setZipBytes(null);
-                  }} aria-label={t("ui.download.format.a4902f0f")}
-                >
-                  <option value="merged">{t("ui.merged.pdf.382cc825")}</option>
-                  <option value="zip">
-                    {t("ui.zip.of.individual.pdfs.3ef61c30")}
-                  </option>
-                </LegacySelect>
-              </div>
+              <strong>{t("ui.download.format.a4902f0f")}</strong>
+              <Segmented
+                label={t("ui.download.format.a4902f0f")}
+                value={output}
+                options={[
+                  { value: "merged", label: t("ui.merged.pdf.382cc825") },
+                  { value: "zip", label: t("ui.zip.of.individual.pdfs.3ef61c30") },
+                ]}
+                onChange={(value) => {
+                  setOutput(value);
+                  preferenceStorage.setItem("ca-s21-format", value);
+                  setBytes(null);
+                  setZipBytes(null);
+                }}
+              />
               <p role="status">
                 {chosen.length} {t("s21.matched")}
               </p>
@@ -842,28 +796,27 @@ export default function PdfStudio({ context: c }: { context: Context }) {
             </label>
           )}
           {["weekend", "duties"].includes(kind) && (
-            <Disclosure>
-              <DisclosureLabel>{t("ui.print.layout.628f0fe9")}</DisclosureLabel>
-              <div className="ui-field">
-                
-                <LegacySelect
-                  value={printLayout}
-                  onChange={(e) => {
-                    setPrintLayout(e.target.value);
-                    setBytes(null);
-                  }} aria-label={t("ui.layout.a5119091")}
-                >
-                  <option value="list">{t("ui.weekly.list.f93ceecb")}</option>
-                  <option value="grid">{t("ui.month.grid.82c6e1de")}</option>
-                  <option value="booklet">{t("ui.a5.booklet.5e40d183")}</option>
-                </LegacySelect>
-              </div>
+            <div className="stack">
+              <strong>{t("ui.print.layout.628f0fe9")}</strong>
+              <Segmented
+                label={t("ui.layout.a5119091")}
+                value={printLayout}
+                options={[
+                  { value: "list", label: t("ui.weekly.list.f93ceecb") },
+                  { value: "grid", label: t("ui.month.grid.82c6e1de") },
+                  { value: "booklet", label: t("ui.a5.booklet.5e40d183") },
+                ]}
+                onChange={(value) => {
+                  setPrintLayout(value);
+                  setBytes(null);
+                }}
+              />
               {printLayout === "booklet" && (
                 <p>
                   {t("ui.print.landscape.with.double.sided.short.ed.37a45137")}
                 </p>
               )}
-            </Disclosure>
+            </div>
           )}
           {["midweek", "weekend", "duties"].includes(kind) && (
             <label className="check">
