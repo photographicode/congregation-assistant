@@ -8,13 +8,15 @@ select test.assert(ca_private.public_report_month_allowed(jsonb_build_object('se
 select test.assert(not ca_private.public_report_month_allowed('{"service_year":1990,"month":1}'),'old months are refused through a shared link');
 select test.assert(not ca_private.public_report_month_allowed('{"service_year":"x","month":1}'),'malformed months are refused');
 do $t$
-declare n integer;denied boolean=false;
+declare calls integer=0;denied boolean=false;
 begin
- for n in 1..200 loop
+ -- A FOR loop variable is local to the loop, so count calls separately.
+ for i in 1..200 loop
+  calls=i;
   begin perform public.get_oclm_public_snapshot('00000000-0000-0000-0000-000000000000');
   exception when sqlstate 'PT429' then denied=true;exit; end;
  end loop;
- perform test.assert(denied and n<=121,'repeated anonymous snapshot calls are limited per address');
+ perform test.assert(denied and calls<=121,'repeated anonymous snapshot calls are limited per address');
 end $t$;
 select test.assert(not exists(select 1 from ca_private.rate_limits where bucket like '%00000000-0000%'),'link tokens are stored only as hashes');
 delete from ca_private.rate_limits;
