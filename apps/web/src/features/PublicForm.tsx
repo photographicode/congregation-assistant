@@ -1,6 +1,6 @@
 import {serviceInput} from "../../../../packages/core/input-limits";
 import {SystemStatePage} from '../system/SystemStates';
-import { LegacySelect, Button } from "../../../../packages/ui/components";
+import { LegacySelect, Button, Skeleton } from "../../../../packages/ui/components";
 import {
   keepReportDraft,
   loadReportDraft,
@@ -23,6 +23,14 @@ import React from "react";
 import { OclmSchedule } from "../../../../packages/ui/OclmSchedule";
 import { programSchema } from "../../../../packages/core/meeting";
 import { rpc } from "./client";
+// Network and rate-limit failures read as plain sentences; server messages pass through unchanged.
+function readableError(e: unknown): string {
+  const message = (e as Error)?.message || "";
+  if (e instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(message))
+    return "We can’t reach the server. Check your connection and try again.";
+  if (/too many requests|PT429|429/i.test(message)) return "Too many attempts. Please wait a minute and try again.";
+  return message;
+}
 export function PublicForm() {
   const params = new URLSearchParams(location.search),
     kind = params.get("form") || "report";
@@ -160,7 +168,7 @@ export function PublicForm() {
         }
       } catch (e) {
         if (active && loadVersion === requestVersion.current)
-          setError((e as Error).message);
+          setError(readableError(e));
       } finally {
         if (active && loadVersion === requestVersion.current) setBusy(false);
       }
@@ -222,9 +230,8 @@ export function PublicForm() {
     return () => window.removeEventListener("hashchange", change);
   }, [token]);
   React.useLayoutEffect(() => {
-    document.documentElement.dataset.theme = context?.theme
-      ? resolvedTheme(context.theme, false)
-      : "mono-light";
+    const dark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+    document.documentElement.dataset.theme = resolvedTheme(context?.theme || "auto", dark);
   }, [context?.theme]);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -278,7 +285,7 @@ export function PublicForm() {
       if (kind === "report") await clearReportDraft("public:" + token);
       if (version === requestVersion.current) setDone(true);
     } catch (e) {
-      if (version === requestVersion.current) setError((e as Error).message);
+      if (version === requestVersion.current) setError(readableError(e));
     } finally {
       if (version === requestVersion.current) {
         submitting.current = false;
@@ -305,7 +312,7 @@ export function PublicForm() {
             : "Published schedule"}
       </h1>
       {busy && !context && !snapshot && (
-        <p role="status">{t("ui.checking.protected.link.5901704e")}</p>
+        <Skeleton label={t("ui.checking.protected.link.5901704e")} />
       )}
       {error && (
         <p role="alert" className="error">

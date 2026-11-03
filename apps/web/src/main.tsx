@@ -54,7 +54,7 @@ import "../../../packages/ui/v3-glass.css";
 import "../../../packages/ui/v3-interaction.css";
 import "../../../packages/ui/shell.css";
 import "../../../packages/ui/v4-layout.css";
-import { Button } from "../../../packages/ui/components";
+import { Button, Skeleton } from "../../../packages/ui/components";
 import { TIMING } from "../../../packages/core/timing";
 import { handleError } from "../../../packages/core/errors";
 import type { Context } from "./context";
@@ -253,8 +253,7 @@ function App() {
   }
   if (loading)
     return (
-      <main className="login" role="status">
-        {t("ui.opening.your.workspace.bed9096c")}</main>
+      <main className="login card" aria-busy="true"><div className="brand"><span className="brand-mark"><BookOpen /></span>{t("ui.congregation.assistant.e97de372")}</div><Skeleton label={t("ui.opening.your.workspace.bed9096c")}/></main>
     );
   if (!demo && !session)
     return (
@@ -264,7 +263,6 @@ function App() {
             <BookOpen />
           </span>
           {t("ui.congregation.assistant.e97de372")}</div>
-        <span className="eyebrow">{t("ui.welcome.back.66212495")}</span>
         <h1>{t("ui.a.calmer.way.to.keep.things.together.8c1b27b2")}</h1>
         <p>{t("ui.sign.in.with.the.account.your.congregation.bde9d5b7")}</p>
         {error && (
@@ -297,11 +295,18 @@ function App() {
   if (!cong&&!owner)
     return (
       <main className="login card">
+        <div className="brand">
+          <span className="brand-mark">
+            <BookOpen />
+          </span>
+          {t("ui.congregation.assistant.e97de372")}</div>
         <h1>{t("ui.approval.needed.9928dd82")}</h1>
         <p>
           {t("ui.this.account.has.no.active.congregation.ac.96c928fe")}</p>
-        <Button onClick={signOut} type="button">{t("ui.sign.out.48f0d3d3")}</Button>
-        <a href={config.PUBLIC_SITE_URL + "/"}>{t("ui.request.a.workspace.2d70699d")}</a>
+        <div className="actions">
+          <Button onClick={signOut} type="button">{t("ui.sign.out.48f0d3d3")}</Button>
+          <a href={config.PUBLIC_SITE_URL + "/"}>{t("ui.request.a.workspace.2d70699d")}</a>
+        </div>
       </main>
     );
   const guardNavigation=(action:()=>void)=>{const event=new CustomEvent('ca:before-navigate',{cancelable:true,detail:action});window.dispatchEvent(event);if(!event.defaultPrevented)action();};
@@ -332,7 +337,7 @@ function App() {
       {!online&&<DismissibleBanner key="offline" stateKey="offline">{t('shell.offline')}</DismissibleBanner>}
       {!demo&&(syncStatus.pending>0||syncStatus.conflicts>0||syncStatus.forbidden>0)&&<DismissibleBanner key={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'} stateKey={syncStatus.forbidden?'forbidden':syncStatus.conflicts?'conflict':'pending'}>{t(syncStatus.forbidden?'store.accessChanged':syncStatus.conflicts?'store.conflict':'store.pending')}</DismissibleBanner>}
       {hub&&<SectionHub section={hub} tools={visibleTools} onOpen={openNativeTool} counts={hubCounts}/>}
-      <div hidden={hub!==null}><Suspense fallback={<p role="status">{t('common.loading')}</p>}>
+      <div hidden={hub!==null}><Suspense fallback={<Skeleton/>}>
             {owner&&route!=="settings"?<OwnerConsole context={context}/>:owner&&route==="settings"?<Workspace key="owner-settings" route="settings" go={go} context={{...context,cong:"",roles:[],caps:{}}}/>:planError?<section className="card"><h1>{t("ui.workspace.status.could.not.load.b6ea4a7c")}</h1><p role="alert">{planError}</p><Button onClick={()=>location.reload()} type="button">{t("ui.retry.942087cc")}</Button></section>:plan?.congregation!==cong?<p role="status">{t("ui.checking.your.workspace.90719547")}</p>:plan.locked?<Subscription context={context} plan={plan}/>:!routes.some(item=>item.id===route)?<SystemStatePage state="notFound" onHome={()=>go("home")}/>:<Workspace key={cong} route={route} go={go} context={context} />}
       </Suspense></div>
     </AppShell>
@@ -346,10 +351,13 @@ function App() {
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
 });
-createRoot(document.getElementById("root")!).render(
+// GitHub Pages cannot send frame-ancestors, so refuse to run inside another site's frame (clickjacking).
+const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
+if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
+else createRoot(document.getElementById("root")!).render(
   <React.StrictMode><SystemBoundary><SystemRuntime>
     <QueryClientProvider client={queryClient}>
-      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main>{t("ui.opening.protected.form.e4af4758")}</main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />}
+      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />}
     </QueryClientProvider>
   </SystemRuntime></SystemBoundary></React.StrictMode>,
 );

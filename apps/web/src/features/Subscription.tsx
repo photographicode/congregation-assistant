@@ -20,7 +20,6 @@ export function Subscription({
   return (
     <div className="stack">
       <section className="card stack">
-        <div className="eyebrow">{t("ui.subscription.4999c6c6")}</div>
         <Title>
           {plan.status === "trial"
             ? "Your trial is active."

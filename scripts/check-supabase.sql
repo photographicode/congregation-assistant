@@ -173,3 +173,11 @@ reset role;rollback;
 \i supabase/rollbacks/20261026183947_v4_publisher_workspace.sql
 \i supabase/migrations/20261026183947_v4_publisher_workspace.sql
 \i scripts/v4-tests/publisher-workspace.sql
+
+-- Public link rate limits, including rollback/reapply and repeatability.
+\i supabase/migrations/20261103090000_public_rate_limits.sql
+\i scripts/v4-tests/public-rate-limits.sql
+\i supabase/migrations/20261103090000_public_rate_limits.down.sql
+\i supabase/migrations/20261103090000_public_rate_limits.sql
+\i supabase/migrations/20261103090000_public_rate_limits.sql
+\i scripts/v4-tests/public-rate-limits.sql

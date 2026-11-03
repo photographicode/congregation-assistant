@@ -64,3 +64,43 @@
 @media (min-width:600px){
  :is(.ap-review-head,.ap-review-row){grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) auto}
 }
+/* Audit 2026-11-03: the shell at large text and on tablets. */
+/* The account initial stays inside its 44px button at any text size. */
+.v4-shell .topbar .ui-avatar{width:36px;height:36px;font-size:min(var(--fs-2),15px);line-height:1}
+/* The congregation name wraps to two lines instead of being cut off on narrow phones. */
+.v4-workspace-name strong{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow-wrap:anywhere}
+/* Tablet sidebar is wide enough for its labels, as on desktop. */
+@media (min-width:600px) and (max-width:1023px){
+ .rail:not(.collapsed) .nav-label{display:block}
+}
+/* Phones with large text (fewer than 20 text widths across): icon-only bottom tabs keep room for content. */
+@media (max-width:599px) and (max-width:19.9em){
+ .bottom-tabs button{min-height:52px;padding-block:6px;overflow-wrap:normal}
+ .bottom-tabs button .nav-label,.bottom-tabs button span:not([aria-hidden]){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .bottom-tabs button svg{width:24px;height:24px}
+ .dialog header{position:static}
+}
+/* Narrow phones (320–399px): the name gets its own row, and tab labels never break inside a word. */
+@media (max-width:399px){
+ .v4-shell .topbar{flex-wrap:wrap}
+ .v4-shell .topbar .v4-workspace-name{flex:1 1 100%;min-width:0}
+ .v4-shell .topbar .actions{margin-left:auto}
+ .bottom-tabs button{padding-inline:2px;overflow-wrap:normal;word-break:keep-all;letter-spacing:-.01em}
+}
+/* Audit 2026-11-03: non-happy-path screens. */
+/* One offline message: the shell has its own banner, so the runtime one shows only outside the shell. */
+body:has(.v4-shell) .runtime-offline{display:none}
+.runtime-offline{margin:var(--space-3) max(var(--space-4),var(--safe-left,0px)) 0}
+/* System pages: the heading takes focus for screen readers without drawing a box, and phones keep a gutter. */
+.system-page h1:focus{outline:none}
+.system-page{border:1px solid var(--border);overflow-wrap:break-word}
+@media (max-width:599px){.system-page{margin:var(--space-5) var(--space-4);padding:var(--space-6) var(--space-5)}}
+.system-illustration svg{width:96px;height:auto;min-width:72px}
+/* Toasts wrap between words, never inside them. */
+.notice>span{overflow-wrap:break-word;min-width:12ch}
+/* Sign-in and approval: full-width primary, secondary links as buttons, gutters on phones. */
+.login .primary.full{width:100%;justify-content:center;margin-bottom:var(--space-2)}
+.login .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--space-2);margin-top:var(--space-1)}
+.login .actions>a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:var(--space-2) var(--space-4);border:1px solid var(--border-strong);border-radius:var(--radius-full);color:var(--text-1);font-weight:600;text-decoration:none;text-align:center}
+.login .actions>button{width:100%;justify-content:center}
+@media (max-width:599px){.login.card{margin:var(--space-5) var(--space-4)}}
