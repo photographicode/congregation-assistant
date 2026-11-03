@@ -161,7 +161,7 @@
       "count": 2
     },
     "no-magic-numbers": {
-      "count": 9
+      "count": 8
     }
   },
   "apps/web/src/features/ManualMeetingParts.tsx": {
