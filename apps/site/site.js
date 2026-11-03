@@ -10,22 +10,6 @@ const steps=[['First, publishers report from any phone.','A two-minute form. Lin
 const range=$('range'),stops=$$('[data-v5-stops] button'),clause=$('clause'),sub=$('sub'),frag=$('frag'),states=[...frag.querySelectorAll('.state')];let current=0;
 const go=i=>{if(i===current)return;current=i;range.value=i;range.style.setProperty('--p',(i/3*100)+'%');stops.forEach((b,j)=>b.setAttribute('aria-current',String(j===i)));[clause,sub,frag].forEach(n=>n.classList.add('fade'));setTimeout(()=>{clause.textContent=steps[i][0];sub.textContent=steps[i][1];states.forEach((n,j)=>n.classList.toggle('on',j===i));[clause,sub,frag].forEach(n=>n.classList.remove('fade'));},reduced?0:200);};
 range.addEventListener('input',()=>go(+range.value));stops.forEach((b,j)=>b.addEventListener('click',()=>go(j)));
-const items=$$('[data-v5-list] li'),find=$('find'),select=li=>items.forEach(x=>x.classList.toggle('sel',x===li));
-items.forEach(li=>{const b=li.querySelector('button');b.addEventListener('click',()=>select(li));b.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover)').matches)select(li);});});
-find.addEventListener('input',()=>{const q=find.value.trim().toLowerCase();let first=null;items.forEach(li=>{const hit=!q||li.textContent.toLowerCase().includes(q);li.hidden=!hit;if(hit&&!first)first=li;});$('empty').hidden=!!first;if(first&&!first.classList.contains('sel'))select(first);});
-find.addEventListener('keydown',event=>{if(event.key!=='ArrowDown'&&event.key!=='ArrowUp')return;event.preventDefault();const shown=items.filter(li=>!li.hidden),i=shown.findIndex(li=>li.classList.contains('sel')),next=shown[(i+(event.key==='ArrowDown'?1:-1)+shown.length)%shown.length];if(next)select(next);});
-const say=$('say'),answer=$('answer'),days={monday:'Mon 2 Nov',tuesday:'Tue 3 Nov',wednesday:'Wed 4 Nov',thursday:'Thu 5 Nov',friday:'Fri 6 Nov',saturday:'Sat 7 Nov',sunday:'Sun 8 Nov'},cap=s=>s.replace(/\b\w/g,c=>c.toUpperCase());
-const parse=text=>{const s=text.toLowerCase().trim();let m;
- if((m=s.match(/(attendants|audio video|cleaning)\s*(?:on)?\s*(\w+)?\s*[:,-]?\s*(.*)/)))return ['Duty draft',[['Duty',cap(m[1])],['Date',days[m[2]]||'Next meeting'],['Person',cap(m[3]||'Choose someone')]]];
- if((m=s.match(/report\s+(\d+)\s+(?:bible\s+)?stud(?:y|ies)(?:\s+for\s+(\w+))?/)))return ['Report draft',[['Month',cap(m[2]||'October')],['Shared in the ministry','Yes'],['Bible studies',m[1]]]];
- if((m=s.match(/attendance\s+(\d+)(?:\s+on\s+(\w+))?/)))return ['Attendance draft',[['Meeting',m[2]==='sunday'||m[2]==='saturday'?'Weekend':'Midweek'],['Date',days[m[2]]||'Today'],['Count',m[1]]]];
- if((m=s.match(/talk\s+(?:number\s+)?(\d+)/)))return ['From your talk history',[['Talk',m[1]],['Last given','14 Sep 2025'],['Speaker','S. Varghese']],true];
- return null;};
-const render=()=>{const result=parse(say.value);if(!result){const row=el('div','row');row.append(el('span','','Try a duty, a report, an attendance count or a talk number.'));answer.replaceChildren(row);return;}
- const head=el('div','panel-head');head.append(el('strong','',result[0]),el('span','',result[2]?'Answer':'Waiting for you'));
- answer.replaceChildren(head,...result[1].map(([k,v])=>{const row=el('div','row');row.append(el('span','',k),el('strong','',v));return row;}));
- if(!result[2]){const acts=el('div','say-acts'),ok=el('button','pri','Confirm'),edit=el('button','','Edit');ok.type=edit.type='button';ok.addEventListener('click',()=>{ok.textContent='Confirmed in this example';ok.disabled=true;});edit.addEventListener('click',()=>say.focus());acts.append(ok,edit);answer.append(acts);}};
-say.addEventListener('input',render);$$('[data-v5-examples] button').forEach(b=>b.addEventListener('click',()=>{say.value=b.textContent;render();say.focus();}));render();
 const gets={pub:['Your assignments and meeting schedule','Your monthly report, with household members','Congregation announcements'],ovs:['Records, reports and S-21 for your role','Meeting parts, talks and duties','Attendance and fair suggestions']},roles=$$('[data-v5-roles] button');
 roles.forEach(b=>b.addEventListener('click',()=>{roles.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('gets').replaceChildren(...gets[b.dataset.role].map(text=>el('li','',text)));}));}const field=document.createElement('canvas'),pen=field.getContext&&field.getContext('2d');if(pen){
 field.className='field-canvas';field.setAttribute('aria-hidden','true');document.body.prepend(field);

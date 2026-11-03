@@ -91,3 +91,7 @@ Evidence on the final build: site audit 224 pages, 0 failures; overflow 1,672 vi
 ## Check-grid background — 2026-11-02
 
 The website's dot field is replaced by a quiet square grid (56px cells, 40px on phones) whose alternate cells slowly fill and fade, ripple out from taps and lift under a mouse; the field fades out at the edges, scrolls with gentle parallax, pauses when hidden and draws one static frame under reduced motion. It now shows on the English home too. The home hero no longer clips its stage, so the demo panel reaches the right edge again. Gates on the final build: site audit 224/0, overflow 1,672/0, marketing PASS, claims PASS, Axe 0 on real routes.
+
+## Simpler home and Territory Management notice — 2026-11-03
+
+The English home is simplified: an announcement bar and an "Up next" section describe Territory Management (KML import, splitting along roads and rivers, printable cards with QR directions, assignment history; source: the standalone territory-manager README), feature chips sit under the hero, and the tool list and assistant demo are replaced by three role cards (publishers, secretaries and service overseers, meeting and duty overseers). "Up next" is used because the site audit forbids the placeholder phrase "coming soon". Gates on the final build: site audit 224/0, overflow 1,672/0, marketing PASS, claims PASS, Axe 0 on real routes.

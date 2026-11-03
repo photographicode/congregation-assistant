@@ -112,36 +112,39 @@
  .feed li{display:flex;justify-content:space-between;gap:12px;padding:12px 18px;border-top:1px solid var(--panel-line)}
  .feed li span{color:var(--muted);font-size:13px;white-space:nowrap}
 
- /* features: the tools as a searchable list */
- .cmd-box{background:none;border:0;border-radius:0;font-size:inherit}
- .cmd-input{display:block;width:100%;font-size:clamp(26px,3vw,44px);height:1.9em;padding:0 .5em;border:0;border-radius:var(--r);background:var(--surface);letter-spacing:-.02em;font-weight:500}
- .cmd-input::placeholder{color:var(--ink);opacity:1}
- .cmd-input:focus::placeholder{color:var(--muted)}
- .cmds{margin-top:28px}
- .cmds li>button{display:block;width:100%;text-align:left;background:none;border:0;padding:.08em .2em;font-size:clamp(32px,4.6vw,76px);font-weight:600;letter-spacing:-.035em;line-height:1.12;border-radius:10px;cursor:pointer;transition:background .2s,color .2s}
- .cmds li.sel>button{background:var(--accent);color:var(--accent-ink)}
- .cmd-detail{display:none;grid-template-columns:minmax(0,38ch) minmax(0,1fr);gap:32px;align-items:start;padding:18px .3em 30px}
- .cmds li.sel .cmd-detail{display:grid;animation:v5-rise .5s var(--ease)}
- .cmd-detail p{font-size:17px}
- .cmd-detail img{border-radius:12px;border:1px solid var(--line);max-width:620px;width:100%}
- .cmds li[hidden]{display:none}
- .cmd-empty{font-size:20px;color:var(--muted);padding:20px .2em}
-
- /* assistant: the headline is the input */
- .say{min-height:88svh;display:flex;flex-direction:column;justify-content:center}
- .say-label{font-size:17px;font-weight:500;letter-spacing:0;color:var(--muted);margin-bottom:10px}
- .say-line{background:none;border:0;border-radius:0}
- .say-input{width:100%;font-size:clamp(40px,5.4vw,96px);font-weight:600;letter-spacing:-.045em;border:0;background:none;padding:0;outline:none;caret-color:var(--ink);text-overflow:clip}
- .say-input:focus-visible{box-shadow:0 3px 0 var(--ink)}
- .say-ans{margin-top:48px;width:560px;max-width:100%}
- .say-ans .row:last-child{border-bottom:0}
- .say-acts{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--panel-line)}
- .say-acts button{height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--panel-line);background:none;font-weight:600}
- .say-acts button.pri{background:var(--ink);color:var(--panel);border-color:var(--ink)}
- .say-ex{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:40px}
- .say-ex button{background:none;border:0;padding:4px 0;font-size:17px;color:var(--muted);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;cursor:pointer}
- .say-ex button:hover{color:var(--ink)}
- .say-note{margin-top:16px;font-size:14px;color:var(--muted)}
+ /* announcement, chips, roles, territories */
+ .notice.wrap{margin-inline:auto}
+ .notice{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding-top:20px;font-size:15px}
+ .notice a{font-weight:600}
+ .badge{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:99px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;letter-spacing:.01em}
+ .badge.on-dark{background:var(--accent-ink);color:var(--accent)}
+ .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:26px 0 0;padding:0;max-width:560px}
+ .chips li{margin:0;line-height:1.35;padding:6px 12px;border-radius:99px;background:var(--surface);font-size:14px}
+ .sec-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px 40px;align-items:end;margin-bottom:48px}
+ .sec-head h2{font-size:clamp(34px,4vw,60px)}
+ .sec-head p{color:var(--muted);max-width:40ch}
+ .roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+ .role{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r);padding:28px 28px 0;overflow:hidden}
+ .role-who{font-size:14px;font-weight:600;color:var(--muted)}
+ .role h3{margin:8px 0 16px;font-size:clamp(22px,2vw,28px);font-weight:650;letter-spacing:-.025em;line-height:1.15}
+ .role ul{margin:0 0 28px;padding-left:1.1em;display:grid;gap:6px;font-size:16px}
+ .role-pic{margin-top:auto;border-radius:12px 12px 0 0;overflow:hidden;border:1px solid var(--line);border-bottom:0;background:var(--panel);height:220px}
+ .role-pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
+ .role-pic.tall{width:62%;margin-inline:auto;border-radius:22px 22px 0 0}
+ .terr{background:var(--accent);color:var(--accent-ink)}
+ .terr-in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px 64px;padding-block:120px;align-items:start}
+ .terr-copy h2{font-size:clamp(34px,4vw,60px);margin-top:16px}
+ .terr-copy p:last-child{margin-top:18px;max-width:38ch;opacity:.8}
+ .steps{list-style:none;margin:0;padding:8px 0 0;display:grid;grid-template-columns:minmax(0,1fr);gap:36px;max-width:560px}
+ .steps li{display:flex;gap:14px}
+ .step-n{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1.5px solid currentColor;font-weight:650;font-size:15px}
+ .steps h3{font-size:18px;font-weight:650;letter-spacing:-.01em}
+ .steps p{margin-top:4px;opacity:.8;font-size:15px}
+ .steps{grid-column:2;grid-row:1/span 2}
+ .terr-map{grid-column:1;grid-row:2;width:100%;max-width:420px;height:auto}
+ .terr-map .edge{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linejoin:round}
+ .terr-map .cut{fill:none;stroke:currentColor;stroke-width:1.5;stroke-dasharray:5 5;opacity:.7}
+ .terr-map .nums text{fill:currentColor;font-size:20px;font-weight:650;text-anchor:middle}
 
  /* trust: answers on tiles */
  .ptiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
@@ -195,6 +198,11 @@
  .go{display:flex;align-items:center;justify-content:center;margin-top:18px;height:48px;border-radius:10px;background:var(--ink);color:var(--panel);font-weight:650;text-decoration:none}
  .small{margin-top:12px;font-size:13px;color:var(--muted)}
 
+ @media (max-width:1023px){
+  .roles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .terr-in{grid-template-columns:1fr}
+  .steps,.terr-map{grid-column:1;grid-row:auto}
+ }
  @media (max-width:1180px){
   .v5-hero{min-height:0;padding-bottom:0}
   .v5-stage{position:relative;left:auto;right:auto;top:auto;margin:64px 0 0;padding:110px var(--m) 48px;flex-wrap:wrap;justify-content:center}
@@ -218,15 +226,15 @@
   .how-clause{font-size:9vw}
   .stops{grid-template-columns:1fr 1fr;font-size:15px;gap:2px 12px}
   .stops button,.stops button:nth-child(n){text-align:left;transform:none}
-  .cmd-input{height:56px;font-size:20px;padding:0 16px}
-  .cmds li>button{font-size:8.5vw;padding:.1em .25em}
-  .cmd-detail{grid-template-columns:1fr;gap:18px;padding:14px .3em 24px}
-  .cmd-detail p{font-size:16px}
-  .say{min-height:0}
-  .say-input{font-size:11vw}
-  .say-ans{margin-top:28px}
-  .say-ex{gap:8px}
-  .say-ex button{background:var(--surface);text-decoration:none;min-height:44px;padding:0 14px;border-radius:10px;color:var(--ink);font-size:15px}
+  .sec-head{grid-template-columns:1fr;margin-bottom:32px}
+  .sec-head h2{font-size:9vw}
+  .roles{grid-template-columns:1fr}
+  .role{padding:22px 22px 0}
+  .role-pic{height:200px}
+  .terr-in{grid-template-columns:1fr;gap:36px;padding-block:80px}
+  .terr-copy h2{font-size:9vw}
+  .steps{grid-template-columns:1fr;gap:20px}
+  .steps,.terr-map{grid-column:1;grid-row:auto}
   .ptiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
   .ptile{min-height:150px;padding:18px}
   .ptile b{font-size:20px}
