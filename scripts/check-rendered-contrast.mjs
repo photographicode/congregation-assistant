@@ -78,7 +78,7 @@ try {
       await page.goto(base + "/?demo=admin&screen=" + screen);
       await page.getByRole("heading", { name: heading, exact: true }).waitFor();
       await page.evaluate(() => document.fonts.ready);
-      if (negativeGradientFixture) await page.addStyleTag({content:".greeting-name{background-image:linear-gradient(transparent,transparent)!important}"});
+      if (negativeGradientFixture) await page.addStyleTag({content:".greeting h1{background-image:linear-gradient(transparent,transparent)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}"});
       for (const scroll of (negativeGradientFixture ? [0] : [0, 0.5, 1])) {
         await page.evaluate((scroll) => {
           const node = document.querySelector(".main-content");
