@@ -105,3 +105,6 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .login .actions>a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:var(--space-2) var(--space-4);border:1px solid var(--border-strong);border-radius:var(--radius-full);color:var(--text-1);font-weight:600;text-decoration:none;text-align:center}
 .login .actions>button{width:100%;justify-content:center}
 @media (max-width:599px){.login.card{margin:var(--space-5) var(--space-4)}}
+/* Owner totals sit two or four across instead of one tall tile per row. */
+:root .dashboard-kpis.owner-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:1024px){:root .dashboard-kpis.owner-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}

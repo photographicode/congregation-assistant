@@ -1,7 +1,6 @@
 import {
   Disclosure,
-  DisclosureLabel, Button } from "../../../../packages/ui/components";
-import { LegacySelect } from "../../../../packages/ui/components";
+  DisclosureLabel, Button, Chip, Segmented, Stack } from "../../../../packages/ui/components";
 import { t } from "../../../../packages/core/i18n";
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -42,6 +41,24 @@ const input = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .nullable(),
 });
+const DAY = 86_400_000,
+  SOON_DAYS = 7,
+  ID_MAX = 60,
+  statusLabel: Record<string, string> = { trial: "Trial", active: "Active", expired: "Paused" },
+  statusTone: Record<string, "warn" | "ok" | "danger"> = { trial: "warn", active: "ok", expired: "danger" };
+// Days until a trial ends; negative once it has lapsed.
+function trialDaysLeft(row: { created_at: string; trial_days: number }) {
+  return Math.ceil((Date.parse(row.created_at) + row.trial_days * DAY - Date.now()) / DAY);
+}
+function trialNote(row: { status: string; created_at: string; trial_days: number }) {
+  if (row.status !== "trial") return "";
+  const left = trialDaysLeft(row);
+  return left >= 0 ? `Trial ends in ${left} days` : "Trial ended";
+}
+// A readable permanent ID from the congregation name, e.g. "River Park" → "river-park".
+function suggestId(name: string) {
+  return name.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, ID_MAX);
+}
 export default function OwnerConsole({ context: c }: { context: Context }) {
   const qc = useQueryClient(),
     [sample, setSample] = React.useState<any[]>([
@@ -60,6 +77,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
     [busy, setBusy] = React.useState(false),
     [error, setError] = React.useState(""),
     [search, setSearch] = React.useState(""),
+    [statusFilter, setStatusFilter] = React.useState("all"),
     [localRequests, setLocalRequests] = React.useState<any[]>([
       {
         id: "00000000-0000-4000-8000-000000000001",
@@ -186,13 +204,21 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
     );
   }
   const pending = (requests.data || []).filter((r) => r.status === "pending"),
-    list = (tenants.data || []).filter((t) =>
-      (t.name + " " + t.id + " " + t.email)
-        .toLowerCase()
-        .includes(search.toLowerCase()),
+    all = tenants.data || [],
+    count = (status: string) => all.filter((t) => t.status === status).length,
+    endingSoon = all.filter((t) => {
+      const left = trialDaysLeft(t);
+      return t.status === "trial" && left >= 0 && left <= SOON_DAYS;
+    }).length,
+    list = all.filter(
+      (t) =>
+        (statusFilter === "all" || t.status === statusFilter) &&
+        (t.name + " " + t.id + " " + t.email)
+          .toLowerCase()
+          .includes(search.toLowerCase()),
     );
   return (
-    <>
+    <Stack>
       <div className="page-heading">
         <div>
           <div className="eyebrow">{t("ui.owner.account.b6440118")}</div>
@@ -205,7 +231,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
             setError("");
             setDirty(false);
             setEditing({
-              id: crypto.randomUUID(),
+              id: "",
               name: "",
               email: "",
               status: "trial",
@@ -222,10 +248,31 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           {error}
         </p>
       )}
+      {/* The owner's day starts with these numbers; each tile filters the list below. */}
+      <div className="dashboard-kpis owner-kpis" aria-busy={tenants.isLoading}>
+        {[
+          { label: "Total", value: all.length, filter: "all" },
+          { label: "Active", value: count("active"), filter: "active" },
+          { label: "On trial", value: count("trial"), detail: `${endingSoon} end this week`, filter: "trial" },
+          { label: "Paused", value: count("expired"), filter: "expired" },
+        ].map((tile) => (
+          <button
+            key={tile.filter}
+            className="card kpi"
+            aria-pressed={statusFilter === tile.filter}
+            onClick={() => setStatusFilter(tile.filter)}
+            type="button"
+          >
+            <span className="kpi-label">{tile.label}</span>
+            <strong>{tenants.isLoading || tenants.error ? "—" : tile.value}</strong>
+            {tile.detail && <span>{tile.detail}</span>}
+          </button>
+        ))}
+      </div>
       <div className="grid">
         <section className="card stack">
           <h2>
-            {pending.length} {t("ui.workspace.requests.11aa2f5f")}
+            {pending.length === 1 ? "1 workspace request" : `${pending.length} workspace requests`}
           </h2>
           {requests.error ? (
             <p role="alert">
@@ -245,7 +292,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 </div>
                 <Button
                   onClick={() => {
-                    setSelectedRequest(r);
+                    setSelectedRequest({ ...r, newId: suggestId(r.congregation_name) });
                     setError("");
                   }} type="button"
                 >
@@ -261,9 +308,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           <h2>{t("ui.mail.delivery.fe1ffc44")}</h2>
           {mail.data ? (
             <p>
-              {mail.data.queued} {t("ui.queued.276fc89a")}
-              {mail.data.failed} {t("ui.failed.b36fc229")}
-              {mail.data.sent} {t("ui.sent.in.the.last.seven.days.ee69a6a8")}
+              {`${mail.data.sent} sent · ${mail.data.queued} queued · ${mail.data.failed} failed in the last seven days`}
             </p>
           ) : (
             <p>
@@ -280,8 +325,24 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
         <h2>{t("ui.congregations.6c2258e5")}</h2>
         <label>
           {t("ui.find.a.congregation.bd6524e5")}
-          <input value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input
+            type="search"
+            placeholder={"Name, ID or email"}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </label>
+        <Segmented
+          label={"Show"}
+          value={statusFilter}
+          options={[
+            { value: "all", label: "All" },
+            { value: "active", label: "Active" },
+            { value: "trial", label: "Trial" },
+            { value: "expired", label: "Paused" },
+          ]}
+          onChange={setStatusFilter}
+        />
         {tenants.isLoading ? (
           <p role="status">{t("ui.loading.congregations.6bfc9b37")}</p>
         ) : tenants.error ? (
@@ -295,10 +356,20 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           list.map((workspaceRow) => (
             <article className="list-row" key={workspaceRow.id}>
               <div>
-                <strong>{workspaceRow.name}</strong>
+                <strong>{workspaceRow.name}</strong>{" "}
+                <Chip tone={statusTone[workspaceRow.status]}>{statusLabel[workspaceRow.status]}</Chip>
                 <p>
-                  {workspaceRow.id} · {workspaceRow.status} ·{" "}
                   {workspaceRow.email || "Administrator not recorded"}
+                </p>
+                <p>
+                  {[
+                    workspaceRow.id,
+                    "Joined " + new Date(workspaceRow.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }),
+                    trialNote(workspaceRow),
+                    workspaceRow.payment_date ? "Paid " + workspaceRow.payment_date : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </p>
               </div>
               <Button
@@ -346,7 +417,13 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 required
                 value={editing.name}
                 onChange={(e) => {
-                  setEditing((v: any) => ({ ...v, name: e.target.value }));
+                  const name = e.target.value;
+                  // New congregations get a readable ID from their name until the owner edits it.
+                  setEditing((v: any) =>
+                    all.some((t) => t.id === v.id) || v.idEdited
+                      ? { ...v, name }
+                      : { ...v, name, id: suggestId(name) },
+                  );
                   setDirty(true);
                 }}
               />
@@ -358,7 +435,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 disabled={(tenants.data || []).some((t) => t.id === editing.id)}
                 value={editing.id}
                 onChange={(e) => {
-                  setEditing((v: any) => ({ ...v, id: e.target.value }));
+                  setEditing((v: any) => ({ ...v, id: e.target.value, idEdited: true }));
                   setDirty(true);
                 }}
               />
@@ -382,23 +459,19 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
                 {t("ui.trial.billing.details.10e0dbe3")}
               </DisclosureLabel>
               <div className="stack">
-                <div className="ui-field">
-                  
-                  <LegacySelect
-                    value={editing.status}
-                    onChange={(e) => {
-                      setEditing((v: any) => ({
-                        ...v,
-                        status: e.target.value,
-                      }));
-                      setDirty(true);
-                    }} aria-label={t("ui.status.920e413c")}
-                  >
-                    <option value="trial">{t("ui.trial.98a66e97")}</option>
-                    <option value="active">{t("ui.active.92340695")}</option>
-                    <option value="expired">{t("ui.paused.e159b061")}</option>
-                  </LegacySelect>
-                </div>
+                <Segmented
+                  label={t("ui.status.920e413c")}
+                  value={editing.status}
+                  options={[
+                    { value: "trial", label: t("ui.trial.98a66e97") },
+                    { value: "active", label: t("ui.active.92340695") },
+                    { value: "expired", label: t("ui.paused.e159b061") },
+                  ]}
+                  onChange={(status) => {
+                    setEditing((v: any) => ({ ...v, status }));
+                    setDirty(true);
+                  }}
+                />
                 <label>
                   {t("ui.trial.length.in.days.cdeeccb2")}
                   <input
@@ -566,6 +639,6 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           </div>
         )}
       </Dialog>
-    </>
+    </Stack>
   );
 }
