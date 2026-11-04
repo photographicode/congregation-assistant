@@ -1628,14 +1628,6 @@ export default function Workspace({
             >
               {t("ui.copy.message.457efe53")}
             </Button>
-            <Disclosure>
-              <DisclosureLabel>
-                {t("ui.whatsapp.business.ai.intake.daaf00f7")}
-              </DisclosureLabel>
-              <p>
-                {t("ui.not.set.up.yet.meta.account.verified.phone.c2df3100")}
-              </p>
-            </Disclosure>
           </section>
         </div>
       </>
@@ -2076,15 +2068,26 @@ export default function Workspace({
         ) : wizardStep === 7 ? (
           <>
             <p>{t("ui.prepare.your.first.midweek.and.weekend.sch.3e4cb7c3")}</p>
-            <Button
-              onClick={() => {
-                setWizard(false);
-                setSub("weekend");
-                go("schedule");
-              }} type="button"
-            >
-              {t("ui.open.weekend.schedule.5c9fdf1b")}
-            </Button>
+            <div className="actions">
+              <Button
+                onClick={() => {
+                  setWizard(false);
+                  setSub("midweek");
+                  go("schedule");
+                }} type="button"
+              >
+                {"Open midweek schedule"}
+              </Button>
+              <Button
+                onClick={() => {
+                  setWizard(false);
+                  setSub("weekend");
+                  go("schedule");
+                }} type="button"
+              >
+                {t("ui.open.weekend.schedule.5c9fdf1b")}
+              </Button>
+            </div>
           </>
         ) : wizardStep === 8 ? (
           <>

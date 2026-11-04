@@ -17,6 +17,7 @@ import {
 import { S21Button } from "./S21Button";
 import React from "react";
 import { useDemoReports } from "./demo-reports";
+import { periodLabel } from "./period-label";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
 import {
   isSFTS,
@@ -46,10 +47,6 @@ function reportingPeriod(date: Date) {
   return { month, year: date.getFullYear() + (month >= 8 ? 1 : 0) };
 }
 const sample = demoPublishers;
-// "2026-10" reads as "October 2026"; anything else is shown unchanged.
-function periodLabel(period: string) {
-  return /^\d{4}-\d{2}$/.test(period) ? new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(period + "-15T12:00:00")) : period;
-}
 export function Reports({ context: c }: { context: Context }) {
   const local = useDemoReports((s) => s.rows),
     setLocal = useDemoReports((s) => s.update);
@@ -825,9 +822,11 @@ export function Reports({ context: c }: { context: Context }) {
                     </div>
                   ))}
             </div>
-            <Button onClick={() => window.print()} type="button">
-              {t("ui.print.monthly.roster.103bec84")}
-            </Button>
+            {canWrite && (
+              <Button onClick={() => window.print()} type="button">
+                {t("ui.print.monthly.roster.103bec84")}
+              </Button>
+            )}
           </section>
         </>
       )}
@@ -939,7 +938,7 @@ export function Reports({ context: c }: { context: Context }) {
                 <strong>
                   {allPersons.find((p) => p.id === revokeTarget.pub_id)?.name}
                 </strong>{" "}
-                · {period}
+                · {periodLabel(period)}
               </p>
               <p>{t("refine.retain")}</p>
               <div className="actions">

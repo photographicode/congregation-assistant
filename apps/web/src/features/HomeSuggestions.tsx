@@ -293,7 +293,7 @@ export function HomeSuggestions({
     if (missing)
       candidates.unshift({
         id: "missing",
-        title: "Remind " + missing + " publishers to submit their reports",
+        title: "Remind " + missing + (missing === 1 ? " publisher" : " publishers") + " to submit their reports",
         action: "Remind now",
         route: "reports",
         roles: ["admin", "field_service", "group_overseer"],
@@ -338,7 +338,7 @@ export function HomeSuggestions({
             <h3>
               {card.id === "missing"
                 ? missing
-                  ? "Remind " + missing + " publishers to submit their reports"
+                  ? "Remind " + missing + (missing === 1 ? " publisher" : " publishers") + " to submit their reports"
                   : "Review the current month’s reports"
                 : card.title}
             </h3>

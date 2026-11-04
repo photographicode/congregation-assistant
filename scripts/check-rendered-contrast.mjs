@@ -71,7 +71,7 @@ try {
     const page = await context.newPage();
     for (const [screen, heading] of (negativeGradientFixture ? [["home", "Monthly submissions"]] : [
       ["home", "Monthly submissions"],
-      ["people", "A place for all."],
+      ["people", "Publishers and groups"],
       ["pdf", "Forms to share"],
       ["schedule", "Midweek assignments"],
     ])) {

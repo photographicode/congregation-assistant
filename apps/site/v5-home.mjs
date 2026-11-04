@@ -15,7 +15,7 @@ const territory=[
 const trust=[
  ['Independent and unofficial','Made by one developer you can email. No affiliation with any religious organization.'],
  ['Roles decide what people see','Approved users see only what their assigned role allows.'],
- ['Encrypted connections','Database access rules, scoped public links, and tests on every release.'],
+ ['Encrypted connections','Every connection uses HTTPS. Access rules and scoped links protect the database, and every release is tested.'],
  ['Works on a weak signal','Loaded records and midweek drafts work offline and sync when you reconnect.'],
  ['Your records leave with you','Administrators can download exports and recovery backups from Settings.'],
  ['Nothing to install','Open it in any browser, then add it to your home screen if you like.']

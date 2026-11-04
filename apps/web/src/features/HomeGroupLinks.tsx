@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { rpc, demo } from "./client";
 import type { Context } from "../context";
+import { periodLabel } from "./period-label";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import { Button } from "../../../../packages/ui/components";
 
@@ -27,7 +28,7 @@ export function HomeGroupLinks({
   period: string;
   manage?: boolean;
 }) {
-  const [year, month] = period.split("-").map(Number),
+  const [year = 0, month = 1] = period.split("-").map(Number),
     allowed = c.roles.some((r) =>
       ["admin", "field_service", "group_overseer"].includes(r),
     ),
@@ -91,7 +92,7 @@ export function HomeGroupLinks({
     <section className="card stack">
       <h2>{t("ui.group.report.links.0ce81c1e")}</h2>
       <p>
-        {period} {t("ui.share.privately.3d1912ff")}
+        {periodLabel(period)} {t("ui.share.privately.3d1912ff")}
         {manage
           ? " Rotating or revoking stops the old link immediately."
           : " Manage links in Links Hub."}
@@ -119,7 +120,7 @@ export function HomeGroupLinks({
               {t("ui.last.submission.ae379f10")}
               {group.lastSubmission
                 ? new Date(group.lastSubmission).toLocaleString()
-                : "No submission time recorded"}
+                : "none yet"}
             </p>
           </div>
           <div className="actions">
@@ -154,7 +155,7 @@ export function HomeGroupLinks({
                     const text =
                       group.name +
                       " · Submit your " +
-                      period +
+                      periodLabel(period) +
                       " report: " +
                       url(group.token!);
                     if (navigator.share)
@@ -234,7 +235,7 @@ export function HomeGroupLinks({
           void copy(
             query
               .data!.filter((g) => g.token)
-              .map((g) => g.name + " · " + period + " report: " + url(g.token!))
+              .map((g) => g.name + " · " + periodLabel(period) + " report: " + url(g.token!))
               .join("\n"),
           )
         } type="button"

@@ -34,6 +34,7 @@ import {
   dashboardSummary,
   previousReportingPeriod,
 } from "./dashboard-model.mjs";
+import { periodLabel } from "./period-label";
 import type { Context } from "../context";
 type DashboardPerson = {
   id: string;
@@ -234,7 +235,7 @@ export function Dashboard({
           <Card className="stack">
             <h2>{t("sfts.summary")}</h2>
             <p>
-              {period} · {special.submitted} / {special.publishers}{" "}
+              {periodLabel(period)} · {special.submitted} / {special.publishers}{" "}
               {t("ui.submitted.1202e3f2")}
               {special.hours} {t("home.hours")} · {special.studies}{" "}
               {t("home.studies")}
@@ -322,12 +323,13 @@ export function Dashboard({
           <Card className="stack" id="dashboard-submissions">
             {/* Home shows who still has to report; the full list, filters and totals live in Reports. */}
             <div>
-              <span className="eyebrow">{period}</span>
+              <span className="eyebrow">{periodLabel(period)}</span>
               <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
+              {/* The count is already in the Submitted figure above, so this card names who is missing. */}
               <p>
-                {summary.pending === 0 && summary.publishers > 0
-                  ? `All ${summary.publishers} reports are in — nicely done.`
-                  : `${summary.publishers - summary.pending} of ${summary.publishers} reports are in.`}
+                {summary.pending > 0
+                  ? "Still to report:"
+                  : summary.publishers > 0 && `All ${summary.publishers} reports are in — nicely done.`}
               </p>
             </div>
             {!loading && !error && summary.missing.length > 0 && (

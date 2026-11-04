@@ -108,7 +108,7 @@ const server = http.createServer((req, res) => {
         .getByRole("button", { name: "Yes, share reports", exact: true })
         .click();
       await page
-        .getByRole("button", { name: "Save publisher & email", exact: true })
+        .getByRole("button", { name: "Save publisher", exact: true })
         .click();
       await page
         .getByRole("button", { name: "Edit Synthetic Household", exact: true })

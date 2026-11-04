@@ -66,22 +66,22 @@
     {
       "id": "digital",
       "name": "Full digital",
-      "description": "Approved sign-in, personal portal and optional device alerts."
+      "description": "Each person signs in with Google and sees their own report, schedule and assignments."
     },
     {
       "id": "link",
       "name": "One link",
-      "description": "A scoped personal link. Keep it private and rotate it if shared."
+      "description": "Each publisher gets a private report link instead of signing in. Replace any link that gets shared."
     },
     {
       "id": "whatsapp",
       "name": "WhatsApp",
-      "description": "User-initiated sharing. Automatic intake needs the optional Business service."
+      "description": "You send schedules and report links yourself through WhatsApp."
     },
     {
       "id": "admin",
       "name": "Admin-only",
-      "description": "Printed schedules and administrator-managed records. No personal portal."
+      "description": "Administrators keep the records and print the schedules. Publishers do not sign in."
     }
   ],
   "flags": {
