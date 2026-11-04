@@ -35,9 +35,10 @@ export function ReportLinks({ context: c }: { context: Context }) {
             .parse(await rpc("ca_v3_report_groups", { p_cong_id: c.cong })),
   });
   React.useEffect(() => {
-    if (groupOnly && !group && groups.data?.length)
-      setGroup(groups.data[0].name);
-  }, [groups.data, groupOnly, group]);
+    // Report links always cover one group, so a leaked link exposes only that group.
+    const first = groups.data?.[0];
+    if (!group && first) setGroup(first.name);
+  }, [groups.data, group]);
   async function create(kind: "report" | "attendance") {
     setBusy(true);
     setError("");
@@ -81,7 +82,6 @@ export function ReportLinks({ context: c }: { context: Context }) {
                   setLink("");
                 }} aria-label={t("links.group")}
               >
-                {!groupOnly && <option value="">{t("s21.all")}</option>}
                 {groups.data?.map((item) => (
                   <option key={item.id} value={item.name}>
                     {item.name}
@@ -94,7 +94,7 @@ export function ReportLinks({ context: c }: { context: Context }) {
                 busy ||
                 groups.isLoading ||
                 !!groups.error ||
-                (groupOnly && !group)
+                !group
               }
               onClick={() => void create("report")} type="button"
             >

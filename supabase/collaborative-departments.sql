@@ -1,6 +1,6 @@
 -- Department workspaces use the same revision-checked OCLM draft, without granting OCLM or report access.
 alter table public.congregation_access drop constraint congregation_access_role_check;
-alter table public.congregation_access add constraint congregation_access_role_check check(role in ('admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av'));
+alter table public.congregation_access add constraint congregation_access_role_check check(role in ('admin','field_service','attendance','oclm','weekend','group_overseer','publisher','attendant','av','cleaning'));
 alter policy congregations_read on public.congregations using(public.ca_has_role(id,array['admin','field_service','attendance','oclm','group_overseer','publisher','attendant','av']));
 create table if not exists ca_private.department_duties(
  cong_id text not null references public.congregations(id) on delete cascade,

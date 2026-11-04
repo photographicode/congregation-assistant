@@ -46,6 +46,10 @@ function reportingPeriod(date: Date) {
   return { month, year: date.getFullYear() + (month >= 8 ? 1 : 0) };
 }
 const sample = demoPublishers;
+// "2026-10" reads as "October 2026"; anything else is shown unchanged.
+function periodLabel(period: string) {
+  return /^\d{4}-\d{2}$/.test(period) ? new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(period + "-15T12:00:00")) : period;
+}
 export function Reports({ context: c }: { context: Context }) {
   const local = useDemoReports((s) => s.rows),
     setLocal = useDemoReports((s) => s.update);
@@ -780,12 +784,17 @@ export function Reports({ context: c }: { context: Context }) {
                             : t("report.didNotShare")}
                           {" · "}
                           <span className="report-metric">
-                            {r.studies || 0} {t("units.studies")}
+                            {r.studies || 0} {t(r.studies === 1 ? "units.study" : "units.studies")}
                           </span>
-                          {" · "}
-                          <span className="report-metric">
-                            {r.hours} {t("units.hours")}
-                          </span>
+                          {/* Publishers do not report hours, so a zero is left out. */}
+                          {Number(r.hours) > 0 && (
+                            <>
+                              {" · "}
+                              <span className="report-metric">
+                                {r.hours} {t("units.hours")}
+                              </span>
+                            </>
+                          )}
                         </p>
                         {r.is_ap && (
                           <span className="chip">{t("refine.apStatus")}</span>
@@ -829,16 +838,16 @@ export function Reports({ context: c }: { context: Context }) {
           <p>
             <strong>
               {t("ui.reporting.month.c996f10c")}
-              {period}
+              {periodLabel(period)}
             </strong>
           </p>
           <p>{t("refine.retain")}</p>
           <p>
-            {monthlyAP.length} {t("ui.auxiliary.pioneers.a250aa99")}
+            {monthlyAP.length} {t(monthlyAP.length === 1 ? "units.auxiliaryPioneer" : "ui.auxiliary.pioneers.a250aa99")}
             {monthlyAP.reduce((sum, r) => sum + Number(r.hours), 0)}{" "}
             {t("ui.hours.0227f1a3")}
             {monthlyAP.reduce((sum, r) => sum + (r.studies || 0), 0)}{" "}
-            {t("ui.studies.48d492d0")}
+            {t(monthlyAP.reduce((sum, r) => sum + (r.studies || 0), 0) === 1 ? "units.study" : "ui.studies.48d492d0")}
           </p>
           <div className="ap-review-list">
             <div className="ap-review-head" aria-hidden="true">
@@ -1420,9 +1429,9 @@ export function Reports({ context: c }: { context: Context }) {
                   <strong>
                     {t("ui.reporting.month.c996f10c")}
                     {personal && !demo
-                      ? own.data?.report.period ||
+                      ? (own.data?.report.period && periodLabel(own.data.report.period)) ||
                         "Loading current reporting month…"
-                      : period}
+                      : periodLabel(period)}
                   </strong>
                 </p>
                 <ServiceReportFields

@@ -7,10 +7,10 @@ const roles=[
  ['Meeting and duty overseers','The week, already planned.',['Midweek parts arrive from wol.jw.org','Fair suggestions for who is next','S-89 slips, duties and attendance'],['meetings-midweek','Weekly schedule with Midweek, Weekend, Duties and Print tabs',1120,475]]
 ];
 const territory=[
- ['Import one map file','Bring in your congregation boundary as a KML or KMZ file from Google My Maps.'],
- ['Split it into territories','Cut along roads, railways and rivers, then adjust any shape by hand.'],
- ['Print territory cards','Each card has its map and a QR code that opens directions on a phone.'],
- ['Keep the record','Assign a territory, mark it returned and see its history.']
+ ['Keep every territory together','Your territory maps and cards in one place, ready for whoever needs them.'],
+ ['Assign and return','Give a territory to a publisher, mark it returned and see its history.'],
+ ['Give the right people access','Overseers assign and track; publishers see only the territories they hold.'],
+ ['Need the maps made?','Making territories is a separate service. If you have only the boundary, request the split and the cards.']
 ];
 const trust=[
  ['Independent and unofficial','Made by one developer you can email. No affiliation with any religious organization.'],
@@ -27,7 +27,7 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
  const tiles=trust.map(([title,body])=>`<div class="ptile reveal"><b>${e(title)}</b><p>${e(body)}</p></div>`).join('');
  const faq=[1,2,4,5,7,10].map((n,i)=>`<details name="faq"${i?'':' open'}><summary>${e(t('faq.'+n+'.q'))}<i class="plus" aria-hidden="true"></i></summary><p>${e(t('faq.'+n+'.a'))}</p></details>`).join('');
  return `<div class="v5">
-<p class="notice wrap"><span class="badge">Up next</span><span>Territory Management: make territories from a KML file.</span><a href="#territories">See what’s coming</a></p>
+<p class="notice wrap"><span class="badge">Up next</span><span>Territory Management: assign territories and keep their record.</span><a href="#territories">See what’s coming</a></p>
 <section class="v5-hero wrap" aria-labelledby="home-title">
  <div class="v5-copy">
   <h1 id="home-title">Less to manage.<br>More time for people.</h1>
@@ -86,8 +86,9 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
  <div class="wrap terr-in">
   <div class="terr-copy">
    <p class="badge on-dark reveal">Up next</p>
-   <h2 id="terr-title" class="reveal">Territories, from one map file.</h2>
-   <p class="reveal">Territory Management is the next part of the app. Make territories from a KML file, print the cards and keep the record in one place.</p>
+   <h2 id="terr-title" class="reveal">Territories, managed in one place.</h2>
+   <p class="reveal">Territory Management is the next part of the app. It manages your territories and who can see them. Drawing or splitting new territory maps is a separate service you request.</p>
+   <p class="reveal"><a class="button" href="${e(app)}?request=territory">Request territory maps</a></p>
   </div>
   <ol class="steps">${steps}</ol>
   <svg class="terr-map reveal" viewBox="0 0 320 220" role="img" aria-label="Sketch of a congregation boundary split into five numbered territories">

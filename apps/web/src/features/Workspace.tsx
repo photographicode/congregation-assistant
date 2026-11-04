@@ -135,6 +135,7 @@ function download(value: unknown, name: string, type = "application/json") {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 const appBaseURL = import.meta.env.BASE_URL;
+const meetingDayOptions = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => ({ value: day, label: day.slice(0, "Mon".length) }));
 export default function Workspace({
   route,
   go,
@@ -1977,32 +1978,19 @@ export default function Workspace({
           </>
         ) : wizardStep === 1 ? (
           <div className="form-grid">
-            {[
-              "name",
-              "country",
-              "language",
-              "timezone",
-              "midweek",
-              "midweekTime",
-              "weekend",
-              "weekendTime",
-            ].map((k) => (
+            {/* Days are buttons and times are time pickers: the server accepts only full day names and HH:MM. */}
+            {([
+              ["name", "Congregation name", "text"],
+              ["country", "Country code", "text"],
+              ["language", "Language", "text"],
+              ["timezone", "Time zone", "text"],
+              ["midweekTime", "Midweek time", "time"],
+              ["weekendTime", "Weekend time", "time"],
+            ] as const).map(([k, label, type]) => (
               <label key={k}>
-                {
-                  (
-                    {
-                      name: "Congregation name",
-                      country: "Country code",
-                      language: "Language",
-                      timezone: "Time zone",
-                      midweek: "Midweek day",
-                      midweekTime: "Midweek time",
-                      weekend: "Weekend day",
-                      weekendTime: "Weekend time",
-                    } as any
-                  )[k]
-                }
+                {label}
                 <input
+                  type={type}
                   value={setup[k]}
                   onChange={(e) => {
                     setSetup((s: any) => ({ ...s, [k]: e.target.value }));
@@ -2011,13 +1999,25 @@ export default function Workspace({
                 />
               </label>
             ))}
+            {([["midweek", "Midweek day"], ["weekend", "Weekend day"]] as const).map(([k, label]) => (
+              <div className="ui-field" key={k}>
+                <span>{label}</span>
+                <Segmented
+                  label={label}
+                  value={setup[k]}
+                  options={meetingDayOptions}
+                  onChange={(day) => {
+                    setSetup((s: any) => ({ ...s, [k]: day }));
+                    setDirty(true);
+                  }}
+                />
+              </div>
+            ))}
           </div>
         ) : wizardStep === 2 ? (
           <>
             <h3>{t("ui.standard.ef669154")}</h3>
             <p>{t("ui.server.access.controls.the.operator.can.te.71fd2594")}</p>
-            <h3>{t("ui.private.verification.pending.a2a3b1bc")}</h3>
-            <p>{t("ui.device.encryption.and.recovery.are.not.rel.05e8326a")}</p>
           </>
         ) : wizardStep === 3 ? (
           <div className="stack">

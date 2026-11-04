@@ -65,6 +65,7 @@ const oldPrefix=import.meta.env.BASE_URL+"v2/";
 if(location.pathname.startsWith(oldPrefix))location.replace(import.meta.env.BASE_URL+location.pathname.slice(oldPrefix.length)+location.search+location.hash);
 const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:m.PublicForm})));
 const OwnerConsole=lazy(()=>import("./features/OwnerConsole"));
+const RequestForm=lazy(()=>import("./features/RequestForm").then(m=>({default:m.RequestForm})));
 const Workspace = lazy(() => import("./features/Workspace"));
 const routes = [
   {id:"owner",label:"Command centre",icon:ShieldCheck},
@@ -289,6 +290,7 @@ function App() {
           <a href="?demo=admin">{t("ui.try.the.admin.demo.f0555a09")}</a>
           <a href="?demo=publisher">{t("ui.publisher.demo.dd489e1c")}</a>
         </div>
+        <p className="muted">{"New congregation? "}<a href="?request=workspace">{t("ui.request.a.workspace.2d70699d")}</a></p>
 
       </main>
     );
@@ -305,7 +307,7 @@ function App() {
           {t("ui.this.account.has.no.active.congregation.ac.96c928fe")}</p>
         <div className="actions">
           <Button onClick={signOut} type="button">{t("ui.sign.out.48f0d3d3")}</Button>
-          <a href={config.PUBLIC_SITE_URL + "/"}>{t("ui.request.a.workspace.2d70699d")}</a>
+          <a href={import.meta.env.BASE_URL + "?request=workspace"}>{t("ui.request.a.workspace.2d70699d")}</a>
         </div>
       </main>
     );
@@ -353,11 +355,13 @@ const queryClient = new QueryClient({
 });
 // GitHub Pages cannot send frame-ancestors, so refuse to run inside another site's frame (clickjacking).
 const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
+// Public request forms need no sign-in and no workspace.
+const requestPage=new URLSearchParams(location.search).has("request")?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><RequestForm/></Suspense>:null;
 if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
 else createRoot(document.getElementById("root")!).render(
   <React.StrictMode><SystemBoundary><SystemRuntime>
     <QueryClientProvider client={queryClient}>
-      {new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />}
+      {requestPage ?? (new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />)}
     </QueryClientProvider>
   </SystemRuntime></SystemBoundary></React.StrictMode>,
 );

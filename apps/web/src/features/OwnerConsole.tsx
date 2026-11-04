@@ -30,6 +30,24 @@ const request = z
     cong_id: z.string().nullable().optional(),
   })
   .passthrough();
+const territoryRequest = z
+  .object({
+    id: z.string(),
+    contact_name: z.string(),
+    contact_email: z.string(),
+    congregation_name: z.string(),
+    phone: z.string().nullable().optional(),
+    details: z.string(),
+    status: z.enum(["new", "in_progress", "done", "declined"]),
+    created_at: z.string(),
+  })
+  .passthrough();
+const territoryStatuses = [
+  { value: "new", label: "New" },
+  { value: "in_progress", label: "In progress" },
+  { value: "done", label: "Done" },
+  { value: "declined", label: "Declined" },
+];
 const input = z.object({
   id: z.string().min(1).max(100),
   name: z.string().trim().min(2).max(150),
@@ -90,11 +108,30 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
       },
     ]),
     [demoMail, setDemoMail] = React.useState({ queued: 0, failed: 0, sent: 0 }),
+    [demoTerritory, setDemoTerritory] = React.useState<z.infer<typeof territoryRequest>[]>([
+      {
+        id: "00000000-0000-4000-8000-000000000002",
+        contact_name: "Fictional Overseer",
+        contact_email: "overseer@example.invalid",
+        congregation_name: "Fictional Hillside",
+        phone: null,
+        details: "We have our boundary as a KML file and need it split into about 30 territories with printed cards.",
+        status: "new" as const,
+        created_at: new Date().toISOString(),
+      },
+    ]),
     [selectedRequest, setSelectedRequest] = React.useState<any>(null);
   const tenants = useQuery({
       queryKey: ["owner", "congregations"],
       queryFn: async () => {
         if (demo) return sample;
+        // Members can no longer read email or billing columns; the owner reads them through this function.
+        // shortcut: falls back to the table until the 2026-11-04 migration runs, remove the fallback after.
+        try {
+          return z.array(tenant).parse(await rpc("ca_owner_congregations"));
+        } catch (failure) {
+          if (!/ca_owner_congregations|PGRST202|could not find/i.test((failure as Error)?.message || "")) throw failure;
+        }
         return storeFor("").read(
           {
             source: {
@@ -137,9 +174,28 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
   React.useEffect(() => {
     if (demo) qc.setQueryData(["owner", "requests"], localRequests);
   }, [localRequests]);
+  const territory = useQuery({
+    queryKey: ["owner", "territory-requests"],
+    queryFn: async () =>
+      demo ? demoTerritory : z.array(territoryRequest).parse(await rpc("get_territory_requests")),
+  });
   React.useEffect(() => {
     if (demo) qc.setQueryData(["owner", "mail-health"], demoMail);
   }, [demoMail]);
+  React.useEffect(() => {
+    if (demo) qc.setQueryData(["owner", "territory-requests"], demoTerritory);
+  }, [demoTerritory, qc]);
+  const territoryErrorText = /PGRST202|could not find/i.test(territory.error?.message || "")
+    ? "Territory requests turn on after the 2026-11-04 database update is run."
+    : "Territory requests could not load. ";
+  async function setTerritoryStatus(id: string, status: string) {
+    if (demo) {
+      setDemoTerritory((rows) => rows.map((r) => (r.id === id ? { ...r, status: status as typeof r.status } : r)));
+      return;
+    }
+    await rpc("update_territory_request", { p_id: id, p_status: status, p_note: null });
+    await qc.invalidateQueries({ queryKey: ["owner", "territory-requests"] });
+  }
   async function run(fn: () => Promise<void>) {
     setBusy(true);
     setError("");
@@ -321,6 +377,53 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           <p>{t("ui.a.queued.message.is.not.proof.of.delivery..afbd1ada")}</p>
         </section>
       </div>
+      {/* Territory maps are made outside the app; requests come from the public form and are tracked here. */}
+      <section className="card stack">
+        <h2>
+          {(() => {
+            const open = (territory.data || []).filter((r) => r.status === "new" || r.status === "in_progress").length;
+            return open === 1 ? "1 open territory map request" : `${open} open territory map requests`;
+          })()}
+        </h2>
+        <p>
+          {"Public form: "}
+          <a href={location.origin + import.meta.env.BASE_URL + "?request=territory"} target="_blank" rel="noreferrer">
+            {location.origin + import.meta.env.BASE_URL + "?request=territory"}
+          </a>
+        </p>
+        {territory.error && (
+          <p role="alert">
+            {territoryErrorText}
+            <Button onClick={() => void territory.refetch()} type="button">
+              {t("ui.retry.942087cc")}
+            </Button>
+          </p>
+        )}
+        {!territory.error && (territory.data?.length ? (
+          territory.data.map((r) => (
+            <article className="stack territory-request" key={r.id}>
+              <div>
+                <strong>{r.congregation_name}</strong>
+                <p>
+                  {r.contact_name} · <a href={"mailto:" + r.contact_email}>{r.contact_email}</a>
+                  {r.phone ? ` · ${r.phone}` : ""}
+                  {" · "}
+                  {new Date(r.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}
+                </p>
+                <p>{r.details}</p>
+              </div>
+              <Segmented
+                label={`Status for ${r.congregation_name}`}
+                value={r.status}
+                options={territoryStatuses}
+                onChange={(status) => void run(() => setTerritoryStatus(r.id, status))}
+              />
+            </article>
+          ))
+        ) : (
+          <p>{"No territory map requests yet."}</p>
+        ))}
+      </section>
       <section className="card stack">
         <h2>{t("ui.congregations.6c2258e5")}</h2>
         <label>
