@@ -83,6 +83,17 @@ export async function rpc(name: string, args: Record<string, unknown> = {}) {
     z.any(),
   );
 }
+// Edge functions return { error } bodies in plain words; surface that text instead of the HTTP status.
+export async function invokeFunction<T>(name: string, body: Record<string, unknown>): Promise<T> {
+  if (demo) throw Error("The fictional demo never calls the cloud.");
+  const { data, error } = await sdk.functions.invoke(name, { body });
+  if (error) {
+    const response = (error as { context?: Response }).context;
+    const detail = response ? await response.clone().json().catch(() => null) : null;
+    throw Error((detail as { error?: string } | null)?.error || "The server could not be reached. Try again.");
+  }
+  return data as T;
+}
 export async function capabilities(cong: string) {
   try {
     return await storeFor(cong).read(

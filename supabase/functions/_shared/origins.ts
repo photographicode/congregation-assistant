@@ -7,3 +7,12 @@ export const allowedOrigins = [
 export function acceptsOrigin(origin: string | null): boolean {
  return origin === null || allowedOrigins.some(allowed => allowed === origin);
 }
+// Browser-called functions answer only an accepted origin, never "*".
+export function corsHeaders(origin: string | null): Record<string, string> {
+ return origin && acceptsOrigin(origin) ? {
+  'Access-Control-Allow-Origin': origin,
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  Vary: 'Origin',
+ } : {};
+}

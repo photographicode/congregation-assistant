@@ -8,13 +8,14 @@ export const publicConfigSchema=z.object({
  PUBLIC_SITE_URL:httpsUrl,APP_URL:httpsUrl,SITE_URL:httpsUrl.optional(),
  SUPABASE_URL:httpsUrl,SUPABASE_PUBLISHABLE_KEY:publicKey,
  BASE_URL:z.string().refine(value=>value.startsWith('/')&&!value.startsWith('//')&&!value.includes('..')&&!/[?#]/.test(value),'Use a local application base path.'),
- domainConfigured:z.boolean().default(false),mailConfigured:z.boolean().default(false),
+ domainConfigured:z.boolean().default(false),mailConfigured:z.boolean().default(false),paymentsEnabled:z.boolean().default(false),
  GITHUB_PAGES_SITE_URL:httpsUrl.optional(),GITHUB_PAGES_SOURCE_URL:httpsUrl.optional(),
 }).passthrough();
 export type PublicConfig=z.infer<typeof publicConfigSchema>;
 export const featureFlags={
  domainConfigured:{owner:'repository-owner',expires:'2027-01-01',description:'Custom-domain activation after DNS and callback verification.'},
  mailConfigured:{owner:'repository-owner',expires:'2027-01-01',description:'Mail provider activation after delivery verification.'},
+ paymentsEnabled:{owner:'repository-owner',expires:'2027-06-01',description:'Razorpay online payment after KYC, secrets and a live test payment.'},
 } as const;
 export function validatePublicConfig(value:unknown):PublicConfig{
  const result=publicConfigSchema.safeParse(value);

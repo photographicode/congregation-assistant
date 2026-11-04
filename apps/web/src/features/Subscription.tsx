@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { config } from "./client";
 import { RecordsExport } from "./RecordsExport";
+import { PayOnline } from "./PayOnline";
 import type { Context } from "../context";
 import { planSchema } from "../../../../packages/core/plan";
 import type { WorkspacePlan } from "../../../../packages/core/plan";
@@ -53,6 +54,7 @@ export function Subscription({
             <p>{t("refine.fee2")}</p>
           </>
         )}
+        <PayOnline context={c} />
         <a
           className="button primary"
           href={
