@@ -107,4 +107,4 @@ body:has(.v4-shell) .runtime-offline{display:none}
 @media (max-width:599px){.login.card{margin:var(--space-5) var(--space-4)}}
 /* Owner totals sit two or four across instead of one tall tile per row. */
 :root .dashboard-kpis.owner-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media (min-width:1024px){:root .dashboard-kpis.owner-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:1023px){:root .dashboard-kpis.owner-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
