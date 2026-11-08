@@ -59,6 +59,20 @@ export function subscribeStores(listener: (event: StoreEvent) => void) {
     listeners.delete(listener);
   };
 }
+// Signing out clears this device, so send queued edits first and warn about any that remain.
+export async function confirmSignOut(): Promise<boolean> {
+  try { await syncStores(); } catch { /* whatever is left is counted below */ }
+  let unsent = 0;
+  try {
+    for (const store of stores.values()) {
+      const status = await store.status();
+      unsent += status.pending + status.conflicts;
+    }
+  } catch { /* a closed store has nothing left to lose */ }
+  if (!unsent) return true;
+  const what = unsent === 1 ? "1 change has" : unsent + " changes have";
+  return window.confirm(what + " not reached the server yet. Signing out deletes them from this device. Sign out anyway?");
+}
 export async function clearStores() {
   const previous = [...stores.values()],
     previousAccount = account;

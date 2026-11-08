@@ -4,6 +4,14 @@ import { linkIdPattern } from "../_shared/razorpay.ts";
    and the key secret never leaves this function. The browser only receives Razorpay's page address. */
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
 const LINK_LIFETIME_SECONDS = 24 * 60 * 60;
+const razorpayPage = (value: string) => {
+  try {
+    const page = new URL(value);
+    return page.protocol === "https:" && (page.hostname === "rzp.io" || page.hostname.endsWith(".razorpay.com"));
+  } catch {
+    return false;
+  }
+};
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("origin");
   if (!acceptsOrigin(origin)) return new Response("Origin not allowed", { status: 403 });
@@ -24,9 +32,12 @@ Deno.serve(async (req: Request) => {
   const user = createClient(url, anon, { global: { headers: { Authorization: auth } }, auth: { persistSession: false } });
   const { data: begin, error } = await user.rpc("ca_payment_begin", { p_cong_id: cong });
   if (error) {
-    const status = error.code === "42501" ? 403 : error.code === "PT429" ? 429 : 400;
-    return Response.json({ error: status === 400 ? "The payment could not start. Try again." : error.message }, { status, headers });
+    // Fixed wording: database error text never reaches the browser.
+    if (error.code === "42501") return Response.json({ error: "Only the main administrator can pay for the congregation." }, { status: 403, headers });
+    if (error.code === "PT429") return Response.json({ error: "Too many attempts. Wait an hour and try again." }, { status: 429, headers });
+    return Response.json({ error: "The payment could not start. Try again." }, { status: 400, headers });
   }
+  if (!begin?.email) return Response.json({ error: "Your account has no email address. Sign in again with Google." }, { status: 400, headers });
 
   const response = await fetch("https://api.razorpay.com/v1/payment_links", {
     method: "POST",
@@ -48,11 +59,20 @@ Deno.serve(async (req: Request) => {
     signal: AbortSignal.timeout(15000),
   }).catch(() => null);
   const link = response?.ok ? await response.json().catch(() => null) : null;
-  if (!link || !linkIdPattern.test(link.id) || link.amount !== begin.amount_paise || !String(link.short_url).startsWith("https://"))
+  if (!link || !linkIdPattern.test(link.id) || link.amount !== begin.amount_paise || !razorpayPage(String(link.short_url)))
     return Response.json({ error: "Razorpay did not create the payment page. Try again in a minute." }, { status: 502, headers });
 
   const db = createClient(url, service, { auth: { persistSession: false } });
   const { error: saveError } = await db.rpc("ca_payment_link_created", { p_cong_id: begin.cong_id, p_link_id: link.id, p_amount_paise: link.amount, p_email: begin.email });
-  if (saveError) return Response.json({ error: "The payment could not be saved. Try again." }, { status: 503, headers });
+  if (saveError) {
+    // An unrecorded link could still be paid from Razorpay's email, so cancel it.
+    const cancelled = await fetch("https://api.razorpay.com/v1/payment_links/" + link.id + "/cancel", {
+      method: "POST",
+      headers: { Authorization: "Basic " + btoa(keyId + ":" + keySecret) },
+      signal: AbortSignal.timeout(15000),
+    }).then((r) => r.ok).catch(() => false);
+    if (!cancelled) console.error("Unrecorded Razorpay link could not be cancelled", link.id);
+    return Response.json({ error: "The payment could not be saved. Try again." }, { status: 503, headers });
+  }
   return Response.json({ url: link.short_url }, { headers });
 });

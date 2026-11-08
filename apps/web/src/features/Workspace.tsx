@@ -68,6 +68,7 @@ import { PublisherHome } from "./PublisherHome";
 import { Access } from "./Access";
 import { Backup } from "./Backup";
 import { Subscription } from "./Subscription";
+import { isHttpsUrl } from "./safe-url";
 import { RecordsExport } from "./RecordsExport";
 import { Sessions } from "./Sessions";
 import catalogue from "../../../../capabilities.json";
@@ -1295,7 +1296,7 @@ export default function Workspace({
                         {weekend.watchtowerSongs}
                       </small>
                     )}
-                    {weekend.sourceUrl && (
+                    {weekend.sourceUrl && isHttpsUrl(weekend.sourceUrl) && (
                       <a
                         href={weekend.sourceUrl}
                         target="_blank"

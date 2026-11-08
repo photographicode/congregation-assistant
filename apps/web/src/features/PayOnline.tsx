@@ -14,31 +14,55 @@ const razorpayPage = (value: string) => {
     return false;
   }
 };
+// The signed result waits in this tab until the server confirms it, so a failed check can be retried.
+const RETURN_STORE = "ca-payment-return";
 function takeReturn(): Record<string, string> | null {
   const params = new URLSearchParams(location.search);
-  if (!params.has("razorpay_payment_link_id")) return null;
-  const result = Object.fromEntries(RETURN_KEYS.map((key) => [key, params.get(key) || ""]));
-  for (const key of RETURN_KEYS) params.delete(key);
-  // Keep the screen but drop the payment details, so a reload or a shared address does not resend them.
-  const rest = params.toString();
-  history.replaceState(history.state, "", location.pathname + (rest ? "?" + rest : "") + location.hash);
-  return result;
+  if (params.has("razorpay_payment_link_id")) {
+    const result = Object.fromEntries(RETURN_KEYS.map((key) => [key, params.get(key) || ""]));
+    for (const key of RETURN_KEYS) params.delete(key);
+    // Keep the screen but drop the payment details, so a shared address does not carry them.
+    const rest = params.toString();
+    history.replaceState(history.state, "", location.pathname + (rest ? "?" + rest : "") + location.hash);
+    try { sessionStorage.setItem(RETURN_STORE, JSON.stringify(result)); } catch { /* still checked once below */ }
+    return result;
+  }
+  try {
+    const saved: unknown = JSON.parse(sessionStorage.getItem(RETURN_STORE) || "null");
+    return saved && typeof saved === "object" ? (saved as Record<string, string>) : null;
+  } catch {
+    return null;
+  }
+}
+function forgetReturn() {
+  try { sessionStorage.removeItem(RETURN_STORE); } catch { /* nothing stored */ }
 }
 
 export function PayOnline({ context: c }: { context: Context }) {
   const [busy, setBusy] = React.useState(false),
     [error, setError] = React.useState(""),
-    [paid, setPaid] = React.useState(false);
+    [paid, setPaid] = React.useState(false),
+    [pending, setPending] = React.useState<Record<string, string> | null>(null);
   const enabled = config.paymentsEnabled && c.roles.includes("admin");
+  const confirm = React.useCallback((result: Record<string, string>) => {
+    setBusy(true);
+    setError("");
+    invokeFunction("razorpay-verify", result)
+      .then(() => {
+        forgetReturn();
+        setPending(null);
+        setPaid(true);
+      })
+      .catch((failure: Error) => {
+        setPending(result);
+        setError(failure.message);
+      })
+      .finally(() => setBusy(false));
+  }, []);
   React.useEffect(() => {
     const result = enabled ? takeReturn() : null;
-    if (!result) return;
-    setBusy(true);
-    invokeFunction("razorpay-verify", result)
-      .then(() => setPaid(true))
-      .catch((failure: Error) => setError(failure.message))
-      .finally(() => setBusy(false));
-  }, [enabled]);
+    if (result) confirm(result);
+  }, [enabled, confirm]);
   async function pay() {
     setBusy(true);
     setError("");
@@ -67,6 +91,9 @@ export function PayOnline({ context: c }: { context: Context }) {
       </Button>
       <p className="muted">{"You pay on Razorpay’s page by UPI, card or net banking, then come back here. Razorpay emails a receipt."}</p>
       {error && <p role="alert" className="error">{error}</p>}
+      {pending && !busy && (
+        <Button onClick={() => confirm(pending)} type="button">{"Check payment again"}</Button>
+      )}
     </div>
   );
 }

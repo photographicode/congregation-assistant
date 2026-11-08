@@ -39,7 +39,7 @@ import {LocalAssistant} from "./features/LocalAssistant";
 import {SectionHub} from "./features/SectionHub";
 import features from "../../../capabilities.json";
 import { Dialog } from "../../../packages/ui/Dialog";
-import { config,rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores } from "./features/client";
+import { config,rpc,client, demo, capabilities,storeFor,clearStores,switchStoreAccount,subscribeStores,syncStores,confirmSignOut } from "./features/client";
 import {ExperienceDefaults} from "./features/ExperienceProfile";
 import { useAppearance,activateAppearanceProfile } from "./features/store";
 import {authScope,displayFirstName} from "./features/auth-scope.mjs";
@@ -234,6 +234,7 @@ function App() {
   const roleScope=[...roles].sort().join(',');
   useEffect(()=>{if(demo||!session?.user?.id||!cong||owner)return;let active=true;const store=storeFor(cong,roles);const update=()=>void store.status().then(status=>{if(active)setSyncStatus(status);}).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});const unsubscribe=subscribeStores(event=>{update();if(['refresh','local','synced'].includes(event.reason))void queryClient.invalidateQueries();});const sync=()=>void syncStores().then(update).catch((error)=>{handleError(error,{scope:"main.tsx",severity:'warning'});});update();sync();window.addEventListener('online',sync);const interval=setInterval(sync,TIMING.maintenanceRetry);return()=>{active=false;unsubscribe();window.removeEventListener('online',sync);clearInterval(interval);};},[session?.user?.id,cong,roleScope,owner]);
   async function signOut() {
+    if(!(await confirmSignOut()))return;
     setQuick(false);setSearch(false);setAssistantOpen(false);setUpdatesOpen(false);setNotice("");window.dispatchEvent(new Event("ca:after-navigate"));
     const { clearDevice } = await import("./features/device-keys");
     try{await clearDevice();}catch{setError(t("store.clearFailed"));}

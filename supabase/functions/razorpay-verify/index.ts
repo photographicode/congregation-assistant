@@ -25,6 +25,11 @@ Deno.serve(async (req: Request) => {
   if (r.status !== "paid") return Response.json({ error: "The payment was not completed. Nothing was charged." }, { status: 400, headers });
   const db = createClient(url, service, { auth: { persistSession: false } });
   const { error } = await db.rpc("ca_payment_mark_paid", { p_link_id: r.linkId, p_payment_id: r.paymentId, p_amount_paise: null });
+  if (error?.code === "P0002") {
+    // Signed by Razorpay but unknown here: needs a person, not a retry.
+    console.error("Signed payment for an unrecorded link", r.linkId, r.paymentId);
+    return Response.json({ error: "Payment received, but it could not be matched to your congregation. Email support with this reference: " + r.paymentId }, { status: 409, headers });
+  }
   if (error) return Response.json({ error: "Payment received, but the workspace could not be updated yet. It will update automatically." }, { status: 503, headers });
   return Response.json({ paid: true }, { headers });
 });

@@ -14,6 +14,7 @@ import {
   previousReportingMonth,
 } from "../../../../packages/core/report-rules";
 import { t } from "../../../../packages/core/i18n";
+import { isHttpsUrl } from "./safe-url";
 import {
   ServiceReportFields,
   ReportReceipt,
@@ -532,7 +533,7 @@ export function PublicForm() {
               );
             })
           )}
-          {snapshot.sourceUrl && (
+          {snapshot.sourceUrl && isHttpsUrl(snapshot.sourceUrl) && (
             <a href={snapshot.sourceUrl} target="_blank" rel="noreferrer">
               {t("ui.source.wol.jw.org.f4aa1fbe")}
             </a>
