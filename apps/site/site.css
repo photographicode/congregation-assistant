@@ -1,9 +1,8 @@
-/* Public website. Monochrome: the app's Eclipse pair (black, greys, white) with Noto Sans, the app's
-   one typeface. A canvas dot field (site.js) moves behind the page. The data-theme names
-   mono-light / mono-dark are kept for the site's toggle and stored preference. */
+/* Public website. One light theme: soft neumorphic surfaces on a pale grey-blue page, with Noto Sans,
+   the app's one typeface. A canvas dot field (site.js) moves behind the page. People choose dark mode
+   inside the app, not here. */
 @font-face{font-family:'Noto Sans';src:url('assets/fonts/noto-sans-latin-wght-normal.woff2') format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-:root,[data-theme=mono-light]{color-scheme:light;--paper:#fafafa;--panel:#fff;--soft:#f0f0f0;--ink:#0a0a0a;--muted:#595959;--line:#e3e3e3;--accent:#0a0a0a;--on-accent:#fafafa;--field:#0a0a0a;--on-field:#fafafa;--on-field-muted:#b3b3b3;--dot:10,10,10;--shadow-float:0 24px 60px #0000002e}
-[data-theme=mono-dark]{color-scheme:dark;--paper:#0a0a0a;--panel:#161616;--soft:#141414;--ink:#f5f5f5;--muted:#a6a6a6;--line:#2b2b2b;--accent:#f5f5f5;--on-accent:#0a0a0a;--field:#1a1a1a;--on-field:#f5f5f5;--on-field-muted:#a6a6a6;--dot:245,245,245;--shadow-float:0 24px 60px #000a}
+:root,[data-theme=mono-light]{color-scheme:light;--paper:#eef1f5;--panel:#f7f9fc;--soft:#eef1f5;--ink:#0f1115;--muted:#4f5663;--line:#d6dce5;--accent:#0f1115;--on-accent:#fafafa;--field:#0a0a0a;--on-field:#fafafa;--on-field-muted:#b3b3b3;--dot:10,10,10;--shadow-float:0 24px 60px #0000002e}
 :root{--site-display:'Noto Sans',system-ui,sans-serif;--site-body:'Noto Sans',system-ui,sans-serif;--radius-s:12px;--radius-l:28px;--radius-pill:999px;--margin:max(24px,calc((100vw - 1240px)/2));--ease:cubic-bezier(.2,.7,.2,1);--step-display:clamp(2.125rem,4.2vw,4.5rem);--step-h2:clamp(2rem,3.2vw,3rem);--step-h3:clamp(1.25rem,1.7vw,1.625rem);--step-body:1.0625rem;--step-small:.875rem}
 
 *{box-sizing:border-box}
@@ -39,7 +38,6 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .skip-link{position:absolute;top:-100px;left:16px;z-index:50;background:var(--panel);color:var(--ink);padding:12px 16px;border-radius:var(--radius-s)}
 .skip-link:focus{top:8px}
 .site-header{position:relative;z-index:20}
-.field-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 110% 85% at 50% 35%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 110% 85% at 50% 35%,#000 35%,transparent 100%)}
 .header-inner{display:flex;align-items:center;flex-wrap:wrap;gap:16px 32px;min-height:80px;padding-block:12px}
 .wordmark{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-weight:650;font-size:1.0625rem;text-decoration:none;letter-spacing:-.01em}
 .wordmark svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--accent);color:var(--on-accent)}
@@ -229,3 +227,10 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 }
 
 @media(max-width:429px){.wordmark span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.header-inner{flex-wrap:nowrap}}
+
+/* Neumorphic controls and cards: they rise out of the page and sink in when pressed. */
+.button:not(.primary){background:var(--paper);border-color:transparent;box-shadow:6px 6px 14px #c9d1dc,-6px -6px 14px #fff}
+.button:not(.primary):active{box-shadow:inset 4px 4px 9px #c9d1dc,inset -4px -4px 9px #fff}
+.button.primary{box-shadow:6px 6px 14px #c3ccd8,-6px -6px 14px #fff}
+.feature-grid .tile,.pricing .tile{padding:28px;border-radius:var(--radius-l);background:var(--paper);box-shadow:8px 8px 18px #c9d1dc,-8px -8px 18px #fff}
+@media (prefers-contrast:more){.button:not(.primary),.feature-grid .tile,.pricing .tile{border:1px solid var(--muted)}}

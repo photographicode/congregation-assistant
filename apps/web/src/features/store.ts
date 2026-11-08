@@ -22,7 +22,7 @@ type Appearance = Experience & {
 const initial: Appearance = {
   ...experiencePresets.calm,
   experienceChosen: true,
-  theme: "auto",
+  theme: "mono-light",
   backgroundIntensity: 0,
   tone: "standard",
   size: "M",

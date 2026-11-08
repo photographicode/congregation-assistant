@@ -32,9 +32,9 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
  <div class="v5-copy">
   <h1 id="home-title">Less to manage.<br>More time for people.</h1>
   <p class="v5-lead">Reports, S-21 cards, meeting schedules, duties and attendance for your congregation, in one calm app that works on any phone.</p>
-  <div class="acts"><a class="btn" href="${e(app)}">Open your workspace</a><a class="btn ghost" href="#how-it-works">See how it works</a></div>
+  <div class="acts"><a class="btn" href="${e(app)}?demo=admin">Try the demo</a><a class="btn ghost" href="${e(app)}">Sign in</a></div>
   <ul class="chips" aria-label="What it covers">${chips.map(chip=>`<li>${e(chip)}</li>`).join('')}</ul>
-  <p class="fine">Independent and unofficial. The sample report is live. Try it.</p>
+  <p class="fine">No sign-in needed. Explore a fictional congregation as an <a href="${e(app)}?demo=admin">administrator</a> or as a <a href="${e(app)}?demo=publisher">publisher</a>. Independent and unofficial.</p>
  </div>
  <div class="v5-stage" role="group" aria-label="Live example with fictional data">
   <div class="report" data-ui>
@@ -119,15 +119,15 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
 </section>
 
 <section class="cta" aria-labelledby="closing-title">
- <div class="cta-copy reveal"><h2 id="closing-title">Your week,<br>handled.</h2><p>Sign in with the Google account your congregation approved. Your administrator decides what you see.</p></div>
+ <div class="cta-copy reveal"><h2 id="closing-title">Your week,<br>handled.</h2><p>Try it first with a fictional congregation. When you are ready, sign in with the Google account your congregation approved.</p></div>
  <div class="dialog reveal" data-ui>
   <div class="body">
-   <h3>Open your workspace</h3>
-   <p>River Park Congregation</p>
+   <h3>Try the demo</h3>
+   <p>River Park Congregation · fictional data, nothing is saved</p>
    <div class="seg" role="group" aria-label="I am a" data-v5-roles><button type="button" aria-pressed="true" data-role="pub">Publisher</button><button type="button" aria-pressed="false" data-role="ovs">Overseer</button></div>
    <ul class="gets" data-v5-gets><li>Your assignments and meeting schedule</li><li>Your monthly report, with household members</li><li>Congregation announcements</li></ul>
-   <a class="go" href="${e(app)}">Continue</a>
-   <p class="small">Independent and unofficial. Your congregation controls access.</p>
+   <a class="go" href="${e(app)}?demo=publisher" data-v5-go data-app="${e(app)}">Open the publisher demo</a>
+   <p class="small">Already approved? <a href="${e(app)}">Sign in</a></p>
   </div>
  </div>
 </section>

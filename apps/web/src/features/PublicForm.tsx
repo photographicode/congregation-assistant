@@ -232,7 +232,7 @@ export function PublicForm() {
   }, [token]);
   React.useLayoutEffect(() => {
     const dark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-    document.documentElement.dataset.theme = resolvedTheme(context?.theme || "auto", dark);
+    document.documentElement.dataset.theme = resolvedTheme(context?.theme || "mono-light", dark);
   }, [context?.theme]);
   async function submit(e: React.FormEvent) {
     e.preventDefault();

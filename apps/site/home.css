@@ -4,14 +4,13 @@
 @keyframes v5-flash{0%{background:var(--ink);color:var(--panel)}100%{}}
 @keyframes v5-rise{from{opacity:0;transform:translateY(12px)}}
 .v5{
- --bg:#fafafa;--surface:#f0f0f0;--surface-2:#e4e4e4;--ink:#0a0a0a;--muted:#595959;--line:#e0e0e0;
- --accent:#0a0a0a;--accent-ink:#fafafa;--stage:#0a0a0a;--panel:#fff;--panel-line:#e4e4e4;
- --m:24px;--r:14px;--ease:cubic-bezier(.2,.7,.1,1);
+ /* One light theme. Neumorphic surfaces share the page colour; depth comes from paired light and dark shadows. */
+ --bg:#eef1f5;--surface:#eef1f5;--surface-2:#dde2ea;--ink:#0f1115;--muted:#4f5663;--line:#d6dce5;
+ --accent:#0f1115;--accent-ink:#f7f9fc;--stage:#e3e8ef;--panel:#f7f9fc;--panel-line:#e0e5ec;
+ --raise:7px 7px 16px #c9d1dc,-7px -7px 16px #fff;--raise-hover:10px 10px 22px #c3ccd8,-10px -10px 22px #fff;
+ --press:inset 4px 4px 9px #c9d1dc,inset -4px -4px 9px #fff;
+ --m:24px;--r:22px;--ease:cubic-bezier(.2,.7,.1,1);
  color:var(--ink);overflow-x:clip;
- [data-theme=mono-dark] &{
-  --bg:#0a0a0a;--surface:#161616;--surface-2:#222;--ink:#f5f5f5;--muted:#a6a6a6;--line:#262626;
-  --accent:#f5f5f5;--accent-ink:#0a0a0a;--stage:#1c1c1c;--panel:#111;--panel-line:#2c2c2c;
- }
  h1,h2,h3,p{margin:0}
  h1,h2{font-weight:600;letter-spacing:-.035em;line-height:1.02}
  a{color:inherit}
@@ -261,45 +260,42 @@
   *,*::before,*::after{animation:none!important;transition:none!important}
  }
 
- /* Spatial layer: panels float as frosted glass above a soft field of light.
-    Text keeps its contrast because each pane stays mostly opaque (0.72). */
- --glass:rgba(255,255,255,.72);--glass-edge:rgba(255,255,255,.9);--glass-hi:rgba(255,255,255,.95);
- --lift:0 1px 2px rgba(10,10,10,.06),0 12px 32px -8px rgba(10,10,10,.14),0 40px 80px -24px rgba(10,10,10,.12);
- --lift-hover:0 2px 4px rgba(10,10,10,.08),0 20px 44px -10px rgba(10,10,10,.2),0 56px 100px -28px rgba(10,10,10,.16);
- --r:22px;
- [data-theme=mono-dark] &{
-  --glass:rgba(30,30,32,.72);--glass-edge:rgba(255,255,255,.12);--glass-hi:rgba(255,255,255,.14);
-  --lift:0 1px 2px rgba(0,0,0,.4),0 12px 32px -8px rgba(0,0,0,.55),0 40px 80px -24px rgba(0,0,0,.5);
-  --lift-hover:0 2px 4px rgba(0,0,0,.45),0 20px 44px -10px rgba(0,0,0,.65),0 56px 100px -28px rgba(0,0,0,.55);
- }
+ /* Spatial + neumorphic layer.
+    Neumorphic: cards, tiles, chips and quiet buttons rise out of the page; open and pressed states sink in.
+    Spatial: the app windows are frosted glass floating above a soft field of light, at slightly different depths.
+    Text stays dark on light everywhere; the black sections of the old design are now soft light panels. */
+ --glass:rgba(250,252,255,.78);--glass-edge:rgba(255,255,255,.95);
+ --float:0 1px 2px rgba(20,30,50,.06),0 18px 40px -12px rgba(20,30,50,.22),0 50px 90px -30px rgba(20,30,50,.18);
  &::before{content:'';position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;
-  background:radial-gradient(38vmax 38vmax at 12% 18%,rgba(120,140,255,.3),transparent 70%),
-   radial-gradient(34vmax 34vmax at 88% 30%,rgba(255,170,120,.26),transparent 70%),
-   radial-gradient(42vmax 42vmax at 50% 95%,rgba(110,210,190,.24),transparent 70%)}
- [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){
-  background:var(--glass);border:1px solid var(--glass-edge);
-  -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
-  box-shadow:inset 0 1px 0 var(--glass-hi),var(--lift)}
- .chips li,.choice span:not(.sel),.btn.ghost{box-shadow:inset 0 1px 0 var(--glass-hi)}
- /* Over the dark stage a light pane must stay nearly solid, or it turns grey. */
- .v5-stage [data-ui],.how-r [data-ui]{--glass:color-mix(in srgb,var(--panel) 94%,transparent)}
- [data-ui]{border-radius:var(--r)}
+  background:radial-gradient(38vmax 38vmax at 12% 18%,rgba(120,140,255,.22),transparent 70%),
+   radial-gradient(34vmax 34vmax at 88% 30%,rgba(255,170,120,.18),transparent 70%),
+   radial-gradient(42vmax 42vmax at 50% 95%,rgba(110,210,190,.18),transparent 70%)}
+ .role,.ptile,.v5-faq details,.chips li,.btn.ghost,.choice span:not(.sel),.terr,.cta{background:var(--surface);color:var(--ink);box-shadow:var(--raise)}
+ .chips li,.choice span:not(.sel){box-shadow:3px 3px 7px #c9d1dc,-3px -3px 7px #fff}
+ .v5-faq details[open],.ptile.head{background:var(--surface);color:var(--ink);box-shadow:var(--press)}
+ .ptile.head a{color:var(--ink)}
+ .terr,.cta{margin:24px var(--m);border-radius:32px}
+ .terr .badge.on-dark,.cta .badge.on-dark{background:var(--ink);color:var(--accent-ink)}
+ .btn.ghost:active,.chips li:active{box-shadow:var(--press)}
  .role,.ptile,.v5-faq details{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
- .role:hover,.ptile:not(.head):hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 var(--glass-hi),var(--lift-hover)}
- /* The hero windows sit at slightly different depths, like panes in a room. */
+ .role:hover,.ptile:not(.head):hover{transform:translateY(-3px);box-shadow:var(--raise-hover)}
+ .v5-stage,.how-r{background:var(--stage);box-shadow:var(--press)}
+ [data-ui]{background:var(--glass);border:1px solid var(--glass-edge);border-radius:var(--r);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);box-shadow:var(--float)}
  .v5-stage{perspective:1400px}
  .v5-stage>.report{transform:rotateY(4deg) translateZ(0)}
  .v5-stage>.sec{transform:rotateY(-3deg) translateY(28px)}
  .btn{border-radius:999px}
- .dialog{border-radius:var(--r)}
- @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){background:var(--panel)}
- }
- @media (prefers-reduced-transparency:reduce){
-  &::before{display:none}
-  [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}
- }
- @media (max-width:1180px){
-  .v5-stage>.report,.v5-stage>.sec{transform:none}
- }
+ .btn:not(.ghost){box-shadow:6px 6px 14px #c3ccd8,-6px -6px 14px #fff}
+ @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){[data-ui]{background:var(--panel)}}
+ @media (prefers-reduced-transparency:reduce){&::before{display:none}[data-ui]{background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}}
+ @media (prefers-contrast:more){.role,.ptile,.v5-faq details,.chips li,.btn.ghost,.terr,.cta{outline:1px solid var(--muted)}}
+ @media (max-width:1180px){.v5-stage>.report,.v5-stage>.sec{transform:none}}
+ .fine{max-width:46ch}
+ @media (min-width:900px){.how{min-height:min(88svh,680px)}.how-l{padding-bottom:120px}.how-r{padding-block:72px 120px}}
+ .phone{display:none}
+ .sec-pad{padding-block:104px}
+ .terr-copy h2+p{margin-top:18px}
+ .cta{min-height:0;padding-block:96px}
+ @media (max-width:899px){.terr,.cta{margin:16px 12px;border-radius:24px}}
 }
