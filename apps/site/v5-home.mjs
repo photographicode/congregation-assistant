@@ -22,12 +22,11 @@ const trust=[
 ];
 export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabel,securityHref}){
  const img=(file,alt,w,h,cls='')=>`<img${cls?` class="${cls}"`:''} src="assets/app/${file}.webp" alt="${e(alt)}" width="${w}" height="${h}" decoding="async" loading="lazy">`;
- const roleCards=roles.map(([who,title,items,[file,alt,w,h,kind]])=>`<article class="role reveal"><p class="role-who">${e(who)}</p><h3>${e(title)}</h3><ul>${items.map(item=>`<li>${e(item)}</li>`).join('')}</ul><div class="role-pic${kind?' '+kind:''}">${img(file,alt,w,h)}</div></article>`).join('');
+ const roleCards=roles.map(([who,title,items,[file,alt,w,h,kind]])=>`<article class="role reveal"><h3>${e(who)}</h3><p class="role-line">${e(title)}</p><ul>${items.map(item=>`<li>${e(item)}</li>`).join('')}</ul><div class="role-pic${kind?' '+kind:''}">${img(file,alt,w,h)}</div></article>`).join('');
  const steps=territory.map(([title,body],i)=>`<li class="reveal"><span class="step-n" aria-hidden="true">${i+1}</span><div><h3>${e(title)}</h3><p>${e(body)}</p></div></li>`).join('');
  const tiles=trust.map(([title,body])=>`<div class="ptile reveal"><b>${e(title)}</b><p>${e(body)}</p></div>`).join('');
  const faq=[1,2,4,5,7,10].map((n,i)=>`<details name="faq"${i?'':' open'}><summary>${e(t('faq.'+n+'.q'))}<i class="plus" aria-hidden="true"></i></summary><p>${e(t('faq.'+n+'.a'))}</p></details>`).join('');
  return `<div class="v5">
-<p class="notice wrap"><span class="badge">Up next</span><span>Territory Management: assign territories and keep their record.</span><a href="#territories">See what’s coming</a></p>
 <section class="v5-hero wrap" aria-labelledby="home-title">
  <div class="v5-copy">
   <h1 id="home-title">Less to manage.<br>More time for people.</h1>
@@ -58,22 +57,22 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
  </div>
 </section>
 
-<section id="how-it-works" class="how" aria-labelledby="how-title">
- <div class="how-l">
-  <h2 id="how-title" class="how-clause" data-v5-clause>First, publishers report from any phone.</h2>
-  <p class="how-sub" data-v5-sub>A two-minute form. Linked household members can be reported from the same screen.</p>
+<section id="how-it-works" class="wrap sec-pad how" aria-labelledby="how-title">
+ <div class="sec-head"><h2 id="how-title" class="reveal">How a month works.</h2><p class="reveal">From the first report to the last S-21 card, in four steps.</p></div>
+ <div class="how-tabs reveal" role="tablist" aria-label="Steps of a reporting month" data-v5-stops>
+  <button type="button" role="tab" id="how-tab-0" aria-controls="how-panel" aria-selected="true">Report<i aria-hidden="true"></i></button>
+  <button type="button" role="tab" id="how-tab-1" aria-controls="how-panel" aria-selected="false" tabindex="-1">Follow up<i aria-hidden="true"></i></button>
+  <button type="button" role="tab" id="how-tab-2" aria-controls="how-panel" aria-selected="false" tabindex="-1">Record<i aria-hidden="true"></i></button>
+  <button type="button" role="tab" id="how-tab-3" aria-controls="how-panel" aria-selected="false" tabindex="-1">Download<i aria-hidden="true"></i></button>
  </div>
- <div class="how-r">
+ <div class="how-body" id="how-panel" role="tabpanel" aria-labelledby="how-tab-0" aria-live="polite">
+  <div class="how-text" data-v5-text><h3 class="how-clause" data-v5-clause>Publishers report from any phone.</h3><p class="how-sub" data-v5-sub>A two-minute form. Linked household members can be reported from the same screen.</p></div>
   <div class="how-frag" data-ui data-v5-frag>
    <div class="state on"><div class="panel-head"><strong>Submitted this week</strong><span>October</span></div><ul class="feed"><li>Grace Thomas<span>2 studies · today</span></li><li>Thomas and Mary Paul<span>household · today</span></li><li>Priya Raman<span>52 hours · yesterday</span></li><li>Benny George<span>1 study · Mon</span></li></ul></div>
    <div class="state"><div class="panel-head"><strong>Missing reports</strong><span>5 of 46</span></div><ul class="feed"><li>Daniel Mathew<span>Field group 1</span></li><li>Ruth Abraham<span>Field group 3</span></li><li>Samuel Varghese<span>Field group 2</span></li><li>Joel Kurian<span>Field group 4</span></li><li>Leena Sam<span>Field group 1</span></li></ul></div>
    <div class="state"><div class="panel-head"><strong>Grace Thomas · S-21</strong><span>Service year 2027</span></div><table class="s21"><thead><tr><th>Month</th><th>Shared</th><th>Studies</th><th>Hours</th></tr></thead><tbody><tr><td>Sep</td><td>Yes</td><td>2</td><td></td></tr><tr class="hot"><td>Oct</td><td>Yes</td><td>2</td><td></td></tr><tr><td>Nov</td><td></td><td></td><td></td></tr><tr><td>Dec</td><td></td><td></td><td></td></tr></tbody></table></div>
-   <div class="state"><div class="panel-head"><strong>Download S-21</strong><span>PDF</span></div><div class="choice"><span class="sel">Everyone</span><span>Pioneers</span><span>Elders</span><span>Ministerial servants</span><span>SFTS</span><span>Missing reports</span></div><p class="submit" style="display:flex;align-items:center;justify-content:center">Download 46 cards</p></div>
+   <div class="state"><div class="panel-head"><strong>Download S-21</strong><span>PDF</span></div><div class="choice"><span class="sel">Everyone</span><span>Pioneers</span><span>Elders</span><span>Ministerial servants</span><span>Special full-time servants</span><span>Missing reports</span></div><p class="submit" style="display:flex;align-items:center;justify-content:center">Download 46 cards</p></div>
   </div>
- </div>
- <div class="how-ctl">
-  <input class="range" type="range" min="0" max="3" step="1" value="0" aria-label="Step of the monthly report" data-v5-range>
-  <div class="stops" data-v5-stops><button type="button" aria-current="true">Report</button><button type="button">Follow up</button><button type="button">Record</button><button type="button">Download</button></div>
  </div>
 </section>
 
@@ -85,8 +84,7 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
 <section id="territories" class="terr" aria-labelledby="terr-title">
  <div class="wrap terr-in">
   <div class="terr-copy">
-   <p class="badge on-dark reveal">Up next</p>
-   <h2 id="terr-title" class="reveal">Territories, managed in one place.</h2>
+   <h2 id="terr-title" class="reveal">Territories, in one place.</h2>
    <p class="reveal">Territory Management is the next part of the app. It manages your territories and who can see them. Drawing or splitting new territory maps is a separate service you request.</p>
    <p class="reveal"><a class="button" href="${e(app)}?request=territory">Request territory maps</a></p>
   </div>
