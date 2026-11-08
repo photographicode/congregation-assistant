@@ -8,6 +8,7 @@ import { z } from "zod";
 import { storeFor, demo, rpc } from "./client";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import type { Context } from "../context";
+import { OwnerPayments } from "./OwnerPayments";
 const tenant = z
   .object({
     id: z.string(),
@@ -424,6 +425,7 @@ export default function OwnerConsole({ context: c }: { context: Context }) {
           <p>{"No territory map requests yet."}</p>
         ))}
       </section>
+      <OwnerPayments />
       <section className="card stack">
         <h2>{t("ui.congregations.6c2258e5")}</h2>
         <label>

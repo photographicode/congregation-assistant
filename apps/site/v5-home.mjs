@@ -1,10 +1,10 @@
 // English home page: plain words, one working example, and the app's own screens (fictional data).
 // Styles live in home.css (scoped to .v5); behaviour lives in site.js under the .v5 guard.
-const chips=['Monthly reports','S-21 cards','Meeting schedules','Duties','Attendance','S-89 slips','Works offline','Light and dark'];
+const chips=['Monthly reports','S-21 cards','Our Christian Life and Ministry meeting','Weekend meeting','Duties and attendance','S-89 slips','Territory assistant','Works offline'];
 const roles=[
  ['Publishers','Your month on one screen.',['See your next assignments and the meeting schedule','Send your report in about a minute','Report for linked household members too'],['phone-today','Today screen with the monthly report and next assignment',780,1688,'tall']],
  ['Secretaries and service overseers','Reports without chasing.',['See who has not reported yet','S-21 cards fill themselves in','Download one card or all of them as a PDF'],['people-s21','Publisher rows with S-21 download and Options buttons',1000,451]],
- ['Meeting and duty overseers','The week, already planned.',['Midweek parts arrive from wol.jw.org','Fair suggestions for who is next','S-89 slips, duties and attendance'],['meetings-midweek','Weekly schedule with Midweek, Weekend, Duties and Print tabs',1120,475]]
+ ['Meeting and duty overseers','The week, already planned.',['Our Christian Life and Ministry meeting parts, ready to assign','Fair suggestions for who is next','S-89 slips, duties and attendance'],['meetings-midweek','Weekly schedule with Midweek, Weekend, Duties and Print tabs',1120,475]]
 ];
 const territory=[
  ['Keep every territory together','Your territory maps and cards in one place, ready for whoever needs them.'],
@@ -13,7 +13,7 @@ const territory=[
  ['Need the maps made?','Making territories is a separate service. If you have only the boundary, request the split and the cards.']
 ];
 const trust=[
- ['Independent and unofficial','Made by one developer you can email. No affiliation with any religious organization.'],
+ ['Independent and unofficial','Made by one developer you can email. Not affiliated with Jehovah’s Witnesses or jw.org.'],
  ['Roles decide what people see','Approved users see only what their assigned role allows.'],
  ['Encrypted connections','Every connection uses HTTPS. Access rules and scoped links protect the database, and every release is tested.'],
  ['Works on a weak signal','Loaded records and midweek drafts work offline and sync when you reconnect.'],
@@ -30,10 +30,10 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
 <section class="v5-hero wrap" aria-labelledby="home-title">
  <div class="v5-copy">
   <h1 id="home-title">Less to manage.<br>More time for people.</h1>
-  <p class="v5-lead">Reports, S-21 cards, meeting schedules, duties and attendance for your congregation, in one calm app that works on any phone.</p>
+  <p class="v5-lead">Monthly reports, S-21 cards, the Our Christian Life and Ministry meeting (OCLM), the weekend meeting, duties and territories for congregations of Jehovah’s Witnesses, in one calm app.</p>
   <div class="acts"><a class="btn" href="${e(app)}?demo=admin">Try the demo</a><a class="btn ghost" href="${e(app)}">Sign in</a></div>
   <ul class="chips" aria-label="What it covers">${chips.map(chip=>`<li>${e(chip)}</li>`).join('')}</ul>
-  <p class="fine">No sign-in needed. Explore a fictional congregation as an <a href="${e(app)}?demo=admin">administrator</a> or as a <a href="${e(app)}?demo=publisher">publisher</a>. Independent and unofficial.</p>
+  <p class="fine">No sign-in needed. Explore a fictional congregation as an <a href="${e(app)}?demo=admin">administrator</a> or as a <a href="${e(app)}?demo=publisher">publisher</a>. For congregations of Jehovah’s Witnesses; independent and unofficial.</p>
  </div>
  <div class="v5-stage" role="group" aria-label="Live example with fictional data">
   <div class="report" data-ui>
@@ -85,7 +85,7 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
  <div class="wrap terr-in">
   <div class="terr-copy">
    <h2 id="terr-title" class="reveal">Territories, in one place.</h2>
-   <p class="reveal">Territory Management is the next part of the app. It manages your territories and who can see them. Drawing or splitting new territory maps is a separate service you request.</p>
+   <p class="reveal">Territory assistant is the next part of Congregation Assistant. It keeps your territories and who can see them. Drawing or splitting new territory maps is a separate service you request.</p>
    <p class="reveal"><a class="button" href="${e(app)}?request=territory">Request territory maps</a></p>
   </div>
   <ol class="steps">${steps}</ol>

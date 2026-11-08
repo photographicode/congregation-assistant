@@ -7,7 +7,8 @@ import {
   sftsTotals,
 } from "../../../../packages/core/publisher-selection";
 import { HomeKpis } from "../../../../packages/ui/HomePreview";
-import { Button, Card, Stack, Inline } from "../../../../packages/ui/components";
+import { Button, Card, Stack, Inline, Tabs } from "../../../../packages/ui/components";
+import { HomeMonthList } from "./HomeMonthList";
 import { t } from "../../../../packages/core/i18n";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -89,6 +90,7 @@ export function Dashboard({
         "publisher",
       ].includes(r),
     );
+  const [homeTab, setHomeTab] = React.useState("overview");
   const [period, setPeriod] = React.useState(() =>
       previousReportingPeriod(new Date(), setup.timezone),
     );
@@ -141,6 +143,68 @@ export function Dashboard({
     );
     go("reports");
   };
+  const overview = (
+    <div className="stack">
+      <div className="home-rich-details" aria-label={t("home.allTools")}>
+        {canReports && (
+          <HomeKpis
+            summary={summary}
+            loading={loading}
+            error={!!error}
+            charts={a.charts}
+            onSelect={() => openReports("review")}
+          />
+        )}
+        {canReports && (
+          <Card className="stack" id="dashboard-submissions">
+            {/* Home shows who still has to report; the full list, filters and totals live in Reports. */}
+            <div>
+              <span className="eyebrow">{periodLabel(period)}</span>
+              <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
+              {/* The count is already in the Submitted figure above, so this card names who is missing. */}
+              <p>
+                {summary.pending > 0
+                  ? "Still to report:"
+                  : summary.publishers > 0 && `All ${summary.publishers} reports are in — nicely done.`}
+              </p>
+            </div>
+            {!loading && !error && summary.missing.length > 0 && (
+              <div className="list">
+                {summary.missing.slice(0, 5).map((p: DashboardPerson) => (
+                  <article className="list-row" key={p.id}>
+                    <strong translate="no">{p.name}</strong>
+                    <Button className="tonal warning" onClick={() => void remind(p.name)} type="button">
+                      {t("ui.remind.3aec36bb")}
+                    </Button>
+                  </article>
+                ))}
+              </div>
+            )}
+            {!loading && !error && !summary.publishers && (
+              <div className="empty-scene">
+                <Scene kind="publishers" />
+                <p>{"Add your first publisher to start seeing reporting progress."}</p>
+              </div>
+            )}
+            <Button onClick={() => openReports("review")} type="button">
+              {t("ui.open.monthly.reports.0436ae79")}
+            </Button>
+          </Card>
+        )}
+      </div>
+      {/* V4.1: the month's work comes first; links, updates and the assistant follow it. */}
+      <HomeGroupLinks context={c} period={period} />
+      {updates}
+      <HomeAssistant context={c} go={go} />
+      <HomeSuggestions
+        context={c}
+        period={period}
+        missing={summary.pending}
+        ready={!loading && !error}
+        go={go}
+      />
+    </div>
+  );
   return (
     <Stack className="dashboard">
       {!a.experienceChosen && (
@@ -200,37 +264,19 @@ export function Dashboard({
       )}
       {/* Until setup is finished it is the first thing a new admin sees; it disappears afterwards. */}
       {setupEntry}
-      {a.style === "calm" && (
-        <Card className="stack">
-          <h2>{t("home.nextTask")}</h2>
-          <p>{t("home.previewTask")}</p>
-          <div className="dashboard-actions">
-            {canReports && (
-              <Button onClick={() => openReports("bulk")} type="button">
-                {t("tool.month")}
-              </Button>
-            )}
-            {canSchedule && (
-              <Button onClick={() => go("schedule")} type="button">
-                {t("tool.midweek")}
-              </Button>
-            )}
-            {canPDF && (
-              <Button onClick={() => go("pdf")} type="button">{t("tool.s21")}</Button>
-            )}
-          </div>
-        </Card>
-      )}
-      <div className="home-rich-details" aria-label={t("home.allTools")}>
-        {canReports && (
-          <HomeKpis
-            summary={summary}
-            loading={loading}
-            error={!!error}
-            charts={a.charts}
-            onSelect={() => openReports("review")}
-          />
-        )}
+      {/* Home stays short: today's figures and who is missing. Every publisher's report sits in its own tab. */}
+      {canReports ? (
+        <Tabs
+          label={"Home"}
+          value={homeTab}
+          onChange={setHomeTab}
+          tabs={[
+            { value: "overview", label: "Overview", content: overview },
+            {
+              value: "month",
+              label: "Reports this month",
+              content: (
+                <div className="stack">
         {canReports && !loading && !error && special.publishers > 0 && (
           <Card className="stack">
             <h2>{t("sfts.summary")}</h2>
@@ -262,6 +308,7 @@ export function Dashboard({
             </Button>
           </Card>
         )}
+                  <HomeMonthList people={livePeople} reports={liveReports} period={period} />
         <Card>
           <h2>{t("ui.your.tools.close.at.hand.66b5ceca")}</h2>
           <div className="dashboard-actions">
@@ -319,54 +366,14 @@ export function Dashboard({
             </Button>
           </div>
         </Card>
-        {canReports && (
-          <Card className="stack" id="dashboard-submissions">
-            {/* Home shows who still has to report; the full list, filters and totals live in Reports. */}
-            <div>
-              <span className="eyebrow">{periodLabel(period)}</span>
-              <h2>{t("ui.monthly.submissions.3126c8db")}</h2>
-              {/* The count is already in the Submitted figure above, so this card names who is missing. */}
-              <p>
-                {summary.pending > 0
-                  ? "Still to report:"
-                  : summary.publishers > 0 && `All ${summary.publishers} reports are in — nicely done.`}
-              </p>
-            </div>
-            {!loading && !error && summary.missing.length > 0 && (
-              <div className="list">
-                {summary.missing.slice(0, 5).map((p: DashboardPerson) => (
-                  <article className="list-row" key={p.id}>
-                    <strong translate="no">{p.name}</strong>
-                    <Button className="tonal warning" onClick={() => void remind(p.name)} type="button">
-                      {t("ui.remind.3aec36bb")}
-                    </Button>
-                  </article>
-                ))}
-              </div>
-            )}
-            {!loading && !error && !summary.publishers && (
-              <div className="empty-scene">
-                <Scene kind="publishers" />
-                <p>{"Add your first publisher to start seeing reporting progress."}</p>
-              </div>
-            )}
-            <Button onClick={() => openReports("review")} type="button">
-              {t("ui.open.monthly.reports.0436ae79")}
-            </Button>
-          </Card>
-        )}
-      </div>
-      {/* V4.1: the month's work comes first; links, updates and the assistant follow it. */}
-      <HomeGroupLinks context={c} period={period} />
-      {updates}
-      <HomeAssistant context={c} go={go} />
-      <HomeSuggestions
-        context={c}
-        period={period}
-        missing={summary.pending}
-        ready={!loading && !error}
-        go={go}
-      />
+                </div>
+              ),
+            },
+          ]}
+        />
+      ) : (
+        overview
+      )}
     </Stack>
   );
 }

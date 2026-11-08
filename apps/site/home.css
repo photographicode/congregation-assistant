@@ -4,8 +4,8 @@
 @keyframes v5-fill{to{transform:scaleX(1)}}
 .v5{
  /* One light theme. Neumorphic surfaces share the page colour; depth comes from paired light and dark shadows. */
- --bg:#eef1f5;--surface:#eef1f5;--surface-2:#dde2ea;--ink:#0f1115;--muted:#3d434d;--line:#d6dce5;
- --accent:#0f1115;--accent-ink:#f7f9fc;--stage:#e3e8ef;--panel:#f7f9fc;--panel-line:#e0e5ec;
+ --bg:#eef1f5;--surface:#eef1f5;--surface-2:#dde2ea;--ink:#15233f;--muted:#3d434d;--line:#d6dce5;
+ --accent:#15233f;--accent-ink:#f7f9fc;--stage:#e3e8ef;--panel:#f7f9fc;--panel-line:#e0e5ec;
  --raise:7px 7px 16px #c9d1dc,-7px -7px 16px #fff;--raise-hover:10px 10px 22px #c3ccd8,-10px -10px 22px #fff;
  --press:inset 4px 4px 9px #c9d1dc,inset -4px -4px 9px #fff;
  --m:24px;--r:22px;--ease:cubic-bezier(.2,.7,.1,1);
