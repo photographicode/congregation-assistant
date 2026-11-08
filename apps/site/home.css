@@ -260,4 +260,46 @@
  @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
  }
+
+ /* Spatial layer: panels float as frosted glass above a soft field of light.
+    Text keeps its contrast because each pane stays mostly opaque (0.72). */
+ --glass:rgba(255,255,255,.72);--glass-edge:rgba(255,255,255,.9);--glass-hi:rgba(255,255,255,.95);
+ --lift:0 1px 2px rgba(10,10,10,.06),0 12px 32px -8px rgba(10,10,10,.14),0 40px 80px -24px rgba(10,10,10,.12);
+ --lift-hover:0 2px 4px rgba(10,10,10,.08),0 20px 44px -10px rgba(10,10,10,.2),0 56px 100px -28px rgba(10,10,10,.16);
+ --r:22px;
+ [data-theme=mono-dark] &{
+  --glass:rgba(30,30,32,.72);--glass-edge:rgba(255,255,255,.12);--glass-hi:rgba(255,255,255,.14);
+  --lift:0 1px 2px rgba(0,0,0,.4),0 12px 32px -8px rgba(0,0,0,.55),0 40px 80px -24px rgba(0,0,0,.5);
+  --lift-hover:0 2px 4px rgba(0,0,0,.45),0 20px 44px -10px rgba(0,0,0,.65),0 56px 100px -28px rgba(0,0,0,.55);
+ }
+ &::before{content:'';position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;
+  background:radial-gradient(38vmax 38vmax at 12% 18%,rgba(120,140,255,.3),transparent 70%),
+   radial-gradient(34vmax 34vmax at 88% 30%,rgba(255,170,120,.26),transparent 70%),
+   radial-gradient(42vmax 42vmax at 50% 95%,rgba(110,210,190,.24),transparent 70%)}
+ [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){
+  background:var(--glass);border:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+  box-shadow:inset 0 1px 0 var(--glass-hi),var(--lift)}
+ .chips li,.choice span:not(.sel),.btn.ghost{box-shadow:inset 0 1px 0 var(--glass-hi)}
+ /* Over the dark stage a light pane must stay nearly solid, or it turns grey. */
+ .v5-stage [data-ui],.how-r [data-ui]{--glass:color-mix(in srgb,var(--panel) 94%,transparent)}
+ [data-ui]{border-radius:var(--r)}
+ .role,.ptile,.v5-faq details{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+ .role:hover,.ptile:not(.head):hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 var(--glass-hi),var(--lift-hover)}
+ /* The hero windows sit at slightly different depths, like panes in a room. */
+ .v5-stage{perspective:1400px}
+ .v5-stage>.report{transform:rotateY(4deg) translateZ(0)}
+ .v5-stage>.sec{transform:rotateY(-3deg) translateY(28px)}
+ .btn{border-radius:999px}
+ .dialog{border-radius:var(--r)}
+ @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){background:var(--panel)}
+ }
+ @media (prefers-reduced-transparency:reduce){
+  &::before{display:none}
+  [data-ui],.role,.ptile:not(.head),.v5-faq details:not([open]),.chips li,.btn.ghost,.choice span:not(.sel){background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}
+ }
+ @media (max-width:1180px){
+  .v5-stage>.report,.v5-stage>.sec{transform:none}
+ }
 }
