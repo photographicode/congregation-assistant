@@ -57,8 +57,8 @@ Four review agents read the code in parallel: payments and edge functions, datab
 | Rate limits | When a wrapped function raises (for example "Invalid link"), the whole transaction rolls back, including the rate-limit counter. Failed token guesses are not counted. Tokens are random UUIDs or 64 hex characters, so guessing stays impractical. | Medium |
 | Sign-in | `ca_google_identity()` in `fresh-project.sql` and `google-access.sql` accepts `providers ? 'google'`; `publisher-home.sql` accepts only `provider='google'`. If a password account is later linked to Google, the looser check may let the password session in. Turning off the Email provider in Supabase closes this. | Low, until Email sign-in is off |
 | Headers | GitHub Pages cannot send HTTP headers. The meta CSP keeps `style-src 'unsafe-inline'` and cannot set `frame-ancestors`. Clickjacking is blocked only by the app's JavaScript frame guard. | Low |
-| Offline edits | The plain store treats every error other than conflict or permission as "retry later". A permanent error retries forever and blocks later edits to that record. | Medium (data, not security) |
-| Mail | `transactional-mail` retries failed sends with no logged status and no retry cap. A successful send with an unreadable reply is sent again. | Low |
+| Offline edits | **Fixed 8 Nov:** permanent server errors (Postgres 22xxx/23xxx, `P0001`, `PGRST202`/`PGRST204`) now stop the queue as a conflict with the server's reason, instead of retrying forever. Test: `tests/v3/plain-store.test.ts`. | Closed |
+| Mail | **Fixed 8 Nov (redeploy the function):** an accepted send with an unreadable reply counts as sent; refusals and network failures log the job id and status. The SQL side already stops after five attempts. | Closed once deployed |
 | App | `capabilities()` turns every error into "database update required", which hides network or permission problems. | Low |
 | Owner console | Before `20261104130000` runs, the console falls back to reading the `congregations` table directly. Remove the fallback once the migration is live. | Low |
 
@@ -70,6 +70,8 @@ Four review agents read the code in parallel: payments and edge functions, datab
    2. `supabase/migrations/20261104130000_audit_followups_territory_requests.sql`
    3. `supabase/migrations/20261105090000_razorpay_payments.sql`
    4. `supabase/migrations/20261106090000_security_followups.sql`
+   5. `supabase/migrations/20261108090000_mail_app_url.sql` (mail links pointed at `app.congregationassistant.com`, which has no DNS record)
 3. Run `select * from ca_private.security_selfcheck();`. No rows means the checks pass. Run it again whenever you run an older `.sql` file.
 4. In Supabase, go to **Authentication → Sign In / Providers** and turn off **Email**.
-5. Razorpay stays off until you follow `docs/billing/RAZORPAY-SETUP.md`.
+5. Redeploy the mail worker: `supabase functions deploy transactional-mail`.
+6. Razorpay stays off until you follow `docs/billing/RAZORPAY-SETUP.md`.

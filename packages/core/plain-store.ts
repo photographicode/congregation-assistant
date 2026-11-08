@@ -101,10 +101,13 @@ export class PlainStore implements Store {
     const db=await this.database,tx=db.transaction(['snapshots','outbox'],'readwrite');
     const current=await tx.objectStore('outbox').get(row.id);this.assertActive();if(!current||current.lease!==row.lease){await tx.done;break;}await tx.objectStore('outbox').delete(row.id);const later=await tx.objectStore('outbox').index('scope').getAll(this.scope),snapshot=await tx.objectStore('snapshots').get(this.id(command.key));this.assertActive();
     if(snapshot&&!later.some(entry=>entry.command.key===command.key))await tx.objectStore('snapshots').put({...snapshot,value:redact({...snapshot.value as object,...response})});await tx.done;this.lastError=undefined;this.emit(command.key,'synced');
-   }catch(error){this.assertActive();const code=(error as {code?:string}).code,kind=code==='40001'?'conflict':code==='42501'||code==='PGRST301'?'forbidden':undefined;
-    this.lastError=kind==='conflict'?t('store.reviewRevision'):kind==='forbidden'?t('store.accessChanged'):t('store.retryLater');
-    const db=await this.database,tx=db.transaction('outbox','readwrite'),current=await tx.store.get(row.id);this.assertActive();if(current?.lease===row.lease)await tx.store.put({...current,state:kind||'pending',error:this.lastError,lease:undefined,leaseUntil:undefined});await tx.done;
-    if(kind)this.emit(command.key,kind);break;
+   }catch(error){this.assertActive();const code=(error as {code?:string}).code??'',kind=code==='40001'?'conflict':code==='42501'||code==='PGRST301'?'forbidden':undefined;
+    // Errors a retry cannot fix (bad data, a validation raise, a missing function) stop the queue and show the server's reason.
+    const permanent=!kind&&(/^(22|23)/.test(code)||code==='P0001'||code==='PGRST202'||code==='PGRST204'),state=kind??(permanent?'conflict':undefined);
+    const reason=permanent?(error as Error).message||t('store.reviewRevision'):t('store.retryLater');
+    this.lastError=kind?{conflict:t('store.reviewRevision'),forbidden:t('store.accessChanged')}[kind]:reason;
+    const db=await this.database,tx=db.transaction('outbox','readwrite'),current=await tx.store.get(row.id);this.assertActive();if(current?.lease===row.lease)await tx.store.put({...current,state:state||'pending',error:this.lastError,lease:undefined,leaseUntil:undefined});await tx.done;
+    if(state)this.emit(command.key,state);break;
    }
   }
  }

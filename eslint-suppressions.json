@@ -535,7 +535,7 @@
       "count": 1
     },
     "no-nested-ternary": {
-      "count": 2
+      "count": 1
     }
   },
   "packages/core/plain-transport.ts": {
