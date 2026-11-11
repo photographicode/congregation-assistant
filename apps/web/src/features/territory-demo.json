@@ -1,0 +1,17 @@
+{
+  "names": ["Riverside North", "Market Street", "Hill View", "Lake Road", "Station Colony", "Temple Lane", "School Junction", "Palm Gardens", "Canal Bank", "Old Town"],
+  "notesFor": { "3": "Gated flats on the east side: call from the intercom." },
+  "mapUrl": "https://www.google.com/maps/d/viewer?mid=demo-territory-map",
+  "dueDays": 120,
+  "recentDays": 90,
+  "assignments": [
+    { "territory": 1, "publisher": "Daniel Thomas", "takenDaysAgo": 30, "returnedDaysAgo": null },
+    { "territory": 1, "publisher": "Maria Thomas", "takenDaysAgo": 400, "returnedDaysAgo": 300 },
+    { "territory": 2, "publisher": "Samuel George", "takenDaysAgo": 140, "returnedDaysAgo": null },
+    { "territory": 3, "publisher": "Anna Joseph", "takenDaysAgo": 200, "returnedDaysAgo": 40 },
+    { "territory": 4, "publisher": "Thomas Varghese", "takenDaysAgo": 500, "returnedDaysAgo": 380 },
+    { "territory": 5, "publisher": "Priya Mathew", "takenDaysAgo": 10, "returnedDaysAgo": null },
+    { "territory": 6, "publisher": "Daniel Thomas", "takenDaysAgo": 260, "returnedDaysAgo": 150 }
+  ],
+  "issue": { "territory": 3, "household": "House 14, blue gate", "details": "Asked not to call again.", "reporter": "Anna", "lat": 9.9312, "lng": 76.2673, "accuracy": 8 }
+}

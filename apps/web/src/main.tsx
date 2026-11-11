@@ -67,6 +67,10 @@ const PublicForm = lazy(() => import("./features/PublicForm").then(m=>({default:
 const OwnerConsole=lazy(()=>import("./features/OwnerConsole"));
 const RequestForm=lazy(()=>import("./features/RequestForm").then(m=>({default:m.RequestForm})));
 const Workspace = lazy(() => import("./features/Workspace"));
+const TerritoryApp=lazy(()=>import("./features/Territory"));
+const TerritoryCard=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryCard})));
+const TerritoryIssue=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryIssue})));
+const TerritoryRequest=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryRequest})));
 const routes = [
   {id:"owner",label:"Command centre",icon:ShieldCheck},
   { id: "home", label: "Home", icon: Home },
@@ -292,6 +296,7 @@ function App() {
           <a href="?demo=publisher">{t("ui.publisher.demo.dd489e1c")}</a>
         </div>
         <p className="muted">{"New congregation? "}<a href="?request=workspace">{t("ui.request.a.workspace.2d70699d")}</a></p>
+        <p className="muted">{"Managing territories? "}<a href="?territory">{"Open the territory manager"}</a></p>
 
       </main>
     );
@@ -309,6 +314,7 @@ function App() {
         <div className="actions">
           <Button onClick={signOut} type="button">{t("ui.sign.out.48f0d3d3")}</Button>
           <a href={import.meta.env.BASE_URL + "?request=workspace"}>{t("ui.request.a.workspace.2d70699d")}</a>
+          <a href={import.meta.env.BASE_URL + "?territory"}>{"Territory manager"}</a>
         </div>
       </main>
     );
@@ -358,11 +364,15 @@ const queryClient = new QueryClient({
 const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
 // Public request forms need no sign-in and no workspace.
 const requestPage=new URLSearchParams(location.search).has("request")?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><RequestForm/></Suspense>:null;
+// The territory manager is its own section of the app: ?territory for managers, the rest open without sign-in.
+const territoryPages={"territory-card":TerritoryCard,"territory-issue":TerritoryIssue,"territory-request":TerritoryRequest,territory:TerritoryApp};
+const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1];
+const territoryPage=TerritoryPage?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton/></main>}><TerritoryPage/></Suspense>:null;
 if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
 else createRoot(document.getElementById("root")!).render(
   <React.StrictMode><SystemBoundary><SystemRuntime>
     <QueryClientProvider client={queryClient}>
-      {requestPage ?? (new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />)}
+      {territoryPage ?? requestPage ?? (new URLSearchParams(location.search).has("form") ? <Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><PublicForm/></Suspense>  : new URLSearchParams(location.search).has("system") ? <SystemStatePage state={stateKeys.find(key=>key===new URLSearchParams(location.search).get("system"))||"notFound"}/> : <App />)}
     </QueryClientProvider>
   </SystemRuntime></SystemBoundary></React.StrictMode>,
 );

@@ -1,0 +1,14 @@
+{
+  "page": { "w": 918, "h": 1300, "inches": 8.27, "dpi": 200, "a4": [595.28, 841.89], "jpeg": 0.9 },
+  "rows": 20,
+  "slots": 4,
+  "cols": [55, 110, 210, 376, 541, 707, 873],
+  "head": { "top": 168, "mid": 196, "bottom": 226 },
+  "bodyBottom": 1198,
+  "title": { "y": 97, "size": 17 },
+  "year": { "labelY": 145, "size": 13.5, "line": [187, 152, 273, 152], "lineW": 1.2, "textX": 230, "textY": 143 },
+  "headText": { "line1": 189, "line2": 204, "size": 11, "assignedY": 183, "dateY": 205, "wordY": 217, "small": 9 },
+  "rule": { "thin": 0.8, "row": 2, "group": 2.4, "frame": 3 },
+  "cell": { "number": 13, "last": 12, "name": 11.5, "date": 11, "namePad": 8, "nameAt": 0.25, "dateAt": 0.75 },
+  "footer": { "noteY": 1214, "noteSize": 11.5, "codeY": 1243, "codeSize": 10 }
+}

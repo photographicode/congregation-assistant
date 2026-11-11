@@ -1,0 +1,31 @@
+-- Removes the territory manager. This deletes every territory workspace, card, assignment and issue report.
+-- Take a full data backup first; run only when the owner chooses to remove the feature.
+drop function if exists public.tm_submit_report(text,uuid,text,text,text,double precision,double precision,real,text);
+drop function if exists public.tm_public_territory(text);
+drop function if exists public.tm_public_form(text);
+drop function if exists public.tm_submit_application(text,text,text,text,text,text);
+drop function if exists public.tm_review_application(uuid,boolean);
+drop function if exists public.tm_create_workspace(text,text);
+drop function if exists public.tm_owner_overview();
+drop function if exists public.tm_set_member(uuid,text,text);
+drop function if exists public.tm_save_settings(uuid,text,integer,integer,boolean);
+drop function if exists public.tm_delete_report(uuid);
+drop function if exists public.tm_resolve_report(uuid,boolean);
+drop function if exists public.tm_delete_assignment(uuid);
+drop function if exists public.tm_save_assignment(uuid,uuid,text,date,date,date);
+drop function if exists public.tm_delete_territory(uuid);
+drop function if exists public.tm_save_territory(uuid,uuid,text,text,text,text,text,text);
+drop function if exists public.tm_territory_image(uuid);
+drop function if exists public.tm_workspace_data(uuid);
+drop function if exists public.tm_my_workspaces();
+drop table if exists ca_private.tm_applications;
+drop function if exists ca_private.tm_welcome(uuid,text,text);
+drop function if exists ca_private.tm_valid_email(text);
+drop function if exists ca_private.tm_workspace_of(uuid);
+drop function if exists ca_private.tm_need(uuid,boolean);
+drop function if exists ca_private.tm_role(uuid);
+drop table if exists public.tm_reports;
+drop table if exists public.tm_assignments;
+drop table if exists public.tm_territories;
+drop table if exists public.tm_members;
+drop table if exists public.tm_workspaces;
