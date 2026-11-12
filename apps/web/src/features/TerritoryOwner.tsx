@@ -4,6 +4,7 @@ import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {Button,Field} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {demo} from './client';
+import {territoryUrl} from './territory-site';
 
 export function TerritoryOwner({notify}:{notify:(m:string)=>void}){
  const qc=useQueryClient();
@@ -11,10 +12,9 @@ export function TerritoryOwner({notify}:{notify:(m:string)=>void}){
  const [f,setF]=React.useState({name:'',email:''}),[busy,setBusy]=React.useState(false),[error,setError]=React.useState('');
  const run=async(fn:()=>Promise<unknown>,done:string)=>{setBusy(true);setError('');try{await fn();if(demo)qc.setQueryData(['tm','owner'],await api.ownerOverview());else await qc.invalidateQueries({queryKey:['tm','owner']});notify(done);}catch(e){setError((e as Error).message);}finally{setBusy(false);}};
  const pending=(data.data?.applications||[]).filter(a=>a.status==='pending');
- const base=import.meta.env.BASE_URL+'?territory'+(demo?'&demo':'');
  return <section className="card stack">
   <h2>{'Territory workspaces'}</h2>
-  <p>{'Territory-only workspaces. Requests come from '}<a href={import.meta.env.BASE_URL+'?territory-request'} target="_blank" rel="noreferrer">{'the territory request form'}</a>{'. Approving creates the workspace and emails the admin.'}</p>
+  <p>{'Territory-only workspaces. Requests come from '}<a href={territoryUrl('territory-request')} target="_blank" rel="noreferrer">{'the territory request form'}</a>{'. Approving creates the workspace and emails the admin.'}</p>
   {data.error&&<p role="alert">{/PGRST202|could not find/i.test((data.error as Error).message)?'Territory workspaces turn on after the 2026-11-11 database update is run.':'Territory workspaces could not load. '}<Button onClick={()=>void data.refetch()}>{'Retry'}</Button></p>}
   {error&&<p role="alert" className="error">{error}</p>}
   <h3>{pending.length===1?'1 request':`${pending.length} requests`}</h3>
@@ -27,6 +27,6 @@ export function TerritoryOwner({notify}:{notify:(m:string)=>void}){
    <Button type="submit" busy={busy}>{'Create workspace'}</Button>
   </form>
   <h3>{'Workspaces'}</h3>
-  {(data.data?.workspaces||[]).map(w=><article className="list-row" key={w.id}><div><strong>{w.name}</strong><p>{w.admins.join(', ')||'No admin'}{' · '}{w.territories===1?'1 territory':`${w.territories} territories`}</p></div><a className="button" href={base+'&ws='+w.id}>{'Open'}</a></article>)}
+  {(data.data?.workspaces||[]).map(w=><article className="list-row" key={w.id}><div><strong>{w.name}</strong><p>{w.admins.join(', ')||'No admin'}{' · '}{w.territories===1?'1 territory':`${w.territories} territories`}</p></div><a className="button" href={territoryUrl(`territory${demo?'&demo':''}&ws=${w.id}`)}>{'Open'}</a></article>)}
  </section>;
 }

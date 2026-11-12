@@ -13,6 +13,7 @@ import {addDays,byNumber,canonicalName,FILTERS,fmt,type Filter,serviceYearLabel,
 import {cardJpeg,download,shareLinkOrCopy} from './territory-card';
 import {setPrefs,usePrefs,useTerritoryTheme,type Style,type Theme,type View} from './territory-prefs';
 import {ImportCsv} from './TerritoryImport';
+import {mainAppUrl,signInReturnUrl} from './territory-site';
 import {TerritoryOwner} from './TerritoryOwner';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
 import './territory.css';
@@ -61,7 +62,7 @@ export default function TerritoryApp(){
  if(!session)return <main className="tm tm-center"><section className="tm-raised tm-login stack">
   <span className="tm-mark"><MapIcon/></span><h1>{'Territory manager'}</h1>
   <p>{'Keep territory cards, assign them to publishers, record returns and see reported issues. Sign in with the Google account your workspace approved.'}</p>
-  <Button className="primary full" onClick={()=>void client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname+'?territory'}})}>{'Continue with Google'}<ArrowRight/></Button>
+  <Button className="primary full" onClick={()=>void client.auth.signInWithOAuth({provider:'google',options:{redirectTo:signInReturnUrl()}})}>{'Continue with Google'}<ArrowRight/></Button>
   <InstallTerritories/>
   <p className="muted">{'New congregation? '}<a href="?territory-request">{'Request a territory workspace'}</a>{' · '}<a href="?territory&demo">{'Try the demo'}</a></p>
  </section></main>;
@@ -99,7 +100,7 @@ function Header({d,onSwitch,onSignOut}:{d:WorkspaceData;onSwitch?:()=>void;onSig
  const role=d.role==='admin'?'Admin':'Manager';
  return <header className="tm-top">
   <div className="tm-title"><span className="tm-mark"><MapIcon/></span><div><strong>{d.workspace.name}</strong><small>{'Territory manager · '+role+(demo?' · Fictional demo':'')}</small></div></div>
-  <div className="tm-top-actions">{onSwitch&&<Button onClick={onSwitch}>{'Switch'}</Button>}{!standalone()&&<a className="button tm-back" href={import.meta.env.BASE_URL} aria-label={'Back to Congregation Assistant'}><ArrowLeft/><span>{'Congregation Assistant'}</span></a>}<Button onClick={onSignOut} aria-label={'Sign out'}><LogOut/></Button></div>
+  <div className="tm-top-actions">{onSwitch&&<Button onClick={onSwitch}>{'Switch'}</Button>}{!standalone()&&<a className="button tm-back" href={mainAppUrl()} aria-label={'Back to Congregation Assistant'}><ArrowLeft/><span>{'Congregation Assistant'}</span></a>}<Button onClick={onSignOut} aria-label={'Sign out'}><LogOut/></Button></div>
  </header>;
 }
 /** Territory images share one shape; cards and the detail image take it from the first image. */
@@ -173,7 +174,7 @@ function Display(){
   <Segmented label={'Style'} value={prefs.style} options={STYLES} onChange={v=>setPrefs({style:v==='glass'?'glass':'soft'})}/>
  </section>;
 }
-function Territories({d,ws,refresh,filter,setFilter,onAdd,openTerritory,notify}:Ctx&{filter:Filter;setFilter:(f:Filter)=>void;onAdd:()=>void}){
+function Territories({d,filter,setFilter,onAdd,openTerritory,notify}:Ctx&{filter:Filter;setFilter:(f:Filter)=>void;onAdd:()=>void}){
  const [query,setQuery]=React.useState(''),[sort,setSort]=React.useState<keyof typeof SORTS>('number'),[year,setYear]=React.useState(()=>serviceYearOf(today())),[busy,setBusy]=React.useState(false);
  const now=today();
  const rows=d.territories.map(t=>({t,s:summarize(t.id,d.assignments,d.workspace.recent_days,now),issues:d.reports.filter(r=>r.territory_id===t.id&&!r.resolved_at).length}))
@@ -182,7 +183,7 @@ function Territories({d,ws,refresh,filter,setFilter,onAdd,openTerritory,notify}:
  const exportCsv=()=>download(new Blob([territoryCsv(d.territories,d.assignments,d.workspace.recent_days)],{type:'text/csv;charset=utf-8'}),`territories-${now}.csv`);
  const exportS13=async()=>{setBusy(true);try{const {s13Pdf}=await import('./territory-s13');download(await s13Pdf(d.territories,d.assignments,year),`S-13-${serviceYearLabel(year)}.pdf`);}catch(e){notify((e as Error).message);}finally{setBusy(false);}};
  return <div className="stack">
-  <div className="tm-heading"><h1>{'Territories'}</h1><div className="actions"><ImportCsv d={d} ws={ws} refresh={refresh} notify={notify}/><Button className="primary" onClick={onAdd}><Plus/>{'Add territory'}</Button></div></div>
+  <div className="tm-heading"><h1>{'Territories'}</h1><div className="actions"><Button className="primary" onClick={onAdd}><Plus/>{'Add territory'}</Button></div></div>
   <div className="tm-raised tm-toolbar">
    <Field label={"Search"}>{p=><input {...p} type="search" className="tm-inset" placeholder={"Number, name or publisher"} value={query} onChange={e=>setQuery(e.target.value)}/>}</Field>
    <Combobox label={'Sort by'} value={sort} options={Object.entries(SORTS).map(([value,label])=>({value,label}))} onChange={v=>setSort(v as keyof typeof SORTS)}/>
@@ -328,6 +329,7 @@ function Settings({d,ws,refresh,notify}:Ctx){
  return <div className="stack">
   <h1>{'Settings'}</h1>
   <Display/>
+  <section className="tm-raised stack"><h2>{'Import territories'}</h2><p className="muted">{'Add territories and their history from a CSV file, such as one exported from this app or a spreadsheet.'}</p><div><ImportCsv d={d} ws={ws} refresh={refresh} notify={notify}/></div></section>
   <section className="tm-raised stack"><h2>{'App'}</h2><p className="muted">{'Install Territories on this phone or computer. It opens straight to your territories.'}</p><InstallTerritories showInstalled/></section>
   <section className="tm-raised stack"><h2>{'Issue report link'}</h2>
    <p>{'Give this link to publishers. It opens a form that takes their GPS location and the household details, and adds the issue to the chosen territory.'}</p>

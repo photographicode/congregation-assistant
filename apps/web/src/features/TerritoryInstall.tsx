@@ -6,6 +6,7 @@ import {Button} from '../../../../packages/ui/components';
 import {Dialog} from '../../../../packages/ui/Dialog';
 import {installPlatform} from '../../../../packages/core/install-controller';
 import {installController} from './install-runtime';
+import {onTerritoryHost} from './territory-site';
 
 /** True when opened from the home screen, so links back to the wider app are hidden. */
 export const standalone=()=>matchMedia('(display-mode: standalone)').matches||Boolean((navigator as Navigator&{standalone?:boolean}).standalone);
@@ -14,7 +15,7 @@ export function useTerritoryInstallable(){
  React.useEffect(()=>{
   const link=document.querySelector<HTMLLinkElement>('link[rel=manifest]'),theme=document.querySelector<HTMLMetaElement>('meta[name=theme-color]');
   const before={href:link?.href,theme:theme?.content};
-  if(link)link.href=import.meta.env.BASE_URL+'territory.webmanifest';
+  if(link)link.href=import.meta.env.BASE_URL+(onTerritoryHost()?'territory-site.webmanifest':'territory.webmanifest');
   if(theme)theme.content=getComputedStyle(document.documentElement).getPropertyValue('--tm-bg').trim()||theme.content;
   // The app's service worker is already scoped to BASE_URL; registering again is a no-op when it exists.
   if('serviceWorker' in navigator&&import.meta.env.PROD)void navigator.serviceWorker.register(import.meta.env.BASE_URL+'service-worker.js',{scope:import.meta.env.BASE_URL}).catch(()=>undefined);

@@ -3,6 +3,7 @@ import {SystemBoundary,SystemStatePage,stateKeys} from './system/SystemStates';
 import {getLocaleSnapshot,getUILocale,subscribeUILocale,setUILocale} from '../../../packages/core/i18n';
 import {Toast,DismissibleBanner} from '../../../packages/ui/Notices';
 import './features/install-runtime';
+import {onTerritoryHost,territoryUrl} from './features/territory-site';
 import {z} from "zod";
 import type {SyncStatus} from "../../../packages/core/store";
 import React, { useEffect, useState, Suspense, lazy } from "react";
@@ -296,7 +297,7 @@ function App() {
           <a href="?demo=publisher">{t("ui.publisher.demo.dd489e1c")}</a>
         </div>
         <p className="muted">{"New congregation? "}<a href="?request=workspace">{t("ui.request.a.workspace.2d70699d")}</a></p>
-        <p className="muted">{"Managing territories? "}<a href="?territory">{"Open the territory manager"}</a></p>
+        <p className="muted">{"Managing territories? "}<a href={territoryUrl()}>{"Open the territory manager"}</a></p>
 
       </main>
     );
@@ -314,7 +315,7 @@ function App() {
         <div className="actions">
           <Button onClick={signOut} type="button">{t("ui.sign.out.48f0d3d3")}</Button>
           <a href={import.meta.env.BASE_URL + "?request=workspace"}>{t("ui.request.a.workspace.2d70699d")}</a>
-          <a href={import.meta.env.BASE_URL + "?territory"}>{"Territory manager"}</a>
+          <a href={territoryUrl()}>{"Territory manager"}</a>
         </div>
       </main>
     );
@@ -366,7 +367,8 @@ const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
 const requestPage=new URLSearchParams(location.search).has("request")?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><RequestForm/></Suspense>:null;
 // The territory manager is its own section of the app: ?territory for managers, the rest open without sign-in.
 const territoryPages={"territory-card":TerritoryCard,"territory-issue":TerritoryIssue,"territory-request":TerritoryRequest,territory:TerritoryApp};
-const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1];
+// On the territory subdomain every page is a territory page; the manager is the default.
+const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1]??(onTerritoryHost()?TerritoryApp:undefined);
 const territoryPage=TerritoryPage?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton/></main>}><TerritoryPage/></Suspense>:null;
 if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
 else createRoot(document.getElementById("root")!).render(

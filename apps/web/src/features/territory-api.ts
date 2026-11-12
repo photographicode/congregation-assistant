@@ -1,6 +1,7 @@
 // Territory manager calls. Every read and write is a scoped server function; the fictional demo keeps data in memory.
 import {z} from 'zod';
 import {demo,rpc} from './client';
+import {territoryUrl} from './territory-site';
 import seed from './territory-demo.json';
 import {addDays,today,workspaceDataSchema,type Assignment,type Issue,type Territory,type WorkspaceData} from './territory-model';
 
@@ -120,5 +121,5 @@ export async function submitApplication(f:{name:string;email:string;admin:string
 }
 
 /** Links that open without sign-in. The token rides in the hash so it never reaches server logs or referrers. */
-export const shareLink=(token:string)=>`${location.origin}${import.meta.env.BASE_URL}?territory-card${demo?'&demo':''}#token=${token}`;
-export const issueLink=(token:string)=>`${location.origin}${import.meta.env.BASE_URL}?territory-issue${demo?'&demo':''}#token=${token}`;
+export const shareLink=(token:string)=>`${territoryUrl('territory-card'+(demo?'&demo':''))}#token=${token}`;
+export const issueLink=(token:string)=>`${territoryUrl('territory-issue'+(demo?'&demo':''))}#token=${token}`;
