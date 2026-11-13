@@ -13,3 +13,5 @@ dist-site/
 *.key
 docs/private-reference/
 tests/fixtures/private/
+.serena/
+.taste-skill/
