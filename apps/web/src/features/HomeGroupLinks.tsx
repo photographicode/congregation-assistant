@@ -112,7 +112,7 @@ export function HomeGroupLinks({
         <article className="list-row" key={group.id}>
           <div>
             <strong>{group.name}</strong>
-            <p>
+            <p className={group.total && group.submitted >= group.total ? "tone-text ok" : "tone-text warning"}>
               {group.submitted} {t("ui.of.4acb731c")}
               {group.total} {t("ui.submitted.this.month.afb9cd68")}
             </p>

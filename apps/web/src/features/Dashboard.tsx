@@ -22,6 +22,8 @@ import {
   ArrowUpRight,
   CheckCircle2,
   RefreshCw,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { repositories } from "../../../../packages/core/repositories";
 import { demo, storeFor } from "./client";
@@ -35,7 +37,7 @@ import {
   dashboardSummary,
   previousReportingPeriod,
 } from "./dashboard-model.mjs";
-import { periodLabel } from "./period-label";
+import { periodLabel, shiftPeriod } from "./period-label";
 import type { Context } from "../context";
 type DashboardPerson = {
   id: string;
@@ -220,17 +222,19 @@ export function Dashboard({
           clock={a.clock}
         />
         <Inline className="dashboard-context">
-          <label>
-            {t("ui.reporting.month.04bf8d83")}
-            <input
-              type="month"
-              required
-              value={period}
-              onChange={(e) => {
-                if (e.target.value) setPeriod(e.target.value);
-              }}
-            />
-          </label>
+          {/* DESIGN.md §4: no native pickers. A stepper suits the usual move of one month back or forward. */}
+          <div className="month-stepper" role="group" aria-labelledby="reporting-month-label">
+            <span id="reporting-month-label">{t("ui.reporting.month.04bf8d83")}</span>
+            <div className="month-stepper-control">
+              <button className="icon-button" aria-label={t("home.previousMonth")} onClick={() => setPeriod(shiftPeriod(period, -1))} type="button">
+                <ChevronLeft aria-hidden="true" />
+              </button>
+              <output aria-live="polite">{periodLabel(period)}</output>
+              <button className="icon-button" aria-label={t("home.nextMonth")} onClick={() => setPeriod(shiftPeriod(period, 1))} type="button">
+                <ChevronRight aria-hidden="true" />
+              </button>
+            </div>
+          </div>
           <span className="chip">
             {demo
               ? "Fictional sample data"

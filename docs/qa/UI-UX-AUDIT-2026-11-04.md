@@ -116,3 +116,28 @@ In order. Effort: S = under an hour, M = half a day, L = a day or more.
 | 10 | Desktop: two-column Home and Schedule; all sections in the sidebar | M | Uses the screen |
 | 11 | Remaining dropdowns with ≤ 5 options become buttons (Report group, Role, Template) | S | Fewer hidden choices |
 | 12 | Website Home: remove blank stretches; give Pricing real content | M | Shorter, more convincing site |
+
+## Follow-up — 13 November 2026
+
+Build `d83c7b6` (V4.1, Eclipse light), admin and publisher demos, 1366×850 and 375×812. Ranked by impact; DESIGN.md rule in brackets.
+
+**High**
+1. Reporting month on admin Today is the native date input: browser calendar icon and "October, 2026" with a stray comma [§4 no native pickers]. Use the house picker or a "‹ October 2026 ›" stepper.
+2. Phone header spends ~150 px before content: congregation name and the icon row sit on two lines. Merge into one 56 px bar; move the role ("Main admin") into the avatar menu.
+3. No colour on state: "1 pending", "Still to report", "0 unread" and Remind are plain black/grey [§1 colour on data]. Add `--warn` chips to pending/overdue and `--ok` to complete groups.
+4. Blank stretches inside panels: ~60 px gap under "Still to report:"; Contact updates empty state padded by two empty lines [§5 frame checks]. Tighten; give the empty state an icon and one line.
+
+**Medium**
+5. Clock floats far right of the greeting on desktop, detached from the date. Put date and time on one line.
+6. KPI sub-lines wrap ("50 hours · 3 Bible / studies"). Use "50 h · 3 studies" or let tiles grow.
+7. "Copy all for WhatsApp" looks disabled through faded opacity [§7]. Use `aria-disabled` + `--text-3`, or keep it enabled.
+8. Assistant bar placeholder ("add a report for Maria Thomas") is near-black and reads as typed text. Use `--text-3` and prefix "Try:".
+9. Letter-spaced month eyebrow above "Monthly submissions" [§5 no eyebrows]. Title it "October submissions".
+10. Sidebar filler: "Version 4.1" and the "A little more organised" tagline take nav space. Move the version to My account.
+
+**Low**
+11. Setup-guide card stays on the first screen; hide it once setup is complete (check the logic exists).
+12. Publisher shortcuts: make the whole row the hit area; drop the tinted icon circles for a calmer list.
+13. Announcements on phone sit under the bottom tab bar at rest; pad by the bar height.
+
+Not checked this round: Eclipse Night, Paper and Forest themes; text at 130/200 %; the public site; territory manager; dialogs and forms. No console errors on Today.

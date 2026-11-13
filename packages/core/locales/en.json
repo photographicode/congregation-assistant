@@ -958,6 +958,8 @@
   "common.undo": "Undo",
   "common.search": "Search",
   "common.next": "Next",
+  "home.previousMonth": "Previous month",
+  "home.nextMonth": "Next month",
   "common.back": "Back",
   "common.cancel": "Cancel",
   "common.choose": "Choose",

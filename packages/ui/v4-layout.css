@@ -112,3 +112,17 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .form-grid{align-items:start}
 /* Public request forms: the fieldset only disables the fields while sending, so it draws no box. */
 .request-form fieldset{margin:0;padding:0;border:0}
+/* Audit 2026-11-13. Reporting month stepper replaces the native month input (DESIGN.md §4). */
+.month-stepper{display:grid;gap:var(--space-1);font-weight:600}
+.month-stepper-control{display:inline-flex;align-items:center;gap:var(--space-1);border:1px solid var(--input-border);background:var(--input-bg);border-radius:var(--radius-full);padding:2px}
+.month-stepper-control output{min-width:9.5em;text-align:center;font-variant-numeric:tabular-nums}
+/* State gets colour as well as words: pending is warning, complete is success. */
+.tone-text.warning{color:var(--warn);font-weight:600}
+.tone-text.ok{color:var(--ok);font-weight:600}
+.tonal.warning{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+/* No blank stretches: the intro line sits close to the list it introduces. */
+#dashboard-submissions>div:first-child>p:last-child{margin-bottom:0}
+#dashboard-submissions>.list>.list-row:first-child{padding-top:0}
+.card.stack>.v4-empty{padding:var(--space-3) 0;margin-block:auto}
+/* Phone header: one bar. The role is in the account menu; the name truncates instead of pushing icons to a second row. */
+@media (max-width:767px){.v4-shell .topbar{flex-wrap:nowrap;min-height:0;padding-block:var(--space-2)}.v4-workspace-name{flex:1 1 auto;min-width:0}.v4-workspace-name>div{min-width:0}.v4-workspace-name strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v4-workspace-name small{display:none}.v4-shell .topbar .actions{flex:0 0 auto}}
