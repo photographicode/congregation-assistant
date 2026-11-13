@@ -140,3 +140,7 @@ Owner plans more products alongside Congregation Assistant and asked for one sub
 - Supabase Auth redirect allow-list gained `https://territory.congregationassistant.com/**`; new-workspace emails point to the subdomain (`20261112110000_territory_subdomain_mail.sql`, applied).
 - Cloudflare zone changes: Real User Monitoring (analytics beacon) disabled and Email Address Obfuscation disabled. Both rewrote published pages; the site CSP blocked their scripts, which broke email links and failed the post-publish byte audit.
 - Import territories moved from the Territories toolbar to Settings.
+
+## 2026-11-13 — Eclipse status tones
+- Owner approved muted status colours in Eclipse and Eclipse Night. `--warn` / `--ok` were black (light) and white (dark), so pending and complete states had no colour (DESIGN.md §1: colour is spent on state). Light: `#8A5A00` / `#2E6B3F` (Paper's values); dark: `#E6C86E` / `#8CC79B`. `--danger` stays monochrome. `check:contrast` 156 checks, 0 failures; `docs/qa/supplied-themes.sha256` updated for the edited `themes.css`.
+- Navigation icons stay neutral in Eclipse (`v4-layout.css`), so the tones mark state only.
