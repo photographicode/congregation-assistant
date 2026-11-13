@@ -2,7 +2,7 @@
 // Admins and managers keep territory cards, assign and return them, read issue reports and export the S-13.
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
-import {ArrowLeft,ArrowRight,Copy,ShieldCheck,Download,FileText,ImagePlus,LayoutDashboard,LogOut,Map as MapIcon,MapPin,Plus,Settings as SettingsIcon,Share2,TriangleAlert,Trash2,Inbox,Wand2,Building2,ExternalLink} from 'lucide-react';
+import {ArrowLeft,ArrowRight,Copy,ShieldCheck,Download,FileText,ImagePlus,LayoutDashboard,LogOut,Map as MapIcon,MapPin,Plus,Settings as SettingsIcon,Share2,TriangleAlert,Trash2,Inbox,Wand2,Building2,ExternalLink,Gauge} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented,Skeleton} from '../../../../packages/ui/components';
 import {Dialog} from '../../../../packages/ui/Dialog';
 import {Toast} from '../../../../packages/ui/Notices';
@@ -15,6 +15,7 @@ import {setPrefs,usePrefs,useTerritoryTheme,type Style,type Theme,type View} fro
 import {ImportCsv} from './TerritoryImport';
 import {generatorUrl,mainAppUrl,signInReturnUrl} from './territory-site';
 import {TerritoryRequests} from './TerritoryRequests';
+import {TerritoryOwnerOverview} from './TerritoryOwnerOverview';
 import {TerritoryOwner} from './TerritoryOwner';
 import {TerritoryLanding} from './TerritoryLanding';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
@@ -93,11 +94,11 @@ const TABS:{id:Tab;label:string;icon:React.ReactNode}[]=[{id:'dashboard',label:'
 function TabButton({tab,active,onClick}:{tab:{label:string;icon:React.ReactNode};active:boolean;onClick:()=>void}){
  return <button type="button" className={active?'active':''} aria-current={active?'page':undefined} onClick={onClick}>{tab.icon}<span>{tab.label}</span></button>;
 }
-type OwnerTab='requests'|'generator'|'workspaces';
-const OWNER_TABS:{id:OwnerTab;label:string;icon:React.ReactNode}[]=[{id:'requests',label:'Requests',icon:<Inbox/>},{id:'generator',label:'Generator',icon:<Wand2/>},{id:'workspaces',label:'Workspaces',icon:<Building2/>}];
+type OwnerTab='overview'|'requests'|'generator'|'workspaces';
+const OWNER_TABS:{id:OwnerTab;label:string;icon:React.ReactNode}[]=[{id:'overview',label:'Overview',icon:<Gauge/>},{id:'requests',label:'Requests',icon:<Inbox/>},{id:'generator',label:'Generator',icon:<Wand2/>},{id:'workspaces',label:'Workspaces',icon:<Building2/>}];
 /** What territory owners see after signing in: requests from the public form, the generator, and every workspace. */
 function OwnerHome({onSignOut}:{onSignOut:()=>void}){
- const [tab,setTab]=React.useState<OwnerTab>('requests'),[notice,setNotice]=React.useState('');
+ const [tab,setTab]=React.useState<OwnerTab>('overview'),[notice,setNotice]=React.useState('');
  return <div className="tm tm-shell">
   <header className="tm-top">
    <div className="tm-title"><span className="tm-mark"><ShieldCheck/></span><div><strong>{'Territory owner'}</strong><small>{'Requests, generator and workspaces'+(demo?' · Fictional demo':'')}</small></div></div>
@@ -105,6 +106,7 @@ function OwnerHome({onSignOut}:{onSignOut:()=>void}){
   </header>
   <nav className="tm-tabs" aria-label={'Territory owner'}>{OWNER_TABS.map(t=><TabButton key={t.id} tab={t} active={tab===t.id} onClick={()=>setTab(t.id)}/>)}</nav>
   <main className="tm-main">
+   {tab==='overview'&&<TerritoryOwnerOverview go={setTab}/>}
    {tab==='requests'&&<TerritoryRequests notify={setNotice}/>}
    {tab==='generator'&&<section className="tm-raised stack">
     <h2>{'Territory generator'}</h2>
