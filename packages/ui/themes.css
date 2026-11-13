@@ -10,7 +10,7 @@ html{font-size:calc(100% * var(--text-scale))}
  --bg:#FAFAFA;--bg-image:radial-gradient(60% 50% at 10% 0%,#FFFFFF 0%,transparent 60%),radial-gradient(55% 50% at 100% 25%,#D8D8DD 0%,transparent 60%),linear-gradient(160deg,#FAFAFA,#E9E9EC 55%,#D8D8DD);
  --surface:rgba(255,255,255,.82);--surface-solid:#FAFAFA;--surface-2:rgba(255,255,255,.58);
  --text-1:#0A0A0A;--text-2:#3F3F46;--text-3:#52525B;--border:rgba(255,255,255,.9);--border-w:1px;
- --accent:#0A0A0A;--text-on-accent:#FFFFFF;--link:#111111;--ok:#0A0A0A;--warn:#0A0A0A;--danger:#0A0A0A;
+ --accent:#0A0A0A;--text-on-accent:#FFFFFF;--link:#111111;--ok:#2E6B3F;--warn:#8A5A00;--danger:#0A0A0A;
  --radius-s:20px;--radius-m:28px;--radius-l:36px;--shadow-card:0 10px 30px rgba(10,10,10,.12);--glass-blur:16px;
  --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:320ms;--ease:cubic-bezier(.34,1.56,.64,1);--focus-ring:2px solid #0A0A0A;}
 
@@ -18,7 +18,7 @@ html{font-size:calc(100% * var(--text-scale))}
  --bg:#0A0A0B;--bg-image:radial-gradient(60% 50% at 10% 0%,#2E2E33 0%,transparent 60%),radial-gradient(55% 50% at 100% 25%,#232327 0%,transparent 60%),linear-gradient(160deg,#0A0A0B,#17171A 55%,#232327);
  --surface:rgba(24,24,27,.78);--surface-solid:#18181B;--surface-2:rgba(255,255,255,.07);
  --text-1:#FAFAFA;--text-2:#D4D4D8;--text-3:#A1A1AA;--border:rgba(255,255,255,.14);--border-w:1px;
- --accent:#FAFAFA;--text-on-accent:#0A0A0A;--link:#FFFFFF;--ok:#FAFAFA;--warn:#FAFAFA;--danger:#FAFAFA;
+ --accent:#FAFAFA;--text-on-accent:#0A0A0A;--link:#FFFFFF;--ok:#8CC79B;--warn:#E6C86E;--danger:#FAFAFA;
  --radius-s:20px;--radius-m:28px;--radius-l:36px;--shadow-card:0 10px 34px rgba(0,0,0,.45);--glass-blur:16px;
  --font-display:'Noto Sans','Noto Sans Fallback',system-ui,sans-serif;--dur:320ms;--ease:cubic-bezier(.34,1.56,.64,1);--focus-ring:2px solid #FAFAFA;}
 

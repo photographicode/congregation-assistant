@@ -126,3 +126,5 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .card.stack>.v4-empty{padding:var(--space-3) 0;margin-block:auto}
 /* Phone header: one bar. The role is in the account menu; the name truncates instead of pushing icons to a second row. */
 @media (max-width:767px){.v4-shell .topbar{flex-wrap:nowrap;min-height:0;padding-block:var(--space-2)}.v4-workspace-name{flex:1 1 auto;min-width:0}.v4-workspace-name>div{min-width:0}.v4-workspace-name strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v4-workspace-name small{display:none}.v4-shell .topbar .actions{flex:0 0 auto}}
+/* Eclipse keeps navigation black and white; its amber/green tones are only for state. */
+:root[data-theme^=mono] .rail nav button[aria-label] svg{color:inherit}
