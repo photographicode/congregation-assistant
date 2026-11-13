@@ -165,3 +165,5 @@ fieldset.publisher-gender.publisher-gender{padding:0;margin:0;border:0}.publishe
 .dashboard-kpis .kpi-1{--kpi-edge:color-mix(in srgb,var(--kpi-blue) 60%,transparent)}
 .dashboard-kpis .kpi-2{--kpi-edge:color-mix(in srgb,var(--ok) 60%,transparent)}
 .dashboard-kpis .kpi-3{--kpi-edge:color-mix(in srgb,var(--warn) 60%,transparent)}
+/* Focus ring only for keyboard users: a mouse click or tap leaves no outline (DESIGN.md §4 :focus-visible). */
+:where(button,[role=button],a[href],.card-link,.tab,.switch,[role=tab],[role=option]):focus:not(:focus-visible){outline:none}
