@@ -11,7 +11,8 @@ create table if not exists ca_private.tm_superadmins(
 alter table ca_private.tm_superadmins enable row level security;
 revoke all on ca_private.tm_superadmins from public,anon,authenticated;
 insert into ca_private.tm_superadmins(email) values('congregationassistant0@gmail.com'),('photographicode@gmail.com')
-on conflict(email) do update set active=true;
+-- do nothing: re-running this file must not re-activate an owner who was switched off.
+on conflict(email) do nothing;
 
 -- Google sign-in only, like ca_is_superadmin().
 create or replace function ca_private.tm_is_superadmin() returns boolean language sql stable security definer set search_path='' as $$

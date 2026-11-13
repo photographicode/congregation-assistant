@@ -3,8 +3,9 @@
 // Deployed as the Cloudflare Worker "territory-site" with the custom domain territory.congregationassistant.com.
 const ORIGIN = 'https://congregationassistant.com';
 const HOST = 'territory.congregationassistant.com';
+const GENERATOR_HOST = 'generator.congregationassistant.com';
 // Same policy as the app's index.html meta tag, plus frame-ancestors, which only works as a header.
-const policy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://ejosykrxjvwrhxfnputo.supabase.co wss://ejosykrxjvwrhxfnputo.supabase.co; worker-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests";
+const policy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://ejosykrxjvwrhxfnputo.supabase.co wss://ejosykrxjvwrhxfnputo.supabase.co; worker-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests";
 
 export default {
  async fetch(request) {
@@ -15,28 +16,31 @@ export default {
   if (url.pathname === '/robots.txt') return new Response(`User-agent: *
 Allow: /$
 Disallow: /?
-Disallow: /generator/
 Sitemap: https://${HOST}/sitemap.xml
 `, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
-  // The territory generator (the territory-manager app on GitHub Pages) for territory owners.
-  if (url.pathname === '/generator') return Response.redirect(`https://${HOST}/generator/${url.search}`, 308);
-  if (url.pathname.startsWith('/generator/')) return generator(request, url);
+  // The generator moved to its own origin so it can never read the owner's session here; keep old links working.
+  if (url.pathname === '/generator' || url.pathname.startsWith('/generator/')) return Response.redirect(`https://${GENERATOR_HOST}${url.pathname.slice('/generator'.length) || '/'}${url.search}`, 301);
   // The site root is the territory manager; everything else (assets, manifests, the service worker) is the app's own path.
   const path = url.pathname === '/' || url.pathname === '/index.html' ? '/app/' : url.pathname;
   const upstream = await fetch(ORIGIN + path + url.search, { method: request.method, headers: { Accept: request.headers.get('Accept') || '*/*' }, redirect: 'manual' });
   const response = new Response(upstream.body, upstream);
   const headers = response.headers;
   const location = headers.get('Location');
-  if (location && location.startsWith(ORIGIN)) headers.set('Location', 'https://' + HOST + location.slice(ORIGIN.length));
+  // Exact origin match: a prefix test would also rewrite https://congregationassistant.com.evil.example.
+  if (location && (location === ORIGIN || location.startsWith(ORIGIN + '/'))) headers.set('Location', 'https://' + HOST + location.slice(ORIGIN.length));
   headers.set('Content-Security-Policy', policy);
   headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   headers.set('X-Content-Type-Options', 'nosniff');
   headers.set('Referrer-Policy', 'no-referrer');
   // Location is allowed for this site only: the issue form records where a house is.
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()');
-  headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+  // allow-popups keeps the link to the generator window this site opens, so a request's file can be handed over.
+  headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
   headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+  // Same caching as hosting/worker.mjs: hashed assets forever, pages and the service worker never from a shared cache.
+  const contentType = headers.get('Content-Type') || '';
+  headers.set('Cache-Control', /\/[\w.-]+-[\w-]{8,}\.(js|css|woff2|wasm)$/.test(url.pathname) ? 'public, max-age=31536000, immutable' : /html/.test(contentType) || /service-worker|manifest|version\.json/.test(url.pathname) ? 'no-store' : 'public, max-age=3600');
   // Only the bare landing page is indexed; app screens (any query string) and files stay out of search.
   const landing = path === '/app/' && !url.search;
   if (!landing) { headers.set('X-Robots-Tag', 'noindex, nofollow'); return response; }
@@ -59,24 +63,3 @@ class SeoHead {
  }
 }
 
-// The generator is a static app that runs in the browser: it reads OpenStreetMap roads from Overpass and draws
-// maps from OpenStreetMap and OpenFreeMap tiles, so its policy allows exactly those hosts and nothing else.
-const GENERATOR_ORIGIN = 'https://photographicode.github.io/territory-manager';
-const generatorPolicy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://tiles.openfreemap.org https://overpass-api.de https://overpass.kumi.systems https://maps.mail.ru; worker-src 'self' blob:; child-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests";
-async function generator(request, url) {
- const upstream = await fetch(GENERATOR_ORIGIN + url.pathname.slice('/generator'.length) + url.search, { method: request.method, headers: { Accept: request.headers.get('Accept') || '*/*' }, redirect: 'manual' });
- const response = new Response(upstream.body, upstream);
- const headers = response.headers;
- const location = headers.get('Location');
- if (location && location.startsWith(GENERATOR_ORIGIN)) headers.set('Location', '/generator' + location.slice(GENERATOR_ORIGIN.length));
- headers.set('Content-Security-Policy', generatorPolicy);
- headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
- headers.set('X-Content-Type-Options', 'nosniff');
- headers.set('Referrer-Policy', 'no-referrer');
- headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
- // Same origin as the owner dashboard, which opens the generator and hands it a request's boundary file.
- headers.set('Cross-Origin-Opener-Policy', 'same-origin');
- headers.set('Cross-Origin-Resource-Policy', 'same-origin');
- headers.set('X-Robots-Tag', 'noindex, nofollow');
- return response;
-}

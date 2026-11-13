@@ -18,7 +18,7 @@ export function TerritoryOwner({notify}:{notify:(m:string)=>void}){
   {data.error&&<p role="alert">{/PGRST202|could not find/i.test((data.error as Error).message)?'Territory workspaces turn on after the 2026-11-11 database update is run.':'Territory workspaces could not load. '}<Button onClick={()=>void data.refetch()}>{'Retry'}</Button></p>}
   {error&&<p role="alert" className="error">{error}</p>}
   <h3>{pending.length===1?'1 request':`${pending.length} requests`}</h3>
-  {pending.map(a=><article className="list-row" key={a.id}><div><strong>{a.congregation_name}</strong><p>{a.contact_name}{' · '}<a href={'mailto:'+a.contact_email}>{a.contact_email}</a>{' · admin '}{a.admin_email}{a.phone?' · '+a.phone:''}</p></div>
+  {pending.map(a=><article className="list-row" key={a.id}><div><strong>{a.congregation_name}</strong><p>{a.contact_name}{' · '}<a href={'mailto:'+encodeURIComponent(a.contact_email)}>{a.contact_email}</a>{' · admin '}{a.admin_email}{a.phone?' · '+a.phone:''}</p></div>
    <div className="actions"><Button className="primary" busy={busy} onClick={()=>void run(()=>api.reviewApplication(a.id,true),'Workspace created. The admin can sign in now.')}>{'Approve'}</Button><Button busy={busy} onClick={()=>void run(()=>api.reviewApplication(a.id,false),'Request declined.')}>{'Decline'}</Button></div></article>)}
   <form className="stack" onSubmit={e=>{e.preventDefault();void run(async()=>{await api.createWorkspace(f.name,f.email);setF({name:'',email:''});},'Workspace created. The admin can sign in now.');}}>
    <h3>{'Create a workspace'}</h3>

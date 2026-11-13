@@ -1,0 +1,9 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "generator-site",
+  "main": "generator-worker.mjs",
+  "compatibility_date": "2026-10-14",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{"pattern": "generator.congregationassistant.com", "custom_domain": true}]
+}

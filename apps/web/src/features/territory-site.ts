@@ -18,5 +18,5 @@ export function territoryUrl(query=''){
 export const mainAppUrl=()=>onTerritoryHost()?MAIN_APP:import.meta.env.BASE_URL;
 /** Google sign-in returns here. */
 export const signInReturnUrl=()=>onTerritoryHost()?`${location.origin}/`:`${location.origin}${location.pathname}?territory`;
-/** The territory generator (KML splitter, cards, full wall map), served by this site's worker at /generator/. */
-export const generatorUrl=()=>onTerritoryHost()?`${location.origin}/generator/`:(import.meta.env.VITE_GENERATOR_URL as string|undefined)||`https://${TERRITORY_HOST}/generator/`;
+/** The territory generator (KML splitter, cards, full wall map) on its own origin, apart from the owner's session. */
+export const generatorUrl=()=>(import.meta.env.VITE_GENERATOR_URL as string|undefined)||'https://generator.congregationassistant.com/';

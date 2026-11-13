@@ -68,7 +68,7 @@ function RequestCard({r,notify}:{r:api.HelpRequest;notify:(m:string)=>void}){
    <Chip tone={tone.tone}>{tone.label}</Chip>
   </header>
   <p className="tm-request-contact"><strong>{r.contact_name}</strong>
-   <a href={`mailto:${r.contact_email}?subject=${encodeURIComponent(`Territories for ${r.congregation_name}`)}`}><Mail aria-hidden="true"/>{r.contact_email}</a>
+   <a href={`mailto:${encodeURIComponent(r.contact_email)}?subject=${encodeURIComponent(`Territories for ${r.congregation_name}`)}`}><Mail aria-hidden="true"/>{r.contact_email}</a>
    {r.phone&&<a href={`tel:${r.phone.replace(/[^\d+]/g,'')}`}><Phone aria-hidden="true"/>{r.phone}</a>}</p>
   {tags.length>0&&<p className="tm-chips">{tags.map(t=><Chip key={t} tone="default">{t}</Chip>)}</p>}
   {text&&<p className="tm-request-details">{text}</p>}
