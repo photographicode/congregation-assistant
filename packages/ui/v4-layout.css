@@ -158,3 +158,10 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .publisher-gender .gender-segments input{position:absolute;inset:0;opacity:0;margin:0;inline-size:100%;block-size:100%;cursor:pointer}
 .publisher-gender .gender-segments>label:focus-within{outline:2px solid var(--text-1);outline-offset:2px}
 fieldset.publisher-gender.publisher-gender{padding:0;margin:0;border:0}.publisher-gender legend{padding:0;margin-block-end:var(--space-1);font-weight:600}
+/* Home totals: each tile gets a muted border in its own hue (publishers grey, regular pioneers blue, auxiliary pioneers green, submitted amber), modelled on the V1 tiles. */
+.dashboard-kpis{--kpi-blue:light-dark(#4A6FA5,#8FB0DE)}
+:root .dashboard-kpis .kpi.kpi{border:2px solid var(--kpi-edge)!important}
+.dashboard-kpis .kpi-0{--kpi-edge:color-mix(in srgb,var(--text-3) 55%,transparent)}
+.dashboard-kpis .kpi-1{--kpi-edge:color-mix(in srgb,var(--kpi-blue) 60%,transparent)}
+.dashboard-kpis .kpi-2{--kpi-edge:color-mix(in srgb,var(--ok) 60%,transparent)}
+.dashboard-kpis .kpi-3{--kpi-edge:color-mix(in srgb,var(--warn) 60%,transparent)}
