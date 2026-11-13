@@ -151,3 +151,10 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .service-report-form .banner{margin:0;padding:var(--space-3);border-radius:var(--radius-s);font-weight:600}
 /* Submissions log on phones: no sideways scroll. Remarks hide (they stay in Reports), tags sit under the name, cells tighten. */
 @media (max-width:599px){.month-log{white-space:normal}.month-log th,.month-log td{padding:var(--space-2) var(--space-1)}.month-log tr>:nth-child(5){display:none}.month-log tbody th .log-tag{margin-left:0;margin-right:var(--space-1)}.month-log tbody th>span[translate]{display:block}.month-log thead th{font-size:.75rem}}
+/* Brother / Sister: one small two-option pill. The radios stay for keyboard and required checks, only hidden visually. */
+.publisher-gender .gender-segments{display:inline-flex;gap:0;padding:2px;border:1px solid var(--input-border);border-radius:var(--radius-full);background:var(--input-bg)}
+.publisher-gender .gender-segments>label{position:relative;min-height:40px;padding:0 var(--space-4);border:0;border-radius:var(--radius-full);outline:0;background:transparent;color:var(--text-2);font-weight:600;display:flex;align-items:center}
+.publisher-gender .gender-segments>label.selected{background:var(--accent);color:var(--text-on-accent);outline:0}
+.publisher-gender .gender-segments input{position:absolute;inset:0;opacity:0;margin:0;inline-size:100%;block-size:100%;cursor:pointer}
+.publisher-gender .gender-segments>label:focus-within{outline:2px solid var(--text-1);outline-offset:2px}
+fieldset.publisher-gender.publisher-gender{padding:0;margin:0;border:0}.publisher-gender legend{padding:0;margin-block-end:var(--space-1);font-weight:600}

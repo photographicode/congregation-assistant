@@ -81,10 +81,7 @@ export default function PublisherEditor({
                 }}
               />
             </label>
-            <fieldset
-              className="publisher-gender"
-              aria-describedby="publisher-gender-help"
-            >
+            <fieldset className="publisher-gender">
               <legend>
                 {t("polish.gender")} <span aria-hidden="true">*</span>
               </legend>
@@ -119,9 +116,6 @@ export default function PublisherEditor({
                   </label>
                 ))}
               </div>
-              <small id="publisher-gender-help">
-                {t("polish.chooseGender")}
-              </small>
             </fieldset>
             <div className="ui-field">
               
