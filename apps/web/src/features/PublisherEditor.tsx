@@ -1,12 +1,11 @@
 import {INPUT_LIMITS} from "../../../../packages/core/input-limits";
 import {
-  Disclosure,
-  DisclosureLabel, Button } from "../../../../packages/ui/components";
+  Button } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
 import React from "react";
 import { Dialog, DialogCancel } from "../../../../packages/ui/Dialog";
 import { t } from "../../../../packages/core/i18n";
-import type { Person } from "./publisher-record";
+import { OTHER_SHEEP, type Person } from "./publisher-record";
 type Props = {
   extendedPeople: boolean;
   people: Person[];
@@ -26,6 +25,25 @@ type Props = {
   run: (task: () => Promise<void>) => void;
   savePerson: () => Promise<void>;
 };
+type RecordKey = "dob" | "baptized" | "spiritualStatus" | "emergencyName" | "emergencyRelationship" | "emergencyPhone";
+const FIELD_TYPE: Partial<Record<RecordKey, string>> = { dob: "date", baptized: "date", emergencyPhone: "tel" };
+function RecordFields({ fields, value, onChange }: { fields: [RecordKey, string][]; value: Person; onChange: (key: RecordKey, value: string) => void }) {
+  return (
+    <div className="form-grid">
+      {fields.map(([key, label]) => (
+        <label key={key}>
+          {label}
+          <input
+            type={FIELD_TYPE[key] || "text"}
+            maxLength={key === "emergencyPhone" ? INPUT_LIMITS.phone : INPUT_LIMITS.name}
+            value={value[key] || ""}
+            onChange={(e) => onChange(key, e.target.value)}
+          />
+        </label>
+      ))}
+    </div>
+  );
+}
 export default function PublisherEditor({
   extendedPeople,
   people,
@@ -207,44 +225,30 @@ export default function PublisherEditor({
               />
             </label>
           </div>
-          <Disclosure>
-            <DisclosureLabel>
-              {t("ui.household.emergency.contact.publisher.reco.7544f6dc")}
-            </DisclosureLabel>
-            {demo || extendedPeople ? (
+          {/* Publisher record, privileges and emergency contact are separate sections so they are not confused. */}
+          {demo || extendedPeople ? (
+            <>
+              <h3>{"Publisher record"}</h3>
               <div className="stack">
-                <div className="form-grid">
-                  {(
-                    [
-                      ["dob", "Date of birth"],
-                      ["baptized", "Date of baptism"],
-                      ["emergencyName", "Emergency contact name"],
-                      ["emergencyRelationship", "Relationship"],
-                      ["emergencyPhone", "Emergency phone"],
-                      ["spiritualStatus", "Publisher status"],
-                    ] as const
-                  ).map(([key, label]) => (
-                    <label key={key}>
-                      {label}
-                      <input
-                        type={
-                          key === "dob" || key === "baptized"
-                            ? "date"
-                            : key === "emergencyPhone"
-                              ? "tel"
-                              : "text"
-                        }
-                        maxLength={key === "emergencyPhone" ? INPUT_LIMITS.phone : INPUT_LIMITS.name}
-                        value={editing[key] || ""}
-                        onChange={(e) => {
-                          setEditing((p) =>
-                            p ? { ...p, [key]: e.target.value } : p,
-                          );
-                          setDirty(true);
-                        }}
-                      />
-                    </label>
-                  ))}
+                <RecordFields
+                  fields={[["dob", "Date of birth"], ["baptized", "Date of baptism"], ["spiritualStatus", "Publisher status"]]}
+                  value={editing}
+                  onChange={(key, value) => {
+                    setEditing((p) => (p ? { ...p, [key]: value } : p));
+                    setDirty(true);
+                  }}
+                />
+                <div className="ui-field">
+                  <LegacySelect
+                    value={editing.hope || OTHER_SHEEP}
+                    onChange={(e) => {
+                      setEditing((p) => (p ? { ...p, hope: e.target.value } : p));
+                      setDirty(true);
+                    }} aria-label={t("ui.hope.8c765f98")} required
+                  >
+                    <option value={OTHER_SHEEP}>{t("ui.other.sheep.48f614b7")}</option>
+                    <option value="Anointed">{t("ui.anointed.8edcfa4d")}</option>
+                  </LegacySelect>
                 </div>
                 <div className="ui-field">
                   
@@ -269,22 +273,9 @@ export default function PublisherEditor({
                       ))}
                   </LegacySelect>
                 </div>
-                <div className="ui-field">
-                  
-                  <LegacySelect
-                    value={editing.hope || ""}
-                    onChange={(e) => {
-                      setEditing((p) =>
-                        p ? { ...p, hope: e.target.value } : p,
-                      );
-                      setDirty(true);
-                    }} aria-label={t("ui.hope.8c765f98")}
-                  >
-                    <option value="">{t("ui.not.recorded.b37c7879")}</option>
-                    <option>{t("ui.other.sheep.48f614b7")}</option>
-                    <option>{t("ui.anointed.8edcfa4d")}</option>
-                  </LegacySelect>
-                </div>
+              </div>
+              <h3>{"Privileges"}</h3>
+              <div className="stack">
                 {(
                   [
                     ["isElder", "Elder"],
@@ -311,12 +302,21 @@ export default function PublisherEditor({
                 ))}
                 <p>{t("sfts.derived")}</p>
               </div>
-            ) : (
-              <p>
-                {t("ui.ask.your.administrator.to.apply.the.extend.8666bf0c")}
-              </p>
-            )}
-          </Disclosure>
+              <h3>{"Emergency contact"}</h3>
+              <div className="stack">
+                <RecordFields
+                  fields={[["emergencyName", "Name"], ["emergencyRelationship", "Relationship"], ["emergencyPhone", "Phone"]]}
+                  value={editing}
+                  onChange={(key, value) => {
+                    setEditing((p) => (p ? { ...p, [key]: value } : p));
+                    setDirty(true);
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <p>{t("ui.ask.your.administrator.to.apply.the.extend.8666bf0c")}</p>
+          )}
           {error && (
             <p role="alert" className="error">
               {error}

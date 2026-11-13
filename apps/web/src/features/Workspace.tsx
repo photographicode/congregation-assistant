@@ -4,7 +4,7 @@ import {
   Disclosure,
   DisclosureLabel, Button, Segmented, Tabs } from "../../../../packages/ui/components";
 import { LegacySelect } from "../../../../packages/ui/components";
-import type { Person } from "./publisher-record";
+import { OTHER_SHEEP, type Person } from "./publisher-record";
 import {
   getLocaleSnapshot,
   subscribeUILocale,
@@ -244,7 +244,7 @@ export default function Workspace({
         id: crypto.randomUUID(),
         name: "",
         gender: "",
-        group: groups[0]?.name || "",
+        group: groups[0]?.name || "", hope: OTHER_SHEEP,
         email: "",
         phone: "",
         address: "",
@@ -463,7 +463,7 @@ export default function Workspace({
     }
   };
   async function edit(person: Person) {
-    setEditing({ ...person });
+    setEditing({ ...person, hope: person.hope || OTHER_SHEEP });
     setDirty(false);
     setError("");
     setShared(false);
@@ -695,7 +695,7 @@ export default function Workspace({
               id: crypto.randomUUID(),
               name: "",
               gender: "",
-              group: groups[0]?.name || "",
+              group: groups[0]?.name || "", hope: OTHER_SHEEP,
               email: "",
               phone: "",
               address: "",
@@ -747,7 +747,7 @@ export default function Workspace({
                   id: crypto.randomUUID(),
                   name: "",
                   gender: "",
-                  group: groups[0]?.name || "",
+                  group: groups[0]?.name || "", hope: OTHER_SHEEP,
                   email: "",
                   phone: "",
                   address: "",

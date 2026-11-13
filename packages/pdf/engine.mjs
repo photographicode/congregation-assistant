@@ -81,8 +81,8 @@ const extractNumbers=value=>(String(value||'').match(/\d+(?:\.\d+)?/g)||[]).redu
                 const bapText=!pub.baptized?'UBP':(pub.baptized||'');
                 drawLeft(page,bapText,109,toOutY(77.8),10.74,font,248);
 
-                // Identity/role checkboxes — the original boxes remain untouched.
-                const states=[pub.gender==='Male',pub.gender==='Female',pub.hope==='Other Sheep',pub.hope==='Anointed',!!pub.isElder,!!pub.isMS,!!pub.isRP,!!pub.isSP,!!pub.isFM];
+                // Identity/role checkboxes — the original boxes remain untouched. Hope defaults to Other Sheep when not recorded.
+                const states=[pub.gender==='Male',pub.gender==='Female',(pub.hope||'Other Sheep')==='Other Sheep',pub.hope==='Anointed',!!pub.isElder,!!pub.isMS,!!pub.isRP,!!pub.isSP,!!pub.isFM];
                 states.forEach((yes,index)=>{if(yes)check(page,squares[index]);});
 
                 // Service year sits under the SERVICE YEAR heading, on the original table.

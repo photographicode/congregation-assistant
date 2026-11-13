@@ -1,3 +1,5 @@
+/** S-21 hope; stored in English because the PDF matches on it. Everyone is Other Sheep unless marked otherwise. */
+export const OTHER_SHEEP = "Other Sheep";
 export type Person = {
   id: string;
   name: string;
