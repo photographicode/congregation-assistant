@@ -4,7 +4,7 @@
 import React from 'react';
 import {ArrowRight,Check,ClipboardList,Languages,Map as MapIcon,MapPin,QrCode,Share2,TriangleAlert} from 'lucide-react';
 import {LegacySelect} from '../../../../packages/ui/components';
-import {mainAppUrl} from './territory-site';
+import {mainAppUrl,territoryUrl} from './territory-site';
 import {initialLang,LANGUAGES,translate,type Key,type Lang} from './territory-landing-i18n';
 import cardImage from './assets/territory-map-card.webp';
 
@@ -87,7 +87,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
    <div className="tl-grid" role="group" aria-labelledby="tl-help-title">{SERVICES.map(s=><button key={s.id} type="button" className={'tl-tile tl-choice'+(service===s.id?' on':'')} aria-pressed={service===s.id} onClick={()=>setService(s.id)}>
     {s.id==='package'&&<span className="tl-badge">{say('best')}</span>}<h3>{say(s.title)}</h3><p>{say(s.text)}</p></button>)}</div>
    <ol className="tl-steps" aria-label={say('stepsLabel')}>{STEPS.map((step,i)=><li key={step}><span>{i+1}</span>{say(step)}</li>)}</ol>
-   <div className="tl-actions"><a className="tl-btn primary" href={mainAppUrl()+'?request=territory&service='+service}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
+   <div className="tl-actions"><a className="tl-btn primary" href={territoryUrl('request=territory&service='+service)}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
   </section>
   <footer className="tl-foot"><span>{say('unofficial')}</span><a href={mainAppUrl()}>{say('mainSite')}</a></footer>
  </main>;

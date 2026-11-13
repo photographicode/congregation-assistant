@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, LegacySelect } from "../../../../packages/ui/components";
+import { Check, Layers, PackageCheck, PenTool } from "lucide-react";
+import { Button } from "../../../../packages/ui/components";
 import { Field } from "../../../../packages/ui/Field";
 import { rpc, config } from "./client";
-import { territoryUrl } from "./territory-site";
+import { onTerritoryHost, territoryUrl } from "./territory-site";
 
 // Public requests that need no sign-in: a new congregation workspace, or territory maps made for a congregation.
 type Kind = "workspace" | "territory";
@@ -23,8 +24,11 @@ const STEPS = [
   "Making the cards in the shown format",
   "A high-resolution full map with all numbers",
 ];
+// The territory site keeps its own visitors: "Back to the website" returns to its landing page.
+const homeUrl = () => (onTerritoryHost() ? location.origin + "/" : config.PUBLIC_SITE_URL + "/");
 const NOT_STARTED = "Not started: we have only the boundary";
-const PROGRESS = [NOT_STARTED, ...STEPS.slice(0, -1).map((step, i) => `Done up to step ${i + 1}: ${step}`)];
+/** What the request says about progress: 0 is "not started", n is "done up to step n". */
+const progressLabel = (done: number) => (done ? `Done up to step ${done}: ${STEPS[done - 1] ?? ""}` : NOT_STARTED);
 const COPY: Record<Kind, { title: string; heading: string; thanks: string }> = {
   territory: { title: "Territories · Congregation Assistant", heading: "Territories", thanks: "Thank you. We will email you about your territories." },
   workspace: { title: "Request a workspace · Congregation Assistant", heading: "Request a congregation workspace", thanks: "Thank you. We will email you when the workspace is ready." },
@@ -52,7 +56,7 @@ export function RequestForm() {
   // Arriving from the territory landing page with a service chosen goes straight to the form.
   const [help, setHelp] = React.useState(() => chosenService() !== undefined),
     [service, setService] = React.useState<Service>(() => chosenService() ?? "package"),
-    [progress, setProgress] = React.useState(NOT_STARTED);
+    [progress, setProgress] = React.useState(0);
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
   React.useEffect(() => {
@@ -65,7 +69,7 @@ export function RequestForm() {
     setError("");
     try {
       const result = (kind === "territory"
-        ? await rpc("submit_territory_request", { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: `[${SERVICES.find((item) => item.id === service)?.label}] [Now: ${progress}] ${form.details}`, p_website: form.website })
+        ? await rpc("submit_territory_request", { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: `[${SERVICES.find((item) => item.id === service)?.label}] [Now: ${progressLabel(progress)}] ${form.details}`, p_website: form.website })
         : await rpc("submit_workspace_application", { p_name: form.name, p_contact_email: form.email, p_admin_email: form.admin, p_congregation: form.congregation, p_phone: form.phone, p_authorized: authorized, p_website: form.website })) as { reference?: string } | null;
       setReference(result?.reference || "received");
     } catch (failure) {
@@ -74,7 +78,7 @@ export function RequestForm() {
       setBusy(false);
     }
   }
-  const home = config.PUBLIC_SITE_URL + "/";
+  const home = homeUrl();
   return (
     <main className="login card stack request-form">
       <h1>{COPY[kind].heading}</h1>
@@ -156,6 +160,8 @@ function TerritoryChoice({ help, onHelp }: { help: boolean; onHelp: () => void }
   );
 }
 
+const SERVICE_ICONS: Record<Service, React.ReactNode> = { scratch: <PenTool />, cards: <Layers />, package: <PackageCheck /> };
+
 function ServicePicker({ value, onChange }: { value: Service; onChange: (service: Service) => void }) {
   return (
     <fieldset className="stack">
@@ -164,6 +170,7 @@ function ServicePicker({ value, onChange }: { value: Service; onChange: (service
         <div key={item.id}>
           <label className="check">
             <input type="radio" name="territory-service" aria-describedby={"service-" + item.id} checked={value === item.id} onChange={() => onChange(item.id)} />
+            <span className="rf-icon" aria-hidden="true">{SERVICE_ICONS[item.id]}</span>
             {item.label}
           </label>
           <p className="muted" id={"service-" + item.id}>{item.detail}</p>
@@ -173,22 +180,25 @@ function ServicePicker({ value, onChange }: { value: Service; onChange: (service
   );
 }
 
-/** Where the congregation is now among the seven making steps. */
-function ProgressPicker({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+/** Where the congregation is now: tap the last finished step (tap it again to clear). */
+function ProgressPicker({ value, onChange }: { value: number; onChange: (value: number) => void }) {
   return (
-    <div className="stack">
-      <LegacySelect value={value} required onChange={(e) => onChange(e.target.value)} aria-label={"Where are you now?"}>
-        {PROGRESS.map((step) => (
-          <option key={step} value={step}>
-            {step}
-          </option>
-        ))}
-      </LegacySelect>
-      <ol className="muted">
-        {STEPS.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
+    <fieldset className="rf-steps">
+      <legend>{"Where are you now? Tap the last step you have finished."}</legend>
+      <ol>
+        {STEPS.map((step, i) => {
+          const n = i + 1;
+          return (
+            <li key={step} className={n <= value ? "done" : undefined}>
+              <button type="button" aria-pressed={n === value} onClick={() => onChange(n === value ? 0 : n)}>
+                <span className="rf-dot" aria-hidden="true">{n <= value ? <Check /> : n}</span>
+                {step}
+              </button>
+            </li>
+          );
+        })}
       </ol>
-    </div>
+      <p className="muted" aria-live="polite">{progressLabel(value)}</p>
+    </fieldset>
   );
 }

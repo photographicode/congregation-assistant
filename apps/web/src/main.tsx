@@ -373,8 +373,8 @@ const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
 const requestPage=new URLSearchParams(location.search).has("request")?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><RequestForm/></Suspense>:null;
 // The territory manager is its own section of the app: ?territory for managers, the rest open without sign-in.
 const territoryPages={"territory-card":TerritoryCard,"territory-issue":TerritoryIssue,"territory-request":TerritoryRequest,territory:TerritoryApp};
-// On the territory subdomain every page is a territory page; the manager is the default.
-const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1]??(onTerritoryHost()?TerritoryApp:undefined);
+// On the territory subdomain every page is a territory page; the manager is the default, except the help request form.
+const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1]??(onTerritoryHost()&&!new URLSearchParams(location.search).has("request")?TerritoryApp:undefined);
 const territoryPage=TerritoryPage?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton/></main>}><TerritoryPage/></Suspense>:null;
 if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
 else createRoot(document.getElementById("root")!).render(
