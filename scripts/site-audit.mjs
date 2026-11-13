@@ -3,7 +3,7 @@ import path from 'node:path';
 import {parseHTML} from 'linkedom';
 const root=path.resolve(process.env.SITE_AUDIT_ROOT||'dist/site');
 const failures=[], pages=[], titles=new Set(), descriptions=new Set();
-async function walk(dir){for(const entry of await readdir(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory()){if(dir===root&&entry.name==='app')continue;await walk(file);}else if(file.endsWith('.html'))pages.push(file);}}
+async function walk(dir){for(const entry of await readdir(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory()){if(dir===root&&entry.name==='app')continue;await walk(file);}else if(file.endsWith('.html')&&!/^google[0-9a-f]+\.html$/.test(entry.name))pages.push(file);/* Search Console ownership files are not pages. */}}
 await walk(root);
 const config=JSON.parse(await readFile('public-config.json','utf8'));
 const base=new URL((process.env.SITE_AUDIT_URL||config.PUBLIC_SITE_URL).replace(/\/$/,'')+'/');

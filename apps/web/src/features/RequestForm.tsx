@@ -23,7 +23,8 @@ const STEPS = [
   "Making the cards in the shown format",
   "A high-resolution full map with all numbers",
 ];
-const PROGRESS = ["Not started: we have only the boundary", ...STEPS.slice(0, -1).map((step, i) => `Done up to step ${i + 1}: ${step}`)];
+const NOT_STARTED = "Not started: we have only the boundary";
+const PROGRESS = [NOT_STARTED, ...STEPS.slice(0, -1).map((step, i) => `Done up to step ${i + 1}: ${step}`)];
 const COPY: Record<Kind, { title: string; heading: string; thanks: string }> = {
   territory: { title: "Territories · Congregation Assistant", heading: "Territories", thanks: "Thank you. We will email you about your territories." },
   workspace: { title: "Request a workspace · Congregation Assistant", heading: "Request a congregation workspace", thanks: "Thank you. We will email you when the workspace is ready." },
@@ -51,7 +52,7 @@ export function RequestForm() {
   // Arriving from the territory landing page with a service chosen goes straight to the form.
   const [help, setHelp] = React.useState(() => chosenService() !== undefined),
     [service, setService] = React.useState<Service>(() => chosenService() ?? "package"),
-    [progress, setProgress] = React.useState(PROGRESS[0]);
+    [progress, setProgress] = React.useState(NOT_STARTED);
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
   React.useEffect(() => {
