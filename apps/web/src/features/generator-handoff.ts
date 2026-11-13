@@ -3,8 +3,8 @@
 import { generatorUrl } from "./territory-site";
 
 export type Handoff = { name: string; congregation: string; bytes: Uint8Array };
-export const READY = "tm-generator-ready";
-export const IMPORT = "tm-import";
+const READY = "tm-generator-ready";
+const IMPORT = "tm-import";
 const WAIT_MS = 60_000;
 
 /**

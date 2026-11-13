@@ -16,7 +16,7 @@ const kb=(n:number)=>n<KIBIBYTE*KIBIBYTE?`${Math.max(1,Math.round(n/KIBIBYTE))} 
 /** The form puts the service and progress in brackets at the start of the details; show them as labels. */
 function splitDetails(details:string){
  const tags:string[]=[];let rest=details;
- for(let m=/^\s*\[([^\]]{1,200})\]/.exec(rest);m;m=/^\s*\[([^\]]{1,200})\]/.exec(rest)){tags.push(m[1]);rest=rest.slice(m[0].length);}
+ for(let m=/^\s*\[([^\]]{1,200})\]/.exec(rest);m;m=/^\s*\[([^\]]{1,200})\]/.exec(rest)){tags.push(m[1]??"");rest=rest.slice(m[0].length);}
  return {tags,text:rest.trim()};
 }
 function save(name:string,bytes:Uint8Array<ArrayBuffer>,kind:'kml'|'kmz'){
