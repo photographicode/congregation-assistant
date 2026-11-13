@@ -167,3 +167,5 @@ fieldset.publisher-gender.publisher-gender{padding:0;margin:0;border:0}.publishe
 .dashboard-kpis .kpi-3{--kpi-edge:color-mix(in srgb,var(--warn) 60%,transparent)}
 /* Focus ring only for keyboard users: a mouse click or tap leaves no outline (DESIGN.md §4 :focus-visible). */
 :where(button,[role=button],a[href],.card-link,.tab,.switch,[role=tab],[role=option]):focus:not(:focus-visible){outline:none}
+/* Meetings: the week's date and time as one summary line; the fields open from "Meeting settings". */
+.meeting-settings-summary{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-2);font-weight:600;font-variant-numeric:tabular-nums}

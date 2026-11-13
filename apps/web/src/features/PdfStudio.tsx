@@ -9,6 +9,7 @@ import {
 import { missingReportMonths } from "../../../../packages/core/pdf-accuracy";
 import { watchtowerWeek } from "./publication-data";
 import React from "react";
+import { ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { programSchema } from "../../../../packages/core/meeting";
 import { demoPublishers } from "../../../../packages/core/demo-publishers";
@@ -33,6 +34,8 @@ import type { Context } from "../context";
 import { handleError } from "../../../../packages/core/errors";
 import { preferenceStorage } from "../../../../packages/core/storage";
 
+/** Documents that share one Forms & Print card; opened from that card, the chooser lists only these. */
+const documentFamilies = [["s3", "s88"], ["midweek", "weekend", "duties"]];
 const documents: Array<[string, string]> = [
   ["s21", "S-21 publisher records"],
   ["s3", "S-3-E monthly attendance"],
@@ -86,12 +89,28 @@ export default function PdfStudio({ context: c }: { context: Context }) {
       date.setMonth(date.getMonth() - 1);
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     });
+  // Opened for one document (from Forms & Print or search): no second chooser, and a Back button instead.
+  const [picked] = React.useState(() => {
+    try {
+      return Boolean(sessionStorage.getItem("ca-pdf-open"));
+    } catch {
+      return false;
+    }
+  });
+  // Clear the one-time request after the first render (an initializer may run twice).
+  React.useEffect(() => {
+    try {
+      sessionStorage.removeItem("ca-pdf-open");
+    } catch {
+      /* storage unavailable: nothing to clear */
+    }
+  }, []);
   const [kind, setKind] = React.useState(() => {
       try {
-        const value =
-          sessionStorage.getItem("ca-pdf-open") ||
-          preferenceStorage.getItem("ca-pdf-kind");
-        sessionStorage.removeItem("ca-pdf-open");
+        const requested = sessionStorage.getItem("ca-pdf-open"),
+          value = requested || preferenceStorage.getItem("ca-pdf-kind");
+        // A requested document is kept even while the list of available documents is still loading.
+        if (requested) return requested;
         return available.some(([id]) => id === value)
           ? value!
           : available[0]?.[0] || "s21";
@@ -531,24 +550,36 @@ export default function PdfStudio({ context: c }: { context: Context }) {
         <p>{t("ui.your.role.does.not.have.document.export.ac.c7390453")}</p>
       </section>
     );
+  // Opened for one document: only that document's own family (if any) is offered again.
+  const family = documentFamilies.find((ids) => ids.includes(kind)),
+    choices = picked ? available.filter(([id]) => family?.includes(id)) : available;
   return (
     <>
       <div className="page-heading">
         <div>
           <div className="eyebrow">{t("ui.print.pdf.541714a2")}</div>
           <h1>{t("ui.forms.to.share.2ebe5a1f")}</h1>
-          <p>{t("ui.choose.your.document.and.download.it.in.on.816b9b89")}</p>
+          <p>
+            {picked
+              ? available.find(([id]) => id === kind)?.[1]
+              : t("ui.choose.your.document.and.download.it.in.on.816b9b89")}
+          </p>
         </div>
+        {picked && (
+          <Button onClick={() => history.back()} type="button">
+            <ArrowLeft aria-hidden="true" /> {t("common.back")}
+          </Button>
+        )}
       </div>
       <div className="grid">
         <section className="card stack">
-          {available.length > 1 && (
+          {choices.length > 1 && (
             <div className="stack">
               <strong>{t("ui.document.d6bd8c0a")}</strong>
               <Segmented
                 label={t("ui.document.d6bd8c0a")}
                 value={kind}
-                options={available.map(([value, label]) => ({ value, label }))}
+                options={choices.map(([value, label]) => ({ value, label }))}
                 onChange={setKind}
               />
             </div>

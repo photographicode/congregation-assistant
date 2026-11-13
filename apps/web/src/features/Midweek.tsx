@@ -222,6 +222,9 @@ export function Midweek({
   const parsedProgram = programSchema.safeParse(draft.programs?.[week]),
     program = parsedProgram.success ? parsedProgram.data : null;
   const auxiliary = program?.auxiliary === true;
+  // Open by default only while the congregation has no usual meeting time yet.
+  const [meetingToggle, setMeetingOpen] = React.useState<boolean | null>(null),
+    meetingOpen = meetingToggle ?? (!demo && meeting.isSuccess && !meeting.data?.settings?.midweek_time);
   const day = Number(meeting.data?.settings?.midweek_day ?? 1),
     selectedDate =
       program?.meetingDate ||
@@ -734,7 +737,21 @@ export function Midweek({
           </Disclosure>
         ))}
       </Disclosure>
-      <div className="card form-grid">
+      {/* The week's date, start time and auxiliary classroom follow the usual settings; they open only to change them. */}
+      <div className="card stack meeting-settings">
+        <div className="meeting-settings-summary">
+          <span>
+            {new Date(selectedDate + "T12:00:00").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", year: "numeric" })}
+            {" · " + startTime}
+            {auxiliary ? " · Auxiliary classroom" : ""}
+          </span>
+          <Button className="tonal" aria-expanded={meetingOpen} onClick={() => setMeetingOpen(!meetingOpen)} type="button">
+            {meetingOpen ? "Done" : "Meeting settings"}
+          </Button>
+        </div>
+        {meetingOpen && (
+          <>
+            <div className="form-grid">
         <label>
           {t("oclm.date")}
           <input
@@ -799,6 +816,10 @@ export function Midweek({
           />
           {t("oclm.enableAux")}
         </label>
+            </div>
+            <p className="muted">{"These change this week only. Set the usual day and time in Settings."}</p>
+          </>
+        )}
       </div>
       {program ? (
         <>

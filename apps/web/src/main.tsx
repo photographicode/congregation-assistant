@@ -86,6 +86,8 @@ const routes = [
 ];
 
 function workspaceRoleLabel(owner:boolean,admin:boolean,roles:string[]){if(owner)return "Owner";if(admin)return "Main admin";if(roles.some(role=>role!=="publisher"))return "Department overseer";return "Publisher";}
+/** The URL of the screen on show; Back restores it when a form with unsaved changes blocks leaving. */
+let shownUrl = "";
 function App() {
   React.useSyncExternalStore(subscribeUILocale,getLocaleSnapshot,getLocaleSnapshot);
   const [updatesOpen,setUpdatesOpen]=useState(false);
@@ -113,6 +115,8 @@ function App() {
   const queryClient=useQueryClient();
   const accountScope=React.useMemo(()=>authScope(queryClient,(account:string|null)=>{switchStoreAccount(account);for(const key of ['ca-quick-action','ca-report-action','ca-person-search','ca-pdf-open','ca-s21-person'])sessionStorage.removeItem(key);setLoading(Boolean(account));setHub(null);setQuick(false);setAssistantOpen(false);setSearch(false);setMemberships([]);setHubCounts({});setSyncStatus({pending:0,conflicts:0,forbidden:0});setCaps({});setPlan(null);setCong("");}),[queryClient]);
   useEffect(()=>setHubCounts({}),[cong]);
+  // Back / Forward: show the screen in the URL. A form with unsaved changes can stop it; the URL is then put back.
+  useEffect(()=>{shownUrl=location.pathname+location.search;const onPop=()=>{const target=location.pathname+location.search,params=new URLSearchParams(location.search),section=params.get("section");const apply=()=>{shownUrl=target;if(location.pathname+location.search!==target)history.pushState(null,"",target);window.dispatchEvent(new Event("ca:after-navigate"));setRoute(params.get("screen")||"home");setHub(sections.some(item=>item.id===section)?section as SectionId:null);setMore(false);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);};const event=new CustomEvent("ca:before-navigate",{cancelable:true,detail:apply});window.dispatchEvent(event);if(event.defaultPrevented)history.pushState(null,"",shownUrl);else apply();};addEventListener("popstate",onPop);return()=>removeEventListener("popstate",onPop);},[]);
   const appearance = useAppearance();
   useEffect(()=>{if(!search)return;const frame=requestAnimationFrame(()=>document.getElementById("tool-search")?.focus());return()=>cancelAnimationFrame(frame);},[search]);
   React.useLayoutEffect(() => adapt(appearance), [appearance]);
@@ -319,9 +323,11 @@ function App() {
         </div>
       </main>
     );
+  // Each screen change is a history entry, so the phone's Back button (and Back in the installed app) returns to the previous screen instead of closing the app.
+  const remember=(url:URL)=>{const next=url.pathname+url.search;if(next!==location.pathname+location.search)history.pushState(null,"",next);shownUrl=next;};
   const guardNavigation=(action:()=>void)=>{const event=new CustomEvent('ca:before-navigate',{cancelable:true,detail:action});window.dispatchEvent(event);if(!event.defaultPrevented)action();};
   const navigate = (id: string) => {
-    const url=new URL(location.href);url.searchParams.set("screen",id);url.searchParams.delete("section");history.replaceState(null,"",url.pathname+url.search);
+    const url=new URL(location.href);url.searchParams.set("screen",id);url.searchParams.delete("section");remember(url);
     window.dispatchEvent(new Event("ca:after-navigate"));
     setRoute(id);setHub(null);
     setMore(false);
@@ -331,7 +337,7 @@ function App() {
   const visibleTools=allowedTools(roles,owner);
   const availableSections=sections.filter(section=>section.id==='home'||visibleTools.some(tool=>tool.section===section.id&&tool.available)).map(section=>section.id);
   const activeSection=hub||sectionForRoute(route);
-  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}if(roles.includes('publisher')&&!admin&&['reports','meetings','admin'].includes(section)){go(({meetings:'schedule',admin:'settings',reports:'reports'} as Partial<Record<SectionId,string>>)[section]||'home');return;}guardNavigation(()=>{window.dispatchEvent(new Event("ca:after-navigate"));setHub(section);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);const url=new URL(location.href);url.searchParams.set('section',section);history.replaceState(null,'',url.pathname+url.search);document.querySelector('.main-content')?.scrollTo(0,0);});};
+  const selectSection=(section:SectionId)=>{if(!availableSections.includes(section))return;if(section==='home'){go('home');return;}if(roles.includes('publisher')&&!admin&&['reports','meetings','admin'].includes(section)){go(({meetings:'schedule',admin:'settings',reports:'reports'} as Partial<Record<SectionId,string>>)[section]||'home');return;}guardNavigation(()=>{window.dispatchEvent(new Event("ca:after-navigate"));setHub(section);setSearch(false);setQuick(false);setAssistantOpen(false);setUpdatesOpen(false);const url=new URL(location.href);url.searchParams.set('section',section);remember(url);document.querySelector('.main-content')?.scrollTo(0,0);});};
   const openNativeTool=(tool:Tool,afterNavigate?:()=>void)=>{if(!visibleTools.some(item=>item.id===tool.id)||!tool.available||!allowed.some(route=>route.id===tool.route))return;setQuick(false);setSearch(false);guardNavigation(()=>{
     if(tool.route==='reports'&&tool.sub&&!sessionStorage.getItem('ca-report-action'))sessionStorage.setItem('ca-report-action',JSON.stringify({action:tool.sub}));
     if(tool.route==='pdf'&&tool.sub)sessionStorage.setItem('ca-pdf-open',tool.sub);
