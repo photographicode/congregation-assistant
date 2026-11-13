@@ -16,7 +16,7 @@ const root = path.resolve("dist"),
           "." +
             (u.pathname.endsWith("/") ? u.pathname + "index.html" : u.pathname),
         );
-      if (!file.startsWith(root + "/")) return res.writeHead(403).end();
+      if (!file.startsWith(root + path.sep)) return res.writeHead(403).end();
       await stat(file);
       res.setHeader(
         "Content-Type",
