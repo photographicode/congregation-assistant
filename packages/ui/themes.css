@@ -42,3 +42,4 @@ html{font-size:calc(100% * var(--text-scale))}
 @media (prefers-reduced-motion:reduce){:root{--dur:0ms}}
 body{background:var(--bg) var(--bg-image);color:var(--text-1);font-family:var(--font-body)}
 .card{background:var(--surface);border:var(--border-w) solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-card);backdrop-filter:blur(var(--glass-blur));}
+:root{--kpi-blue:light-dark(#4A6FA5,#8FB0DE)}

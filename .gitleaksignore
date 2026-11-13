@@ -31,3 +31,5 @@ cd3af92b9a862610d77890a96ec3d3e82aa7aa42:scripts/v4-tests/publisher-workspace.sq
 # Historical explanatory comment containing the same SQL relation identifier.
 60c151f8f73adc2e58f2b635da17ffd8ab84277d:.gitleaksignore:generic-api-key:26
 62f84c8886786fdc596ac2348ce82243ec17affd:.gitleaksignore:generic-api-key:26
+# Reviewed non-secret UI text ("Independent and unofficial. Your congregation controls access."); same false positive as en.generated.json:173, re-flagged when the locale file was rewritten.
+78ae8fdb90763cd021c0df716749b8d10b728ce3:packages/core/locales/en.json:generic-api-key:173

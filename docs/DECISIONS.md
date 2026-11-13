@@ -144,3 +144,7 @@ Owner plans more products alongside Congregation Assistant and asked for one sub
 ## 2026-11-13 — Eclipse status tones
 - Owner approved muted status colours in Eclipse and Eclipse Night. `--warn` / `--ok` were black (light) and white (dark), so pending and complete states had no colour (DESIGN.md §1: colour is spent on state). Light: `#8A5A00` / `#2E6B3F` (Paper's values); dark: `#E6C86E` / `#8CC79B`. `--danger` stays monochrome. `check:contrast` 156 checks, 0 failures; `docs/qa/supplied-themes.sha256` updated for the edited `themes.css`.
 - Navigation icons stay neutral in Eclipse (`v4-layout.css`), so the tones mark state only.
+
+## 2026-11-13 — CSS byte budget for the audit follow-ups
+- Owner authorised this release ("deploy! Fully authorised"). The audit follow-ups add CSS for the reporting-month stepper, state tones, submissions-log table, More page, sticky report submit, compact Brother/Sister pill, KPI tile edges and the meeting summary. After compacting it and removing two superseded KPI rules, net CSS grows 124,400 → 128,441 bytes; `docs/engineering/css-baseline.json` bytes budget set to 128,500. Breakpoints stay at 10; the long-term 71,680-byte target is unchanged.
+- Gitleaks re-flagged the known UI-text false positive at `packages/core/locales/en.json:173` after that file was rewritten; its exact fingerprint is added to `.gitleaksignore`, as for the earlier `en.generated.json:173`.
