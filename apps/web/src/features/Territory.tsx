@@ -15,6 +15,7 @@ import {setPrefs,usePrefs,useTerritoryTheme,type Style,type Theme,type View} fro
 import {ImportCsv} from './TerritoryImport';
 import {mainAppUrl,signInReturnUrl} from './territory-site';
 import {TerritoryOwner} from './TerritoryOwner';
+import {TerritoryLanding} from './TerritoryLanding';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
 import './territory.css';
 
@@ -56,16 +57,11 @@ async function compress(file:File,max:number,quality:number){
 export default function TerritoryApp(){
  const [session,setSession]=React.useState<unknown>(demo?{}:undefined);
  useTerritoryInstallable();
- useTerritoryTheme();
+ useTerritoryTheme(session!==null);
  React.useEffect(()=>{document.title='Territories · Congregation Assistant';if(demo)return;void client.auth.getSession().then(({data})=>setSession(data.session));const {data}=client.auth.onAuthStateChange((_e,s)=>setSession(s));return()=>data.subscription.unsubscribe();},[]);
  if(session===undefined)return <main className="tm tm-center"><Skeleton label={"Opening territories…"}/></main>;
- if(!session)return <main className="tm tm-center"><section className="tm-raised tm-login stack">
-  <span className="tm-mark"><MapIcon/></span><h1>{'Territory manager'}</h1>
-  <p>{'Keep territory cards, assign them to publishers, record returns and see reported issues. Sign in with the Google account your workspace approved.'}</p>
-  <Button className="primary full" onClick={()=>void client.auth.signInWithOAuth({provider:'google',options:{redirectTo:signInReturnUrl()}})}>{'Continue with Google'}<ArrowRight/></Button>
-  <InstallTerritories/>
-  <p className="muted">{'New congregation? '}<a href="?territory-request">{'Request a territory workspace'}</a>{' · '}<a href="?territory&demo">{'Try the demo'}</a></p>
- </section></main>;
+ // Signed-out visitors see the territory landing page; sign-in starts from it.
+ if(!session)return <TerritoryLanding signIn={()=>void client.auth.signInWithOAuth({provider:'google',options:{redirectTo:signInReturnUrl()}})}/>;
  return <Workspaces/>;
 }
 

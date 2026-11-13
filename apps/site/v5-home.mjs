@@ -84,9 +84,9 @@ export function v5Home({app,escape:e,t,price,pricingText,pricingHref,pricingLabe
 <section id="territories" class="terr" aria-labelledby="terr-title">
  <div class="wrap terr-in">
   <div class="terr-copy">
-   <h2 id="terr-title" class="reveal">Territories, in one place.</h2>
-   <p class="reveal">Territory assistant is the next part of Congregation Assistant. It keeps your territories and who can see them. Drawing or splitting new territory maps is a separate service you request.</p>
-   <p class="reveal"><a class="button" href="${e(app)}?request=territory">Request territory maps</a></p>
+   <h2 id="terr-title" class="reveal">Need help with territories?</h2>
+   <p class="reveal">Territories have their own home: keep and assign every territory, or have us make them for you, from your boundary KML to printed cards with QR codes and a full named map.</p>
+   <p class="reveal"><a class="button" href="https://territory.congregationassistant.com/">Go to Territories</a> <a class="button" href="https://territory.congregationassistant.com/#tl-help">Get help making territories</a></p>
   </div>
   <ol class="steps">${steps}</ol>
   <svg class="terr-map reveal" viewBox="0 0 320 220" role="img" aria-label="Sketch of a congregation boundary split into five numbered territories">

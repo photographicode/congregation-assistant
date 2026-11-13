@@ -43,3 +43,5 @@ html{font-size:calc(100% * var(--text-scale))}
 body{background:var(--bg) var(--bg-image);color:var(--text-1);font-family:var(--font-body)}
 .card{background:var(--surface);border:var(--border-w) solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-card);backdrop-filter:blur(var(--glass-blur));}
 :root{--kpi-blue:light-dark(#4A6FA5,#8FB0DE)}
+/* Territory landing page: the soft raised look of congregationassistant.com (apps/site). */
+.tl{--tl-paper:#eef1f5;--tl-panel:#f7f9fc;--tl-ink:#15233f;--tl-muted:#3d434d;--tl-line:#d6dce5;--tl-accent:#15233f;--tl-on-accent:#fafafa;--tl-raise:7px 7px 16px #c9d1dc,-7px -7px 16px #fff;--tl-raise-hover:10px 10px 22px #c3ccd8,-10px -10px 22px #fff;--tl-press:inset 4px 4px 9px #c9d1dc,inset -4px -4px 9px #fff;--tl-float:0 1px 2px rgba(20,30,50,.06),0 18px 40px -12px rgba(20,30,50,.22),0 50px 90px -30px rgba(20,30,50,.18);--tl-r-l:28px;--tl-r-s:12px;--tl-h1:clamp(2.125rem,4.6vw,4.25rem);--tl-h2:clamp(1.75rem,3vw,2.5rem);--tl-glow:rgba(21,35,63,.35);--tl-wash:#dfe6f2}
