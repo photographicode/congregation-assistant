@@ -244,6 +244,24 @@ export function Switch({
 export function Select(props: React.ComponentProps<typeof Combobox>) {
   return <Combobox {...props} />;
 }
+/** Reads <option> children like a native select: an option without a value uses its text as the value. */
+export function legacyOptions(children: React.ReactNode): Option[] {
+  const options: Option[] = [];
+  function collect(nodes: React.ReactNode) {
+    React.Children.forEach(nodes, (node) => {
+      if (!React.isValidElement(node)) return;
+      if (node.type === "option") {
+        const option = node.props as { value?: string | number; children?: React.ReactNode; disabled?: boolean };
+        const label = React.Children.toArray(option.children).join("");
+        options.push({ value: String(option.value ?? label), label, disabled: option.disabled });
+        return;
+      }
+      collect((node.props as { children?: React.ReactNode }).children);
+    });
+  }
+  collect(children);
+  return options;
+}
 /** Compatibility adapter while screens move from option children to the typed API. */
 export function LegacySelect({
   children,
@@ -256,42 +274,16 @@ export function LegacySelect({
 }: Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> & {
   onChange?: (event: { target: { value: string } }) => void;
 }) {
-  const options: Option[] = [];
-  function collect(nodes: React.ReactNode) {
-    React.Children.forEach(nodes, (node) => {
-      if (!React.isValidElement(node)) return;
-      if (node.type === React.Fragment) {
-        collect((node.props as { children?: React.ReactNode }).children);
-        return;
-      }
-      if (node.type === "option") {
-        const option = node.props as {
-          value?: string | number;
-          children?: React.ReactNode;
-          disabled?: boolean;
-        };
-        options.push({
-          value: String(option.value ?? ""),
-          label: React.Children.toArray(option.children).join(""),
-          disabled: option.disabled,
-        });
-        return;
-      }
-      collect((node.props as { children?: React.ReactNode }).children);
-    });
-  }
-  collect(children);
+  const options = legacyOptions(children);
+  const clearLabel = required ? undefined : options.find((option) => option.value === "")?.label;
   return (
     <Combobox
       label={ariaLabel || String(props.name || "Choose")}
       value={String(value ?? "")}
-      options={options}
+      // The empty option becomes the clear row; listing it as well showed it twice.
+      options={clearLabel === undefined ? options : options.filter((option) => option.value !== "")}
       disabled={disabled}
-      clearLabel={
-        required
-          ? undefined
-          : options.find((option) => option.value === "")?.label
-      }
+      clearLabel={clearLabel}
       onChange={(next) => onChange?.({ target: { value: next } })}
     />
   );
