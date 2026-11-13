@@ -15,9 +15,13 @@ export default {
   if (url.pathname === '/robots.txt') return new Response(`User-agent: *
 Allow: /$
 Disallow: /?
+Disallow: /generator/
 Sitemap: https://${HOST}/sitemap.xml
 `, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+  // The territory generator (the territory-manager app on GitHub Pages) for territory owners.
+  if (url.pathname === '/generator') return Response.redirect(`https://${HOST}/generator/${url.search}`, 308);
+  if (url.pathname.startsWith('/generator/')) return generator(request, url);
   // The site root is the territory manager; everything else (assets, manifests, the service worker) is the app's own path.
   const path = url.pathname === '/' || url.pathname === '/index.html' ? '/app/' : url.pathname;
   const upstream = await fetch(ORIGIN + path + url.search, { method: request.method, headers: { Accept: request.headers.get('Accept') || '*/*' }, redirect: 'manual' });
@@ -53,4 +57,26 @@ class SeoHead {
  element(head) {
   head.append(`<meta name="description" content="${escape(DESCRIPTION)}"><meta name="keywords" content="${escape(KEYWORDS)}"><meta name="robots" content="index, follow"><link rel="canonical" href="https://${HOST}/"><meta property="og:type" content="website"><meta property="og:title" content="${escape(TITLE)}"><meta property="og:description" content="${escape(DESCRIPTION)}"><meta property="og:url" content="https://${HOST}/"><meta name="twitter:card" content="summary"><script type="application/ld+json">${JSONLD.replace(/</g, '\u003c')}</script>`, { html: true });
  }
+}
+
+// The generator is a static app that runs in the browser: it reads OpenStreetMap roads from Overpass and draws
+// maps from OpenStreetMap and OpenFreeMap tiles, so its policy allows exactly those hosts and nothing else.
+const GENERATOR_ORIGIN = 'https://photographicode.github.io/territory-manager';
+const generatorPolicy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://tiles.openfreemap.org https://overpass-api.de https://overpass.kumi.systems https://maps.mail.ru; worker-src 'self' blob:; child-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests";
+async function generator(request, url) {
+ const upstream = await fetch(GENERATOR_ORIGIN + url.pathname.slice('/generator'.length) + url.search, { method: request.method, headers: { Accept: request.headers.get('Accept') || '*/*' }, redirect: 'manual' });
+ const response = new Response(upstream.body, upstream);
+ const headers = response.headers;
+ const location = headers.get('Location');
+ if (location && location.startsWith(GENERATOR_ORIGIN)) headers.set('Location', '/generator' + location.slice(GENERATOR_ORIGIN.length));
+ headers.set('Content-Security-Policy', generatorPolicy);
+ headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+ headers.set('X-Content-Type-Options', 'nosniff');
+ headers.set('Referrer-Policy', 'no-referrer');
+ headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+ // Same origin as the owner dashboard, which opens the generator and hands it a request's boundary file.
+ headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+ headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+ headers.set('X-Robots-Tag', 'noindex, nofollow');
+ return response;
 }

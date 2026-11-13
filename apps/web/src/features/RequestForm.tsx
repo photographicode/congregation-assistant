@@ -1,9 +1,10 @@
 import React from "react";
-import { Check, Layers, PackageCheck, PenTool } from "lucide-react";
+import { Check, FileUp, Layers, PackageCheck, PenTool, X } from "lucide-react";
 import { Button } from "../../../../packages/ui/components";
 import { Field } from "../../../../packages/ui/Field";
 import { rpc, config } from "./client";
 import { onTerritoryHost, territoryUrl } from "./territory-site";
+import { FILE_LIMITS, KIBIBYTE, readRequestFile, setProblem, type RequestFile } from "./request-files";
 
 // Public requests that need no sign-in: a new congregation workspace, or territory maps made for a congregation.
 type Kind = "workspace" | "territory";
@@ -34,8 +35,11 @@ const COPY: Record<Kind, { title: string; heading: string; thanks: string }> = {
   workspace: { title: "Request a workspace · Congregation Assistant", heading: "Request a congregation workspace", thanks: "Thank you. We will email you when the workspace is ready." },
 };
 const NAME_MAX = 100, CONGREGATION_MAX = 150, EMAIL_MAX = 150, PHONE_MAX = 30, DETAILS_MIN = 10, DETAILS_MAX = 2000, DETAILS_ROWS = 5, REFERENCE_LENGTH = 8;
-function readableError(e: unknown): string {
+function readableError(e: unknown, withFiles = false): string {
   const message = (e as Error)?.message || "";
+  if (withFiles && /PGRST202|could not find the function/i.test(message))
+    return "Attaching files is not open yet. Remove the files and send the request; we will ask for the KML by email.";
+  if (/413|payload too large|request entity too large/i.test(message)) return "The files are too large to send. Keep them under 4 MB each.";
   if (e instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(message))
     return "We can’t reach the server. Check your connection and try again.";
   if (/too many requests|PT429|429/i.test(message)) return "Too many requests from this connection. Please try again in an hour.";
@@ -56,7 +60,9 @@ export function RequestForm() {
   // Arriving from the territory landing page with a service chosen goes straight to the form.
   const [help, setHelp] = React.useState(() => chosenService() !== undefined),
     [service, setService] = React.useState<Service>(() => chosenService() ?? "package"),
-    [progress, setProgress] = React.useState(0);
+    [progress, setProgress] = React.useState(0),
+    [files, setFiles] = React.useState<RequestFile[]>([]),
+    [fileError, setFileError] = React.useState("");
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
   React.useEffect(() => {
@@ -67,13 +73,16 @@ export function RequestForm() {
     if (busy) return;
     setBusy(true);
     setError("");
+    const attach = kind === "territory" && files.length > 0;
     try {
-      const result = (kind === "territory"
-        ? await rpc("submit_territory_request", { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: `[${SERVICES.find((item) => item.id === service)?.label}] [Now: ${progressLabel(progress)}] ${form.details}`, p_website: form.website })
-        : await rpc("submit_workspace_application", { p_name: form.name, p_contact_email: form.email, p_admin_email: form.admin, p_congregation: form.congregation, p_phone: form.phone, p_authorized: authorized, p_website: form.website })) as { reference?: string } | null;
+      const territory = { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: `[${SERVICES.find((item) => item.id === service)?.label}] [Now: ${progressLabel(progress)}] ${form.details}`, p_website: form.website };
+      let call: [string, Record<string, unknown>] = ["submit_workspace_application", { p_name: form.name, p_contact_email: form.email, p_admin_email: form.admin, p_congregation: form.congregation, p_phone: form.phone, p_authorized: authorized, p_website: form.website }];
+      if (kind === "territory") call = ["submit_territory_request", territory];
+      if (attach) call = ["submit_territory_request_with_files", { ...territory, p_files: files.map(({ name, data }) => ({ name, data })) }];
+      const result = (await rpc(...call)) as { reference?: string } | null;
       setReference(result?.reference || "received");
     } catch (failure) {
-      setError(readableError(failure));
+      setError(readableError(failure, attach));
     } finally {
       setBusy(false);
     }
@@ -109,6 +118,7 @@ export function RequestForm() {
               <>
                 <ServicePicker value={service} onChange={setService} />
                 <ProgressPicker value={progress} onChange={setProgress} />
+                <BoundaryFiles files={files} error={fileError} onError={setFileError} onChange={setFiles} />
               <Field label={"Tell us about your territory"} hint={"For example: we have the boundary as a KML file and need about 40 territories. Card instructions in Malayalam."}>{(p) => <textarea {...p} required minLength={DETAILS_MIN} maxLength={DETAILS_MAX} rows={DETAILS_ROWS} value={form.details} onChange={set("details")} />}</Field>
               </>
             )}
@@ -200,5 +210,44 @@ function ProgressPicker({ value, onChange }: { value: number; onChange: (value: 
       </ol>
       <p className="muted" aria-live="polite">{progressLabel(value)}</p>
     </fieldset>
+  );
+}
+
+/** Optional boundary files (KML or KMZ from Google My Maps or Google Earth), read and checked in the browser. */
+function BoundaryFiles({ files, error, onError, onChange }: { files: RequestFile[]; error: string; onError: (e: string) => void; onChange: (files: RequestFile[]) => void }) {
+  const input = React.useRef<HTMLInputElement>(null);
+  async function add(list: FileList | null) {
+    onError("");
+    if (!list?.length) return;
+    try {
+      const read = await Promise.all([...list].map(readRequestFile));
+      const next = [...files, ...read];
+      const problem = setProblem(next);
+      if (problem) throw Error(problem);
+      onChange(next);
+    } catch (failure) {
+      onError((failure as Error).message);
+    } finally {
+      if (input.current) input.current.value = "";
+    }
+  }
+  return (
+    <div className="stack rf-files">
+      <Field label={"Boundary file (optional)"} hint={"KML or KMZ, for example exported from Google My Maps (⋮ → Export to KML/KMZ). Up to 3 files, 4 MB each."} error={error || undefined}>
+        {(p) => <input {...p} ref={input} type="file" accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz" multiple disabled={files.length >= FILE_LIMITS.count} onChange={(e) => void add(e.target.files)} />}
+      </Field>
+      {files.length > 0 && (
+        <ul className="rf-file-list" aria-label={"Attached files"}>
+          {files.map((f) => (
+            <li key={f.name}>
+              <FileUp aria-hidden="true" />
+              <span>{f.name}</span>
+              <span className="muted">{`${Math.max(1, Math.round(f.size / KIBIBYTE))} KB`}</span>
+              <button type="button" aria-label={`Remove ${f.name}`} onClick={() => onChange(files.filter((x) => x !== f))}><X aria-hidden="true" /></button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

@@ -7,5 +7,11 @@
 - GitHub Pages → Source → GitHub Actions. The connected app cannot change this administration setting (403); branch publishing can overwrite the native app.
 - Turnstile/application delivery endpoint, Cloudflare hosting/headers, DNS activation, support mailbox, real-device tests and independent penetration testing remain unverified. The contact page currently opens an email draft; it is not a server-delivered form.
 
+## Territory request files and owner home — 2026-11-14
+- Run `supabase/migrations/20261114090000_territory_request_files.sql` in the production SQL Editor (additive; down path in the matching `.down.sql`). Until then the request form still works without files and shows a clear message if files are attached.
+- Deploy the territory worker: `npx wrangler deploy -c hosting/wrangler-territory.jsonc` (adds `/generator/`).
+- Publish the generator (`territory-manager` repo, push to main → GitHub Pages).
+- Not verified: Supabase's request-size limit with a 6 MB attachment set (base64 ≈ 8 MB); try one large KML after deploying.
+
 ## Close-blockers production evidence
 Run [OWNER-DB-AUDIT.sql](OWNER-DB-AUDIT.sql) in the production SQL Editor and provide results for `docs/qa/PROD-DB-AUDIT.md`. The connected account cannot read even system metadata. Query 7 is conditional; do not export password values. Provider settings, backups/PITR and JWT expiry remain not verified. No production mutation is part of this deployment.

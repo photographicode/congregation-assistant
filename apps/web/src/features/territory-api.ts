@@ -88,7 +88,8 @@ export async function setMember(ws:string,email:string,role:'admin'|'manager'|nu
 
 // ---- Owner (SuperAdmin) ---------------------------------------------------------------------------
 /** Main-app owners and the territory-only owners both manage territory workspaces. */
-export async function amSuperadmin(){return demo?false:z.boolean().parse(await rpc('tm_am_superadmin'));}
+// The fictional demo shows the owner home with ?territory&demo=owner.
+export async function amSuperadmin(){return demo?new URLSearchParams(location.search).get('demo')==='owner':z.boolean().parse(await rpc('tm_am_superadmin'));}
 export async function ownerOverview(){return demo?clone(demoOwner):ownerSchema.parse(await rpc('tm_owner_overview'));}
 export async function createWorkspace(name:string,adminEmail:string){
  if(!demo){await rpc('tm_create_workspace',{p_name:name,p_admin_email:adminEmail});return;}
@@ -118,6 +119,29 @@ export async function submitApplication(f:{name:string;email:string;admin:string
  if(demo)return 'demo';
  const result=z.object({reference:z.string().optional()}).parse(await rpc('tm_submit_application',{p_name:f.name,p_contact_email:f.email,p_admin_email:f.admin,p_congregation:f.congregation,p_phone:f.phone,p_website:f.website}));
  return result.reference||'received';
+}
+
+// ---- Territory-making requests (owners only) ------------------------------------------------------
+const helpStatus=z.enum(['new','in_progress','done','declined']);
+const helpRequestSchema=z.object({id:z.string(),contact_name:z.string(),contact_email:z.string(),congregation_name:z.string(),phone:z.string().nullable(),details:z.string(),
+ status:helpStatus,owner_note:z.string().nullable(),created_at:z.string(),
+ files:z.array(z.object({id:z.string(),name:z.string(),kind:z.enum(['kml','kmz']),size:z.number()})).default([])});
+export type HelpRequest=z.infer<typeof helpRequestSchema>;
+export type HelpStatus=z.infer<typeof helpStatus>;
+const helpFileSchema=z.object({name:z.string(),kind:z.enum(['kml','kmz']),congregation:z.string(),data:z.string()});
+export type HelpFile=z.infer<typeof helpFileSchema>;
+const DEMO_KML='<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark><name>Fictional Hillside boundary</name><Polygon><outerBoundaryIs><LinearRing><coordinates>76.30,9.90 76.33,9.90 76.33,9.93 76.30,9.93 76.30,9.90</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark></Document></kml>';
+let demoHelp:HelpRequest[]=[{id:'00000000-0000-4000-8000-000000000011',contact_name:'Fictional Servant',contact_email:'servant@example.invalid',congregation_name:'Fictional Hillside',phone:null,
+ details:'[Complete package] [Now: Not started: we have only the boundary] We need about 40 territories. Card instructions in Malayalam.',status:'new',owner_note:null,created_at:new Date().toISOString(),
+ files:[{id:'demo-file-1',name:'hillside-boundary.kml',kind:'kml',size:DEMO_KML.length}]}];
+export async function helpRequests(){return demo?clone(demoHelp):z.array(helpRequestSchema).parse(await rpc('get_territory_requests'));}
+export async function setHelpRequest(request:string,status:HelpStatus,note:string|null){
+ if(!demo){await rpc('update_territory_request',{p_id:request,p_status:status,p_note:note});return;}
+ demoHelp=demoHelp.map(r=>r.id===request?{...r,status,owner_note:note===null?r.owner_note:note.trim()||null}:r);
+}
+export async function helpRequestFile(file:string):Promise<HelpFile>{
+ if(demo)return {name:'hillside-boundary.kml',kind:'kml',congregation:'Fictional Hillside',data:btoa(DEMO_KML)};
+ return helpFileSchema.parse(await rpc('get_territory_request_file',{p_id:file}));
 }
 
 /** Links that open without sign-in. The token rides in the hash so it never reaches server logs or referrers. */

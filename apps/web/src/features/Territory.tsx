@@ -2,7 +2,7 @@
 // Admins and managers keep territory cards, assign and return them, read issue reports and export the S-13.
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
-import {ArrowLeft,ArrowRight,Copy,ShieldCheck,Download,FileText,ImagePlus,LayoutDashboard,LogOut,Map as MapIcon,MapPin,Plus,Settings as SettingsIcon,Share2,TriangleAlert,Trash2} from 'lucide-react';
+import {ArrowLeft,ArrowRight,Copy,ShieldCheck,Download,FileText,ImagePlus,LayoutDashboard,LogOut,Map as MapIcon,MapPin,Plus,Settings as SettingsIcon,Share2,TriangleAlert,Trash2,Inbox,Wand2,Building2,ExternalLink} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented,Skeleton} from '../../../../packages/ui/components';
 import {Dialog} from '../../../../packages/ui/Dialog';
 import {Toast} from '../../../../packages/ui/Notices';
@@ -13,7 +13,8 @@ import {addDays,byNumber,canonicalName,FILTERS,fmt,type Filter,serviceYearLabel,
 import {cardJpeg,download,shareLinkOrCopy} from './territory-card';
 import {setPrefs,usePrefs,useTerritoryTheme,type Style,type Theme,type View} from './territory-prefs';
 import {ImportCsv} from './TerritoryImport';
-import {mainAppUrl,signInReturnUrl} from './territory-site';
+import {generatorUrl,mainAppUrl,signInReturnUrl} from './territory-site';
+import {TerritoryRequests} from './TerritoryRequests';
 import {TerritoryOwner} from './TerritoryOwner';
 import {TerritoryLanding} from './TerritoryLanding';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
@@ -65,28 +66,56 @@ export default function TerritoryApp(){
  return <Workspaces/>;
 }
 
+/** The workspace to open: the chosen one, or the only one (owners always start on their own home). */
+const pickWorkspace=<T extends {id:string}>(rows:T[],chosen:string,owner:boolean)=>rows.find(w=>w.id===chosen)??(!owner&&rows.length===1?rows[0]:undefined);
 function Workspaces(){
  const list=useQuery({queryKey:['tm','mine'],queryFn:api.myWorkspaces});
- const owner=useQuery({queryKey:['tm','am-owner'],queryFn:api.amSuperadmin}).data===true;
+ const ownerQuery=useQuery({queryKey:['tm','am-owner'],queryFn:api.amSuperadmin});
+ const owner=ownerQuery.data===true;
  const [chosen,setChosen]=React.useState(()=>new URLSearchParams(location.search).get('ws')||'');
  const signOut=async()=>{if(!demo)await client.auth.signOut();location.href=import.meta.env.BASE_URL+'?territory';};
- if(list.isLoading)return <main className="tm tm-center"><Skeleton label={"Finding your workspaces…"}/></main>;
+ // Wait for the owner check too: owners get their own home instead of going straight into a workspace.
+ if(list.isLoading||ownerQuery.isLoading)return <main className="tm tm-center"><Skeleton label={"Finding your workspaces…"}/></main>;
  if(list.error)return <main className="tm tm-center"><section className="tm-raised tm-login stack"><h1>{'Workspaces could not load'}</h1><p role="alert">{(list.error as Error).message}</p><Button onClick={()=>void list.refetch()}>{'Retry'}</Button></section></main>;
  const rows=list.data||[];
- const ws=rows.find(w=>w.id===chosen)||(rows.length===1?rows[0]:undefined);
+ const ws=pickWorkspace(rows,chosen,owner);
+ if(owner&&!ws)return <OwnerHome onSignOut={()=>void signOut()}/>;
  if(!ws)return <main className="tm tm-center"><section className="tm-raised tm-login stack">
   <span className="tm-mark"><MapIcon/></span>
   {rows.length?<><h1>{'Choose a workspace'}</h1>{rows.map(w=><Button key={w.id} className="tm-raised-button" onClick={()=>setChosen(w.id)}>{w.name}<span className="muted">{w.role==='admin'?'Admin':'Manager'}</span></Button>)}</>
   :<><h1>{'Approval needed'}</h1><p>{'This Google account is not in any territory workspace yet. Ask your workspace admin to add it, or request a new workspace.'}</p><a className="button" href="?territory-request">{'Request a territory workspace'}</a></>}
-  {owner&&<TerritoryOwner notify={()=>undefined}/>}
   <Button onClick={()=>void signOut()}><LogOut/>{'Sign out'}</Button>
  </section></main>;
- return <Manager key={ws.id} ws={ws.id} owner={owner} onSwitch={rows.length>1?()=>setChosen(''):undefined} onSignOut={()=>void signOut()}/>;
+ return <Manager key={ws.id} ws={ws.id} owner={owner} onSwitch={owner||rows.length>1?()=>setChosen(''):undefined} onSignOut={()=>void signOut()}/>;
 }
 
 const TABS:{id:Tab;label:string;icon:React.ReactNode}[]=[{id:'dashboard',label:'Dashboard',icon:<LayoutDashboard/>},{id:'territories',label:'Territories',icon:<MapIcon/>},{id:'issues',label:'Issues',icon:<TriangleAlert/>},{id:'settings',label:'Settings',icon:<SettingsIcon/>},{id:'owner',label:'Owner',icon:<ShieldCheck/>}];
-function TabButton({tab,active,onClick}:{tab:typeof TABS[number];active:boolean;onClick:()=>void}){
+function TabButton({tab,active,onClick}:{tab:{label:string;icon:React.ReactNode};active:boolean;onClick:()=>void}){
  return <button type="button" className={active?'active':''} aria-current={active?'page':undefined} onClick={onClick}>{tab.icon}<span>{tab.label}</span></button>;
+}
+type OwnerTab='requests'|'generator'|'workspaces';
+const OWNER_TABS:{id:OwnerTab;label:string;icon:React.ReactNode}[]=[{id:'requests',label:'Requests',icon:<Inbox/>},{id:'generator',label:'Generator',icon:<Wand2/>},{id:'workspaces',label:'Workspaces',icon:<Building2/>}];
+/** What territory owners see after signing in: requests from the public form, the generator, and every workspace. */
+function OwnerHome({onSignOut}:{onSignOut:()=>void}){
+ const [tab,setTab]=React.useState<OwnerTab>('requests'),[notice,setNotice]=React.useState('');
+ return <div className="tm tm-shell">
+  <header className="tm-top">
+   <div className="tm-title"><span className="tm-mark"><ShieldCheck/></span><div><strong>{'Territory owner'}</strong><small>{'Requests, generator and workspaces'+(demo?' · Fictional demo':'')}</small></div></div>
+   <div className="tm-top-actions">{!standalone()&&<a className="button tm-back" href={mainAppUrl()} aria-label={'Back to Congregation Assistant'}><ArrowLeft/><span>{'Congregation Assistant'}</span></a>}<Button onClick={onSignOut} aria-label={'Sign out'}><LogOut/></Button></div>
+  </header>
+  <nav className="tm-tabs" aria-label={'Territory owner'}>{OWNER_TABS.map(t=><TabButton key={t.id} tab={t} active={tab===t.id} onClick={()=>setTab(t.id)}/>)}</nav>
+  <main className="tm-main">
+   {tab==='requests'&&<TerritoryRequests notify={setNotice}/>}
+   {tab==='generator'&&<section className="tm-raised stack">
+    <h2>{'Territory generator'}</h2>
+    <p>{'Split a boundary KML into territories along roads, review and number them, then print the Territory Map Cards and the full wall map.'}</p>
+    <p className="muted">{"A request’s boundary file opens straight in the generator from Requests → Open in generator. Generator projects are kept in this browser; use its Backup page to keep a copy."}</p>
+    <div className="actions"><a className="button primary" href={generatorUrl()} target="tm-generator"><ExternalLink/>{'Open the generator'}</a></div>
+   </section>}
+   {tab==='workspaces'&&<TerritoryOwner notify={setNotice}/>}
+  </main>
+  {notice&&<Toast message={notice} onClose={()=>setNotice('')}/>}
+ </div>;
 }
 function LoadState({loading,error,retry}:{loading:boolean;error:unknown;retry:()=>void}){
  if(loading)return <main className="tm tm-center"><Skeleton label={'Opening territories…'}/></main>;

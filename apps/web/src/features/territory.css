@@ -249,3 +249,10 @@
 .is-in :is(.tl-tile,.tl-steps li):where(:nth-child(2)){transition-delay:.1s}.is-in :is(.tl-tile,.tl-steps li):where(:nth-child(3)){transition-delay:.2s}.is-in :is(.tl-tile,.tl-steps li):where(:nth-child(4)){transition-delay:.3s}.is-in .tl-steps li:where(:nth-child(5)){transition-delay:.4s}
 @keyframes tl-up{from{opacity:0;transform:translateY(24px)}}@keyframes tl-bob{50%{translate:0 -10px}}@keyframes tl-pulse{0%{box-shadow:0 0 0 0 var(--tl-glow)}100%{box-shadow:0 0 0 18px transparent}}
 @media (prefers-reduced-motion:reduce){.tl *,.tl{animation:none;transition:none}.tl-reveal,.tl-reveal .tl-tile,.tl-reveal .tl-steps li{opacity:1;transform:none}}
+/* Owner dashboard: territory-making requests */
+.tm-section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--tm-u-12)}
+.tm-request-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--tm-u-12)}.tm-request-head h3{margin:0}
+.tm-request-contact{display:flex;flex-wrap:wrap;align-items:center;gap:var(--tm-u-8) var(--tm-u-16);margin:0}.tm-request-contact a{display:inline-flex;align-items:center;gap:var(--tm-u-6);overflow-wrap:anywhere}.tm-request-contact svg{inline-size:1rem;block-size:1rem;flex:none}
+.tm-request-details{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.tm-request-files{display:grid;gap:var(--tm-u-8);margin:0;padding:0;list-style:none}.tm-request-files li{display:flex;flex-wrap:wrap;align-items:center;gap:var(--tm-u-8)}.tm-request-files li>span{flex:1;min-width:10rem;overflow-wrap:anywhere}.tm-request-files li>svg{inline-size:1.1rem;block-size:1.1rem;flex:none}
+.tm-request-edit{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:var(--tm-u-12)}
