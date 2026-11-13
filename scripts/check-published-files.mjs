@@ -4,7 +4,7 @@ const root=path.resolve(process.argv[2]||'work/pages'),failures=[];
 const config=JSON.parse(await readFile('public-config.json','utf8'));
 const publicKeys=new Set(Object.entries(config).filter(([key])=>/anon|publishable/i.test(key)).map(([,value])=>value));
 async function walk(dir){for(const entry of await readdir(dir,{withFileTypes:true})){
- const file=path.join(dir,entry.name),relative=path.relative(root,file);
+ const file=path.join(dir,entry.name),relative=path.relative(root,file).split(path.sep).join('/');
  if(entry.isSymbolicLink()){failures.push({file:relative,rule:'symlink'});continue;}
  if(entry.isDirectory()){if(/^(?:docs|supabase|tests|node_modules)$/.test(entry.name)||/^(?:\.git|\.env)/.test(entry.name))failures.push({file:relative,rule:'private directory'});else await walk(file);continue;}
  if(/(?:\.map|\.sql|\.md|\.bak|\.zip)$/i.test(entry.name)||/^(?:\.env|\.git)/.test(entry.name))failures.push({file:relative,rule:'private extension'});

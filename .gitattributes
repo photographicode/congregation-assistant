@@ -1,0 +1,3 @@
+# Locale files are stored with LF. Editors on Windows that write CRLF no longer rewrite every
+# line in git, which made the secret scanner re-report reviewed UI text as new findings.
+packages/core/locales/*.json text eol=lf

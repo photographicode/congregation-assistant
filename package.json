@@ -33,6 +33,7 @@
     "check:final": "node scripts/check-final-release.mjs",
     "check:style": "node scripts/check-style-ratchet.mjs",
     "check:css": "node scripts/css-audit.mjs",
+    "check:predeploy": "node scripts/check-predeploy.mjs",
     "check:architecture": "depcruise --config .dependency-cruiser.cjs apps/web/src packages/core packages/ui packages/pdf",
     "check:cycles": "madge --circular --extensions ts,tsx,mjs --ts-config apps/web/tsconfig.json apps/web/src packages/core packages/ui packages/pdf",
     "check:unused": "knip",
