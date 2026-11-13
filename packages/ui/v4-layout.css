@@ -137,12 +137,17 @@ body:has(.v4-shell) .runtime-offline{display:none}
 .month-log .num{text-align:right}
 .month-log tbody tr:hover{background:var(--surface-2)}
 .month-log .log-missing td,.month-log .log-missing th{color:var(--text-3)}
-.month-log .log-missing td[colspan]{font-style:italic}
+.month-log .log-missing-cell{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);font-style:italic}.month-log .log-missing-cell button{font-style:normal;white-space:nowrap}
 .month-log .log-remarks{max-width:16em;overflow:hidden;text-overflow:ellipsis;color:var(--text-2)}
-.month-log .log-action{text-align:right;padding-block:var(--space-1)}
 .log-tag{display:inline-block;margin-left:var(--space-2);padding:1px 6px;border-radius:var(--radius-s);background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-size:var(--fs-1,.75rem);font-weight:500}
 .log-tag.strong{color:var(--text-1);font-weight:700}
 /* More opens as a page in the content area, like the other tabs. */
 .more-page{max-width:720px}
 .more-page .more-grid{display:grid;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-m,16px);padding:0 var(--space-3)}
 .more-page .more-grid>button:last-child{border-bottom:0}
+/* P0-4: on phones Submit stays on screen while the form is in view. Sticky insets count from the content padding (nav height + 24 px, see --v4v1), so the offset subtracts it. */
+@media (max-width:767px){.service-report-form button[type=submit].primary{position:sticky;bottom:calc(var(--space-2) + env(safe-area-inset-bottom,0px));z-index:2;width:100%;box-shadow:0 6px 24px rgba(0,0,0,.18)}.v4-shell .service-report-form button[type=submit].primary{bottom:calc(var(--space-2) - var(--nav-h,72px) - 24px);z-index:2;width:100%;box-shadow:0 6px 24px rgba(0,0,0,.18)}}
+/* Banner for editing an already-submitted report. */
+.service-report-form .banner{margin:0;padding:var(--space-3);border-radius:var(--radius-s);font-weight:600}
+/* Submissions log on phones: no sideways scroll. Remarks hide (they stay in Reports), tags sit under the name, cells tighten. */
+@media (max-width:599px){.month-log{white-space:normal}.month-log th,.month-log td{padding:var(--space-2) var(--space-1)}.month-log tr>:nth-child(5){display:none}.month-log tbody th .log-tag{margin-left:0;margin-right:var(--space-1)}.month-log tbody th>span[translate]{display:block}.month-log thead th{font-size:.75rem}}

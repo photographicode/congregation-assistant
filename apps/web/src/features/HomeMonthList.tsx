@@ -33,13 +33,15 @@ function MissingRow({ person, onRemind }: { person: Person; onRemind?: (name: st
   return (
     <tr className="log-missing">
       <Name person={person} />
-      <td colSpan={4}>{"Not reported yet"}</td>
-      <td className="log-action">
-        {onRemind && (
-          <button className="tonal warning" onClick={() => onRemind(person.name)} type="button">
-            {"Remind"}
-          </button>
-        )}
+      <td colSpan={4}>
+        <div className="log-missing-cell">
+          <span>{"Not reported yet"}</span>
+          {onRemind && (
+            <button className="tonal warning" onClick={() => onRemind(person.name)} type="button">
+              {"Remind"}
+            </button>
+          )}
+        </div>
       </td>
     </tr>
   );
@@ -55,7 +57,6 @@ function ReportRow({ person, report }: { person: Person; report: Report }) {
       <td className="num">{dash(studies)}</td>
       <td className="num">{dash(hours)}</td>
       <td className="log-remarks" title={report.comments || undefined}>{report.comments || ""}</td>
-      <td className="log-action" />
     </tr>
   );
 }
@@ -81,7 +82,6 @@ export function HomeMonthList({ people, reports, period, onRemind }: { people: P
                 <th scope="col" className="num">{"Studies"}</th>
                 <th scope="col" className="num">{"Hours"}</th>
                 <th scope="col">{"Remarks"}</th>
-                <th scope="col"><span className="sr-only">{"Action"}</span></th>
               </tr>
             </thead>
             <tbody>

@@ -6,6 +6,8 @@ import { z } from "zod";
 import { rpc, demo } from "./client";
 import type { Context } from "../context";
 import { periodLabel } from "./period-label";
+import { demoPublishers } from "../../../../packages/core/demo-publishers";
+import seedRows from "./demo-report-seed.json";
 import { Dialog } from "../../../../packages/ui/Dialog";
 import { Button } from "../../../../packages/ui/components";
 
@@ -40,24 +42,11 @@ export function HomeGroupLinks({
     enabled: allowed,
     queryFn: async () =>
       demo
-        ? [
-            {
-              id: "1",
-              name: "Group 1",
-              token: null,
-              total: 2,
-              submitted: 2,
-              lastSubmission: null,
-            },
-            {
-              id: "2",
-              name: "Group 2",
-              token: null,
-              total: 2,
-              submitted: 1,
-              lastSubmission: null,
-            },
-          ].slice(
+        ? ["Group 1", "Group 2"].map((name, i) => {
+            const members = demoPublishers.filter((p) => p.group === name),
+              sent = new Set(seedRows.map((r) => r.pub_id));
+            return { id: String(i + 1), name, token: null, total: members.length, submitted: members.filter((p) => sent.has(p.id)).length, lastSubmission: null };
+          }).slice(
             0,
             c.roles.includes("group_overseer") && !c.roles.includes("admin")
               ? 1

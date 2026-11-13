@@ -306,7 +306,7 @@ export function Reports({ context: c }: { context: Context }) {
   }, [canAttendance, canService]);
   React.useEffect(() => {
     if (launch?.action === "entry" && (demo || people.isSuccess)) {
-      setPerson(persons[0]?.id || "");
+      setPerson(entryTarget());
       setReceipt(null);
       setReportDirty(false);
       setError("");
@@ -314,8 +314,8 @@ export function Reports({ context: c }: { context: Context }) {
     }
     const quick = (event: Event) => {
       if ((event as CustomEvent).detail === "entry" && (canWrite || personal)) {
-        setForm(valuesFor(persons[0]?.id || ""));
-        setPerson(persons[0]?.id || "");
+        setForm(valuesFor(entryTarget()));
+        setPerson(entryTarget());
         setReceipt(null);
         setReportDirty(false);
         setError("");
@@ -525,6 +525,9 @@ export function Reports({ context: c }: { context: Context }) {
       (r) => r.service_year === year && r.month === month,
     ),
     missing = persons.filter((p) => !submitted.some((r) => r.pub_id === p.id));
+  // P0-1: a new entry opens on the next person who has not reported; one's own report opens directly.
+  const entryTarget = () => (persons.length === 1 ? persons[0]?.id : missing[0]?.id) || "";
+  const editingSubmitted = !personal && submitted.some((r) => r.pub_id === person);
   const monthlyAP = (demo ? local : rows.data || []).filter(
     (row) =>
       row.service_year === year &&
@@ -725,8 +728,8 @@ export function Reports({ context: c }: { context: Context }) {
                     setReportDirty(false);
                     setError("");
                     setEditing(true);
-                    setPerson(persons[0]?.id || "");
-                    setForm(valuesFor(persons[0]?.id || ""));
+                    setPerson(entryTarget());
+                    setForm(valuesFor(entryTarget()));
                   }} type="button"
                 >
                   {t("ui.enter.report.63ad9d6b")}
@@ -1028,7 +1031,7 @@ export function Reports({ context: c }: { context: Context }) {
                       exportCSV(
                         [
                           {
-                            publisher_id: persons[0]?.id || "",
+                            publisher_id: entryTarget(),
                             publisher_name:
                               persons[0]?.name || "Fictional Publisher",
                             reporting_month: period,
@@ -1433,6 +1436,9 @@ export function Reports({ context: c }: { context: Context }) {
                       : periodLabel(period)}
                   </strong>
                 </p>
+                {editingSubmitted && (
+                  <p className="banner" role="status">{t("refine.editingSubmitted")}</p>
+                )}
                 <ServiceReportFields
                   value={form}
                   onChange={(value) => {
