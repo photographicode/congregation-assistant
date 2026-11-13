@@ -128,3 +128,21 @@ body:has(.v4-shell) .runtime-offline{display:none}
 @media (max-width:767px){.v4-shell .topbar{flex-wrap:nowrap;min-height:0;padding-block:var(--space-2)}.v4-workspace-name{flex:1 1 auto;min-width:0}.v4-workspace-name>div{min-width:0}.v4-workspace-name strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v4-workspace-name small{display:none}.v4-shell .topbar .actions{flex:0 0 auto}}
 /* Eclipse keeps navigation black and white; its amber/green tones are only for state. */
 :root[data-theme^=mono] .rail nav button[aria-label] svg{color:inherit}
+/* Submissions log (from the V1 dashboard): spreadsheet table per DESIGN.md §4 — borderless rows, sticky header, tabular figures, faded missing rows. */
+.log-scroll{overflow:auto;max-height:520px;margin-inline:calc(var(--space-2) * -1)}
+.month-log{width:100%;border-collapse:collapse;font-size:var(--fs-2,.9375rem);font-variant-numeric:tabular-nums;white-space:nowrap}
+.month-log th,.month-log td{padding:var(--space-3) var(--space-2);text-align:left;border-bottom:1px solid var(--border)}
+.month-log thead th{position:sticky;top:0;z-index:1;background:var(--surface-solid);color:var(--text-2);font-weight:600;font-size:var(--fs-1,.8125rem)}
+.month-log tbody th{font-weight:600}
+.month-log .num{text-align:right}
+.month-log tbody tr:hover{background:var(--surface-2)}
+.month-log .log-missing td,.month-log .log-missing th{color:var(--text-3)}
+.month-log .log-missing td[colspan]{font-style:italic}
+.month-log .log-remarks{max-width:16em;overflow:hidden;text-overflow:ellipsis;color:var(--text-2)}
+.month-log .log-action{text-align:right;padding-block:var(--space-1)}
+.log-tag{display:inline-block;margin-left:var(--space-2);padding:1px 6px;border-radius:var(--radius-s);background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-size:var(--fs-1,.75rem);font-weight:500}
+.log-tag.strong{color:var(--text-1);font-weight:700}
+/* More opens as a page in the content area, like the other tabs. */
+.more-page{max-width:720px}
+.more-page .more-grid{display:grid;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-m,16px);padding:0 var(--space-3)}
+.more-page .more-grid>button:last-child{border-bottom:0}

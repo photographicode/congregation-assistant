@@ -312,7 +312,7 @@ export function Dashboard({
             </Button>
           </Card>
         )}
-                  <HomeMonthList people={livePeople} reports={liveReports} period={period} />
+                  <HomeMonthList people={livePeople} reports={liveReports} period={period} onRemind={(name) => void remind(name)} />
         <Card>
           <h2>{t("ui.your.tools.close.at.hand.66b5ceca")}</h2>
           <div className="dashboard-actions">
