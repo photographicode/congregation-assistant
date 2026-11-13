@@ -50,13 +50,15 @@ function MissingRow({ person, onRemind }: { person: Person; onRemind?: (name: st
 function ReportRow({ person, report }: { person: Person; report: Report }) {
   const studies = Number(report.studies) || 0, hours = Number(report.hours) || 0;
   const shared = Boolean(report.shared_in_ministry || studies || hours);
+  // Same rule as saving: a month without ministry reads "Not Participated" in remarks.
+  const remarks = report.comments || (shared ? "" : "Not Participated");
   return (
     <tr>
       <Name person={person} report={report} />
       <td className={shared ? "tone-text ok" : "tone-text warning"}>{shared ? "Yes" : "No"}</td>
       <td className="num">{dash(studies)}</td>
       <td className="num">{dash(hours)}</td>
-      <td className="log-remarks" title={report.comments || undefined}>{report.comments || ""}</td>
+      <td className="log-remarks" title={remarks || undefined}>{remarks}</td>
     </tr>
   );
 }

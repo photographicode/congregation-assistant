@@ -412,7 +412,7 @@ export function Reports({ context: c }: { context: Context }) {
         remaining = 10000;
       if (demo)
         setLocal((old) =>
-          old.map((r) => (r.id === row.id ? { ...r, is_ap: false } : r)),
+          old.map((r) => (r.id === row.id ? { ...r, is_ap: false, hours: 0 } : r)),
         );
       else {
         const result = await repo.reports.revokeAP(row);
@@ -447,7 +447,7 @@ export function Reports({ context: c }: { context: Context }) {
         if (
           !current ||
           JSON.stringify(current) !==
-            JSON.stringify({ ...apUndo.row, is_ap: false })
+            JSON.stringify({ ...apUndo.row, is_ap: false, hours: 0 })
         )
           throw Error(t("refine.apChanged"));
         setLocal((old) =>
@@ -835,22 +835,26 @@ export function Reports({ context: c }: { context: Context }) {
       )}
       {apManager && tab === "service" && (
         <section className="card stack" aria-label={t("refine.apReview")}>
-          <h2>{t("refine.apTitle")}</h2>
-          <p>{t("refine.apSubtitle")}</p>
-          <p>
-            <strong>
-              {t("ui.reporting.month.c996f10c")}
-              {periodLabel(period)}
-            </strong>
-          </p>
-          <p>{t("refine.retain")}</p>
-          <p>
-            {monthlyAP.length} {t(monthlyAP.length === 1 ? "units.auxiliaryPioneer" : "ui.auxiliary.pioneers.a250aa99")}
-            {monthlyAP.reduce((sum, r) => sum + Number(r.hours), 0)}{" "}
-            {t("ui.hours.0227f1a3")}
-            {monthlyAP.reduce((sum, r) => sum + (r.studies || 0), 0)}{" "}
-            {t(monthlyAP.reduce((sum, r) => sum + (r.studies || 0), 0) === 1 ? "units.study" : "ui.studies.48d492d0")}
-          </p>
+          {/* Title and month, one muted line of guidance, then the month's totals as figures. */}
+          <div className="ap-review-title">
+            <h2>{t("refine.apTitle")}</h2>
+            <span>{periodLabel(period)}</span>
+          </div>
+          <p className="muted">{t("refine.apSubtitle")} {t("refine.retain")}</p>
+          <dl className="ap-review-stats">
+            <div>
+              <dt>{t("refine.apCount")}</dt>
+              <dd>{monthlyAP.length}</dd>
+            </div>
+            <div>
+              <dt>{t("refine.hours")}</dt>
+              <dd>{monthlyAP.reduce((sum, r) => sum + Number(r.hours), 0)}</dd>
+            </div>
+            <div>
+              <dt>{t("refine.studies")}</dt>
+              <dd>{monthlyAP.reduce((sum, r) => sum + (r.studies || 0), 0)}</dd>
+            </div>
+          </dl>
           <div className="ap-review-list">
             <div className="ap-review-head" aria-hidden="true">
               <strong>{t("refine.publisher")}</strong>
@@ -887,6 +891,7 @@ export function Reports({ context: c }: { context: Context }) {
                     {t("refine.adminAction")}
                   </span>
                   <Button
+                    className="tonal danger"
                     disabled={busy || editing}
                     onClick={() => {
                       c.notify("");

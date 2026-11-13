@@ -8,7 +8,7 @@ function seed(): Report[] {
   const [y = 0, m = 1] = String(previousReportingPeriod()).split("-").map(Number),
     month = m - 1,
     service_year = y + (month >= SEPTEMBER ? 1 : 0);
-  return seedRows.map((row) => ({ ...row, id: "demo-" + row.pub_id, cong_id: "demo", service_year, month, comments: "" }));
+  return seedRows.map((row) => ({ ...row, id: "demo-" + row.pub_id, cong_id: "demo", service_year, month, comments: row.shared_in_ministry ? "" : "Not Participated" }));
 }
 export const useDemoReports = create<{
   rows: Report[];
