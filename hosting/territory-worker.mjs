@@ -36,7 +36,8 @@ Sitemap: https://${HOST}/sitemap.xml
   // Only the bare landing page is indexed; app screens (any query string) and files stay out of search.
   const landing = path === '/app/' && !url.search;
   if (!landing) { headers.set('X-Robots-Tag', 'noindex, nofollow'); return response; }
-  return new HTMLRewriter().on('head', new SeoHead()).on('title', { element(title) { title.setInnerContent(TITLE); } }).transform(response);
+  // The app's own noindex tag would override ours (Google obeys the stricter one), so drop it here.
+  return new HTMLRewriter().on('meta[name="robots"]', { element(meta) { meta.remove(); } }).on('head', new SeoHead()).on('title', { element(title) { title.setInnerContent(TITLE); } }).transform(response);
  }
 };
 
