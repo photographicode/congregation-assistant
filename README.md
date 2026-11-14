@@ -1,5 +1,9 @@
 # Congregation Assistant
 
+| App | Website |
+|-----|---------|
+| ![App](docs/img/app.png) | ![Website](docs/img/site.png) |
+
 Independent, unofficial congregation tools for publisher records, field-service reports, attendance, meeting schedules, assignments, duties and private report links.
 
 The canonical website is [photographicode.github.io/congregation-assistant](https://photographicode.github.io/congregation-assistant/) and the app is at [/app/](https://photographicode.github.io/congregation-assistant/app/). The fictional admin demo is available at [/app/?demo=admin](https://photographicode.github.io/congregation-assistant/app/?demo=admin). `Congregation-Assistant_Public` is retained only as a path-preserving redirect for old links.
