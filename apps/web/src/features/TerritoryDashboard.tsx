@@ -53,8 +53,8 @@ function MonthlyActivity({d}:{d:WorkspaceData}){
    </button>)}
   </div>
   <p className="tm-tip" aria-live="polite">{tip||'Tap a month for details.'}</p>
-  <table className="sr-only"><caption>{'Given out and returned by month'}</caption><thead><tr><th>{'Month'}</th><th>{'Given out'}</th><th>{'Returned'}</th></tr></thead>
-   <tbody>{rows.map(r=><tr key={r.k}><td>{long(r.k)}</td><td>{r.out}</td><td>{r.back}</td></tr>)}</tbody></table>
+  <div className="sr-only"><table><caption>{'Given out and returned by month'}</caption><thead><tr><th>{'Month'}</th><th>{'Given out'}</th><th>{'Returned'}</th></tr></thead>
+   <tbody>{rows.map(r=><tr key={r.k}><td>{long(r.k)}</td><td>{r.out}</td><td>{r.back}</td></tr>)}</tbody></table></div>
  </section>;
 }
 
