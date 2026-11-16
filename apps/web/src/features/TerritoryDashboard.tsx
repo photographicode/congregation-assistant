@@ -89,7 +89,7 @@ export function Dashboard({d,show,openTerritory}:Props){
  const now=today();
  const items=d.territories.map(t=>({t,s:summarize(t.id,d.assignments,d.workspace.recent_days,now)}));
  const count=(f:Filter)=>items.filter(({s})=>f==='all'||(f==='overdue'?s.overdue:s.status===f)).length;
- const openIssues=d.reports.filter(r=>!r.resolved_at);
+ const openIssues=d.reports.filter(r=>r.kind!=='language'&&!r.resolved_at);
  const due=items.filter(({s})=>s.open&&s.open.due_on<=addDays(now,DUE_SOON_DAYS)).sort((a,b)=>a.s.open!.due_on.localeCompare(b.s.open!.due_on));
  const name=(id:string)=>{const t=d.territories.find(x=>x.id===id);return t?`${t.number} · ${t.name}`:'';};
  return <div className="stack">

@@ -1,11 +1,11 @@
 import {describe,expect,it} from 'vitest';
-import {canonicalName,csvCell,publisherNames,serviceYearLabel,serviceYearOf,serviceYears,summarize,territoryCsv,type Assignment,type Territory} from '../../apps/web/src/features/territory-model';
+import {canonicalName,csvCell,reportTitle,roleSchema,publisherNames,serviceYearLabel,serviceYearOf,serviceYears,summarize,territoryCsv,type Assignment,type Territory} from '../../apps/web/src/features/territory-model';
 import {s13Rows} from '../../apps/web/src/features/territory-s13';
 import {parseCsv,planImport,readDate} from '../../apps/web/src/features/territory-csv';
 
 const on='2026-11-11';
 const a=(id:string,territory:string,taken:string,returned:string|null,due='2027-03-11'):Assignment=>({id,territory_id:territory,publisher:'P '+id,taken_on:taken,due_on:due,returned_on:returned});
-const t=(id:string,number:string):Territory=>({id,number,name:'T'+number,notes:'',thumb:null,has_image:false,map_url:null,share_token:'x',updated_at:on});
+const t=(id:string,number:string):Territory=>({id,number,name:'T'+number,notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'x',updated_at:on});
 
 describe('territory status',()=>{
  it('is never used without history',()=>expect(summarize('t1',[],90,on).status).toBe('never'));
@@ -69,4 +69,17 @@ describe('CSV import',()=>{
   expect(plan.records).toEqual([{number:'2',publisher:'Anna',taken:'2026-03-12',due:'',returned:''}]);
  });
  it('needs a Number column',()=>expect(()=>planImport('Name\nX\n',[],[])).toThrow(/Number/));
+});
+
+describe('access and reports (2026-11-16)',()=>{
+ it('has two kinds of access; an older server saying manager means viewer',()=>{
+  expect(roleSchema.parse('admin')).toBe('admin');
+  expect(roleSchema.parse('viewer')).toBe('viewer');
+  expect(roleSchema.parse('manager')).toBe('viewer');
+  expect(()=>roleSchema.parse('owner')).toThrow();
+ });
+ it('titles a language find by its language',()=>{
+  expect(reportTitle({kind:'language',language:'Tamil',household:'House 22'})).toBe('Tamil speaker · House 22');
+  expect(reportTitle({kind:'issue',language:null,household:''})).toBe('Reported issue');
+ });
 });

@@ -1,13 +1,20 @@
 // Territory manager rules shared by the screens, the exports and the tests. Dates are yyyy-mm-dd strings.
 import {z} from 'zod';
 
-const territorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),thumb:z.string().nullable(),has_image:z.boolean(),map_url:z.string().nullable().default(null),share_token:z.string(),updated_at:z.string()});
+/** Two kinds of access: admins change everything, viewers look only. A server not yet migrated still says 'manager'. */
+export const roleSchema=z.enum(['admin','viewer','manager']).transform(r=>r==='admin'?'admin' as const:'viewer' as const);
+/** What a shared card lets publishers report: issues only, or issues and houses where a language is spoken. */
+export const reportModeSchema=z.enum(['issues','issues_language']);
+export type ReportMode=z.infer<typeof reportModeSchema>;
+
+const territorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),thumb:z.string().nullable(),has_image:z.boolean(),has_boundary:z.boolean().default(false),map_url:z.string().nullable().default(null),share_token:z.string(),updated_at:z.string()});
 const assignmentSchema=z.object({id:z.string(),territory_id:z.string(),publisher:z.string(),taken_on:z.string(),due_on:z.string(),returned_on:z.string().nullable()});
-const issueSchema=z.object({id:z.string(),territory_id:z.string(),household:z.string(),details:z.string(),reporter:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),accuracy:z.number().nullable(),created_at:z.string(),resolved_at:z.string().nullable()});
+// kind 'language' marks a house where a language is spoken (language search); older servers send no kind.
+const issueSchema=z.object({id:z.string(),territory_id:z.string(),kind:z.enum(['issue','language']).default('issue'),language:z.string().nullable().default(null),household:z.string(),details:z.string(),reporter:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),accuracy:z.number().nullable(),created_at:z.string(),resolved_at:z.string().nullable()});
 export const workspaceDataSchema=z.object({
- workspace:z.object({id:z.string(),name:z.string(),due_days:z.number(),recent_days:z.number(),report_token:z.string()}),
- role:z.enum(['admin','manager']),
- members:z.array(z.object({email:z.string(),role:z.enum(['admin','manager'])})),
+ workspace:z.object({id:z.string(),name:z.string(),due_days:z.number(),recent_days:z.number(),report_token:z.string(),report_mode:reportModeSchema.default('issues'),languages:z.array(z.string()).default([])}),
+ role:roleSchema,
+ members:z.array(z.object({email:z.string(),role:roleSchema})),
  territories:z.array(territorySchema),
  assignments:z.array(assignmentSchema),
  reports:z.array(issueSchema),
@@ -15,7 +22,7 @@ export const workspaceDataSchema=z.object({
 export type Territory=z.infer<typeof territorySchema>;
 export type Assignment=z.infer<typeof assignmentSchema>;
 export type Issue=z.infer<typeof issueSchema>;
-export type WorkspaceData=z.infer<typeof workspaceDataSchema>;
+export type WorkspaceData=z.output<typeof workspaceDataSchema>;
 
 export type Status='in_use'|'available'|'never'|'recent';
 export const STATUS_LABEL:Record<Status,string>={in_use:'In use',available:'Available',never:'Never used',recent:'Recently used'};
@@ -79,4 +86,10 @@ export function publisherNames(assignments:Assignment[]){
 export function canonicalName(typed:string,names:string[]){
  const clean=typed.trim().replace(/\s+/g,' ');
  return names.find(n=>n.toLocaleLowerCase()===clean.toLocaleLowerCase())||clean;
+}
+
+/** Heading for a report: the language and house for a language find, otherwise the house. */
+export function reportTitle(r:{kind?:'issue'|'language';language?:string|null;household:string}){
+ if(r.kind==='language')return `${r.language||'Language'} speaker`+(r.household?' · '+r.household:'');
+ return r.household||'Reported issue';
 }

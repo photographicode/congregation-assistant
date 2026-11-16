@@ -3,29 +3,31 @@ import {z} from 'zod';
 import {demo,rpc} from './client';
 import {territoryUrl} from './territory-site';
 import seed from './territory-demo.json';
-import {addDays,today,workspaceDataSchema,type Assignment,type Issue,type Territory,type WorkspaceData} from './territory-model';
+import {addDays,reportModeSchema,roleSchema,today,workspaceDataSchema,type Assignment,type Issue,type ReportMode,type Territory,type WorkspaceData} from './territory-model';
 
-const workspaceList=z.array(z.object({id:z.string(),name:z.string(),role:z.enum(['admin','manager'])}));
+const workspaceList=z.array(z.object({id:z.string(),name:z.string(),role:roleSchema}));
 type WorkspaceSummary=z.infer<typeof workspaceList>[number];
 const ownerSchema=z.object({
  workspaces:z.array(z.object({id:z.string(),name:z.string(),created_at:z.string(),admins:z.array(z.string()),territories:z.number()})),
  applications:z.array(z.object({id:z.string(),contact_name:z.string(),contact_email:z.string(),admin_email:z.string(),congregation_name:z.string(),phone:z.string().nullable(),status:z.enum(['pending','approved','declined']),created_at:z.string()})),
 });
 type OwnerOverview=z.infer<typeof ownerSchema>;
-const publicFormSchema=z.object({workspace:z.string(),territories:z.array(z.object({id:z.string(),number:z.string(),name:z.string()}))});
-const publicTerritorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),image:z.string().nullable(),map_url:z.string().nullable().default(null),workspace:z.string(),
- reports:z.array(z.object({household:z.string(),details:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),created_at:z.string()}))});
+const reportSettings={report_mode:reportModeSchema.default('issues'),languages:z.array(z.string()).default([])};
+const publicFormSchema=z.object({workspace:z.string(),...reportSettings,territories:z.array(z.object({id:z.string(),number:z.string(),name:z.string()}))});
+const publicTerritorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),image:z.string().nullable(),map_url:z.string().nullable().default(null),workspace:z.string(),...reportSettings,
+ reports:z.array(z.object({kind:z.enum(['issue','language']).default('issue'),language:z.string().nullable().default(null),household:z.string(),details:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),created_at:z.string()}))});
 export type PublicTerritory=z.infer<typeof publicTerritorySchema>;
 
 // ---- Fictional demo -------------------------------------------------------------------------------
 const id=()=>crypto.randomUUID();
 const sample=(():WorkspaceData&{images:Record<string,string>}=>{
  const d=today(),now=new Date().toISOString(),notes:Record<string,string>=seed.notesFor;
- const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now}));
+ const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,has_boundary:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now}));
  const assignments:Assignment[]=seed.assignments.map(a=>({id:id(),territory_id:'demo-t'+a.territory,publisher:a.publisher,taken_on:addDays(d,-a.takenDaysAgo),due_on:addDays(d,seed.dueDays-a.takenDaysAgo),returned_on:a.returnedDaysAgo===null?null:addDays(d,-a.returnedDaysAgo)}));
  const {territory,...issue}=seed.issue;
- const reports:Issue[]=[{...issue,id:id(),territory_id:'demo-t'+territory,created_at:now,resolved_at:null}];
- return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo'},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'manager'}],territories,assignments,reports,images:{}};
+ const reports:Issue[]=[{...issue,kind:'issue',language:null,id:id(),territory_id:'demo-t'+territory,created_at:now,resolved_at:null},
+  ...seed.languageFinds.map(f=>({...f,kind:'language' as const,id:id(),territory_id:'demo-t'+f.territory,reporter:'',lat:null,lng:null,accuracy:null,created_at:now,resolved_at:null}))];
+ return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo',report_mode:'issues_language',languages:seed.languages},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'viewer'}],territories,assignments,reports,images:{}};
 })();
 const demoOwner:OwnerOverview={workspaces:[{id:'demo-ws',name:'River Park Congregation',created_at:new Date().toISOString(),admins:['overseer@example.invalid'],territories:seed.names.length}],
  applications:[{id:'00000000-0000-4000-8000-000000000003',contact_name:'Fictional Servant',contact_email:'servant@example.invalid',admin_email:'servant@example.invalid',congregation_name:'Fictional Hillside',phone:null,status:'pending',created_at:new Date().toISOString()}]};
@@ -43,7 +45,7 @@ type TerritoryInput={id?:string;number:string;name:string;notes:string;mapUrl:st
 function demoSaveTerritory(t:TerritoryInput){
  if(sample.territories.some(x=>x.number===t.number.trim()&&x.id!==t.id))fail(`Territory number ${t.number} is already used. Choose another.`);
  const existing=sample.territories.find(x=>x.id===t.id);
- const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,map_url:null,share_token:'demo-share-'+id(),updated_at:''};
+ const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'demo-share-'+id(),updated_at:''};
  Object.assign(row,{number:t.number.trim(),name:t.name.trim(),notes:t.notes,map_url:t.mapUrl.trim()||null,updated_at:new Date().toISOString()});
  if(t.image!==undefined){row.thumb=t.thumb||null;row.has_image=Boolean(t.image);if(t.image)sample.images[row.id]=t.image;else delete sample.images[row.id];}
  if(!existing)sample.territories.push(row);
@@ -79,7 +81,21 @@ export async function saveSettings(ws:string,s:{name:string;dueDays:number;recen
  if(!demo){await rpc('tm_save_settings',{p_ws:ws,p_name:s.name,p_due_days:s.dueDays,p_recent_days:s.recentDays,p_rotate_report_link:s.rotate});return;}
  Object.assign(sample.workspace,{name:s.name.trim(),due_days:s.dueDays,recent_days:s.recentDays});
 }
-export async function setMember(ws:string,email:string,role:'admin'|'manager'|null){
+export async function saveReportSettings(ws:string,mode:ReportMode,languages:string[]){
+ if(!demo){await rpc('tm_save_report_settings',{p_ws:ws,p_mode:mode,p_languages:languages});return;}
+ const list=[...new Set(languages.map(l=>l.trim()).filter(Boolean))];
+ if(mode==='issues_language'&&!list.length)fail('Add at least one language for language search');
+ Object.assign(sample.workspace,{report_mode:mode,languages:list});
+}
+/** Territory outlines matched by number; the server routes a located report to the territory that holds it. */
+export async function saveBoundaries(ws:string,items:{number:string;boundary:unknown}[]){
+ const result=z.object({matched:z.number(),missing:z.array(z.string())});
+ if(!demo)return result.parse(await rpc('tm_save_boundaries',{p_ws:ws,p_items:items}));
+ const numbers=new Set(sample.territories.map(t=>t.number));
+ for(const t of sample.territories)if(items.some(i=>i.number===t.number))t.has_boundary=true;
+ return {matched:items.filter(i=>numbers.has(i.number)).length,missing:items.filter(i=>!numbers.has(i.number)).map(i=>i.number)};
+}
+export async function setMember(ws:string,email:string,role:'admin'|'viewer'|null){
  if(!demo){await rpc('tm_set_member',{p_ws:ws,p_email:email,p_role:role});return;}
  const e=email.trim().toLowerCase();
  if(role!=='admin'&&sample.members.find(m=>m.email===e)?.role==='admin'&&sample.members.filter(m=>m.role==='admin').length<=1)fail('Keep at least one admin. Add another admin first.');
@@ -103,17 +119,30 @@ export async function reviewApplication(application:string,approve:boolean){
 
 // ---- Public, no sign-in ---------------------------------------------------------------------------
 export async function publicForm(token:string){
- if(demo)return {workspace:sample.workspace.name,territories:sample.territories.map(({id,number,name})=>({id,number,name}))};
+ if(demo)return {workspace:sample.workspace.name,report_mode:sample.workspace.report_mode,languages:sample.workspace.languages,territories:sample.territories.map(({id,number,name})=>({id,number,name}))};
  return publicFormSchema.parse(await rpc('tm_public_form',{p_token:token}));
 }
 export async function publicTerritory(token:string):Promise<PublicTerritory>{
- if(demo){const t=sample.territories.find(x=>x.share_token===token)??sample.territories.find(x=>x.number==='3');if(!t)throw Error('Demo territory missing');return {id:t.id,number:t.number,name:t.name,notes:t.notes,map_url:t.map_url,image:sample.images[t.id]||null,workspace:sample.workspace.name,reports:sample.reports.filter(r=>r.territory_id===t.id&&!r.resolved_at)};}
+ if(demo){const t=sample.territories.find(x=>x.share_token===token)??sample.territories.find(x=>x.number==='3');if(!t)throw Error('Demo territory missing');return {id:t.id,number:t.number,name:t.name,notes:t.notes,map_url:t.map_url,image:sample.images[t.id]||null,workspace:sample.workspace.name,report_mode:sample.workspace.report_mode,languages:sample.workspace.languages,reports:sample.reports.filter(r=>r.territory_id===t.id&&!r.resolved_at)};}
  return publicTerritorySchema.parse(await rpc('tm_public_territory',{p_token:token}));
 }
-export async function submitIssue(token:string,r:{territory:string|null;household:string;details:string;reporter:string;lat:number|null;lng:number|null;accuracy:number|null;website:string}){
- if(!demo){await rpc('tm_submit_report',{p_token:token,p_territory:r.territory,p_household:r.household,p_details:r.details,p_reporter:r.reporter,p_lat:r.lat,p_lng:r.lng,p_accuracy:r.accuracy,p_website:r.website});return;}
+type ReportInput={territory:string|null;kind:'issue'|'language';language:string;household:string;details:string;reporter:string;lat:number|null;lng:number|null;accuracy:number|null;website:string};
+const reportResult=z.object({number:z.string().optional(),name:z.string().optional(),moved:z.boolean().optional()}).passthrough();
+/** Sends a report. With a location inside a territory outline the server files it under that territory (moved: true). */
+export async function submitIssue(token:string,r:ReportInput){
+ if(demo)return demoSubmitIssue(token,r);
+ try{return reportResult.parse(await rpc('tm_submit_report_v2',{p_token:token,p_territory:r.territory,p_kind:r.kind,p_language:r.language||null,p_household:r.household,p_details:r.details,p_reporter:r.reporter,p_lat:r.lat,p_lng:r.lng,p_accuracy:r.accuracy,p_website:r.website}));}
+ catch(e){
+  // shortcut: servers without the 2026-11-16 migration take issues only; drop this fallback once it has run.
+  if(r.kind!=='issue'||!/PGRST202|could not find the function/i.test((e as Error)?.message||''))throw e;
+  await rpc('tm_submit_report',{p_token:token,p_territory:r.territory,p_household:r.household,p_details:r.details,p_reporter:r.reporter,p_lat:r.lat,p_lng:r.lng,p_accuracy:r.accuracy,p_website:r.website});return {};
+ }
+}
+function demoSubmitIssue(token:string,r:ReportInput){
  const territory=r.territory||sample.territories.find(t=>t.share_token===token)?.id;if(!territory)fail('Choose a territory from the list.');
- sample.reports.unshift({id:id(),territory_id:territory!,household:r.household,details:r.details,reporter:r.reporter,lat:r.lat,lng:r.lng,accuracy:r.accuracy,created_at:new Date().toISOString(),resolved_at:null});
+ const details=r.details.trim()||(r.kind==='language'?'Speaks '+r.language:'');
+ sample.reports.unshift({id:id(),territory_id:territory!,kind:r.kind,language:r.kind==='language'?r.language:null,household:r.household,details,reporter:r.reporter,lat:r.lat,lng:r.lng,accuracy:r.accuracy,created_at:new Date().toISOString(),resolved_at:null});
+ return {};
 }
 export async function submitApplication(f:{name:string;email:string;admin:string;congregation:string;phone:string;website:string}){
  if(demo)return 'demo';

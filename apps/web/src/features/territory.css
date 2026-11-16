@@ -265,3 +265,6 @@
 .tm-ov-main{display:flex;flex-direction:column;flex:1;min-width:0}.tm-ov-main strong{overflow-wrap:anywhere}
 .tm-ov-file{display:inline-flex;align-items:center;gap:var(--tm-u-4);color:var(--tm-muted)}.tm-ov-file svg,.tm-ov-alert svg{inline-size:1rem;block-size:1rem;flex:none}
 .tm-ov-alert{display:flex;align-items:center;gap:var(--tm-u-10);inline-size:100%;color:var(--tm-warn);font:inherit;font-weight:700;text-align:start;cursor:pointer}
+/* Questions page, demo note and text-style buttons (2026-11-16). */
+.tl-faq{display:grid;gap:var(--space-4)}.tl-faq .tl-tile:hover{transform:none}.tl-faq a{color:var(--tl-ink)}
+.tm-link{padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline;cursor:pointer}
