@@ -9,7 +9,7 @@ import {Button,Combobox} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {generatorUrl} from './territory-site';
 
-const READY='tm-manager-ready',SYNC='tm-sync',PING_MS=1000,NAME_MAX=150,NUMBER_MAX=20,URL_MAX=500,IMAGE_MAX=1_500_000,THUMB_MAX=150_000,MAX_TERRITORIES=1000;
+const LOCAL_GENERATOR='http://localhost:5180',READY='tm-manager-ready',SYNC='tm-sync',PING_MS=1000,NAME_MAX=150,NUMBER_MAX=20,URL_MAX=500,IMAGE_MAX=1_500_000,THUMB_MAX=150_000,MAX_TERRITORIES=1000;
 const dataImage=(max:number)=>z.string().max(max).regex(/^data:image\/(webp|jpeg|png);base64,/);
 const ring=z.array(z.tuple([z.number(),z.number()]).rest(z.number()));
 const payloadSchema=z.object({type:z.literal(SYNC),congregation:z.string().max(NAME_MAX).default(''),territories:z.array(z.object({
@@ -20,6 +20,7 @@ type Payload=z.infer<typeof payloadSchema>;
 
 // Local development: the generator runs on its own localhost port.
 const trusted=(origin:string)=>origin===new URL(generatorUrl()).origin||/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+const generatorOrigins=()=>[new URL(generatorUrl()).origin,...(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?[LOCAL_GENERATOR]:[])];
 const FLAG='tm-from-generator';
 /** True when the generator opened this page. Kept for this tab, so signing in with Google (which drops the query) does not lose it. */
 export function fromGenerator(){
@@ -43,9 +44,10 @@ function useIncoming(){
    else if((e.data as {type?:unknown}|null)?.type===SYNC)setError('The territories from the generator could not be read: '+parsed.error.issues[0]?.message);
   };
   addEventListener('message',listener);
-  // The ready message carries nothing, so any opener origin may receive it; the reply is checked above.
-  const ping=setInterval(()=>opener.postMessage({type:READY},'*'),PING_MS);
-  opener.postMessage({type:READY},'*');
+  // Sent only to the generator's origins (production, and its local development server); the reply is checked above.
+  const ready=()=>{for(const origin of generatorOrigins())opener.postMessage({type:READY},origin);};
+  const ping=setInterval(ready,PING_MS);
+  ready();
   return()=>{clearInterval(ping);removeEventListener('message',listener);};
  },[]);
  return {data,error};

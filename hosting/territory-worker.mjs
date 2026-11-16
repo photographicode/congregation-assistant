@@ -79,7 +79,7 @@ class SeoHead {
  constructor(page) { this.page = page; }
  element(head) {
   const { title, description, url, jsonld } = this.page;
-  head.append(`<meta name="description" content="${escape(description)}"><meta name="keywords" content="${escape(KEYWORDS)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${url}"><meta property="og:type" content="website"><meta property="og:site_name" content="Territory Assistant"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:url" content="${url}"><meta property="og:image" content="https://${HOST}/app/assets/icon-512.png"><meta name="twitter:card" content="summary"><script type="application/ld+json">${jsonld.replace(/</g, '\u003c')}</script>`, { html: true });
+  head.append(`<meta name="description" content="${escape(description)}"><meta name="keywords" content="${escape(KEYWORDS)}"><meta name="robots" content="index, follow"><link rel="canonical" href="${url}"><meta property="og:type" content="website"><meta property="og:site_name" content="Territory Assistant"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:url" content="${url}"><meta property="og:image" content="https://${HOST}/app/assets/icon-512.png"><meta name="twitter:card" content="summary"><script type="application/ld+json">${jsonld.replace(/</g, '\\u003c')}</script>`, { html: true });
  }
 }
 
