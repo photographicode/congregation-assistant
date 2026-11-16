@@ -32,23 +32,20 @@ describe('territory worker: generator moved to its own origin',()=>{
 });
 
 describe('territory worker: search engines',()=>{
- it('lists the landing and questions pages for search engines',async()=>{
+ it('lists the landing page for search engines',async()=>{
   const robots=await (await worker.fetch(new Request(HOST+'/robots.txt'))).text();
-  expect(robots).toContain('Allow: /faq$');
   expect(robots).toContain('Disallow: /?');
-  expect(await (await worker.fetch(new Request(HOST+'/sitemap.xml'))).text()).toContain(HOST+'/faq</loc>');
+  expect(await (await worker.fetch(new Request(HOST+'/sitemap.xml'))).text()).toContain(HOST+'/</loc>');
  });
  it('points /favicon.ico at the app icon',async()=>{
   const res:Response=await worker.fetch(new Request(HOST+'/favicon.ico'));
   expect(res.status).toBe(301);
   expect(res.headers.get('Location')).toBe(HOST+'/app/assets/icon-192.png');
  });
- it('serves /faq from the app page, and keeps it out of search with a query string',async()=>{
-  const seen:string[]=[];
-  vi.stubGlobal('fetch',async(url:string)=>{seen.push(url);return new Response('<html></html>',{status:200,headers:{'Content-Type':'text/html'}});});
-  const res:Response=await worker.fetch(new Request(HOST+'/faq?x=1'));
-  expect(seen).toEqual(['https://congregationassistant.com/app/?x=1']);
-  expect(res.headers.get('X-Robots-Tag')).toBe('noindex, nofollow');
+ it('sends /faq to the questions on the landing page',async()=>{
+  const res:Response=await worker.fetch(new Request(HOST+'/faq'));
+  expect(res.status).toBe(301);
+  expect(res.headers.get('Location')).toBe(HOST+'/#tl-faq');
  });
 });
 

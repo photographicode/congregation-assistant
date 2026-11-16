@@ -20,5 +20,3 @@ export const mainAppUrl=()=>onTerritoryHost()?MAIN_APP:import.meta.env.BASE_URL;
 export const signInReturnUrl=()=>onTerritoryHost()?`${location.origin}/`:`${location.origin}${location.pathname}?territory`;
 /** The territory generator (KML splitter, cards, full wall map) on its own origin, apart from the owner's session. */
 export const generatorUrl=()=>(import.meta.env.VITE_GENERATOR_URL as string|undefined)||'https://generator.congregationassistant.com/';
-/** Questions and answers: a real path on the territory site (indexed), a query elsewhere. */
-export const faqUrl=()=>onTerritoryHost()?`${location.origin}/faq`:territoryUrl('territory-faq');

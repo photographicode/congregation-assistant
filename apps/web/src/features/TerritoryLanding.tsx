@@ -4,7 +4,8 @@
 import React from 'react';
 import {ArrowRight,Check,ClipboardList,Languages,Map as MapIcon,MapPin,QrCode,Share2,TriangleAlert} from 'lucide-react';
 import {LegacySelect} from '../../../../packages/ui/components';
-import {faqUrl,mainAppUrl,territoryUrl} from './territory-site';
+import {mainAppUrl,territoryUrl} from './territory-site';
+import {FaqSection} from './TerritoryFaq';
 import {initialLang,LANGUAGES,translate,type Key,type Lang} from './territory-landing-i18n';
 import cardImage from './assets/territory-map-card.webp';
 
@@ -48,7 +49,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
   <header className="tl-bar">
    <span className="tl-brand"><span className="brand-mark"><MapIcon aria-hidden="true"/></span>{'Territories'}<small>{'Congregation Assistant'}</small></span>
    <span className="tl-bar-end">
-    <a className="tl-btn" href={faqUrl()}>{'FAQ'}</a>
+    <a className="tl-btn" href="#tl-faq">{'FAQ'}</a>
     <LanguagePicker lang={lang} onChange={setLang} label={say('language')}/>
     <button className="tl-btn" onClick={signIn} type="button">{say('signIn')}</button>
    </span>
@@ -90,7 +91,8 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
    <ol className="tl-steps" aria-label={say('stepsLabel')}>{STEPS.map((step,i)=><li key={step}><span>{i+1}</span>{say(step)}</li>)}</ol>
    <div className="tl-actions"><a className="tl-btn primary" href={territoryUrl('request=territory&service='+service)}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
   </section>
-  <footer className="tl-foot"><span>{say('unofficial')}</span><span className="tl-bar-end"><a href={faqUrl()}>{'FAQ'}</a><a href={mainAppUrl()}>{say('mainSite')}</a></span></footer>
+  <FaqSection/>
+  <footer className="tl-foot"><span>{say('unofficial')}</span><span className="tl-bar-end"><a href="#tl-faq">{'FAQ'}</a><a href={mainAppUrl()}>{say('mainSite')}</a></span></footer>
  </main>;
 }
 

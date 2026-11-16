@@ -72,7 +72,6 @@ const TerritoryApp=lazy(()=>import("./features/Territory"));
 const TerritoryCard=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryCard})));
 const TerritoryIssue=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryIssue})));
 const TerritoryRequest=lazy(()=>import("./features/TerritoryPublic").then(m=>({default:m.TerritoryRequest})));
-const TerritoryFaq=lazy(()=>import("./features/TerritoryFaq").then(m=>({default:m.TerritoryFaq})));
 const routes = [
   {id:"owner",label:"Command centre",icon:ShieldCheck},
   { id: "home", label: "Home", icon: Home },
@@ -373,10 +372,9 @@ const framed=(()=>{try{return window.top!==window.self;}catch{return true;}})();
 // Public request forms need no sign-in and no workspace.
 const requestPage=new URLSearchParams(location.search).has("request")?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton label={t("ui.opening.protected.form.e4af4758")}/></main>}><RequestForm/></Suspense>:null;
 // The territory manager is its own section of the app: ?territory for managers, the rest open without sign-in.
-const territoryPages={"territory-card":TerritoryCard,"territory-issue":TerritoryIssue,"territory-request":TerritoryRequest,"territory-faq":TerritoryFaq,territory:TerritoryApp};
+const territoryPages={"territory-card":TerritoryCard,"territory-issue":TerritoryIssue,"territory-request":TerritoryRequest,territory:TerritoryApp};
 // On the territory subdomain every page is a territory page; the manager is the default, except the help request form.
-// territory.congregationassistant.com/faq is the questions page (a real path, so search engines can list it).
-const TerritoryPage=(onTerritoryHost()&&location.pathname==='/faq'?TerritoryFaq:undefined)??Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1]??(onTerritoryHost()&&!new URLSearchParams(location.search).has("request")?TerritoryApp:undefined);
+const TerritoryPage=Object.entries(territoryPages).find(([key])=>new URLSearchParams(location.search).has(key))?.[1]??(onTerritoryHost()&&!new URLSearchParams(location.search).has("request")?TerritoryApp:undefined);
 const territoryPage=TerritoryPage?<Suspense fallback={<main className="login card" aria-busy="true"><Skeleton/></main>}><TerritoryPage/></Suspense>:null;
 if(framed)createRoot(document.getElementById("root")!).render(<SystemStatePage state="forbidden" onHome={()=>window.open(location.href,'_blank','noopener')}/>);
 else createRoot(document.getElementById("root")!).render(

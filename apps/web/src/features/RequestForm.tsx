@@ -111,26 +111,18 @@ export function RequestForm() {
       {!reference && showsForm(kind, help) && (
         <form className="stack" onSubmit={(e) => void submit(e)} aria-busy={busy}>
           <fieldset className="stack" disabled={busy}>
-            <Field label={"Your name"}>{(p) => <input {...p} required minLength={2} maxLength={NAME_MAX} autoComplete="name" value={form.name} onChange={set("name")} />}</Field>
-            <Field label={"Your email"} hint={"We reply to this address."}>{(p) => <input {...p} type="email" required maxLength={EMAIL_MAX} autoComplete="email" value={form.email} onChange={set("email")} />}</Field>
-            <Field label={"Congregation name"}>{(p) => <input {...p} required minLength={2} maxLength={CONGREGATION_MAX} value={form.congregation} onChange={set("congregation")} />}</Field>
-            {kind === "workspace" && (
-              <Field label={"Administrator's Gmail address"} hint={"The person who will manage the workspace. It must end in @gmail.com."}>{(p) => <input {...p} type="email" required pattern="[A-Za-z0-9._%+\-]+@gmail\.com" maxLength={EMAIL_MAX} value={form.admin} onChange={set("admin")} />}</Field>
-            )}
-            <Field label={"Phone (optional)"}>{(p) => <input {...p} type="tel" maxLength={PHONE_MAX} autoComplete="tel" value={form.phone} onChange={set("phone")} />}</Field>
-            {kind === "territory" && (
+            {kind === "territory" ? (
+              <TerritoryFields form={form} set={set} needs={needs} onNeeds={setNeeds} progress={progress} onProgress={setProgress} files={files} fileError={fileError} onFileError={setFileError} onFiles={setFiles} />
+            ) : (
               <>
-                <NeedsPicker value={needs} onChange={setNeeds} />
-                <ProgressPicker value={progress} onChange={setProgress} />
-                <BoundaryFiles files={files} error={fileError} onError={setFileError} onChange={setFiles} />
-              <Field label={"Tell us about your territory"} hint={"For example: we have the boundary as a KML file and need about 40 territories. Card instructions in Malayalam."}>{(p) => <textarea {...p} required minLength={DETAILS_MIN} maxLength={DETAILS_MAX} rows={DETAILS_ROWS} value={form.details} onChange={set("details")} />}</Field>
+                <ContactFields form={form} set={set} />
+                <Field label={"Administrator's Gmail address"} hint={"The person who will manage the workspace. It must end in @gmail.com."}>{(p) => <input {...p} type="email" required pattern="[A-Za-z0-9._%+\-]+@gmail\.com" maxLength={EMAIL_MAX} value={form.admin} onChange={set("admin")} />}</Field>
+                <Field label={"Phone (optional)"}>{(p) => <input {...p} type="tel" maxLength={PHONE_MAX} autoComplete="tel" value={form.phone} onChange={set("phone")} />}</Field>
+                <label className="check">
+                  <input type="checkbox" required checked={authorized} onChange={(e) => setAuthorized(e.target.checked)} />
+                  <span>{"I am allowed to request this for my congregation."}</span>
+                </label>
               </>
-            )}
-            {kind === "workspace" && (
-              <label className="check">
-                <input type="checkbox" required checked={authorized} onChange={(e) => setAuthorized(e.target.checked)} />
-                <span>{"I am allowed to request this for my congregation."}</span>
-              </label>
             )}
             <label className="sr-only" aria-hidden="true">
               {"Leave this empty"}
@@ -175,30 +167,91 @@ function TerritoryChoice({ help, onHelp }: { help: boolean; onHelp: () => void }
   );
 }
 
+type FormState = { name: string; email: string; congregation: string; phone: string; details: string };
+type Setter = (key: "name" | "email" | "congregation" | "phone" | "details") => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+function ContactFields({ form, set }: { form: FormState; set: Setter }) {
+  return (
+    <>
+      <Field label={"Your name"}>{(p) => <input {...p} required minLength={2} maxLength={NAME_MAX} autoComplete="name" value={form.name} onChange={set("name")} />}</Field>
+      <Field label={"Your email"} hint={"We reply to this address."}>{(p) => <input {...p} type="email" required maxLength={EMAIL_MAX} autoComplete="email" value={form.email} onChange={set("email")} />}</Field>
+      <Field label={"Congregation name"}>{(p) => <input {...p} required minLength={2} maxLength={CONGREGATION_MAX} value={form.congregation} onChange={set("congregation")} />}</Field>
+    </>
+  );
+}
+
+const sectionState = (done: boolean, optional?: boolean) => {
+  if (done) return "Done";
+  return optional ? "Optional" : "To do";
+};
+const PERCENT = 100, CONTACT_ANSWERS = 3;
+/** One numbered part of the territory request. Its badge turns into a tick when its required answers are in. */
+function Section({ n, title, done, optional, children }: { n: number; title: string; done: boolean; optional?: boolean; children: React.ReactNode }) {
+  return (
+    <section className={"rf-section" + (done ? " done" : "")} aria-labelledby={"rf-section-" + n}>
+      <header>
+        <span className="rf-dot" aria-hidden="true">{done ? <Check /> : n}</span>
+        <h2 id={"rf-section-" + n}>{title}</h2>
+        <span className="rf-state">{sectionState(done, optional)}</span>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+/** The territory request in four sections, with a bar that stays on screen and counts the required answers. */
+function TerritoryFields(props: { form: FormState; set: Setter; needs: Need[]; onNeeds: (n: Need[]) => void; progress: number; onProgress: (n: number) => void; files: RequestFile[]; fileError: string; onFileError: (e: string) => void; onFiles: (f: RequestFile[]) => void }) {
+  const { form, set, needs } = props;
+  const answers = [form.name.trim().length >= 2, EMAIL.test(form.email.trim()), form.congregation.trim().length >= 2, needs.length > 0, form.details.trim().length >= DETAILS_MIN];
+  const done = answers.filter(Boolean).length;
+  const percent = Math.round((done / answers.length) * PERCENT);
+  return (
+    <>
+      <div className="rf-progress" role="group" aria-label={"Your progress"}>
+        <div className="rf-progress-text"><strong>{done === answers.length ? "Ready to send" : `${done} of ${answers.length} required answers`}</strong><span>{percent + "%"}</span></div>
+        <progress max={answers.length} value={done} aria-label={"Required answers given"} />
+      </div>
+      <Section n={1} title={"About you"} done={answers.slice(0, CONTACT_ANSWERS).every(Boolean)}>
+        <div className="rf-grid">
+          <ContactFields form={form} set={set} />
+          <Field label={"Phone (optional)"}>{(p) => <input {...p} type="tel" maxLength={PHONE_MAX} autoComplete="tel" value={form.phone} onChange={set("phone")} />}</Field>
+        </div>
+      </Section>
+      <Section n={2} title={"What do you need?"} done={needs.length > 0}>
+        <NeedsPicker value={needs} onChange={props.onNeeds} />
+      </Section>
+      <Section n={3} title={"Where are you now?"} done optional>
+        <ProgressPicker value={props.progress} onChange={props.onProgress} />
+      </Section>
+      <Section n={4} title={"Your boundary file and details"} done={answers[4]!}>
+        <BoundaryFiles files={props.files} error={props.fileError} onError={props.onFileError} onChange={props.onFiles} />
+        <Field label={"Tell us about your territory"} hint={"For example: we have the boundary as a KML file and need about 40 territories. Card instructions in Malayalam."}>{(p) => <textarea {...p} required minLength={DETAILS_MIN} maxLength={DETAILS_MAX} rows={DETAILS_ROWS} value={form.details} onChange={set("details")} />}</Field>
+      </Section>
+    </>
+  );
+}
+
 const NEED_ICONS: Record<Need, React.ReactNode> = { cards: <Layers />, map: <MapIcon />, software: <LayoutDashboard /> };
 
 /** What the congregation needs, as checkboxes. The software comes with a demo link (sign-in is on the main page only). */
 function NeedsPicker({ value, onChange }: { value: Need[]; onChange: (needs: Need[]) => void }) {
   const toggle = (id: Need, on: boolean) => onChange(on ? [...value, id] : value.filter((v) => v !== id));
   return (
-    <fieldset className="stack">
-      <legend>{"What do you need? Tick all that apply."}</legend>
+    <fieldset className="rf-needs">
+      <legend className="sr-only">{"What do you need? Tick all that apply."}</legend>
+      <p className="muted rf-wide">{"Tick all that apply. You can start from just the KML file from Hub."}</p>
       {NEEDS.map((item) => (
-        <div key={item.id}>
-          <label className="check">
-            <input type="checkbox" aria-describedby={"need-" + item.id} checked={value.includes(item.id)} onChange={(e) => toggle(item.id, e.target.checked)} />
-            <span className="rf-icon" aria-hidden="true">{NEED_ICONS[item.id]}</span>
-            {item.label}
-          </label>
-          <p className="muted" id={"need-" + item.id}>{item.detail}</p>
-          {item.id === "software" && (
-            <p className="muted">
-              <a href={territoryUrl("territory&demo")} target="_blank" rel="noreferrer">{"Try the demo with 25 territory cards"}</a>
-              {". Theme options are available: light, dark or automatic, in a soft or glass style."}
-            </p>
-          )}
-        </div>
+        <label key={item.id} className="rf-need">
+          <input type="checkbox" aria-describedby={"need-" + item.id} checked={value.includes(item.id)} onChange={(e) => toggle(item.id, e.target.checked)} />
+          <span className="rf-need-top"><span className="rf-icon" aria-hidden="true">{NEED_ICONS[item.id]}</span><strong>{item.label}</strong><span className="rf-tick" aria-hidden="true"><Check /></span></span>
+          <span className="muted" id={"need-" + item.id}>{item.detail}</span>
+        </label>
       ))}
+      <p className="muted rf-wide">
+        <a href={territoryUrl("territory&demo")} target="_blank" rel="noreferrer">{"Try the software demo with 25 territory cards"}</a>
+        {". Theme options are available: light, dark or automatic, in a soft or glass style."}
+      </p>
     </fieldset>
   );
 }
@@ -207,7 +260,7 @@ function NeedsPicker({ value, onChange }: { value: Need[]; onChange: (needs: Nee
 function ProgressPicker({ value, onChange }: { value: number; onChange: (value: number) => void }) {
   return (
     <fieldset className="rf-steps">
-      <legend>{"Where are you now? Tap the last step you have finished."}</legend>
+      <legend className="muted">{"Tap the last step you have finished."}</legend>
       <ol>
         <li className="done">
           <button type="button" aria-pressed={value === 0} onClick={() => onChange(0)}>

@@ -1,10 +1,7 @@
-// Frequently asked questions for territory.congregationassistant.com (/faq there, ?territory-faq elsewhere).
-// Same look as the landing page. The worker adds the matching FAQPage data for search engines.
+// Frequently asked questions on the territory landing page. The worker adds the matching FAQPage data for search engines.
 import React from 'react';
-import {Map as MapIcon} from 'lucide-react';
 import {config} from './client';
 import {territoryUrl} from './territory-site';
-import './territory.css';
 
 type Item={q:string;a:React.ReactNode};
 const ITEMS=():Item[]=>[
@@ -20,17 +17,10 @@ const ITEMS=():Item[]=>[
  {q:'Is this an official app?',a:<p>{'No. It is independent and unofficial, made to help congregations keep their territories in order.'}</p>},
 ];
 
-export function TerritoryFaq(){
- React.useEffect(()=>{document.title='Questions and answers · Territories · Congregation Assistant';},[]);
- return <main className="tl">
-  <header className="tl-bar">
-   <a className="tl-brand" href={territoryUrl()}><span className="brand-mark"><MapIcon aria-hidden="true"/></span>{'Territories'}<small>{'Congregation Assistant'}</small></a>
-   <a className="tl-btn" href={territoryUrl()}>{'Main page'}</a>
-  </header>
-  <section className="tl-section" aria-labelledby="tl-faq-title">
-   <h1 id="tl-faq-title">{'Questions and answers'}</h1>
-   <div className="tl-faq">{ITEMS().map(item=><section key={item.q} className="tl-tile" aria-label={item.q}><h2>{item.q}</h2>{item.a}</section>)}</div>
-  </section>
-  <footer className="tl-foot"><span>{'Independent and unofficial.'}</span><a href={territoryUrl('request=territory')}>{'Request territories'}</a></footer>
- </main>;
+/** Questions and answers, shown on the territory landing page (#tl-faq). */
+export function FaqSection(){
+ return <section className="tl-section tl-reveal" id="tl-faq" aria-labelledby="tl-faq-title">
+  <h2 id="tl-faq-title">{'Questions and answers'}</h2>
+  <div className="tl-faq">{ITEMS().map(item=><section key={item.q} className="tl-tile" aria-label={item.q}><h3>{item.q}</h3>{item.a}</section>)}</div>
+ </section>;
 }
