@@ -161,6 +161,8 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;gap
 .footer-links a:hover{text-decoration:underline}
 .footer-small{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:var(--step-small);color:var(--muted)}
 .footer-small p{margin:0}
+/* Footer items may shrink and wrap, so the long support address fits narrow screens at large text sizes. */
+.footer-small>*{min-width:0;overflow-wrap:anywhere}
 .translation-note{display:block;margin-top:24px;font-size:var(--step-small);color:var(--muted)}
 
 /* Motion: each section's parts rise in once. Content on screen at load and without script never hides. */
