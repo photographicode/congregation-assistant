@@ -67,10 +67,13 @@ function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number
 function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boolean;onView:()=>void;notify:(m:string)=>void;refresh:Ctx['refresh']}){
  const [text,setText]=React.useState(t.review_comment),[saved,setSaved]=React.useState(t.review_comment);
  const changed=changedSinceComment(t);
+ // The card itself: its thumbnail, or the full card when no thumbnail was saved.
+ const full=useQuery({queryKey:['tm','image',t.id,t.updated_at],enabled:!t.thumb&&t.has_image,queryFn:()=>api.territoryImage(t.id)});
+ const src=t.thumb||full.data;
  const save=async()=>{if(text.trim()===saved.trim())return;try{await api.reviewComment(t.id,text);setSaved(text);await refresh();}catch(e){notify((e as Error).message);}};
  return <article className="tm-raised tm-card">
   <button type="button" className="tm-thumb" onClick={onView} aria-label={`See card ${t.number} full size`}>
-   {t.thumb?<img src={t.thumb} alt="" width={480} height={320} loading="lazy" decoding="async"/>:<MapIcon aria-hidden="true"/>}<span className="tm-number">{t.number}</span></button>
+   {src?<img src={src} alt={`Territory card ${t.number}`} width={480} height={320} loading="lazy" decoding="async"/>:<MapIcon aria-hidden="true"/>}<span className="tm-number">{t.number}</span></button>
   <span className="tm-card-body stack"><strong>{t.name}</strong>
    {changed&&<Chip tone="ok">{'Changed since your comment'}</Chip>}
    {editable?<div ref={stretch}><Field label={'Comment (optional)'}>{p=><textarea {...p} ref={stretch} className="tm-inset" rows={2} maxLength={1000} placeholder={'What should change on this card?'}

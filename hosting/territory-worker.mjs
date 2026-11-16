@@ -79,12 +79,12 @@ const LLMS = `# Territory Assistant
 `;
 // Questions and answers for search results; they match apps/web/src/features/TerritoryFaq.tsx on the landing page.
 const FAQ = { '@type': 'FAQPage', mainEntity: [
- ['How much does it cost?', 'Nothing is charged. This work is hard and has a lot of time and effort behind it, but we accept only voluntary donations. No donation is needed to receive any service.'],
- ['What can we ask for?', 'Start from just the KML file from Hub, then choose Territory Cards, a full map, the Territory Management Software, or all three.'],
- ['How do we name the territories?', 'After we split your boundary, your congregation gets one private link by email. For each territory you write the locality name, correct the landmark names and add notes. Everything saves as you type, with no sign-in. Your names then go on the cards and the full map.'],
- ['Can we try the software first?', 'Yes. The demo has 25 fictional territory cards and theme options: light, dark or automatic, in a soft or glass style.'],
- ['Who can sign in?', 'An admin changes everything and a viewer looks only. The congregation’s official Gmail account is the first admin.'],
- ['How do publishers report a house or a place?', 'From a shared digital territory card. A report with a location goes automatically to the territory that holds that place.'],
+ ['What does it cost?', 'Nothing. We accept only voluntary donations, and none is needed for any service.'],
+ ['What do we need to start?', 'Just the KML file of your boundary from Hub. Then choose Territory Cards, a full map, the territory manager, or all three.'],
+ ['How do we name the territories?', 'On one private link, with no sign-in. You see each territory on a street map, write its locality name, correct the landmarks and add notes.'],
+ ['Who checks the cards?', 'Your congregation’s admin signs in with Google, looks at every card, and comments on any that needs a change or approves them all.'],
+ ['Can we try it first?', 'Yes. The demo has 25 fictional territory cards. Nothing is saved.'],
+ ['Is this an official app?', 'No. It is independent and unofficial, made to help congregations keep their territories in order.'],
 ].map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })) };
 const JSONLD = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
  { '@type': 'WebSite', name: 'Territory Assistant', alternateName: ['Territory manager · Congregation Assistant', 'JW territory manager', 'JW territory map maker', 'KML territory maker', 'KML file splitter for territories', 'Territory map cards'], url: `https://${HOST}/` },

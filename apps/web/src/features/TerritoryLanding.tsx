@@ -51,7 +51,6 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
   <header className="tl-bar">
    <span className="tl-brand"><span className="brand-mark"><MapIcon aria-hidden="true"/></span>{'Territories'}<small>{'Congregation Assistant'}</small></span>
    <span className="tl-bar-end">
-    <a className="tl-btn" href="#tl-faq">{'FAQ'}</a>
     <LanguagePicker lang={lang} onChange={setLang} label={say('language')}/>
     <button className="tl-btn" onClick={signIn} type="button">{say('signIn')}</button>
    </span>
