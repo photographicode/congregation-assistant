@@ -46,7 +46,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
  const [lang,setLang]=React.useState<Lang>(initialLang),[service,setService]=React.useState<typeof SERVICES[number]['id']>('package');
  const say=(key:Key)=>translate(lang,key);
  useReveal();
- React.useEffect(()=>{document.title=translate(lang,'heroTitle')+' · Territory Assistant';document.querySelector('meta[name=description]')?.setAttribute('content',translate(lang,'heroLead'));document.documentElement.lang=lang;try{localStorage.setItem('ca-territory-lang',lang);}catch{/* the choice just is not remembered */}},[lang]);
+ React.useEffect(()=>{document.title=translate(lang,'heroTitle')+' · Territory Assistant';document.documentElement.lang=lang;try{localStorage.setItem('ca-territory-lang',lang);}catch{/* the choice just is not remembered */}},[lang]);
  return <main className="tl">
   <header className="tl-bar">
    <span className="tl-brand"><span className="brand-mark"><MapIcon aria-hidden="true"/></span>{'Territories'}<small>{'Congregation Assistant'}</small></span>
