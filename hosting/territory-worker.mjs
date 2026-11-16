@@ -18,6 +18,8 @@ Allow: /$
 Disallow: /?
 Sitemap: https://${HOST}/sitemap.xml
 `, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  // IndexNow key (Bing, Yandex and others): public by design, proves this site sent the change list.
+  if (url.pathname === '/f4229fc3717dfac1f6afd4b460687b07.txt') return new Response('f4229fc3717dfac1f6afd4b460687b07', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><lastmod>${LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
   // The generator moved to its own origin so it can never read the owner's session here; keep old links working.
   if (url.pathname === '/generator' || url.pathname.startsWith('/generator/')) return Response.redirect(`https://${GENERATOR_HOST}${url.pathname.slice('/generator'.length) || '/'}${url.search}`, 301);
