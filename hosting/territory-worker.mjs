@@ -49,7 +49,7 @@ Sitemap: https://${HOST}/sitemap.xml
   // Only the bare landing page is indexed; app screens (any query string) and files stay out of search.
   if (!page || url.search) { headers.set('X-Robots-Tag', 'noindex, nofollow'); return response; }
   // The app's own noindex tag would override ours (Google obeys the stricter one), so drop it here.
-  return new HTMLRewriter().on('meta[name="robots"]', { element(meta) { meta.remove(); } }).on('meta[name="description"]', { element(meta) { meta.remove(); } }).on('head', new SeoHead(page)).on('title', { element(title) { title.setInnerContent(page.title); } }).transform(response);
+  return new HTMLRewriter().on('meta[name="robots"]', { element(meta) { meta.remove(); } }).on('meta[name="description"]', { element(meta) { meta.remove(); } }).on('head', new SeoHead(page)).on('title', { element(title) { title.setInnerContent(page.title); } }).on('div#root', { element(root) { root.setInnerContent(page.body, { html: true }); } }).on('noscript', { element(note) { note.remove(); } }).transform(response);
  }
 };
 
@@ -75,8 +75,31 @@ const JSONLD = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
  { '@type': 'Service', name: 'Territory map cards and territory making', serviceType: 'Territory maker', provider: { '@type': 'Organization', name: 'Congregation Assistant', url: 'https://congregationassistant.com/' }, areaServed: 'IN', description: 'From the congregation boundary (KML) to territories, a Territory Map Card for each with a QR code to Google Maps, and a high-resolution full map with every territory number.' },
  FAQ,
 ] });
+// The landing page as plain HTML inside #root: search engines and link previews read it without running the app,
+// and the app replaces it as soon as it starts. Same words as apps/web/src/features/TerritoryLanding.tsx (English).
+const li = (items) => items.map(([title, text]) => `<li><h3>${title}</h3><p>${text}</p></li>`).join('');
+const BODY = `<main class="tl"><header><p>Territory Assistant · Congregation Assistant</p></header>
+<h1>Every territory, in one place.</h1>
+<p>Keep your territory cards, assign and return them, keep the S-13 record and share each map with the publisher who has it. Only have the congregation boundary? We make the territories and cards for you.</p>
+<p><a href="/#tl-help">Request help with territories</a> · <a href="/?territory&amp;demo">Try the demo</a></p>
+<h2>What the territory manager does</h2><ul>${li([
+ ['Every territory in one list', 'Number, locality and map for each territory, with who has it and how long it has been out.'],
+ ['S-13 kept for you', 'Assign and return a territory in two taps. The S-13 assignment record fills itself.'],
+ ['Share the map', 'Send a publisher their territory card or its Google Maps link straight from the phone.'],
+ ['Hear about problems', 'Publishers report a do-not-call, a new building or a dog to avoid. You see it on the dashboard.'],
+])}</ul>
+<h2>The Territory Map Card</h2><p>Every territory gets a card in the familiar printed format: locality name and number at the top, the territory shaded on the map with its boundary roads named, a QR code that opens it in Google Maps, and the card-care note in your language.</p>
+<h2>We can make your territories</h2><p>Territories from scratch, Territory Map Cards, or the complete package: from your KML file to the territories, a card for each, the territory manager set up and a full congregation map. There is no fee: we accept only voluntary donations.</p>
+<h2>How we work with you</h2><ol>${li([
+ ['You send the boundary', 'Send the KML file from Hub with the request form. That is all we need to start.'],
+ ['We draw and split', 'We split the boundary into territories along the roads and email you as each stage is done.'],
+ ['You name them on one link', 'Your congregation opens one private link. For each territory: write the locality name, check the landmarks and add notes. It saves as you type, with no sign-in.'],
+ ['We make the cards and the map', 'Your names go on every Territory Map Card with its QR code, and on the full map. Then the territory manager is set up for you.'],
+])}</ol>
+<h2>Questions and answers</h2><dl>${FAQ.mainEntity.map((q) => `<dt>${q.name}</dt><dd>${q.acceptedAnswer.text}</dd>`).join('')}</dl>
+<p>Available in English, Malayalam, Kannada, Telugu, Hindi and Tamil. Independent and unofficial. <a href="https://congregationassistant.com/">Congregation Assistant</a></p></main>`;
 const PAGES = {
- '/': { title: TITLE, description: DESCRIPTION, url: `https://${HOST}/`, jsonld: JSONLD },
+ '/': { title: TITLE, description: DESCRIPTION, url: `https://${HOST}/`, jsonld: JSONLD, body: BODY },
 };
 const escape = (text) => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 class SeoHead {
