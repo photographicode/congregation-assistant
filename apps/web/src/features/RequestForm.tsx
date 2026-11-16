@@ -5,34 +5,12 @@ import { Field } from "../../../../packages/ui/Field";
 import { rpc, config } from "./client";
 import { onTerritoryHost, territoryUrl } from "./territory-site";
 import { KIBIBYTE, readRequestFile, type RequestFile } from "./request-files";
+import { AREAS, EMAIL, NEEDS, NOT_STARTED, progressLabel, progressText, requestDetails, SERVICE_NEEDS, STEPS, sectionState, submitLabel, territoryProblem, type Need } from "./request-form-model";
 
 // Public requests that need no sign-in: a new congregation workspace, or territory maps made for a congregation.
 type Kind = "workspace" | "territory";
-// What a congregation needs; any mix. The choices are sent at the start of the request details.
-const NEEDS = [
-  { id: "cards", label: "Territory Cards", detail: "A Territory Map Card for each territory: the map with boundary roads named, landmarks, a QR code to Google Maps and the card-care note in your language." },
-  { id: "map", label: "Full map", detail: "One high-resolution map of the whole congregation area with every territory number, ready to print large." },
-  { id: "software", label: "Territory Management Software", detail: "Keep every territory, assign and return them, keep the S-13 record, share each card by link and collect reports from publishers." },
-] as const;
-type Need = (typeof NEEDS)[number]["id"];
-// Links from the territory landing page name a service; each preselects the needs it covers.
-const SERVICE_NEEDS: Record<string, Need[]> = { scratch: ["cards"], cards: ["cards"], package: ["cards", "map", "software"] };
-// The making steps, in order. Congregations say which they have already finished.
-const STEPS = [
-  "Drawing all territories",
-  "Splitting them",
-  "Naming each territory (locality name)",
-  "Finding each territory's corners",
-  "Assigning QR codes",
-  "Making the cards in the shown format",
-  "A high-resolution full map with all numbers",
-];
 // The territory site keeps its own visitors: "Back to the website" returns to its landing page.
 const homeUrl = () => (onTerritoryHost() ? location.origin + "/" : config.PUBLIC_SITE_URL + "/");
-// The starting point before every step: only the congregation boundary KML from Hub.
-const NOT_STARTED = "Just the KML file from Hub";
-/** What the request says about progress: 0 is "not started", n is "done up to step n". */
-const progressLabel = (done: number) => (done ? `Done up to step ${done}: ${STEPS[done - 1] ?? ""}` : NOT_STARTED);
 const COPY: Record<Kind, { title: string; heading: string; thanks: string }> = {
   territory: { title: "Territories · Congregation Assistant", heading: "Territories", thanks: "Thank you. We will email you about your territories." },
   workspace: { title: "Request a workspace · Congregation Assistant", heading: "Request a congregation workspace", thanks: "Thank you. We will email you when the workspace is ready." },
@@ -171,20 +149,10 @@ function TerritoryChoice({ help, onHelp }: { help: boolean; onHelp: () => void }
   );
 }
 
-// What the area is like; any mix.
-const AREAS = ["City", "Hills or mountains", "Backwaters", "Villages and farmland", "Coast"];
-const territoryProblem = (needs: Need[], files: RequestFile[]) => {
-  if (!needs.length) return "Tick at least one thing you need.";
-  return files.length ? "" : "Add the KML file from JW Hub. Your congregation secretary can give it to you.";
-};
 const scrollToForm = () => requestAnimationFrame(() => document.querySelector(".rf-progress")?.scrollIntoView({ behavior: "smooth", block: "start" }));
-/** The request details: labels in brackets first (the owner dashboard shows them as chips), then the free text. */
-const requestDetails = (needs: Need[], areas: string[], progress: number, text: string) =>
-  `[Needs: ${NEEDS.filter((item) => needs.includes(item.id)).map((item) => item.label).join(", ")}] ${areas.length ? `[Area: ${areas.join(", ")}] ` : ""}[Now: ${progressLabel(progress)}] ${text}`.trim();
 
 type FormState = { name: string; email: string; congregation: string; phone: string; details: string };
 type Setter = (key: "name" | "email" | "congregation" | "phone" | "details") => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 function ContactFields({ form, set }: { form: FormState; set: Setter }) {
   return (
@@ -196,10 +164,6 @@ function ContactFields({ form, set }: { form: FormState; set: Setter }) {
   );
 }
 
-const sectionState = (done: boolean, optional?: boolean) => {
-  if (done) return "Done";
-  return optional ? "Optional" : "To do";
-};
 const PERCENT = 100, CONTACT_ANSWERS = 3;
 /** One numbered part of the territory request. Its badge turns into a tick when its required answers are in. */
 function Section({ n, title, done, optional, children }: { n: number; title: string; done: boolean; optional?: boolean; children: React.ReactNode }) {
@@ -252,14 +216,6 @@ function TerritoryFields(props: TerritoryProps) {
   );
 }
 
-const submitLabel = (busy: boolean, toReview: boolean) => {
-  if (busy) return "Sending…";
-  return toReview ? "Review request" : "Send request";
-};
-const progressText = (review: boolean, done: number, total: number) => {
-  if (review) return "Check your request, then send it";
-  return done === total ? "Ready to review" : `${done} of ${total} required answers`;
-};
 
 function AreaPicker({ value, onChange }: { value: string[]; onChange: (a: string[]) => void }) {
   return (
