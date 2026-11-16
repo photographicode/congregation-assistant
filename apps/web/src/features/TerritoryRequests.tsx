@@ -2,7 +2,7 @@
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {Copy,Download,FileUp,Mail,Phone,Wand2} from 'lucide-react';
-import {Button,Chip,Combobox,Field,Segmented,Switch} from '../../../../packages/ui/components';
+import {Button,Chip,Combobox,Field,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {fromBase64,KIBIBYTE} from './request-files';
 import {openInGenerator,openNamesInGenerator} from './generator-handoff';
@@ -113,7 +113,8 @@ function NamingRow({naming,notify}:{naming:api.NamingSummary;notify:(m:string)=>
  return <div className="tm-inset-box stack">
   <p><strong>{`Names: ${naming.submitted} of ${naming.total} submitted`}</strong></p>
   <progress max={naming.total} value={naming.submitted} aria-label={'Territories named'}/>
-  <Switch label={'Let them move, add and remove landmarks'} checked={editable} onChange={toggle}/>
+  <p className="muted">{'Landmarks on the naming link'}</p>
+  <Segmented label={'Landmarks on the naming link'} value={editable?'edit':'rename'} options={[{value:'rename',label:'Rename only'},{value:'edit',label:'Rename, move, add, remove'}]} onChange={v=>toggle(v==='edit')}/>
   <div className="actions"><Button busy={busy} onClick={()=>void toGenerator()}><Wand2/>{'Open names in generator'}</Button>
    <Button onClick={()=>void navigator.clipboard.writeText(api.namingLink(naming.token)).then(()=>notify('Naming link copied.'),()=>notify('Copy failed.'))}><Copy/>{'Copy naming link'}</Button></div>
  </div>;

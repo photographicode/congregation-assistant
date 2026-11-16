@@ -5,7 +5,7 @@ import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {z} from 'zod';
 import {Check,Map as MapIcon} from 'lucide-react';
-import {Button,Combobox,Switch} from '../../../../packages/ui/components';
+import {Button,Combobox,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {generatorUrl} from './territory-site';
 
@@ -88,7 +88,8 @@ function SendForNaming({data}:{data:Payload}){
  return <section className="stack tm-inset-box" aria-labelledby="send-naming">
   <h2 id="send-naming">{'Or send for naming'}</h2>
   <p className="muted">{'The congregation gets one link with all these territories: the outline and the landmarks on a street map, not the card. For each one they write the locality name, rename the landmarks and add notes, then submit. Pull their names into the generator from Requests.'}</p>
-  <Switch label={'Let them move, add and remove landmarks'} checked={editable} onChange={setEditable}/>
+  <p className="muted">{'Landmarks on the naming link'}</p>
+  <Segmented label={'Landmarks on the naming link'} value={editable?'edit':'rename'} options={[{value:'rename',label:'Rename only'},{value:'edit',label:'Rename, move, add, remove'}]} onChange={v=>setEditable(v==='edit')}/>
   <Combobox label={'Request'} value={chosen} options={[{value:'',label:'No request (just make the link)'},...open.map(r=>({value:r.id,label:r.congregation_name+' · '+r.contact_email}))]} onChange={setRequest}/>
   {result?<p role="status">{result}</p>:<Button busy={busy} onClick={()=>void send()}>{chosen?'Send naming link by email':'Make naming link'}</Button>}
   {failed&&<p role="alert" className="error">{failed}</p>}

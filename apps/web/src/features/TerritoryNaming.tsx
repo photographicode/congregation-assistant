@@ -11,10 +11,14 @@ import {fit,H,latOf,lngOf,path,px,py,TILE,W,type Geometry} from './naming-map';
 import './territory.css';
 
 const MAX_POINTS=12,SAVE_MS=1200,SHIELD_MS=3000,DIGITS=6;
-const PIN_R=11,PIN_TEXT_DY=4,KEY_CHARS=12,LABEL_DX=PIN_R+PIN_TEXT_DY,LABEL_HALO=3;
+const PIN_R=11,PIN_TEXT_DY=4,KEY_CHARS=12,LABEL_DX=PIN_R+PIN_TEXT_DY,LABEL_HALO=3,MAX_ZOOM=2.4,FLIP_AT=0.6;
 /** Street map tiles with the territory outlined (others faint) and the named places. Tap to add a place, unless onAdd is left out. */
 function NamingMap({g,others,points,onAdd}:{g:Geometry;others:Geometry[];points:api.NamingPoint[];onAdd?:(p:api.NamingPoint)=>void}){
  const v=React.useMemo(()=>fit(g),[g]);
+ // The drawing shrinks with the screen; pins and labels are scaled back up so they stay readable on a phone.
+ const frame=React.useRef<HTMLDivElement>(null),[zoom,setZoom]=React.useState(1);
+ React.useEffect(()=>{const el=frame.current;if(!el||!('ResizeObserver' in window))return;
+  const seen=new ResizeObserver(()=>setZoom(Math.min(MAX_ZOOM,Math.max(1,W/(el.clientWidth||W)))));seen.observe(el);return()=>seen.disconnect();},[]);
  const tiles:{x:number;y:number}[]=[];
  for(let x=Math.floor(v.x0/TILE);x<=Math.floor((v.x0+W)/TILE);x++)for(let y=Math.floor(v.y0/TILE);y<=Math.floor((v.y0+H)/TILE);y++)tiles.push({x,y});
  const add=(e:React.MouseEvent<SVGSVGElement>)=>{
@@ -23,13 +27,13 @@ function NamingMap({g,others,points,onAdd}:{g:Geometry;others:Geometry[];points:
   const x=v.x0+(e.clientX-box.left)/box.width*W,y=v.y0+(e.clientY-box.top)/box.height*H;
   onAdd({name:'',lng:+lngOf(x,v.z).toFixed(DIGITS),lat:+latOf(y,v.z).toFixed(DIGITS)});
  };
- return <div className="nm-map">
+ return <div className="nm-map" ref={frame}>
   <svg viewBox={`0 0 ${W} ${H}`} onClick={add} role="img" aria-label={onAdd?'Territory map. Tap to mark a junction or landmark.':'Territory map with its marked junctions and landmarks.'}>
    {tiles.map(t=><image key={`${t.x}-${t.y}`} href={`https://tile.openstreetmap.org/${v.z}/${t.x}/${t.y}.png`} x={t.x*TILE-v.x0} y={t.y*TILE-v.y0} width={TILE} height={TILE}/>)}
    {others.map((o,i)=><path key={i} d={path(o,v)} className="nm-other"/>)}
    <path d={path(g,v)} className="nm-this"/>
-   {points.map((p,i)=><g key={i} transform={`translate(${px(p.lng,v.z)-v.x0},${py(p.lat,v.z)-v.y0})`}><circle r={PIN_R} className="nm-pin"/><text dy={PIN_TEXT_DY} textAnchor="middle">{i+1}</text>
-    {p.name.trim()&&<text x={LABEL_DX} dy={PIN_TEXT_DY} fill="rgb(31 41 55)" stroke="rgb(255 255 255)" strokeWidth={LABEL_HALO} paintOrder="stroke" fontSize={13} fontWeight={700}>{p.name}</text>}</g>)}
+   {points.map((p,i)=>{const x=px(p.lng,v.z)-v.x0,flip=x>W*FLIP_AT;return <g key={i} transform={`translate(${x},${py(p.lat,v.z)-v.y0}) scale(${zoom})`}><circle r={PIN_R} className="nm-pin"/><text dy={PIN_TEXT_DY} textAnchor="middle">{i+1}</text>
+    {p.name.trim()&&<text x={flip?-LABEL_DX:LABEL_DX} textAnchor={flip?'end':'start'} dy={PIN_TEXT_DY} fill="rgb(31 41 55)" stroke="rgb(255 255 255)" strokeWidth={LABEL_HALO} paintOrder="stroke" fontSize={13} fontWeight={700}>{p.name}</text>}</g>;})}
   </svg>
   <span className="nm-credit">{'Map data: OpenStreetMap contributors'}</span>
  </div>;
