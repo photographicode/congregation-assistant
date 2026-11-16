@@ -279,7 +279,7 @@
 .nm-map{position:relative;aspect-ratio:640/440;overflow:hidden;border-radius:var(--radius-lg);box-shadow:var(--tm-press);background:rgb(232 236 241)}
 .nm-map svg{position:absolute;inset:0;inline-size:100%;block-size:100%;cursor:crosshair}
 .nm-this{fill:rgb(63 111 216 / 14%);stroke:rgb(63 111 216);stroke-width:3}.nm-other{fill:none;stroke:rgb(43 50 64 / 35%);stroke-width:1.2;stroke-dasharray:4 3}
-.nm-pin{fill:rgb(194 65 59);stroke:rgb(255 255 255);stroke-width:2}.nm-map text{fill:rgb(255 255 255);font:700 11px system-ui,sans-serif;pointer-events:none}
+.nm-pin{fill:rgb(194 65 59);stroke:rgb(255 255 255);stroke-width:2}.nm-pin+text{fill:rgb(255 255 255);font:700 11px system-ui,sans-serif;pointer-events:none}
 .nm-credit{position:absolute;right:var(--tm-u-6);bottom:var(--tm-u-4);padding:0 var(--tm-u-4);background:rgb(255 255 255 / 80%);font-size:var(--fs-1)}
 .nm-points{display:grid;gap:var(--tm-u-8);margin:0;padding:0;list-style:none}.nm-points li{display:flex;align-items:center;gap:var(--tm-u-8)}
 .nm-pin-label{display:inline-grid;flex:none;place-items:center;inline-size:28px;block-size:28px;border-radius:var(--radius-full);background:rgb(194 65 59);color:rgb(255 255 255);font-weight:700}

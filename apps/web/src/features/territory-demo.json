@@ -175,6 +175,11 @@
       },
       {
         "number": "2",
+        "locality": "Seethapal",
+        "points": [
+          { "name": "Agri Field", "lng": 76.2944, "lat": 9.9624 },
+          { "name": "Coconut Field", "lng": 76.2925, "lat": 9.9605 }
+        ],
         "geometry": {
           "type": "Polygon",
           "coordinates": [

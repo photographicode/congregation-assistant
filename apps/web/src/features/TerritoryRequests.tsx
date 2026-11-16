@@ -2,7 +2,7 @@
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {Copy,Download,FileUp,Mail,Phone,Wand2} from 'lucide-react';
-import {Button,Chip,Combobox,Field,Segmented} from '../../../../packages/ui/components';
+import {Button,Chip,Combobox,Field,Segmented,Switch} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {fromBase64,KIBIBYTE} from './request-files';
 import {openInGenerator,openNamesInGenerator} from './generator-handoff';
@@ -102,7 +102,10 @@ function RequestCard({r,notify,naming}:{r:api.HelpRequest;notify:(m:string)=>voi
 
 /** How far the congregation has got with naming, its link, and the names sent straight to the generator. */
 function NamingRow({naming,notify}:{naming:api.NamingSummary;notify:(m:string)=>void}){
- const [busy,setBusy]=React.useState(false);
+ const [busy,setBusy]=React.useState(false),[editable,setEditable]=React.useState(naming.landmarks_editable);
+ const qc=useQueryClient();
+ const toggle=(on:boolean)=>{setEditable(on);api.setNamingLandmarks(naming.id,on).then(()=>{notify(on?'They can now move, add and remove landmarks.':'Landmarks locked: they can only rename them.');void qc.invalidateQueries({queryKey:['tm','naming']});},
+  (e:Error)=>{setEditable(!on);notify(e.message);});};
  const toGenerator=async()=>{setBusy(true);try{
   await openNamesInGenerator(async()=>({congregation:naming.congregation,names:(await api.namingResults(naming.id)).filter(e=>e.locality.trim()||e.points.length)}));
   notify('Names opened in the generator.');
@@ -110,6 +113,7 @@ function NamingRow({naming,notify}:{naming:api.NamingSummary;notify:(m:string)=>
  return <div className="tm-inset-box stack">
   <p><strong>{`Names: ${naming.submitted} of ${naming.total} submitted`}</strong></p>
   <progress max={naming.total} value={naming.submitted} aria-label={'Territories named'}/>
+  <Switch label={'Let them move, add and remove landmarks'} checked={editable} onChange={toggle}/>
   <div className="actions"><Button busy={busy} onClick={()=>void toGenerator()}><Wand2/>{'Open names in generator'}</Button>
    <Button onClick={()=>void navigator.clipboard.writeText(api.namingLink(naming.token)).then(()=>notify('Naming link copied.'),()=>notify('Copy failed.'))}><Copy/>{'Copy naming link'}</Button></div>
  </div>;

@@ -195,20 +195,27 @@ export type NamingPoint=z.infer<typeof pointSchema>;
 const entrySchema=z.object({number:z.string(),locality:z.string(),points:z.array(pointSchema),note:z.string(),submitted:z.boolean()});
 export type NamingEntry=z.infer<typeof entrySchema>;
 const outline=z.object({type:z.enum(['Polygon','MultiPolygon']),coordinates:z.array(z.any())});
-const namingSchema=z.object({congregation:z.string(),territories:z.array(z.object({number:z.string(),geometry:outline})),entries:z.array(entrySchema)});
+// Territories may carry their card's current locality and landmarks; landmarks_editable=false allows renaming only.
+const namingSchema=z.object({congregation:z.string(),landmarks_editable:z.boolean().default(true),
+ territories:z.array(z.object({number:z.string(),geometry:outline,locality:z.string().default(''),points:z.array(pointSchema).default([])})),entries:z.array(entrySchema)});
 export type Naming=z.infer<typeof namingSchema>;
-const namingListSchema=z.array(z.object({id:z.string(),token:z.string(),request_id:z.string().nullable(),congregation:z.string(),created_at:z.string(),total:z.number(),submitted:z.number()}));
+const namingListSchema=z.array(z.object({id:z.string(),token:z.string(),request_id:z.string().nullable(),congregation:z.string(),created_at:z.string(),total:z.number(),submitted:z.number(),landmarks_editable:z.boolean().default(true)}));
 export type NamingSummary=z.infer<typeof namingListSchema>[number];
 const demoNaming:Naming=namingSchema.parse(seed.naming);
 /** Owner: publish split territories for naming; with a request, its contact is emailed the link. */
-export async function createNaming(request:string|null,congregation:string,territories:{number:string;geometry:unknown}[]){
+export async function createNaming(request:string|null,congregation:string,territories:{number:string;geometry:unknown;locality?:string;points?:NamingPoint[]}[],landmarksEditable=true){
  const result=z.object({id:z.string(),token:z.string(),link:z.string(),emailed:z.boolean()});
  if(demo)return {id:'demo-naming',token:'demo',link:namingLink('demo'),emailed:Boolean(request)};
- return result.parse(await rpc('create_territory_naming',{p_request:request,p_congregation:congregation,p_territories:territories}));
+ return result.parse(await rpc('create_territory_naming',{p_request:request,p_congregation:congregation,p_territories:territories,p_landmarks_editable:landmarksEditable}));
 }
 export async function namingList():Promise<NamingSummary[]>{
- if(demo)return [{id:'demo-naming',token:'demo',request_id:'00000000-0000-4000-8000-000000000011',congregation:'Fictional Hillside',created_at:new Date().toISOString(),total:demoNaming.territories.length,submitted:demoNaming.entries.filter(e=>e.submitted).length}];
+ if(demo)return [{id:'demo-naming',token:'demo',request_id:'00000000-0000-4000-8000-000000000011',congregation:'Fictional Hillside',created_at:new Date().toISOString(),total:demoNaming.territories.length,submitted:demoNaming.entries.filter(e=>e.submitted).length,landmarks_editable:demoNaming.landmarks_editable}];
  return namingListSchema.parse(await rpc('territory_naming_list'));
+}
+/** Owner: let the congregation move, add and remove landmarks on this link, or only rename them. */
+export async function setNamingLandmarks(id:string,on:boolean){
+ if(demo||id==='demo-naming'){demoNaming.landmarks_editable=on;return;}
+ await rpc('set_territory_naming_landmarks',{p_id:id,p_on:on});
 }
 export async function namingResults(id:string):Promise<NamingEntry[]>{
  if(demo||id==='demo-naming')return clone(demoNaming.entries);
