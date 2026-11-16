@@ -1,6 +1,6 @@
 // Territory manager calls. Every read and write is a scoped server function; the fictional demo keeps data in memory.
 import {z} from 'zod';
-import {demo,mapFiles,rpc} from './client';
+import {demo,rpc} from './client';
 import {territoryUrl} from './territory-site';
 import seed from './territory-demo.json';
 import {addDays,reportModeSchema,roleSchema,today,workspaceDataSchema,type Assignment,type Issue,type ReportMode,type Territory,type WorkspaceData} from './territory-model';
@@ -27,7 +27,7 @@ const sample=(():WorkspaceData&{images:Record<string,string>}=>{
  const {territory,...issue}=seed.issue;
  const reports:Issue[]=[{...issue,kind:'issue',language:null,id:id(),territory_id:'demo-t'+territory,created_at:now,resolved_at:null},
   ...seed.languageFinds.map(f=>({...f,kind:'language' as const,id:id(),territory_id:'demo-t'+f.territory,reporter:'',lat:null,lng:null,accuracy:null,created_at:now,resolved_at:null}))];
- return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo',report_mode:'issues_language',languages:seed.languages,review_state:'none',review_round:0,full_map_path:null,full_map_name:null,full_map_at:null,stage:null},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'viewer'}],territories,assignments,reports,images:{}};
+ return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo',report_mode:'issues_language',languages:seed.languages,review_state:'none',review_round:0,drive_url:null,full_map_url:null,full_map_name:null,full_map_at:null,stage:null},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'viewer'}],territories,assignments,reports,images:{}};
 })();
 const demoOwner:OwnerOverview={workspaces:[{id:'demo-ws',name:'River Park Congregation',created_at:new Date().toISOString(),admins:['overseer@example.invalid'],territories:seed.names.length}],
  applications:[{id:'00000000-0000-4000-8000-000000000003',contact_name:'Fictional Servant',contact_email:'servant@example.invalid',admin_email:'servant@example.invalid',congregation_name:'Fictional Hillside',phone:null,status:'pending',created_at:new Date().toISOString()}]};
@@ -259,22 +259,17 @@ export async function reviewSend(ws:string){
  if(!demo){await rpc('tm_review_send',{p_ws:ws});return;}
  sample.workspace.review_state='review';sample.workspace.review_round=(sample.workspace.review_round??0)+1;
 }
-const requestWorkspaceSchema=z.array(z.object({id:z.string(),request_id:z.string(),review_state:z.enum(['none','review','changes','approved']),review_round:z.number(),cards:z.number(),comments:z.number(),full_map_name:z.string().nullable(),full_map_at:z.string().nullable()}));
+const requestWorkspaceSchema=z.array(z.object({id:z.string(),request_id:z.string(),review_state:z.enum(['none','review','changes','approved']),review_round:z.number(),cards:z.number(),comments:z.number(),drive_url:z.string().nullable().default(null),full_map_url:z.string().nullable().default(null),full_map_name:z.string().nullable(),full_map_at:z.string().nullable()}));
 export type RequestWorkspace=z.infer<typeof requestWorkspaceSchema>[number];
 /** Owner: each request's workspace and how far its review has got. */
 export async function requestWorkspaces():Promise<RequestWorkspace[]>{
- if(demo)return [{id:'demo-ws',request_id:'00000000-0000-4000-8000-000000000011',review_state:sample.workspace.review_state??'none',review_round:sample.workspace.review_round??0,cards:sample.territories.length,comments:sample.territories.filter(t=>t.review_comment).length,full_map_name:null,full_map_at:null}];
+ if(demo)return [{id:'demo-ws',request_id:'00000000-0000-4000-8000-000000000011',review_state:sample.workspace.review_state??'none',review_round:sample.workspace.review_round??0,cards:sample.territories.length,comments:sample.territories.filter(t=>t.review_comment).length,drive_url:sample.workspace.drive_url??null,full_map_url:sample.workspace.full_map_url??null,full_map_name:null,full_map_at:null}];
  return requestWorkspaceSchema.parse(await rpc('tm_request_workspaces'));
 }
 /** Owner: the request's workspace (made now if missing; its contact email is the admin). */
 export async function workspaceForRequest(request:string){return demo?'demo-ws':z.string().parse(await rpc('tm_workspace_for_request',{p_request:request}));}
-const FILE_NAME_MAX=120;
-/** Owner: upload the full map into the workspace's folder; the admin is emailed and the request becomes ready for use. */
-export async function setFullMap(ws:string,file:File){
- if(demo)return;
- const safe=file.name.replace(/[^\w.-]+/g,'-').slice(-FILE_NAME_MAX)||'full-map.pdf',path=`${ws}/${Date.now()}-${safe}`;
- await mapFiles.upload(path,file);
- await rpc('tm_set_full_map',{p_ws:ws,p_path:path,p_name:file.name});
+/** Owner: the congregation's Google Drive folder and full map links. A new full map link emails the admin and makes the request ready for use. */
+export async function setDriveLinks(ws:string,folder:string,fullMap:string){
+ if(!demo){await rpc('tm_set_drive_links',{p_ws:ws,p_folder:folder,p_full_map:fullMap});return;}
+ Object.assign(sample.workspace,{drive_url:folder.trim()||null,full_map_url:fullMap.trim()||null});
 }
-/** Members: a short-lived link that downloads the full map. */
-export async function fullMapLink(path:string,name:string){if(demo)fail('The fictional demo has no full map file.');return mapFiles.link(path,name);}

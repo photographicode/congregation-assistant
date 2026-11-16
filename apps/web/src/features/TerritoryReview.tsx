@@ -3,7 +3,7 @@
 // While the cards are in review the workspace opens on this screen; once approved it is used as normal.
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
-import {Check,CheckCheck,Download,FileText,Map as MapIcon,Send} from 'lucide-react';
+import {Check,CheckCheck,Download,FileText,FolderOpen,Map as MapIcon,Send} from 'lucide-react';
 import {Button,Chip,Field} from '../../../../packages/ui/components';
 import {Dialog} from '../../../../packages/ui/Dialog';
 import * as api from './territory-api';
@@ -146,19 +146,19 @@ function CardDownloads({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
 /** Dashboard panels for a request's workspace: milestones until ready, the full map, and every card at once. */
 export function ReadyPanels({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
  const stage=d.workspace.stage;
- return <>{stage!==null&&stage<LAST_STAGE&&<Progress d={d}/>}<FullMap d={d} notify={notify}/><CardDownloads d={d} notify={notify}/></>;
+ return <>{stage!==null&&stage<LAST_STAGE&&<Progress d={d}/>}<FullMap d={d}/><CardDownloads d={d} notify={notify}/></>;
 }
 
-/** The full map: a download once we upload it, otherwise where it stands. */
-function FullMap({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
- const {full_map_path:path,full_map_name:name,full_map_at:at,review_state:state}=d.workspace;
- const [busy,setBusy]=React.useState(false);
- if(!path&&state!=='approved')return null;
- const get=async()=>{setBusy(true);try{const a=document.createElement('a');a.href=await api.fullMapLink(path!,name||'full-map.pdf');a.rel='noopener';a.click();}catch(e){notify((e as Error).message);}finally{setBusy(false);}};
+/** The full map and the congregation's Google Drive folder (cards, boundary, guide), once we share them. */
+function FullMap({d}:{d:WorkspaceData}){
+ const {full_map_url:map,drive_url:folder,full_map_at:at,review_state:state}=d.workspace;
+ if(!map&&!folder&&state!=='approved')return null;
  return <section className="tm-raised stack" aria-labelledby="tm-full-map">
-  <h2 id="tm-full-map">{'Full map'}</h2>
-  {path?<><p className="muted">{`${name||'Full map'} · ready since ${new Date(at!).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}`}</p>
-   <div className="actions"><Button className="primary" busy={busy} onClick={()=>void get()}><Download/>{'Download the full map'}</Button></div></>
-  :<p className="muted">{'We are making the full map of every territory. We will email you when it is ready.'}</p>}
+  <h2 id="tm-full-map">{'Full map and files'}</h2>
+  <p className="muted">{map&&at?`The full map is ready since ${new Date(at).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}.`:'We are making the full map of every territory. We will email you when it is ready.'}</p>
+  <div className="actions">
+   {map&&<a className="button primary" href={map} target="_blank" rel="noopener noreferrer"><MapIcon/>{'Open the full map'}</a>}
+   {folder&&<a className="button" href={folder} target="_blank" rel="noopener noreferrer"><FolderOpen/>{'Open all files in Google Drive'}</a>}
+  </div>
  </section>;
 }

@@ -139,7 +139,7 @@ function ReviewRow({request,status,review,notify}:{request:string;status:string;
    <a className="button" href={`?territory&ws=${encodeURIComponent(review.id)}`}><ExternalLink/>{'Open the workspace'}</a>
    {resend&&<Button className="primary" busy={run.busy==='send'} disabled={!review.cards} onClick={()=>void run.go('send',()=>api.reviewSend(review.id),'Cards sent. The admin is emailed to check them.')}><Send/>{review.review_round?'Send corrected cards':'Send cards for review'}</Button>}
   </div>
-  {review.review_state==='approved'&&<MapUpload review={review} run={run}/>}
+  <DriveLinks review={review} run={run}/>
  </div>;
 }
 /** Runs one owner action at a time, then refreshes the request list. */
@@ -148,11 +148,16 @@ function useRun(notify:(m:string)=>void){
  const go=async(kind:string,fn:()=>Promise<unknown>,done:string)=>{setBusy(kind);try{await fn();notify(done);await qc.invalidateQueries({queryKey:['tm','request-ws']});await qc.invalidateQueries({queryKey:['tm','help']});}catch(e){notify((e as Error).message);}finally{setBusy('');}};
  return {busy,go};
 }
-function MapUpload({review,run}:{review:api.RequestWorkspace;run:ReturnType<typeof useRun>}){
- const upload=(file?:File)=>{if(file)void run.go('map',()=>api.setFullMap(review.id,file),'Full map uploaded. The admin is emailed and the request is ready for use.');};
+/** The congregation's Google Drive folder and full map links. A new full map link emails the admin and finishes the request. */
+function DriveLinks({review,run}:{review:api.RequestWorkspace;run:ReturnType<typeof useRun>}){
+ const [folder,setFolder]=React.useState(review.drive_url??''),[map,setMap]=React.useState(review.full_map_url??'');
+ const dirty=folder.trim()!==(review.drive_url??'')||map.trim()!==(review.full_map_url??'');
+ const done=map.trim()&&map.trim()!==(review.full_map_url??'')?'Links saved. The admin is emailed the full map and the request is ready for use.':'Links saved.';
  return <>
-  <Field label={review.full_map_at?`Full map: ${review.full_map_name} (replace)`:'Upload the full map'} hint={'PDF, PNG or JPEG, up to 50 MB. The admin is emailed and the request becomes Ready for use.'}>
-   {p=><input {...p} type="file" accept="application/pdf,image/png,image/jpeg" disabled={run.busy==='map'} onChange={e=>upload(e.target.files?.[0])}/>}</Field>
-  {run.busy==='map'&&<p className="muted" aria-live="polite">{'Uploading the full map…'}</p>}
+  <Field label={'Google Drive folder link'} hint={'The congregation’s folder (Full map, Territory cards, Boundary, Guide), shared as Anyone with the link.'}>
+   {p=><input {...p} type="url" inputMode="url" className="tm-inset" placeholder={'https://drive.google.com/drive/folders/…'} value={folder} onChange={e=>setFolder(e.target.value)}/>}</Field>
+  <Field label={'Full map link'} hint={'The full map file in that folder. Saving a new link emails the admin and makes the request Ready for use.'}>
+   {p=><input {...p} type="url" inputMode="url" className="tm-inset" placeholder={'https://drive.google.com/file/d/…'} value={map} onChange={e=>setMap(e.target.value)}/>}</Field>
+  <div className="actions"><Button className="primary" disabled={!dirty} busy={run.busy==='links'} onClick={()=>void run.go('links',()=>api.setDriveLinks(review.id,folder,map),done)}>{'Save links'}</Button></div>
  </>;
 }

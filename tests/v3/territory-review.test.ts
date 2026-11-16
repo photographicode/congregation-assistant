@@ -36,7 +36,7 @@ describe('territory card review',()=>{
  it('reads workspaces from servers without the review update',()=>{
   const d=workspaceDataSchema.parse({workspace:{id:'w',name:'Hill',due_days:120,recent_days:90,report_token:'t'},role:'admin',members:[],assignments:[],reports:[],
    territories:[{id:'t1',number:'1',name:'A',notes:'',thumb:null,has_image:true,share_token:'s',updated_at:'2026-11-17'}]});
-  expect(d.workspace).toMatchObject({review_state:'none',review_round:0,full_map_path:null,stage:null});
+  expect(d.workspace).toMatchObject({review_state:'none',review_round:0,drive_url:null,full_map_url:null,stage:null});
   expect(d.territories[0]).toMatchObject({review_comment:'',review_comment_at:null});
  });
 });
