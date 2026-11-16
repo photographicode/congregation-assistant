@@ -35,6 +35,7 @@ describe('territory worker: search engines',()=>{
  it('lists the landing page for search engines',async()=>{
   const robots=await (await worker.fetch(new Request(HOST+'/robots.txt'))).text();
   expect(robots).toContain('Disallow: /?');
+  expect(await (await worker.fetch(new Request(HOST+'/llms.txt'))).text()).toContain('KML file splitter');
   expect(await (await worker.fetch(new Request(HOST+'/sitemap.xml'))).text()).toContain(HOST+'/</loc>');
  });
  it('points /favicon.ico at the app icon',async()=>{

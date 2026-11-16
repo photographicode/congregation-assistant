@@ -18,6 +18,8 @@ Allow: /$
 Disallow: /?
 Sitemap: https://${HOST}/sitemap.xml
 `, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  // Plain summary for AI search (ChatGPT, Claude, Perplexity and others).
+  if (url.pathname === '/llms.txt') return new Response(LLMS, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   // IndexNow key (Bing, Yandex and others): public by design, proves this site sent the change list.
   if (url.pathname === '/f4229fc3717dfac1f6afd4b460687b07.txt') return new Response('f4229fc3717dfac1f6afd4b460687b07', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><lastmod>${LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
@@ -59,8 +61,22 @@ Sitemap: https://${HOST}/sitemap.xml
 const TITLE = 'Territory Assistant: JW territory manager and map cards';
 const DESCRIPTION = 'Keep, assign and return congregation territories, with the S-13 record and digital cards. We also make Territory Map Cards from your KML file. Free.';
 // Date the landing page last changed, for the sitemap.
-const LASTMOD = '2026-11-16';
-const KEYWORDS = 'territory assistant, territory manager, JW territory, JW territory card, JW territory manager, Jehovah’s Witnesses territory card, Jehovahs Witnesses territory card, S-13, S-13 territory assignment record, digital territory card, language search territory, territory, territory manager, territory card, territory map card, territory maker, congregation territory, Jehovah’s Witnesses, Jehovah’s Witnesses territory, JW territory, S-13, territory assignment record, congregation, KML territory map, QR code territory map, KML file splitter, KML territory splitter, split KML into territories, KML to territory cards, Google My Maps territory, territory map maker, territory QR code, printable territory cards, territory card generator, territory assignment, territory tracker, territory records app, Jehovah’s Witnesses territory cards, JW territory map, JW territory app, field service territory, congregation territory map, territory boundaries, door to door territory, India congregations, Malayalam, Hindi, Tamil, Telugu, Kannada';
+const LASTMOD = '2026-11-17';
+const KEYWORDS = 'territory assistant, territory manager, JW territory, JW territory card, JW territory manager, Jehovah’s Witnesses territory card, Jehovahs Witnesses territory card, S-13, S-13 territory assignment record, digital territory card, language search territory, territory, territory manager, territory card, territory map card, territory maker, congregation territory, Jehovah’s Witnesses, Jehovah’s Witnesses territory, JW territory, S-13, territory assignment record, congregation, KML territory map, QR code territory map, KML file splitter, KML territory splitter, split KML into territories, KML to territory cards, Google My Maps territory, territory map maker, territory QR code, printable territory cards, territory card generator, territory assignment, territory tracker, territory records app, Jehovah’s Witnesses territory cards, JW territory map, JW territory app, field service territory, congregation territory map, territory boundaries, door to door territory, India congregations, Malayalam, Hindi, Tamil, Telugu, Kannada, territory map jw, JW territory map maker, territory JW map maker, territory kml, KML territory maker, kml file splitter, split KML file, KML boundary to territories, territory map generator, territory cards PDF, territory helper, territory app for congregations, Jehovah’s Witnesses congregation, Jehovahs Witnesses, Jehovah witness territory, congregation assistant, publisher territory card, field service territory map';
+const LLMS = `# Territory Assistant
+
+> JW territory manager for congregations of Jehovah’s Witnesses, part of Congregation Assistant (https://congregationassistant.com/). Free; voluntary donations only. Independent; not made by or affiliated with the Watch Tower Bible and Tract Society.
+
+- Territory manager: keep, assign and return territories, with the S-13 territory assignment record, digital territory cards that publishers open on the phone, and reports of houses or places routed to the right territory.
+- Territory making: send the congregation boundary as a KML file (from Hub); we split it into territories (KML file splitter / KML territory maker), the congregation names them through a private link, and we print Territory Map Cards with a QR code to Google Maps plus a high-resolution full map with every territory number.
+- Languages: English, Malayalam, Kannada, Telugu, Hindi, Tamil.
+
+## Pages
+
+- [Territory Assistant home and FAQ](https://${HOST}/)
+- [Ask for territory help](https://${HOST}/#tl-help)
+- [Congregation Assistant (OCLM meeting scheduler, publisher manager)](https://congregationassistant.com/)
+`;
 // Questions and answers for search results; they match apps/web/src/features/TerritoryFaq.tsx on the landing page.
 const FAQ = { '@type': 'FAQPage', mainEntity: [
  ['How much does it cost?', 'Nothing is charged. This work is hard and has a lot of time and effort behind it, but we accept only voluntary donations. No donation is needed to receive any service.'],
@@ -71,7 +87,7 @@ const FAQ = { '@type': 'FAQPage', mainEntity: [
  ['How do publishers report a house or a place?', 'From a shared digital territory card. A report with a location goes automatically to the territory that holds that place.'],
 ].map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })) };
 const JSONLD = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
- { '@type': 'WebSite', name: 'Territory Assistant', alternateName: ['Territory manager · Congregation Assistant', 'JW territory manager'], url: `https://${HOST}/` },
+ { '@type': 'WebSite', name: 'Territory Assistant', alternateName: ['Territory manager · Congregation Assistant', 'JW territory manager', 'JW territory map maker', 'KML territory maker', 'KML file splitter for territories', 'Territory map cards'], url: `https://${HOST}/` },
  { '@type': 'Organization', name: 'Congregation Assistant', url: 'https://congregationassistant.com/', logo: `https://${HOST}/app/assets/icon-512.png` },
  { '@type': 'SoftwareApplication', name: 'Territory Assistant · Congregation Assistant', offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' }, url: `https://${HOST}/`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web, Android, iOS', description: DESCRIPTION, inLanguage: ['en', 'ml', 'kn', 'te', 'hi', 'ta'] },
  { '@type': 'Service', name: 'Territory map cards and territory making', serviceType: 'Territory maker', provider: { '@type': 'Organization', name: 'Congregation Assistant', url: 'https://congregationassistant.com/' }, areaServed: 'IN', description: 'From the congregation boundary (KML) to territories, a Territory Map Card for each with a QR code to Google Maps, and a high-resolution full map with every territory number.' },

@@ -41,7 +41,7 @@ const manifest=JSON.parse(await readFile('dist/.vite/manifest.json','utf8'));con
 let total=0;for(const key of initialKeys){const file=manifest[key].file;if(file.endsWith('.js'))total+=gzipSync(await readFile('dist/'+file)).length;}
 if(total>250*1024)throw Error('Initial application JS exceeds 250 KiB gzip: '+total);
 await writeFile('dist/build-report.json',JSON.stringify({hash,jsGzipBytes:total,limit:250*1024},null,2));
-await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-site',{recursive:true});await writeFile('dist-site/robots.txt','User-agent: *\nAllow: /\nSitemap: https://congregationassistant.com/sitemap.xml\n');
+await rm('dist-site',{force:true,recursive:true});await cp('dist/site','dist-site',{recursive:true});await writeFile('dist-site/robots.txt','User-agent: *\nAllow: /\nSitemap: https://congregationassistant.com/sitemap.xml\nSitemap: https://territory.congregationassistant.com/sitemap.xml\n');
 const siteReport=JSON.parse(await readFile('dist-site/build-report.json','utf8'));await writeFile('dist-site/build-report.json',JSON.stringify({...siteReport,hash},null,2)+'\n');console.log('Initial website gzip payload',siteReport.initialGzipBytes,'bytes');console.log('Standalone V3 build',hash.slice(0,12),'JS gzip bytes',total);
 
 await import('./build-system-pages.mjs');
