@@ -14,7 +14,7 @@ if(cssWarnings.length)throw Error('Invalid application CSS: '+cssWarnings.join('
 await mkdir('dist/assets/fonts',{recursive:true});
 for(const file of (await readdir('assets/fonts')).filter(name=>!/^Nimbus|^NIMBUS/.test(name)).filter(name=>/\.(?:ttf|otf|woff2|txt|zip)$/.test(name)))await cp('assets/fonts/'+file,'dist/assets/fonts/'+file);
 await cp('assets/pdf-templates','dist/assets/pdf-templates',{recursive:true});
-for(const file of ['icon-192.png','icon-512.png'])await cp('assets/'+file,'dist/assets/'+file);
+for(const file of ['icon-192.png','icon-512.png','territory-guide.pdf'])await cp('assets/'+file,'dist/assets/'+file);
 await cp('data','dist/data',{recursive:true});await cp('public-config.json','dist/public-config.json');await cp('capabilities.json','dist/capabilities.json');
 await import('./build-marketing-site.mjs');
 await mkdir('dist/.well-known',{recursive:true});await writeFile('dist/.well-known/build-hash.txt',hash+'\n');

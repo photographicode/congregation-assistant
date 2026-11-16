@@ -139,5 +139,145 @@
       "household": "House 22, yellow wall",
       "details": "Speaks Tamil."
     }
-  ]
+  ],
+  "naming": {
+    "congregation": "Fictional Hillside",
+    "territories": [
+      {
+        "number": "1",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                76.286,
+                9.96
+              ],
+              [
+                76.292,
+                9.96
+              ],
+              [
+                76.292,
+                9.966
+              ],
+              [
+                76.286,
+                9.966
+              ],
+              [
+                76.286,
+                9.96
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "number": "2",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                76.292,
+                9.96
+              ],
+              [
+                76.298,
+                9.96
+              ],
+              [
+                76.298,
+                9.966
+              ],
+              [
+                76.292,
+                9.966
+              ],
+              [
+                76.292,
+                9.96
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "number": "3",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                76.298,
+                9.96
+              ],
+              [
+                76.304,
+                9.96
+              ],
+              [
+                76.304,
+                9.966
+              ],
+              [
+                76.298,
+                9.966
+              ],
+              [
+                76.298,
+                9.96
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "number": "4",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                76.304,
+                9.96
+              ],
+              [
+                76.31,
+                9.96
+              ],
+              [
+                76.31,
+                9.966
+              ],
+              [
+                76.304,
+                9.966
+              ],
+              [
+                76.304,
+                9.96
+              ]
+            ]
+          ]
+        }
+      }
+    ],
+    "entries": [
+      {
+        "number": "1",
+        "locality": "Market Road",
+        "points": [
+          {
+            "name": "Clock junction",
+            "lng": 76.289,
+            "lat": 9.963
+          }
+        ],
+        "note": "",
+        "submitted": true
+      }
+    ]
+  }
 }

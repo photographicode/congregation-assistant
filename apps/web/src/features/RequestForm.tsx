@@ -4,7 +4,7 @@ import { Button } from "../../../../packages/ui/components";
 import { Field } from "../../../../packages/ui/Field";
 import { rpc, config } from "./client";
 import { onTerritoryHost, territoryUrl } from "./territory-site";
-import { FILE_LIMITS, KIBIBYTE, readRequestFile, setProblem, type RequestFile } from "./request-files";
+import { KIBIBYTE, readRequestFile, setProblem, type RequestFile } from "./request-files";
 
 // Public requests that need no sign-in: a new congregation workspace, or territory maps made for a congregation.
 type Kind = "workspace" | "territory";
@@ -65,21 +65,34 @@ export function RequestForm() {
     [needs, setNeeds] = React.useState<Need[]>(() => chosenService() ?? ["cards"]),
     [progress, setProgress] = React.useState(0),
     [files, setFiles] = React.useState<RequestFile[]>([]),
-    [fileError, setFileError] = React.useState("");
+    [fileError, setFileError] = React.useState(""),
+    [areas, setAreas] = React.useState<string[]>([]),
+    [review, setReview] = React.useState(false);
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
   React.useEffect(() => {
     document.title = COPY[kind].title;
   }, [kind]);
+  /** Territory requests are checked, then shown once for review; the second press sends them. */
+  function holdForReview() {
+    if (kind !== "territory") return false;
+    const problem = territoryProblem(needs, files);
+    setError(problem);
+    if (problem) return true;
+    if (review) return false;
+    setReview(true);
+    scrollToForm();
+    return true;
+  }
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (busy) return;
-    if (kind === "territory" && !needs.length) { setError("Tick at least one thing you need."); return; }
+    if (holdForReview()) return;
     setBusy(true);
     setError("");
     const attach = kind === "territory" && files.length > 0;
     try {
-      const territory = { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: `[Needs: ${NEEDS.filter((item) => needs.includes(item.id)).map((item) => item.label).join(", ")}] [Now: ${progressLabel(progress)}] ${form.details}`, p_website: form.website };
+      const territory = { p_name: form.name, p_contact_email: form.email, p_congregation: form.congregation, p_phone: form.phone, p_details: requestDetails(needs, areas, progress, form.details), p_website: form.website };
       let call: [string, Record<string, unknown>] = ["submit_workspace_application", { p_name: form.name, p_contact_email: form.email, p_admin_email: form.admin, p_congregation: form.congregation, p_phone: form.phone, p_authorized: authorized, p_website: form.website }];
       if (kind === "territory") call = ["submit_territory_request", territory];
       if (attach) call = ["submit_territory_request_with_files", { ...territory, p_files: files.map(({ name, data }) => ({ name, data })) }];
@@ -112,7 +125,7 @@ export function RequestForm() {
         <form className="stack" onSubmit={(e) => void submit(e)} aria-busy={busy}>
           <fieldset className="stack" disabled={busy}>
             {kind === "territory" ? (
-              <TerritoryFields form={form} set={set} needs={needs} onNeeds={setNeeds} progress={progress} onProgress={setProgress} files={files} fileError={fileError} onFileError={setFileError} onFiles={setFiles} />
+              <TerritoryFields form={form} set={set} needs={needs} onNeeds={setNeeds} progress={progress} onProgress={setProgress} files={files} fileError={fileError} onFileError={setFileError} onFiles={setFiles} areas={areas} onAreas={setAreas} review={review} onEdit={(n) => { setReview(false); requestAnimationFrame(() => document.getElementById("rf-section-" + n)?.scrollIntoView({ behavior: "smooth", block: "start" })); }} />
             ) : (
               <>
                 <ContactFields form={form} set={set} />
@@ -130,7 +143,7 @@ export function RequestForm() {
             </label>
           </fieldset>
           {error && <p role="alert" className="error">{error}</p>}
-          <Button className="primary full" type="submit" disabled={busy}>{busy ? "Sending…" : "Send request"}</Button>
+          <Button className="primary full" type="submit" disabled={busy}>{submitLabel(busy, kind === "territory" && !review)}</Button>
           <p className="muted">{"Do not include publisher names or reports. Questions: "}<a href={"mailto:" + config.SUPPORT_EMAIL}>{config.SUPPORT_EMAIL}</a></p>
         </form>
       )}
@@ -138,19 +151,10 @@ export function RequestForm() {
   );
 }
 
-/** First step for territories: open the manager, or ask for help making territories. */
+/** First step for territories: what we make, then the request. */
 function TerritoryChoice({ help, onHelp }: { help: boolean; onHelp: () => void }) {
   return (
     <div className="stack">
-      <p>{"Territories are a separate part of Congregation Assistant. What do you need?"}</p>
-      <section className="card stack">
-        <h2>{"Manage our territories"}</h2>
-        <p>{"Keep every territory, assign and return them, keep the S-13 record and share each map with the publisher who has it."}</p>
-        <div className="actions">
-          <a href={territoryUrl()}>{"Open the territory manager"}</a>
-          <a href={territoryUrl("territory&demo")}>{"See the demo"}</a>
-        </div>
-      </section>
       <section className="card stack">
         <h2>{"Help us make our territories"}</h2>
         <p>{"We make them for you, from the congregation boundary to printed cards. Each Territory Map Card shows:"}</p>
@@ -166,6 +170,17 @@ function TerritoryChoice({ help, onHelp }: { help: boolean; onHelp: () => void }
     </div>
   );
 }
+
+// What the area is like; any mix.
+const AREAS = ["City", "Hills or mountains", "Backwaters", "Villages and farmland", "Coast"];
+const territoryProblem = (needs: Need[], files: RequestFile[]) => {
+  if (!needs.length) return "Tick at least one thing you need.";
+  return files.length ? "" : "Add the KML file from JW Hub. Your congregation secretary can give it to you.";
+};
+const scrollToForm = () => requestAnimationFrame(() => document.querySelector(".rf-progress")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+/** The request details: labels in brackets first (the owner dashboard shows them as chips), then the free text. */
+const requestDetails = (needs: Need[], areas: string[], progress: number, text: string) =>
+  `[Needs: ${NEEDS.filter((item) => needs.includes(item.id)).map((item) => item.label).join(", ")}] ${areas.length ? `[Area: ${areas.join(", ")}] ` : ""}[Now: ${progressLabel(progress)}] ${text}`.trim();
 
 type FormState = { name: string; email: string; congregation: string; phone: string; details: string };
 type Setter = (key: "name" | "email" | "congregation" | "phone" | "details") => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -201,17 +216,20 @@ function Section({ n, title, done, optional, children }: { n: number; title: str
 }
 
 /** The territory request in four sections, with a bar that stays on screen and counts the required answers. */
-function TerritoryFields(props: { form: FormState; set: Setter; needs: Need[]; onNeeds: (n: Need[]) => void; progress: number; onProgress: (n: number) => void; files: RequestFile[]; fileError: string; onFileError: (e: string) => void; onFiles: (f: RequestFile[]) => void }) {
+type TerritoryProps = { form: FormState; set: Setter; needs: Need[]; onNeeds: (n: Need[]) => void; progress: number; onProgress: (n: number) => void; files: RequestFile[]; fileError: string; onFileError: (e: string) => void; onFiles: (f: RequestFile[]) => void; areas: string[]; onAreas: (a: string[]) => void; review: boolean; onEdit: (section: number) => void };
+function TerritoryFields(props: TerritoryProps) {
   const { form, set, needs } = props;
-  const answers = [form.name.trim().length >= 2, EMAIL.test(form.email.trim()), form.congregation.trim().length >= 2, needs.length > 0, form.details.trim().length >= DETAILS_MIN];
+  const answers = [form.name.trim().length >= 2, EMAIL.test(form.email.trim()), form.congregation.trim().length >= 2, needs.length > 0, props.files.length > 0];
   const done = answers.filter(Boolean).length;
   const percent = Math.round((done / answers.length) * PERCENT);
   return (
     <>
       <div className="rf-progress" role="group" aria-label={"Your progress"}>
-        <div className="rf-progress-text"><strong>{done === answers.length ? "Ready to send" : `${done} of ${answers.length} required answers`}</strong><span>{percent + "%"}</span></div>
+        <div className="rf-progress-text"><strong>{progressText(props.review, done, answers.length)}</strong><span>{percent + "%"}</span></div>
         <progress max={answers.length} value={done} aria-label={"Required answers given"} />
       </div>
+      {props.review && <Review {...props} />}
+      <div className="rf-sections" hidden={props.review}>
       <Section n={1} title={"About you"} done={answers.slice(0, CONTACT_ANSWERS).every(Boolean)}>
         <div className="rf-grid">
           <ContactFields form={form} set={set} />
@@ -224,11 +242,61 @@ function TerritoryFields(props: { form: FormState; set: Setter; needs: Need[]; o
       <Section n={3} title={"Where are you now?"} done optional>
         <ProgressPicker value={props.progress} onChange={props.onProgress} />
       </Section>
-      <Section n={4} title={"Your boundary file and details"} done={answers[4]!}>
+      <Section n={4} title={"Your KML file and your area"} done={answers[4]!}>
         <BoundaryFiles files={props.files} error={props.fileError} onError={props.onFileError} onChange={props.onFiles} />
-        <Field label={"Tell us about your territory"} hint={"For example: we have the boundary as a KML file and need about 40 territories. Card instructions in Malayalam."}>{(p) => <textarea {...p} required minLength={DETAILS_MIN} maxLength={DETAILS_MAX} rows={DETAILS_ROWS} value={form.details} onChange={set("details")} />}</Field>
+        <AreaPicker value={props.areas} onChange={props.onAreas} />
+        <Field label={"Anything else? (optional)"} hint={"For example: about 40 territories, roughly 150 houses each, card notes in Malayalam."}>{(p) => <textarea {...p} maxLength={DETAILS_MAX} rows={DETAILS_ROWS} value={form.details} onChange={set("details")} />}</Field>
       </Section>
+      </div>
     </>
+  );
+}
+
+const submitLabel = (busy: boolean, toReview: boolean) => {
+  if (busy) return "Sending…";
+  return toReview ? "Review request" : "Send request";
+};
+const progressText = (review: boolean, done: number, total: number) => {
+  if (review) return "Check your request, then send it";
+  return done === total ? "Ready to review" : `${done} of ${total} required answers`;
+};
+
+function AreaPicker({ value, onChange }: { value: string[]; onChange: (a: string[]) => void }) {
+  return (
+    <fieldset className="rf-areas">
+      <legend>{"What is the area like? Tick all that apply."}</legend>
+      {AREAS.map((a) => (
+        <label key={a} className="rf-chip">
+          <input type="checkbox" checked={value.includes(a)} onChange={(e) => onChange(e.target.checked ? [...value, a] : value.filter((x) => x !== a))} />
+          <span>{a}</span>
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+
+/** Everything the request will send, part by part, each with an Edit button that reopens that section. */
+function Review(props: TerritoryProps) {
+  const { form, needs } = props;
+  const rows: [string, string][] = [
+    ["About you", [form.name, form.email, form.congregation, form.phone].filter(Boolean).join(" · ")],
+    ["What you need", NEEDS.filter((n) => needs.includes(n.id)).map((n) => n.label).join(", ")],
+    ["Where you are now", progressLabel(props.progress)],
+    ["KML file and area", [props.files.map((f) => f.name).join(", "), props.areas.join(", "), form.details.trim()].filter(Boolean).join(" · ")],
+  ];
+  return (
+    <section className="rf-review" aria-labelledby="rf-review-title">
+      <h2 id="rf-review-title">{"Review your request"}</h2>
+      <dl>
+        {rows.map(([title, text], i) => (
+          <div key={title}>
+            <dt>{title}</dt>
+            <dd>{text || "—"}</dd>
+            <button type="button" className="button" onClick={() => props.onEdit(i + 1)}>{"Edit"}</button>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 
@@ -305,8 +373,8 @@ function BoundaryFiles({ files, error, onError, onChange }: { files: RequestFile
   }
   return (
     <div className="stack rf-files">
-      <Field label={"Boundary file (optional)"} hint={"KML or KMZ, for example exported from Google My Maps (⋮ → Export to KML/KMZ). Up to 3 files, 4 MB each."} error={error || undefined}>
-        {(p) => <input {...p} ref={input} type="file" accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz" multiple disabled={files.length >= FILE_LIMITS.count} onChange={(e) => void add(e.target.files)} />}
+      <Field label={"KML file from JW Hub"} hint={"One file with your congregation boundary. Ask your congregation secretary for it. Up to 4 MB."} error={error || undefined}>
+        {(p) => <input {...p} ref={input} type="file" accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz" disabled={files.length >= 1} onChange={(e) => void add(e.target.files)} />}
       </Field>
       {files.length > 0 && (
         <ul className="rf-file-list" aria-label={"Attached files"}>

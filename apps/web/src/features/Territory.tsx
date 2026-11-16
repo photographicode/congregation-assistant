@@ -16,6 +16,7 @@ import {ImportCsv} from './TerritoryImport';
 import {DemoBanner,Outlines,ReportSettings,shareNote} from './TerritorySettingsMore';
 import {generatorUrl,mainAppUrl,signInReturnUrl} from './territory-site';
 import {TerritoryRequests} from './TerritoryRequests';
+import {fromGenerator,GeneratorSync} from './GeneratorSync';
 import {TerritoryOwnerOverview} from './TerritoryOwnerOverview';
 import {TerritoryOwner} from './TerritoryOwner';
 import {TerritoryLanding} from './TerritoryLanding';
@@ -80,6 +81,7 @@ function Workspaces(){
  if(list.isLoading||ownerQuery.isLoading)return <main className="tm tm-center"><Skeleton label={"Finding your workspaces…"}/></main>;
  if(list.error)return <main className="tm tm-center"><section className="tm-raised tm-login stack"><h1>{'Workspaces could not load'}</h1><p role="alert">{(list.error as Error).message}</p><Button onClick={()=>void list.refetch()}>{'Retry'}</Button></section></main>;
  const rows=list.data||[];
+ if(fromGenerator())return <GeneratorSync workspaces={rows}/>;
  const ws=pickWorkspace(rows,chosen,owner);
  if(owner&&!ws)return <OwnerHome onSignOut={()=>void signOut()}/>;
  if(!ws)return <main className="tm tm-center"><section className="tm-raised tm-login stack">

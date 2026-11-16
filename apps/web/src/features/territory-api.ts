@@ -151,9 +151,11 @@ export async function submitApplication(f:{name:string;email:string;admin:string
 }
 
 // ---- Territory-making requests (owners only) ------------------------------------------------------
+/** The last request milestone, ready for use. */
+const LAST_STAGE=4;
 const helpStatus=z.enum(['new','in_progress','done','declined']);
 const helpRequestSchema=z.object({id:z.string(),contact_name:z.string(),contact_email:z.string(),congregation_name:z.string(),phone:z.string().nullable(),details:z.string(),
- status:helpStatus,owner_note:z.string().nullable(),created_at:z.string(),
+ status:helpStatus,owner_note:z.string().nullable(),created_at:z.string(),stage:z.number().int().min(0).max(LAST_STAGE).default(0),track_token:z.string().nullable().default(null),
  files:z.array(z.object({id:z.string(),name:z.string(),kind:z.enum(['kml','kmz']),size:z.number()})).default([])});
 export type HelpRequest=z.infer<typeof helpRequestSchema>;
 export type HelpStatus=z.infer<typeof helpStatus>;
@@ -161,17 +163,68 @@ const helpFileSchema=z.object({name:z.string(),kind:z.enum(['kml','kmz']),congre
 export type HelpFile=z.infer<typeof helpFileSchema>;
 const DEMO_KML='<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><Placemark><name>Fictional Hillside boundary</name><Polygon><outerBoundaryIs><LinearRing><coordinates>76.30,9.90 76.33,9.90 76.33,9.93 76.30,9.93 76.30,9.90</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark></Document></kml>';
 let demoHelp:HelpRequest[]=[{id:'00000000-0000-4000-8000-000000000011',contact_name:'Fictional Servant',contact_email:'servant@example.invalid',congregation_name:'Fictional Hillside',phone:null,
- details:'[Complete package] [Now: Not started: we have only the boundary] We need about 40 territories. Card instructions in Malayalam.',status:'new',owner_note:null,created_at:new Date().toISOString(),
+ details:'[Needs: Territory Cards, Full map] [Now: Just the KML file from Hub] We need about 40 territories. Card instructions in Malayalam.',status:'new',owner_note:null,created_at:new Date().toISOString(),stage:0,track_token:'demo-track',
  files:[{id:'demo-file-1',name:'hillside-boundary.kml',kind:'kml',size:DEMO_KML.length}]}];
 export async function helpRequests(){return demo?clone(demoHelp):z.array(helpRequestSchema).parse(await rpc('get_territory_requests'));}
 export async function setHelpRequest(request:string,status:HelpStatus,note:string|null){
  if(!demo){await rpc('update_territory_request',{p_id:request,p_status:status,p_note:note});return;}
  demoHelp=demoHelp.map(r=>r.id===request?{...r,status,owner_note:note===null?r.owner_note:note.trim()||null}:r);
 }
+const demoStatus=(stage:number):HelpStatus=>{if(stage===0)return 'new';return stage===LAST_STAGE?'done':'in_progress';};
+/** Moves a request to a milestone (0 received … 4 ready for use; -1 declines). The server emails the congregation on accept, decline and ready. */
+export async function setHelpStage(request:string,stage:number){
+ if(!demo){await rpc('set_territory_request_stage',{p_id:request,p_stage:stage});return;}
+ demoHelp=demoHelp.map(r=>{if(r.id!==request)return r;if(stage<0)return {...r,status:'declined'};return {...r,stage,status:demoStatus(stage)};});
+}
+const progressSchema=z.object({congregation:z.string(),status:helpStatus,stage:z.number(),created_at:z.string(),updated_at:z.string()});
+export type RequestProgress=z.infer<typeof progressSchema>;
+/** The congregation's tracking link (no sign-in). */
+export async function requestProgress(token:string):Promise<RequestProgress>{
+ if(demo){const now=new Date().toISOString();return {congregation:'Fictional Hillside',status:'in_progress',stage:2,created_at:now,updated_at:now};}
+ return progressSchema.parse(await rpc('territory_request_progress',{p_token:token}));
+}
+export const trackLink=(token:string)=>`${territoryUrl('territory-track'+(demo?'&demo':''))}#token=${token}`;
 export async function helpRequestFile(file:string):Promise<HelpFile>{
  if(demo)return {name:'hillside-boundary.kml',kind:'kml',congregation:'Fictional Hillside',data:btoa(DEMO_KML)};
  return helpFileSchema.parse(await rpc('get_territory_request_file',{p_id:file}));
 }
+
+// ---- Territory naming: the congregation names each split territory on one link --------------------------------
+const pointSchema=z.object({name:z.string(),lng:z.number(),lat:z.number()});
+export type NamingPoint=z.infer<typeof pointSchema>;
+const entrySchema=z.object({number:z.string(),locality:z.string(),points:z.array(pointSchema),note:z.string(),submitted:z.boolean()});
+export type NamingEntry=z.infer<typeof entrySchema>;
+const outline=z.object({type:z.enum(['Polygon','MultiPolygon']),coordinates:z.array(z.any())});
+const namingSchema=z.object({congregation:z.string(),territories:z.array(z.object({number:z.string(),geometry:outline})),entries:z.array(entrySchema)});
+export type Naming=z.infer<typeof namingSchema>;
+const namingListSchema=z.array(z.object({id:z.string(),token:z.string(),request_id:z.string().nullable(),congregation:z.string(),created_at:z.string(),total:z.number(),submitted:z.number()}));
+export type NamingSummary=z.infer<typeof namingListSchema>[number];
+const demoNaming:Naming=namingSchema.parse(seed.naming);
+/** Owner: publish split territories for naming; with a request, its contact is emailed the link. */
+export async function createNaming(request:string|null,congregation:string,territories:{number:string;geometry:unknown}[]){
+ const result=z.object({id:z.string(),token:z.string(),link:z.string(),emailed:z.boolean()});
+ if(demo)return {id:'demo-naming',token:'demo',link:namingLink('demo'),emailed:Boolean(request)};
+ return result.parse(await rpc('create_territory_naming',{p_request:request,p_congregation:congregation,p_territories:territories}));
+}
+export async function namingList():Promise<NamingSummary[]>{
+ if(demo)return [{id:'demo-naming',token:'demo',request_id:'00000000-0000-4000-8000-000000000011',congregation:'Fictional Hillside',created_at:new Date().toISOString(),total:demoNaming.territories.length,submitted:demoNaming.entries.filter(e=>e.submitted).length}];
+ return namingListSchema.parse(await rpc('territory_naming_list'));
+}
+export async function namingResults(id:string):Promise<NamingEntry[]>{
+ if(demo||id==='demo-naming')return clone(demoNaming.entries);
+ return z.array(entrySchema).parse(await rpc('territory_naming_results',{p_id:id}));
+}
+export async function namingGet(token:string):Promise<Naming>{
+ if(demo)return clone(demoNaming);
+ return namingSchema.parse(await rpc('territory_naming_get',{p_token:token}));
+}
+export async function namingSave(token:string,e:Omit<NamingEntry,'submitted'>,submit:boolean){
+ if(!demo){await rpc('territory_naming_save',{p_token:token,p_number:e.number,p_locality:e.locality,p_points:e.points,p_note:e.note,p_submit:submit});return;}
+ if(submit&&e.locality.trim().length<2)fail('Write the locality name before submitting');
+ const old=demoNaming.entries.find(x=>x.number===e.number);
+ demoNaming.entries=[...demoNaming.entries.filter(x=>x.number!==e.number),{...e,submitted:submit||Boolean(old?.submitted)}];
+}
+export const namingLink=(token:string)=>`${territoryUrl('territory-names'+(demo?'&demo':''))}#token=${token}`;
 
 /** Links that open without sign-in. The token rides in the hash so it never reaches server logs or referrers. */
 export const shareLink=(token:string)=>`${territoryUrl('territory-card'+(demo?'&demo':''))}#token=${token}`;

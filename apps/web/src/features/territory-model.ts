@@ -93,3 +93,6 @@ export function reportTitle(r:{kind?:'issue'|'language';language?:string|null;ho
  if(r.kind==='language')return `${r.language||'Language'} speaker`+(r.household?' · '+r.household:'');
  return r.household||'Reported issue';
 }
+
+/** A territory request's milestones, in order; the owner moves it along and the congregation follows on its tracking link. */
+export const MILESTONES=['Request received','Accepted','Territories drawn','Cards and full map made','Ready for use'] as const;

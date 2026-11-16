@@ -5,6 +5,7 @@ import { generatorUrl } from "./territory-site";
 export type Handoff = { name: string; congregation: string; bytes: Uint8Array };
 const READY = "tm-generator-ready";
 const IMPORT = "tm-import";
+const NAMES = "tm-names";
 const WAIT_MS = 60_000;
 
 /**
@@ -13,6 +14,17 @@ const WAIT_MS = 60_000;
  * generator never says it is ready.
  */
 export function openInGenerator(load: () => Promise<Handoff>): Promise<void> {
+  return sendToGenerator(load, ({ name, congregation, bytes }) => {
+    const copy = bytes.slice().buffer;
+    return [{ type: IMPORT, name, congregation, bytes: copy }, [copy]];
+  });
+}
+
+export type Names = { congregation: string; names: { number: string; locality: string; points: { name: string; lng: number; lat: number }[]; note: string }[] };
+/** Opens the generator and gives it the names a congregation wrote for its territories. */
+export const openNamesInGenerator = (load: () => Promise<Names>) => sendToGenerator(load, (n) => [{ type: NAMES, ...n }, []]);
+
+function sendToGenerator<T>(load: () => Promise<T>, message: (data: T) => [unknown, Transferable[]]): Promise<void> {
   const url = generatorUrl();
   const origin = new URL(url).origin;
   const win = window.open(url, "tm-generator");
@@ -24,9 +36,9 @@ export function openInGenerator(load: () => Promise<Handoff>): Promise<void> {
       if (e.source !== win || e.origin !== origin || (e.data as { type?: unknown } | null)?.type !== READY) return;
       stop();
       file.then(
-        ({ name, congregation, bytes }) => {
-          const copy = bytes.slice().buffer;
-          win.postMessage({ type: IMPORT, name, congregation, bytes: copy }, origin, [copy]);
+        (data) => {
+          const [payload, transfer] = message(data);
+          win.postMessage(payload, origin, transfer);
           win.focus();
           resolve();
         },

@@ -1,10 +1,10 @@
 // Territory pages that open without sign-in: a shared territory card, the issue report form and the workspace request.
 import React from 'react';
-import {Copy,Crosshair,Download,MapPin,Map as MapIcon} from 'lucide-react';
+import {Check,Copy,Crosshair,Download,MapPin,Map as MapIcon} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented,Skeleton} from '../../../../packages/ui/components';
 import {config} from './client';
 import * as api from './territory-api';
-import {mapsLink,reportTitle,type ReportMode} from './territory-model';
+import {MILESTONES,mapsLink,reportTitle,type ReportMode} from './territory-model';
 import {cardJpeg,download} from './territory-card';
 import {useTerritoryTheme} from './territory-prefs';
 import './territory.css';
@@ -123,3 +123,21 @@ export function TerritoryRequest(){
   <p className="muted">{'Already approved? '}<a href="?territory">{'Sign in'}</a></p>
  </Page>;
 }
+
+/** ?territory-track#token=… : where a congregation's territory request stands, as milestones. */
+export function TerritoryTrack(){
+ const token=tokenFromHash();
+ const [data,setData]=React.useState<api.RequestProgress|null>(null),[error,setError]=React.useState('');
+ React.useEffect(()=>{document.title='Your territory request · Congregation Assistant';api.requestProgress(token).then(setData).catch(e=>setError(readable(e)));},[token]);
+ if(error)return <Page><h1>{'Your territory request'}</h1><p role="alert">{error}</p></Page>;
+ if(!data)return <Page><Skeleton label={'Opening your request…'}/></Page>;
+ const declined=data.status==='declined';
+ return <Page><p className="muted">{data.congregation}</p><h1>{'Your territory request'}</h1>
+  {declined?<p role="status">{'This request was declined. Check your email for details, or send a new request.'}</p>
+  :<ol className="tm-track" aria-label={'Milestones'}>{MILESTONES.map((m,i)=>{const state=trackState(i,data.stage);return <li key={m} className={state} aria-current={state==='now'?'step':undefined}>
+   <span className="tm-track-dot" aria-hidden="true">{state==='done'?<Check/>:i+1}</span><span>{m}</span></li>;})}</ol>}
+  <p className="muted">{'Last updated '+new Date(data.updated_at).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})+'. We email you when it is accepted and when it is ready for use.'}</p>
+  {declined&&<a className="button" href="?request=territory">{'Send a new request'}</a>}
+ </Page>;
+}
+const trackState=(i:number,stage:number)=>{if(i<stage||stage===MILESTONES.length-1)return 'done';return i===stage?'now':'next';};
