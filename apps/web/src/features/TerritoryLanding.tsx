@@ -26,6 +26,8 @@ const SERVICES:{id:'scratch'|'cards'|'package';title:Key;text:Key}[]=[
 /** Pointer tilt: offset from the card centre (0.5) times the largest tilt in degrees. */
 const HALF=0.5,TILT=8;
 const STEPS:Key[]=['st1','st2','st3','st4','st5','st6','st7'];
+// How a request goes, start to finish; the third step is the congregation's naming link.
+const PROCESS:{title:Key;text:Key}[]=[{title:'p1Title',text:'p1Text'},{title:'p2Title',text:'p2Text'},{title:'p3Title',text:'p3Text'},{title:'p4Title',text:'p4Text'}];
 const CHIPS:Key[]=['chipS13','chipQr','chipShare','chipLangs'];
 
 /** Fades sections in as they scroll into view (skipped when the visitor prefers reduced motion). */
@@ -44,7 +46,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
  const [lang,setLang]=React.useState<Lang>(initialLang),[service,setService]=React.useState<typeof SERVICES[number]['id']>('package');
  const say=(key:Key)=>translate(lang,key);
  useReveal();
- React.useEffect(()=>{document.title=translate(lang,'heroTitle')+' · Territory manager · Congregation Assistant';document.querySelector('meta[name=description]')?.setAttribute('content',translate(lang,'heroLead'));document.documentElement.lang=lang;try{localStorage.setItem('ca-territory-lang',lang);}catch{/* the choice just is not remembered */}},[lang]);
+ React.useEffect(()=>{document.title=translate(lang,'heroTitle')+' · Territory Assistant';document.querySelector('meta[name=description]')?.setAttribute('content',translate(lang,'heroLead'));document.documentElement.lang=lang;try{localStorage.setItem('ca-territory-lang',lang);}catch{/* the choice just is not remembered */}},[lang]);
  return <main className="tl">
   <header className="tl-bar">
    <span className="tl-brand"><span className="brand-mark"><MapIcon aria-hidden="true"/></span>{'Territories'}<small>{'Congregation Assistant'}</small></span>
@@ -75,7 +77,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
     <h2 id="tl-card">{say('cardTitle')}</h2>
     <p>{say('cardLead')}</p>
     <ul className="tl-points">{POINTS.map(p=><li key={p.text}><span className="tl-icon">{p.icon}</span>{say(p.text)}</li>)}</ul>
-    <a className="tl-btn" href={cardImage} target="_blank" rel="noreferrer">{say('cardOpen')}<ArrowRight aria-hidden="true"/></a>
+    <div className="tl-actions"><a className="tl-btn" href={cardImage} target="_blank" rel="noreferrer">{say('cardOpen')}<ArrowRight aria-hidden="true"/></a></div>
    </div>
    <a className="tl-photo" href={cardImage} target="_blank" rel="noreferrer"><img src={cardImage} alt={say('cardAlt')} loading="lazy" width={1200} height={783}/></a>
   </section>
@@ -90,6 +92,11 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
     {s.id==='package'&&<span className="tl-badge">{say('best')}</span>}<h3>{say(s.title)}</h3><p>{say(s.text)}</p></button>)}</div>
    <ol className="tl-steps" aria-label={say('stepsLabel')}>{STEPS.map((step,i)=><li key={step}><span>{i+1}</span>{say(step)}</li>)}</ol>
    <div className="tl-actions"><a className="tl-btn primary" href={territoryUrl('request=territory&service='+service)}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
+  </section>
+  <section className="tl-section tl-reveal" id="tl-process" aria-labelledby="tl-process-title">
+   <h2 id="tl-process-title">{say('procTitle')}</h2>
+   <p>{say('procLead')}</p>
+   <div className="tl-grid" role="list">{PROCESS.map((p,i)=><article className="tl-tile" role="listitem" key={p.title}><span className="tl-icon" aria-hidden="true">{i+1}</span><h3>{say(p.title)}</h3><p>{say(p.text)}</p></article>)}</div>
   </section>
   <FaqSection/>
   <footer className="tl-foot"><span>{say('unofficial')}</span><span className="tl-bar-end"><a href="#tl-faq">{'FAQ'}</a><a href={mainAppUrl()}>{say('mainSite')}</a></span></footer>

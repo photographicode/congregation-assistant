@@ -10,7 +10,8 @@ const territory=[
  ['Keep every territory together','Your territory maps and cards in one place, ready for whoever needs them.'],
  ['Assign and return','Give a territory to a publisher, mark it returned and see its history.'],
  ['Give the right people access','Overseers assign and track; publishers see only the territories they hold.'],
- ['Need the maps made?','Making territories is a separate service. If you have only the boundary, request the split and the cards.']
+ ['Need the maps made?','Making territories is a separate service. If you have only the boundary, request the split and the cards.'],
+ ['You name them, on one link','When we make your territories, your congregation names each one and checks its landmarks on one private link. It saves as you type.']
 ];
 const trust=[
  ['Independent and unofficial','Made by one developer you can email. Not affiliated with Jehovah’s Witnesses or jw.org.'],

@@ -18,7 +18,7 @@ Allow: /$
 Disallow: /?
 Sitemap: https://${HOST}/sitemap.xml
 `, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-  if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+  if (url.pathname === '/sitemap.xml') return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${HOST}/</loc><lastmod>${LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url></urlset>`, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
   // The generator moved to its own origin so it can never read the owner's session here; keep old links working.
   if (url.pathname === '/generator' || url.pathname.startsWith('/generator/')) return Response.redirect(`https://${GENERATOR_HOST}${url.pathname.slice('/generator'.length) || '/'}${url.search}`, 301);
   // The questions and answers live on the landing page now.
@@ -53,13 +53,17 @@ Sitemap: https://${HOST}/sitemap.xml
  }
 };
 
-const TITLE = 'Territory Assistant: territory manager and territory cards for Jehovah’s Witnesses congregations · Congregation Assistant';
-const DESCRIPTION = 'Territory Assistant keeps every congregation territory in one place: assign and return territory cards, keep the S-13 record, share each digital card by link and collect reports of houses and language speakers. We also make territories for you, from the KML file from Hub to printed Territory Map Cards and a full named map. Voluntary donations only.';
+// Search results cut titles near 60 characters and descriptions near 160.
+const TITLE = 'Territory Assistant: JW territory manager and map cards';
+const DESCRIPTION = 'Keep, assign and return congregation territories, with the S-13 record and digital cards. We also make Territory Map Cards from your KML file. Free.';
+// Date the landing page last changed, for the sitemap.
+const LASTMOD = '2026-11-16';
 const KEYWORDS = 'territory assistant, territory manager, JW territory, JW territory card, JW territory manager, Jehovah’s Witnesses territory card, Jehovahs Witnesses territory card, S-13, S-13 territory assignment record, digital territory card, language search territory, territory, territory manager, territory card, territory map card, territory maker, congregation territory, Jehovah’s Witnesses, Jehovah’s Witnesses territory, JW territory, S-13, territory assignment record, congregation, KML territory map, QR code territory map, KML file splitter, KML territory splitter, split KML into territories, KML to territory cards, Google My Maps territory, territory map maker, territory QR code, printable territory cards, territory card generator, territory assignment, territory tracker, territory records app, Jehovah’s Witnesses territory cards, JW territory map, JW territory app, field service territory, congregation territory map, territory boundaries, door to door territory, India congregations, Malayalam, Hindi, Tamil, Telugu, Kannada';
 // Questions and answers for search results; they match apps/web/src/features/TerritoryFaq.tsx on the landing page.
 const FAQ = { '@type': 'FAQPage', mainEntity: [
  ['How much does it cost?', 'Nothing is charged. This work is hard and has a lot of time and effort behind it, but we accept only voluntary donations. No donation is needed to receive any service.'],
  ['What can we ask for?', 'Start from just the KML file from Hub, then choose Territory Cards, a full map, the Territory Management Software, or all three.'],
+ ['How do we name the territories?', 'After we split your boundary, your congregation gets one private link by email. For each territory you write the locality name, correct the landmark names and add notes. Everything saves as you type, with no sign-in. Your names then go on the cards and the full map.'],
  ['Can we try the software first?', 'Yes. The demo has 25 fictional territory cards and theme options: light, dark or automatic, in a soft or glass style.'],
  ['Who can sign in?', 'An admin changes everything and a viewer looks only. The congregation’s official Gmail account is the first admin.'],
  ['How do publishers report a house or a place?', 'From a shared digital territory card. A report with a location goes automatically to the territory that holds that place.'],
