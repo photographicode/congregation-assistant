@@ -1,10 +1,10 @@
 import React from "react";
-import { Check, FileUp, LayoutDashboard, Layers, Map as MapIcon, X } from "lucide-react";
+import { Check, FileUp, LayoutDashboard, Layers, Map as MapIcon, Upload, X } from "lucide-react";
 import { Button } from "../../../../packages/ui/components";
 import { Field } from "../../../../packages/ui/Field";
 import { rpc, config } from "./client";
 import { onTerritoryHost, territoryUrl } from "./territory-site";
-import { KIBIBYTE, readRequestFile, setProblem, type RequestFile } from "./request-files";
+import { KIBIBYTE, readRequestFile, type RequestFile } from "./request-files";
 
 // Public requests that need no sign-in: a new congregation workspace, or territory maps made for a congregation.
 type Kind = "workspace" | "territory";
@@ -353,41 +353,50 @@ function ProgressPicker({ value, onChange }: { value: number; onChange: (value: 
   );
 }
 
-/** Optional boundary files (KML or KMZ from Google My Maps or Google Earth), read and checked in the browser. */
+/** The boundary file: one .kml from JW Hub, up to 5 MB. Drop it on the box or choose it, like an upload on Google Drive. */
 function BoundaryFiles({ files, error, onError, onChange }: { files: RequestFile[]; error: string; onError: (e: string) => void; onChange: (files: RequestFile[]) => void }) {
   const input = React.useRef<HTMLInputElement>(null);
-  async function add(list: FileList | null) {
+  const [over, setOver] = React.useState(false);
+  const file = files[0];
+  async function take(list: FileList | null | undefined) {
     onError("");
     if (!list?.length) return;
     try {
-      const read = await Promise.all([...list].map(readRequestFile));
-      const next = [...files, ...read];
-      const problem = setProblem(next);
-      if (problem) throw Error(problem);
-      onChange(next);
+      if (list.length > 1) throw Error("Drop one KML file.");
+      onChange([await readRequestFile(list[0]!)]);
     } catch (failure) {
       onError((failure as Error).message);
     } finally {
       if (input.current) input.current.value = "";
     }
   }
+  const drop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setOver(false);
+    void take(e.dataTransfer.files);
+  };
   return (
     <div className="stack rf-files">
-      <Field label={"KML file from JW Hub"} hint={"One file with your congregation boundary. Ask your congregation secretary for it. Up to 4 MB."} error={error || undefined}>
-        {(p) => <input {...p} ref={input} type="file" accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz" disabled={files.length >= 1} onChange={(e) => void add(e.target.files)} />}
-      </Field>
-      {files.length > 0 && (
-        <ul className="rf-file-list" aria-label={"Attached files"}>
-          {files.map((f) => (
-            <li key={f.name}>
-              <FileUp aria-hidden="true" />
-              <span>{f.name}</span>
-              <span className="muted">{`${Math.max(1, Math.round(f.size / KIBIBYTE))} KB`}</span>
-              <button type="button" aria-label={`Remove ${f.name}`} onClick={() => onChange(files.filter((x) => x !== f))}><X aria-hidden="true" /></button>
-            </li>
-          ))}
-        </ul>
+      <strong id="rf-kml-label">{"KML file from JW Hub"}</strong>
+      {file ? (
+        <div className="rf-file" role="status" aria-labelledby="rf-kml-label">
+          <span className="rf-icon" aria-hidden="true"><FileUp /></span>
+          <span className="rf-file-name">{file.name}<small className="muted">{`${Math.max(1, Math.round(file.size / KIBIBYTE))} KB · ready`}</small></span>
+          <button type="button" className="rf-file-remove" aria-label={`Remove ${file.name}`} onClick={() => onChange([])}><X aria-hidden="true" /></button>
+        </div>
+      ) : (
+        <>
+          <input ref={input} className="sr-only" type="file" tabIndex={-1} accept=".kml,application/vnd.google-earth.kml+xml" aria-hidden="true" onChange={(e) => void take(e.target.files)} />
+          <button type="button" className={"rf-drop" + (over ? " over" : "")} aria-labelledby="rf-kml-label" aria-describedby="rf-kml-hint" onClick={() => input.current?.click()}
+            onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)} onDrop={drop}>
+            <Upload aria-hidden="true" />
+            <strong>{"Drag your KML file here"}</strong>
+            <span>{"or "}<u>{"choose a file"}</u></span>
+            <small className="muted" id="rf-kml-hint">{"One .kml file, up to 5 MB. Ask your congregation secretary for it."}</small>
+          </button>
+        </>
       )}
+      {error && <p role="alert" className="error">{error}</p>}
     </div>
   );
 }
