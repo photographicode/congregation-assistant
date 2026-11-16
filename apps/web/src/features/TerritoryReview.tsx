@@ -9,6 +9,7 @@ import {Dialog} from '../../../../packages/ui/Dialog';
 import * as api from './territory-api';
 import {byNumber,MILESTONES,type Territory,type WorkspaceData} from './territory-model';
 import {download} from './territory-card';
+import {changedSinceComment,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from './territory-review-model';
 
 type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<unknown>|void;notify:(m:string)=>void};
 const JPEG_Q=0.92,PDF_DPI=200,PT_PER_IN=72,NAME_MAX=60;
@@ -20,27 +21,22 @@ const stretch=(el:HTMLElement|null)=>{el?.style.setProperty('justify-self','stre
 function Progress({d}:{d:WorkspaceData}){
  const stage=d.workspace.stage;
  if(stage===null)return null;
- const state=(i:number)=>{if(i<stage||stage===LAST_STAGE)return 'done';return i===stage?'now':'next';};
- let note='We email you at each step.';
- if(d.workspace.review_state==='approved')note='You approved the cards. We are making the full map, and will email you when it is ready.';
- if(stage===LAST_STAGE)note='Everything is ready. Download the cards and the full map below.';
+ const state=(i:number)=>milestoneState(i,stage);
  return <section className="tm-raised stack" aria-labelledby="tm-progress">
   <h2 id="tm-progress">{'Progress'}</h2>
   <ol className="tm-track" aria-label={'Milestones'}>{MILESTONES.map((m,i)=><li key={m} className={state(i)} aria-current={state(i)==='now'?'step':undefined}>
    <span className="tm-track-dot" aria-hidden="true">{state(i)==='done'?<Check/>:i+1}</span><span>{m}</span></li>)}</ol>
-  <p className="muted">{note}</p>
+  <p className="muted">{progressNote(stage,d.workspace.review_state)}</p>
  </section>;
 }
 
 /** Cards in review: every card with its comment; the admin sends comments or approves all. */
 export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
  // Owners count as admins on the server; here they only look, so the congregation's admin decides.
- const admin=d.role==='admin'&&!owner,open=d.workspace.review_state==='review';
+ const who=reviewer(d.role,owner),admin=who==='admin',open=d.workspace.review_state==='review';
  const cards=[...d.territories].filter(t=>t.has_image).sort(byNumber);
  const comments=cards.filter(t=>t.review_comment).length;
- let intro='The admin is checking these cards. You can look at them; only an admin can comment or approve.';
- if(owner)intro='Waiting for the congregation’s admin to check these cards. You see their comments here as they write them.';
- if(admin)intro=`Look at each of the ${cards.length} cards. Tap a card to see it full size. Write a comment on any card that needs a change, then press "Send comments". When every card is right, press "Approve all cards".`;
+ const intro=reviewIntro(who,cards.length);
  const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null);
  const act=async(kind:string,fn:()=>Promise<void>,done:string)=>{setBusy(kind);try{await fn();notify(done);await refresh();}catch(e){notify((e as Error).message);}finally{setBusy('');setConfirm(false);}};
  return <div className="stack">
@@ -48,7 +44,7 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
   <Progress d={d}/>
   <section className="tm-raised stack">
    {open?<p>{intro}</p>
-    :<p role="status">{`Thank you. We have your ${comments} comment${comments===1?'':'s'} and are correcting the cards. We will email you when they are ready to check again.`}</p>}
+    :<p role="status">{`Thank you. We have your ${plural(comments,'comment')} and are correcting the cards. We will email you when they are ready to check again.`}</p>}
    {open&&admin&&<div className="actions">
     <Button busy={busy==='send'} disabled={!comments||Boolean(busy)} onClick={()=>void act('send',()=>api.reviewSubmit(ws),'Comments sent. We will email you when the cards are corrected.')}><Send/>{`Send comments (${comments})`}</Button>
     <Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>
@@ -61,9 +57,8 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
 }
 
 function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number;cards:number;busy:boolean;onCancel:()=>void;onApprove:()=>void}){
- const plural=comments===1?'':'s';
  return <Dialog open onClose={onCancel} title={'Approve all cards?'}><div className="tm-dialog stack">
-  <p>{comments?`You still have ${comments} comment${plural}. Approving clears them and finalises all ${cards} cards.`:`This finalises all ${cards} cards. Next, we make the full map.`}</p>
+  <p>{comments?`You still have ${plural(comments,'comment')}. Approving clears them and finalises all ${cards} cards.`:`This finalises all ${cards} cards. Next, we make the full map.`}</p>
   <div className="actions"><Button onClick={onCancel}>{'Cancel'}</Button>
    <Button className="primary" busy={busy} onClick={onApprove}><CheckCheck/>{'Approve all cards'}</Button></div>
  </div></Dialog>;
@@ -71,7 +66,7 @@ function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number
 
 function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boolean;onView:()=>void;notify:(m:string)=>void;refresh:Ctx['refresh']}){
  const [text,setText]=React.useState(t.review_comment),[saved,setSaved]=React.useState(t.review_comment);
- const changed=Boolean(t.review_comment_at&&t.updated_at>t.review_comment_at);
+ const changed=changedSinceComment(t);
  const save=async()=>{if(text.trim()===saved.trim())return;try{await api.reviewComment(t.id,text);setSaved(text);await refresh();}catch(e){notify((e as Error).message);}};
  return <article className="tm-raised tm-card">
   <button type="button" className="tm-thumb" onClick={onView} aria-label={`See card ${t.number} full size`}>
@@ -101,7 +96,7 @@ async function encode(src:string,type:'image/jpeg'|'image/png'){
  if(!blob)throw Error('This browser could not convert the card image.');
  return {bytes:new Uint8Array(await blob.arrayBuffer()),w:c.width,h:c.height};
 }
-const fileName=(text:string)=>text.replace(/[^\w-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,NAME_MAX)||'territories';
+const fileName=(text:string)=>safeFileName(text,NAME_MAX);
 
 /** Every card at once: one PDF (one card per page) or the images in a ZIP file. */
 function CardDownloads({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
@@ -134,7 +129,7 @@ function CardDownloads({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
    const files=Object.fromEntries(items.map(x=>[`${fileName(`territory-${x.t.number}-${x.t.name}`)}.${kind}`,x.bytes]));
    download(new Blob([new Uint8Array(zipSync(files,{level:0}))],{type:'application/zip'}),`${base}-territory-cards-${kind}.zip`);
   }
-  notify(`${saved} card${saved===1?'':'s'} downloaded.`);
+  notify(`${plural(saved,'card')} downloaded.`);
  }catch(e){notify((e as Error).message);}finally{setProgress('');}};
  return <section className="tm-raised stack" aria-labelledby="tm-all-cards">
   <h2 id="tm-all-cards">{'Download all cards'}</h2>

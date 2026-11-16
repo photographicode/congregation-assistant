@@ -25,16 +25,36 @@ const sdk = createClient(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY, {
 // Screens may use the authentication API; data APIs belong to Store adapters.
 export const client = { auth: sdk.auth };
 // Full territory maps are files, not rows: owners upload them; workspace members get a short-lived download link.
+// Plain Storage REST calls with the signed-in session, so the storage client stays out of the app bundle.
 const MAP_BUCKET = "territory-maps", LINK_SECONDS = 600;
+async function storageFetch(path: string, init: RequestInit) {
+  const token = (await sdk.auth.getSession()).data.session?.access_token;
+  if (!token) throw Error("Sign in again, then retry.");
+  const response = await fetch(`${config.SUPABASE_URL}/storage/v1/${path}`, {
+    ...init,
+    headers: { ...init.headers, apikey: config.SUPABASE_PUBLISHABLE_KEY, Authorization: `Bearer ${token}` },
+  });
+  const body = (await response.json().catch(() => ({}))) as { message?: string; error?: string; signedURL?: string };
+  if (!response.ok) throw Error(body.message || body.error || `Storage error ${response.status}`);
+  return body;
+}
+const objectPath = (path: string) => `${MAP_BUCKET}/${path.split("/").map(encodeURIComponent).join("/")}`;
 export const mapFiles = {
   async upload(path: string, file: File) {
-    const { error } = await sdk.storage.from(MAP_BUCKET).upload(path, file, { upsert: true, contentType: file.type || "application/pdf" });
-    if (error) throw Error(error.message);
+    await storageFetch(`object/${objectPath(path)}`, {
+      method: "POST",
+      headers: { "Content-Type": file.type || "application/pdf", "x-upsert": "true" },
+      body: file,
+    });
   },
   async link(path: string, name: string) {
-    const { data, error } = await sdk.storage.from(MAP_BUCKET).createSignedUrl(path, LINK_SECONDS, { download: name });
-    if (error) throw Error(error.message);
-    return data.signedUrl;
+    const { signedURL } = await storageFetch(`object/sign/${objectPath(path)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expiresIn: LINK_SECONDS }),
+    });
+    if (!signedURL) throw Error("The download link could not be made.");
+    return `${config.SUPABASE_URL}/storage/v1${signedURL}&download=${encodeURIComponent(name)}`;
   },
 };
 const transport = plainTransport(sdk),

@@ -4,6 +4,7 @@ import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {Copy,Download,ExternalLink,FileUp,Mail,Phone,Send,Wand2} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
+import {plural} from './territory-review-model';
 import {fromBase64,KIBIBYTE} from './request-files';
 import {openInGenerator,openNamesInGenerator} from './generator-handoff';
 import {MILESTONES} from './territory-model';
@@ -130,7 +131,6 @@ function ReviewRow({request,status,review,notify}:{request:string;status:string;
  if(review===undefined||status==='new'||status==='declined')return null;
  if(!review)return <div className="tm-inset-box stack"><p>{'No workspace yet for this request.'}</p>
   <div className="actions"><Button busy={run.busy==='make'} onClick={()=>void run.go('make',()=>api.workspaceForRequest(request),'Workspace made. Its admin is the contact email.')}>{'Make its workspace'}</Button></div></div>;
- const plural=(n:number,word:string)=>`${n} ${word}${n===1?'':'s'}`;
  const resend=review.review_state==='none'||review.review_state==='changes';
  return <div className="tm-inset-box stack">
   <p><strong>{REVIEW_TEXT[review.review_state]}</strong>{review.review_round>1?` · round ${review.review_round}`:''}</p>
