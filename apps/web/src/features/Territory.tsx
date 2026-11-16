@@ -19,7 +19,8 @@ import {TerritoryRequests} from './TerritoryRequests';
 import {fromGenerator,GeneratorSync} from './GeneratorSync';
 import {TerritoryOwnerOverview} from './TerritoryOwnerOverview';
 import {TerritoryOwner} from './TerritoryOwner';
-import {TerritoryLanding} from './TerritoryLanding';
+import {TerritoryLanding} from './TerritoryLanding';
+import {ReadyPanels,ReviewScreen} from './TerritoryReview';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
 import './territory.css';
 
@@ -155,16 +156,14 @@ function Manager({ws,owner,onSwitch,onSignOut}:{ws:string;owner:boolean;onSwitch
  const show=(f:Filter)=>{setFilter(f);setTab('territories');};
  const ctx={d,ws,refresh,notify:setNotice,openTerritory:setOpen};
  const current=d.territories.find(t=>t.id===open);
+ // Cards sent for review (or sent back with comments): the workspace opens on the review screen until approved.
+ const reviewing=['review','changes'].includes(d.workspace.review_state);
  return <div className="tm tm-shell">
   <Header d={d} onSwitch={onSwitch} onSignOut={onSignOut}/>
-  <nav className="tm-tabs" aria-label={"Territory manager"}>{TABS.filter(t=>owner||t.id!=='owner').map(t=><TabButton key={t.id} tab={t} active={tab===t.id} onClick={()=>setTab(t.id)}/>)}</nav>
+  {!reviewing&&<nav className="tm-tabs" aria-label={"Territory manager"}>{TABS.filter(t=>owner||t.id!=='owner').map(t=><TabButton key={t.id} tab={t} active={tab===t.id} onClick={()=>setTab(t.id)}/>)}</nav>}
   <main className="tm-main">
    {demo?<DemoBanner count={d.territories.length} onDisplay={()=>setTab('settings')}/>:<InstallBanner/>}
-   {tab==='dashboard'&&<Dashboard {...ctx} show={show}/>}
-   {tab==='territories'&&<Territories {...ctx} filter={filter} setFilter={setFilter} onAdd={()=>setAdding(true)}/>}
-   {tab==='issues'&&<Issues {...ctx}/>}
-   {tab==='settings'&&<Settings {...ctx}/>}
-   {tab==='owner'&&<TerritoryOwner notify={setNotice}/>}
+   {reviewing?<ReviewScreen {...ctx} owner={owner}/>:<TabPane tab={tab} ctx={ctx} show={show} filter={filter} setFilter={setFilter} onAdd={()=>setAdding(true)}/>}
   </main>
   {adding&&<Dialog open onClose={()=>setAdding(false)} title={"Add territory"}><div className="tm-dialog"><TerritoryForm {...ctx} onDone={id=>{setAdding(false);if(id)setOpen(id);}}/></div></Dialog>}
   {current&&<Dialog open onClose={()=>setOpen(null)} title={`Territory ${current.number} · ${current.name}`}><div className="tm-dialog"><Detail {...ctx} t={current} onClose={()=>setOpen(null)}/></div></Dialog>}
@@ -172,6 +171,13 @@ function Manager({ws,owner,onSwitch,onSignOut}:{ws:string;owner:boolean;onSwitch
  </div>;
 }
 type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<void>;notify:(m:string)=>void;openTerritory:(id:string)=>void};
+function TabPane({tab,ctx,show,filter,setFilter,onAdd}:{tab:Tab;ctx:Ctx;show:(f:Filter)=>void;filter:Filter;setFilter:(f:Filter)=>void;onAdd:()=>void}){
+ if(tab==='dashboard')return <><ReadyPanels d={ctx.d} notify={ctx.notify}/><Dashboard {...ctx} show={show}/></>;
+ if(tab==='territories')return <Territories {...ctx} filter={filter} setFilter={setFilter} onAdd={onAdd}/>;
+ if(tab==='issues')return <Issues {...ctx}/>;
+ if(tab==='settings')return <Settings {...ctx}/>;
+ return <TerritoryOwner notify={ctx.notify}/>;
+}
 
 
 function StatusChips({s,issues}:{s:Summary;issues:number}){

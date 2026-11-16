@@ -7,12 +7,17 @@ export const roleSchema=z.enum(['admin','viewer','manager']).transform(r=>r==='a
 export const reportModeSchema=z.enum(['issues','issues_language']);
 export type ReportMode=z.infer<typeof reportModeSchema>;
 
-const territorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),thumb:z.string().nullable(),has_image:z.boolean(),has_boundary:z.boolean().default(false),map_url:z.string().nullable().default(null),share_token:z.string(),updated_at:z.string()});
+const territorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),thumb:z.string().nullable(),has_image:z.boolean(),has_boundary:z.boolean().default(false),map_url:z.string().nullable().default(null),share_token:z.string(),updated_at:z.string(),
+ // The admin's comment while the cards are in review; older servers send none.
+ review_comment:z.string().default(''),review_comment_at:z.string().nullable().default(null)});
 const assignmentSchema=z.object({id:z.string(),territory_id:z.string(),publisher:z.string(),taken_on:z.string(),due_on:z.string(),returned_on:z.string().nullable()});
 // kind 'language' marks a house where a language is spoken (language search); older servers send no kind.
 const issueSchema=z.object({id:z.string(),territory_id:z.string(),kind:z.enum(['issue','language']).default('issue'),language:z.string().nullable().default(null),household:z.string(),details:z.string(),reporter:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),accuracy:z.number().nullable(),created_at:z.string(),resolved_at:z.string().nullable()});
 export const workspaceDataSchema=z.object({
- workspace:z.object({id:z.string(),name:z.string(),due_days:z.number(),recent_days:z.number(),report_token:z.string(),report_mode:reportModeSchema.default('issues'),languages:z.array(z.string()).default([])}),
+ workspace:z.object({id:z.string(),name:z.string(),due_days:z.number(),recent_days:z.number(),report_token:z.string(),report_mode:reportModeSchema.default('issues'),languages:z.array(z.string()).default([]),
+  // Card review (none: no review), the request's milestone (null: no request) and the full map file.
+  review_state:z.enum(['none','review','changes','approved']).default('none'),review_round:z.number().default(0),
+  full_map_path:z.string().nullable().default(null),full_map_name:z.string().nullable().default(null),full_map_at:z.string().nullable().default(null),stage:z.number().nullable().default(null)}),
  role:roleSchema,
  members:z.array(z.object({email:z.string(),role:roleSchema})),
  territories:z.array(territorySchema),

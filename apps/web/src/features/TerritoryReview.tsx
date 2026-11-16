@@ -1,0 +1,169 @@
+// The congregation admin's side of a territory request: check every card (comment, then send comments or approve all),
+// follow the milestones, then download every card (one PDF, or JPEG/PNG images in a ZIP file) and the full map.
+// While the cards are in review the workspace opens on this screen; once approved it is used as normal.
+import React from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {Check,CheckCheck,Download,FileText,Map as MapIcon,Send} from 'lucide-react';
+import {Button,Chip,Field} from '../../../../packages/ui/components';
+import {Dialog} from '../../../../packages/ui/Dialog';
+import * as api from './territory-api';
+import {byNumber,MILESTONES,type Territory,type WorkspaceData} from './territory-model';
+import {download} from './territory-card';
+
+type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<unknown>|void;notify:(m:string)=>void};
+const JPEG_Q=0.92,PDF_DPI=200,PT_PER_IN=72,NAME_MAX=60;
+const LAST_STAGE=MILESTONES.length-1;
+// Card bodies left-align their items; the comment box takes the full width (set here: the stylesheet is at its size budget).
+const stretch=(el:HTMLElement|null)=>{el?.style.setProperty('justify-self','stretch');el?.style.setProperty('inline-size','100%');};
+
+/** The request's milestones, as on the public tracking page. */
+function Progress({d}:{d:WorkspaceData}){
+ const stage=d.workspace.stage;
+ if(stage===null)return null;
+ const state=(i:number)=>{if(i<stage||stage===LAST_STAGE)return 'done';return i===stage?'now':'next';};
+ let note='We email you at each step.';
+ if(d.workspace.review_state==='approved')note='You approved the cards. We are making the full map, and will email you when it is ready.';
+ if(stage===LAST_STAGE)note='Everything is ready. Download the cards and the full map below.';
+ return <section className="tm-raised stack" aria-labelledby="tm-progress">
+  <h2 id="tm-progress">{'Progress'}</h2>
+  <ol className="tm-track" aria-label={'Milestones'}>{MILESTONES.map((m,i)=><li key={m} className={state(i)} aria-current={state(i)==='now'?'step':undefined}>
+   <span className="tm-track-dot" aria-hidden="true">{state(i)==='done'?<Check/>:i+1}</span><span>{m}</span></li>)}</ol>
+  <p className="muted">{note}</p>
+ </section>;
+}
+
+/** Cards in review: every card with its comment; the admin sends comments or approves all. */
+export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
+ // Owners count as admins on the server; here they only look, so the congregation's admin decides.
+ const admin=d.role==='admin'&&!owner,open=d.workspace.review_state==='review';
+ const cards=[...d.territories].filter(t=>t.has_image).sort(byNumber);
+ const comments=cards.filter(t=>t.review_comment).length;
+ let intro='The admin is checking these cards. You can look at them; only an admin can comment or approve.';
+ if(owner)intro='Waiting for the congregation’s admin to check these cards. You see their comments here as they write them.';
+ if(admin)intro=`Look at each of the ${cards.length} cards. Tap a card to see it full size. Write a comment on any card that needs a change, then press "Send comments". When every card is right, press "Approve all cards".`;
+ const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null);
+ const act=async(kind:string,fn:()=>Promise<void>,done:string)=>{setBusy(kind);try{await fn();notify(done);await refresh();}catch(e){notify((e as Error).message);}finally{setBusy('');setConfirm(false);}};
+ return <div className="stack">
+  <div className="tm-heading"><h1>{'Check your territory cards'}</h1></div>
+  <Progress d={d}/>
+  <section className="tm-raised stack">
+   {open?<p>{intro}</p>
+    :<p role="status">{`Thank you. We have your ${comments} comment${comments===1?'':'s'} and are correcting the cards. We will email you when they are ready to check again.`}</p>}
+   {open&&admin&&<div className="actions">
+    <Button busy={busy==='send'} disabled={!comments||Boolean(busy)} onClick={()=>void act('send',()=>api.reviewSubmit(ws),'Comments sent. We will email you when the cards are corrected.')}><Send/>{`Send comments (${comments})`}</Button>
+    <Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>
+   </div>}
+  </section>
+  <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}/>)}</div>
+  {confirm&&<ApproveDialog comments={comments} cards={cards.length} busy={busy==='approve'} onCancel={()=>setConfirm(false)} onApprove={()=>void act('approve',()=>api.reviewApprove(ws),'All cards approved. Thank you!')}/>}
+  {view&&<CardView t={view} onClose={()=>setView(null)}/>}
+ </div>;
+}
+
+function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number;cards:number;busy:boolean;onCancel:()=>void;onApprove:()=>void}){
+ const plural=comments===1?'':'s';
+ return <Dialog open onClose={onCancel} title={'Approve all cards?'}><div className="tm-dialog stack">
+  <p>{comments?`You still have ${comments} comment${plural}. Approving clears them and finalises all ${cards} cards.`:`This finalises all ${cards} cards. Next, we make the full map.`}</p>
+  <div className="actions"><Button onClick={onCancel}>{'Cancel'}</Button>
+   <Button className="primary" busy={busy} onClick={onApprove}><CheckCheck/>{'Approve all cards'}</Button></div>
+ </div></Dialog>;
+}
+
+function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boolean;onView:()=>void;notify:(m:string)=>void;refresh:Ctx['refresh']}){
+ const [text,setText]=React.useState(t.review_comment),[saved,setSaved]=React.useState(t.review_comment);
+ const changed=Boolean(t.review_comment_at&&t.updated_at>t.review_comment_at);
+ const save=async()=>{if(text.trim()===saved.trim())return;try{await api.reviewComment(t.id,text);setSaved(text);await refresh();}catch(e){notify((e as Error).message);}};
+ return <article className="tm-raised tm-card">
+  <button type="button" className="tm-thumb" onClick={onView} aria-label={`See card ${t.number} full size`}>
+   {t.thumb?<img src={t.thumb} alt="" width={480} height={320} loading="lazy" decoding="async"/>:<MapIcon aria-hidden="true"/>}<span className="tm-number">{t.number}</span></button>
+  <span className="tm-card-body stack"><strong>{t.name}</strong>
+   {changed&&<Chip tone="ok">{'Changed since your comment'}</Chip>}
+   {editable?<div ref={stretch}><Field label={'Comment (optional)'}>{p=><textarea {...p} ref={stretch} className="tm-inset" rows={2} maxLength={1000} placeholder={'What should change on this card?'}
+     value={text} onChange={e=>setText(e.target.value)} onBlur={()=>void save()}/>}</Field></div>
+    :t.review_comment&&<p><small className="muted">{'Your comment: '}</small>{t.review_comment}</p>}
+  </span>
+ </article>;
+}
+
+function CardView({t,onClose}:{t:Territory;onClose:()=>void}){
+ const image=useQuery({queryKey:['tm','image',t.id,t.updated_at],queryFn:()=>api.territoryImage(t.id)});
+ return <Dialog open onClose={onClose} title={`Card ${t.number} · ${t.name}`}><div className="tm-dialog">
+  {image.data?<img src={image.data} alt={`Territory card ${t.number}, ${t.name}`} width={1600} height={1067}/>:<p className="muted">{image.isLoading?'Loading the card…':'This card has no image.'}</p>}
+ </div></Dialog>;
+}
+
+/** A card image (data URL) as JPEG or PNG bytes, with its size in pixels. */
+async function encode(src:string,type:'image/jpeg'|'image/png'){
+ const img=new Image();img.src=src;await img.decode();
+ const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+ const g=c.getContext('2d')!;if(type==='image/jpeg'){g.fillStyle='white';g.fillRect(0,0,c.width,c.height);}g.drawImage(img,0,0);
+ const blob=await new Promise<Blob|null>(done=>c.toBlob(done,type,JPEG_Q));
+ if(!blob)throw Error('This browser could not convert the card image.');
+ return {bytes:new Uint8Array(await blob.arrayBuffer()),w:c.width,h:c.height};
+}
+const fileName=(text:string)=>text.replace(/[^\w-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,NAME_MAX)||'territories';
+
+/** Every card at once: one PDF (one card per page) or the images in a ZIP file. */
+function CardDownloads({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
+ const cards=[...d.territories].filter(t=>t.has_image).sort(byNumber);
+ const [progress,setProgress]=React.useState('');
+ if(!cards.length)return null;
+ const base=fileName(d.workspace.name);
+ const each=async(type:'image/jpeg'|'image/png')=>{
+  const out:{t:Territory;bytes:Uint8Array;w:number;h:number}[]=[];
+  for(const [i,t] of cards.entries()){
+   setProgress(`Preparing card ${i+1} of ${cards.length}…`);
+   const src=await api.territoryImage(t.id);
+   if(src)out.push({t,...await encode(src,type)});
+  }
+  return out;
+ };
+ const run=async(kind:'pdf'|'jpg'|'png')=>{try{let saved=0;
+  if(kind==='pdf'){
+   const [{PDFDocument},items]=await Promise.all([import('pdf-lib'),each('image/jpeg')]);saved=items.length;
+   if(!saved)throw Error('No card images were found.');
+   setProgress('Making the PDF…');
+   const pdf=await PDFDocument.create();pdf.setTitle(`${d.workspace.name} territory cards`);
+   for(const x of items){const img=await pdf.embedJpg(x.bytes),w=x.w/PDF_DPI*PT_PER_IN,h=x.h/PDF_DPI*PT_PER_IN;pdf.addPage([w,h]).drawImage(img,{x:0,y:0,width:w,height:h});}
+   download(new Blob([(await pdf.save()).slice()],{type:'application/pdf'}),`${base}-territory-cards.pdf`);
+  }else{
+   const type=kind==='jpg'?'image/jpeg':'image/png';
+   const [{zipSync},items]=await Promise.all([import('fflate'),each(type)]);saved=items.length;
+   if(!saved)throw Error('No card images were found.');
+   setProgress('Making the ZIP file…');
+   const files=Object.fromEntries(items.map(x=>[`${fileName(`territory-${x.t.number}-${x.t.name}`)}.${kind}`,x.bytes]));
+   download(new Blob([new Uint8Array(zipSync(files,{level:0}))],{type:'application/zip'}),`${base}-territory-cards-${kind}.zip`);
+  }
+  notify(`${saved} card${saved===1?'':'s'} downloaded.`);
+ }catch(e){notify((e as Error).message);}finally{setProgress('');}};
+ return <section className="tm-raised stack" aria-labelledby="tm-all-cards">
+  <h2 id="tm-all-cards">{'Download all cards'}</h2>
+  <p className="muted">{`All ${cards.length} Territory Map Cards, ready to print or share.`}</p>
+  <div className="actions">
+   <Button className="primary" disabled={Boolean(progress)} onClick={()=>void run('pdf')}><FileText/>{'One PDF'}</Button>
+   <Button disabled={Boolean(progress)} onClick={()=>void run('jpg')}><Download/>{'JPEG images (ZIP)'}</Button>
+   <Button disabled={Boolean(progress)} onClick={()=>void run('png')}><Download/>{'PNG images (ZIP)'}</Button>
+  </div>
+  {progress&&<p className="muted" aria-live="polite">{progress}</p>}
+ </section>;
+}
+
+/** Dashboard panels for a request's workspace: milestones until ready, the full map, and every card at once. */
+export function ReadyPanels({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
+ const stage=d.workspace.stage;
+ return <>{stage!==null&&stage<LAST_STAGE&&<Progress d={d}/>}<FullMap d={d} notify={notify}/><CardDownloads d={d} notify={notify}/></>;
+}
+
+/** The full map: a download once we upload it, otherwise where it stands. */
+function FullMap({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
+ const {full_map_path:path,full_map_name:name,full_map_at:at,review_state:state}=d.workspace;
+ const [busy,setBusy]=React.useState(false);
+ if(!path&&state!=='approved')return null;
+ const get=async()=>{setBusy(true);try{const a=document.createElement('a');a.href=await api.fullMapLink(path!,name||'full-map.pdf');a.rel='noopener';a.click();}catch(e){notify((e as Error).message);}finally{setBusy(false);}};
+ return <section className="tm-raised stack" aria-labelledby="tm-full-map">
+  <h2 id="tm-full-map">{'Full map'}</h2>
+  {path?<><p className="muted">{`${name||'Full map'} · ready since ${new Date(at!).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}`}</p>
+   <div className="actions"><Button className="primary" busy={busy} onClick={()=>void get()}><Download/>{'Download the full map'}</Button></div></>
+  :<p className="muted">{'We are making the full map of every territory. We will email you when it is ready.'}</p>}
+ </section>;
+}

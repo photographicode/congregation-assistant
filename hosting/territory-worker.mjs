@@ -96,7 +96,7 @@ const BODY = `<main class="tl"><header><p>Territory Assistant · Congregation As
  ['You send the boundary', 'Send the KML file from Hub with the request form. That is all we need to start.'],
  ['We draw and split', 'We split the boundary into territories along the roads and email you as each stage is done.'],
  ['You name them on one link', 'Your congregation opens one private link. For each territory: write the locality name, check the landmarks and add notes. It saves as you type, with no sign-in.'],
- ['We make the cards and the map', 'Your names go on every Territory Map Card with its QR code, and on the full map. Then the territory manager is set up for you.'],
+ ['We make the cards, you check them', 'Your names go on every Territory Map Card with its QR code. Sign in with Google to check each card, comment or approve. Then we make the full map and you download everything.'],
 ])}</ol>
 <h2>Questions and answers</h2><dl>${FAQ.mainEntity.map((q) => `<dt>${q.name}</dt><dd>${q.acceptedAnswer.text}</dd>`).join('')}</dl>
 <p>Available in English, Malayalam, Kannada, Telugu, Hindi and Tamil. Independent and unofficial. <a href="https://congregationassistant.com/">Congregation Assistant</a></p></main>`;

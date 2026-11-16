@@ -95,6 +95,12 @@ function SendForNaming({data}:{data:Payload}){
   {failed&&<p role="alert" className="error">{failed}</p>}
  </section>;
 }
+/** Sends the saved cards to the workspace's admin, who checks them and comments or approves; they are emailed now. */
+function SendReview({ws}:{ws:string}){
+ const [sending,setSending]=React.useState(false),[sent,setSent]=React.useState(false),[note,setNote]=React.useState('');
+ const send=async()=>{setSending(true);setNote('');try{await api.reviewSend(ws);setSent(true);setNote('The admin is emailed to check the cards.');}catch(e){setNote((e as Error).message);}finally{setSending(false);}};
+ return <><Button busy={sending} disabled={sent} onClick={()=>void send()}>{sent?'Sent for review':'Send to the admin for review'}</Button>{note&&<p role="status">{note}</p>}</>;
+}
 /** Saves every territory into the chosen workspace, updated by number when it is already there. */
 function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  const admin=workspaces.filter(w=>w.role==='admin');
@@ -120,7 +126,8 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  return <>
   <p>{`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`}</p>
   <Combobox label={'Save into workspace'} value={chosen} options={admin.map(w=>({value:w.id,label:w.name}))} onChange={setWs}/>
-  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><a className="button primary" href={`?territory&ws=${encodeURIComponent(chosen)}`}>{'Open the workspace'}</a></>
+  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(chosen)}`}>{'Open the workspace'}</a>
+   <SendReview ws={chosen}/></div></>
   :<Button className="primary" disabled={!chosen} busy={Boolean(progress)} onClick={()=>void save()}>{'Save'}</Button>}
   {progress&&<p className="muted" aria-live="polite">{progress}</p>}
   {failed&&<p role="alert" className="error">{failed}</p>}

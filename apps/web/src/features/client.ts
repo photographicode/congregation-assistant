@@ -24,6 +24,19 @@ const sdk = createClient(config.SUPABASE_URL, config.SUPABASE_PUBLISHABLE_KEY, {
 });
 // Screens may use the authentication API; data APIs belong to Store adapters.
 export const client = { auth: sdk.auth };
+// Full territory maps are files, not rows: owners upload them; workspace members get a short-lived download link.
+const MAP_BUCKET = "territory-maps", LINK_SECONDS = 600;
+export const mapFiles = {
+  async upload(path: string, file: File) {
+    const { error } = await sdk.storage.from(MAP_BUCKET).upload(path, file, { upsert: true, contentType: file.type || "application/pdf" });
+    if (error) throw Error(error.message);
+  },
+  async link(path: string, name: string) {
+    const { data, error } = await sdk.storage.from(MAP_BUCKET).createSignedUrl(path, LINK_SECONDS, { download: name });
+    if (error) throw Error(error.message);
+    return data.signedUrl;
+  },
+};
 const transport = plainTransport(sdk),
   stores = new Map<string, Store>(),
   listeners = new Set<(event: StoreEvent) => void>();

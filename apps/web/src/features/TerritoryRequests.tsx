@@ -1,7 +1,7 @@
 // Owner dashboard: territory-making requests from the public form, their boundary files, and the next step for each.
 import React from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
-import {Copy,Download,FileUp,Mail,Phone,Wand2} from 'lucide-react';
+import {Copy,Download,ExternalLink,FileUp,Mail,Phone,Send,Wand2} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {fromBase64,KIBIBYTE} from './request-files';
@@ -34,6 +34,7 @@ function save(name:string,bytes:Uint8Array<ArrayBuffer>,kind:'kml'|'kmz'){
 export function TerritoryRequests({notify}:{notify:(m:string)=>void}){
  const list=useQuery({queryKey:['tm','help'],queryFn:api.helpRequests});
  const namings=useQuery({queryKey:['tm','naming'],queryFn:api.namingList,retry:false});
+ const reviews=useQuery({queryKey:['tm','request-ws'],queryFn:api.requestWorkspaces,retry:false});
  const [show,setShow]=React.useState<Show>('new');
  const rows=list.data||[];
  const count=(s:Show)=>s==='all'?rows.length:rows.filter(r=>r.status===s).length;
@@ -45,11 +46,11 @@ export function TerritoryRequests({notify}:{notify:(m:string)=>void}){
   <Segmented label={'Show requests'} value={show} options={options} onChange={v=>setShow(options.some(o=>o.value===v)?v as Show:'new')}/>
   {list.isLoading&&<p className="muted">{'Loading requests…'}</p>}
   {!list.isLoading&&!shown.length&&<p className="muted">{show==='new'?'No new requests.':'Nothing here.'}</p>}
-  {shown.map(r=><RequestCard key={r.id} r={r} notify={notify} naming={namings.data?.find(n=>n.request_id===r.id)}/>)}
+  {shown.map(r=><RequestCard key={r.id} r={r} notify={notify} naming={namings.data?.find(n=>n.request_id===r.id)} review={reviews.isError?undefined:reviews.data?.find(w=>w.request_id===r.id)??null}/>)}
  </section>;
 }
 
-function RequestCard({r,notify,naming}:{r:api.HelpRequest;notify:(m:string)=>void;naming?:api.NamingSummary}){
+function RequestCard({r,notify,naming,review}:{r:api.HelpRequest;notify:(m:string)=>void;naming?:api.NamingSummary;review?:api.RequestWorkspace|null}){
  const qc=useQueryClient();
  const [stage,setStage]=React.useState(stageOf(r)),[note,setNote]=React.useState(r.owner_note||''),[busy,setBusy]=React.useState(''),[error,setError]=React.useState('');
  React.useEffect(()=>{setStage(stageOf(r));setNote(r.owner_note||'');},[r]);
@@ -90,6 +91,7 @@ function RequestCard({r,notify,naming}:{r:api.HelpRequest;notify:(m:string)=>voi
    <Button busy={busy==='dl'+f.id} disabled={!!busy} onClick={()=>void download(f)} aria-label={`Download ${f.name}`}><Download/></Button>
   </li>)}</ul>:<p className="muted">{'No boundary file attached.'}</p>}
   {naming&&<NamingRow naming={naming} notify={notify}/>}
+  <ReviewRow request={r.id} status={r.status} review={review} notify={notify}/>
   <div className="tm-request-edit">
    <Combobox label={'Milestone'} value={stage} options={STAGES} onChange={v=>setStage(STAGES.some(s=>s.value===v)?v:'0')}/>
    <Field label={'Private note'} hint={'Only owners see this.'}>{p=><textarea {...p} rows={2} maxLength={NOTE_MAX} value={note} onChange={e=>setNote(e.target.value)}/>}</Field>
@@ -118,4 +120,39 @@ function NamingRow({naming,notify}:{naming:api.NamingSummary;notify:(m:string)=>
   <div className="actions"><Button busy={busy} onClick={()=>void toGenerator()}><Wand2/>{'Open names in generator'}</Button>
    <Button onClick={()=>void navigator.clipboard.writeText(api.namingLink(naming.token)).then(()=>notify('Naming link copied.'),()=>notify('Copy failed.'))}><Copy/>{'Copy naming link'}</Button></div>
  </div>;
+}
+
+const REVIEW_TEXT:Record<api.RequestWorkspace['review_state'],string>={none:'Cards not sent for review yet',review:'Waiting for the admin to check the cards',changes:'The admin asked for changes',approved:'Cards approved'};
+/** The request's workspace: send its cards for review, see the admin's answer, and upload the full map. */
+function ReviewRow({request,status,review,notify}:{request:string;status:string;review?:api.RequestWorkspace|null;notify:(m:string)=>void}){
+ const run=useRun(notify);
+ // Not before the request is accepted; undefined means the review update is not on the server yet.
+ if(review===undefined||status==='new'||status==='declined')return null;
+ if(!review)return <div className="tm-inset-box stack"><p>{'No workspace yet for this request.'}</p>
+  <div className="actions"><Button busy={run.busy==='make'} onClick={()=>void run.go('make',()=>api.workspaceForRequest(request),'Workspace made. Its admin is the contact email.')}>{'Make its workspace'}</Button></div></div>;
+ const plural=(n:number,word:string)=>`${n} ${word}${n===1?'':'s'}`;
+ const resend=review.review_state==='none'||review.review_state==='changes';
+ return <div className="tm-inset-box stack">
+  <p><strong>{REVIEW_TEXT[review.review_state]}</strong>{review.review_round>1?` · round ${review.review_round}`:''}</p>
+  <p className="muted">{plural(review.cards,'card')+' in the workspace'+(review.comments?` · ${plural(review.comments,'comment')} to fix (also emailed to you)`:'')}</p>
+  <div className="actions">
+   <a className="button" href={`?territory&ws=${encodeURIComponent(review.id)}`}><ExternalLink/>{'Open the workspace'}</a>
+   {resend&&<Button className="primary" busy={run.busy==='send'} disabled={!review.cards} onClick={()=>void run.go('send',()=>api.reviewSend(review.id),'Cards sent. The admin is emailed to check them.')}><Send/>{review.review_round?'Send corrected cards':'Send cards for review'}</Button>}
+  </div>
+  {review.review_state==='approved'&&<MapUpload review={review} run={run}/>}
+ </div>;
+}
+/** Runs one owner action at a time, then refreshes the request list. */
+function useRun(notify:(m:string)=>void){
+ const qc=useQueryClient(),[busy,setBusy]=React.useState('');
+ const go=async(kind:string,fn:()=>Promise<unknown>,done:string)=>{setBusy(kind);try{await fn();notify(done);await qc.invalidateQueries({queryKey:['tm','request-ws']});await qc.invalidateQueries({queryKey:['tm','help']});}catch(e){notify((e as Error).message);}finally{setBusy('');}};
+ return {busy,go};
+}
+function MapUpload({review,run}:{review:api.RequestWorkspace;run:ReturnType<typeof useRun>}){
+ const upload=(file?:File)=>{if(file)void run.go('map',()=>api.setFullMap(review.id,file),'Full map uploaded. The admin is emailed and the request is ready for use.');};
+ return <>
+  <Field label={review.full_map_at?`Full map: ${review.full_map_name} (replace)`:'Upload the full map'} hint={'PDF, PNG or JPEG, up to 50 MB. The admin is emailed and the request becomes Ready for use.'}>
+   {p=><input {...p} type="file" accept="application/pdf,image/png,image/jpeg" disabled={run.busy==='map'} onChange={e=>upload(e.target.files?.[0])}/>}</Field>
+  {run.busy==='map'&&<p className="muted" aria-live="polite">{'Uploading the full map…'}</p>}
+ </>;
 }

@@ -1,6 +1,6 @@
 // Territory manager calls. Every read and write is a scoped server function; the fictional demo keeps data in memory.
 import {z} from 'zod';
-import {demo,rpc} from './client';
+import {demo,mapFiles,rpc} from './client';
 import {territoryUrl} from './territory-site';
 import seed from './territory-demo.json';
 import {addDays,reportModeSchema,roleSchema,today,workspaceDataSchema,type Assignment,type Issue,type ReportMode,type Territory,type WorkspaceData} from './territory-model';
@@ -22,12 +22,12 @@ export type PublicTerritory=z.infer<typeof publicTerritorySchema>;
 const id=()=>crypto.randomUUID();
 const sample=(():WorkspaceData&{images:Record<string,string>}=>{
  const d=today(),now=new Date().toISOString(),notes:Record<string,string>=seed.notesFor;
- const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,has_boundary:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now}));
+ const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,has_boundary:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now,review_comment:'',review_comment_at:null}));
  const assignments:Assignment[]=seed.assignments.map(a=>({id:id(),territory_id:'demo-t'+a.territory,publisher:a.publisher,taken_on:addDays(d,-a.takenDaysAgo),due_on:addDays(d,seed.dueDays-a.takenDaysAgo),returned_on:a.returnedDaysAgo===null?null:addDays(d,-a.returnedDaysAgo)}));
  const {territory,...issue}=seed.issue;
  const reports:Issue[]=[{...issue,kind:'issue',language:null,id:id(),territory_id:'demo-t'+territory,created_at:now,resolved_at:null},
   ...seed.languageFinds.map(f=>({...f,kind:'language' as const,id:id(),territory_id:'demo-t'+f.territory,reporter:'',lat:null,lng:null,accuracy:null,created_at:now,resolved_at:null}))];
- return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo',report_mode:'issues_language',languages:seed.languages},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'viewer'}],territories,assignments,reports,images:{}};
+ return {workspace:{id:'demo-ws',name:'River Park Congregation',due_days:seed.dueDays,recent_days:seed.recentDays,report_token:'demo',report_mode:'issues_language',languages:seed.languages,review_state:'none',review_round:0,full_map_path:null,full_map_name:null,full_map_at:null,stage:null},role:'admin',members:[{email:'overseer@example.invalid',role:'admin'},{email:'helper@example.invalid',role:'viewer'}],territories,assignments,reports,images:{}};
 })();
 const demoOwner:OwnerOverview={workspaces:[{id:'demo-ws',name:'River Park Congregation',created_at:new Date().toISOString(),admins:['overseer@example.invalid'],territories:seed.names.length}],
  applications:[{id:'00000000-0000-4000-8000-000000000003',contact_name:'Fictional Servant',contact_email:'servant@example.invalid',admin_email:'servant@example.invalid',congregation_name:'Fictional Hillside',phone:null,status:'pending',created_at:new Date().toISOString()}]};
@@ -37,7 +37,7 @@ const clone=<T>(v:T):T=>structuredClone(v);
 // ---- Signed-in members ----------------------------------------------------------------------------
 export async function myWorkspaces(){return demo?[{id:'demo-ws',name:sample.workspace.name,role:'admin' as const}]:workspaceList.parse(await rpc('tm_my_workspaces'));}
 export async function loadWorkspace(ws:string):Promise<WorkspaceData>{
- if(demo){const {images:_images,...data}=sample;return clone(data);}
+ if(demo){const {images:_images,...data}=sample;return workspaceDataSchema.parse(clone(data));}
  return workspaceDataSchema.parse(await rpc('tm_workspace_data',{p_ws:ws}));
 }
 export async function territoryImage(territory:string){return demo?sample.images[territory]||null:z.string().nullable().parse(await rpc('tm_territory_image',{p_id:territory}));}
@@ -45,7 +45,7 @@ type TerritoryInput={id?:string;number:string;name:string;notes:string;mapUrl:st
 function demoSaveTerritory(t:TerritoryInput){
  if(sample.territories.some(x=>x.number===t.number.trim()&&x.id!==t.id))fail(`Territory number ${t.number} is already used. Choose another.`);
  const existing=sample.territories.find(x=>x.id===t.id);
- const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'demo-share-'+id(),updated_at:''};
+ const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'demo-share-'+id(),updated_at:'',review_comment:'',review_comment_at:null};
  Object.assign(row,{number:t.number.trim(),name:t.name.trim(),notes:t.notes,map_url:t.mapUrl.trim()||null,updated_at:new Date().toISOString()});
  if(t.image!==undefined){row.thumb=t.thumb||null;row.has_image=Boolean(t.image);if(t.image)sample.images[row.id]=t.image;else delete sample.images[row.id];}
  if(!existing)sample.territories.push(row);
@@ -236,3 +236,45 @@ export const namingLink=(token:string)=>`${territoryUrl('territory-names'+(demo?
 /** Links that open without sign-in. The token rides in the hash so it never reaches server logs or referrers. */
 export const shareLink=(token:string)=>`${territoryUrl('territory-card'+(demo?'&demo':''))}#token=${token}`;
 export const issueLink=(token:string)=>`${territoryUrl('territory-issue'+(demo?'&demo':''))}#token=${token}`;
+
+// ---- Card review, downloads and the full map ---------------------------------------------------------------
+/** Admin: a comment on one card while in review ('' removes it). */
+export async function reviewComment(territory:string,comment:string){
+ if(!demo){await rpc('tm_review_comment',{p_territory:territory,p_comment:comment});return;}
+ const t=sample.territories.find(x=>x.id===territory);if(t){t.review_comment=comment.trim();t.review_comment_at=comment.trim()?new Date().toISOString():null;}
+}
+/** Admin: send the comments back (the cards come back corrected). */
+export async function reviewSubmit(ws:string){
+ if(!demo){await rpc('tm_review_submit',{p_ws:ws});return;}
+ if(!sample.territories.some(t=>t.review_comment))fail('Write a comment on the cards that need a change, or approve all cards');
+ sample.workspace.review_state='changes';
+}
+/** Admin: approve every card. */
+export async function reviewApprove(ws:string){
+ if(!demo){await rpc('tm_review_approve',{p_ws:ws});return;}
+ sample.workspace.review_state='approved';for(const t of sample.territories){t.review_comment='';t.review_comment_at=null;}
+}
+/** Owner: send the cards in a workspace to its admin for review. */
+export async function reviewSend(ws:string){
+ if(!demo){await rpc('tm_review_send',{p_ws:ws});return;}
+ sample.workspace.review_state='review';sample.workspace.review_round=(sample.workspace.review_round??0)+1;
+}
+const requestWorkspaceSchema=z.array(z.object({id:z.string(),request_id:z.string(),review_state:z.enum(['none','review','changes','approved']),review_round:z.number(),cards:z.number(),comments:z.number(),full_map_name:z.string().nullable(),full_map_at:z.string().nullable()}));
+export type RequestWorkspace=z.infer<typeof requestWorkspaceSchema>[number];
+/** Owner: each request's workspace and how far its review has got. */
+export async function requestWorkspaces():Promise<RequestWorkspace[]>{
+ if(demo)return [{id:'demo-ws',request_id:'00000000-0000-4000-8000-000000000011',review_state:sample.workspace.review_state??'none',review_round:sample.workspace.review_round??0,cards:sample.territories.length,comments:sample.territories.filter(t=>t.review_comment).length,full_map_name:null,full_map_at:null}];
+ return requestWorkspaceSchema.parse(await rpc('tm_request_workspaces'));
+}
+/** Owner: the request's workspace (made now if missing; its contact email is the admin). */
+export async function workspaceForRequest(request:string){return demo?'demo-ws':z.string().parse(await rpc('tm_workspace_for_request',{p_request:request}));}
+const FILE_NAME_MAX=120;
+/** Owner: upload the full map into the workspace's folder; the admin is emailed and the request becomes ready for use. */
+export async function setFullMap(ws:string,file:File){
+ if(demo)return;
+ const safe=file.name.replace(/[^\w.-]+/g,'-').slice(-FILE_NAME_MAX)||'full-map.pdf',path=`${ws}/${Date.now()}-${safe}`;
+ await mapFiles.upload(path,file);
+ await rpc('tm_set_full_map',{p_ws:ws,p_path:path,p_name:file.name});
+}
+/** Members: a short-lived link that downloads the full map. */
+export async function fullMapLink(path:string,name:string){if(demo)fail('The fictional demo has no full map file.');return mapFiles.link(path,name);}
