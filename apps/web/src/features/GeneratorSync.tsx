@@ -28,7 +28,10 @@ const FLAG='tm-from-generator';
 /** True when the generator opened this page. Kept for this tab, so signing in with Google (which drops the query) does not lose it. */
 export function fromGenerator(){
  try{
-  if(new URLSearchParams(location.search).has('from-generator'))sessionStorage.setItem(FLAG,'1');
+  const q=new URLSearchParams(location.search);
+  if(q.has('from-generator'))sessionStorage.setItem(FLAG,'1');
+  // Opening a workspace link in this tab (e.g. "Open the workspace") leaves the import page.
+  else if(q.has('ws'))sessionStorage.removeItem(FLAG);
   return sessionStorage.getItem(FLAG)==='1'&&Boolean(window.opener);
  }catch{return new URLSearchParams(location.search).has('from-generator');}
 }
