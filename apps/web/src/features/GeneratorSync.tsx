@@ -98,7 +98,7 @@ function SendForNaming({data}:{data:Payload}){
  </section>;
 }
 // No silent fallback: saving overwrites territories by number, so a wrong default would overwrite another congregation.
-const pick=(targets:{value:string;label:string}[],congregation:string)=>targets.find(t=>sameCongregation(t.label,congregation))?.value??(targets.length===1?targets[0].value:'');
+const pick=(targets:{value:string;label:string}[],congregation:string)=>targets.find(t=>sameCongregation(t.label,congregation))?.value??(targets.length===1?targets[0]?.value??'':'');
 const describe=(data:Payload)=>`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`;
 function SaveButtons({disabled,busy,save}:{disabled:boolean;busy:boolean;save:(review:boolean)=>void}){
  return <div className="actions">
