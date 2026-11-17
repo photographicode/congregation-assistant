@@ -108,7 +108,8 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  const admin=workspaces.filter(w=>w.role==='admin');
  const guess=admin.find(w=>data.congregation&&w.name.toLowerCase().includes(data.congregation.toLowerCase()))?.id;
  const [ws,setWs]=React.useState(''),[progress,setProgress]=React.useState(''),[done,setDone]=React.useState(''),[failed,setFailed]=React.useState('');
- const chosen=ws||guess||admin[0]?.id||'';
+ // No silent fallback: saving overwrites territories by number, so a wrong default would overwrite another congregation.
+ const chosen=ws||guess||(admin.length===1?admin[0].id:'');
  async function save(){
   setFailed('');setDone('');
   try{
@@ -127,7 +128,8 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  if(!admin.length)return <p role="alert">{'You are not an admin of any workspace. Create the workspace first (Owner → Workspaces), then send again.'}</p>;
  return <>
   <p>{`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`}</p>
-  <Combobox label={'Save into workspace'} value={chosen} options={admin.map(w=>({value:w.id,label:w.name}))} onChange={setWs}/>
+  <Combobox label={'Save into workspace'} value={chosen} options={[...(chosen?[]:[{value:'',label:'Choose a workspace'}]),...admin.map(w=>({value:w.id,label:w.name}))]} onChange={setWs}/>
+  {!guess&&data.congregation&&<p className="muted">{`No workspace is named after ${data.congregation}. If it is a request, make its workspace first (Requests → Make its workspace), then send again.`}</p>}
   {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(chosen)}`}>{'Open the workspace'}</a>
    <SendReview ws={chosen} data={data}/></div></>
   :<Button className="primary" disabled={!chosen} busy={Boolean(progress)} onClick={()=>void save()}>{'Save'}</Button>}
