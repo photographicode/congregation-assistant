@@ -9,7 +9,7 @@ import {Button,Combobox,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {generatorUrl} from './territory-site';
 
-const LOCAL_GENERATOR='http://localhost:5180',READY='tm-manager-ready',SYNC='tm-sync',PING_MS=1000,NAME_MAX=150,NUMBER_MAX=20,URL_MAX=500,IMAGE_MAX=1_500_000,THUMB_MAX=150_000,MAX_TERRITORIES=1000,LANDMARK_MAX=80,MAX_POINTS=12;
+const LOCAL_GENERATOR='http://localhost:5180',READY='tm-manager-ready',SYNC='tm-sync',PING_MS=1000,NAME_MAX=150,NUMBER_MAX=20,URL_MAX=2000,IMAGE_MAX=1_500_000,THUMB_MAX=150_000,MAX_TERRITORIES=1000,LANDMARK_MAX=80,MAX_POINTS=12;
 const dataImage=(max:number)=>z.string().max(max).regex(/^data:image\/(webp|jpeg|png);base64,/);
 const ring=z.array(z.tuple([z.number(),z.number()]).rest(z.number()));
 const payloadSchema=z.object({type:z.literal(SYNC),congregation:z.string().max(NAME_MAX).default(''),territories:z.array(z.object({

@@ -19,7 +19,7 @@ import {TerritoryRequests} from './TerritoryRequests';
 import {fromGenerator,GeneratorSync} from './GeneratorSync';
 import {TerritoryOwnerOverview} from './TerritoryOwnerOverview';
 import {TerritoryOwner} from './TerritoryOwner';
-import {TerritoryLanding} from './TerritoryLanding';
+import {TerritoryLanding} from './TerritoryLanding';
 import {ReadyPanels,ReviewScreen} from './TerritoryReview';
 import {CardPlaceholder} from './CardSketch';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
@@ -28,7 +28,7 @@ import './territory.css';
 type Tab='dashboard'|'territories'|'issues'|'settings'|'owner';
 const SORTS={number:'Number',name:'Name',idle:'Longest unused',due:'Due date'} as const;
 const IMAGE_MAX=1600,THUMB_MAX=480,IMAGE_LIMIT=1_400_000,IMAGE_Q=0.82,THUMB_Q=0.7,MIN_SIZE=400,SHRINK=0.8,MIN_Q=0.5,Q_STEP=0.1,EMAIL_MAX=150;
-const LAST='9999-12-31',MAP_URL_MAX=500;
+const LAST='9999-12-31',MAP_URL_MAX=2000;
 
 type Row={t:Territory;s:Summary;issues:number};
 const SORTERS:Record<keyof typeof SORTS,(a:Row,b:Row)=>number>={
