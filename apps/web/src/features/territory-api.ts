@@ -22,7 +22,7 @@ export type PublicTerritory=z.infer<typeof publicTerritorySchema>;
 const id=()=>crypto.randomUUID();
 const sample=(():WorkspaceData&{images:Record<string,string>}=>{
  const d=today(),now=new Date().toISOString(),notes:Record<string,string>=seed.notesFor;
- const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,has_boundary:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now,review_comment:'',review_comment_at:null}));
+ const territories:Territory[]=seed.names.map((name,i)=>({id:'demo-t'+(i+1),number:String(i+1),name,notes:notes[String(i+1)]||'',thumb:null,has_image:false,has_boundary:false,map_url:seed.mapUrl,share_token:'demo-share-'+(i+1),updated_at:now,review_comment:'',review_comment_at:null,review_ok_at:null}));
  const assignments:Assignment[]=seed.assignments.map(a=>({id:id(),territory_id:'demo-t'+a.territory,publisher:a.publisher,taken_on:addDays(d,-a.takenDaysAgo),due_on:addDays(d,seed.dueDays-a.takenDaysAgo),returned_on:a.returnedDaysAgo===null?null:addDays(d,-a.returnedDaysAgo)}));
  const {territory,...issue}=seed.issue;
  const reports:Issue[]=[{...issue,kind:'issue',language:null,id:id(),territory_id:'demo-t'+territory,created_at:now,resolved_at:null},
@@ -45,7 +45,7 @@ type TerritoryInput={id?:string;number:string;name:string;notes:string;mapUrl:st
 function demoSaveTerritory(t:TerritoryInput){
  if(sample.territories.some(x=>x.number===t.number.trim()&&x.id!==t.id))fail(`Territory number ${t.number} is already used. Choose another.`);
  const existing=sample.territories.find(x=>x.id===t.id);
- const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'demo-share-'+id(),updated_at:'',review_comment:'',review_comment_at:null};
+ const row:Territory=existing??{id:id(),number:'',name:'',notes:'',thumb:null,has_image:false,has_boundary:false,map_url:null,share_token:'demo-share-'+id(),updated_at:'',review_comment:'',review_comment_at:null,review_ok_at:null};
  Object.assign(row,{number:t.number.trim(),name:t.name.trim(),notes:t.notes,map_url:t.mapUrl.trim()||null,updated_at:new Date().toISOString()});
  if(t.image!==undefined){row.thumb=t.thumb||null;row.has_image=Boolean(t.image);if(t.image)sample.images[row.id]=t.image;else delete sample.images[row.id];}
  if(!existing)sample.territories.push(row);
@@ -241,7 +241,7 @@ export const issueLink=(token:string)=>`${territoryUrl('territory-issue'+(demo?'
 /** Admin: a comment on one card while in review ('' removes it). */
 export async function reviewComment(territory:string,comment:string){
  if(!demo){await rpc('tm_review_comment',{p_territory:territory,p_comment:comment});return;}
- const t=sample.territories.find(x=>x.id===territory);if(t){t.review_comment=comment.trim();t.review_comment_at=comment.trim()?new Date().toISOString():null;}
+ const t=sample.territories.find(x=>x.id===territory);if(t){t.review_comment=comment.trim();t.review_comment_at=comment.trim()?new Date().toISOString():null;if(t.review_comment)t.review_ok_at=null;}
 }
 /** Admin: send the comments back (the cards come back corrected). */
 export async function reviewSubmit(ws:string){
@@ -253,6 +253,11 @@ export async function reviewSubmit(ws:string){
 export async function reviewApprove(ws:string){
  if(!demo){await rpc('tm_review_approve',{p_ws:ws});return;}
  sample.workspace.review_state='approved';for(const t of sample.territories){t.review_comment='';t.review_comment_at=null;}
+}
+/** Admin: tick a card as right (clears its comment), or untick it. */
+export async function reviewMark(territory:string,ok:boolean){
+ if(!demo){await rpc('tm_review_mark',{p_territory:territory,p_ok:ok});return;}
+ const t=sample.territories.find(x=>x.id===territory);if(t){t.review_ok_at=ok?new Date().toISOString():null;if(ok){t.review_comment='';t.review_comment_at=null;}}
 }
 /** Owner: send the cards in a workspace to its admin for review. */
 export async function reviewSend(ws:string){

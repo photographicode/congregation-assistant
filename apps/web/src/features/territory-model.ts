@@ -9,7 +9,7 @@ export type ReportMode=z.infer<typeof reportModeSchema>;
 
 const territorySchema=z.object({id:z.string(),number:z.string(),name:z.string(),notes:z.string(),thumb:z.string().nullable(),has_image:z.boolean(),has_boundary:z.boolean().default(false),map_url:z.string().nullable().default(null),share_token:z.string(),updated_at:z.string(),
  // The admin's comment while the cards are in review; older servers send none.
- review_comment:z.string().default(''),review_comment_at:z.string().nullable().default(null)});
+ review_comment:z.string().default(''),review_comment_at:z.string().nullable().default(null),review_ok_at:z.string().nullable().default(null)});
 const assignmentSchema=z.object({id:z.string(),territory_id:z.string(),publisher:z.string(),taken_on:z.string(),due_on:z.string(),returned_on:z.string().nullable()});
 // kind 'language' marks a house where a language is spoken (language search); older servers send no kind.
 const issueSchema=z.object({id:z.string(),territory_id:z.string(),kind:z.enum(['issue','language']).default('issue'),language:z.string().nullable().default(null),household:z.string(),details:z.string(),reporter:z.string(),lat:z.number().nullable(),lng:z.number().nullable(),accuracy:z.number().nullable(),created_at:z.string(),resolved_at:z.string().nullable()});

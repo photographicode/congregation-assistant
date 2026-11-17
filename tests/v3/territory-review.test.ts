@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {changedSinceComment,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from '../../apps/web/src/features/territory-review-model';
+import {changedSinceComment,checkedCard,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from '../../apps/web/src/features/territory-review-model';
 import {workspaceDataSchema} from '../../apps/web/src/features/territory-model';
 
 describe('territory card review',()=>{
@@ -26,6 +26,11 @@ describe('territory card review',()=>{
   expect(changedSinceComment({review_comment_at:'2026-11-17T10:00:00Z',updated_at:'2026-11-17T09:00:00Z'})).toBe(false);
   expect(changedSinceComment({review_comment_at:null,updated_at:'2026-11-17T11:00:00Z'})).toBe(false);
  });
+ it('counts a ticked card as checked until it is saved again',()=>{
+  expect(checkedCard({review_ok_at:'2026-11-17T10:00:00Z',updated_at:'2026-11-17T09:00:00Z'})).toBe(true);
+  expect(checkedCard({review_ok_at:'2026-11-17T10:00:00Z',updated_at:'2026-11-17T11:00:00Z'})).toBe(false);
+  expect(checkedCard({review_ok_at:null,updated_at:'2026-11-17T09:00:00Z'})).toBe(false);
+ });
  it('makes safe file names and plurals',()=>{
   expect(safeFileName('Territory 4 · Seethapal / East',60)).toBe('Territory-4-Seethapal-East');
   expect(safeFileName('***',60)).toBe('territories');
@@ -37,6 +42,6 @@ describe('territory card review',()=>{
   const d=workspaceDataSchema.parse({workspace:{id:'w',name:'Hill',due_days:120,recent_days:90,report_token:'t'},role:'admin',members:[],assignments:[],reports:[],
    territories:[{id:'t1',number:'1',name:'A',notes:'',thumb:null,has_image:true,share_token:'s',updated_at:'2026-11-17'}]});
   expect(d.workspace).toMatchObject({review_state:'none',review_round:0,drive_url:null,full_map_url:null,stage:null});
-  expect(d.territories[0]).toMatchObject({review_comment:'',review_comment_at:null});
+  expect(d.territories[0]).toMatchObject({review_comment:'',review_comment_at:null,review_ok_at:null});
  });
 });

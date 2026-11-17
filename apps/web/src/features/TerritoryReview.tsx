@@ -12,7 +12,7 @@ import {download} from './territory-card';
 import {CardPlaceholder} from './CardSketch';
 import {demo} from './client';
 import {SuggestDialog,useReviewNaming} from './ReviewNaming';
-import {changedSinceComment,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from './territory-review-model';
+import {changedSinceComment,checkedCard,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from './territory-review-model';
 
 type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<unknown>|void;notify:(m:string)=>void};
 const JPEG_Q=0.92,PDF_DPI=200,PT_PER_IN=72,NAME_MAX=60;
@@ -39,7 +39,7 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
  const who=reviewer(d.role,owner),admin=who==='admin',open=d.workspace.review_state==='review';
  // The demo's sample cards have no images; their sketches stand in.
  const cards=[...d.territories].filter(t=>t.has_image||demo).sort(byNumber);
- const comments=cards.filter(t=>t.review_comment).length;
+ const comments=cards.filter(t=>t.review_comment).length,checked=cards.filter(checkedCard).length;
  const intro=reviewIntro(who,cards.length);
  const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null),[naming,setNaming]=React.useState('');
  // Names and landmarks, when the cards were sent with their outlines: only the admin, only while in review.
@@ -49,6 +49,7 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
   <div className="tm-heading"><h1>{'Check your territory cards'}</h1></div>
   <Progress d={d}/>
   <section className="tm-raised stack">
+   {open&&cards.length>0&&<><p><strong>{`${checked} of ${plural(cards.length,'card')} checked`}</strong></p><progress max={cards.length} value={checked} aria-label={'Cards checked'}/></>}
    {open?<p>{intro}</p>
     :<p role="status">{`Thank you. We have your ${plural(comments,'comment')} and are correcting the cards. We will email you when they are ready to check again.`}</p>}
    {open&&admin&&<div className="actions">
@@ -56,7 +57,7 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
     <Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>
    </div>}
   </section>
-  <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}
+  <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id+(t.review_ok_at??'')} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}
    named={named?.naming.entries.find(e=>e.number===t.number)} onName={named?()=>setNaming(t.number):undefined}/>)}</div>
   {confirm&&<ApproveDialog comments={comments} cards={cards.length} busy={busy==='approve'} onCancel={()=>setConfirm(false)} onApprove={()=>void act('approve',()=>api.reviewApprove(ws),'All cards approved. Thank you!')}/>}
   {view&&<CardView t={view} onClose={()=>setView(null)}/>}
@@ -85,6 +86,7 @@ function ReviewCard({t,editable,onView,notify,refresh,named,onName}:CardProps){
    {src?<img src={src} alt={`Territory card ${t.number}`} width={480} height={320} loading="lazy" decoding="async"/>:<CardPlaceholder number={t.number}/>}<span className="tm-number">{t.number}</span></button>
   <span className="tm-card-body stack"><strong>{t.name}</strong>
    {changed&&<Chip tone="ok">{'Changed since your comment'}</Chip>}
+   <Tick t={t} editable={editable} notify={notify} refresh={refresh}/>
    {editable?<div ref={stretch}><Field label={'Comment (optional)'}>{p=><textarea {...p} ref={stretch} className="tm-inset" rows={2} maxLength={1000} placeholder={'What should change on this card?'}
      value={text} onChange={e=>setText(e.target.value)} onBlur={()=>void save()}/>}</Field></div>
     :t.review_comment&&<p><small className="muted">{'Your comment: '}</small>{t.review_comment}</p>}
@@ -93,6 +95,13 @@ function ReviewCard({t,editable,onView,notify,refresh,named,onName}:CardProps){
  </article>;
 }
 
+/** The admin's tick: this card is right. A tick clears the card's comment; a comment clears the tick. */
+function Tick({t,editable,notify,refresh}:Pick<CardProps,'t'|'editable'|'notify'|'refresh'>){
+ const ok=checkedCard(t),[busy,setBusy]=React.useState(false);
+ if(!editable)return ok?<Chip tone="ok">{'Checked'}</Chip>:null;
+ const toggle=async()=>{setBusy(true);try{await api.reviewMark(t.id,!ok);await refresh();}catch(e){notify((e as Error).message);}finally{setBusy(false);}};
+ return <Button className={ok?'primary':undefined} busy={busy} aria-pressed={ok} onClick={()=>void toggle()}><Check/>{ok?'Checked':'Mark as right'}</Button>;
+}
 /** What the admin suggested for the territory's name, and the button to the map. */
 function Naming({named,onName}:{named?:api.NamingEntry;onName:()=>void}){
  return <>{named?.submitted&&<p><small className="muted">{'Name you gave: '}</small>{named.locality}{named.points.length>0&&<small className="muted">{` · ${plural(named.points.length,'landmark')}`}</small>}</p>}
