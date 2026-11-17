@@ -21,6 +21,7 @@ import {TerritoryOwnerOverview} from './TerritoryOwnerOverview';
 import {TerritoryOwner} from './TerritoryOwner';
 import {TerritoryLanding} from './TerritoryLanding';
 import {ReadyPanels,ReviewScreen} from './TerritoryReview';
+import {CardPlaceholder} from './CardSketch';
 import {InstallBanner,InstallTerritories,standalone,useTerritoryInstallable} from './TerritoryInstall';
 import './territory.css';
 
@@ -192,7 +193,7 @@ function TerritoryList({rows,onOpen}:{rows:Row[];onOpen:(id:string)=>void}){
   <StatusChips s={s} issues={issues}/>
  </button></li>)}</ul>;
  return <div className="tm-grid">{rows.map(({t,s,issues})=><button type="button" key={t.id} className="tm-raised tm-card" onClick={()=>onOpen(t.id)}>
-  <span className="tm-thumb">{t.thumb?<img src={t.thumb} alt="" width={480} height={320} loading="lazy" decoding="async"/>:<MapIcon aria-hidden="true"/>}<span className="tm-number">{t.number}</span></span>
+  <span className="tm-thumb">{t.thumb?<img src={t.thumb} alt="" width={480} height={320} loading="lazy" decoding="async"/>:<CardPlaceholder number={t.number}/>}<span className="tm-number">{t.number}</span></span>
   <span className="tm-card-body"><strong>{t.name}</strong><StatusChips s={s} issues={issues}/><small>{holder(s)}</small></span>
  </button>)}</div>;
 }
@@ -296,7 +297,7 @@ function Detail({d,ws,t,refresh,notify,onClose,openTerritory}:Ctx&{t:Territory;o
 /** The territory image comes first; the small copy shows at once while the full image loads. */
 function Hero({t,full}:{t:Territory;full:string|null}){
  const src=full||t.thumb;
- return <div className="tm-hero">{src?<img src={src} alt={`Map of territory ${t.number}`} width={1200} height={800}/>:<MapIcon aria-hidden="true"/>}</div>;
+ return <div className="tm-hero">{src?<img src={src} alt={`Map of territory ${t.number}`} width={1200} height={800}/>:<CardPlaceholder number={t.number}/>}</div>;
 }
 function MapLink({url,notify}:{url:string;notify:(m:string)=>void}){
  return <div className="actions tm-map-actions">

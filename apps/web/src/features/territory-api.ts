@@ -123,7 +123,7 @@ export async function publicForm(token:string){
  return publicFormSchema.parse(await rpc('tm_public_form',{p_token:token}));
 }
 export async function publicTerritory(token:string):Promise<PublicTerritory>{
- if(demo){const t=sample.territories.find(x=>x.share_token===token)??sample.territories.find(x=>x.number==='3');if(!t)throw Error('Demo territory missing');return {id:t.id,number:t.number,name:t.name,notes:t.notes,map_url:t.map_url,image:sample.images[t.id]||null,workspace:sample.workspace.name,report_mode:sample.workspace.report_mode,languages:sample.workspace.languages,reports:sample.reports.filter(r=>r.territory_id===t.id&&!r.resolved_at)};}
+ if(demo){const t=sample.territories.find(x=>x.share_token===token)??sample.territories.find(x=>x.number==='3');if(!t)throw Error('Demo territory missing');return {id:t.id,number:t.number,name:t.name,notes:t.notes,map_url:t.map_url,image:sample.images[t.id]||null,workspace:sample.workspace.name,report_mode:sample.workspace.report_mode,languages:sample.workspace.languages,reports:sample.reports.filter(r=>r.territory_id===t.id&&(!r.resolved_at||r.kind==='language'))};}
  return publicTerritorySchema.parse(await rpc('tm_public_territory',{p_token:token}));
 }
 type ReportInput={territory:string|null;kind:'issue'|'language';language:string;household:string;details:string;reporter:string;lat:number|null;lng:number|null;accuracy:number|null;website:string};

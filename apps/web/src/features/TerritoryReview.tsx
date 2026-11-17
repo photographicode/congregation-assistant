@@ -9,6 +9,7 @@ import {Dialog} from '../../../../packages/ui/Dialog';
 import * as api from './territory-api';
 import {byNumber,MILESTONES,type Territory,type WorkspaceData} from './territory-model';
 import {download} from './territory-card';
+import {CardPlaceholder} from './CardSketch';
 import {changedSinceComment,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from './territory-review-model';
 
 type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<unknown>|void;notify:(m:string)=>void};
@@ -73,7 +74,7 @@ function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boo
  const save=async()=>{if(text.trim()===saved.trim())return;try{await api.reviewComment(t.id,text);setSaved(text);await refresh();}catch(e){notify((e as Error).message);}};
  return <article className="tm-raised tm-card">
   <button type="button" className="tm-thumb" onClick={onView} aria-label={`See card ${t.number} full size`}>
-   {src?<img src={src} alt={`Territory card ${t.number}`} width={480} height={320} loading="lazy" decoding="async"/>:<MapIcon aria-hidden="true"/>}<span className="tm-number">{t.number}</span></button>
+   {src?<img src={src} alt={`Territory card ${t.number}`} width={480} height={320} loading="lazy" decoding="async"/>:<CardPlaceholder number={t.number}/>}<span className="tm-number">{t.number}</span></button>
   <span className="tm-card-body stack"><strong>{t.name}</strong>
    {changed&&<Chip tone="ok">{'Changed since your comment'}</Chip>}
    {editable?<div ref={stretch}><Field label={'Comment (optional)'}>{p=><textarea {...p} ref={stretch} className="tm-inset" rows={2} maxLength={1000} placeholder={'What should change on this card?'}

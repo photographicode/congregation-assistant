@@ -170,7 +170,7 @@
  .tm .tm-kpi{padding:var(--tm-u-14) var(--tm-u-16)}
  .tm-kpi strong{font-size:var(--fs-6)}
  .tm-toolbar{grid-template-columns:1fr;gap:var(--tm-u-12)}
- .tm-export{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--tm-u-10);align-items:end}
+ .tm-export{display:grid;grid-template-columns:1fr 1fr;gap:var(--tm-u-10);align-items:end}
  .tm-export .ui-field label{white-space:nowrap}
  .tm-export button{justify-content:center}
 

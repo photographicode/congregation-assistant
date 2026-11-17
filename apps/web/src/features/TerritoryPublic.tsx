@@ -3,6 +3,7 @@ import React from 'react';
 import {Check,Copy,Crosshair,Download,MapPin,Map as MapIcon} from 'lucide-react';
 import {Button,Chip,Combobox,Field,Segmented,Skeleton} from '../../../../packages/ui/components';
 import {config} from './client';
+import {CardPlaceholder} from './CardSketch';
 import * as api from './territory-api';
 import {MILESTONES,mapsLink,reportTitle,type ReportMode} from './territory-model';
 import {cardJpeg,download} from './territory-card';
@@ -31,14 +32,11 @@ export function TerritoryCard(){
  return <main className="tm tm-public"><article className="tm-raised stack">
   <p className="muted">{data.workspace}</p>
   <h1><span className="tm-number">{data.number}</span>{' '}{data.name}</h1>
-  {data.image?<img className="tm-hero" src={data.image} alt={`Map of territory ${data.number}`} width={1200} height={800}/>:<span className="tm-thumb tm-hero"><MapIcon aria-hidden="true"/></span>}
+  {data.image?<img className="tm-hero" src={data.image} alt={`Map of territory ${data.number}`} width={1200} height={800}/>:<span className="tm-thumb tm-hero"><CardPlaceholder number={data.number}/></span>}
   {data.map_url&&<div className="actions tm-map-actions"><a className="button primary" href={data.map_url} target="_blank" rel="noreferrer"><MapPin/>{'Open map'}</a><Button onClick={()=>void navigator.clipboard.writeText(data.map_url||'').catch(()=>undefined)}><Copy/>{'Copy map link'}</Button></div>}
   {data.notes&&<section className="stack"><h2>{'Notes'}</h2><p className="v4-preserve-lines">{data.notes}</p></section>}
-  <section className="stack"><h2>{'Be aware'}</h2>
-   {data.reports.length?data.reports.map((r,i)=><div className="tm-issue" key={i}><div>{r.kind==='language'&&<Chip tone="ok">{'Language: '+r.language}</Chip>}<strong>{reportTitle(r)}</strong><p className="v4-preserve-lines">{r.details}</p>
-    {r.lat!==null&&r.lng!==null&&<a href={mapsLink(r.lat,r.lng)} target="_blank" rel="noreferrer"><MapPin/>{'Open location'}</a>}</div></div>)
-   :<p className="muted">{'No open issues reported in this territory.'}</p>}
-  </section>
+  <Reports title={'Be aware'} empty={'No open issues reported in this territory.'} reports={data.reports.filter(r=>r.kind!=='language')}/>
+  {data.report_mode==='issues_language'||data.reports.some(r=>r.kind==='language')?<Reports title={'Languages spoken here'} empty={'No language finds yet.'} reports={data.reports.filter(r=>r.kind==='language')}/>:null}
   <div className="actions"><Button className="primary" onClick={()=>setReporting(true)}>{data.report_mode==='issues_language'?'Report a house or place':'Report an issue here'}</Button><Button onClick={()=>void save()}><Download/>{'Save card'}</Button></div>
   {reporting&&<IssueForm token={token} territories={null} mode={data.report_mode} languages={data.languages} onDone={()=>void api.publicTerritory(token).then(setData)}/>}
  </article></main>;
@@ -141,3 +139,12 @@ export function TerritoryTrack(){
  </Page>;
 }
 const trackState=(i:number,stage:number)=>{if(i<stage||stage===MILESTONES.length-1)return 'done';return i===stage?'now':'next';};
+
+/** One group of reports on a shared card: open issues, or every language find. */
+function Reports({title,empty,reports}:{title:string;empty:string;reports:api.PublicTerritory['reports']}){
+ return <section className="stack"><h2>{reports.length?`${title} (${reports.length})`:title}</h2>
+  {reports.length?reports.map((r,i)=><div className="tm-issue" key={i}><div>{r.kind==='language'&&<Chip tone="ok">{'Language: '+r.language}</Chip>}<strong>{reportTitle(r)}</strong><p className="v4-preserve-lines">{r.details}</p>
+   {r.lat!==null&&r.lng!==null&&<a href={mapsLink(r.lat,r.lng)} target="_blank" rel="noreferrer"><MapPin/>{'Open location'}</a>}</div></div>)
+  :<p className="muted">{empty}</p>}
+ </section>;
+}
