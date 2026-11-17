@@ -1,4 +1,4 @@
-# Advisory exceptions, reviewed 2026-11-02. Each needs a specific ID, reachability reason and expiry <=90 days.
+# Advisory exceptions, reviewed 2026-11-02 (picomatch added 2026-11-17). Each needs a specific ID, reachability reason and expiry <=90 days.
 # GHSA-8g5g-mxqh-grgj (Vite server.fs.deny bypass) is fixed by upgrading Vite to 6.4.5.
 # GHSA-vfj7-8cjw-p6xm was not reported by run 40006331896; its unused ignore is removed.
 # GHSA-mrhx-c7xc-m3w5 is fixed by upgrading production Zod to 4.6.7 (fixed >=4.6.6).
@@ -12,3 +12,8 @@ reason = "minimatch 3/9/10 is dev-only (ESLint, typescript-eslint, ts-morph); pa
 id = "GHSA-3g3m-2fjr-6pw4"
 ignoreUntil = 2027-01-30
 reason = "glob 10 is dev-only via npm cacache in build tooling; it never receives an AbortSignal from untrusted input and is absent from the production SBOM. Fix needs glob 14, a breaking major."
+
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+ignoreUntil = 2027-02-14
+reason = "picomatch 2.3.2/4.0.7 is dev-only (Vite, Vitest, knip, stylelint, changesets build tooling); glob patterns come from repository config, never user input, and it is absent from the production SBOM. No patched release exists yet (<=4.0.7 affected)."
