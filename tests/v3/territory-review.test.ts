@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {changedSinceComment,checkedCard,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from '../../apps/web/src/features/territory-review-model';
+import {changedSinceComment,checkedCard,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName,sameCongregation} from '../../apps/web/src/features/territory-review-model';
 import {workspaceDataSchema} from '../../apps/web/src/features/territory-model';
 
 describe('territory card review',()=>{
@@ -30,6 +30,14 @@ describe('territory card review',()=>{
   expect(checkedCard({review_ok_at:'2026-11-17T10:00:00Z',updated_at:'2026-11-17T09:00:00Z'})).toBe(true);
   expect(checkedCard({review_ok_at:'2026-11-17T10:00:00Z',updated_at:'2026-11-17T11:00:00Z'})).toBe(false);
   expect(checkedCard({review_ok_at:null,updated_at:'2026-11-17T09:00:00Z'})).toBe(false);
+ });
+ it('matches the generator congregation to a workspace or request by name only',()=>{
+  expect(sameCongregation('Vadassery Congregation (new workspace for this request)','Vadassery')).toBe(true);
+  expect(sameCongregation('Vadassery Congregation','vadassery congregation')).toBe(true);
+  expect(sameCongregation('Nagercoil Congregation','Vadassery')).toBe(false);
+  expect(sameCongregation('Sample Congregation','')).toBe(false);
+  expect(sameCongregation('Hill East','Hill')).toBe(true);
+  expect(sameCongregation('Hillside','Hill')).toBe(false);
  });
  it('makes safe file names and plurals',()=>{
   expect(safeFileName('Territory 4 · Seethapal / East',60)).toBe('Territory-4-Seethapal-East');

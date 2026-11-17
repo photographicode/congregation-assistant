@@ -49,25 +49,26 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
   <div className="tm-heading"><h1>{'Check your territory cards'}</h1></div>
   <Progress d={d}/>
   <section className="tm-raised stack">
-   {open&&cards.length>0&&<><p><strong>{`${checked} of ${plural(cards.length,'card')} checked`}</strong></p><progress max={cards.length} value={checked} aria-label={'Cards checked'}/></>}
+   {open&&cards.length>0&&<><p><strong>{`${checked} of ${plural(cards.length,'card')} checked`}{comments?` · ${plural(comments,'card')} to change`:''}</strong></p><progress max={cards.length} value={checked+comments} aria-label={'Cards checked'}/></>}
    {open?<p>{intro}</p>
     :<p role="status">{`Thank you. We have your ${plural(comments,'comment')} and are correcting the cards. We will email you when they are ready to check again.`}</p>}
-   {open&&admin&&<div className="actions">
-    <Button busy={busy==='send'} disabled={!comments||Boolean(busy)} onClick={()=>void act('send',()=>api.reviewSubmit(ws),'Comments sent. We will email you when the cards are corrected.')}><Send/>{`Send comments (${comments})`}</Button>
-    <Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>
+   {/* One way to finish: with changes to make, send them; with none, approve every card. */}
+   {open&&admin&&<div className="actions">{comments
+    ?<Button className="primary" busy={busy==='send'} disabled={Boolean(busy)} onClick={()=>void act('send',()=>api.reviewSubmit(ws),'Changes sent. We will email you when the cards are corrected.')}><Send/>{`Send ${plural(comments,'change')}`}</Button>
+    :<Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>}
    </div>}
   </section>
   <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id+(t.review_ok_at??'')} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}
    named={named?.naming.entries.find(e=>e.number===t.number)} onName={named?()=>setNaming(t.number):undefined}/>)}</div>
-  {confirm&&<ApproveDialog comments={comments} cards={cards.length} busy={busy==='approve'} onCancel={()=>setConfirm(false)} onApprove={()=>void act('approve',()=>api.reviewApprove(ws),'All cards approved. Thank you!')}/>}
+  {confirm&&<ApproveDialog unchecked={cards.length-checked} cards={cards.length} busy={busy==='approve'} onCancel={()=>setConfirm(false)} onApprove={()=>void act('approve',()=>api.reviewApprove(ws),'All cards approved. Thank you!')}/>}
   {view&&<CardView t={view} onClose={()=>setView(null)}/>}
   {naming&&<SuggestDialog ws={ws} number={naming} onClose={()=>setNaming('')}/>}
  </div>;
 }
 
-function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number;cards:number;busy:boolean;onCancel:()=>void;onApprove:()=>void}){
+function ApproveDialog({unchecked,cards,busy,onCancel,onApprove}:{unchecked:number;cards:number;busy:boolean;onCancel:()=>void;onApprove:()=>void}){
  return <Dialog open onClose={onCancel} title={'Approve all cards?'}><div className="tm-dialog stack">
-  <p>{comments?`You still have ${plural(comments,'comment')}. Approving clears them and finalises all ${cards} cards.`:`This finalises all ${cards} cards. Next, we make the full map.`}</p>
+  <p>{(unchecked?`${plural(unchecked,'card')} not marked as right yet. `:'')+`This finalises all ${cards} cards. Next, we make the full map.`}</p>
   <div className="actions"><Button onClick={onCancel}>{'Cancel'}</Button>
    <Button className="primary" busy={busy} onClick={onApprove}><CheckCheck/>{'Approve all cards'}</Button></div>
  </div></Dialog>;

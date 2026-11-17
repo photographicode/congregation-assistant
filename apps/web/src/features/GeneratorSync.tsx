@@ -4,10 +4,11 @@
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {z} from 'zod';
-import {Check,Map as MapIcon} from 'lucide-react';
+import {Check,Map as MapIcon,Send} from 'lucide-react';
 import {Button,Combobox,Segmented} from '../../../../packages/ui/components';
 import * as api from './territory-api';
 import {generatorUrl} from './territory-site';
+import {sameCongregation} from './territory-review-model';
 
 const LOCAL_GENERATOR='http://localhost:5180',READY='tm-manager-ready',SYNC='tm-sync',PING_MS=1000,NAME_MAX=150,NUMBER_MAX=20,URL_MAX=2000,IMAGE_MAX=1_500_000,THUMB_MAX=150_000,MAX_TERRITORIES=1000,LANDMARK_MAX=80,MAX_POINTS=12;
 const dataImage=(max:number)=>z.string().max(max).regex(/^data:image\/(webp|jpeg|png);base64,/);
@@ -96,43 +97,66 @@ function SendForNaming({data}:{data:Payload}){
   {failed&&<p role="alert" className="error">{failed}</p>}
  </section>;
 }
-/** Sends the saved cards to the workspace's admin, who checks them and comments or approves; they are emailed now. */
-function SendReview({ws,data}:{ws:string;data:Payload}){
- const [sending,setSending]=React.useState(false),[sent,setSent]=React.useState(false),[note,setNote]=React.useState('');
- // With the cards, the outlines and landmarks, so the admin can also check each territory's name and landmarks.
- const send=async()=>{setSending(true);setNote('');try{await api.reviewNamingSet(ws,toNaming(data));await api.reviewSend(ws);setSent(true);setNote('The admin is emailed to check the cards.');}catch(e){setNote((e as Error).message);}finally{setSending(false);}};
- return <><Button busy={sending} disabled={sent} onClick={()=>void send()}>{sent?'Sent for review':'Send to the admin for review'}</Button>{note&&<p role="status">{note}</p>}</>;
+// No silent fallback: saving overwrites territories by number, so a wrong default would overwrite another congregation.
+const pick=(targets:{value:string;label:string}[],congregation:string)=>targets.find(t=>sameCongregation(t.label,congregation))?.value??(targets.length===1?targets[0].value:'');
+const describe=(data:Payload)=>`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`;
+function SaveButtons({disabled,busy,save}:{disabled:boolean;busy:boolean;save:(review:boolean)=>void}){
+ return <div className="actions">
+  <Button className="primary" disabled={disabled} busy={busy} onClick={()=>save(true)}><Send/>{'Save and send for review'}</Button>
+  <Button disabled={disabled} onClick={()=>save(false)}>{'Save only'}</Button>
+ </div>;
 }
-/** Saves every territory into the chosen workspace, updated by number when it is already there. */
+/** Where the territories can go: workspaces this account administers and, for owners, requests with no workspace yet
+ * (made on save). Other admins get an error from the request list, so they see only their workspaces. */
+function useTargets(workspaces:Workspace[]){
+ const requests=useQuery({queryKey:['tm','save-targets'],retry:false,queryFn:async()=>{
+  const [all,made]=await Promise.all([api.helpRequests(),api.requestWorkspaces()]);
+  const linked=new Set(made.map(w=>w.request_id));
+  return all.filter(r=>r.status!=='declined'&&!linked.has(r.id));
+ }});
+ const targets=[...workspaces.filter(w=>w.role==='admin').map(w=>({value:'w:'+w.id,label:w.name})),
+  ...(requests.data??[]).map(r=>({value:'r:'+r.id,label:`${r.congregation_name} (new workspace for this request)`}))];
+ return {targets,loading:requests.isLoading};
+}
+/** Saves the territories into the workspace (updated by number when already there), then sends them for review if asked. */
+async function saveAll(id:string,data:Payload,review:boolean,setProgress:(m:string)=>void){
+ const existing=new Map((await api.loadWorkspace(id)).territories.map(t=>[t.number,t]));
+ for(const [i,t] of data.territories.entries()){
+  setProgress(`Saving territory ${t.number} (${i+1} of ${data.territories.length})…`);
+  const old=existing.get(t.number);
+  await api.saveTerritory(id,{id:old?.id,number:t.number,name:t.name,notes:old?.notes??'',mapUrl:t.mapUrl,...(t.image?{image:t.image,thumb:t.thumb}:{})});
+ }
+ setProgress('Saving the outlines…');
+ const r=await api.saveBoundaries(id,data.territories.map(t=>({number:t.number,boundary:t.boundary})));
+ const note=`${data.territories.length} territories saved${data.territories.some(t=>t.image)?' with their cards':''} and ${r.matched} outlines.`;
+ if(!review)return note;
+ // With the outlines and landmarks, so the admin can also check each territory's name and landmarks.
+ setProgress('Sending the cards for review…');
+ await api.reviewNamingSet(id,toNaming(data));await api.reviewSend(id);
+ return note+' The admin is emailed to check them.';
+}
+/** Saves every territory into the chosen workspace (updated by number when already there), then by default sends the cards
+ * to its admin for review. A request without a workspace can be chosen too: its workspace is made on save. */
 function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
- const admin=workspaces.filter(w=>w.role==='admin');
- const guess=admin.find(w=>data.congregation&&w.name.toLowerCase().includes(data.congregation.toLowerCase()))?.id;
- const [ws,setWs]=React.useState(''),[progress,setProgress]=React.useState(''),[done,setDone]=React.useState(''),[failed,setFailed]=React.useState('');
- // No silent fallback: saving overwrites territories by number, so a wrong default would overwrite another congregation.
- const chosen=ws||guess||(admin.length===1?admin[0].id:'');
- async function save(){
+ const {targets,loading}=useTargets(workspaces);
+ const [target,setTarget]=React.useState(''),[progress,setProgress]=React.useState(''),[done,setDone]=React.useState(''),[failed,setFailed]=React.useState(''),[ws,setWs]=React.useState('');
+ const chosen=target||pick(targets,data.congregation);
+ async function save(review:boolean){
   setFailed('');setDone('');
   try{
-   const existing=new Map((await api.loadWorkspace(chosen)).territories.map(t=>[t.number,t]));
-   for(const [i,t] of data.territories.entries()){
-    setProgress(`Saving territory ${t.number} (${i+1} of ${data.territories.length})…`);
-    const old=existing.get(t.number);
-    await api.saveTerritory(chosen,{id:old?.id,number:t.number,name:t.name,notes:old?.notes??'',mapUrl:t.mapUrl,...(t.image?{image:t.image,thumb:t.thumb}:{})});
-   }
-   setProgress('Saving the outlines…');
-   const r=await api.saveBoundaries(chosen,data.territories.map(t=>({number:t.number,boundary:t.boundary})));
-   setDone(`${data.territories.length} territories saved${data.territories.some(t=>t.image)?' with their cards':''} and ${r.matched} outlines.`);
+   const id=chosen.startsWith('r:')?(setProgress('Making the workspace…'),await api.workspaceForRequest(chosen.slice(2))):chosen.slice(2);
+   setWs(id);
+   setDone(await saveAll(id,data,review,setProgress));
    forget();
   }catch(e){setFailed((e as Error).message);}finally{setProgress('');}
  }
- if(!admin.length)return <p role="alert">{'You are not an admin of any workspace. Create the workspace first (Owner → Workspaces), then send again.'}</p>;
+ if(!targets.length)return <p role="alert">{loading?'Finding your workspaces…':'You are not an admin of any workspace. Create the workspace first (Owner → Workspaces), then send again.'}</p>;
+ const busy=Boolean(progress);
  return <>
-  <p>{`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`}</p>
-  <Combobox label={'Save into workspace'} value={chosen} options={[...(chosen?[]:[{value:'',label:'Choose a workspace'}]),...admin.map(w=>({value:w.id,label:w.name}))]} onChange={setWs}/>
-  {!guess&&data.congregation&&<p className="muted">{`No workspace is named after ${data.congregation}. If it is a request, make its workspace first (Requests → Make its workspace), then send again.`}</p>}
-  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(chosen)}`}>{'Open the workspace'}</a>
-   <SendReview ws={chosen} data={data}/></div></>
-  :<Button className="primary" disabled={!chosen} busy={Boolean(progress)} onClick={()=>void save()}>{'Save'}</Button>}
+  <p>{describe(data)}</p>
+  <Combobox label={'Save into workspace'} value={chosen} options={[...(chosen?[]:[{value:'',label:'Choose a workspace'}]),...targets]} onChange={setTarget} disabled={busy||Boolean(done)}/>
+  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(ws)}`}>{'Open the workspace'}</a></div></>
+  :<SaveButtons disabled={!chosen||busy} busy={busy} save={review=>void save(review)}/>}
   {progress&&<p className="muted" aria-live="polite">{progress}</p>}
   {failed&&<p role="alert" className="error">{failed}</p>}
  </>;

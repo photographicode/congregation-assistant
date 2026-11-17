@@ -20,7 +20,7 @@ export function reviewer(role:string,owner:boolean):'admin'|'owner'|'viewer'{
  return role==='admin'?'admin':'viewer';
 }
 export function reviewIntro(who:'admin'|'owner'|'viewer',cards:number){
- if(who==='admin')return `Look at each of the ${cards} cards. Tap a card to see it full size. Check each territory’s name and landmarks on the map. Press "Mark as right" on each card that is right, or write a comment on any card that needs a change, then press "Send comments". When every card is right, press "Approve all cards".`;
+ if(who==='admin')return `Check each of the ${cards} cards: tap it to see it full size. If it is right, press "Mark as right". If not, write what should change, or fix its name and landmarks on the map. Then press the button above.`;
  if(who==='owner')return 'Waiting for the congregation’s admin to check these cards. You see their comments here as they write them.';
  return 'The admin is checking these cards. You can look at them; only an admin can comment or approve.';
 }
@@ -32,4 +32,10 @@ export const checkedCard=(t:Pick<Territory,'review_ok_at'|'updated_at'>)=>Boolea
 /** A file name from free text: letters, digits and dashes only, never empty. */
 export function safeFileName(text:string,max:number,fallback='territories'){
  return text.replace(/[^\w-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,max)||fallback;
+}
+/** A workspace or request label that names the generator's congregation ("Vadassery" matches "Vadassery Congregation (new …)"). */
+export function sameCongregation(label:string,congregation:string){
+ const core=(x:string)=>x.toLowerCase().replace(/\(.*\)/g,'').replace(/congregation/g,'').replace(/\s+/g,' ').trim();
+ const a=core(label),b=core(congregation);
+ return Boolean(a&&b)&&(a===b||a.startsWith(b+' ')||b.startsWith(a+' '));
 }
