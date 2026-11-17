@@ -16,13 +16,14 @@ describe('territory worker: generator moved to its own origin',()=>{
   expect(bare.headers.get('Location')).toBe('https://generator.congregationassistant.com/');
  });
  it('keeps upstream redirects only for the exact origin, and sets hardened headers',async()=>{
-  vi.stubGlobal('fetch',async()=>new Response('<html></html>',{status:302,headers:{Location:'https://congregationassistant.com.evil.example/x','Content-Type':'text/html'}}));
+  vi.stubGlobal('fetch',async()=>new Response('<html></html>',{status:302,headers:{Location:'https://congregationassistant.com.evil.example/x','Content-Type':'text/html','Cross-Origin-Opener-Policy':'same-origin'}}));
   const res:Response=await worker.fetch(new Request(HOST+'/app/x'));
   expect(res.headers.get('Location')).toBe('https://congregationassistant.com.evil.example/x');
   const csp=res.headers.get('Content-Security-Policy')||'';
   expect(csp).toContain("base-uri 'none'");
   expect(csp).not.toContain('unsafe-inline');
-  expect(res.headers.get('Cross-Origin-Opener-Policy')).toBe('same-origin-allow-popups');
+  // The generator's window to this site must survive: no opener policy.
+  expect(res.headers.get('Cross-Origin-Opener-Policy')).toBeNull();
   expect(res.headers.get('Cache-Control')).toBe('no-store');
  });
  it('refuses writes',async()=>{

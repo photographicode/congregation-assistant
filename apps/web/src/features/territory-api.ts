@@ -259,6 +259,15 @@ export async function reviewSend(ws:string){
  if(!demo){await rpc('tm_review_send',{p_ws:ws});return;}
  sample.workspace.review_state='review';sample.workspace.review_round=(sample.workspace.review_round??0)+1;
 }
+/** Owner: with the cards sent for review, the territories the admin may name (outline, locality, landmarks). */
+export async function reviewNamingSet(ws:string,territories:{number:string;geometry:unknown;locality?:string;points?:NamingPoint[]}[]){
+ if(!demo)await rpc('tm_review_naming_set',{p_ws:ws,p_territories:territories,p_landmarks_editable:true});
+}
+/** The admin's naming token while the cards are in review; null otherwise. */
+export async function reviewNaming(ws:string):Promise<string|null>{
+ if(demo)return sample.workspace.review_state==='review'?'demo':null;
+ return z.string().nullable().parse(await rpc('tm_review_naming',{p_ws:ws}));
+}
 const requestWorkspaceSchema=z.array(z.object({id:z.string(),request_id:z.string(),review_state:z.enum(['none','review','changes','approved']),review_round:z.number(),cards:z.number(),comments:z.number(),drive_url:z.string().nullable().default(null),full_map_url:z.string().nullable().default(null),full_map_name:z.string().nullable(),full_map_at:z.string().nullable()}));
 export type RequestWorkspace=z.infer<typeof requestWorkspaceSchema>[number];
 /** Owner: each request's workspace and how far its review has got. */

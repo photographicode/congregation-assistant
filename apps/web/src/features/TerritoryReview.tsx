@@ -3,13 +3,15 @@
 // While the cards are in review the workspace opens on this screen; once approved it is used as normal.
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
-import {Check,CheckCheck,Download,FileText,FolderOpen,Map as MapIcon,Send} from 'lucide-react';
+import {Check,CheckCheck,Download,FileText,FolderOpen,Map as MapIcon,MapPin,Send} from 'lucide-react';
 import {Button,Chip,Field} from '../../../../packages/ui/components';
 import {Dialog} from '../../../../packages/ui/Dialog';
 import * as api from './territory-api';
 import {byNumber,MILESTONES,type Territory,type WorkspaceData} from './territory-model';
 import {download} from './territory-card';
 import {CardPlaceholder} from './CardSketch';
+import {demo} from './client';
+import {SuggestDialog,useReviewNaming} from './ReviewNaming';
 import {changedSinceComment,milestoneState,plural,progressNote,reviewer,reviewIntro,safeFileName} from './territory-review-model';
 
 type Ctx={d:WorkspaceData;ws:string;refresh:()=>Promise<unknown>|void;notify:(m:string)=>void};
@@ -35,10 +37,13 @@ function Progress({d}:{d:WorkspaceData}){
 export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
  // Owners count as admins on the server; here they only look, so the congregation's admin decides.
  const who=reviewer(d.role,owner),admin=who==='admin',open=d.workspace.review_state==='review';
- const cards=[...d.territories].filter(t=>t.has_image).sort(byNumber);
+ // The demo's sample cards have no images; their sketches stand in.
+ const cards=[...d.territories].filter(t=>t.has_image||demo).sort(byNumber);
  const comments=cards.filter(t=>t.review_comment).length;
  const intro=reviewIntro(who,cards.length);
- const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null);
+ const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null),[naming,setNaming]=React.useState('');
+ // Names and landmarks, when the cards were sent with their outlines: only the admin, only while in review.
+ const named=useReviewNaming(ws,open&&admin).data;
  const act=async(kind:string,fn:()=>Promise<void>,done:string)=>{setBusy(kind);try{await fn();notify(done);await refresh();}catch(e){notify((e as Error).message);}finally{setBusy('');setConfirm(false);}};
  return <div className="stack">
   <div className="tm-heading"><h1>{'Check your territory cards'}</h1></div>
@@ -51,9 +56,11 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
     <Button className="primary" disabled={Boolean(busy)} onClick={()=>setConfirm(true)}><CheckCheck/>{'Approve all cards'}</Button>
    </div>}
   </section>
-  <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}/>)}</div>
+  <div className="tm-grid">{cards.map(t=><ReviewCard key={t.id} t={t} editable={open&&admin} onView={()=>setView(t)} notify={notify} refresh={refresh}
+   named={named?.naming.entries.find(e=>e.number===t.number)} onName={named?()=>setNaming(t.number):undefined}/>)}</div>
   {confirm&&<ApproveDialog comments={comments} cards={cards.length} busy={busy==='approve'} onCancel={()=>setConfirm(false)} onApprove={()=>void act('approve',()=>api.reviewApprove(ws),'All cards approved. Thank you!')}/>}
   {view&&<CardView t={view} onClose={()=>setView(null)}/>}
+  {naming&&<SuggestDialog ws={ws} number={naming} onClose={()=>setNaming('')}/>}
  </div>;
 }
 
@@ -65,7 +72,8 @@ function ApproveDialog({comments,cards,busy,onCancel,onApprove}:{comments:number
  </div></Dialog>;
 }
 
-function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boolean;onView:()=>void;notify:(m:string)=>void;refresh:Ctx['refresh']}){
+type CardProps={t:Territory;editable:boolean;onView:()=>void;notify:(m:string)=>void;refresh:Ctx['refresh'];named?:api.NamingEntry;onName?:()=>void};
+function ReviewCard({t,editable,onView,notify,refresh,named,onName}:CardProps){
  const [text,setText]=React.useState(t.review_comment),[saved,setSaved]=React.useState(t.review_comment);
  const changed=changedSinceComment(t);
  // The card itself: its thumbnail, or the full card when no thumbnail was saved.
@@ -80,8 +88,15 @@ function ReviewCard({t,editable,onView,notify,refresh}:{t:Territory;editable:boo
    {editable?<div ref={stretch}><Field label={'Comment (optional)'}>{p=><textarea {...p} ref={stretch} className="tm-inset" rows={2} maxLength={1000} placeholder={'What should change on this card?'}
      value={text} onChange={e=>setText(e.target.value)} onBlur={()=>void save()}/>}</Field></div>
     :t.review_comment&&<p><small className="muted">{'Your comment: '}</small>{t.review_comment}</p>}
+   {onName&&<Naming named={named} onName={onName}/>}
   </span>
  </article>;
+}
+
+/** What the admin suggested for the territory's name, and the button to the map. */
+function Naming({named,onName}:{named?:api.NamingEntry;onName:()=>void}){
+ return <>{named?.submitted&&<p><small className="muted">{'Name you gave: '}</small>{named.locality}{named.points.length>0&&<small className="muted">{` · ${plural(named.points.length,'landmark')}`}</small>}</p>}
+  <Button onClick={onName}><MapPin/>{named?.submitted?'Change name and landmarks':'Check name and landmarks'}</Button></>;
 }
 
 function CardView({t,onClose}:{t:Territory;onClose:()=>void}){
@@ -104,7 +119,8 @@ const fileName=(text:string)=>safeFileName(text,NAME_MAX);
 
 /** Every card at once: one PDF (one card per page) or the images in a ZIP file. */
 function CardDownloads({d,notify}:{d:WorkspaceData;notify:(m:string)=>void}){
- const cards=[...d.territories].filter(t=>t.has_image).sort(byNumber);
+ // The demo's sample cards have no images; their sketches stand in.
+ const cards=[...d.territories].filter(t=>t.has_image||demo).sort(byNumber);
  const [progress,setProgress]=React.useState('');
  if(!cards.length)return null;
  const base=fileName(d.workspace.name);

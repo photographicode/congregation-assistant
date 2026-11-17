@@ -63,7 +63,7 @@ const draftKey=(token:string,n:string)=>`tm-naming:${token.slice(0,KEY_CHARS)}:$
 const chipState=(e?:api.NamingEntry)=>{if(e?.submitted)return 'done';return e?.locality?'draft':'';};
 const chipClass=(e:api.NamingEntry|undefined,on:boolean)=>chipState(e)+(on?' on':'');
 /** Nothing written yet: start from the card's current locality and landmarks. */
-const blank=(t:api.Naming['territories'][number]):api.NamingEntry=>({number:t.number,locality:t.locality,points:t.points,note:'',submitted:false});
+export const blank=(t:api.Naming['territories'][number]):api.NamingEntry=>({number:t.number,locality:t.locality,points:t.points,note:'',submitted:false});
 
 export function TerritoryNaming(){
  useTerritoryTheme();
@@ -105,7 +105,8 @@ export function TerritoryNaming(){
  </main>;
 }
 
-function Editor({token,territory,editable,others,entry,onChange,onSubmitted}:{token:string;territory:api.Naming['territories'][number];editable:boolean;others:Geometry[];entry:api.NamingEntry;onChange:(e:api.NamingEntry)=>void;onSubmitted:()=>void}){
+/** One territory's name, landmarks and note; also used inside the admin's card review. */
+export function Editor({token,territory,editable,others,entry,onChange,onSubmitted}:{token:string;territory:api.Naming['territories'][number];editable:boolean;others:Geometry[];entry:api.NamingEntry;onChange:(e:api.NamingEntry)=>void;onSubmitted:()=>void}){
  const [status,setStatus]=React.useState(entry.submitted?'Submitted':''),[busy,setBusy]=React.useState(false),[error,setError]=React.useState('');
  const first=React.useRef(true);
  const set=(patch:Partial<api.NamingEntry>)=>onChange({...entry,...patch});

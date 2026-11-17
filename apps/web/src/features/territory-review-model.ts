@@ -20,7 +20,7 @@ export function reviewer(role:string,owner:boolean):'admin'|'owner'|'viewer'{
  return role==='admin'?'admin':'viewer';
 }
 export function reviewIntro(who:'admin'|'owner'|'viewer',cards:number){
- if(who==='admin')return `Look at each of the ${cards} cards. Tap a card to see it full size. Write a comment on any card that needs a change, then press "Send comments". When every card is right, press "Approve all cards".`;
+ if(who==='admin')return `Look at each of the ${cards} cards. Tap a card to see it full size. Check each territory’s name and landmarks on the map. Write a comment on any card that needs another change, then press "Send comments". When every card is right, press "Approve all cards".`;
  if(who==='owner')return 'Waiting for the congregation’s admin to check these cards. You see their comments here as they write them.';
  return 'The admin is checking these cards. You can look at them; only an admin can comment or approve.';
 }

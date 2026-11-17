@@ -44,8 +44,10 @@ Sitemap: https://${HOST}/sitemap.xml
   headers.set('Referrer-Policy', 'no-referrer');
   // Location is allowed for this site only: the issue form records where a house is.
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()');
-  // allow-popups keeps the link to the generator window this site opens, so a request's file can be handed over.
-  headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  // No opener policy: the generator opens this site to send its territories, and this site opens the generator to hand
+  // over a request's file. Any policy here (even same-origin-allow-popups) cuts the window the generator opened, which then
+  // looks closed to it. The upstream app's own policy is dropped too.
+  headers.delete('Cross-Origin-Opener-Policy');
   headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   // Same caching as hosting/worker.mjs: hashed assets forever, pages and the service worker never from a shared cache.
   const contentType = headers.get('Content-Type') || '';

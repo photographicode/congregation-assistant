@@ -69,6 +69,8 @@ export function GeneratorSync({workspaces}:{workspaces:Workspace[]}){
 }
 
 type Workspace={id:string;name:string;role:'admin'|'viewer'};
+// Generator names like "Territory 4" are placeholders, not localities.
+const toNaming=(data:Payload)=>data.territories.map(t=>({number:t.number,geometry:t.boundary,locality:t.name===`Territory ${t.number}`?'':t.name,points:t.landmarks}));
 
 /** Owners: send the split territories to the congregation, who name each one and mark its junctions on one link. */
 function SendForNaming({data}:{data:Payload}){
@@ -80,8 +82,7 @@ function SendForNaming({data}:{data:Payload}){
  const chosen=request||open.find(r=>data.congregation&&r.congregation_name.toLowerCase().includes(data.congregation.toLowerCase()))?.id||'';
  async function send(){
   setBusy(true);setFailed('');
-  // Generator names like "Territory 4" are placeholders, not localities.
-  try{const r=await api.createNaming(chosen||null,data.congregation,data.territories.map(t=>({number:t.number,geometry:t.boundary,locality:t.name===`Territory ${t.number}`?'':t.name,points:t.landmarks})),editable);
+  try{const r=await api.createNaming(chosen||null,data.congregation,toNaming(data),editable);
    setResult(r.emailed?`Sent. The congregation was emailed this link: ${r.link}`:`Naming link made: ${r.link}`);}
   catch(e){setFailed((e as Error).message);}finally{setBusy(false);}
  }
@@ -96,9 +97,10 @@ function SendForNaming({data}:{data:Payload}){
  </section>;
 }
 /** Sends the saved cards to the workspace's admin, who checks them and comments or approves; they are emailed now. */
-function SendReview({ws}:{ws:string}){
+function SendReview({ws,data}:{ws:string;data:Payload}){
  const [sending,setSending]=React.useState(false),[sent,setSent]=React.useState(false),[note,setNote]=React.useState('');
- const send=async()=>{setSending(true);setNote('');try{await api.reviewSend(ws);setSent(true);setNote('The admin is emailed to check the cards.');}catch(e){setNote((e as Error).message);}finally{setSending(false);}};
+ // With the cards, the outlines and landmarks, so the admin can also check each territory's name and landmarks.
+ const send=async()=>{setSending(true);setNote('');try{await api.reviewNamingSet(ws,toNaming(data));await api.reviewSend(ws);setSent(true);setNote('The admin is emailed to check the cards.');}catch(e){setNote((e as Error).message);}finally{setSending(false);}};
  return <><Button busy={sending} disabled={sent} onClick={()=>void send()}>{sent?'Sent for review':'Send to the admin for review'}</Button>{note&&<p role="status">{note}</p>}</>;
 }
 /** Saves every territory into the chosen workspace, updated by number when it is already there. */
@@ -127,7 +129,7 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
   <p>{`${data.territories.length} territories${data.congregation?' for '+data.congregation:''}: number, name, map link${data.territories.some(t=>t.image)?', card image':''} and outline. Territories already in the workspace are updated by number; their notes and history stay.`}</p>
   <Combobox label={'Save into workspace'} value={chosen} options={admin.map(w=>({value:w.id,label:w.name}))} onChange={setWs}/>
   {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(chosen)}`}>{'Open the workspace'}</a>
-   <SendReview ws={chosen}/></div></>
+   <SendReview ws={chosen} data={data}/></div></>
   :<Button className="primary" disabled={!chosen} busy={Boolean(progress)} onClick={()=>void save()}>{'Save'}</Button>}
   {progress&&<p className="muted" aria-live="polite">{progress}</p>}
   {failed&&<p role="alert" className="error">{failed}</p>}
