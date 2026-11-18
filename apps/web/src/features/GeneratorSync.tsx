@@ -6,6 +6,7 @@ import {useQuery} from '@tanstack/react-query';
 import {z} from 'zod';
 import {Check,Map as MapIcon,Send} from 'lucide-react';
 import {Button,Combobox,Segmented} from '../../../../packages/ui/components';
+import {demo} from './client';
 import * as api from './territory-api';
 import {generatorUrl} from './territory-site';
 import {sameCongregation} from './territory-review-model';
@@ -158,7 +159,7 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  return <>
   <p>{describe(data)}</p>
   <Combobox label={'Save into workspace'} value={chosen} options={[...(chosen?[]:[{value:'',label:'Choose a workspace'}]),...targets]} onChange={setTarget} disabled={busy||Boolean(done)}/>
-  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory&ws=${encodeURIComponent(ws)}`}>{'Open the workspace'}</a></div></>
+  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory${demo?'&demo':''}&ws=${encodeURIComponent(ws)}`}>{'Open the workspace'}</a></div></>
   :<SaveButtons disabled={!chosen||busy} busy={busy} save={review=>void save(review)}/>}
   {progress&&<p className="muted" aria-live="polite">{progress}</p>}
   {failed&&<p role="alert" className="error">{failed}</p>}
