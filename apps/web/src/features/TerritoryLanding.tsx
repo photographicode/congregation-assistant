@@ -62,7 +62,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
     <h1 id="tl-title" className="tl-rise">{say('heroTitle')}</h1>
     <p className="tl-rise">{say('heroLead')}</p>
     <div className="tl-actions tl-rise">
-     <a className="tl-btn primary" href="#tl-help">{say('heroHelp')}<ArrowRight aria-hidden="true"/></a>
+     <a className="tl-btn primary big" href="#tl-help">{say('heroHelp')}<ArrowRight aria-hidden="true"/></a>
      <a className="tl-btn" href="?territory&demo">{say('heroDemo')}</a>
     </div>
     <ul className="tl-chips tl-rise">{CHIPS.map(key=><li key={key}><Check aria-hidden="true"/>{say(key)}</li>)}</ul>
@@ -97,7 +97,7 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
    <div className="tl-grid" role="group" aria-labelledby="tl-help-title">{SERVICES.map(s=><button key={s.id} type="button" className={'tl-tile tl-choice'+(service===s.id?' on':'')} aria-pressed={service===s.id} onClick={()=>setService(s.id)}>
     {s.id==='package'&&<span className="tl-badge">{say('best')}</span>}<h3>{say(s.title)}</h3><p>{say(s.text)}</p></button>)}</div>
    <ol className="tl-steps" aria-label={say('stepsLabel')}>{STEPS.map((step,i)=><li key={step}><span>{i+1}</span>{say(step)}</li>)}</ol>
-   <div className="tl-actions"><a className="tl-btn primary" href={territoryUrl('request=territory&service='+service)}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
+   <div className="tl-actions"><a className="tl-btn primary big" href={territoryUrl('request=territory&service='+service)}>{say('helpCta')}<ArrowRight aria-hidden="true"/></a></div>
   </section>
   <section className="tl-section tl-reveal" id="tl-process" aria-labelledby="tl-process-title">
    <h2 id="tl-process-title">{say('procTitle')}</h2>
