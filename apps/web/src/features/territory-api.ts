@@ -248,7 +248,7 @@ export async function reviewLinkData(token:string):Promise<WorkspaceData>{
  return workspaceDataSchema.parse(await rpc('tm_review_link_get',{p_token:token}));
 }
 /** Owner or admin: the review link to share with the congregation’s admin. */
-export async function reviewLink(ws:string){return demo?`${territoryUrl('territory-review&demo')}#token=demo`:z.string().parse(await rpc('tm_review_link',{p_ws:ws}));}
+async function reviewLink(ws:string){return demo?`${territoryUrl('territory-review&demo')}#token=demo`:z.string().parse(await rpc('tm_review_link',{p_ws:ws}));}
 /** The admin's review link (no sign-in), to share by email or WhatsApp. */
 export async function copyReviewLink(ws:string,notify:(m:string)=>void){
  try{await navigator.clipboard.writeText(await reviewLink(ws));notify('Review link copied. Share it only with the congregation’s admin.');}catch(e){notify((e as Error).message||'Copy failed.');}
