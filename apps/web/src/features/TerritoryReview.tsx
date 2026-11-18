@@ -44,6 +44,9 @@ export function ReviewScreen({d,ws,refresh,notify,owner}:Ctx&{owner:boolean}){
  const [busy,setBusy]=React.useState(''),[confirm,setConfirm]=React.useState(false),[view,setView]=React.useState<Territory|null>(null),[naming,setNaming]=React.useState('');
  // Names and landmarks, when the cards were sent with their outlines: only the admin, only while in review.
  const named=useReviewNaming(ws,open&&admin).data;
+ // A comment typed just before "Approve all cards" is saved as the box loses focus: then close the dialog,
+ // so the button turns into "Send 1 change" instead of approving the card with a change still asked for.
+ React.useEffect(()=>{if(comments)setConfirm(false);},[comments]);
  const act=async(kind:string,fn:()=>Promise<void>,done:string)=>{setBusy(kind);try{await fn();notify(done);await refresh();}catch(e){notify((e as Error).message);}finally{setBusy('');setConfirm(false);}};
  return <div className="stack">
   <div className="tm-heading"><h1>{'Check your territory cards'}</h1></div>
