@@ -63,7 +63,7 @@ Sitemap: https://${HOST}/sitemap.xml
 const TITLE = 'Territory Assistant: JW territory manager and map cards';
 const DESCRIPTION = 'Keep, assign and return congregation territories, with the S-13 record and digital cards. We also make Territory Map Cards from your KML file. Free.';
 // Date the landing page last changed, for the sitemap.
-const LASTMOD = '2026-11-17';
+const LASTMOD = '2026-11-18';
 const KEYWORDS = 'territory assistant, territory manager, JW territory, JW territory card, JW territory manager, Jehovah’s Witnesses territory card, Jehovahs Witnesses territory card, S-13, S-13 territory assignment record, digital territory card, language search territory, territory, territory manager, territory card, territory map card, territory maker, congregation territory, Jehovah’s Witnesses, Jehovah’s Witnesses territory, JW territory, S-13, territory assignment record, congregation, KML territory map, QR code territory map, KML file splitter, KML territory splitter, split KML into territories, KML to territory cards, Google My Maps territory, territory map maker, territory QR code, printable territory cards, territory card generator, territory assignment, territory tracker, territory records app, Jehovah’s Witnesses territory cards, JW territory map, JW territory app, field service territory, congregation territory map, territory boundaries, door to door territory, India congregations, Malayalam, Hindi, Tamil, Telugu, Kannada, territory map jw, JW territory map maker, territory JW map maker, territory kml, KML territory maker, kml file splitter, split KML file, KML boundary to territories, territory map generator, territory cards PDF, territory helper, territory app for congregations, Jehovah’s Witnesses congregation, Jehovahs Witnesses, Jehovah witness territory, congregation assistant, publisher territory card, field service territory map';
 const LLMS = `# Territory Assistant
 
@@ -109,6 +109,12 @@ const BODY = `<main class="tl"><header><p>Territory Assistant · Congregation As
  ['Hear about problems', 'Publishers report a do-not-call, a new building or a dog to avoid. You see it on the dashboard.'],
 ])}</ul>
 <h2>The Territory Map Card</h2><p>Every territory gets a card in the familiar printed format: locality name and number at the top, the territory shaded on the map with its boundary roads named, a QR code that opens it in Google Maps, and the card-care note in your language.</p>
+<h2>Who makes the territories</h2><p>A brother makes them, as a service to help congregations that find it hard to make their own territories. It is not compulsory: use it only if your congregation needs the help.</p><ul>${li([
+ ['A service, not a business', 'There is no fee and nothing is sold. Your data is never used for advertising or any commercial purpose.'],
+ ['Your data is kept safe', 'Your boundary, names and cards are kept private. Only your congregation and the brother making them can open them.'],
+ ['Try the manager for free', 'Anyone can open the demo of the territory manager, with no sign-in and nothing to install.'],
+ ['Only if it helps', 'Keep your own way of working if it serves you well. Ask for all of it, or only the part you need.'],
+])}</ul>
 <h2>We can make your territories</h2><p>Territories from scratch, Territory Map Cards, or the complete package: from your KML file to the territories, a card for each, the territory manager set up and a full congregation map. There is no fee: we accept only voluntary donations.</p>
 <h2>How we work with you</h2><ol>${li([
  ['You send the boundary', 'Send the KML file from Hub with the request form. That is all we need to start.'],

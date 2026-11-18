@@ -28,6 +28,8 @@ const HALF=0.5,TILT=8;
 const STEPS:Key[]=['st1','st2','st3','st4','st5','st6','st7'];
 // How a request goes, start to finish; the third step is the congregation's naming link.
 const PROCESS:{title:Key;text:Key}[]=[{title:'p1Title',text:'p1Text'},{title:'p2Title',text:'p2Text'},{title:'p3Title',text:'p3Text'},{title:'p4Title',text:'p4Text'}];
+// Who makes the territories and on what terms: a free, optional service; data private and never used commercially.
+const ABOUT:{title:Key;text:Key}[]=[{title:'a1Title',text:'a1Text'},{title:'a2Title',text:'a2Text'},{title:'a3Title',text:'a3Text'},{title:'a4Title',text:'a4Text'}];
 const CHIPS:Key[]=['chipS13','chipQr','chipShare','chipLangs'];
 
 /** Fades sections in as they scroll into view (skipped when the visitor prefers reduced motion). */
@@ -83,6 +85,11 @@ export function TerritoryLanding({signIn}:{signIn:()=>void}){
   <section className="tl-section tl-reveal" aria-labelledby="tl-langs">
    <h2 id="tl-langs">{say('langsTitle')}</h2>
    <p>{say('langsLead')}</p>
+  </section>
+  <section className="tl-section tl-reveal" id="tl-about" aria-labelledby="tl-about-title">
+   <h2 id="tl-about-title">{say('aboutTitle')}</h2>
+   <p>{say('aboutLead')}</p>
+   <div className="tl-grid" role="list">{ABOUT.map(a=><article className="tl-tile" role="listitem" key={a.title}><h3>{say(a.title)}</h3><p>{say(a.text)}</p></article>)}</div>
   </section>
   <section className="tl-section tl-reveal" id="tl-help" aria-labelledby="tl-help-title">
    <h2 id="tl-help-title">{say('helpTitle')}</h2>
