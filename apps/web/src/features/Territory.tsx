@@ -9,7 +9,7 @@ import {Toast} from '../../../../packages/ui/Notices';
 import {client,demo,config} from './client';
 import * as api from './territory-api';
 import {Dashboard} from './TerritoryDashboard';
-import {addDays,byNumber,canonicalName,FILTERS,fmt,reportTitle,type Filter,serviceYearLabel,serviceYears,publisherNames,isDateOnly,mapsLink,serviceYearOf,STATUS_LABEL,STATUS_TONE,summarize,territoryCsv,today,type Assignment,type Issue,type Status,type Summary,type Territory,type WorkspaceData} from './territory-model';
+import {addDays,byNumber,speaks,canonicalName,FILTERS,fmt,reportTitle,type Filter,serviceYearLabel,serviceYears,publisherNames,isDateOnly,mapsLink,serviceYearOf,STATUS_LABEL,STATUS_TONE,summarize,territoryCsv,today,type Assignment,type Issue,type Status,type Summary,type Territory,type WorkspaceData} from './territory-model';
 import {cardJpeg,download,shareLinkOrCopy} from './territory-card';
 import {setPrefs,usePrefs,useTerritoryTheme,type Style,type Theme,type View} from './territory-prefs';
 import {ImportCsv} from './TerritoryImport';
@@ -213,9 +213,9 @@ function Display(){
  </section>;
 }
 function Territories({d,filter,setFilter,onAdd,openTerritory,notify}:Ctx&{filter:Filter;setFilter:(f:Filter)=>void;onAdd:()=>void}){
- const [query,setQuery]=React.useState(''),[sort,setSort]=React.useState<keyof typeof SORTS>('number'),[year,setYear]=React.useState(()=>serviceYearOf(today())),[busy,setBusy]=React.useState(false);
+ const [query,setQuery]=React.useState(''),[sort,setSort]=React.useState<keyof typeof SORTS>('number'),[year,setYear]=React.useState(()=>serviceYearOf(today())),[busy,setBusy]=React.useState(false),[lang,setLang]=React.useState('');
  const now=today();
- const rows=d.territories.map(t=>({t,s:summarize(t.id,d.assignments,d.workspace.recent_days,now),issues:d.reports.filter(r=>r.territory_id===t.id&&r.kind!=='language'&&!r.resolved_at).length}))
+ const rows=d.territories.filter(t=>!lang||speaks(d.reports,t.id,lang)).map(t=>({t,s:summarize(t.id,d.assignments,d.workspace.recent_days,now),issues:d.reports.filter(r=>r.territory_id===t.id&&r.kind!=='language'&&!r.resolved_at).length}))
   .filter(({t,s})=>(filter==='all'||(filter==='overdue'?s.overdue:s.status===filter))&&(t.number+' '+t.name+' '+(s.open?.publisher||'')).toLowerCase().includes(query.trim().toLowerCase()))
   .sort(SORTERS[sort]);
  const exportCsv=()=>download(new Blob([territoryCsv(d.territories,d.assignments,d.workspace.recent_days)],{type:'text/csv;charset=utf-8'}),`territories-${now}.csv`);
@@ -227,6 +227,7 @@ function Territories({d,filter,setFilter,onAdd,openTerritory,notify}:Ctx&{filter
    <Combobox label={'Sort by'} value={sort} options={Object.entries(SORTS).map(([value,label])=>({value,label}))} onChange={v=>setSort(v as keyof typeof SORTS)}/>
    <div className="tm-export"><Combobox label={'Service year'} value={String(year)} options={serviceYears(d.assignments).map(y=>({value:String(y),label:serviceYearLabel(y)}))} onChange={v=>setYear(+v)}/>
     <Button onClick={exportCsv}><Download/>{'CSV'}</Button><Button busy={busy} onClick={()=>void exportS13()}><FileText/>{'S-13 PDF'}</Button></div>
+   {d.workspace.languages.length>0&&<Combobox label={'Language spoken'} value={lang} options={[{value:'',label:'All languages'},...d.workspace.languages.map(l=>({value:l,label:`${l} (${d.territories.filter(t=>speaks(d.reports,t.id,l)).length})`}))]} onChange={setLang}/>}
   </div>
   <div className="tm-filters" role="group" aria-label={"Show"}>{FILTERS.map(f=><button key={f.value} type="button" aria-pressed={filter===f.value} className={filter===f.value?'active':''} onClick={()=>setFilter(f.value)}>{f.label}</button>)}</div>
   {rows.length?<TerritoryList rows={rows} onOpen={openTerritory}/>

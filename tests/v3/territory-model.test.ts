@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {canonicalName,csvCell,reportTitle,roleSchema,publisherNames,serviceYearLabel,serviceYearOf,serviceYears,summarize,territoryCsv,type Assignment,type Territory} from '../../apps/web/src/features/territory-model';
+import {canonicalName,csvCell,reportTitle,roleSchema,speaks,publisherNames,serviceYearLabel,serviceYearOf,serviceYears,summarize,territoryCsv,type Assignment,type Territory} from '../../apps/web/src/features/territory-model';
 import {s13Rows} from '../../apps/web/src/features/territory-s13';
 import {parseCsv,planImport,readDate} from '../../apps/web/src/features/territory-csv';
 
@@ -81,5 +81,14 @@ describe('access and reports (2026-11-16)',()=>{
  it('titles a language find by its language',()=>{
   expect(reportTitle({kind:'language',language:'Tamil',household:'House 22'})).toBe('Tamil speaker · House 22');
   expect(reportTitle({kind:'issue',language:null,household:''})).toBe('Reported issue');
+ });
+});
+describe('language filter',()=>{
+ const r=(territory_id:string,language:string|null,kind='language',resolved_at:string|null=null)=>({territory_id,kind,language,resolved_at});
+ it('finds territories with an open find in that language only',()=>{
+  const reports=[r('t1','Tamil'),r('t2','Tamil','language','2026-11-01'),r('t3','Hindi'),r('t4','Tamil','issue')];
+  expect(['t1','t2','t3','t4'].filter(t=>speaks(reports,t,'Tamil'))).toEqual(['t1']);
+  expect(speaks(reports,'t3','Hindi')).toBe(true);
+  expect(speaks([],'t1','Tamil')).toBe(false);
  });
 });

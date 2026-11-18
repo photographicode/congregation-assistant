@@ -138,6 +138,7 @@ function ReviewRow({request,status,review,notify}:{request:string;status:string;
   <div className="actions">
    <a className="button" href={`?territory&ws=${encodeURIComponent(review.id)}`}><ExternalLink/>{'Open the workspace'}</a>
    {resend&&<Button className="primary" busy={run.busy==='send'} disabled={!review.cards} onClick={()=>void run.go('send',()=>api.reviewSend(review.id),'Cards sent. The admin is emailed to check them.')}><Send/>{review.review_round?'Send corrected cards':'Send cards for review'}</Button>}
+   {review.review_state!=='none'&&<Button onClick={()=>void api.copyReviewLink(review.id,notify)}><Copy/>{'Copy review link'}</Button>}
   </div>
   <DriveLinks review={review} run={run}/>
  </div>;

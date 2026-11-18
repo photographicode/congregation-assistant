@@ -101,3 +101,6 @@ export function reportTitle(r:{kind?:'issue'|'language';language?:string|null;ho
 
 /** A territory request's milestones, in order; the owner moves it along and the congregation follows on its tracking link. */
 export const MILESTONES=['Request received','Accepted','Territories drawn','Cards and full map made','Ready for use'] as const;
+/** True when an open language find in this territory names the language (the admin's language list sets the choices). */
+export const speaks=(reports:{territory_id:string;kind:string;language:string|null;resolved_at:string|null}[],territory:string,language:string)=>
+ reports.some(r=>r.territory_id===territory&&r.kind==='language'&&!r.resolved_at&&r.language===language);

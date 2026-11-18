@@ -4,7 +4,7 @@
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {z} from 'zod';
-import {Check,Map as MapIcon,Send} from 'lucide-react';
+import {Check,Copy,Map as MapIcon,Send} from 'lucide-react';
 import {Button,Combobox,Segmented} from '../../../../packages/ui/components';
 import {demo} from './client';
 import * as api from './territory-api';
@@ -143,14 +143,14 @@ async function saveAll(id:string,data:Payload,review:boolean,setProgress:(m:stri
  * to its admin for review. A request without a workspace can be chosen too: its workspace is made on save. */
 function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  const {targets,loading}=useTargets(workspaces);
- const [target,setTarget]=React.useState(''),[progress,setProgress]=React.useState(''),[done,setDone]=React.useState(''),[failed,setFailed]=React.useState(''),[ws,setWs]=React.useState('');
+ const [target,setTarget]=React.useState(''),[progress,setProgress]=React.useState(''),[done,setDone]=React.useState(''),[failed,setFailed]=React.useState(''),[ws,setWs]=React.useState(''),[sent,setSent]=React.useState(false);
  const chosen=target||pick(targets,data.congregation);
  async function save(review:boolean){
   setFailed('');setDone('');
   try{
    const id=chosen.startsWith('r:')?(setProgress('Making the workspace…'),await api.workspaceForRequest(chosen.slice(2))):chosen.slice(2);
    setWs(id);
-   setDone(await saveAll(id,data,review,setProgress));
+   setDone(await saveAll(id,data,review,setProgress));setSent(review);
    forget();
   }catch(e){setFailed((e as Error).message);}finally{setProgress('');}
  }
@@ -159,7 +159,7 @@ function SaveInto({data,workspaces}:{data:Payload;workspaces:Workspace[]}){
  return <>
   <p>{describe(data)}</p>
   <Combobox label={'Save into workspace'} value={chosen} options={[...(chosen?[]:[{value:'',label:'Choose a workspace'}]),...targets]} onChange={setTarget} disabled={busy||Boolean(done)}/>
-  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory${demo?'&demo':''}&ws=${encodeURIComponent(ws)}`}>{'Open the workspace'}</a></div></>
+  {done?<><p role="status"><Check aria-hidden="true"/>{done}</p><div className="actions"><a className="button primary" href={`?territory${demo?'&demo':''}&ws=${encodeURIComponent(ws)}`}>{'Open the workspace'}</a>{sent&&<Button onClick={()=>void api.copyReviewLink(ws,setDone)}><Copy/>{'Copy review link'}</Button>}</div></>
   :<SaveButtons disabled={!chosen||busy} busy={busy} save={review=>void save(review)}/>}
   {progress&&<p className="muted" aria-live="polite">{progress}</p>}
   {failed&&<p role="alert" className="error">{failed}</p>}

@@ -40,7 +40,7 @@ export async function loadWorkspace(ws:string):Promise<WorkspaceData>{
  if(demo){const {images:_images,...data}=sample;return workspaceDataSchema.parse(clone(data));}
  return workspaceDataSchema.parse(await rpc('tm_workspace_data',{p_ws:ws}));
 }
-export async function territoryImage(territory:string){return demo?sample.images[territory]||null:z.string().nullable().parse(await rpc('tm_territory_image',{p_id:territory}));}
+export async function territoryImage(territory:string){if(reviewToken&&!demo)return z.string().nullable().parse(await rpc('tm_review_link_image',{p_token:reviewToken,p_territory:territory}));return demo?sample.images[territory]||null:z.string().nullable().parse(await rpc('tm_territory_image',{p_id:territory}));}
 type TerritoryInput={id?:string;number:string;name:string;notes:string;mapUrl:string;image?:string;thumb?:string};
 function demoSaveTerritory(t:TerritoryInput){
  if(sample.territories.some(x=>x.number===t.number.trim()&&x.id!==t.id))fail(`Territory number ${t.number} is already used. Choose another.`);
@@ -238,24 +238,43 @@ export const shareLink=(token:string)=>`${territoryUrl('territory-card'+(demo?'&
 export const issueLink=(token:string)=>`${territoryUrl('territory-issue'+(demo?'&demo':''))}#token=${token}`;
 
 // ---- Card review, downloads and the full map ---------------------------------------------------------------
+// The review link (?territory-review#token=…) lets the admin check the cards with no sign-in. Its page sets the token
+// once; the review calls below then go through the link's functions instead of the signed-in ones.
+let reviewToken='';
+export const setReviewLink=(token:string)=>{reviewToken=token;};
+/** The cards to check, from the review link (the demo opens its sample on the review). */
+export async function reviewLinkData(token:string):Promise<WorkspaceData>{
+ if(demo){sample.workspace.review_state=sample.workspace.review_state==='none'?'review':sample.workspace.review_state;const {images:_images,...data}=sample;return workspaceDataSchema.parse(clone(data));}
+ return workspaceDataSchema.parse(await rpc('tm_review_link_get',{p_token:token}));
+}
+/** Owner or admin: the review link to share with the congregation’s admin. */
+export async function reviewLink(ws:string){return demo?`${territoryUrl('territory-review&demo')}#token=demo`:z.string().parse(await rpc('tm_review_link',{p_ws:ws}));}
+/** The admin's review link (no sign-in), to share by email or WhatsApp. */
+export async function copyReviewLink(ws:string,notify:(m:string)=>void){
+ try{await navigator.clipboard.writeText(await reviewLink(ws));notify('Review link copied. Share it only with the congregation’s admin.');}catch(e){notify((e as Error).message||'Copy failed.');}
+}
 /** Admin: a comment on one card while in review ('' removes it). */
 export async function reviewComment(territory:string,comment:string){
+ if(reviewToken&&!demo){await rpc('tm_review_link_comment',{p_token:reviewToken,p_territory:territory,p_comment:comment});return;}
  if(!demo){await rpc('tm_review_comment',{p_territory:territory,p_comment:comment});return;}
  const t=sample.territories.find(x=>x.id===territory);if(t){t.review_comment=comment.trim();t.review_comment_at=comment.trim()?new Date().toISOString():null;if(t.review_comment)t.review_ok_at=null;}
 }
 /** Admin: send the comments back (the cards come back corrected). */
 export async function reviewSubmit(ws:string){
+ if(reviewToken&&!demo){await rpc('tm_review_link_submit',{p_token:reviewToken});return;}
  if(!demo){await rpc('tm_review_submit',{p_ws:ws});return;}
  if(!sample.territories.some(t=>t.review_comment))fail('Write a comment on the cards that need a change, or approve all cards');
  sample.workspace.review_state='changes';
 }
 /** Admin: approve every card. */
 export async function reviewApprove(ws:string){
+ if(reviewToken&&!demo){await rpc('tm_review_link_approve',{p_token:reviewToken});return;}
  if(!demo){await rpc('tm_review_approve',{p_ws:ws});return;}
  sample.workspace.review_state='approved';for(const t of sample.territories){t.review_comment='';t.review_comment_at=null;}
 }
 /** Admin: tick a card as right (clears its comment), or untick it. */
 export async function reviewMark(territory:string,ok:boolean){
+ if(reviewToken&&!demo){await rpc('tm_review_link_mark',{p_token:reviewToken,p_territory:territory,p_ok:ok});return;}
  if(!demo){await rpc('tm_review_mark',{p_territory:territory,p_ok:ok});return;}
  const t=sample.territories.find(x=>x.id===territory);if(t){t.review_ok_at=ok?new Date().toISOString():null;if(ok){t.review_comment='';t.review_comment_at=null;}}
 }
@@ -270,7 +289,8 @@ export async function reviewNamingSet(ws:string,territories:{number:string;geome
 }
 /** The admin's naming token while the cards are in review; null otherwise. */
 export async function reviewNaming(ws:string):Promise<string|null>{
- if(demo)return sample.workspace.review_state==='review'?'demo':null;
+ if(demo)return sample.workspace.review_state==='review'||reviewToken?'demo':null;
+ if(reviewToken)return z.string().nullable().parse(await rpc('tm_review_link_naming',{p_token:reviewToken}));
  return z.string().nullable().parse(await rpc('tm_review_naming',{p_ws:ws}));
 }
 const requestWorkspaceSchema=z.array(z.object({id:z.string(),request_id:z.string(),review_state:z.enum(['none','review','changes','approved']),review_round:z.number(),cards:z.number(),comments:z.number(),drive_url:z.string().nullable().default(null),full_map_url:z.string().nullable().default(null),full_map_name:z.string().nullable(),full_map_at:z.string().nullable()}));
